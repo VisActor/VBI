@@ -1,0 +1,26 @@
+<!DOCTYPE html><html><head><title>Rsbuild App</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><script defer src="https://visactor.github.io/VBI/~demo/static/js/_index.a3039ab9.js"></script><link href="https://visactor.github.io/VBI/~demo/static/css/_index.d999c3dc.css" rel="stylesheet"><script>const storageKey = 'rspress-plugin-preview-theme-appearance';
+
+function setDocumentTheme(isDark) {
+  if (isDark) {
+    document.documentElement.classList.add('dark');
+    document.documentElement.style.colorScheme = 'dark';
+  } else {
+    document.documentElement.classList.remove('dark');
+    document.documentElement.style.colorScheme = 'light';
+  }
+  localStorage.setItem(
+    'rspress-plugin-preview-theme-appearance',
+    isDark ? 'dark' : 'light',
+  );
+}
+
+const saved = localStorage.getItem(storageKey) || 'light';
+setDocumentTheme(saved === 'dark');
+
+window.addEventListener('message', event => {
+  if (event.data.type === 'theme-change') {
+    const isDark = event.data.dark;
+    setDocumentTheme(isDark);
+  }
+});
+</script></head><body><div id="root"></div></body></html>
