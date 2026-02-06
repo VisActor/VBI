@@ -9,6 +9,11 @@ export class DimensionNodeBuilder {
     return this
   }
 
+  setEncoding(encoding: VBIDimension['encoding']): this {
+    this.yMap.set('encoding', encoding)
+    return this
+  }
+
   build(): VBIDimension {
     return this.yMap.toJSON() as VBIDimension
   }

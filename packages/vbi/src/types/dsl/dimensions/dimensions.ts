@@ -3,6 +3,7 @@ import { z } from 'zod'
 export const zVBIDimensionSchema = z.object({
   field: z.string(),
   alias: z.string(),
+  encoding: z.string().optional(),
 })
 
 export const zVBIDimensionGroupSchema: z.ZodType<VBIDimensionGroup> = z.object({

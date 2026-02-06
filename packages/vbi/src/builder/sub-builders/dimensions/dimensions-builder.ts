@@ -23,9 +23,14 @@ export class DimensionsBuilder {
     if (typeof fieldOrDimension === 'string') {
       defaultDimension.alias = fieldOrDimension
       defaultDimension.field = fieldOrDimension
+      // Don't set encoding - let VSeed auto-select based on chart type
     } else {
       defaultDimension.alias = fieldOrDimension.alias
       defaultDimension.field = fieldOrDimension.field || fieldOrDimension.alias
+      // Only use encoding if explicitly provided
+      if (fieldOrDimension.encoding) {
+        defaultDimension.encoding = fieldOrDimension.encoding
+      }
     }
 
     const yMap = new Y.Map<any>()
@@ -33,7 +38,8 @@ export class DimensionsBuilder {
       yMap.set(key, value)
     }
 
-    this.dsl.get('dimensions').push([yMap])
+    const dimensionsArray = this.dsl.get('dimensions') as Y.Array<any>
+    dimensionsArray.insert(dimensionsArray.length, [yMap])
     const dimensionNode = new DimensionNodeBuilder(yMap)
 
     if (callback) {
@@ -49,6 +55,17 @@ export class DimensionsBuilder {
     const index = dimensions.toArray().findIndex((item: any) => item.get('field') === field)
     if (index !== -1) {
       this.dsl.get('dimensions').delete(index, 1)
+    }
+  }
+
+  updateEncoding(field: string, encoding: string) {
+    const dimensions = this.dsl.get('dimensions')
+    const index = dimensions.toArray().findIndex((item: any) => item.get('field') === field)
+    if (index !== -1) {
+      const dimensionYMap = dimensions.get(index)
+      if (dimensionYMap) {
+        dimensionYMap.set('encoding', encoding)
+      }
     }
   }
 

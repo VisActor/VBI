@@ -1,5 +1,5 @@
 import type { Select, VQueryDSL } from '@visactor/vquery'
-import { VBIDSL } from '../../types'
+import { VBIDSL, exprField } from '../../types'
 import { DimensionsBuilder, MeasuresBuilder, VBIBuilder } from 'src'
 import { pipe } from 'remeda'
 
@@ -21,11 +21,16 @@ const buildSelect: buildPipe = (queryDSL, context) => {
   const result = { ...queryDSL }
   const measureNodes = measures.filter((measure) => MeasuresBuilder.isMeasureNode(measure))
   const measureSelects: Select<Record<string, unknown>> = measureNodes.map((measure) => {
-    return {
-      field: measure.field,
+    const field = exprField(measure.expr)
+    if (!field) {
+      throw new Error(`Cannot extract field from measure expr: ${JSON.stringify(measure.expr)}`)
+    }
+    const selectItem: any = {
+      field,
       alias: measure.alias,
       func: measure.aggregate.func,
     }
+    return selectItem
   })
 
   const dimensionNodes = dimensions.filter((dimension) => DimensionsBuilder.isDimensionNode(dimension))

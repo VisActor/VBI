@@ -15,7 +15,12 @@ export class MeasureNodeBuilder {
   }
 
   setAggregate(aggregate: VBIMeasure['aggregate']): this {
-    this.yMap.set('aggregate', aggregate)
+    // Create a Y.Map to store aggregate properly (not plain object)
+    const aggregateMap = new Y.Map<any>()
+    for (const [key, value] of Object.entries(aggregate as Record<string, unknown>)) {
+      aggregateMap.set(key, value)
+    }
+    this.yMap.set('aggregate', aggregateMap)
     return this
   }
 

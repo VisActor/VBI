@@ -5,7 +5,6 @@ import { useVBIStore } from 'src/model';
 
 export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
-  console.log('debug DimensionsList rerender');
 
   const [schema, setSchema] = useState<
     {
@@ -22,6 +21,8 @@ export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
     run();
   }, [builder]);
 
+  const measures = schema.filter((d) => d.type === 'number');
+
   const addMeasure = (measureName: string) => () => {
     builder.doc.transact(() => {
       builder.measures.addMeasure(measureName, (node) => {
@@ -32,8 +33,6 @@ export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
       });
     });
   };
-
-  const measures = schema.filter((d) => d.type === 'number');
 
   return (
     <Card

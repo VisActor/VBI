@@ -1,8 +1,9 @@
 import { z } from 'zod'
 import { zAggregate } from './aggregate'
+import { zMeasureExpr } from './expr'
 
 export const zVBIMeasure = z.object({
-  field: z.string(),
+  expr: zMeasureExpr,
   alias: z.string(),
   encoding: z.literal(['yAxis', 'xAxis', 'color', 'label', 'tooltip', 'size']),
   aggregate: zAggregate,

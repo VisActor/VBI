@@ -6,10 +6,13 @@ import DimensionShelf from './components/Shelfs/DimensionShelf';
 import MeasureShelf from './components/Shelfs/MeasureShelf';
 import { ChartTypeSelector } from './components/ChartType';
 import FieldsList from './components/Fields/FieldList';
+import MeasureFieldList from './components/Fields/MeasureFieldList';
 import { VSeedRender } from './components/Render';
 import { useVBIStore } from './model';
 import { useShallow } from 'zustand/shallow';
-import { setLocalData } from './utils/localConnector';
+import { VBIBuilder, VBIMeasure, VBIDimension } from '@visactor/vbi';
+import { getSupportedEncodings, canDimensionBeOnEncoding, canFieldBeOnEncoding, getDefaultDimensionEncoding, getDefaultMeasureEncoding, type MeasureEncodingType, type DimensionEncodingType } from './utils/chartMeasureEncodings';
+import EncodingFieldList from './components/Fields/EncodingFieldList';
 
 export function APP() {
   const [leftWidth, setLeftWidth] = useState(220);
@@ -17,13 +20,19 @@ export function APP() {
   const [builderCollapsed, setBuilderCollapsed] = useState(false);
 
   // VBI builder 相关
-  const builderRef = useRef<unknown>(null);
+  const builderRef = useRef<VBIBuilder | null>(null);
 
   // 可用的字段和选中的字段
   const [dimensions, setDimensions] = useState<string[]>([]);
   const [measures, setMeasures] = useState<string[]>([]);
   const [dimensionFields, setDimensionFields] = useState<string[]>([]);
   const [measureFields, setMeasureFields] = useState<string[]>([]);
+  const [measuresDetail, setMeasuresDetail] = useState<
+    Record<string, { alias?: string; aggregate?: { func: string }; encoding?: string }>
+  >({});
+  const [dimensionsDetail, setDimensionsDetail] = useState<
+    Record<string, { alias?: string; encoding?: string }>
+  >({});
   const [chartTypeOptions, setChartTypeOptions] = useState<string[]>([]);
   const [currentChartType, setCurrentChartType] = useState<string>('table');
   const [renderKey, setRenderKey] = useState(0);
@@ -42,111 +51,81 @@ export function APP() {
   useEffect(() => {
     initialize();
     builderRef.current = builder;
-    // setCurrentBuilder(builder);
 
     // 获取可用的图表类型
     if (builder?.chartType?.getAvailableChartTypes) {
       const types = builder.chartType.getAvailableChartTypes();
       setChartTypeOptions(types);
     }
+
+    // 从 connector schema 获取可用的字段
+    const loadSchema = async () => {
+      const schema = await builder.getSchema();
+      const dims = schema.filter((d) => d.type !== 'number').map((d) => d.name);
+      const meas = schema.filter((d) => d.type === 'number').map((d) => d.name);
+      setDimensions(dims);
+      setMeasures(meas);
+    };
+
+    loadSchema();
   }, []);
 
-  // 加载 demo 数据
-  const handleLoadDemo = async () => {
-    try {
-      const url = 'https://visactor.github.io/VBI/dataset/supermarket.csv';
-      const response = await fetch(url);
-      const csv = await response.text();
-
-      const lines = csv.split('\n');
-      const headers = lines[0].split(',').map((h: string) => h.trim());
-      const data = lines
-        .slice(1)
-        .map((line: string) => {
-          const values = line.split(',').map((v: string) => v.trim());
-          const row: Record<string, unknown> = {};
-          headers.forEach((header: string, index: number) => {
-            const value = values[index];
-            row[header] = isNaN(Number(value)) ? value : Number(value);
-          });
-          return row;
-        })
-        .filter((row: Record<string, unknown>) =>
-          Object.values(row).some((v) => v !== ''),
-        );
-
-      // 设置本地数据
-      setLocalData(data);
-
-      // 识别维度和度量
-      if (data.length > 0) {
-        const dims = headers.filter((h: string) => isNaN(Number(data[0]?.[h])));
-        const meas = headers.filter(
-          (h: string) => !isNaN(Number(data[0]?.[h])),
-        );
-        setDimensions(dims.length > 0 ? dims : headers.slice(0, 3));
-        setMeasures(meas.length > 0 ? meas : headers.slice(3));
-        setDimensionFields([]);
-        setMeasureFields([]);
-      }
-
-      console.log('Demo 数据已加载');
-    } catch (err) {
-      console.error('加载 Demo 数据失败:', err);
+  // 同步 measures 的详细信息（别名、聚合方式、编码）并更新 measureFields
+  const syncMeasuresDetail = () => {
+    if (builder?.measures) {
+      const allMeasures = (builder.measures.getMeasures() as VBIMeasure[]);
+      const detail: Record<string, { alias?: string; aggregate?: { func: string }; encoding?: string }> = {};
+      const fields: string[] = [];
+      
+      allMeasures.forEach((m: VBIMeasure) => {
+        const alias = m.alias;
+        if (alias) {
+          detail[alias] = {
+            alias: m.alias,
+            aggregate: m.aggregate,
+            encoding: m.encoding,
+          };
+          fields.push(alias);
+        }
+      });
+      setMeasuresDetail(detail);
+      // 同时更新 measureFields 以保持两者一致
+      setMeasureFields(fields);
     }
   };
 
-  // 上传 CSV
-  const handleUploadCSV = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.csv';
-    input.onchange = (e: Event) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = (event: ProgressEvent<FileReader>) => {
-        try {
-          const csv = event.target?.result as string;
-          const lines = csv.split('\n');
-          const headers = lines[0].split(',').map((h: string) => h.trim());
-          const data = lines
-            .slice(1)
-            .map((line: string) => {
-              const values = line.split(',').map((v: string) => v.trim());
-              const row: Record<string, unknown> = {};
-              headers.forEach((header: string, index: number) => {
-                const value = values[index];
-                row[header] = isNaN(Number(value)) ? value : Number(value);
-              });
-              return row;
-            })
-            .filter((row: Record<string, unknown>) =>
-              Object.values(row).some((v) => v !== ''),
-            );
-
-          // 设置本地数据
-          setLocalData(data);
-
-          const dims = headers.filter((h: string) =>
-            isNaN(Number(data[0]?.[h])),
-          );
-          const meas = headers.filter(
-            (h: string) => !isNaN(Number(data[0]?.[h])),
-          );
-          setDimensions(dims.length > 0 ? dims : headers);
-          setMeasures(meas.length > 0 ? meas : []);
-          setDimensionFields([]);
-          setMeasureFields([]);
-          console.log(`CSV 已上传，共 ${data.length} 行`);
-        } catch (err) {
-          console.error('CSV 解析失败:', err);
+  // 同步 dimensions 的详细信息（别名、编码）并更新 dimensionFields
+  const syncDimensionsDetail = () => {
+    if (builder?.dimensions) {
+      const allDimensions = (builder.dimensions.getDimensions() as VBIDimension[]);
+      const detail: Record<string, { alias?: string; encoding?: string }> = {};
+      const fields: string[] = [];
+      
+      allDimensions.forEach((d: VBIDimension) => {
+        const field = d.field;
+        if (field) {
+          detail[field] = {
+            alias: d.alias,
+            encoding: d.encoding,
+          };
+          fields.push(field);
         }
-      };
-      reader.readAsText(file);
-    };
-    input.click();
+      });
+      setDimensionsDetail(detail);
+      // 同时更新 dimensionFields 以保持两者一致
+      setDimensionFields(fields);
+    }
+  };
+
+  // 加载 demo 数据
+  const handleLoadDemo = async () => {
+    // 数据已经通过 demoConnector 的 query 方法从云端加载
+    // 字段列表已经通过 getSchema 获得
+  };
+
+  // 上传 CSV - 暂时禁用，需要 localConnector
+  const handleUploadCSV = () => {
+    alert('Function not yet implemented. Currently only demo data is supported.');
   };
 
   const dataMenuItems = [
@@ -164,73 +143,246 @@ export function APP() {
 
   // 维度字段变化
   const handleAddDimension = (field: string) => {
-    if (!dimensionFields.includes(field)) {
-      const newDims = [...dimensionFields, field];
-      setDimensionFields(newDims);
-      if (builderRef.current?.dimensions) {
-        builderRef.current.doc.transact(() => {
-          builderRef.current?.dimensions.addDimension(
-            field,
-            (node: unknown) => {
-              const nodeObj = node as Record<string, (field: string) => void>;
-              if (nodeObj?.setAlias) {
-                nodeObj.setAlias(field);
-              }
-            },
-          );
+    if (builder?.dimensions) {
+      const defaultEncoding = getDefaultDimensionEncoding(currentChartType);
+      builder.doc.transact(() => {
+        builder?.dimensions.addDimension(field, (node) => {
+          node.setAlias(field);
+          if (defaultEncoding) {
+            node.setEncoding(defaultEncoding);
+          }
         });
-      }
+      });
+      setTimeout(() => {
+        syncDimensionsDetail();
+      }, 0);
       setRenderKey((prev) => prev + 1);
     }
   };
 
   const handleRemoveDimension = (field: string) => {
-    const newDims = dimensionFields.filter((d) => d !== field);
-    setDimensionFields(newDims);
-    if (builderRef.current?.dimensions) {
-      builderRef.current.doc.transact(() => {
-        builderRef.current?.dimensions.removeDimension(field);
+    if (builder?.dimensions) {
+      builder.doc.transact(() => {
+        builder?.dimensions.removeDimension(field);
       });
+      setTimeout(() => {
+        syncDimensionsDetail();
+      }, 0);
+      setRenderKey((prev) => prev + 1);
     }
-    setRenderKey((prev) => prev + 1);
   };
 
   // 度量字段变化
   const handleAddMeasure = (field: string) => {
-    if (!measureFields.includes(field)) {
-      const newMeas = [...measureFields, field];
-      setMeasureFields(newMeas);
-      if (builderRef.current?.measures) {
-        builderRef.current.doc.transact(() => {
-          builderRef.current?.measures.addMeasure(field, (node: unknown) => {
-            const nodeObj = node as Record<string, (field: string) => void>;
-            if (nodeObj?.setAlias) {
-              nodeObj.setAlias(field);
-            }
-          });
+    if (builder?.measures) {
+      const defaultEncoding = getDefaultMeasureEncoding(currentChartType);
+      builder.doc.transact(() => {
+        builder?.measures.addMeasure(field, (node) => {
+          node.setAlias(field);
+          if (defaultEncoding) {
+            node.setEncoding(defaultEncoding);
+          }
         });
-      }
+      });
+      setTimeout(() => {
+        syncMeasuresDetail();
+      }, 0);
+      setRenderKey((prev) => prev + 1);
+    }
+  };
+
+  const handleRenameMeasure = (field: string, alias: string) => {
+    if (builder?.measures) {
+      builder.doc.transact(() => {
+        builder?.measures.renameMeasure(field, alias);
+      });
+      setTimeout(() => {
+        syncMeasuresDetail();
+      }, 0);
+      setRenderKey((prev) => prev + 1);
+    }
+  };
+
+  const handleChangeAggregateFunc = (field: string, func: string) => {
+    if (builder?.measures) {
+      builder.doc.transact(() => {
+        builder?.measures.updateAggregate(field, func);
+      });
+      setTimeout(() => {
+        syncMeasuresDetail();
+      }, 0);
       setRenderKey((prev) => prev + 1);
     }
   };
 
   const handleRemoveMeasure = (field: string) => {
-    const newMeas = measureFields.filter((m) => m !== field);
-    setMeasureFields(newMeas);
-    if (builderRef.current?.measures) {
-      builderRef.current.doc.transact(() => {
-        builderRef.current?.measures.removeMeasure(field);
+    if (builder?.measures) {
+      builder.doc.transact(() => {
+        builder?.measures.removeMeasure(field);
       });
+      setTimeout(() => {
+        syncMeasuresDetail();
+      }, 0);
+      setRenderKey((prev) => prev + 1);
     }
-    setRenderKey((prev) => prev + 1);
   };
+
+  // 拖拽处理函数
+  const handleDropDimensionToDimension = (field: string) => {
+    // dimension → dimension
+    handleAddDimension(field);
+  };
+
+  const handleDropDimensionToMeasure = (field: string) => {
+    // dimension → measure
+    handleAddMeasure(field);
+  };
+
+  const handleDropMeasureToMeasure = (field: string) => {
+    // measure → measure（可能是重排）
+    handleAddMeasure(field);
+  };
+
+  // 拖拽 measure 到某个 encoding 区域
+  const handleDropMeasureToEncoding = (measureAlias: string, encoding: MeasureEncodingType) => {
+    // 检查这个 measure 是否可以放在这个 encoding 上
+    const canPlace = canFieldBeOnEncoding(currentChartType, 'measure', encoding);
+    if (!canPlace) {
+      alert(`Cannot place measure on ${encoding} for ${currentChartType} chart`);
+      return;
+    }
+
+    if (builder?.measures) {
+      builder.doc.transact(() => {
+        // 关键逻辑：检查 measure 是否存在
+        const allMeasures = builder.measures.getMeasures() as VBIMeasure[];
+        const measureExists = allMeasures.some((m) => m.alias === measureAlias);
+
+        if (!measureExists) {
+          // 创建新的 measure
+          const defaultAggregate = 'sum';
+          
+          builder?.measures.addMeasure(measureAlias, (node) => {
+            node.setAlias(measureAlias);
+            node.setAggregate({ func: defaultAggregate });
+            node.setEncoding(encoding);
+          });
+        } else {
+          // 更新已有 measure 的 encoding
+          builder?.measures.updateEncoding(measureAlias, encoding);
+        }
+      });
+
+      setTimeout(() => {
+        syncMeasuresDetail();
+      }, 0);
+      setRenderKey((prev) => prev + 1);
+    }
+  };
+
+  // 获取某个 encoding 对应的 measure 列表
+  const getMeasuresByEncoding = (encoding: MeasureEncodingType) => {
+    return measureFields.filter((field) => {
+      // measureFields contains aliases (not raw field names)
+      const measure = measuresDetail[field];
+      return measure?.encoding === encoding;
+    });
+  };
+
+  // 获取当前 chartType 支持的 encoding
+  const supportedEncodings = getSupportedEncodings(currentChartType);
+
+  const handleDropDimensionToEncoding = (field: string, encoding: DimensionEncodingType) => {
+    // 检查这个 dimension 是否可以放在这个 encoding 上
+    const canPlaceDimension = canDimensionBeOnEncoding(currentChartType, encoding);
+    
+    // 如果 encoding 本身不支持 dimension，检查是否支持 measure
+    if (!canPlaceDimension) {
+      const canPlaceMeasure = canFieldBeOnEncoding(currentChartType, 'measure', encoding as MeasureEncodingType);
+      if (canPlaceMeasure) {
+        handleAddMeasure(field);
+        return;
+      }
+      
+      alert(`Cannot place dimension on ${encoding} for ${currentChartType} chart`);
+      return;
+    }
+
+    if (builder?.dimensions) {
+      builder.doc.transact(() => {
+        const allDimensions = builder.dimensions.getDimensions() as VBIDimension[];
+        const dimensionExists = allDimensions.some((d) => d.field === field);
+
+        if (!dimensionExists) {
+          builder?.dimensions.addDimension(field, (node) => {
+            node.setAlias(field);
+          });
+        }
+        
+        builder?.dimensions.updateEncoding(field, encoding);
+      });
+
+      setTimeout(() => {
+        syncDimensionsDetail();
+      }, 0);
+      setRenderKey((prev) => prev + 1);
+    }
+  };
+
+  // 获取某个 encoding 对应的 dimension 列表
+  const getDimensionsByEncoding = (encoding: DimensionEncodingType | MeasureEncodingType) => {
+    return dimensionFields.filter((field) => {
+      const dimension = dimensionsDetail[field];
+      return dimension?.encoding === encoding;
+    });
+  };
+
+  // 获取当前 chartType 支持的维度 encoding
 
   // 图表类型变化
   const handleChangeChartType = (type: string) => {
     setCurrentChartType(type);
-    if (builderRef.current?.chartType) {
-      builderRef.current.chartType.changeChartType(type);
+    
+    // 修复已存在的 dimension/measure 的 encoding - 为新的 chart type 适配
+    if (builder) {
+      builder.doc.transact(() => {
+        // 修复 dimensions 的 encoding
+        const dimensions = builder.dimensions?.getDimensions() as VBIDimension[];
+        if (dimensions) {
+          const defaultDimEncoding = getDefaultDimensionEncoding(type);
+          dimensions.forEach(d => {
+            if (!d.encoding || !canDimensionBeOnEncoding(type, d.encoding as DimensionEncodingType)) {
+              if (defaultDimEncoding) {
+                builder.dimensions?.updateEncoding(d.field, defaultDimEncoding);
+              }
+            }
+          });
+        }
+        
+        // 修复 measures 的 encoding
+        const measures = builder.measures?.getMeasures() as VBIMeasure[];
+        if (measures) {
+          const defaultMeasEncoding = getDefaultMeasureEncoding(type);
+          measures.forEach(m => {
+            if (!m.encoding || !canFieldBeOnEncoding(type, 'measure', m.encoding as MeasureEncodingType)) {
+              if (defaultMeasEncoding) {
+                builder.measures?.updateEncoding(m.alias, defaultMeasEncoding);
+              }
+            }
+          });
+        }
+      });
     }
+    
+    if (builder?.chartType) {
+      builder.chartType.changeChartType(type);
+    }
+    
+    setTimeout(() => {
+      syncDimensionsDetail();
+      syncMeasuresDetail();
+    }, 0);
+    
     setRenderKey((prev) => prev + 1);
   };
 
@@ -310,7 +462,8 @@ export function APP() {
                     </div>
                     <DimensionShelf
                       items={dimensions}
-                      onAdd={handleAddDimension}
+                      onAddDimension={handleAddDimension}
+                      onAddMeasure={handleAddMeasure}
                       existingFields={dimensionFields}
                     />
                   </>
@@ -381,15 +534,54 @@ export function APP() {
                   items={dimensionFields}
                   onAdd={handleAddDimension}
                   onRemove={handleRemoveDimension}
+                  onDropDimension={handleDropDimensionToDimension}
                   style={{ flex: 1, minHeight: 0 }}
                 />
-                <FieldsList
-                  title="MEASURES"
+                <MeasureFieldList
                   items={measureFields}
-                  onAdd={handleAddMeasure}
+                  measures={measuresDetail}
                   onRemove={handleRemoveMeasure}
+                  onRename={handleRenameMeasure}
+                  onChangeAggregate={handleChangeAggregateFunc}
+                  onDropDimension={handleDropDimensionToMeasure}
+                  onDropMeasure={handleDropMeasureToMeasure}
                   style={{ flex: 1, minHeight: 0, marginTop: 12 }}
                 />
+                {/* 根据 chartType 生成不同的 encoding fieldlists */}
+                {supportedEncodings.length > 0 && (
+                  <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {supportedEncodings.map((encoding) => {
+                      const measuresInEncoding = getMeasuresByEncoding(encoding);
+                      const dimensionsInEncoding = getDimensionsByEncoding(encoding);
+                      const encodingLabels: Record<MeasureEncodingType, string> = {
+                        yAxis: 'Y Axis',
+                        xAxis: 'X Axis',
+                        color: 'Color',
+                        label: 'Label',
+                        tooltip: 'Tooltip',
+                        size: 'Size',
+                      };
+                      return (
+                        <EncodingFieldList
+                          key={encoding}
+                          encoding={encoding}
+                          label={encodingLabels[encoding]}
+                          measureItems={measuresInEncoding}
+                          dimensionItems={dimensionsInEncoding}
+                          measures={measuresDetail}
+                          dimensions={dimensionsDetail}
+                          onRemoveMeasure={handleRemoveMeasure}
+                          onRemoveDimension={handleRemoveDimension}
+                          onRenameMeasure={handleRenameMeasure}
+                          onChangeAggregateFunc={handleChangeAggregateFunc}
+                          onDropMeasure={handleDropMeasureToEncoding}
+                          onDropDimension={handleDropDimensionToEncoding}
+                          style={{ flex: 0 }}
+                        />
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </>
           )}

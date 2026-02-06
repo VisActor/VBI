@@ -12,6 +12,7 @@ export interface FieldListProps {
   items: string[];
   onAdd?: (field: string) => void;
   onRemove: (field: string) => void;
+  onDropDimension?: (field: string) => void;
   style?: React.CSSProperties;
 }
 
@@ -20,8 +21,22 @@ const FieldList: React.FC<FieldListProps> = ({
   items,
   onAdd,
   onRemove,
+  onDropDimension,
   style,
 }) => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const dragType = e.dataTransfer.getData('dragType');
+    const field = e.dataTransfer.getData('field');
+    if (dragType === 'dimension' && onDropDimension) {
+      onDropDimension(field);
+    }
+  };
   const getIcon = () => {
     const lowerTitle = title.toLowerCase();
     if (lowerTitle.includes('dimension')) {
@@ -36,7 +51,11 @@ const FieldList: React.FC<FieldListProps> = ({
   return (
     <div className="fieldlist" style={style}>
       <div className="fieldlist-title">{title}</div>
-      <div className="fieldlist-items">
+      <div
+        className="fieldlist-items"
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
         {items.length === 0 && (
           <div className="fieldlist-empty">Drop {title.toLowerCase()} here</div>
         )}

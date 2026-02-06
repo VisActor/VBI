@@ -21,13 +21,30 @@ const MeasureShelf: React.FC<MeasureShelfProps> = ({
     }
   };
 
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, field: string, type: 'measure') => {
+    e.dataTransfer.effectAllowed = 'copy';
+    e.dataTransfer.setData('dragType', type);
+    e.dataTransfer.setData('field', field);
+    // For measures, also set measureAlias (which will be the measure's alias after adding)
+    e.dataTransfer.setData('measureAlias', field);  
+  };
+
   return (
     <div className="shelf" style={style}>
       <div className="shelf-items">
         {items.map((field) => {
           const isExists = existingFields.includes(field);
           return (
-            <div key={field} className="shelf-item">
+            <div
+              key={field}
+              className="shelf-item"
+              draggable={true}
+              onDragStart={(e) => handleDragStart(e, field, 'measure')}
+              style={{
+                cursor: 'grab',
+                opacity: 1,
+              }}
+            >
               <FontSizeOutlined style={{ marginRight: 4 }} />
               <span className="shelf-item-text">{field}</span>
               <button

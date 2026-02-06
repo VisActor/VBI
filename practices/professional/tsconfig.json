@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "lib": ["ES2021", "DOM"],
+    "lib": [
+      "ES2021",
+      "DOM"
+    ],
     "module": "ESNext",
     "noEmit": false,
     "jsx": "react-jsx",
@@ -17,7 +20,9 @@
     "rootDir": "./src",
     "baseUrl": ".",
     "paths": {
-      "src/*": ["./src/*"]
+      "src/*": [
+        "./src/*"
+      ]
     }
   },
   "references": [
@@ -31,5 +36,12 @@
       "path": "../../packages/vbi"
     }
   ],
-  "include": ["src", "src/**/*.csv"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.csv"
+  ],
+  "exclude": [
+    "src/main.tsx"
+  ]
 }

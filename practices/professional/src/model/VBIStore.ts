@@ -1,14 +1,11 @@
 import { VBI, VBIDSL } from '@visactor/vbi';
 import { VSeed } from '@visactor/vseed';
-import { createLocalConnector } from 'src/utils/localConnector';
+import { registerDemoConnector } from 'src/utils/demoConnector';
 import { create } from 'zustand';
 
 type DestroyCallback = () => void;
 
-const CONNECTOR_ID = 'localDataConnector';
-
-// 初始化本地连接器
-createLocalConnector(CONNECTOR_ID);
+const CONNECTOR_ID = registerDemoConnector();
 
 interface BearState {
   loading: boolean;
@@ -59,9 +56,23 @@ export const useVBIStore = create<BearState>((set, get) => ({
     const updateAll = async () => {
       setLoading(true);
       try {
+        const vbiDSL = builder.build();
+        console.log('[VBIStore] VBI DSL:', JSON.stringify(vbiDSL, null, 2));
+        
         const newVSeed = await builder.buildVSeed();
+        // BigInt replacer for JSON.stringify
+        const bigIntReplacer = (_key: string, value: unknown) => {
+          if (typeof value === 'bigint') {
+            return value.toString();
+          }
+          return value;
+        };
+        console.log('[VBIStore] VSeed DSL:', JSON.stringify(newVSeed, bigIntReplacer, 2));
+        
         setVSeed(newVSeed);
-        setDsl(builder.dsl.toJSON() as VBIDSL);
+        setDsl(vbiDSL);
+      } catch (error) {
+        console.error('[VBIStore] Error building VSeed:', error);
       } finally {
         setLoading(false);
       }

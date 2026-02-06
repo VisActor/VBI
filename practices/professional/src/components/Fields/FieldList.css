@@ -48,6 +48,17 @@
   white-space: nowrap;
 }
 
+.fieldlist-item-action {
+  background: transparent;
+  border: none;
+  color: #2563eb;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+  padding: 0;
+  margin-right: 4px;
+}
+
 .fieldlist-item-remove {
   background: transparent;
   border: none;
@@ -58,6 +69,7 @@
   padding: 0;
 }
 
+.fieldlist-item:hover .fieldlist-item-action,
 .fieldlist-item:hover .fieldlist-item-remove {
   opacity: 1;
 }
