@@ -1,14 +1,11 @@
 import { VBI, VBIDSL } from '@visactor/vbi';
 import { VSeed } from '@visactor/vseed';
-import { createLocalConnector } from 'src/utils/localConnector';
+import { registerDemoConnector } from 'src/utils/demoConnector';
 import { create } from 'zustand';
 
 type DestroyCallback = () => void;
 
-const CONNECTOR_ID = 'localDataConnector';
-
-// 初始化本地连接器
-createLocalConnector(CONNECTOR_ID);
+const CONNECTOR_ID = registerDemoConnector();
 
 interface BearState {
   loading: boolean;
