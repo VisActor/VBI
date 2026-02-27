@@ -57,6 +57,29 @@ export class MeasuresBuilder {
     }
   }
 
+  renameMeasure(measureAlias: string, newAlias: string): void {
+    this.modifyMeasure(measureAlias, { alias: newAlias })
+  }
+
+  modifyAggregate(measureAlias: string, func: string): void {
+    const measures = this.dsl.get('measures') as Y.Array<any>
+    const index = measures.toArray().findIndex((item: any) => item.get('alias') === measureAlias)
+
+    if (index === -1) {
+      throw new Error(`Measure with alias "${measureAlias}" not found`)
+    }
+
+    const measureYMap = measures.get(index)
+    const aggregateYMap = measureYMap.get('aggregate')
+    if (aggregateYMap && typeof aggregateYMap === 'object') {
+      ;(aggregateYMap as any).set('func', func)
+    }
+  }
+
+  modifyEncoding(measureAlias: string, encoding: VBIMeasure['encoding']): void {
+    this.modifyMeasure(measureAlias, { encoding })
+  }
+
   modifyMeasure(
     measureAlias: string,
     updates: Partial<Omit<VBIMeasure, 'field'>>,
