@@ -57,6 +57,23 @@ export class MeasuresBuilder {
     }
   }
 
+  modifyMeasure(
+    measureAlias: string,
+    updates: Partial<Omit<VBIMeasure, 'field'>>,
+  ): void {
+    const measures = this.dsl.get('measures') as Y.Array<any>
+    const index = measures.toArray().findIndex((item: any) => item.get('alias') === measureAlias)
+
+    if (index === -1) {
+      throw new Error(`Measure with alias "${measureAlias}" not found`)
+    }
+
+    const measureYMap = measures.get(index)
+    for (const [key, value] of Object.entries(updates)) {
+      measureYMap.set(key, value)
+    }
+  }
+
   getMeasures(): VBIMeasure[] {
     return this.dsl.get('measures').toJSON()
   }
