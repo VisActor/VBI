@@ -1,10 +1,11 @@
 import { z } from 'zod'
 import { zAggregate } from './aggregate'
+import { zVBIEncoding } from '../encoding'
 
 export const zVBIMeasure = z.object({
   field: z.string(),
   alias: z.string(),
-  encoding: z.literal(['yAxis', 'xAxis', 'color', 'label', 'tooltip', 'size']),
+  encoding: zVBIEncoding,
   aggregate: zAggregate,
 })
 export const zVBIMeasureGroup: z.ZodType<VBIMeasureGroup> = z.object({
