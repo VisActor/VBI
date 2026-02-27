@@ -1,5 +1,6 @@
 import * as Y from 'yjs'
 import type { ObserveCallback, VBIMeasure, VBIMeasureGroup, VBIMeasureTree } from 'src/types'
+import { materialize } from '../../../utils'
 import { MeasureNodeBuilder } from './measure-node-builder'
 
 export class MeasuresBuilder {
@@ -32,11 +33,7 @@ export class MeasuresBuilder {
       defaultMeasure.aggregate = fieldOrMeasure.aggregate
     }
 
-    const yMap = new Y.Map<any>()
-
-    for (const [key, value] of Object.entries(defaultMeasure)) {
-      yMap.set(key, value)
-    }
+    const yMap = materialize(defaultMeasure) as Y.Map<any>
     this.dsl.get('measures').push([yMap])
 
     const measureNode = new MeasureNodeBuilder(yMap)
@@ -61,7 +58,7 @@ export class MeasuresBuilder {
     this.modifyMeasure(measureAlias, { alias: newAlias })
   }
 
-  modifyAggregate(measureAlias: string, func: string): void {
+  modifyAggregate(measureAlias: string, func: string, quantile?: number): void {
     const measures = this.dsl.get('measures') as Y.Array<any>
     const index = measures.toArray().findIndex((item: any) => item.get('alias') === measureAlias)
 
@@ -70,10 +67,14 @@ export class MeasuresBuilder {
     }
 
     const measureYMap = measures.get(index)
-    const aggregateYMap = measureYMap.get('aggregate')
-    if (aggregateYMap && typeof aggregateYMap === 'object') {
-      ;(aggregateYMap as any).set('func', func)
+    // Create a new Y.Map for aggregate to ensure it's properly typed
+    const newAggregate = new Y.Map()
+    newAggregate.set('func', func)
+    if (func === 'quantile' && quantile !== undefined) {
+      newAggregate.set('quantile', quantile)
     }
+    // Replace the entire aggregate object
+    measureYMap.set('aggregate', newAggregate)
   }
 
   modifyEncoding(measureAlias: string, encoding: VBIMeasure['encoding']): void {
