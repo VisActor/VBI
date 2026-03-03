@@ -3,11 +3,13 @@ import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { ConfigProvider, theme, Dropdown, Button } from 'antd';
 import { LeftOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
+import { Builder as VSeedBuilder } from '@visactor/vseed';
 import DimensionShelf from './components/Shelfs/DimensionShelf';
 import MeasureShelf from './components/Shelfs/MeasureShelf';
 import { ChartTypeSelector } from './components/ChartType';
 import FieldsList from './components/Fields/FieldList';
 import MeasureFieldList from './components/Fields/MeasureFieldList';
+import EncodingPanel from './components/Fields/EncodingPanel';
 import { VSeedRender } from './components/Render';
 import { useVBIStore } from './model';
 import { useShallow } from 'zustand/shallow';
@@ -123,6 +125,38 @@ export function APP() {
       setMeasuresDetail(detail);
     }
   }, []);
+
+  // Update measures with encoding info when measures change
+  useEffect(() => {
+    if (builderRef.current?.measures?.getMeasures) {
+      builderRef.current.measures.getMeasures();
+    }
+  }, [measureFields]);
+
+  // Get measure names from VBIStore (user-added measures)
+  const measureNames = useMemo(() => {
+    return measureFields;
+  }, [measureFields]);
+
+  // Compute VChart spec and extract measures for EncodingPanel
+  const { vchartSpec, vseedMeasures } = useMemo(() => {
+    if (!vseed) {
+      return { vchartSpec: null, vseedMeasures: [] };
+    }
+
+    try {
+      const builder = VSeedBuilder.from({ ...vseed, theme: 'light' } as any);
+      const spec = builder.build() as any;
+      
+      // We have measure names from measureFields state
+      // Just find which encoding points to __MeaValue__ in the spec
+      const extractedMeasures = measureNames.length > 0 ? measureNames : [];
+      
+      return { vchartSpec: spec as any, vseedMeasures: extractedMeasures };
+    } catch {
+      return { vchartSpec: null, vseedMeasures: [] };
+    }
+  }, [vseed, measureNames]);
 
   // 加载 demo 数据
   const handleLoadDemo = async () => {
@@ -467,6 +501,11 @@ export function APP() {
                   onRename={handleRenameMeasure}
                   onChangeAggregate={handleChangeAggregateFunc}
                   onRemove={handleRemoveMeasure}
+                  style={{ flex: 1, minHeight: 0, marginTop: 12 }}
+                />
+                <EncodingPanel
+                  spec={vchartSpec}
+                  measures={vseedMeasures}
                   style={{ flex: 1, minHeight: 0, marginTop: 12 }}
                 />
               </div>

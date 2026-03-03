@@ -50,7 +50,6 @@ export const VSeedRender = (props: VSeedRenderProps) => {
       );
 
       tableInstance.on('legend_item_click', (args) => {
-        console.log('LEGEND_ITEM_CLICK', args);
         tableInstance.updateFilterRules([
           {
             filterKey: ColorIdEncoding,
@@ -107,11 +106,7 @@ export const VSeedRender = (props: VSeedRenderProps) => {
         backgroundColor: 'transparent',
         ...style,
       }}
-      onClick={() => {
-        console.group(`selected ${vseed.chartType}`);
-        console.log('builder', vseedBuilderRef.current);
-        console.groupEnd();
-      }}
+      onClick={() => {}}
     />
   );
 };
