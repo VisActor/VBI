@@ -14,9 +14,9 @@ export interface MeasureFieldListProps {
     { alias?: string; aggregate?: { func: string; quantile?: number } }
   >;
   dimensionMeasures?: string[];
-  onRemove: (alias: string) => void;
-  onRename?: (alias: string, newAlias: string) => void;
-  onChangeAggregate?: (alias: string, func: string, quantile?: number) => void;
+  onRemove: (field: string) => void;
+  onRename?: (field: string, newAlias: string) => void;
+  onChangeAggregate?: (field: string, func: string, quantile?: number) => void;
   style?: React.CSSProperties;
 }
 
@@ -50,18 +50,18 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
   onChangeAggregate,
   style,
 }) => {
-  const [editingAlias, setEditingAlias] = useState<string | null>(null);
+  const [editingField, setEditingField] = useState<string | null>(null);
   const [editAlias, setEditAlias] = useState('');
   const [editAggregate, setEditAggregate] = useState('sum');
   const [editQuantile, setEditQuantile] = useState(0.5);
 
-  const handleEdit = (alias: string) => {
-    const measure = measures[alias];
-    setEditingAlias(alias);
-    setEditAlias(measure?.alias || alias);
+  const handleEdit = (field: string) => {
+    const measure = measures[field];
+    setEditingField(field);
+    setEditAlias(measure?.alias || field);
 
     // 如果这个字段来自 dimension，聚合函数只能是 count 或 count_distinct
-    const isDimensionMeasure = dimensionMeasures.includes(alias);
+    const isDimensionMeasure = dimensionMeasures.includes(field);
     let defaultFunc = measure?.aggregate?.func || 'sum';
     if (
       isDimensionMeasure &&
@@ -74,22 +74,23 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
   };
 
   const handleSave = () => {
-    if (editingAlias) {
-      // 如果修改了别名，先进行重命名
-      if (onRename && editAlias !== editingAlias) {
-        onRename(editingAlias, editAlias);
-      }
-      // 然后修改聚合函数（使用新的别名）
+    if (editingField) {
+      // 先修改聚合函数
       if (onChangeAggregate) {
         const quantile =
           editAggregate === 'quantile' ? editQuantile : undefined;
-        onChangeAggregate(editAlias, editAggregate, quantile);
+        onChangeAggregate(editingField, editAggregate, quantile);
+      }
+      // 如果修改了别名，再进行重命名
+      const oldAlias = measures[editingField]?.alias || editingField;
+      if (onRename && editAlias !== oldAlias) {
+        onRename(editingField, editAlias);
       }
     }
 
     // 使用setTimeout确保状态更新完成后再关闭Modal
     setTimeout(() => {
-      setEditingAlias(null);
+      setEditingField(null);
     }, 0);
   };
 
@@ -101,13 +102,13 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
           {items.length === 0 && (
             <div className="fieldlist-empty">No measures added</div>
           )}
-          {items.map((alias) => {
-            const measure = measures[alias];
-            const displayName = alias;
+          {items.map((field) => {
+            const measure = measures[field];
+            const displayName = measure?.alias || field;
             const aggregateFunc = measure?.aggregate?.func || 'sum';
             return (
               <div
-                key={alias}
+                key={field}
                 className="fieldlist-item"
                 style={{ cursor: 'grab' }}
               >
@@ -120,7 +121,7 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
                     className="fieldlist-item-action"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleEdit(alias);
+                      handleEdit(field);
                     }}
                     title="Edit"
                   >
@@ -130,7 +131,7 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
                     className="fieldlist-item-remove"
                     onClick={(e) => {
                       e.stopPropagation();
-                      onRemove(alias);
+                      onRemove(field);
                     }}
                   >
                     <DeleteOutlined />
@@ -144,9 +145,9 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
 
       <Modal
         title="Edit Measure"
-        open={editingAlias !== null}
+        open={editingField !== null}
         onOk={handleSave}
-        onCancel={() => setEditingAlias(null)}
+        onCancel={() => setEditingField(null)}
       >
         <Form layout="vertical">
           <Form.Item label="Alias">
@@ -161,7 +162,7 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
               value={editAggregate}
               onChange={setEditAggregate}
               options={
-                editingAlias && dimensionMeasures.includes(editingAlias)
+                editingField && dimensionMeasures.includes(editingField)
                   ? DIMENSION_AGGREGATE_OPTIONS
                   : ALL_AGGREGATE_OPTIONS
               }

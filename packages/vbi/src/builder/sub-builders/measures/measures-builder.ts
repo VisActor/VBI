@@ -54,16 +54,16 @@ export class MeasuresBuilder {
     }
   }
 
-  renameMeasure(measureAlias: string, newAlias: string): void {
-    this.modifyMeasure(measureAlias, { alias: newAlias })
+  renameMeasure(field: string, newAlias: string): void {
+    this.modifyMeasure(field, { alias: newAlias })
   }
 
-  modifyAggregate(measureAlias: string, func: string, quantile?: number): void {
+  modifyAggregate(field: string, func: string, quantile?: number): void {
     const measures = this.dsl.get('measures') as Y.Array<any>
-    const index = measures.toArray().findIndex((item: any) => item.get('alias') === measureAlias)
+    const index = measures.toArray().findIndex((item: any) => item.get('field') === field)
 
     if (index === -1) {
-      throw new Error(`Measure with alias "${measureAlias}" not found`)
+      throw new Error(`Measure with field "${field}" not found`)
     }
 
     const measureYMap = measures.get(index)
@@ -77,16 +77,19 @@ export class MeasuresBuilder {
     measureYMap.set('aggregate', newAggregate)
   }
 
-  modifyEncoding(measureAlias: string, encoding: VBIMeasure['encoding']): void {
-    this.modifyMeasure(measureAlias, { encoding })
+  modifyEncoding(field: string, encoding: VBIMeasure['encoding']): void {
+    this.modifyMeasure(field, { encoding })
   }
 
-  modifyMeasure(measureAlias: string, updates: Partial<Omit<VBIMeasure, 'field'>>): void {
+  modifyMeasure(
+    field: string,
+    updates: Partial<Omit<VBIMeasure, 'field'>>,
+  ): void {
     const measures = this.dsl.get('measures') as Y.Array<any>
-    const index = measures.toArray().findIndex((item: any) => item.get('alias') === measureAlias)
+    const index = measures.toArray().findIndex((item: any) => item.get('field') === field)
 
     if (index === -1) {
-      throw new Error(`Measure with alias "${measureAlias}" not found`)
+      throw new Error(`Measure with field "${field}" not found`)
     }
 
     const measureYMap = measures.get(index)

@@ -38,10 +38,6 @@ export const registerDemoConnector = () => {
         ];
       },
       query: async ({ queryDSL, schema }) => {
-        console.log(
-          '[demoConnector] Received queryDSL:',
-          JSON.stringify(queryDSL, null, 2),
-        );
         if (!(await vquery.hasDataset(connectorId))) {
           const url = 'https://visactor.github.io/VBI/dataset/supermarket.csv';
           const datasetSource = { type: 'csv', rawDataset: url };
@@ -63,48 +59,44 @@ export const registerDemoConnector = () => {
             }
             return value;
           };
-          console.log(
-            '[demoConnector] Query result (raw):',
-            JSON.stringify(queryResult, bigIntReplacer, 2),
-          );
 
           // Measure-aware type conversion: convert measure results from string to number
           let normalizedDataset = queryResult.dataset;
           if (queryDSL.select && Array.isArray(queryDSL.select)) {
-            // Identify measure columns (those with func property)
-            const measureAliases: string[] = [];
+            // Identify measure columns (those with func property) and dimension columns
+            // 使用 field 而不是 alias 作为列名，保持与 buildVSeed 的 id 一致
+            const measureFields: { field: string; alias: string }[] = [];
+            const dimensionFields: { field: string; alias: string }[] = [];
+            
             for (const item of queryDSL.select) {
-              if (
-                typeof item === 'object' &&
-                item !== null &&
-                'func' in item &&
-                (item as any).func
-              ) {
-                const alias = (item as any).alias || (item as any).field;
-                if (alias) {
-                  measureAliases.push(alias);
+              if (typeof item === 'object' && item !== null) {
+                const field = (item as any).field;
+                const alias = (item as any).alias;
+                
+                if ('func' in item && (item as any).func) {
+                  // This is a measure
+                  if (field) {
+                    measureFields.push({ field, alias });
+                  }
+                } else {
+                  // This is a dimension
+                  if (field) {
+                    dimensionFields.push({ field, alias });
+                  }
                 }
               }
             }
-            console.log(
-              '[demoConnector] Identified measure aliases:',
-              measureAliases,
-            );
 
-            if (measureAliases.length > 0) {
+
+            if (measureFields.length > 0 || dimensionFields.length > 0) {
               // CRITICAL: Must reassign the result
+              // 将列从 alias 名重命名为 field 名
               normalizedDataset = queryResult.dataset.map((row) => {
-                const next = { ...row };
-                console.log(
-                  '[demoConnector] Processing row:',
-                  JSON.stringify(row, bigIntReplacer),
-                );
+                const next: Record<string, any> = {};
 
-                for (const alias of measureAliases) {
-                  const raw = next[alias];
-                  console.log(
-                    `[demoConnector] Before: ${alias} = ${raw} (type: ${typeof raw})`,
-                  );
+                // Process measures: convert string to number and rename from alias to field
+                for (const { field, alias } of measureFields) {
+                  const raw = (row as any)[alias];
 
                   if (raw != null) {
                     // Handle both string and bigint types from Arrow
@@ -119,34 +111,25 @@ export const registerDemoConnector = () => {
                       num = NaN;
                     }
 
-                    // Only assign if valid
+                    // Only assign if valid，用 field 作为新的列名
                     if (!Number.isNaN(num)) {
-                      next[alias] = num;
+                      next[field] = num;
                     }
                   }
+                }
 
-                  console.log(
-                    `[demoConnector] After: ${alias} = ${next[alias]} (type: ${typeof next[alias]}, isFinite: ${Number.isFinite(next[alias])})`,
-                  );
+                // Process dimensions: just rename from alias to field
+                for (const { field, alias } of dimensionFields) {
+                  const raw = (row as any)[alias];
+                  if (raw != null) {
+                    next[field] = raw;
+                  }
                 }
 
                 return next;
               });
 
-              // CRITICAL SELF-CHECK
-              if (normalizedDataset.length > 0) {
-                const firstRow = normalizedDataset[0];
-                for (const alias of measureAliases) {
-                  console.log(
-                    `[demoConnector] FINAL CHECK - ${alias}: value=${firstRow[alias]}, type=${typeof firstRow[alias]}, isFinite=${Number.isFinite(firstRow[alias])}`,
-                  );
-                }
-              }
 
-              console.log(
-                '[demoConnector] Normalized dataset:',
-                JSON.stringify(normalizedDataset, bigIntReplacer, 2),
-              );
             }
           }
 

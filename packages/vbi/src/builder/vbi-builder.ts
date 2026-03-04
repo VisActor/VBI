@@ -48,9 +48,45 @@ export class VBIBuilder implements VBIBuilderInterface {
     const schema = await connector.discoverSchema()
     const queryResult = await connector.query({ queryDSL, schema, connectorId })
 
+    // 将 VBI DSL 的 measures/dimensions 转换为 VSeed 格式
+    const mapMeasures = (tree: any[]): any[] => {
+      return tree.map((node) => {
+        if (MeasuresBuilder.isMeasureNode(node)) {
+          return {
+            id: node.field,  // field → id
+            alias: node.alias,
+            encoding: node.encoding,
+          }
+        } else {
+          return {
+            alias: node.alias,
+            children: mapMeasures(node.children),
+          }
+        }
+      })
+    }
+
+    const mapDimensions = (tree: any[]): any[] => {
+      return tree.map((node) => {
+        if (DimensionsBuilder.isDimensionNode(node)) {
+          return {
+            id: node.field,  // field → id
+            alias: node.alias,
+          }
+        } else {
+          return {
+            alias: node.alias,
+            children: mapDimensions(node.children),
+          }
+        }
+      })
+    }
+
     return {
       chartType: vbiDSL.chartType,
       dataset: queryResult.dataset,
+      measures: vbiDSL.measures.length > 0 ? mapMeasures(vbiDSL.measures) : undefined,
+      dimensions: vbiDSL.dimensions.length > 0 ? mapDimensions(vbiDSL.dimensions) : undefined,
     } as VSeedDSL
   }
 
