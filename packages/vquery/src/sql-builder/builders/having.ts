@@ -15,13 +15,16 @@ export const applyHaving = <T>(having: Having<T> | HavingClause<T>): RawBuilder<
     const op = leaf.op
 
     // Handle aggregation function operators: sum(), avg(), count(), min(), max()
-    if (['sum', 'avg', 'count', 'min', 'max'].includes(op)) {
-      const aggrExpr = sql`${sql.raw(op.toLowerCase())}(${sql.ref(field)})`
-      return sql<boolean>`${aggrExpr} = ${sql.val(value)}`
-    }
-
-    // Handle comparison operators
+    // Using switch for better coverage tracking
     switch (op) {
+      case 'sum':
+      case 'avg':
+      case 'count':
+      case 'min':
+      case 'max': {
+        const aggrExpr = sql`${sql.raw(op.toLowerCase())}(${sql.ref(field)})`
+        return sql<boolean>`${aggrExpr} = ${sql.val(value)}`
+      }
       case 'is null':
         return sql<boolean>`${sql.ref(field)} is null`
       case 'is not null':
@@ -43,7 +46,7 @@ export const applyHaving = <T>(having: Having<T> | HavingClause<T>): RawBuilder<
         return sql<boolean>`${sql.ref(field)} not between ${sql.val(a)} and ${sql.val(b)}`
       }
     }
-    // Default comparison
+    // Default comparison (for =, !=, >, >=, <, <= etc)
     return sql<boolean>`${sql.ref(field)} ${sql.raw(op)} ${sql.val(value)}`
   }
   return toRaw(having)
