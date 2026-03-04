@@ -1,3 +1,5 @@
 export { MeasuresBuilder } from './measures'
+export { MeasureNodeBuilder } from './measures'
 export { DimensionsBuilder } from './dimensions'
+export { DimensionNodeBuilder } from './dimensions'
 export { ChartTypeBuilder } from './chart-type'

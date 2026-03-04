@@ -46,12 +46,18 @@ export class MeasuresBuilder {
     }
   }
 
-  removeMeasure(field: VBIMeasure['field']) {
+  removeMeasure(field: VBIMeasure['field']): boolean {
+    if (!field || typeof field !== 'string') {
+      console.error('[MeasuresBuilder] Invalid field name:', field)
+      return false
+    }
     const measures = this.dsl.get('measures')
     const index = measures.toArray().findIndex((item: any) => item.get('field') === field)
     if (index !== -1) {
       this.dsl.get('measures').delete(index, 1)
+      return true
     }
+    return false
   }
 
   renameMeasure(measureAlias: string, newAlias: string): void {
