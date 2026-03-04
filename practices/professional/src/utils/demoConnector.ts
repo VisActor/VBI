@@ -52,13 +52,6 @@ export const registerDemoConnector = () => {
           const queryResult = await dataset.query(
             queryDSL as VQueryDSL<Record<string, string | number>>,
           );
-          // BigInt replacer for JSON.stringify
-          const bigIntReplacer = (_key: string, value: unknown) => {
-            if (typeof value === 'bigint') {
-              return value.toString();
-            }
-            return value;
-          };
 
           // Measure-aware type conversion: convert measure results from string to number
           let normalizedDataset = queryResult.dataset;
