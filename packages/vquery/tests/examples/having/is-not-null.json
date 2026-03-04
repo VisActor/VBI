@@ -1,0 +1,37 @@
+{
+  "datasetId": "having-is-not-null",
+  "description": "Having Example with IS NOT NULL operator",
+  "vquery": {
+    "select": [
+      "department",
+      {
+        "field": "salary",
+        "alias": "has_salary",
+        "aggr": { "func": "count" }
+      }
+    ],
+    "groupBy": ["department"],
+    "having": {
+      "op": "and",
+      "conditions": [
+        {
+          "field": "has_salary",
+          "op": ">",
+          "value": 0
+        }
+      ]
+    }
+  },
+  "dataset": [
+    { "id": 1, "name": "Alice", "age": 25, "department": "HR", "salary": null },
+    { "id": 2, "name": "Bob", "age": 30, "department": "Engineering", "salary": 8000 },
+    { "id": 3, "name": "Charlie", "age": 35, "department": "Engineering", "salary": 9000 }
+  ],
+  "schema": [
+    { "name": "id", "type": "number" },
+    { "name": "name", "type": "string" },
+    { "name": "age", "type": "number" },
+    { "name": "department", "type": "string" },
+    { "name": "salary", "type": "number" }
+  ]
+}
