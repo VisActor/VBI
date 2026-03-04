@@ -23,7 +23,7 @@ export const convertDSLToSQL = <T, TableName extends string>(
     qb = qb.where(applyWhere<T>(dsl.where))
   }
 
-  qb = applyGroupBy(qb, dsl.groupBy as Array<Extract<keyof T, string>> | undefined)
+  qb = applyGroupBy(qb, dsl.groupBy as Array<Extract<keyof T, string>> | undefined, dsl.select)
 
   // Apply having after groupBy
   if (dsl.having) {
