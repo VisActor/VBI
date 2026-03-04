@@ -42,9 +42,9 @@ export const applyHaving = <T>(having: Having<T> | HavingClause<T>): RawBuilder<
         const [a, b] = value as [unknown, unknown]
         return sql<boolean>`${sql.ref(field)} not between ${sql.val(a)} and ${sql.val(b)}`
       }
-      default:
-        return sql<boolean>`${sql.ref(field)} ${sql.raw(op)} ${sql.val(value)}`
     }
+    // Default comparison
+    return sql<boolean>`${sql.ref(field)} ${sql.raw(op)} ${sql.val(value)}`
   }
   return toRaw(having)
 }

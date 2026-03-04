@@ -66,13 +66,9 @@ const buildHaving: buildPipe = (queryDSL, context) => {
     // Handle simple filter
     if ('field' in filter && 'operator' in filter && 'value' in filter) {
       return {
-        [filter.field]: {
-          [filter.operator]: {
-            field: filter.field,
-            op: filter.operator,
-            value: filter.value,
-          },
-        },
+        field: filter.field,
+        op: filter.operator,
+        value: filter.value,
       }
     }
     return filter
