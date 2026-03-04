@@ -13,6 +13,14 @@ const DATE_FORMAT_MAP: Record<string, string> = {
   second: '%Y-%m-%d %H:%M:%S',
 }
 
+const OFFSET_UNIT_MAP: Record<string, number> = {
+  year: 1,
+  quarter: 3,
+  month: 1,
+  week: 1,
+  day: 1,
+}
+
 export const applySelect = <DB, TB extends keyof DB & string, O, T>(
   qb: SelectQueryBuilder<DB, TB, O>,
   select?: Array<keyof T | SelectItem<T>>,
@@ -24,10 +32,44 @@ export const applySelect = <DB, TB extends keyof DB & string, O, T>(
           const field = item.field as Extract<keyof T, string>
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const expression = eb.ref(field as any)
+          const alias = item.alias ?? (field as string)
 
+          // Handle period (YoY/MoM/etc)
+          if (item.period && item.aggr) {
+            const { dateField, offsetUnit, offset } = item.period
+            const { func } = item.aggr
+
+            // Build aggregation expression using original field
+            let aggrExpr: any
+            if (['avg', 'sum', 'min', 'max', 'variance', 'variancePop', 'stddev', 'median'].includes(func)) {
+              if (func === 'variance') {
+                aggrExpr = sql`var_samp(${expression})`
+              } else if (func === 'variancePop') {
+                aggrExpr = sql`var_pop(${expression})`
+              } else {
+                aggrExpr = sql`${sql.raw(func)}(${expression})`
+              }
+            } else if (func === 'count') {
+              aggrExpr = sql`CAST(count(${expression}) AS INTEGER)`
+            } else if (func === 'count_distinct') {
+              aggrExpr = sql`CAST(count(distinct ${expression}) AS INTEGER)`
+            } else {
+              aggrExpr = expression
+            }
+
+            // Calculate offset rows
+            const offsetRows = Math.abs(offset) * (OFFSET_UNIT_MAP[offsetUnit] || 1)
+
+            // Generate LAG(聚合表达式, offset) OVER (ORDER BY DATE_TRUNC(offsetUnit, dateField))
+            // Cast dateField to TIMESTAMP for date_trunc
+            return sql`LAG(${aggrExpr}, ${offsetRows}) OVER (ORDER BY DATE_TRUNC(${sql.raw(`'${offsetUnit}'`)}, CAST(${eb.ref(dateField as any)} AS TIMESTAMP)))`.as(
+              alias,
+            )
+          }
+
+          // Handle regular aggregation
           if (item.aggr) {
             const { func } = item.aggr
-            const alias = item.alias ?? (field as string)
             if (['avg', 'sum', 'min', 'max', 'variance', 'variancePop', 'stddev', 'median'].includes(func)) {
               if (func === 'variance') {
                 return sql`var_samp(${expression})`.as(alias)
@@ -56,7 +98,6 @@ export const applySelect = <DB, TB extends keyof DB & string, O, T>(
               }
             }
           }
-          const alias = item.alias ?? (field as string)
           return expression.as(alias)
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

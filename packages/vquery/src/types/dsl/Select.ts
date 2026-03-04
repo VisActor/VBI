@@ -23,6 +23,16 @@ export type DateAggregateFunction =
 
 export type AggregateFunction = BaseAggregateFunction | DateAggregateFunction
 
+// Period offset unit
+export type OffsetUnit = 'year' | 'quarter' | 'month' | 'week' | 'day'
+
+// Period configuration for YoY/MoM/etc
+export type PeriodConfig = {
+  dateField: string
+  offsetUnit: OffsetUnit
+  offset: number
+}
+
 export type SelectItem<T> = {
   field: keyof T
   alias?: string
@@ -30,6 +40,7 @@ export type SelectItem<T> = {
     func: AggregateFunction
     quantile?: number
   }
+  period?: PeriodConfig
 }
 
 export type Select<T> = Array<keyof T | SelectItem<T>>
