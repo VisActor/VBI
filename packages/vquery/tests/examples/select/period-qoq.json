@@ -1,0 +1,40 @@
+{
+  "datasetId": "select-period-qoq",
+  "description": "Select with Period QoQ (Quarter-over-Quarter)",
+  "vquery": {
+    "select": [
+      {
+        "field": "order_date",
+        "alias": "quarter",
+        "aggr": { "func": "to_quarter" }
+      },
+      {
+        "field": "sales",
+        "alias": "current",
+        "aggr": { "func": "sum" }
+      },
+      {
+        "field": "sales",
+        "alias": "last_quarter",
+        "aggr": { "func": "sum" },
+        "period": {
+          "dateField": "order_date",
+          "offsetUnit": "quarter",
+          "offset": -1
+        }
+      }
+    ]
+  },
+  "dataset": [
+    { "id": 1, "name": "Alice", "order_date": "2024-01-15", "sales": 5000 },
+    { "id": 2, "name": "Bob", "order_date": "2024-04-20", "sales": 8000 },
+    { "id": 3, "name": "Charlie", "order_date": "2023-01-10", "sales": 4000 },
+    { "id": 4, "name": "David", "order_date": "2023-04-15", "sales": 6000 }
+  ],
+  "schema": [
+    { "name": "id", "type": "number" },
+    { "name": "name", "type": "string" },
+    { "name": "order_date", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ]
+}
