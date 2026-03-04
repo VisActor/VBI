@@ -26,7 +26,11 @@ export class HavingFilterNodeBuilder {
    * @param operator - 操作符
    */
   setOperator(operator: FilterOperator): this {
-    const validOperators = ['eq', 'neq', 'gt', 'gte', 'lt', 'lte', 'contains', 'startsWith', 'endsWith', 'between']
+    const validOperators = [
+      'sum', 'avg', 'count', 'min', 'max',
+      'eq', 'neq', 'gt', 'gte', 'lt', 'lte',
+      'contains', 'startsWith', 'endsWith', 'between'
+    ]
     if (!validOperators.includes(operator)) {
       this.validationErrors.push(`Invalid operator: "${operator}". Valid options: ${validOperators.join(', ')}`)
       return this

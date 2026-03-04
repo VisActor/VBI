@@ -1,13 +1,21 @@
 import { z } from 'zod'
 
-// 筛选操作符
+// 筛选操作符（包括聚合函数操作符）
 export const zFilterOperator = z.enum([
+  // 聚合函数操作符
+  'sum',
+  'avg',
+  'count',
+  'min',
+  'max',
+  // 比较操作符
   'eq',
   'neq',
   'gt',
   'gte',
   'lt',
   'lte',
+  // 范围操作符
   'contains',
   'startsWith',
   'endsWith',
