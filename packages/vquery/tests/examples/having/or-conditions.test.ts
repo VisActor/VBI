@@ -25,12 +25,12 @@ describe('Having Example with OR conditions', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "Total Salary": 17000,
           "department": "Engineering",
+          "salary": 17000,
         },
         {
-          "Total Salary": 4000,
           "department": "Marketing",
+          "salary": 4000,
         },
       ]
     `)

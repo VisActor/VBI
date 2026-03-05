@@ -44,7 +44,7 @@ describe('select', () => {
       'demoDataset',
     )
     expect(sql).toMatchInlineSnapshot(
-      `"select sum("sales") as "Sum(sales)", sum("profit") as "Sum(profit)" from "demoDataset" limit 1000"`,
+      `"select sum("sales") as "sales", sum("profit") as "profit" from "demoDataset" limit 1000"`,
     )
   })
 
@@ -79,7 +79,7 @@ describe('select', () => {
       'orders',
     )
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", "name", avg("age") as "AGE" from "orders" group by "department", "name" order by "age" desc"`,
+      `"select "department", "name", avg("age") as "age" from "orders" group by "department", "name" order by "age" desc"`,
     )
   })
 
@@ -117,7 +117,7 @@ describe('select', () => {
       'orders',
     )
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", "name" as "NAME", avg("age") as "AGE" from "orders" group by "department", "name" order by "age" desc"`,
+      `"select "department", "name" as "name", avg("age") as "age" from "orders" group by "department", "name" order by "age" desc"`,
     )
   })
 
@@ -157,7 +157,7 @@ describe('select', () => {
       'orders',
     )
     expect(sql).toMatchInlineSnapshot(
-      `"select "department" as "department", "name" as "NAME", avg("age") as "AGE" from "orders" group by "department", "name" order by "age" desc"`,
+      `"select "department" as "department", "name" as "name", avg("age") as "age" from "orders" group by "department", "name" order by "age" desc"`,
     )
   })
 
@@ -182,7 +182,7 @@ describe('select', () => {
       'orders',
     )
     expect(sql).toMatchInlineSnapshot(
-      `"select sum("age") as "SUM", min("age") as "MIN", max("age") as "MAX", CAST(count("id") AS INTEGER) as "CNT" from "orders""`,
+      `"select sum("age") as "age", min("age") as "age", max("age") as "age", CAST(count("id") AS INTEGER) as "id" from "orders""`,
     )
   })
 

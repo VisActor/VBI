@@ -25,7 +25,7 @@ describe('Select Min Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "min_salary": 4000,
+          "salary": 4000,
         },
       ]
     `)

@@ -25,7 +25,7 @@ describe('Select Count Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "total_count": 5,
+          "id": 5,
         },
       ]
     `)
