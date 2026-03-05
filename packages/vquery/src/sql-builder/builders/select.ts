@@ -27,37 +27,38 @@ export const applySelect = <DB, TB extends keyof DB & string, O, T>(
 
           if (item.aggr) {
             const { func } = item.aggr
-            const alias = item.alias ?? (field as string)
+            // 使用 field 作为 SQL 别名以保证唯一性，而不是 alias
+            const sqlAlias = field as string
             if (['avg', 'sum', 'min', 'max', 'variance', 'variancePop', 'stddev', 'median'].includes(func)) {
               if (func === 'variance') {
-                return sql`var_samp(${expression})`.as(alias)
+                return sql`var_samp(${expression})`.as(sqlAlias)
               }
               if (func === 'variancePop') {
-                return sql`var_pop(${expression})`.as(alias)
+                return sql`var_pop(${expression})`.as(sqlAlias)
               }
-              return sql`${sql.raw(func)}(${expression})`.as(alias)
+              return sql`${sql.raw(func)}(${expression})`.as(sqlAlias)
             } else if (func === 'count') {
-              return sql`CAST(count(${expression}) AS INTEGER)`.as(alias)
+              return sql`CAST(count(${expression}) AS INTEGER)`.as(sqlAlias)
             } else if (func === 'quantile') {
               const q = item.aggr.quantile ?? 0.5
-              return sql`quantile(${expression}, ${q})`.as(alias)
+              return sql`quantile(${expression}, ${q})`.as(sqlAlias)
             } else if (func === 'count_distinct') {
-              return sql`CAST(count(distinct ${expression}) AS INTEGER)`.as(alias)
+              return sql`CAST(count(distinct ${expression}) AS INTEGER)`.as(sqlAlias)
             } else if (func.startsWith('to_')) {
               const dateTrunc = func.replace('to_', '')
               const format = DATE_FORMAT_MAP[dateTrunc]
               if (format) {
-                return sql`strftime(CAST(${expression} AS TIMESTAMP), ${format})`.as(alias)
+                return sql`strftime(CAST(${expression} AS TIMESTAMP), ${format})`.as(sqlAlias)
               }
               if (dateTrunc === 'quarter') {
                 return sql`strftime(CAST(${expression} AS TIMESTAMP), '%Y') || '-Q' || date_part('quarter', CAST(${expression} AS TIMESTAMP))`.as(
-                  alias,
+                  sqlAlias,
                 )
               }
             }
           }
-          const alias = item.alias ?? (field as string)
-          return expression.as(alias)
+          // 使用 field 作为别名，而不是 alias
+          return expression.as(field as string)
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return item as any

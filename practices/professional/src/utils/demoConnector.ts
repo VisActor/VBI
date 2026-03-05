@@ -83,13 +83,14 @@ export const registerDemoConnector = () => {
 
             if (measureFields.length > 0 || dimensionFields.length > 0) {
               // CRITICAL: Must reassign the result
-              // 将列从 alias 名重命名为 field 名
+              // SQL 现在使用 field 作为列名，所以需要从 field 读取
               normalizedDataset = queryResult.dataset.map((row) => {
                 const next: Record<string, any> = {};
 
-                // Process measures: convert string to number and rename from alias to field
+                // Process measures: convert string to number
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 for (const { field, alias } of measureFields) {
-                  const raw = (row as any)[alias];
+                  const raw = (row as any)[field];
 
                   if (raw != null) {
                     // Handle both string and bigint types from Arrow
@@ -104,16 +105,17 @@ export const registerDemoConnector = () => {
                       num = NaN;
                     }
 
-                    // Only assign if valid，用 field 作为新的列名
+                    // Only assign if valid，用 field 作为列名
                     if (!Number.isNaN(num)) {
                       next[field] = num;
                     }
                   }
                 }
 
-                // Process dimensions: just rename from alias to field
+                // Process dimensions: just copy using field as column name
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 for (const { field, alias } of dimensionFields) {
-                  const raw = (row as any)[alias];
+                  const raw = (row as any)[field];
                   if (raw != null) {
                     next[field] = raw;
                   }
