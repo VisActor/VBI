@@ -25,7 +25,7 @@ describe('Select Stddev Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "salary_stddev": 1870.8286933869706,
+          "salary": 1870.8286933869706,
         },
       ]
     `)

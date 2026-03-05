@@ -87,16 +87,16 @@ describe('VQuery with tidy datum array', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "Sum(sales)": 1000,
           "area": "SHANG HAI",
+          "sales": 1000,
         },
         {
-          "Sum(sales)": 600,
           "area": "BEI JING",
+          "sales": 600,
         },
         {
-          "Sum(sales)": 500,
           "area": "HANG ZHOU",
+          "sales": 500,
         },
       ]
     `)

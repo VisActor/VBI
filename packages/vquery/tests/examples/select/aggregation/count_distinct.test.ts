@@ -25,7 +25,7 @@ describe('Select Count Distinct Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "distinct_departments": 3,
+          "department": 3,
         },
       ]
     `)

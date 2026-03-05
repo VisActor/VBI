@@ -25,19 +25,34 @@ describe('toYear', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "Sum(sales)": 1000,
           "area": "SHANG HAI",
-          "year": "2025",
+          "date": "2025",
+          "sales": 600,
         },
         {
-          "Sum(sales)": 600,
-          "area": "BEI JING",
-          "year": "2025",
-        },
-        {
-          "Sum(sales)": 500,
           "area": "HANG ZHOU",
-          "year": "2025",
+          "date": "2025",
+          "sales": 500,
+        },
+        {
+          "area": "SHANG HAI",
+          "date": "2025",
+          "sales": 400,
+        },
+        {
+          "area": "BEI JING",
+          "date": "2025",
+          "sales": 300,
+        },
+        {
+          "area": "BEI JING",
+          "date": "2025",
+          "sales": 200,
+        },
+        {
+          "area": "BEI JING",
+          "date": "2025",
+          "sales": 100,
         },
       ]
     `)

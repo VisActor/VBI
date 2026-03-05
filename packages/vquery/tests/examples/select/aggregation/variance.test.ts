@@ -25,7 +25,7 @@ describe('Select Variance Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "salary_variance": 3500000,
+          "salary": 3500000,
         },
       ]
     `)
