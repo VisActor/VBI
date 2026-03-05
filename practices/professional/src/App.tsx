@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import './App.css';
 import { ConfigProvider, theme, Dropdown, Button } from 'antd';
 import { LeftOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
 import { Builder as VSeedBuilder } from '@visactor/vseed';
+import { getChartEncodingSupport } from '@visactor/vbi';
 import DimensionShelf from './components/Shelfs/DimensionShelf';
 import MeasureShelf from './components/Shelfs/MeasureShelf';
 import { ChartTypeSelector } from './components/ChartType';
@@ -39,6 +40,7 @@ export function APP() {
     doc?: {
       transact: (callback: () => void) => void;
     };
+    getEncodings?: (spec: any, measureNames: string[]) => Array<{ encoding: string; measures: string[] }>;
   }>(null);
 
   // 可用的字段和选中的字段
@@ -131,25 +133,30 @@ export function APP() {
     return measureFields;
   }, [measureFields]);
 
-  // Compute VChart spec and extract measures for EncodingPanel
-  const { vchartSpec, vseedMeasures } = useMemo(() => {
-    if (!vseed) {
-      return { vchartSpec: null, vseedMeasures: [] };
+  // Compute VChart spec and extract encoding information
+  const encodingInfo = useMemo(() => {
+    if (!vseed || !builderRef.current) {
+      return [];
     }
 
     try {
-      const builder = VSeedBuilder.from({ ...vseed, theme: 'light' } as any);
-      const spec = builder.build() as any;
+      const vseedBuilder = VSeedBuilder.from({ ...vseed, theme: 'light' } as any);
+      const spec = vseedBuilder.build() as any;
       
-      // We have measure names from measureFields state
-      // Just find which encoding points to __MeaValue__ in the spec
-      const extractedMeasures = measureNames.length > 0 ? measureNames : [];
+      // Get encoding information from VBI builder
+      const encodings = builderRef.current.getEncodings?.(spec, measureNames) ?? [];
       
-      return { vchartSpec: spec as any, vseedMeasures: extractedMeasures };
+      return encodings;
     } catch {
-      return { vchartSpec: null, vseedMeasures: [] };
+      return [];
     }
   }, [vseed, measureNames]);
+
+  // Compute supported encodings for current chart type
+  const supportedEncodings = useMemo(() => {
+    const encodingConfig = getChartEncodingSupport(currentChartType);
+    return encodingConfig.measure || [];
+  }, [currentChartType]);
 
   // 加载 demo 数据
   const handleLoadDemo = async () => {
@@ -473,27 +480,64 @@ export function APP() {
                     <LeftOutlined />
                   </button>
                 </div>
-                <FieldsList
-                  title="DIMENSIONS"
-                  items={dimensionFields}
-                  onAdd={handleAddDimension}
-                  onRemove={handleRemoveDimension}
-                  style={{ flex: 1, minHeight: 0 }}
-                />
-                <MeasureFieldList
-                  items={measureFields}
-                  measures={measuresDetail}
-                  dimensionMeasures={Array.from(dimensionMeasures)}
-                  onRename={handleRenameMeasure}
-                  onChangeAggregate={handleChangeAggregateFunc}
-                  onRemove={handleRemoveMeasure}
-                  style={{ flex: 1, minHeight: 0, marginTop: 12 }}
-                />
-                <EncodingPanel
-                  spec={vchartSpec}
-                  measures={vseedMeasures}
-                  style={{ flex: 1, minHeight: 0, marginTop: 12 }}
-                />
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr',
+                    gap: '12px',
+                    padding: '0 12px 12px 12px',
+                    flex: 1,
+                    minHeight: 0,
+                    overflow: 'hidden',
+                  }}
+                >
+                  {/* Top Panel: Configuration */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0',
+                      backgroundColor: '#1a1b33',
+                      borderRadius: '4px',
+                      border: '1px solid #2a2b4d',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <FieldsList
+                      title="DIMENSIONS"
+                      items={dimensionFields}
+                      onAdd={handleAddDimension}
+                      onRemove={handleRemoveDimension}
+                      style={{ flex: 1, minHeight: 0 }}
+                    />
+                    <MeasureFieldList
+                      items={measureFields}
+                      measures={measuresDetail}
+                      dimensionMeasures={Array.from(dimensionMeasures)}
+                      onRename={handleRenameMeasure}
+                      onChangeAggregate={handleChangeAggregateFunc}
+                      onRemove={handleRemoveMeasure}
+                      style={{ flex: 1, minHeight: 0, borderTop: '1px solid #2a2b4d' }}
+                    />
+                  </div>
+
+                  {/* Bottom Panel: Encoding */}
+                  <div
+                    style={{
+                      backgroundColor: '#1a1b33',
+                      borderRadius: '4px',
+                      border: '1px solid #2a2b4d',
+                      overflow: 'auto',
+                      minHeight: '200px',
+                    }}
+                  >
+                    <EncodingPanel
+                      supportedEncodings={supportedEncodings}
+                      encodingInfo={encodingInfo}
+                      style={{ height: '100%' }}
+                    />
+                  </div>
+                </div>
               </div>
             </>
           )}

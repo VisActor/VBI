@@ -9,6 +9,7 @@ import { ChartTypeBuilder } from './sub-builders/chart-type'
 import { HavingBuilder } from './sub-builders/having'
 import { getConnector } from './connector'
 import { VQueryDSL } from '@visactor/vquery'
+import { EncodingBuilder } from './encoding-builder'
 
 export class VBIBuilder implements VBIBuilderInterface {
   public doc: Y.Doc
@@ -19,6 +20,7 @@ export class VBIBuilder implements VBIBuilderInterface {
   public measures: MeasuresBuilder
   public dimensions: DimensionsBuilder
   public having: HavingBuilder
+  public encoding: EncodingBuilder
 
   constructor(doc: Y.Doc) {
     this.doc = doc
@@ -29,6 +31,7 @@ export class VBIBuilder implements VBIBuilderInterface {
     this.measures = new MeasuresBuilder(doc, this.dsl)
     this.dimensions = new DimensionsBuilder(doc, this.dsl)
     this.having = new HavingBuilder(doc, this.dsl)
+    this.encoding = new EncodingBuilder()
   }
 
   public applyUpdate(update: Uint8Array) {
@@ -104,5 +107,15 @@ export class VBIBuilder implements VBIBuilderInterface {
     const con = await getConnector(connectorId)
     const result = await con.discoverSchema()
     return result
+  }
+
+  /**
+   * Get measure encoding information from a VChart spec
+   * @param spec VChart spec to analyze
+   * @param measureNames List of measure names
+   * @returns Array of {encoding, measures} pairs
+   */
+  public getEncodings(spec: any, measureNames: string[] = []) {
+    return this.encoding.getMeasureEncodings(spec, measureNames)
   }
 }
