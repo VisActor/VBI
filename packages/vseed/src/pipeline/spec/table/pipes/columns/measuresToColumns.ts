@@ -2,6 +2,8 @@ import type { ListTableConstructorOptions } from '@visactor/vtable'
 import { createFormatterByMeasure, isMeasure } from 'src/pipeline/utils'
 import type { MeasureGroup, Measure, MeasureTree, ListTableSpecPipe, Datum } from 'src/types'
 import { treeTreeToColumns } from './utils'
+import { isNullish } from 'remeda'
+import { isUndefined } from '@visactor/vutils'
 
 export const measureTreeToColumns: ListTableSpecPipe = (spec, context) => {
   const { advancedVSeed } = context
@@ -31,6 +33,9 @@ const fieldFormat = (node: Measure) => {
   return (datum: Datum) => {
     const { id } = node
     const value = datum[id] as number | string | undefined
+    if (isNullish(value) || isUndefined(value)) {
+      return value
+    }
     return formatter(value)
   }
 }

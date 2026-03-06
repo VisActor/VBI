@@ -439,6 +439,9 @@ importers:
       remeda:
         specifier: 2.28.0
         version: 2.28.0
+      tinycolor2:
+        specifier: 1.4.2
+        version: 1.4.2
       zod:
         specifier: 4.0.17
         version: 4.0.17
@@ -461,6 +464,9 @@ importers:
       '@types/node':
         specifier: 24.10.1
         version: 24.10.1
+      '@types/tinycolor2':
+        specifier: 1.4.3
+        version: 1.4.3
       '@typescript-eslint/eslint-plugin':
         specifier: 8.48.0
         version: 8.48.0(@typescript-eslint/parser@8.48.0(eslint@9.39.0(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.0(jiti@2.6.1))(typescript@5.9.3)
@@ -3932,6 +3938,9 @@ packages:
 
   '@types/tapable@2.2.7':
     resolution: {integrity: sha512-D6QzACV9vNX3r8HQQNTOnpG+Bv1rko+yEA82wKs3O9CQ5+XW7HI7TED17/UE7+5dIxyxZIWTxKbsBeF6uKFCwA==}
+
+  '@types/tinycolor2@1.4.3':
+    resolution: {integrity: sha512-Kf1w9NE5HEgGxCRyIcRXR/ZYtDv0V8FVPtYHwLxl0O+maGX0erE77pQlD0gpP+/KByMZ87mOA79SjifhSB3PjQ==}
 
   '@types/unist@2.0.11':
     resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
@@ -8281,6 +8290,9 @@ packages:
 
   tinybench@2.9.0:
     resolution: {integrity: sha512-0+DUvqWMValLmha6lr4kD8iAMK1HzV0/aKnCtWb9v9641TnP/MFb7Pc2bxoxQjTXAErryXVgUOfv2YqNllqGeg==}
+
+  tinycolor2@1.4.2:
+    resolution: {integrity: sha512-vJhccZPs965sV/L2sU4oRQVAos0pQXwsvTLkWYdqJ+a8Q5kPFzJTuOFwy7UniPli44NKQGAglksjvOcpo95aZA==}
 
   tinyexec@0.3.2:
     resolution: {integrity: sha512-KQQR9yN7R5+OSwaK0XQoj22pwHoTlgYqmUscPYoknOoWCWfj/5/ABTMRi69FrKU5ffPVh5QcFikpWJI/P1ocHA==}
@@ -12667,6 +12679,8 @@ snapshots:
   '@types/tapable@2.2.7':
     dependencies:
       tapable: 2.3.0
+
+  '@types/tinycolor2@1.4.3': {}
 
   '@types/unist@2.0.11': {}
 
@@ -18238,6 +18252,8 @@ snapshots:
   throttle-debounce@5.0.2: {}
 
   tinybench@2.9.0: {}
+
+  tinycolor2@1.4.2: {}
 
   tinyexec@0.3.2: {}
 

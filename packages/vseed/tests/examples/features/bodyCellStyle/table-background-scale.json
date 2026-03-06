@@ -1,0 +1,79 @@
+{
+  "name": "表格条件样式 - 色阶",
+  "description": "表格条件样式 - 色阶",
+  "vseed": {
+    "chartType": "table",
+    "dataset": [
+      {
+        "date": "2019",
+        "type": "A",
+        "goalProfit": -10,
+        "profit": 10,
+        "leftCount": 1,
+        "salesCount": 100
+      },
+      {
+        "date": "2020",
+        "type": "A",
+        "goalProfit": 30,
+        "profit": 30,
+        "sales": 320,
+        "leftCount": 2,
+        "salesCount": 200
+      },
+      {
+        "date": "2021",
+        "type": "A",
+        "goalProfit": 30,
+        "profit": 30,
+        "sales": 300,
+        "leftCount": 3,
+        "salesCount": 300
+      },
+      {
+        "date": "2022",
+        "type": "A",
+        "goalProfit": 50,
+        "profit": 50,
+        "sales": 240,
+        "leftCount": 4,
+        "salesCount": 400
+      },
+      {
+        "date": "2023",
+        "type": "A",
+        "goalProfit": 40,
+        "profit": 40,
+        "sales": 500,
+        "leftCount": 5,
+        "salesCount": 500
+      }
+    ],
+    "bodyCellStyle": [
+      {
+        "selector": {
+          "field": "goalProfit"
+        },
+        "enableProgressBar": true,
+        "barPositiveColor": "green"
+      },
+      {
+        "selector": {
+          "field": "profit"
+        },
+        "enableBackgroundColorScale": true,
+        "backgroundColorScale": {
+          "minColor": "rgba(210,128,128, 0.8)",
+          "maxColor": "rgba(255,10,10, 0.8)"
+        }
+      },
+      {
+        "selector": {
+          "field": "sales"
+        },
+        "enableBackgroundColorScale": true,
+        "enableProgressBar": true
+      }
+    ]
+  }
+}

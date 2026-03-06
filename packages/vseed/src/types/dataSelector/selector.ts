@@ -6,6 +6,20 @@ export type ValueSelector = string | number
 export type PartialDatumSelector = Datum
 
 /**
+ * @description 字段选择器，用于直接选择指定字段（列），不涉及条件判断
+ */
+export type FieldSelector = {
+  /**
+   * @description 字段名，可以是单个字段或多个字段数组
+   * @example 单个字段
+   * field: 'sales'
+   * @example 多个字段
+   * field: ['sales', 'profit', 'revenue']
+   */
+  field: string | string[]
+}
+
+/**
  * @description 指标选择器, 用于选择数据项中指标字段的值
  */
 export type MeasureSelector = {
@@ -397,6 +411,11 @@ export interface ValueDynamicFilter {
 }
 
 export const zPartialSelector = zDatum
+
+export const zFieldSelector = z.object({
+  field: z.union([z.string(), z.array(z.string())]),
+})
+
 export const zMeasureSelector = z.object({
   field: z.string(),
   operator: z.enum(['=', '==', '!=', '>', '<', '>=', '<=', 'between']).nullish(),
@@ -411,11 +430,18 @@ export const zDimensionSelector = z.object({
   value: z.union([z.string(), z.number(), z.array(z.union([z.string(), z.number()]))]),
 })
 
-export const zSelector = z.union([z.string(), z.number(), zMeasureSelector, zDimensionSelector, zPartialSelector])
+export const zSelector = z.union([
+  z.string(),
+  z.number(),
+  zFieldSelector,
+  zMeasureSelector,
+  zDimensionSelector,
+  zPartialSelector,
+])
 
 export const zSelectors = z.array(zSelector)
 
-export const zAreaSelector = z.union([zMeasureSelector, zDimensionSelector])
+export const zAreaSelector = z.union([zFieldSelector, zMeasureSelector, zDimensionSelector])
 
 export const zAreaSelectors = z.array(zAreaSelector)
 

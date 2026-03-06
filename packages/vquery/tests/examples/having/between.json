@@ -1,0 +1,39 @@
+{
+  "datasetId": "having-between",
+  "description": "Having Example with BETWEEN operator",
+  "vquery": {
+    "select": [
+      "department",
+      {
+        "field": "salary",
+        "alias": "Total Salary",
+        "aggr": { "func": "sum" }
+      }
+    ],
+    "groupBy": ["department"],
+    "having": {
+      "op": "and",
+      "conditions": [
+        {
+          "field": "Total Salary",
+          "op": "between",
+          "value": [5000, 12000]
+        }
+      ]
+    }
+  },
+  "dataset": [
+    { "id": 1, "name": "Alice", "age": 25, "department": "HR", "salary": 5000 },
+    { "id": 2, "name": "Bob", "age": 30, "department": "Engineering", "salary": 8000 },
+    { "id": 3, "name": "Charlie", "age": 35, "department": "Engineering", "salary": 9000 },
+    { "id": 4, "name": "David", "age": 40, "department": "HR", "salary": 6000 },
+    { "id": 5, "name": "Eve", "age": 22, "department": "Marketing", "salary": 4000 }
+  ],
+  "schema": [
+    { "name": "id", "type": "number" },
+    { "name": "name", "type": "string" },
+    { "name": "age", "type": "number" },
+    { "name": "department", "type": "string" },
+    { "name": "salary", "type": "number" }
+  ]
+}

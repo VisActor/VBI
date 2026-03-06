@@ -109,6 +109,7 @@ function generateMeta() {
   const meta = [
     { type: 'dir', name: 'select', label: 'Select' },
     { type: 'file', name: 'where', label: 'Where' },
+    { type: 'file', name: 'having', label: 'Having' },
     { type: 'file', name: 'groupBy', label: 'GroupBy' },
     { type: 'file', name: 'orderBy', label: 'OrderBy' },
     { type: 'file', name: 'limit', label: 'Limit' },

@@ -91,12 +91,12 @@ export const createLocalConnector = (connectorId: string) => {
           // 识别度量列和维度列，使用 field 来匹配 SQL 列名
           const measureFields: { field: string; alias: string }[] = [];
           const dimensionFields: { field: string; alias: string }[] = [];
-          
+
           for (const item of queryDSL.select) {
             if (typeof item === 'object' && item !== null) {
               const field = (item as any).field;
               const alias = (item as any).alias;
-              
+
               if ('func' in item && (item as any).func) {
                 // This is a measure
                 if (field) {
@@ -116,7 +116,7 @@ export const createLocalConnector = (connectorId: string) => {
             // SQL 现在使用 field 作为列名，需要从 field 读取并映射到 alias 返回
             normalizedDataset = queryResult.dataset.map((row) => {
               const next: Record<string, any> = {};
-              
+
               for (const { field, alias } of measureFields) {
                 const raw = (row as any)[field];
                 console.log(`Before: ${field} = ${raw} (type: ${typeof raw})`);
@@ -143,14 +143,14 @@ export const createLocalConnector = (connectorId: string) => {
                   `After: ${alias || field} = ${next[alias || field]} (type: ${typeof next[alias || field]})`,
                 );
               }
-              
+
               for (const { field, alias } of dimensionFields) {
                 const raw = (row as any)[field];
                 if (raw != null) {
                   next[alias || field] = raw;
                 }
               }
-              
+
               return next;
             });
 

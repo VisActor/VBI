@@ -666,7 +666,7 @@
 
 ### selector
 
-**Type:** `Selector | Selectors | undefined`
+**Type:** `Selector | Selectors | FieldSelector | undefined`
 
 :::note{title=描述}
 数据选择器
@@ -718,17 +718,34 @@ operator: 'between'
 value: [100, 300]
 }
 
+字段列筛选
+selector = {
+field: 'category'
+}
+selector = {
+field: ['category', 'profit']
+}
+
 
 
 
 #### field
 
-**Type:** `string`
+**Type:** `string | string[]`
 
 :::note{title=描述}
-维度字段, dimensions 某一项的 id
+字段名，可以是单个字段或多个字段数组
 
 :::
+
+**示例**
+单个字段
+field: 'sales'
+
+多个字段
+field: ['sales', 'profit', 'revenue']
+
+
 
 #### operator
 
@@ -1025,6 +1042,114 @@ prepare() 阶段写入，运行时只读
 
 :::note{title=描述}
 单元格背景色
+
+:::
+
+### enableBackgroundColorScale
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否开启背景色的色阶配置（color scale）
+
+:::
+
+### backgroundColorScale
+
+**Type:** `{ minValue?: number; maxValue?: number; minColor: string; maxColor: string; } | undefined`
+
+:::note{title=描述}
+单元格背景色scale映射，优先级高于backgroundColor
+
+:::
+
+
+#### minValue
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+最小值，不配置时默认为当前数据列中的最小值
+
+:::
+
+#### maxValue
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+最大值，不配置时默认为当前数据列中的最大值
+
+:::
+
+#### minColor
+
+**Type:** `string`
+
+:::note{title=描述}
+最小值对应的颜色
+
+:::
+
+#### maxColor
+
+**Type:** `string`
+
+:::note{title=描述}
+最大值对应的颜色
+
+:::
+
+### enableProgressBar
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否开启背景数据条条（一个条形柱来显示当前单元格的大小）功能，默认不开启
+
+:::
+
+### barPositiveColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+当前单元格直为正数时的背景数据条颜色
+
+:::
+
+### barNegativeColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+数值为负数时的背景数据条条颜色
+
+:::
+
+### barMin
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+进度条最小值
+
+
+
+未配置时自动计算列的最小值
+
+:::
+
+### barMax
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+进度条最大值
+
+
+
+未配置时自动计算列的最大值
 
 :::
 

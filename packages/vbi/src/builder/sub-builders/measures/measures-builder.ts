@@ -81,10 +81,7 @@ export class MeasuresBuilder {
     this.modifyMeasure(field, { encoding })
   }
 
-  modifyMeasure(
-    field: string,
-    updates: Partial<Omit<VBIMeasure, 'field'>>,
-  ): void {
+  modifyMeasure(field: string, updates: Partial<Omit<VBIMeasure, 'field'>>): void {
     const measures = this.dsl.get('measures') as Y.Array<any>
     const index = measures.toArray().findIndex((item: any) => item.get('field') === field)
 

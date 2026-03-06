@@ -2,6 +2,11 @@
 
 本文档旨在为 AI Agent 及项目贡献者提供关键的开发与验证指引。
 
+## Agent 上下文入口
+
+- VSeed（核心库）Agent 上下文：`packages/vseed/AGENTS.md`
+- VSeed（站点版上下文）入口：`apps/website/docs/zh-CN/vseed/development/agentContext.md`
+
 ## 项目概览
 
 VSeed 是一个 Monorepo 项目，包含核心数据可视化组合器库及其周边生态。

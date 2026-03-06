@@ -22,6 +22,19 @@ describe('Having Example with multiple conditions (AND/OR)', () => {
     await dataset.disconnect()
     await vquery.close()
 
-    expect(queryResult.dataset).toMatchInlineSnapshot(`[]`)
+    expect(queryResult.dataset).toMatchInlineSnapshot(`
+      [
+        {
+          "Count": 2,
+          "Total Salary": 11000,
+          "department": "HR",
+        },
+        {
+          "Count": 2,
+          "Total Salary": 17000,
+          "department": "Engineering",
+        },
+      ]
+    `)
   })
 })

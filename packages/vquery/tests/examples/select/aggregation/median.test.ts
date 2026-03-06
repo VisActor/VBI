@@ -25,7 +25,7 @@ describe('Select Median Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "salary": 6500,
+          "salary_median": 6500,
         },
       ]
     `)

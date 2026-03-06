@@ -25,7 +25,7 @@ describe('Select Quantile Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "salary": 9000,
+          "salary_quantile": 9000,
         },
       ]
     `)

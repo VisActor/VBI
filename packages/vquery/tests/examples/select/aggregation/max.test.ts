@@ -25,7 +25,7 @@ describe('Select Max Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "salary": 9000,
+          "max_salary": 9000,
         },
       ]
     `)

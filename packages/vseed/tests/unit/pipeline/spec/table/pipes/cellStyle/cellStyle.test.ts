@@ -5,7 +5,8 @@ import { vi } from 'vitest'
 
 // Mock selector
 vi.mock('src/dataSelector/selector', () => ({
-  selector: vi.fn().mockReturnValue(true)
+  selector: vi.fn().mockReturnValue(true),
+  isFieldSelector: vi.fn().mockReturnValue(false),
 }))
 
 // Mock common

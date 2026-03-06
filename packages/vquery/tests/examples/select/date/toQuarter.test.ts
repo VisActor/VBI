@@ -25,49 +25,39 @@ describe('toQuarter', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
+          "Sum(sales)": 1300,
           "area": "SHANG HAI",
-          "date": "2025-Q4",
-          "sales": 600,
+          "quarter": "2025-Q4",
         },
         {
+          "Sum(sales)": 500,
           "area": "HANG ZHOU",
-          "date": "2025-Q3",
-          "sales": 500,
+          "quarter": "2025-Q3",
         },
         {
-          "area": "SHANG HAI",
-          "date": "2025-Q4",
-          "sales": 400,
-        },
-        {
+          "Sum(sales)": 300,
           "area": "BEI JING",
-          "date": "2025-Q3",
-          "sales": 300,
+          "quarter": "2025-Q3",
         },
         {
-          "area": "SHANG HAI",
-          "date": "2025-Q4",
-          "sales": 300,
-        },
-        {
+          "Sum(sales)": 200,
           "area": "HANG ZHOU",
-          "date": "2025-Q2",
-          "sales": 200,
+          "quarter": "2025-Q2",
         },
         {
+          "Sum(sales)": 200,
           "area": "BEI JING",
-          "date": "2025-Q2",
-          "sales": 200,
+          "quarter": "2025-Q2",
         },
         {
+          "Sum(sales)": 100,
           "area": "BEI JING",
-          "date": "2025-Q1",
-          "sales": 100,
+          "quarter": "2025-Q1",
         },
         {
+          "Sum(sales)": 100,
           "area": "HANG ZHOU",
-          "date": "2025-Q1",
-          "sales": 100,
+          "quarter": "2025-Q1",
         },
       ]
     `)

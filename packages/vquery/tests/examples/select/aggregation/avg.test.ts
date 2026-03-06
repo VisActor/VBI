@@ -25,7 +25,7 @@ describe('Select Avg Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "salary": 6400,
+          "avg_salary": 6400,
         },
       ]
     `)

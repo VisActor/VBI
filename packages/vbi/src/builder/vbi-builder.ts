@@ -56,7 +56,7 @@ export class VBIBuilder implements VBIBuilderInterface {
       return tree.map((node) => {
         if (MeasuresBuilder.isMeasureNode(node)) {
           return {
-            id: node.field,  // field → id
+            id: node.field, // field → id
             alias: node.alias,
             encoding: node.encoding,
           }
@@ -73,7 +73,7 @@ export class VBIBuilder implements VBIBuilderInterface {
       return tree.map((node) => {
         if (DimensionsBuilder.isDimensionNode(node)) {
           return {
-            id: node.field,  // field → id
+            id: node.field, // field → id
             alias: node.alias,
           }
         } else {

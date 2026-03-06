@@ -25,16 +25,16 @@ describe('Basic GroupBy Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
+          "Average Salary": 5500,
           "department": "HR",
-          "salary": 5500,
         },
         {
+          "Average Salary": 8500,
           "department": "Engineering",
-          "salary": 8500,
         },
         {
+          "Average Salary": 4000,
           "department": "Marketing",
-          "salary": 4000,
         },
       ]
     `)

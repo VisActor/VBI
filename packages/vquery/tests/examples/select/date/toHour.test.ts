@@ -25,49 +25,49 @@ describe('toHour', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
+          "Sum(sales)": 600,
           "area": "SHANG HAI",
-          "date": "2025-11-01 10",
-          "sales": 600,
+          "hour": "2025-11-01 10",
         },
         {
+          "Sum(sales)": 500,
           "area": "HANG ZHOU",
-          "date": "2025-01-01 12",
-          "sales": 500,
+          "hour": "2025-01-01 12",
         },
         {
+          "Sum(sales)": 400,
           "area": "SHANG HAI",
-          "date": "2025-11-01 11",
-          "sales": 400,
+          "hour": "2025-11-01 11",
         },
         {
+          "Sum(sales)": 300,
           "area": "BEI JING",
-          "date": "2025-01-01 12",
-          "sales": 300,
+          "hour": "2025-01-01 12",
         },
         {
+          "Sum(sales)": 300,
           "area": "SHANG HAI",
-          "date": "2025-11-01 12",
-          "sales": 300,
+          "hour": "2025-11-01 12",
         },
         {
+          "Sum(sales)": 200,
           "area": "HANG ZHOU",
-          "date": "2025-01-01 11",
-          "sales": 200,
+          "hour": "2025-01-01 11",
         },
         {
+          "Sum(sales)": 200,
           "area": "BEI JING",
-          "date": "2025-01-01 11",
-          "sales": 200,
+          "hour": "2025-01-01 11",
         },
         {
+          "Sum(sales)": 100,
           "area": "BEI JING",
-          "date": "2025-01-01 10",
-          "sales": 100,
+          "hour": "2025-01-01 10",
         },
         {
+          "Sum(sales)": 100,
           "area": "HANG ZHOU",
-          "date": "2025-01-01 10",
-          "sales": 100,
+          "hour": "2025-01-01 10",
         },
       ]
     `)

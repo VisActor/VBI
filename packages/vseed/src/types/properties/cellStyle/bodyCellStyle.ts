@@ -1,6 +1,13 @@
 import { z } from 'zod'
-import type { TableDynamicFilter } from '../../dataSelector'
-import { zSelector, zSelectors, zTableDynamicFilter, type Selector, type Selectors } from '../../dataSelector'
+import type { FieldSelector, TableDynamicFilter } from '../../dataSelector'
+import {
+  zFieldSelector,
+  zSelector,
+  zSelectors,
+  zTableDynamicFilter,
+  type Selector,
+  type Selectors,
+} from '../../dataSelector'
 
 export type BodyCellStyle = {
   /**
@@ -42,8 +49,15 @@ export type BodyCellStyle = {
    *  operator: 'between'
    *  value: [100, 300]
    * }
+   * @example 字段列筛选
+   * selector = {
+   *  field: 'category'
+   * }
+   * selector = {
+   *  field: ['category', 'profit']
+   * }
    */
-  selector?: Selector | Selectors
+  selector?: Selector | Selectors | FieldSelector
   /**
    * 动态筛选器（代码驱动）
    * @description
@@ -67,7 +81,45 @@ export type BodyCellStyle = {
    */
   backgroundColor?: string
   /**
-   * 单元格文字颜色
+   * 是否开启背景色的色阶配置（color scale）
+   */
+  enableBackgroundColorScale?: boolean
+  /**
+   * 单元格背景色scale映射，优先级高于backgroundColor
+   */
+  backgroundColorScale?: {
+    /** 最小值，不配置时默认为当前数据列中的最小值 */
+    minValue?: number
+    /** 最大值，不配置时默认为当前数据列中的最大值 */
+    maxValue?: number
+    /** 最小值对应的颜色 */
+    minColor: string
+    /** 最大值对应的颜色 */
+    maxColor: string
+  }
+  /**
+   * 是否开启背景数据条条（一个条形柱来显示当前单元格的大小）功能，默认不开启
+   */
+  enableProgressBar?: boolean
+  /**
+   * 当前单元格直为正数时的背景数据条颜色
+   */
+  barPositiveColor?: string
+  /**
+   * 数值为负数时的背景数据条条颜色
+   */
+  barNegativeColor?: string
+  /**
+   * 进度条最小值
+   * @description 未配置时自动计算列的最小值
+   */
+  barMin?: number
+  /**
+   * 进度条最大值
+   * @description 未配置时自动计算列的最大值
+   */
+  barMax?: number
+  /**   * 单元格文字颜色
    */
   textColor?: string
   /**
@@ -85,11 +137,24 @@ export type BodyCellStyle = {
 }
 
 export const zBodyCellStyle = z.object({
-  selector: z.union([zSelector, zSelectors]).nullish(),
+  selector: z.union([zSelector, zSelectors, zFieldSelector]).nullish(),
   dynamicFilter: zTableDynamicFilter.nullish(),
   backgroundColor: z.string().nullish(),
-  textColor: z.string().nullish(),
+  enableBackgroundColorScale: z.boolean().nullish(),
+  backgroundColorScale: z
+    .object({
+      minValue: z.number().optional(),
+      maxValue: z.number().optional(),
+      minColor: z.string(),
+      maxColor: z.string(),
+    })
+    .nullish(),
   textFontSize: z.number().nullish(),
   borderColor: z.string().nullish(),
   borderLineWidth: z.number().nullish(),
+  enableProgressBar: z.boolean().nullish(),
+  barMin: z.number().nullish(),
+  barMax: z.number().nullish(),
+  barPositiveColor: z.string().nullish(),
+  barNegativeColor: z.string().nullish(),
 })

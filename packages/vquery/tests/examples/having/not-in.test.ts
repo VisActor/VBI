@@ -25,12 +25,12 @@ describe('Having Example with NOT IN operator', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
+          "Total Salary": 11000,
           "department": "HR",
-          "salary": 11000,
         },
         {
+          "Total Salary": 17000,
           "department": "Engineering",
-          "salary": 17000,
         },
       ]
     `)

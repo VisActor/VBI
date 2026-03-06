@@ -3,6 +3,7 @@ import type {
   ChartDynamicFilter,
   PartialDatumRes,
   DimensionSelector,
+  FieldSelector,
   MeasureSelector,
   PartialDatumSelector,
   Selector,
@@ -54,15 +55,20 @@ export const selector = (
       return selectByValue(selector, datum)
     }
 
-    // 2. 指标选择器
+    // 2. 字段选择器（优先于 MeasureSelector/DimensionSelector 判断，因为字段选择器也有 field 属性）
+    else if (isFieldSelector(selector)) {
+      return selectByField(selector, datum)
+    }
+
+    // 3. 指标选择器
     else if (isMeasureSelector(selector)) {
       return selectByMeasure(selector, datum)
     }
-    // 3. 维度选择器
+    // 4. 维度选择器
     else if (isDimensionSelector(selector)) {
       return selectByDmension(selector, datum)
     }
-    // 4. 部分数据对象选择器
+    // 5. 部分数据对象选择器
     else if (isPartialDatumSelector(selector)) {
       return selectByPartial(selector, datum)
     }
@@ -77,6 +83,21 @@ export const isValueSelector = (selector: Selector): selector is ValueSelector =
 
 export const isPartialDatumSelector = (selector: Selector): selector is PartialDatumSelector => {
   return typeof selector === 'object' && selector !== null
+}
+
+/**
+ * 判断是否为字段选择器
+ * @description 字段选择器只有 field 属性，没有 operator/op/value
+ */
+export const isFieldSelector = (selector: Selector): selector is FieldSelector => {
+  return (
+    typeof selector === 'object' &&
+    selector !== null &&
+    'field' in selector &&
+    !('operator' in selector) &&
+    !('op' in selector) &&
+    !('value' in selector)
+  )
 }
 
 export const isMeasureSelector = (selector: Selector): selector is MeasureSelector => {
@@ -189,6 +210,26 @@ export const selectByDmension = (selector: DimensionSelector, datum: Datum) => {
   }
 
   return false
+}
+
+/**
+ * 通过字段名选择
+ * @description 检查 datum 是否包含指定字段（用于列级选择）
+ */
+export const selectByField = (selector: FieldSelector, datum: Datum) => {
+  const fields = Array.isArray(selector.field) ? selector.field : [selector.field]
+  const datumKeys = Object.keys(datum)
+
+  // 检查 datum 的 keys 中是否包含任一指定字段
+  return fields.some((field) => datumKeys.includes(field))
+}
+
+/**
+ * 检查给定的字段是否与 FieldSelector 匹配
+ */
+export const matchesFieldSelector = (field: string, fieldSelector: FieldSelector): boolean => {
+  const fields = Array.isArray(fieldSelector.field) ? fieldSelector.field : [fieldSelector.field]
+  return fields.includes(field)
 }
 
 export const selectByPartial = (selector: PartialDatumSelector, datum: Datum) => {

@@ -25,7 +25,7 @@ describe('Select Sum Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "salary": 32000,
+          "total_salary": 32000,
         },
       ]
     `)

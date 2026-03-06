@@ -60,12 +60,12 @@ export const registerDemoConnector = () => {
             // 使用 field 而不是 alias 作为列名，保持与 buildVSeed 的 id 一致
             const measureFields: { field: string; alias: string }[] = [];
             const dimensionFields: { field: string; alias: string }[] = [];
-            
+
             for (const item of queryDSL.select) {
               if (typeof item === 'object' && item !== null) {
                 const field = (item as any).field;
                 const alias = (item as any).alias;
-                
+
                 if ('func' in item && (item as any).func) {
                   // This is a measure
                   if (field) {
@@ -79,7 +79,6 @@ export const registerDemoConnector = () => {
                 }
               }
             }
-
 
             if (measureFields.length > 0 || dimensionFields.length > 0) {
               // CRITICAL: Must reassign the result
@@ -121,8 +120,6 @@ export const registerDemoConnector = () => {
 
                 return next;
               });
-
-
             }
           }
 

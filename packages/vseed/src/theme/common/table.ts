@@ -4,6 +4,17 @@ export const getDefaultTableConfig = () => ({
   bodyFontSize: 12,
   bodyBackgroundColor: 'transparent',
   headerFontSize: 12,
+  barHeight: '100%',
+  barMarkInBar: false,
+  barMarkWidth: 2,
+  barPadding: ['25%', 10],
+  barRightToLeft: false,
+  barPositiveColor: 'rgba(188,220,194, 0.5)',
+  barNegativeColor: 'rgba(241,188,191, 0.5)',
+  backgroundColorScale: {
+    minColor: '#D8CFFF',
+    maxColor: '#6B4FD7',
+  },
 })
 
 export const getLightTableConfig = () => ({
@@ -24,6 +35,8 @@ export const getLightTableConfig = () => ({
   selectedBackgroundColor: '#bedaff33',
 
   backgroundColor: 'transparent',
+
+  barAxisColor: '#9EAFC6',
 })
 
 export const getDarkTableConfig = () => ({
@@ -41,6 +54,7 @@ export const getDarkTableConfig = () => ({
 
   selectedBorderColor: '#3073f2',
   selectedBackgroundColor: '#4284ff33',
+  barAxisColor: '#9EAFC6',
 })
 
 const pickPivotChartGridConfig = (tableConfig: any) => {

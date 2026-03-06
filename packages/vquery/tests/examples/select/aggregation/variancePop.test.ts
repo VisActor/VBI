@@ -25,7 +25,7 @@ describe('Select VariancePop Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "salary": 2916666.6666666665,
+          "salary_variance_pop": 2916666.6666666665,
         },
       ]
     `)

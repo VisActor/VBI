@@ -25,29 +25,29 @@ describe('Basic Select Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
+          "Income": 5000,
           "department": "HR",
           "name": "Alice",
-          "salary": 5000,
         },
         {
+          "Income": 8000,
           "department": "Engineering",
           "name": "Bob",
-          "salary": 8000,
         },
         {
+          "Income": 9000,
           "department": "Engineering",
           "name": "Charlie",
-          "salary": 9000,
         },
         {
+          "Income": 6000,
           "department": "HR",
           "name": "David",
-          "salary": 6000,
         },
         {
+          "Income": 4000,
           "department": "Marketing",
           "name": "Eve",
-          "salary": 4000,
         },
       ]
     `)

@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.9
+
+### Patch Changes
+
+- Add color scale && barProgress feature in bodyCellStyle
+
 ## 0.4.8
 
 ### Patch Changes
