@@ -88,38 +88,42 @@ export const createLocalConnector = (connectorId: string) => {
         // 度量感知的类型转换：将度量结果从字符串转换为数字
         let normalizedDataset = queryResult.dataset;
         if (queryDSL.select && Array.isArray(queryDSL.select)) {
-          // 识别度量列和维度列，使用 field 来匹配 SQL 列名
+          // 识别度量列和维度列，查询结果列名优先 alias，否则 field
           const measureFields: { field: string; alias: string }[] = [];
           const dimensionFields: { field: string; alias: string }[] = [];
 
           for (const item of queryDSL.select) {
-            if (typeof item === 'object' && item !== null) {
-              const field = (item as any).field;
-              const alias = (item as any).alias;
+            if (typeof item === 'string') {
+              dimensionFields.push({ field: item, alias: item });
+              continue;
+            }
 
-              if ('func' in item && (item as any).func) {
-                // This is a measure
-                if (field) {
-                  measureFields.push({ field, alias });
-                }
+            if (typeof item === 'object' && item !== null) {
+              const field = (item as any).field as string | undefined;
+              const alias = ((item as any).alias ?? field) as string | undefined;
+
+              if (!field || !alias) {
+                continue;
+              }
+
+              if ((item as any).aggr?.func) {
+                measureFields.push({ field, alias });
               } else {
-                // This is a dimension
-                if (field) {
-                  dimensionFields.push({ field, alias });
-                }
+                dimensionFields.push({ field, alias });
               }
             }
           }
           console.log('Identified measure fields:', measureFields);
 
           if (measureFields.length > 0 || dimensionFields.length > 0) {
-            // SQL 现在使用 field 作为列名，需要从 field 读取并映射到 alias 返回
+            // SQL 列名优先是 alias（如果提供），否则是 field
             normalizedDataset = queryResult.dataset.map((row) => {
               const next: Record<string, any> = {};
 
               for (const { field, alias } of measureFields) {
-                const raw = (row as any)[field];
-                console.log(`Before: ${field} = ${raw} (type: ${typeof raw})`);
+                const sourceKey = alias || field;
+                const raw = (row as any)[sourceKey];
+                console.log(`Before: ${sourceKey} = ${raw} (type: ${typeof raw})`);
 
                 if (raw != null) {
                   let num: number;
@@ -135,19 +139,20 @@ export const createLocalConnector = (connectorId: string) => {
 
                   // 仅在有效时赋值，使用 alias 作为列名
                   if (!Number.isNaN(num)) {
-                    next[alias || field] = num;
+                    next[field] = num;
                   }
                 }
 
                 console.log(
-                  `After: ${alias || field} = ${next[alias || field]} (type: ${typeof next[alias || field]})`,
+                  `After: ${field} = ${next[field]} (type: ${typeof next[field]})`,
                 );
               }
 
               for (const { field, alias } of dimensionFields) {
-                const raw = (row as any)[field];
+                const sourceKey = alias || field;
+                const raw = (row as any)[sourceKey];
                 if (raw != null) {
-                  next[alias || field] = raw;
+                  next[field] = raw;
                 }
               }
 
