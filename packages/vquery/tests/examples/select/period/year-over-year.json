@@ -1,0 +1,38 @@
+{
+  "datasetId": "select-period-year-over-year",
+  "description": "Select with Year-over-Year (YoY) period - calculate sales growth compared to same month last year",
+  "vquery": {
+    "select": [
+      {
+        "field": "date",
+        "aggr": { "func": "to_year" },
+        "alias": "year"
+      },
+      {
+        "field": "sales",
+        "aggr": { "func": "sum" },
+        "alias": "total_sales",
+        "period": {
+          "offset": 1,
+          "offsetUnit": "year",
+          "dateField": "date"
+        }
+      }
+    ],
+    "groupBy": ["date"],
+    "orderBy": [{ "field": "date", "order": "asc" }]
+  },
+  "dataset": [
+    { "id": 1, "name": "Alice", "department": "HR", "date": "2023-01-15", "sales": 5000 },
+    { "id": 2, "name": "Bob", "department": "HR", "date": "2024-01-15", "sales": 6000 },
+    { "id": 3, "name": "Charlie", "department": "Engineering", "date": "2023-02-20", "sales": 8000 },
+    { "id": 4, "name": "David", "department": "Engineering", "date": "2024-02-20", "sales": 9000 }
+  ],
+  "schema": [
+    { "name": "id", "type": "number" },
+    { "name": "name", "type": "string" },
+    { "name": "department", "type": "string" },
+    { "name": "date", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ]
+}

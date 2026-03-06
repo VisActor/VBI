@@ -1,0 +1,44 @@
+{
+  "datasetId": "select-period-week-over-week",
+  "description": "Select with Week-over-Week (WoW) period - calculate sales growth compared to previous week",
+  "vquery": {
+    "select": [
+      "department",
+      {
+        "field": "date",
+        "aggr": { "func": "to_week" },
+        "alias": "week"
+      },
+      {
+        "field": "sales",
+        "aggr": { "func": "sum" },
+        "alias": "total_sales",
+        "period": {
+          "offset": 1,
+          "offsetUnit": "week",
+          "dateField": "date"
+        }
+      }
+    ],
+    "groupBy": ["department", "date"],
+    "orderBy": [
+      { "field": "department", "order": "asc" },
+      { "field": "date", "order": "asc" }
+    ]
+  },
+  "dataset": [
+    { "id": 1, "name": "Alice", "department": "HR", "date": "2024-01-08", "sales": 5000 },
+    { "id": 2, "name": "Bob", "department": "HR", "date": "2024-01-15", "sales": 6000 },
+    { "id": 3, "name": "Charlie", "department": "HR", "date": "2024-01-22", "sales": 5500 },
+    { "id": 4, "name": "David", "department": "Engineering", "date": "2024-01-08", "sales": 8000 },
+    { "id": 5, "name": "Eve", "department": "Engineering", "date": "2024-01-15", "sales": 9000 },
+    { "id": 6, "name": "Frank", "department": "Engineering", "date": "2024-01-22", "sales": 8500 }
+  ],
+  "schema": [
+    { "name": "id", "type": "number" },
+    { "name": "name", "type": "string" },
+    { "name": "department", "type": "string" },
+    { "name": "date", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ]
+}
