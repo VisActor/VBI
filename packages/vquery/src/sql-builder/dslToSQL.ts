@@ -1,6 +1,6 @@
 import { QueryDSL, VQueryDSL } from 'src/types'
 import { Kysely } from 'kysely'
-import { PostgresDialect } from './dialect'
+import { PostgresDialect, type DatabaseDialect } from './dialect'
 import { inlineParameters } from './compile'
 import { applyWhere, applyGroupBy, applyLimit, applySelect, applyHaving } from './builders'
 
@@ -11,13 +11,16 @@ type TableDB<TableName extends string, Row> = {
 export const convertDSLToSQL = <T, TableName extends string>(
   dsl: QueryDSL<T> | VQueryDSL<T>,
   tableName: TableName,
+  dialect: DatabaseDialect = 'duckdb',
 ): string => {
+  // 注意：方言参数主要用于 applySelect 中的日期格式化
+  // Kysely 的方言主要用于编译 SQL，这里统一使用 PostgresDialect
   const db = new Kysely<TableDB<TableName, T>>({ dialect: new PostgresDialect() })
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let qb: any = db.selectFrom(tableName)
 
-  qb = applySelect(qb, dsl.select)
+  qb = applySelect(qb, dsl.select, dialect)
 
   if (dsl.where) {
     qb = qb.where(applyWhere<T>(dsl.where))

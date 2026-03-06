@@ -1,0 +1,52 @@
+{
+  "datasetId": "select-period-week-over-week",
+  "description": "Select with Week-over-Week (WoW) period - calculate sales by department comparing current week vs last week",
+  "vquery": {
+    "select": [
+      {
+        "field": "department",
+        "alias": "部门"
+      },
+      {
+        "field": "sales",
+        "aggr": { "func": "sum" },
+        "alias": "本周销售额",
+        "period": {
+          "offset": 0,
+          "offsetUnit": "week",
+          "dateField": "date",
+          "referenceYear": 2024
+        }
+      },
+      {
+        "field": "sales",
+        "aggr": { "func": "sum" },
+        "alias": "上周销售额",
+        "period": {
+          "offset": -1,
+          "offsetUnit": "week",
+          "dateField": "date",
+          "referenceYear": 2024
+        }
+      }
+    ],
+    "groupBy": ["department"]
+  },
+  "dataset": [
+    { "id": 1, "name": "Alice", "department": "HR", "date": "2024-01-08", "sales": 5000 },
+    { "id": 2, "name": "Bob", "department": "HR", "date": "2024-01-10", "sales": 7000 },
+    { "id": 3, "name": "Charlie", "department": "HR", "date": "2024-01-15", "sales": 6000 },
+    { "id": 4, "name": "David", "department": "HR", "date": "2024-01-17", "sales": 8000 },
+    { "id": 5, "name": "Eve", "department": "Engineering", "date": "2024-01-08", "sales": 12000 },
+    { "id": 6, "name": "Frank", "department": "Engineering", "date": "2024-01-15", "sales": 13500 },
+    { "id": 7, "name": "Grace", "department": "Sales", "date": "2024-01-09", "sales": 9000 },
+    { "id": 8, "name": "Henry", "department": "Sales", "date": "2024-01-16", "sales": 10500 }
+  ],
+  "schema": [
+    { "name": "id", "type": "number" },
+    { "name": "name", "type": "string" },
+    { "name": "department", "type": "string" },
+    { "name": "date", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ]
+}

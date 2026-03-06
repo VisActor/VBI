@@ -1,0 +1,56 @@
+{
+  "datasetId": "select-period-quarter-over-quarter",
+  "description": "Select with Quarter-over-Quarter (QoQ) period - calculate sales by department comparing current quarter vs last quarter",
+  "vquery": {
+    "select": [
+      {
+        "field": "department",
+        "alias": "部门"
+      },
+      {
+        "field": "sales",
+        "aggr": { "func": "sum" },
+        "alias": "本季度销售额",
+        "period": {
+          "offset": 0,
+          "offsetUnit": "quarter",
+          "dateField": "date",
+          "referenceYear": 2024
+        }
+      },
+      {
+        "field": "sales",
+        "aggr": { "func": "sum" },
+        "alias": "上季度销售额",
+        "period": {
+          "offset": -1,
+          "offsetUnit": "quarter",
+          "dateField": "date",
+          "referenceYear": 2024
+        }
+      }
+    ],
+    "groupBy": ["department"]
+  },
+  "dataset": [
+    { "id": 1, "name": "Alice", "department": "HR", "date": "2024-01-15", "sales": 5000 },
+    { "id": 2, "name": "Bob", "department": "HR", "date": "2024-02-20", "sales": 7000 },
+    { "id": 3, "name": "Charlie", "department": "HR", "date": "2024-03-10", "sales": 6000 },
+    { "id": 4, "name": "David", "department": "HR", "date": "2024-04-05", "sales": 8000 },
+    { "id": 5, "name": "Eve", "department": "HR", "date": "2024-05-12", "sales": 5500 },
+    { "id": 6, "name": "Frank", "department": "HR", "date": "2024-06-18", "sales": 7200 },
+    { "id": 7, "name": "Grace", "department": "Engineering", "date": "2024-01-10", "sales": 12000 },
+    { "id": 8, "name": "Henry", "department": "Engineering", "date": "2024-02-15", "sales": 13500 },
+    { "id": 9, "name": "Ivy", "department": "Engineering", "date": "2024-03-22", "sales": 11000 },
+    { "id": 10, "name": "Jack", "department": "Engineering", "date": "2024-04-18", "sales": 14500 },
+    { "id": 11, "name": "Kate", "department": "Engineering", "date": "2024-05-25", "sales": 12800 },
+    { "id": 12, "name": "Leo", "department": "Engineering", "date": "2024-06-30", "sales": 15200 }
+  ],
+  "schema": [
+    { "name": "id", "type": "number" },
+    { "name": "name", "type": "string" },
+    { "name": "department", "type": "string" },
+    { "name": "date", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ]
+}

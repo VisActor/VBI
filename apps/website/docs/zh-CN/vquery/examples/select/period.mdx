@@ -1,5 +1,680 @@
 # Period
 
+## month-over-month
+
+Select with Month-over-Month (MoM) period - calculate sales by department comparing current month vs last month
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+    datasetId: 'select-period-month-over-month',
+    description:
+      'Select with Month-over-Month (MoM) period - calculate sales by department comparing current month vs last month',
+    vquery: {
+      select: [
+        {
+          field: 'department',
+          alias: '部门',
+        },
+        {
+          field: 'sales',
+          aggr: {
+            func: 'sum',
+          },
+          alias: '当月销售额',
+          period: {
+            offset: 0,
+            offsetUnit: 'month',
+            dateField: 'date',
+            referenceYear: 2024,
+          },
+        },
+        {
+          field: 'sales',
+          aggr: {
+            func: 'sum',
+          },
+          alias: '上月销售额',
+          period: {
+            offset: -1,
+            offsetUnit: 'month',
+            dateField: 'date',
+            referenceYear: 2024,
+          },
+        },
+      ],
+      groupBy: ['department'],
+    },
+    dataset: [
+      {
+        id: 1,
+        name: 'Alice',
+        department: 'HR',
+        date: '2024-01-15',
+        sales: 5000,
+      },
+      {
+        id: 2,
+        name: 'Bob',
+        department: 'HR',
+        date: '2024-01-20',
+        sales: 7000,
+      },
+      {
+        id: 3,
+        name: 'Charlie',
+        department: 'HR',
+        date: '2024-02-10',
+        sales: 6000,
+      },
+      {
+        id: 4,
+        name: 'David',
+        department: 'HR',
+        date: '2024-02-15',
+        sales: 8000,
+      },
+      {
+        id: 5,
+        name: 'Eve',
+        department: 'HR',
+        date: '2024-03-12',
+        sales: 5500,
+      },
+      {
+        id: 6,
+        name: 'Frank',
+        department: 'HR',
+        date: '2024-03-18',
+        sales: 7200,
+      },
+      {
+        id: 7,
+        name: 'Grace',
+        department: 'Engineering',
+        date: '2024-01-10',
+        sales: 12000,
+      },
+      {
+        id: 8,
+        name: 'Henry',
+        department: 'Engineering',
+        date: '2024-01-15',
+        sales: 13500,
+      },
+      {
+        id: 9,
+        name: 'Ivy',
+        department: 'Engineering',
+        date: '2024-02-22',
+        sales: 11000,
+      },
+      {
+        id: 10,
+        name: 'Jack',
+        department: 'Engineering',
+        date: '2024-02-28',
+        sales: 14500,
+      },
+      {
+        id: 11,
+        name: 'Kate',
+        department: 'Engineering',
+        date: '2024-03-25',
+        sales: 12800,
+      },
+      {
+        id: 12,
+        name: 'Leo',
+        department: 'Engineering',
+        date: '2024-03-30',
+        sales: 15200,
+      },
+      {
+        id: 13,
+        name: 'Mike',
+        department: 'Sales',
+        date: '2024-01-08',
+        sales: 9000,
+      },
+      {
+        id: 14,
+        name: 'Nancy',
+        department: 'Sales',
+        date: '2024-01-14',
+        sales: 10500,
+      },
+      {
+        id: 15,
+        name: 'Oscar',
+        department: 'Sales',
+        date: '2024-02-21',
+        sales: 8500,
+      },
+      {
+        id: 16,
+        name: 'Paul',
+        department: 'Sales',
+        date: '2024-02-27',
+        sales: 11200,
+      },
+      {
+        id: 17,
+        name: 'Quinn',
+        department: 'Sales',
+        date: '2024-03-19',
+        sales: 9800,
+      },
+      {
+        id: 18,
+        name: 'Rose',
+        department: 'Sales',
+        date: '2024-03-25',
+        sales: 12100,
+      },
+    ],
+    schema: [
+      {
+        name: 'id',
+        type: 'number',
+      },
+      {
+        name: 'name',
+        type: 'string',
+      },
+      {
+        name: 'department',
+        type: 'string',
+      },
+      {
+        name: 'date',
+        type: 'string',
+      },
+      {
+        name: 'sales',
+        type: 'number',
+      },
+    ],
+  }
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## period-aggregation
+
+Select with period + different aggregation functions (avg, count, min, max, count_distinct)
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+    datasetId: 'select-period-aggregation',
+    description: 'Select with period + different aggregation functions (avg, count, min, max, count_distinct)',
+    vquery: {
+      select: [
+        {
+          field: 'department',
+          alias: '部门',
+        },
+        {
+          field: 'sales',
+          aggr: {
+            func: 'avg',
+          },
+          alias: '平均销售额',
+          period: {
+            offset: 0,
+            offsetUnit: 'year',
+            dateField: 'date',
+            referenceYear: 2024,
+          },
+        },
+        {
+          field: 'sales',
+          aggr: {
+            func: 'count',
+          },
+          alias: '销售记录数',
+          period: {
+            offset: 0,
+            offsetUnit: 'year',
+            dateField: 'date',
+            referenceYear: 2024,
+          },
+        },
+        {
+          field: 'sales',
+          aggr: {
+            func: 'min',
+          },
+          alias: '最低销售额',
+          period: {
+            offset: 0,
+            offsetUnit: 'year',
+            dateField: 'date',
+            referenceYear: 2024,
+          },
+        },
+        {
+          field: 'sales',
+          aggr: {
+            func: 'max',
+          },
+          alias: '最高销售额',
+          period: {
+            offset: 0,
+            offsetUnit: 'year',
+            dateField: 'date',
+            referenceYear: 2024,
+          },
+        },
+        {
+          field: 'name',
+          aggr: {
+            func: 'count_distinct',
+          },
+          alias: '销售人员数',
+          period: {
+            offset: 0,
+            offsetUnit: 'year',
+            dateField: 'date',
+            referenceYear: 2024,
+          },
+        },
+      ],
+      groupBy: ['department'],
+    },
+    dataset: [
+      {
+        id: 1,
+        name: 'Alice',
+        department: 'HR',
+        date: '2024-01-15',
+        sales: 5000,
+      },
+      {
+        id: 2,
+        name: 'Bob',
+        department: 'HR',
+        date: '2024-02-20',
+        sales: 7000,
+      },
+      {
+        id: 3,
+        name: 'Charlie',
+        department: 'HR',
+        date: '2024-03-10',
+        sales: 6000,
+      },
+      {
+        id: 4,
+        name: 'David',
+        department: 'Engineering',
+        date: '2024-01-10',
+        sales: 12000,
+      },
+      {
+        id: 5,
+        name: 'Eve',
+        department: 'Engineering',
+        date: '2024-02-15',
+        sales: 13500,
+      },
+      {
+        id: 6,
+        name: 'Frank',
+        department: 'Engineering',
+        date: '2024-03-22',
+        sales: 11000,
+      },
+      {
+        id: 7,
+        name: 'Grace',
+        department: 'Sales',
+        date: '2024-01-08',
+        sales: 9000,
+      },
+      {
+        id: 8,
+        name: 'Henry',
+        department: 'Sales',
+        date: '2024-02-14',
+        sales: 10500,
+      },
+      {
+        id: 9,
+        name: 'Ivy',
+        department: 'Sales',
+        date: '2024-03-21',
+        sales: 8500,
+      },
+    ],
+    schema: [
+      {
+        name: 'id',
+        type: 'number',
+      },
+      {
+        name: 'name',
+        type: 'string',
+      },
+      {
+        name: 'department',
+        type: 'string',
+      },
+      {
+        name: 'date',
+        type: 'string',
+      },
+      {
+        name: 'sales',
+        type: 'number',
+      },
+    ],
+  }
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## quarter-over-quarter
+
+Select with Quarter-over-Quarter (QoQ) period - calculate sales by department comparing current quarter vs last quarter
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+    datasetId: 'select-period-quarter-over-quarter',
+    description:
+      'Select with Quarter-over-Quarter (QoQ) period - calculate sales by department comparing current quarter vs last quarter',
+    vquery: {
+      select: [
+        {
+          field: 'department',
+          alias: '部门',
+        },
+        {
+          field: 'sales',
+          aggr: {
+            func: 'sum',
+          },
+          alias: '本季度销售额',
+          period: {
+            offset: 0,
+            offsetUnit: 'quarter',
+            dateField: 'date',
+            referenceYear: 2024,
+          },
+        },
+        {
+          field: 'sales',
+          aggr: {
+            func: 'sum',
+          },
+          alias: '上季度销售额',
+          period: {
+            offset: -1,
+            offsetUnit: 'quarter',
+            dateField: 'date',
+            referenceYear: 2024,
+          },
+        },
+      ],
+      groupBy: ['department'],
+    },
+    dataset: [
+      {
+        id: 1,
+        name: 'Alice',
+        department: 'HR',
+        date: '2024-01-15',
+        sales: 5000,
+      },
+      {
+        id: 2,
+        name: 'Bob',
+        department: 'HR',
+        date: '2024-02-20',
+        sales: 7000,
+      },
+      {
+        id: 3,
+        name: 'Charlie',
+        department: 'HR',
+        date: '2024-03-10',
+        sales: 6000,
+      },
+      {
+        id: 4,
+        name: 'David',
+        department: 'HR',
+        date: '2024-04-05',
+        sales: 8000,
+      },
+      {
+        id: 5,
+        name: 'Eve',
+        department: 'HR',
+        date: '2024-05-12',
+        sales: 5500,
+      },
+      {
+        id: 6,
+        name: 'Frank',
+        department: 'HR',
+        date: '2024-06-18',
+        sales: 7200,
+      },
+      {
+        id: 7,
+        name: 'Grace',
+        department: 'Engineering',
+        date: '2024-01-10',
+        sales: 12000,
+      },
+      {
+        id: 8,
+        name: 'Henry',
+        department: 'Engineering',
+        date: '2024-02-15',
+        sales: 13500,
+      },
+      {
+        id: 9,
+        name: 'Ivy',
+        department: 'Engineering',
+        date: '2024-03-22',
+        sales: 11000,
+      },
+      {
+        id: 10,
+        name: 'Jack',
+        department: 'Engineering',
+        date: '2024-04-18',
+        sales: 14500,
+      },
+      {
+        id: 11,
+        name: 'Kate',
+        department: 'Engineering',
+        date: '2024-05-25',
+        sales: 12800,
+      },
+      {
+        id: 12,
+        name: 'Leo',
+        department: 'Engineering',
+        date: '2024-06-30',
+        sales: 15200,
+      },
+    ],
+    schema: [
+      {
+        name: 'id',
+        type: 'number',
+      },
+      {
+        name: 'name',
+        type: 'string',
+      },
+      {
+        name: 'department',
+        type: 'string',
+      },
+      {
+        name: 'date',
+        type: 'string',
+      },
+      {
+        name: 'sales',
+        type: 'number',
+      },
+    ],
+  }
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## week-over-week
+
+Select with Week-over-Week (WoW) period - calculate sales by department comparing current week vs last week
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+    datasetId: 'select-period-week-over-week',
+    description:
+      'Select with Week-over-Week (WoW) period - calculate sales by department comparing current week vs last week',
+    vquery: {
+      select: [
+        {
+          field: 'department',
+          alias: '部门',
+        },
+        {
+          field: 'sales',
+          aggr: {
+            func: 'sum',
+          },
+          alias: '本周销售额',
+          period: {
+            offset: 0,
+            offsetUnit: 'week',
+            dateField: 'date',
+            referenceYear: 2024,
+          },
+        },
+        {
+          field: 'sales',
+          aggr: {
+            func: 'sum',
+          },
+          alias: '上周销售额',
+          period: {
+            offset: -1,
+            offsetUnit: 'week',
+            dateField: 'date',
+            referenceYear: 2024,
+          },
+        },
+      ],
+      groupBy: ['department'],
+    },
+    dataset: [
+      {
+        id: 1,
+        name: 'Alice',
+        department: 'HR',
+        date: '2024-01-08',
+        sales: 5000,
+      },
+      {
+        id: 2,
+        name: 'Bob',
+        department: 'HR',
+        date: '2024-01-10',
+        sales: 7000,
+      },
+      {
+        id: 3,
+        name: 'Charlie',
+        department: 'HR',
+        date: '2024-01-15',
+        sales: 6000,
+      },
+      {
+        id: 4,
+        name: 'David',
+        department: 'HR',
+        date: '2024-01-17',
+        sales: 8000,
+      },
+      {
+        id: 5,
+        name: 'Eve',
+        department: 'Engineering',
+        date: '2024-01-08',
+        sales: 12000,
+      },
+      {
+        id: 6,
+        name: 'Frank',
+        department: 'Engineering',
+        date: '2024-01-15',
+        sales: 13500,
+      },
+      {
+        id: 7,
+        name: 'Grace',
+        department: 'Sales',
+        date: '2024-01-09',
+        sales: 9000,
+      },
+      {
+        id: 8,
+        name: 'Henry',
+        department: 'Sales',
+        date: '2024-01-16',
+        sales: 10500,
+      },
+    ],
+    schema: [
+      {
+        name: 'id',
+        type: 'number',
+      },
+      {
+        name: 'name',
+        type: 'string',
+      },
+      {
+        name: 'department',
+        type: 'string',
+      },
+      {
+        name: 'date',
+        type: 'string',
+      },
+      {
+        name: 'sales',
+        type: 'number',
+      },
+    ],
+  }
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
 ## year-over-year
 
 Select with Year-over-Year (YoY) period - calculate sales by department comparing 2024 vs 2023

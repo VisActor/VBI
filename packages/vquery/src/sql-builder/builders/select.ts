@@ -2,15 +2,23 @@ import { SelectItem, PeriodOffsetUnit } from 'src/types/dsl/Select'
 import { isSelectItem } from '../utils'
 import { sql } from 'kysely'
 import type { SelectQueryBuilder } from 'kysely'
+import { getDateFormatExpression, type DatabaseDialect } from '../dialect'
 
-const DATE_FORMAT_MAP: Record<string, string> = {
-  year: '%Y',
-  month: '%Y-%m',
-  day: '%Y-%m-%d',
-  week: '%Y-W%W',
-  hour: '%Y-%m-%d %H',
-  minute: '%Y-%m-%d %H:%M',
-  second: '%Y-%m-%d %H:%M:%S',
+/**
+ * 计算给定日期的 ISO 周数 (1-53)
+ * ISO 周从周一开始，周年第一周是包含该年第一个周四的那一周
+ */
+const getISOWeek = (date: Date): number => {
+  const target = new Date(date.valueOf())
+  const dayNumber = (date.getDay() + 6) % 7 // 将周日(0)转为6，周一(1)转为0
+  target.setDate(target.getDate() - dayNumber + 3) // 找到该周的周四
+  const firstThursday = target.valueOf()
+  target.setMonth(0, 1)
+  while (target.getDay() !== 4) {
+    // 找到该年第一个周四
+    target.setDate(target.getDate() + 1)
+  }
+  return Math.ceil((firstThursday - target.valueOf()) / 604800000) + 1
 }
 
 /**
@@ -66,13 +74,21 @@ const computePeriodDate = (offset: number, offsetUnit: PeriodOffsetUnit, referen
         targetMonth -= 12
       }
       return `${targetYear}-${String(targetMonth).padStart(2, '0')}`
-    case 'week':
-      // 简单处理：返回目标年份和周数
-      targetYear = inferredCurrentYear + offset
-      return `${targetYear}-W01`
+    case 'week': {
+      // 使用 setDate 按周偏移 (offset * 7 天)
+      // 基于推断的当前年份来计算周
+      const weekDate = new Date(inferredCurrentYear, currentMonth, 15) // 使用月中旬以确保周数稳定
+      weekDate.setDate(weekDate.getDate() + offset * 7)
+      const targetWeekYear = weekDate.getFullYear()
+      // 获取该年的 ISO 周数 (1-53)
+      const targetWeek = getISOWeek(weekDate)
+      return `${targetWeekYear}-W${String(targetWeek).padStart(2, '0')}`
+    }
     case 'day': {
-      const targetDate = new Date(now)
-      targetDate.setFullYear(targetDate.getFullYear() + offset)
+      // 使用 setDate 进行日偏移
+      // 基于推断的当前年份来计算日期
+      const targetDate = new Date(inferredCurrentYear, currentMonth, 15)
+      targetDate.setDate(targetDate.getDate() + offset)
       return targetDate.toISOString().split('T')[0]
     }
     default:
@@ -83,6 +99,7 @@ const computePeriodDate = (offset: number, offsetUnit: PeriodOffsetUnit, referen
 export const applySelect = <DB, TB extends keyof DB & string, O, T>(
   qb: SelectQueryBuilder<DB, TB, O>,
   select?: Array<keyof T | SelectItem<T>>,
+  dialect: DatabaseDialect = 'duckdb',
 ) => {
   if (select && select.length > 0) {
     return qb.select((eb) =>
@@ -98,33 +115,40 @@ export const applySelect = <DB, TB extends keyof DB & string, O, T>(
             const { func } = item.aggr
             // 如果有 period 配置，使用 CASE WHEN 来按日期过滤
             if (item.period) {
-              const targetDate = computePeriodDate(item.period.offset, item.period.offsetUnit)
-              const format = DATE_FORMAT_MAP[item.period.offsetUnit]
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              const dateFieldExpr = eb.ref(item.period.dateField as any)
+              const targetDate = computePeriodDate(
+                item.period.offset,
+                item.period.offsetUnit,
+                item.period.referenceYear,
+              )
+              const periodUnit = item.period.offsetUnit
+              // 直接传递字段名字符串，避免 Kysely 表达式对象的问题
+              const dateFieldName = item.period.dateField as string
+
+              // 使用方言适配器获取日期格式化表达式
+              const dateFormatExpr = getDateFormatExpression(dialect, dateFieldName, periodUnit)
 
               if (func === 'sum') {
-                return sql`sum(case when strftime(CAST(${dateFieldExpr} AS TIMESTAMP), ${format}) = ${targetDate} then ${expression} else 0 end)`.as(
+                return sql`sum(case when ${sql.raw(dateFormatExpr)} = ${targetDate} then ${expression} else 0 end)`.as(
                   alias,
                 )
               } else if (func === 'avg') {
-                return sql`avg(case when strftime(CAST(${dateFieldExpr} AS TIMESTAMP), ${format}) = ${targetDate} then ${expression} else null end)`.as(
+                return sql`avg(case when ${sql.raw(dateFormatExpr)} = ${targetDate} then ${expression} else null end)`.as(
                   alias,
                 )
               } else if (func === 'count') {
-                return sql`CAST(sum(case when strftime(CAST(${dateFieldExpr} AS TIMESTAMP), ${format}) = ${targetDate} then 1 else 0 end) AS INTEGER)`.as(
+                return sql`CAST(sum(case when ${sql.raw(dateFormatExpr)} = ${targetDate} then 1 else 0 end) AS INTEGER)`.as(
                   alias,
                 )
               } else if (func === 'min') {
-                return sql`min(case when strftime(CAST(${dateFieldExpr} AS TIMESTAMP), ${format}) = ${targetDate} then ${expression} else null end)`.as(
+                return sql`min(case when ${sql.raw(dateFormatExpr)} = ${targetDate} then ${expression} else null end)`.as(
                   alias,
                 )
               } else if (func === 'max') {
-                return sql`max(case when strftime(CAST(${dateFieldExpr} AS TIMESTAMP), ${format}) = ${targetDate} then ${expression} else null end)`.as(
+                return sql`max(case when ${sql.raw(dateFormatExpr)} = ${targetDate} then ${expression} else null end)`.as(
                   alias,
                 )
               } else if (func === 'count_distinct') {
-                return sql`CAST(count(distinct case when strftime(CAST(${dateFieldExpr} AS TIMESTAMP), ${format}) = ${targetDate} then ${expression} else null end) AS INTEGER)`.as(
+                return sql`CAST(count(distinct case when ${sql.raw(dateFormatExpr)} = ${targetDate} then ${expression} else null end) AS INTEGER)`.as(
                   alias,
                 )
               } else if (func.startsWith('to_')) {
@@ -149,15 +173,9 @@ export const applySelect = <DB, TB extends keyof DB & string, O, T>(
               return sql`CAST(count(distinct ${expression}) AS INTEGER)`.as(alias)
             } else if (func.startsWith('to_')) {
               const dateTrunc = func.replace('to_', '')
-              const format = DATE_FORMAT_MAP[dateTrunc]
-              if (format) {
-                return sql`strftime(CAST(${expression} AS TIMESTAMP), ${format})`.as(alias)
-              }
-              if (dateTrunc === 'quarter') {
-                return sql`strftime(CAST(${expression} AS TIMESTAMP), '%Y') || '-Q' || date_part('quarter', CAST(${expression} AS TIMESTAMP))`.as(
-                  alias,
-                )
-              }
+              // 使用方言适配器获取日期格式化表达式，直接传递字段名字符串
+              const dateFormatExpr = getDateFormatExpression(dialect, field, dateTrunc)
+              return sql`${sql.raw(dateFormatExpr)}`.as(alias)
             }
           }
           // 优先使用用户提供的 alias，其次使用 field

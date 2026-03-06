@@ -47,6 +47,12 @@ export type Period<T> = {
    * 用于计算周期的日期字段
    */
   dateField: keyof T
+  /**
+   * 参考年份
+   * 显式指定当前周期（offset=0）对应的年份
+   * 如果未指定，将通过查询数据集动态获取最大年份
+   */
+  referenceYear?: number
 }
 
 export type SelectItem<T> = {
