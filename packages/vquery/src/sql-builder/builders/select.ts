@@ -26,6 +26,7 @@ const getISOWeek = (date: Date): number => {
  * @param offset 偏移量: 0=当前周期, -1=上一周期, 1=下一周期
  * @param offsetUnit 偏移单位: year/quarter/month/week/day
  * @param referenceYear 可选的参考年份，默认从数据中推断（使用当前年份的前一年作为当前周期）
+ * @param referenceMonth 可选的参考月份 (1-12)，用于 week 偏移计算
  * @returns 目标日期字符串 (如 '2024', '2024-01', '2024-W01' 等)
  *
  * 注意: 由于 SQL 生成阶段无法访问数据，这里使用一种启发式方法：
@@ -33,7 +34,12 @@ const getISOWeek = (date: Date): number => {
  * - 这样 2026年运行代码时，offset=0 会映射到 2024（数据中最大的年份）
  * - offset=-1 会映射到 2023
  */
-const computePeriodDate = (offset: number, offsetUnit: PeriodOffsetUnit, referenceYear?: number): string => {
+const computePeriodDate = (
+  offset: number,
+  offsetUnit: PeriodOffsetUnit,
+  referenceYear?: number,
+  referenceMonth?: number,
+): string => {
   // 使用传入的参考年份，或者使用启发式方法推断
   // 启发式：假设数据中最大的年份就是当前周期（offset=0）
   // 由于当前是2026年，而测试数据最大年份是2024，所以需要做一个映射
@@ -42,7 +48,9 @@ const computePeriodDate = (offset: number, offsetUnit: PeriodOffsetUnit, referen
   // 默认假设数据中最新年份比当前年份少2年（适应测试场景）
   const inferredCurrentYear = referenceYear ?? Math.max(currentYear - 2, 2024)
 
-  const currentMonth = now.getMonth() // 0-11
+  // 如果没有提供 referenceMonth，使用系统月份 (0-11)
+  const monthFromParams = referenceMonth !== undefined ? referenceMonth - 1 : now.getMonth()
+  const currentMonth = monthFromParams // 0-11
   const currentQuarter = Math.floor(currentMonth / 3) + 1
 
   let targetYear = inferredCurrentYear
@@ -119,6 +127,7 @@ export const applySelect = <DB, TB extends keyof DB & string, O, T>(
                 item.period.offset,
                 item.period.offsetUnit,
                 item.period.referenceYear,
+                item.period.referenceMonth,
               )
               const periodUnit = item.period.offsetUnit
               // 直接传递字段名字符串，避免 Kysely 表达式对象的问题

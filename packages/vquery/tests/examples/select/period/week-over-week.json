@@ -15,7 +15,8 @@
           "offset": 0,
           "offsetUnit": "week",
           "dateField": "date",
-          "referenceYear": 2024
+          "referenceYear": 2024,
+          "referenceMonth": 1
         }
       },
       {
@@ -26,7 +27,8 @@
           "offset": -1,
           "offsetUnit": "week",
           "dateField": "date",
-          "referenceYear": 2024
+          "referenceYear": 2024,
+          "referenceMonth": 1
         }
       }
     ],

@@ -25,18 +25,18 @@ describe('Select with Week-over-Week (WoW) period - calculate sales by departmen
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "上周销售额": 0,
-          "本周销售额": 0,
+          "上周销售额": 12000,
+          "本周销售额": 14000,
           "部门": "HR",
         },
         {
-          "上周销售额": 0,
-          "本周销售额": 0,
+          "上周销售额": 12000,
+          "本周销售额": 13500,
           "部门": "Engineering",
         },
         {
-          "上周销售额": 0,
-          "本周销售额": 0,
+          "上周销售额": 9000,
+          "本周销售额": 10500,
           "部门": "Sales",
         },
       ]

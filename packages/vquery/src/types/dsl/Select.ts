@@ -53,6 +53,12 @@ export type Period<T> = {
    * 如果未指定，将通过查询数据集动态获取最大年份
    */
   referenceYear?: number
+  /**
+   * 参考月份 (1-12)
+   * 用于 week 偏移计算，确保正确识别当前周
+   * 如果未指定，将使用系统当前月份
+   */
+  referenceMonth?: number
 }
 
 export type SelectItem<T> = {
