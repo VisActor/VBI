@@ -1,5 +1,5 @@
 // FieldList.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import {
   DeleteOutlined,
   NumberOutlined,
@@ -12,6 +12,7 @@ export interface FieldListProps {
   items: string[];
   onAdd?: (field: string) => void;
   onRemove: (field: string) => void;
+  onDropDimension?: (field: string) => void;
   style?: React.CSSProperties;
 }
 
@@ -20,8 +21,10 @@ const FieldList: React.FC<FieldListProps> = ({
   items,
   onAdd,
   onRemove,
+  onDropDimension,
   style,
 }) => {
+  const [hoveredDropZone, setHoveredDropZone] = useState(false);
   const getIcon = () => {
     const lowerTitle = title.toLowerCase();
     if (lowerTitle.includes('dimension')) {
@@ -34,9 +37,46 @@ const FieldList: React.FC<FieldListProps> = ({
   };
 
   return (
-    <div className="fieldlist" style={style}>
-      <div className="fieldlist-title">{title}</div>
-      <div className="fieldlist-items">
+    <div
+      className="fieldlist"
+      style={style}
+      onDragOver={(e) => {
+        if (!onDropDimension) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        setHoveredDropZone(true);
+      }}
+      onDragLeave={() => {
+        setHoveredDropZone(false);
+      }}
+      onDrop={(e) => {
+        if (!onDropDimension) return;
+        e.preventDefault();
+        const field = e.dataTransfer.getData('application/x-vbi-dimension-field') ||
+                      e.dataTransfer.getData('text/plain');
+        if (field) {
+          onDropDimension(field);
+        }
+        setHoveredDropZone(false);
+      }}
+    >
+      <div
+        className="fieldlist-title"
+        style={{
+          backgroundColor: hoveredDropZone ? '#e6f4ff' : 'transparent',
+          transition: 'background-color 0.2s',
+        }}
+      >
+        {title}
+      </div>
+      <div
+        className="fieldlist-items"
+        style={{
+          backgroundColor: hoveredDropZone ? '#e6f4ff' : 'transparent',
+          borderRadius: '2px',
+          transition: 'background-color 0.2s',
+        }}
+      >
         {items.length === 0 && (
           <div className="fieldlist-empty">No {title.toLowerCase()} added</div>
         )}

@@ -3,7 +3,6 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import './App.css';
 import { ConfigProvider, theme, Dropdown, Button } from 'antd';
 import { LeftOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
-import { Builder as VSeedBuilder } from '@visactor/vseed';
 import { getChartEncodingSupport } from '@visactor/vbi';
 import DimensionShelf from './components/Shelfs/DimensionShelf';
 import MeasureShelf from './components/Shelfs/MeasureShelf';
@@ -14,6 +13,8 @@ import EncodingPanel from './components/Fields/EncodingPanel';
 import { VSeedRender } from './components/Render';
 import { useVBIStore } from './model';
 import { useShallow } from 'zustand/shallow';
+
+type EncodingChannel = 'yAxis' | 'xAxis' | 'color' | 'label' | 'tooltip' | 'size';
 
 export function APP() {
   const [leftWidth, setLeftWidth] = useState(220);
@@ -31,6 +32,7 @@ export function APP() {
       removeMeasure: (field: string) => void;
       renameMeasure: (alias: string, newAlias: string) => void;
       modifyAggregate: (alias: string, func: string, quantile?: number) => void;
+      modifyEncoding: (field: string, encoding: EncodingChannel) => void;
       getMeasures: () => any[];
     };
     chartType?: {
@@ -51,7 +53,11 @@ export function APP() {
   const [measuresDetail, setMeasuresDetail] = useState<
     Record<
       string,
-      { alias?: string; aggregate?: { func: string; quantile?: number } }
+      {
+        alias?: string;
+        aggregate?: { func: string; quantile?: number };
+        encoding?: EncodingChannel;
+      }
     >
   >({});
   const [chartTypeOptions, setChartTypeOptions] = useState<string[]>([]);
@@ -108,7 +114,11 @@ export function APP() {
       const measures = builder.measures.getMeasures();
       const detail: Record<
         string,
-        { alias?: string; aggregate?: { func: string; quantile?: number } }
+        {
+          alias?: string;
+          aggregate?: { func: string; quantile?: number };
+          encoding?: EncodingChannel;
+        }
       > = {};
 
       if (Array.isArray(measures)) {
@@ -122,6 +132,7 @@ export function APP() {
             aggregate: aggregate
               ? { func: aggregate.func, quantile: aggregate.quantile }
               : undefined,
+            encoding: value.encoding,
           };
         });
       }
@@ -130,36 +141,30 @@ export function APP() {
     }
   }, []);
 
-  // Update measures with encoding info when measures change
-  useEffect(() => {
-    if (builderRef.current?.measures?.getMeasures) {
-      builderRef.current.measures.getMeasures();
-    }
-  }, [measureFields]);
-
-  // Get measure names from VBIStore (user-added measures)
-  const measureNames = useMemo(() => {
-    return measureFields;
-  }, [measureFields]);
-
-  // Compute VChart spec and extract encoding information
+  // Compute encoding information from DSL as the single source of truth
   const encodingInfo = useMemo(() => {
-    if (!vseed || !builderRef.current) {
+    if (!measureFields.length) {
       return [];
     }
 
-    try {
-      const vseedBuilder = VSeedBuilder.from({ ...vseed, theme: 'light' } as any);
-      const spec = vseedBuilder.build() as any;
-      
-      // Get encoding information from VBI builder
-      const encodings = builderRef.current.getEncodings?.(spec, measureNames) ?? [];
-      
-      return encodings;
-    } catch {
-      return [];
+    const map: Record<string, string[]> = {};
+
+    for (const field of measureFields) {
+      const detail = measuresDetail[field];
+      const encoding = detail?.encoding ?? 'yAxis';
+      const displayName = detail?.alias || field;
+
+      if (!map[encoding]) {
+        map[encoding] = [];
+      }
+      map[encoding].push(displayName);
     }
-  }, [vseed, measureNames]);
+
+    return Object.entries(map).map(([encoding, measures]) => ({
+      encoding,
+      measures,
+    }));
+  }, [measureFields, measuresDetail]);
 
   // Compute supported encodings for current chart type
   const supportedEncodings = useMemo(() => {
@@ -257,7 +262,11 @@ export function APP() {
       const measures = builderRef.current.measures.getMeasures();
       const detail: Record<
         string,
-        { alias?: string; aggregate?: { func: string; quantile?: number } }
+        {
+          alias?: string;
+          aggregate?: { func: string; quantile?: number };
+          encoding?: EncodingChannel;
+        }
       > = {};
 
       if (Array.isArray(measures)) {
@@ -271,6 +280,7 @@ export function APP() {
             aggregate: aggregate
               ? { func: aggregate.func, quantile: aggregate.quantile }
               : undefined,
+            encoding: value.encoding,
           };
         });
       }
@@ -339,6 +349,75 @@ export function APP() {
       syncMeasuresDetail();
       setRenderKey((prev) => prev + 1);
     }
+  };
+
+  const handleDropMeasureToEncoding = (field: string, encoding: EncodingChannel) => {
+    if (!builderRef.current?.measures || !builderRef.current.doc) {
+      return;
+    }
+
+    const { measures, doc } = builderRef.current;
+    const hasMeasure = measureFields.includes(field);
+
+    if (!supportedEncodings.includes(encoding)) {
+      return;
+    }
+
+    doc.transact(() => {
+      if (hasMeasure) {
+        measures.modifyEncoding(field, encoding);
+      } else {
+        measures.addMeasure(field);
+        measures.modifyEncoding(field, encoding);
+      }
+    });
+
+    if (!hasMeasure) {
+      setMeasureFields((prev) => [...prev, field]);
+    }
+
+    syncMeasuresDetail();
+    setRenderKey((prev) => prev + 1);
+  };
+
+  const handleDropDimensionToEncoding = (field: string, encoding: EncodingChannel) => {
+    if (!builderRef.current?.measures || !builderRef.current.doc) {
+      return;
+    }
+
+    const { measures, doc } = builderRef.current;
+    const hasMeasure = measureFields.includes(field);
+
+    if (!supportedEncodings.includes(encoding)) {
+      return;
+    }
+
+    doc.transact(() => {
+      if (hasMeasure) {
+        // Already added as measure, just modify encoding
+        measures.modifyEncoding(field, encoding);
+      } else {
+        // Add dimension as measure with count aggregate
+        measures.addMeasure(field, (node: unknown) => {
+          const nodeObj = node as any;
+          if (nodeObj?.setAlias) {
+            nodeObj.setAlias(field);
+          }
+          if (nodeObj?.setAggregate) {
+            nodeObj.setAggregate({ func: 'count' });
+          }
+        });
+        measures.modifyEncoding(field, encoding);
+      }
+    });
+
+    if (!hasMeasure) {
+      setMeasureFields((prev) => [...prev, field]);
+      setDimensionMeasures((prev) => [...prev, field]);
+    }
+
+    syncMeasuresDetail();
+    setRenderKey((prev) => prev + 1);
   };
 
   // 图表类型变化
@@ -521,6 +600,7 @@ export function APP() {
                       items={dimensionFields}
                       onAdd={handleAddDimension}
                       onRemove={handleRemoveDimension}
+                      onDropDimension={handleAddDimension}
                       style={{ flex: 1, minHeight: 0 }}
                     />
                     <MeasureFieldList
@@ -530,6 +610,7 @@ export function APP() {
                       onRename={handleRenameMeasure}
                       onChangeAggregate={handleChangeAggregateFunc}
                       onRemove={handleRemoveMeasure}
+                      onDropDimension={handleAddMeasureFromDimension}
                       style={{ flex: 1, minHeight: 0, borderTop: '1px solid #2a2b4d' }}
                     />
                   </div>
@@ -547,6 +628,8 @@ export function APP() {
                     <EncodingPanel
                       supportedEncodings={supportedEncodings}
                       encodingInfo={encodingInfo}
+                      onDropMeasureToEncoding={handleDropMeasureToEncoding}
+                      onDropDimensionToEncoding={handleDropDimensionToEncoding}
                       style={{ height: '100%' }}
                     />
                   </div>

@@ -27,7 +27,16 @@ const MeasureShelf: React.FC<MeasureShelfProps> = ({
         {items.map((field) => {
           const isExists = existingFields.includes(field);
           return (
-            <div key={field} className="shelf-item">
+            <div
+              key={field}
+              className="shelf-item"
+              draggable
+              onDragStart={(e) => {
+                e.dataTransfer.setData('application/x-vbi-measure-field', field);
+                e.dataTransfer.setData('text/plain', field);
+                e.dataTransfer.effectAllowed = 'move';
+              }}
+            >
               <FontSizeOutlined style={{ marginRight: 4 }} />
               <span className="shelf-item-text">{field}</span>
               <button

@@ -17,6 +17,7 @@ export interface MeasureFieldListProps {
   onRemove: (field: string) => void;
   onRename?: (field: string, newAlias: string) => void;
   onChangeAggregate?: (field: string, func: string, quantile?: number) => void;
+  onDropDimension?: (field: string) => void;
   style?: React.CSSProperties;
 }
 
@@ -48,12 +49,14 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
   onRemove,
   onRename,
   onChangeAggregate,
+  onDropDimension,
   style,
 }) => {
   const [editingField, setEditingField] = useState<string | null>(null);
   const [editAlias, setEditAlias] = useState('');
   const [editAggregate, setEditAggregate] = useState('sum');
   const [editQuantile, setEditQuantile] = useState(0.5);
+  const [hoveredDropZone, setHoveredDropZone] = useState(false);
 
   const handleEdit = (field: string) => {
     const measure = measures[field];
@@ -96,9 +99,46 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
 
   return (
     <>
-      <div className="fieldlist" style={style}>
-        <div className="fieldlist-title">MEASURES</div>
-        <div className="fieldlist-items">
+      <div
+        className="fieldlist"
+        style={style}
+        onDragOver={(e) => {
+          if (!onDropDimension) return;
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          setHoveredDropZone(true);
+        }}
+        onDragLeave={() => {
+          setHoveredDropZone(false);
+        }}
+        onDrop={(e) => {
+          if (!onDropDimension) return;
+          e.preventDefault();
+          const field = e.dataTransfer.getData('application/x-vbi-dimension-field') ||
+                        e.dataTransfer.getData('text/plain');
+          if (field) {
+            onDropDimension(field);
+          }
+          setHoveredDropZone(false);
+        }}
+      >
+        <div
+          className="fieldlist-title"
+          style={{
+            backgroundColor: hoveredDropZone ? '#e6f4ff' : 'transparent',
+            transition: 'background-color 0.2s',
+          }}
+        >
+          MEASURES
+        </div>
+        <div
+          className="fieldlist-items"
+          style={{
+            backgroundColor: hoveredDropZone ? '#e6f4ff' : 'transparent',
+            borderRadius: '2px',
+            transition: 'background-color 0.2s',
+          }}
+        >
           {items.length === 0 && (
             <div className="fieldlist-empty">No measures added</div>
           )}

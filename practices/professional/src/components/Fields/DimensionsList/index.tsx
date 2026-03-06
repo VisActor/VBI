@@ -4,8 +4,9 @@ import { CalendarOutlined, FontSizeOutlined } from '@ant-design/icons';
 import { useVBIStore } from 'src/model';
 
 export const DimensionsList = memo(
-  ({ style }: { style?: React.CSSProperties }) => {
+  ({ style, onDropDimension }: { style?: React.CSSProperties; onDropDimension?: (field: string) => void }) => {
     const builder = useVBIStore((state) => state.builder);
+    const [hoveredDropZone, setHoveredDropZone] = useState(false);
     console.log('debug DimensionsList rerender');
 
     const [schema, setSchema] = useState<
@@ -56,11 +57,36 @@ export const DimensionsList = memo(
             minHeight: '48px',
           },
         }}
+        onDragOver={(e) => {
+          if (!onDropDimension) return;
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          setHoveredDropZone(true);
+        }}
+        onDragLeave={() => {
+          setHoveredDropZone(false);
+        }}
+        onDrop={(e) => {
+          if (!onDropDimension) return;
+          e.preventDefault();
+          const field = e.dataTransfer.getData('application/x-vbi-dimension-field') ||
+                        e.dataTransfer.getData('text/plain');
+          if (field) {
+            onDropDimension(field);
+          }
+          setHoveredDropZone(false);
+        }}
       >
         <List
           size="small"
           dataSource={dimensions}
           split={false}
+          style={{
+            backgroundColor: hoveredDropZone ? '#e6f4ff' : 'transparent',
+            borderRadius: '2px',
+            padding: '4px',
+            transition: 'background-color 0.2s',
+          }}
           renderItem={(item) => (
             <List.Item style={{ padding: 0, marginBottom: 2 }}>
               <div

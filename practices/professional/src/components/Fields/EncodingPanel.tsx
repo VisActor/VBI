@@ -1,5 +1,7 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Empty, Tag } from 'antd'
+
+type EncodingChannel = 'yAxis' | 'xAxis' | 'color' | 'label' | 'tooltip' | 'size'
 
 export interface MeasureEncodingInfo {
   encoding: string;
@@ -8,9 +10,13 @@ export interface MeasureEncodingInfo {
 
 export interface EncodingPanelProps {
   /** Array of supported encoding channels for this chart type */
-  supportedEncodings?: string[];
+  supportedEncodings?: EncodingChannel[];
   /** Array of {encoding, measures} pairs - currently configured encodings */
   encodingInfo?: MeasureEncodingInfo[];
+  /** Handle dropping a measure field into an encoding channel */
+  onDropMeasureToEncoding?: (field: string, encoding: EncodingChannel) => void;
+  /** Handle dropping a dimension field into an encoding channel (as a measure) */
+  onDropDimensionToEncoding?: (field: string, encoding: EncodingChannel) => void;
   style?: React.CSSProperties;
 }
 
@@ -22,8 +28,12 @@ export interface EncodingPanelProps {
 const EncodingPanel: React.FC<EncodingPanelProps> = ({ 
   supportedEncodings = [], 
   encodingInfo = [], 
+  onDropMeasureToEncoding,
+  onDropDimensionToEncoding,
   style 
 }) => {
+  const [hoveredEncoding, setHoveredEncoding] = useState<string | null>(null);
+
   const encodingState = useMemo(() => {
     // Create a map of configured encodings
     const configuredMap: Record<string, string[]> = {};
@@ -65,15 +75,59 @@ const EncodingPanel: React.FC<EncodingPanelProps> = ({
         {Object.entries(encodingState).map(([encoding, { configured, measures }]) => (
           <div
             key={encoding}
+            onDragOver={(e) => {
+              if (!onDropMeasureToEncoding) {
+                return;
+              }
+              e.preventDefault();
+              e.dataTransfer.dropEffect = 'move';
+              setHoveredEncoding(encoding);
+            }}
+            onDragLeave={() => {
+              setHoveredEncoding((prev) => (prev === encoding ? null : prev));
+            }}
+            onDrop={(e) => {
+              if (!onDropMeasureToEncoding && !onDropDimensionToEncoding) {
+                return;
+              }
+              e.preventDefault();
+              // Try to get measure field first
+              let field = e.dataTransfer.getData('application/x-vbi-measure-field');
+              let isMeasure = !!field;
+              
+              // If no measure, try dimension field
+              if (!field) {
+                field = e.dataTransfer.getData('application/x-vbi-dimension-field');
+                isMeasure = false;
+              }
+              
+              // Fallback to plain text
+              if (!field) {
+                field = e.dataTransfer.getData('text/plain');
+              }
+              
+              if (field) {
+                if (isMeasure && onDropMeasureToEncoding) {
+                  onDropMeasureToEncoding(field, encoding as EncodingChannel);
+                } else if (!isMeasure && onDropDimensionToEncoding) {
+                  onDropDimensionToEncoding(field, encoding as EncodingChannel);
+                }
+              }
+              setHoveredEncoding(null);
+            }}
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
               padding: '6px 12px',
-              backgroundColor: configured ? '#fafafa' : '#f5f5f5',
+              backgroundColor:
+                hoveredEncoding === encoding ? '#e6f4ff' : configured ? '#fafafa' : '#f5f5f5',
               opacity: configured ? 1 : 0.7,
               borderRadius: '2px',
               fontSize: '12px',
+              border:
+                hoveredEncoding === encoding ? '1px dashed #1677ff' : '1px solid transparent',
+              transition: 'all 0.12s ease',
             }}
           >
             <span style={{ fontWeight: 'bold', minWidth: '60px', color: '#666' }}>
