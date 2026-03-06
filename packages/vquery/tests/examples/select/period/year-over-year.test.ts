@@ -2,8 +2,8 @@ import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
 import vqueryConfig from './year-over-year.json'
 
-describe('Select with Year-over-Year (YoY) period - calculate sales growth compared to same month last year', () => {
-  it('Select with Year-over-Year (YoY) period - calculate sales growth compared to same month last year', async () => {
+describe('Select with Year-over-Year (YoY) period - calculate sales by department comparing 2024 vs 2023', () => {
+  it('Select with Year-over-Year (YoY) period - calculate sales by department comparing 2024 vs 2023', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 
@@ -25,24 +25,24 @@ describe('Select with Year-over-Year (YoY) period - calculate sales growth compa
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "total_sales": 5000,
-          "total_sales_period_1_year": null,
-          "year": "2023",
+          "2023年销售额": 89600,
+          "2024年销售额": 101100,
+          "部门": "HR",
         },
         {
-          "total_sales": 8000,
-          "total_sales_period_1_year": null,
-          "year": "2023",
+          "2023年销售额": 166500,
+          "2024年销售额": 184400,
+          "部门": "Engineering",
         },
         {
-          "total_sales": 6000,
-          "total_sales_period_1_year": null,
-          "year": "2024",
+          "2023年销售额": 134100,
+          "2024年销售额": 149700,
+          "部门": "Sales",
         },
         {
-          "total_sales": 9000,
-          "total_sales_period_1_year": null,
-          "year": "2024",
+          "2023年销售额": 102200,
+          "2024年销售额": 113900,
+          "部门": "Marketing",
         },
       ]
     `)
