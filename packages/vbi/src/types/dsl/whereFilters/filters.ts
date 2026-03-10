@@ -1,7 +1,12 @@
 import { z } from 'zod'
 
-// 叶子条件
-export const zVBIWhereFilterLeaf = z.object({
+// 前向声明
+export const zVBIWhereFilterLeaf: z.ZodType<{
+  id: string
+  field: string
+  op?: string
+  value?: unknown
+}> = z.object({
   id: z.string().uuid(),
   field: z.string(),
   op: z.string().optional(),
@@ -10,8 +15,12 @@ export const zVBIWhereFilterLeaf = z.object({
 
 export type VBIWhereFilterLeaf = z.infer<typeof zVBIWhereFilterLeaf>
 
-// 嵌套组
-export const zVBIWhereFilterGroup: z.ZodType<VBIWhereFilterGroup> = z.lazy(() =>
+// 嵌套组 - 使用前向声明避免循环引用
+export const zVBIWhereFilterGroup: z.ZodType<{
+  id: string
+  op: 'AND' | 'OR'
+  conditions: (VBIWhereFilterLeaf | VBIWhereFilterGroup)[]
+}> = z.lazy(() =>
   z.object({
     id: z.string().uuid(),
     op: z.enum(['AND', 'OR']),
@@ -22,7 +31,7 @@ export const zVBIWhereFilterGroup: z.ZodType<VBIWhereFilterGroup> = z.lazy(() =>
 export type VBIWhereFilterGroup = z.infer<typeof zVBIWhereFilterGroup>
 
 // 联合类型
-export const zVBIWhereFilterCondition: z.ZodType<VBIWhereFilterCondition> = z.union([
+export const zVBIWhereFilterCondition: z.ZodType<VBIWhereFilterLeaf | VBIWhereFilterGroup> = z.union([
   zVBIWhereFilterLeaf,
   zVBIWhereFilterGroup,
 ])
@@ -39,5 +48,10 @@ export const zVBIWhereFiltersRoot = z.object({
 export type VBIWhereFiltersRoot = z.infer<typeof zVBIWhereFiltersRoot>
 
 // 兼容旧类型 (标记废弃)
-export const zVBIFilter = zVBIWhereFilterLeaf
-export type VBIFilter = VBIWhereFilterLeaf
+export const zVBIFilter = z.object({
+  field: z.string(),
+  operator: z.string().optional(),
+  value: z.any().optional(),
+})
+
+export type VBIFilter = z.infer<typeof zVBIFilter>
