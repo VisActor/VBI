@@ -6,7 +6,7 @@ import type {
   DimensionsBuilder,
   ChartTypeBuilder,
   HavingFiltersBuilder,
-  WhereFiltersBuilder,
+  WhereFilterGroupBuilder,
 } from 'src/builder/sub-builders'
 import type { Map, Doc, UndoManager } from 'yjs'
 
@@ -19,7 +19,7 @@ export interface VBIBuilderInterface {
   measures: MeasuresBuilder
   dimensions: DimensionsBuilder
   havingFilters: HavingFiltersBuilder
-  whereFilters: WhereFiltersBuilder
+  whereFilters: WhereFilterGroupBuilder
 
   applyUpdate: (update: Uint8Array, origin?: any) => void
   encodeStateAsUpdate: (targetStateVector?: Uint8Array) => Uint8Array
