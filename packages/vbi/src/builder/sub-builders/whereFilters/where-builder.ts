@@ -11,7 +11,7 @@ export class WhereFilterGroupBuilder {
   constructor(
     private yMap: Y.Map<any>,
     private conditionsArray: Y.Array<any>,
-    private parent?: WhereFilterGroupBuilder,
+    private _parent?: WhereFilterGroupBuilder,
   ) {
     // 初始化 logic 字段
     if (!this.yMap.get('logic')) {
