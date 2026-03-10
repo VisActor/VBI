@@ -23,41 +23,43 @@ export const buildVQuery = (vbiDSL: VBIDSL, builder: VBIBuilder) => {
 
 const buildWhere: buildPipe = (queryDSL, context) => {
   const { vbiDSL } = context
-  const whereFilters = vbiDSL.whereFilters || []
+  const whereFiltersRoot = vbiDSL.whereFilters
+  const conditions = whereFiltersRoot?.conditions ?? []
 
-  if (whereFilters.length === 0) {
+  if (conditions.length === 0) {
     return queryDSL
   }
 
-  const result = { ...queryDSL }
-  result.where = {
-    op: 'and',
-    conditions: whereFilters.flatMap((filter) => {
-      if (
-        filter.operator === 'between' &&
-        filter.value &&
-        typeof filter.value === 'object' &&
-        !Array.isArray(filter.value)
-      ) {
-        const conditions = []
-        if (filter.value.min !== undefined && filter.value.min !== null && filter.value.min !== '') {
-          conditions.push({
+  // Flatten the nested filter structure for VQuery
+  const flattenConditions = (items: typeof conditions): any[] => {
+    return items.flatMap((item) => {
+      // Check if it's a group (has op and conditions)
+      if ('op' in item && 'conditions' in item) {
+        return flattenConditions(item.conditions)
+      }
+      // It's a leaf filter
+      const filter = item as { field: string; op?: string; value?: unknown }
+      if (filter.op === 'between' && filter.value && typeof filter.value === 'object' && !Array.isArray(filter.value)) {
+        const conditionsList = []
+        const value = filter.value as { min?: unknown; max?: unknown; leftOp?: string; rightOp?: string }
+        if (value.min !== undefined && value.min !== null && value.min !== '') {
+          conditionsList.push({
             field: filter.field,
-            op: filter.value.leftOp === '<' ? '>' : '>=',
-            value: filter.value.min,
+            op: value.leftOp === '<' ? '>' : '>=',
+            value: value.min,
           })
         }
-        if (filter.value.max !== undefined && filter.value.max !== null && filter.value.max !== '') {
-          conditions.push({
+        if (value.max !== undefined && value.max !== null && value.max !== '') {
+          conditionsList.push({
             field: filter.field,
-            op: filter.value.rightOp === '<' ? '<' : '<=',
-            value: filter.value.max,
+            op: value.rightOp === '<' ? '<' : '<=',
+            value: value.max,
           })
         }
-        return conditions as any
+        return conditionsList
       }
 
-      let mappedOp = filter.operator ?? '='
+      let mappedOp = filter.op ?? '='
       if (Array.isArray(filter.value)) {
         if (mappedOp === '=') mappedOp = 'in'
         if (mappedOp === '!=') mappedOp = 'not in'
@@ -69,8 +71,14 @@ const buildWhere: buildPipe = (queryDSL, context) => {
           op: mappedOp,
           value: filter.value,
         },
-      ] as any
-    }),
+      ]
+    })
+  }
+
+  const result = { ...queryDSL }
+  result.where = {
+    op: 'and',
+    conditions: flattenConditions(conditions),
   }
 
   return result as VQueryDSL

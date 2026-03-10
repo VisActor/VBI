@@ -103,10 +103,11 @@ export const VSeedRender = (props: {
       if (storeBuilder) {
         storeBuilder.doc.transact(() => {
           const filters = storeBuilder.whereFilters.toJson();
-          if (filters && filters.length > 0) {
+          if (filters && filters.conditions && filters.conditions.length > 0) {
             // Remove the last filter added since it's most likely the offending one
-            const lastFilter = filters[filters.length - 1];
-            storeBuilder.whereFilters.remove(lastFilter.field);
+            const lastFilter =
+              filters.conditions[filters.conditions.length - 1];
+            storeBuilder.whereFilters.remove(lastFilter.id);
             window.dispatchEvent(
               new CustomEvent('vbi-filter-error', { detail: lastFilter }),
             );

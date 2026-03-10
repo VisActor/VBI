@@ -75,7 +75,11 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilters": {
+          "conditions": [],
+          "id": "00000000-0000-0000-0000-000000000000",
+          "op": "AND",
+        },
       }
     `)
 
@@ -236,7 +240,11 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilters": {
+          "conditions": [],
+          "id": "00000000-0000-0000-0000-000000000000",
+          "op": "AND",
+        },
       }
     `)
 
@@ -407,7 +415,11 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilters": {
+          "conditions": [],
+          "id": "00000000-0000-0000-0000-000000000000",
+          "op": "AND",
+        },
       }
     `)
 
@@ -579,7 +591,11 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilters": {
+          "conditions": [],
+          "id": "00000000-0000-0000-0000-000000000000",
+          "op": "AND",
+        },
       }
     `)
 

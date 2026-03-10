@@ -16,7 +16,11 @@ const createVBI = () => {
         chartType: 'table',
         measures: [],
         dimensions: [],
-        whereFilters: [],
+        whereFilters: {
+          id: '00000000-0000-0000-0000-000000000000',
+          op: 'AND',
+          conditions: [],
+        },
         havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
@@ -60,7 +64,8 @@ const createVBI = () => {
         // Initialize whereFilters with new nested structure
         const ensureWhereFiltersGroup = () => {
           const root = new Y.Map<any>()
-          root.set('id', crypto.randomUUID())
+          // Use deterministic UUID for test stability
+          root.set('id', '00000000-0000-0000-0000-000000000000')
           root.set('op', 'AND')
           root.set('conditions', new Y.Array<any>())
           return root

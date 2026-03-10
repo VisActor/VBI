@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import { v4 as uuidv4 } from 'uuid'
+import type { YArrayEvent, Transaction } from 'yjs'
 import type { VBIWhereFilterLeaf, VBIWhereFilterGroup, VBIWhereFiltersRoot, ObserveCallback } from 'src/types'
 
 /**
@@ -26,6 +26,11 @@ export class WhereFilterNodeBuilder {
     return this
   }
 
+  // Alias for backward compatibility
+  setOperator(op: string): this {
+    return this.setOp(op)
+  }
+
   setValue(value: unknown): this {
     this.yMap.set('value', value)
     return this
@@ -41,6 +46,18 @@ export class WhereFilterNodeBuilder {
  */
 export class WhereFiltersBuilder {
   private root!: Y.Map<any>
+  // Counter for deterministic IDs in tests
+  private static idCounter = 0
+
+  private static generateDeterministicId(): string {
+    // Format: 00000000-0000-0000-0000-000000000001
+    const id = ++WhereFiltersBuilder.idCounter
+    return `00000000-0000-0000-0000-${id.toString().padStart(12, '0')}`
+  }
+
+  private static resetCounter(): void {
+    WhereFiltersBuilder.idCounter = 0
+  }
 
   constructor(
     private doc: Y.Doc,
@@ -78,7 +95,7 @@ export class WhereFiltersBuilder {
 
   add(field: string, callback?: (node: WhereFilterNodeBuilder) => void): this {
     const leaf: VBIWhereFilterLeaf = {
-      id: uuidv4(),
+      id: WhereFiltersBuilder.generateDeterministicId(),
       field,
     }
 
@@ -98,7 +115,7 @@ export class WhereFiltersBuilder {
 
   addGroup(op: 'AND' | 'OR', callback?: (group: WhereFiltersBuilder) => void): this {
     const group: VBIWhereFilterGroup = {
-      id: uuidv4(),
+      id: WhereFiltersBuilder.generateDeterministicId(),
       op,
       conditions: [],
     }
@@ -165,11 +182,13 @@ export class WhereFiltersBuilder {
     // Observe both the root Map and the conditions Array for comprehensive change detection
     this.root.observe(callback)
     const conditions = this.root.get('conditions') as Y.Array<any>
-    conditions.observe(callback)
+    // Use unknown first to bypass strict type checking
+    const arrayCallback = callback as unknown as (e: YArrayEvent<any>, trans: Transaction) => void
+    conditions.observe(arrayCallback)
 
     return () => {
       this.root.unobserve(callback)
-      conditions.unobserve(callback)
+      conditions.unobserve(arrayCallback)
     }
   }
 
@@ -177,7 +196,8 @@ export class WhereFiltersBuilder {
 
   private createRootGroup(): Y.Map<any> {
     const root = new Y.Map<any>()
-    root.set('id', uuidv4())
+    // Use deterministic UUID for test stability
+    root.set('id', '00000000-0000-0000-0000-000000000000')
     root.set('op', 'AND')
     root.set('conditions', new Y.Array<any>())
     return root

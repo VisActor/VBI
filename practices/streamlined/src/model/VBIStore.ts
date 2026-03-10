@@ -64,10 +64,10 @@ export const useVBIStore = create<BearState>((set, get) => ({
         });
 
         const filters = builder.whereFilters.toJson();
-        if (filters && filters.length > 0) {
-          const lastFilter = filters[filters.length - 1];
+        if (filters && filters.conditions && filters.conditions.length > 0) {
+          const lastFilter = filters.conditions[filters.conditions.length - 1];
           builder.doc.transact(() => {
-            builder.whereFilters.remove(lastFilter.field);
+            builder.whereFilters.remove(lastFilter.id);
           });
           // Avoid triggering immediately if possible, or let it trigger again and succeed
           window.dispatchEvent(

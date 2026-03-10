@@ -3,7 +3,7 @@ import { zVBIDimensionTree } from '../dimensions/dimensions'
 import { zVBIMeasureTree } from '../measures/measures'
 import { zVBIDSLTheme } from '../theme/theme'
 import { zVBIDSLLocale } from '../locale/locale'
-import { zVBIFilter } from '../whereFilters/filters'
+import { zVBIWhereFiltersRoot } from '../whereFilters/filters'
 import { zVBIHavingFilter } from '../havingFilters/having'
 
 export const zVBIDSL = z.object({
@@ -12,7 +12,11 @@ export const zVBIDSL = z.object({
   dimensions: zVBIDimensionTree,
   measures: zVBIMeasureTree,
   havingFilters: z.array(zVBIHavingFilter).optional().default([]),
-  whereFilters: z.array(zVBIFilter).optional().default([]),
+  whereFilters: zVBIWhereFiltersRoot.optional().default({
+    id: '00000000-0000-0000-0000-000000000000',
+    op: 'AND',
+    conditions: [],
+  }),
   theme: zVBIDSLTheme,
   locale: zVBIDSLLocale,
   limit: z.number().int().min(1).optional(),
