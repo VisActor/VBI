@@ -33,7 +33,11 @@
         }
       }
     ],
-    "whereFilters": [],
+    "whereFilters": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "op": "AND",
+      "conditions": []
+    },
     "limit": 20
   },
   "code": "const applyBuilder = (builder: VBIBuilder) => { builder.whereFilters.add('product_type', node => { node.setOperator('eq').setValue('办公用品'); }); }"

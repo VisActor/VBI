@@ -33,18 +33,14 @@
         }
       }
     ],
-    "whereFilters": [
-      {
-        "field": "product_type",
-        "operator": "eq",
-        "value": "办公用品"
-      },
-      {
-        "field": "province",
-        "operator": "eq",
-        "value": "浙江"
-      }
-    ],
+    "whereFilters": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "op": "AND",
+      "conditions": [
+        { "id": "00000000-0000-0000-0000-000000000002", "field": "product_type", "op": "eq", "value": "办公用品" },
+        { "id": "00000000-0000-0000-0000-000000000003", "field": "province", "op": "eq", "value": "浙江" }
+      ]
+    },
     "limit": 20
   },
   "code": "const applyBuilder = (builder: VBIBuilder) => { builder.whereFilters.clear(); }"
