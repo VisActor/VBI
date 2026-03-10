@@ -1,134 +1,215 @@
 import * as Y from 'yjs'
-import type { VBIFilter, ObserveCallback } from 'src/types'
-import { WhereFilterNodeBuilder } from './where-node-builder'
+import { v4 as uuidv4 } from 'uuid'
+import type { VBIWhereFilterLeaf, VBIWhereFilterGroup, VBIWhereFiltersRoot, ObserveCallback } from 'src/types'
 
 /**
- * @description Where 过滤构建器，用于添加、修改、删除行级过滤条件。Where 过滤在数据查询前生效，用于筛选原始数据
+ * Where 过滤节点构建器 (叶子条件)
+ */
+export class WhereFilterNodeBuilder {
+  constructor(private yMap: Y.Map<any>) {}
+
+  getId(): string {
+    return this.yMap.get('id')
+  }
+
+  getField(): string {
+    return this.yMap.get('field')
+  }
+
+  setField(field: string): this {
+    this.yMap.set('field', field)
+    return this
+  }
+
+  setOp(op: string): this {
+    this.yMap.set('op', op)
+    return this
+  }
+
+  setValue(value: unknown): this {
+    this.yMap.set('value', value)
+    return this
+  }
+
+  toJson(): VBIWhereFilterLeaf {
+    return this.yMap.toJSON() as VBIWhereFilterLeaf
+  }
+}
+
+/**
+ * Where 过滤构建器 (组 + 根入口)
  */
 export class WhereFiltersBuilder {
-  private dsl: Y.Map<any>
-  private doc: Y.Doc
+  private root: Y.Map<any>
 
-  constructor(doc: Y.Doc, dsl: Y.Map<any>) {
-    this.doc = doc
-    this.dsl = dsl
-
+  constructor(
+    private doc: Y.Doc,
+    private dsl: Y.Map<any>,
+  ) {
+    // 初始化根组
     if (!this.dsl.get('whereFilters')) {
       this.doc.transact(() => {
-        this.dsl.set('whereFilters', new Y.Array<any>())
+        this.root = this.createRootGroup()
+        this.dsl.set('whereFilters', this.root)
       })
+    } else {
+      this.root = this.dsl.get('whereFilters') as Y.Map<any>
     }
   }
 
-  /**
-   * @description 添加一个 Where 过滤条件
-   * @param field - 字段名
-   * @param callback - 回调函数
-   */
-  add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder {
-    const filter: VBIFilter = {
+  // ==================== 根组操作 ====================
+
+  getId(): string {
+    return this.root.get('id')
+  }
+
+  setOp(op: 'AND' | 'OR'): this {
+    this.root.set('op', op)
+    return this
+  }
+
+  // ==================== 条件操作 ====================
+
+  add(field: string, callback?: (node: WhereFilterNodeBuilder) => void): this {
+    const leaf: VBIWhereFilterLeaf = {
+      id: uuidv4(),
       field,
     }
 
     const yMap = new Y.Map<any>()
-    for (const [key, value] of Object.entries(filter)) {
+    for (const [key, value] of Object.entries(leaf)) {
       yMap.set(key, value)
     }
-    this.dsl.get('whereFilters').push([yMap])
 
-    const node = new WhereFilterNodeBuilder(yMap)
+    this.root.get('conditions').push([yMap])
 
-    callback(node)
-    return this
-  }
-
-  /**
-   * @description 更新指定字段的过滤条件
-   * @param field - 字段名
-   * @param callback - 回调函数
-   */
-  update(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder {
-    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
-    const index = whereFilters.toArray().findIndex((item: any) => item.get('field') === field)
-
-    if (index === -1) {
-      throw new Error(`Where filter with field ${field} not found`)
+    if (callback) {
+      callback(new WhereFilterNodeBuilder(yMap))
     }
 
-    const filterYMap = whereFilters.get(index)
-    const node = new WhereFilterNodeBuilder(filterYMap)
-    callback(node)
     return this
   }
 
-  /**
-   * @description 删除指定字段的过滤条件
-   * @param field - 字段名
-   */
-  remove(field: string): WhereFiltersBuilder {
-    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
-    const index = whereFilters.toArray().findIndex((item: any) => item.get('field') === field)
-
-    if (index === -1) {
-      return this
+  addGroup(op: 'AND' | 'OR', callback?: (group: WhereFiltersBuilder) => void): this {
+    const group: VBIWhereFilterGroup = {
+      id: uuidv4(),
+      op,
+      conditions: [],
     }
 
-    whereFilters.delete(index, 1)
-    return this
-  }
+    const yMap = new Y.Map<any>()
+    yMap.set('id', group.id)
+    yMap.set('op', group.op)
+    yMap.set('conditions', new Y.Array<any>())
 
-  /**
-   * @description 根据字段名查找过滤条件
-   * @param field - 字段名
-   */
-  find(field: string): WhereFilterNodeBuilder | undefined {
-    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
-    const index = whereFilters.toArray().findIndex((item: any) => item.get('field') === field)
+    this.root.get('conditions').push([yMap])
 
-    if (index === -1) {
-      return undefined
+    if (callback) {
+      callback(new WhereFiltersBuilder(this.doc, yMap))
     }
 
-    return new WhereFilterNodeBuilder(whereFilters.get(index))
-  }
-
-  /**
-   * @description 获取所有 Where 过滤条件
-   */
-  findAll(): WhereFilterNodeBuilder[] {
-    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
-    return whereFilters.toArray().map((yMap: any) => new WhereFilterNodeBuilder(yMap))
-  }
-
-  /**
-   * @description 清空所有 Where 过滤条件
-   */
-  clear() {
-    const whereFilters = this.dsl.get('whereFilters')
-    whereFilters.delete(0, whereFilters.length)
     return this
   }
 
-  /**
-   * @description 导出所有 Where 过滤条件为 JSON 数组
-   */
-  toJson(): VBIFilter[] {
-    return this.dsl.get('whereFilters').toJSON() as VBIFilter[]
+  // ==================== CRUD ====================
+
+  update(id: string, callback: (node: WhereFilterNodeBuilder | WhereFiltersBuilder) => void): this {
+    const result = this.find(id)
+    if (!result) {
+      throw new Error(`Where filter with id ${id} not found`)
+    }
+    callback(result)
+    return this
   }
 
-  /**
-   * @description 监听过滤条件变化
-   * @param callback - 回调函数
-   */
-  /**
-   * @description 监听过滤条件变化，返回取消监听的函数
-   * @param callback - 回调函数
-   * @returns 取消监听的函数
-   */
+  remove(id: string): this {
+    this.removeFromArray(this.root.get('conditions'), id)
+    return this
+  }
+
+  find(id: string): WhereFilterNodeBuilder | WhereFiltersBuilder | undefined {
+    return this.searchById(this.root, id)
+  }
+
+  findAll(): (WhereFilterNodeBuilder | WhereFiltersBuilder)[] {
+    const results: (WhereFilterNodeBuilder | WhereFiltersBuilder)[] = []
+    const conditions = this.root.get('conditions') as Y.Array<any>
+
+    for (let i = 0; i < conditions.length; i++) {
+      const item = conditions.get(i)
+      results.push(this.createBuilder(item))
+    }
+
+    return results
+  }
+
+  // ==================== 工具方法 ====================
+
+  clear(): this {
+    const conditions = this.root.get('conditions')
+    conditions.delete(0, conditions.length)
+    return this
+  }
+
+  toJson(): VBIWhereFiltersRoot {
+    return this.root.toJSON() as VBIWhereFiltersRoot
+  }
+
   observe(callback: ObserveCallback): () => void {
-    this.dsl.get('whereFilters').observe(callback)
+    this.root.observe(callback)
     return () => {
-      this.dsl.get('whereFilters').unobserve(callback)
+      this.root.unobserve(callback)
     }
+  }
+
+  // ==================== 私有方法 ====================
+
+  private createRootGroup(): Y.Map<any> {
+    const root = new Y.Map<any>()
+    root.set('id', uuidv4())
+    root.set('op', 'AND')
+    root.set('conditions', new Y.Array<any>())
+    return root
+  }
+
+  private createBuilder(yMap: Y.Map<any>): WhereFilterNodeBuilder | WhereFiltersBuilder {
+    // 判断是叶子还是组
+    if (yMap.has('field')) {
+      return new WhereFilterNodeBuilder(yMap)
+    }
+    return new WhereFiltersBuilder(this.doc, yMap)
+  }
+
+  private removeFromArray(array: Y.Array<any>, id: string): boolean {
+    const index = array.toArray().findIndex((item: any) => item.get('id') === id)
+    if (index !== -1) {
+      array.delete(index, 1)
+      return true
+    }
+    return false
+  }
+
+  private searchById(group: Y.Map<any>, id: string): WhereFilterNodeBuilder | WhereFiltersBuilder | undefined {
+    const conditions = group.get('conditions') as Y.Array<any>
+
+    for (let i = 0; i < conditions.length; i++) {
+      const item = conditions.get(i)
+      if (item.get('id') === id) {
+        return this.createBuilder(item)
+      }
+    }
+
+    // 递归搜索嵌套组
+    for (let i = 0; i < conditions.length; i++) {
+      const item = conditions.get(i)
+      if (item.has('conditions')) {
+        const result = this.searchById(item, id)
+        if (result) {
+          return result
+        }
+      }
+    }
+
+    return undefined
   }
 }
