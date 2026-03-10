@@ -1,20 +1,7 @@
-import { DatasetColumn, DatasetSource, DatasetSourceType, DataType, QueryDSL, VQueryDSL } from 'src/types'
+import { DatasetColumn, DatasetSource, QueryDSL, VQueryDSL } from 'src/types'
 import { QueryAdapter, StorageAdapter } from 'src/types'
 import { convertDSLToSQL } from 'src/sql-builder'
-
-const READ_FUNCTION_MAP: Record<DatasetSourceType, string> = {
-  csv: 'read_csv_auto',
-  json: 'read_json_auto',
-  parquet: 'read_parquet',
-}
-
-const DATA_TYPE_MAP: Record<DataType, string> = {
-  number: 'DOUBLE',
-  string: 'VARCHAR',
-  date: 'DATE',
-  datetime: 'TIMESTAMP',
-  timestamp: 'TIMESTAMP',
-}
+import { READ_FUNCTION_MAP, DATA_TYPE_MAP } from './constants'
 
 export class Dataset {
   private queryAdapter: QueryAdapter
