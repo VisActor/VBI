@@ -18,7 +18,11 @@ describe('VBI YJS Integration', () => {
 
     expect(b2.build()).toEqual({
       dimensions: [],
-      whereFilters: [],
+      whereFilters: {
+        id: expect.any(String),
+        op: 'AND',
+        conditions: [],
+      },
       havingFilters: [],
       measures: [
         {
@@ -53,7 +57,11 @@ test('encodeStateAsUpdate', () => {
 
   expect(b2.build()).toEqual({
     dimensions: [],
-    whereFilters: [],
+    whereFilters: {
+      id: expect.any(String),
+      op: 'AND',
+      conditions: [],
+    },
     havingFilters: [],
     measures: [
       {

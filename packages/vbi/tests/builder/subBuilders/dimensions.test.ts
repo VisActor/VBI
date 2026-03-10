@@ -17,7 +17,11 @@ describe('DimensionsBuilder', () => {
           field: 'category',
         },
       ],
-      whereFilters: [],
+      whereFilters: {
+        id: expect.any(String),
+        op: 'AND',
+        conditions: [],
+      },
       havingFilters: [],
       measures: [],
     })
@@ -45,7 +49,11 @@ describe('DimensionsBuilder', () => {
           field: 'city',
         },
       ],
-      whereFilters: [],
+      whereFilters: {
+        id: expect.any(String),
+        op: 'AND',
+        conditions: [],
+      },
       havingFilters: [],
       measures: [],
     })

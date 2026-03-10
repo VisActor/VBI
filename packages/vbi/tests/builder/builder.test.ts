@@ -19,7 +19,11 @@ describe('VBI', () => {
           field: 'area',
         },
       ],
-      whereFilters: [],
+      whereFilters: {
+        id: expect.any(String),
+        op: 'AND',
+        conditions: [],
+      },
       havingFilters: [],
       measures: [
         {

@@ -56,7 +56,18 @@ const createVBI = () => {
           })
           return yArr
         }
-        dsl.set('whereFilters', ensureYArray(vbi.whereFilters))
+
+        // Initialize whereFilters with new nested structure
+        const ensureWhereFiltersGroup = () => {
+          const root = new Y.Map<any>()
+          root.set('id', crypto.randomUUID())
+          root.set('op', 'AND')
+          root.set('conditions', new Y.Array<any>())
+          return root
+        }
+        dsl.set('whereFilters', ensureWhereFiltersGroup())
+
+        // Initialize other arrays
         dsl.set('havingFilters', ensureYArray(vbi.havingFilters))
         dsl.set('measures', ensureYArray(vbi.measures))
         dsl.set('dimensions', ensureYArray(vbi.dimensions))

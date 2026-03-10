@@ -46,14 +46,20 @@ export class WhereFiltersBuilder {
     private doc: Y.Doc,
     private dsl: Y.Map<any>,
   ) {
-    // 初始化根组
-    if (!this.dsl.get('whereFilters')) {
-      this.doc.transact(() => {
-        this.root = this.createRootGroup()
-        this.dsl.set('whereFilters', this.root)
-      })
+    // 检查是否是嵌套组 (有 conditions 字段) 还是根 DSL (需要初始化 whereFilters)
+    if (this.dsl.has('conditions')) {
+      // 嵌套组：直接使用传入的 yMap 作为 root
+      this.root = this.dsl
     } else {
-      this.root = this.dsl.get('whereFilters') as Y.Map<any>
+      // 根组：需要初始化 whereFilters 结构
+      if (!this.dsl.get('whereFilters')) {
+        this.doc.transact(() => {
+          this.root = this.createRootGroup()
+          this.dsl.set('whereFilters', this.root)
+        })
+      } else {
+        this.root = this.dsl.get('whereFilters') as Y.Map<any>
+      }
     }
   }
 
@@ -156,9 +162,14 @@ export class WhereFiltersBuilder {
   }
 
   observe(callback: ObserveCallback): () => void {
+    // Observe both the root Map and the conditions Array for comprehensive change detection
     this.root.observe(callback)
+    const conditions = this.root.get('conditions') as Y.Array<any>
+    conditions.observe(callback)
+
     return () => {
       this.root.unobserve(callback)
+      conditions.unobserve(callback)
     }
   }
 
