@@ -19,7 +19,7 @@ export interface VBIBuilderInterface {
   measures: MeasuresBuilder
   dimensions: DimensionsBuilder
   havingFilters: HavingFiltersBuilder
-  whereFilters: WhereFilterGroupBuilder
+  where: WhereFilterGroupBuilder
 
   applyUpdate: (update: Uint8Array, origin?: any) => void
   encodeStateAsUpdate: (targetStateVector?: Uint8Array) => Uint8Array

@@ -92,9 +92,9 @@ export const APP = (props: APPProps) => {
   const handleFilterChange = (newFilters: FilterItem[]) => {
     setFilters(newFilters);
     builder.doc.transact(() => {
-      builder.whereFilters.clear();
+      builder.where.clear();
       newFilters.forEach((f) => {
-        builder.whereFilters.add(f.field, (node) => {
+        builder.where.add(f.field, (node) => {
           node.setOperator(f.operator);
           node.setValue(f.value);
         });

@@ -21,7 +21,7 @@ export class VBIBuilder implements VBIBuilderInterface {
   public measures: MeasuresBuilder
   public dimensions: DimensionsBuilder
   public havingFilters: HavingFiltersBuilder
-  public whereFilters: WhereFilterGroupBuilder
+  public where: WhereFilterGroupBuilder
 
   constructor(doc: Y.Doc) {
     this.doc = doc
@@ -32,7 +32,7 @@ export class VBIBuilder implements VBIBuilderInterface {
     this.measures = new MeasuresBuilder(doc, this.dsl)
     this.dimensions = new DimensionsBuilder(doc, this.dsl)
     this.havingFilters = new HavingFiltersBuilder(doc, this.dsl)
-    this.whereFilters = createWhereFilterBuilder(doc, this.dsl)
+    this.where = createWhereFilterBuilder(doc, this.dsl)
   }
 
   public applyUpdate(update: Uint8Array) {
