@@ -2,6 +2,7 @@ import type { Select, VQueryDSL } from '@visactor/vquery'
 import { VBIDSL } from '../../types'
 import { DimensionsBuilder, MeasuresBuilder, VBIBuilder } from 'src'
 import { pipe } from 'remeda'
+import type { WhereFilterConditionOrGroup } from 'src/types/dsl/whereFilters/filters'
 
 type buildPipe = (queryDSL: VQueryDSL, context: { vbiDSL: VBIDSL; builder: VBIBuilder }) => VQueryDSL
 
@@ -21,56 +22,79 @@ export const buildVQuery = (vbiDSL: VBIDSL, builder: VBIBuilder) => {
   )
 }
 
+/**
+ * 将 WhereFilterCondition 转换为查询条件
+ */
+const mapCondition = (filter: { field: string; operator?: string; value?: any }): any => {
+  if (
+    filter.operator === 'between' &&
+    filter.value &&
+    typeof filter.value === 'object' &&
+    !Array.isArray(filter.value)
+  ) {
+    const conditions = []
+    if (filter.value.min !== undefined && filter.value.min !== null && filter.value.min !== '') {
+      conditions.push({
+        field: filter.field,
+        op: filter.value.leftOp === '<' ? '>' : '>=',
+        value: filter.value.min,
+      })
+    }
+    if (filter.value.max !== undefined && filter.value.max !== null && filter.value.max !== '') {
+      conditions.push({
+        field: filter.field,
+        op: filter.value.rightOp === '<' ? '<' : '<=',
+        value: filter.value.max,
+      })
+    }
+    return conditions
+  }
+
+  let mappedOp = filter.operator ?? '='
+  if (Array.isArray(filter.value)) {
+    if (mappedOp === '=') mappedOp = 'in'
+    if (mappedOp === '!=') mappedOp = 'not in'
+  }
+
+  return [
+    {
+      field: filter.field,
+      op: mappedOp,
+      value: filter.value,
+    },
+  ]
+}
+
+/**
+ * 递归转换 WhereFilterConditionOrGroup 为查询条件
+ */
+const transformFilter = (filter: WhereFilterConditionOrGroup): any[] => {
+  // 判断是条件还是条件组
+  if ('logic' in filter && 'conditions' in filter) {
+    // 条件组，递归处理
+    const conditions = filter.conditions.flatMap(transformFilter)
+    return conditions
+  } else {
+    // 条件，转换为查询条件
+    return mapCondition(filter as { field: string; operator?: string; value?: any })
+  }
+}
+
 const buildWhere: buildPipe = (queryDSL, context) => {
   const { vbiDSL } = context
-  const whereFilters = vbiDSL.whereFilters || []
+  const whereFilters = vbiDSL.whereFilters
 
-  if (whereFilters.length === 0) {
+  // 检查是否有条件
+  if (!whereFilters || !whereFilters.conditions || whereFilters.conditions.length === 0) {
     return queryDSL
   }
 
   const result = { ...queryDSL }
+  const conditions = transformFilter(whereFilters)
+
   result.where = {
-    op: 'and',
-    conditions: whereFilters.flatMap((filter) => {
-      if (
-        filter.operator === 'between' &&
-        filter.value &&
-        typeof filter.value === 'object' &&
-        !Array.isArray(filter.value)
-      ) {
-        const conditions = []
-        if (filter.value.min !== undefined && filter.value.min !== null && filter.value.min !== '') {
-          conditions.push({
-            field: filter.field,
-            op: filter.value.leftOp === '<' ? '>' : '>=',
-            value: filter.value.min,
-          })
-        }
-        if (filter.value.max !== undefined && filter.value.max !== null && filter.value.max !== '') {
-          conditions.push({
-            field: filter.field,
-            op: filter.value.rightOp === '<' ? '<' : '<=',
-            value: filter.value.max,
-          })
-        }
-        return conditions as any
-      }
-
-      let mappedOp = filter.operator ?? '='
-      if (Array.isArray(filter.value)) {
-        if (mappedOp === '=') mappedOp = 'in'
-        if (mappedOp === '!=') mappedOp = 'not in'
-      }
-
-      return [
-        {
-          field: filter.field,
-          op: mappedOp,
-          value: filter.value,
-        },
-      ] as any
-    }),
+    op: whereFilters.logic,
+    conditions: conditions,
   }
 
   return result as VQueryDSL

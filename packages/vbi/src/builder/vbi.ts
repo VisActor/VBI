@@ -16,7 +16,10 @@ const createVBI = () => {
         chartType: 'table',
         measures: [],
         dimensions: [],
-        whereFilters: [],
+        whereFilters: {
+          logic: 'and',
+          conditions: [],
+        },
         havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
