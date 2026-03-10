@@ -40,7 +40,7 @@ export class WhereFilterNodeBuilder {
  * Where 过滤构建器 (组 + 根入口)
  */
 export class WhereFiltersBuilder {
-  private root: Y.Map<any>
+  private root!: Y.Map<any>
 
   constructor(
     private doc: Y.Doc,
