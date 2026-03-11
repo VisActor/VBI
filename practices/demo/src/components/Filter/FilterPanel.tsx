@@ -3,7 +3,6 @@ import {
   Select,
   Input,
   Button,
-  Space,
   Card,
   Modal,
   Form,
@@ -30,16 +29,25 @@ export interface FilterItem {
   value: any;
 }
 
+export interface FilterGroup {
+  id: string;
+  type: 'and' | 'or';
+  items: FilterItem[];
+}
+
 export interface FilterField {
   name: string;
   role: 'dimension' | 'measure';
 }
 
+type FilterType = 'where' | 'having';
+
 interface FilterPanelProps {
+  title?: string; // 面板标题
   fields: FilterField[]; // 可供筛选的字段列表
   activeFields?: string[]; // 正在使用的字段
   filters: FilterItem[];
-  onChange: (filters: FilterItem[]) => void;
+  onChange: (filters: FilterItem[], type?: FilterType) => void;
 }
 
 const DIMENSION_OPERATORS = [
@@ -58,6 +66,7 @@ const MEASURE_OPERATORS = [
 ];
 
 export const FilterPanel: React.FC<FilterPanelProps> = ({
+  title,
   fields,
   activeFields = [],
   filters = [],
@@ -229,36 +238,53 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     <Card
       size="small"
       title={
-        <Space>
-          <FilterOutlined />
-          数据筛选器
-        </Space>
+        <span style={{ fontWeight: 600, fontSize: 14 }}>
+          <FilterOutlined style={{ marginRight: 8, color: '#fa8c16' }} />
+          {title || '数据筛选器'}
+        </span>
       }
       extra={
         <Button
-          type="text"
+          type="primary"
           size="small"
           icon={<PlusOutlined />}
           onClick={handleAddClick}
-        />
+          style={{
+            background: 'linear-gradient(135deg, #fa8c16 0%, #fa541c 100%)',
+            border: 'none',
+            borderRadius: 6,
+          }}
+        >
+          添加筛选
+        </Button>
       }
-      style={{ marginBottom: 0 }}
+      style={{ marginBottom: 0, borderRadius: 8 }}
       styles={{
         body: {
-          padding: '12px',
+          padding: 12,
+        },
+        header: {
+          padding: '12px 16px',
         },
       }}
     >
       {filters.length === 0 ? (
         <div
           style={{
-            color: '#999',
-            fontSize: 12,
+            color: '#bfbfbf',
+            fontSize: 13,
             textAlign: 'center',
-            padding: '10px 0',
+            padding: '24px 12px',
+            background: 'rgba(0,0,0,0.02)',
+            borderRadius: 8,
+            border: '1px dashed #d9d9d9',
           }}
         >
-          暂无筛选条件
+          <FilterOutlined
+            style={{ fontSize: 24, marginBottom: 8, opacity: 0.5 }}
+          />
+          <div>暂无筛选条件</div>
+          <div style={{ fontSize: 12, marginTop: 4 }}>点击上方按钮添加筛选</div>
         </div>
       ) : (
         <List
@@ -267,7 +293,13 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           renderItem={(item, index) => {
             return (
               <List.Item
-                style={{ padding: '8px 0' }}
+                style={{
+                  padding: '10px 12px',
+                  background: 'rgba(0,0,0,0.02)',
+                  borderRadius: 8,
+                  marginBottom: 8,
+                  border: '1px solid #f0f0f0',
+                }}
                 actions={[
                   <Tooltip title="编辑" key="edit">
                     <Button

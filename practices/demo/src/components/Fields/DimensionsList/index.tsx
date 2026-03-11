@@ -1,12 +1,21 @@
-import { List, Card } from 'antd';
-import { memo, useEffect, useState } from 'react';
-import { CalendarOutlined, FontSizeOutlined } from '@ant-design/icons';
+import { List, Card, Badge, Input } from 'antd';
+import { memo, useEffect, useState, useMemo } from 'react';
+import {
+  CalendarOutlined,
+  FontSizeOutlined,
+  TagOutlined,
+  SearchOutlined,
+} from '@ant-design/icons';
 import { useVBIStore } from 'src/model';
+
+const DIMENSION_COLORS = {
+  date: '#1890ff',
+  string: '#722ed1',
+};
 
 export const DimensionsList = memo(
   ({ style }: { style?: React.CSSProperties }) => {
     const builder = useVBIStore((state) => state.builder);
-    console.log('debug DimensionsList rerender');
 
     const [schema, setSchema] = useState<
       {
@@ -14,6 +23,7 @@ export const DimensionsList = memo(
         type: string;
       }[]
     >([]);
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
       const run = async () => {
@@ -22,6 +32,17 @@ export const DimensionsList = memo(
       };
       run();
     }, [builder]);
+
+    const handleDragStart = (
+      e: React.DragEvent,
+      item: { name: string; type: string },
+    ) => {
+      e.dataTransfer.setData(
+        'application/json',
+        JSON.stringify({ name: item.name, type: item.type, role: 'dimension' }),
+      );
+      e.dataTransfer.effectAllowed = 'copy';
+    };
 
     const addDimension = (dimensionName: string) => () => {
       builder.doc.transact(() => {
@@ -33,70 +54,111 @@ export const DimensionsList = memo(
 
     const dimensions = schema.filter((d) => d.type !== 'number');
 
+    const filteredDimensions = useMemo(() => {
+      if (!searchText.trim()) return dimensions;
+      const searchLower = searchText.toLowerCase();
+      return dimensions.filter((d) =>
+        d.name.toLowerCase().includes(searchLower),
+      );
+    }, [dimensions, searchText]);
+
     const getIcon = (type: string) => {
       if (type === 'date') {
-        return <CalendarOutlined style={{ color: '#1890ff' }} />;
+        return <CalendarOutlined />;
       }
-      return <FontSizeOutlined style={{ color: '#1890ff' }} />;
+      return <TagOutlined />;
+    };
+
+    const getColor = (type: string) => {
+      return (
+        DIMENSION_COLORS[type as keyof typeof DIMENSION_COLORS] ||
+        DIMENSION_COLORS.string
+      );
     };
 
     return (
       <Card
-        title="Dimensions"
-        style={{ ...style }}
+        title={
+          <span style={{ fontWeight: 600, fontSize: 11, color: '#666' }}>
+            <FontSizeOutlined style={{ marginRight: 4 }} />
+            维度
+          </span>
+        }
+        style={{ ...style, borderRadius: 6 }}
         styles={{
           body: {
-            padding: '0 0 10px 0',
+            padding: '0 4px 4px 4px',
             flex: 1,
             overflowY: 'auto',
             minHeight: 0,
-            height: 'calc(100% - 48px)',
+            height: 'calc(100% - 36px)',
           },
           header: {
-            minHeight: '48px',
+            minHeight: 36,
+            padding: '0 8px',
           },
         }}
+        size="small"
       >
+        <div style={{ padding: '4px 4px 8px 4px' }}>
+          <Input
+            prefix={
+              <SearchOutlined style={{ fontSize: 10, color: '#bfbfbf' }} />
+            }
+            placeholder="搜索维度"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            allowClear
+            style={{ fontSize: 11 }}
+            size="small"
+          />
+        </div>
         <List
           size="small"
-          dataSource={dimensions}
+          dataSource={filteredDimensions}
           split={false}
           renderItem={(item) => (
-            <List.Item style={{ padding: 0, marginBottom: 2 }}>
+            <List.Item style={{ padding: 0, marginBottom: 1 }}>
               <div
+                draggable
+                onDragStart={(e) => handleDragStart(e, item)}
                 onClick={addDimension(item.name)}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   width: '100%',
-                  padding: '4px 12px',
+                  padding: '3px 6px',
                   cursor: 'pointer',
-                  borderRadius: '4px',
-                  transition: 'background-color 0.2s',
+                  borderRadius: 3,
+                  transition: 'background 0.15s ease',
+                  background: 'transparent',
                 }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor =
-                    'rgba(0, 0, 0, 0.04)')
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = 'transparent')
-                }
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(24,144,255,0.08)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                }}
               >
+                <Badge color={getColor(item.type)} style={{ marginRight: 6 }} />
                 <span
                   style={{
-                    marginRight: 8,
                     display: 'flex',
                     alignItems: 'center',
+                    color: getColor(item.type),
+                    fontSize: 11,
                   }}
                 >
                   {getIcon(item.type)}
                 </span>
                 <span
                   style={{
+                    marginLeft: 6,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
-                    fontSize: '13px',
+                    fontSize: 11,
+                    color: 'rgba(0,0,0,0.8)',
                   }}
                 >
                   {item.name}

@@ -1,18 +1,19 @@
-import { Flex, Spin, Card } from 'antd';
+import { Flex, Spin, Card, Button, Tooltip } from 'antd';
+import { UndoOutlined, RedoOutlined } from '@ant-design/icons';
 import { VSeedRender } from 'src/components/Render';
 import { MeasuresList } from 'src/components/Fields/MeasuresList';
 import { DimensionsList } from 'src/components/Fields/DimensionsList';
 import { VBIBuilder } from '@visactor/vbi';
 import { ChartTypeSelector } from 'src/components/ChartType';
-import {
-  FilterPanel,
-  type FilterItem,
-} from 'src/components/Filter/FilterPanel';
 
-import { MeasureShelf } from 'src/components/Shelfs/MeasureShelf';
-import { DimensionShelf } from 'src/components/Shelfs/DimensionShelf';
+import {
+  MeasureShelf,
+  DimensionShelf,
+  WhereShelf,
+  HavingShelf,
+} from 'src/components/Shelfs';
 import { useVBIStore } from 'src/model';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 interface APPProps {
@@ -20,87 +21,44 @@ interface APPProps {
 }
 
 export const APP = (props: APPProps) => {
-  const { initialize, initialized, builder, dsl } = useVBIStore(
+  const { initialize, initialized, builder } = useVBIStore(
     useShallow((state) => ({
       initialize: state.initialize,
       initialized: state.initialized,
       builder: state.builder,
-      dsl: state.dsl,
     })),
   );
 
-  const activeFields = useMemo(() => {
-    if (!dsl) return [];
-    const fields = new Set<string>();
+  const [canUndo, setCanUndo] = useState(false);
+  const [canRedo, setCanRedo] = useState(false);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const extractFields = (items: any[]) => {
-      items?.forEach((item) => {
-        if (item && typeof item === 'object') {
-          if ('field' in item && typeof item.field === 'string') {
-            fields.add(item.field);
-          }
-          if ('children' in item && Array.isArray(item.children)) {
-            extractFields(item.children);
-          }
-        }
-      });
-    };
-
-    extractFields(dsl.dimensions || []);
-    extractFields(dsl.measures || []);
-    return Array.from(fields);
-  }, [dsl]);
-
-  const [allFields, setAllFields] = useState<
-    { name: string; role: 'dimension' | 'measure' }[]
-  >([]);
-  const [filters, setFilters] = useState<FilterItem[]>([]);
+  // 更新撤销/重做按钮状态
+  const updateUndoRedoState = useCallback(() => {
+    if (builder?.undoManager) {
+      setCanUndo(builder.undoManager.canUndo());
+      setCanRedo(builder.undoManager.canRedo());
+    }
+  }, [builder]);
 
   useEffect(() => {
-    const handleFilterError = () => {
-      setFilters((prev) => prev.slice(0, -1));
-    };
-    window.addEventListener('vbi-filter-error', handleFilterError);
-    return () =>
-      window.removeEventListener('vbi-filter-error', handleFilterError);
-  }, []);
+    updateUndoRedoState();
+    if (builder?.doc) {
+      const handleUpdate = () => updateUndoRedoState();
+      builder.doc.on('update', handleUpdate);
+      return () => builder.doc.off('update', handleUpdate);
+    }
+  }, [builder, updateUndoRedoState]);
+
+  const handleUndo = () => builder?.undoManager?.undo();
+  const handleRedo = () => builder?.undoManager?.redo();
 
   useEffect(() => {
     return initialize(props.builder);
   }, []);
 
-  useEffect(() => {
-    if (initialized && builder) {
-      const fetchSchema = async () => {
-        const schema = await builder.getSchema();
-        setAllFields(
-          schema.map((s: { name: string; type: string }) => ({
-            name: s.name,
-            role: s.type === 'number' ? 'measure' : 'dimension',
-          })),
-        );
-      };
-      fetchSchema();
-    }
-  }, [initialized, builder]);
-
   if (!initialized) {
     return <Spin tip="Initializing..." fullscreen />;
   }
-
-  const handleFilterChange = (newFilters: FilterItem[]) => {
-    setFilters(newFilters);
-    builder.doc.transact(() => {
-      builder.whereFilters.clear();
-      newFilters.forEach((f) => {
-        builder.whereFilters.add(f.field, (node) => {
-          node.setOperator(f.operator);
-          node.setValue(f.value);
-        });
-      });
-    });
-  };
 
   return (
     <Flex
@@ -112,39 +70,118 @@ export const APP = (props: APPProps) => {
       }}
       style={{
         height: '100%',
-        gap: '20px',
+        gap: 12,
+        padding: 12,
+        background: '#f5f5f5',
       }}
     >
-      <Flex vertical={true} gap={20} style={{ flexBasis: 300 }}>
-        <FilterPanel
-          fields={allFields}
-          activeFields={activeFields}
-          filters={filters}
-          onChange={handleFilterChange}
-        />
+      {/* 左侧：字段列表 */}
+      <Flex vertical={true} gap={12} style={{ flexBasis: 220 }}>
         <ChartTypeSelector style={{ flexBasis: 32, minHeight: 0 }} />
         <DimensionsList style={{ flex: 1, minHeight: 0 }} />
         <MeasuresList style={{ flex: 1, minHeight: 0 }} />
       </Flex>
-      <Flex vertical={true} gap={20} style={{ flexGrow: 1 }}>
+
+      {/* 右侧：Shelfs + 图表 */}
+      <Flex vertical={true} gap={12} style={{ flexGrow: 1 }}>
+        {/* 工具栏：图表类型 + Undo/Redo */}
+        <Flex vertical={false} justify="space-between" align="center">
+          <div style={{ fontWeight: 600, color: '#333', fontSize: 13 }}>
+            图表配置
+          </div>
+          <Flex gap={8}>
+            <Tooltip title="撤销 (Ctrl+Z)">
+              <Button
+                type="text"
+                icon={<UndoOutlined />}
+                onClick={handleUndo}
+                disabled={!canUndo}
+                style={{
+                  color: canUndo ? '#666' : '#ccc',
+                }}
+              />
+            </Tooltip>
+            <Tooltip title="重做 (Ctrl+Y)">
+              <Button
+                type="text"
+                icon={<RedoOutlined />}
+                onClick={handleRedo}
+                disabled={!canRedo}
+                style={{
+                  color: canRedo ? '#666' : '#ccc',
+                }}
+              />
+            </Tooltip>
+          </Flex>
+        </Flex>
+
+        {/* Shelfs 区域 */}
         <Card
+          style={{ borderRadius: 8 }}
           styles={{
             body: {
-              padding: '12px',
+              padding: 12,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 8,
             },
           }}
         >
-          <Flex vertical={true} gap={8}>
-            <Flex align="center">
-              <div style={{ width: 100, fontWeight: 500 }}>Dimensions</div>
-              <DimensionShelf style={{ flex: 1, minHeight: 0 }} />
-            </Flex>
-            <Flex align="center">
-              <div style={{ width: 100, fontWeight: 500 }}>Measures</div>
-              <MeasureShelf style={{ flex: 1, minHeight: 0 }} />
-            </Flex>
+          <Flex align="center">
+            <div
+              style={{
+                width: 70,
+                fontWeight: 600,
+                fontSize: 12,
+                color: '#1890ff',
+              }}
+            >
+              维度
+            </div>
+            <DimensionShelf style={{ flex: 1, minHeight: 0 }} />
+          </Flex>
+          <Flex align="center">
+            <div
+              style={{
+                width: 70,
+                fontWeight: 600,
+                fontSize: 12,
+                color: '#52c41a',
+              }}
+            >
+              度量
+            </div>
+            <MeasureShelf style={{ flex: 1, minHeight: 0 }} />
+          </Flex>
+          <Flex align="center">
+            <div
+              style={{
+                width: 70,
+                fontWeight: 600,
+                fontSize: 12,
+                color: '#fa8c16',
+              }}
+            >
+              明细筛选
+            </div>
+            <WhereShelf style={{ flex: 1, minHeight: 0 }} />
+          </Flex>
+          <Flex align="center">
+            <div
+              style={{
+                width: 70,
+                fontWeight: 600,
+                fontSize: 12,
+                color: '#722ed1',
+              }}
+            >
+              结果筛选
+            </div>
+            <HavingShelf style={{ flex: 1, minHeight: 0 }} />
           </Flex>
         </Card>
+
+        {/* 图表区域 */}
         <ChartWrapper />
       </Flex>
     </Flex>
@@ -157,12 +194,13 @@ const ChartWrapper = () => {
   return (
     <Card
       loading={loading}
+      style={{ borderRadius: 8, flex: 1 }}
       styles={{
         root: {
           height: '100%',
         },
         body: {
-          padding: '12px',
+          padding: 12,
           height: '100%',
         },
       }}

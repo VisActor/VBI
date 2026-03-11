@@ -1,4 +1,5 @@
-import { Select } from 'antd';
+import { Select, Flex } from 'antd';
+import { BarChartOutlined } from '@ant-design/icons';
 import { useVBIStore } from 'src/model';
 
 export const ChartTypeSelector = (props: { style?: React.CSSProperties }) => {
@@ -10,35 +11,36 @@ export const ChartTypeSelector = (props: { style?: React.CSSProperties }) => {
     builder.chartType.changeChartType(chartType);
   };
 
-  // const [chartType, setChartType] = useState(builder.chartType.getChartType());
+  const chartTypeOptions = [
+    { value: 'bar', label: '柱状图 (Bar)', icon: '📊' },
+    { value: 'column', label: '条形图 (Column)', icon: '📈' },
+    { value: 'line', label: '折线图 (Line)', icon: '📉' },
+    { value: 'pie', label: '饼图 (Pie)', icon: '🥧' },
+    { value: 'area', label: '面积图 (Area)', icon: '⬆️' },
+    { value: 'scatter', label: '散点图 (Scatter)', icon: '⚪' },
+  ];
 
-  // useEffect(() => {
-  //   const updateChartType: ObserveCallback = (event, transaction) => {
-  //     console.info('[observe] chartType', event, transaction);
-  //     setChartType(builder.chartType.getChartType());
-  //   };
-
-  //   builder.chartType.observe(updateChartType);
-  //   return () => {
-  //     builder.chartType.unobserve(updateChartType);
-  //   };
-  // }, [builder]);
-
-  const availableChartTypes = builder.chartType.getAvailableChartTypes();
   return (
-    <div style={style}>
+    <Flex gap={4} align="center" style={style}>
+      <span
+        style={{
+          fontSize: 11,
+          fontWeight: 600,
+          color: '#1890ff',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        <BarChartOutlined style={{ marginRight: 3 }} />
+        图表
+      </span>
       <Select
-        defaultValue={builder.chartType.getChartType()}
         value={chartType}
         onChange={changeChartType}
-        style={{ width: '100%' }}
-      >
-        {availableChartTypes.map((type) => (
-          <Select.Option key={type} value={type}>
-            {type}
-          </Select.Option>
-        ))}
-      </Select>
-    </div>
+        style={{ flex: 1 }}
+        placeholder="选择图表"
+        options={chartTypeOptions}
+        size="small"
+      />
+    </Flex>
   );
 };

@@ -1,0 +1,117 @@
+.vbi-shelf {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 4px 8px;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  background: #fff;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Dimension Shelf */
+.vbi-shelf--dimension {
+  --shelf-accent: #1890ff;
+  --shelf-accent-bg: rgba(24, 144, 255, 0.06);
+  --shelf-accent-shadow: rgba(24, 144, 255, 0.12);
+  --shelf-item-over: rgba(24, 144, 255, 0.14);
+  --shelf-tag-bg: rgba(24, 144, 255, 0.1);
+  --shelf-tag-color: #1890ff;
+}
+
+/* Measure Shelf */
+.vbi-shelf--measure {
+  --shelf-accent: #52c41a;
+  --shelf-accent-bg: rgba(82, 196, 26, 0.06);
+  --shelf-accent-shadow: rgba(82, 196, 26, 0.12);
+  --shelf-item-over: rgba(82, 196, 26, 0.14);
+  --shelf-tag-bg: rgba(82, 196, 26, 0.1);
+  --shelf-tag-color: #52c41a;
+}
+
+/* Where Shelf */
+.vbi-shelf--where {
+  --shelf-accent: #fa8c16;
+  --shelf-accent-bg: rgba(250, 140, 22, 0.06);
+  --shelf-accent-shadow: rgba(250, 140, 22, 0.12);
+  --shelf-tag-bg: rgba(250, 140, 22, 0.1);
+  --shelf-tag-border: rgba(250, 140, 22, 0.3);
+  --shelf-tag-color: #d46b08;
+}
+
+/* Having Shelf */
+.vbi-shelf--having {
+  --shelf-accent: #722ed1;
+  --shelf-accent-bg: rgba(114, 46, 209, 0.06);
+  --shelf-accent-shadow: rgba(114, 46, 209, 0.12);
+  --shelf-tag-bg: rgba(114, 46, 209, 0.1);
+  --shelf-tag-border: rgba(114, 46, 209, 0.3);
+  --shelf-tag-color: #722ed1;
+}
+
+.vbi-shelf--dragover {
+  border-color: var(--shelf-accent, #1890ff);
+  background: var(--shelf-accent-bg, rgba(24, 144, 255, 0.05));
+  box-shadow: 0 0 0 2px var(--shelf-accent-shadow, rgba(24, 144, 255, 0.12));
+}
+
+.vbi-shelf-empty {
+  color: #bfbfbf;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.vbi-shelf-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  cursor: grab;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.vbi-shelf-item--over {
+  background: var(--shelf-item-over, rgba(24, 144, 255, 0.12));
+}
+
+.vbi-shelf-item--dragging {
+  opacity: 0.5;
+}
+
+.vbi-shelf-handle {
+  font-size: 10px;
+  color: #bfbfbf;
+  cursor: grab;
+}
+
+.vbi-shelf-tag {
+  padding: 2px 6px;
+  font-size: 11px;
+  border-radius: 4px;
+  border: none;
+  margin: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  background: var(--shelf-tag-bg, rgba(24, 144, 255, 0.1));
+  color: var(--shelf-tag-color, #1890ff);
+}
+
+.vbi-shelf-filter-tag {
+  padding: 2px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  margin: 0;
+  cursor: pointer;
+  background: var(--shelf-tag-bg, rgba(250, 140, 22, 0.1));
+  border: 1px solid var(--shelf-tag-border, rgba(250, 140, 22, 0.3));
+  color: var(--shelf-tag-color, #d46b08);
+}
+
+.vbi-shelf-icon {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 4px;
+}
