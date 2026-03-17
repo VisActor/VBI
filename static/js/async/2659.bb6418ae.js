@@ -1,2 +1,0 @@
-"use strict";(self.rspackChunkwebsite=self.rspackChunkwebsite||[]).push([["2659"],{15102(e,t,r){r.r(t),r.d(t,{default:()=>a});var n=r(56730),s=r(52861);function i(e){return(0,n.jsx)(n.Fragment,{})}function a(){let e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},{wrapper:t}={...(0,s.R)(),...e.components};return t?(0,n.jsx)(t,{...e,children:(0,n.jsx)(i,{...e})}):i(e)}a.__RSPRESS_PAGE_META={},a.__RSPRESS_PAGE_META["zh-CN%2Fvseed%2Fapi.md"]={toc:[],title:"",headingTitle:"",frontmatter:{overview:!0}}}}]);
-//# sourceMappingURL=2659.bb6418ae.js.map

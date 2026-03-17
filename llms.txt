@@ -1,0 +1,176 @@
+# VisActor/VBI
+
+## VSeed
+
+- [快速开始](/VBI/vseed/guide/quickStart.md): VSeed 是面向分析领域的标准化 DSL（领域特定语言）。通过优雅的数据编排，让数据可视化变得简单。 安装核心库 vseed 及底层渲染引擎 vchart、vtable。 注册 在应用入口处注册图表能力与主题（只需执行一次）。 构建 通过 Builder 将 VSeed DSL 转换为可渲染的 Spec 配置。 渲染 将生成的 Spec 传递给 VChart 组件进行渲染。
+- [图表类型](/VBI/vseed/guide/intro/chartTypeSwitch.md): VSeed 支持多种图表类型，通过 chartType 属性可以轻松切换不同的可视化形式，包括常规图表、透视表等。
+- [数据重塑](/VBI/vseed/guide/intro/dataReshape.md): 下面的示例演示了不同结构的 dataset 和不同 chartType 之间的自由组合。你可以点击下方的按钮切换数据集和图表类型，观察 VSeed 如何自动适配。
+- [透视与组合](/VBI/vseed/guide/intro/pivotAndCombine.md)
+- [数值格式](/VBI/vseed/guide/intro/dataFormat.md): VSeed 支持在 measures 中配置数值的格式化规则。 autoFormat: 是否自动格式化。format: 详细的格式化配置，包括类型、倍率、千分位、小数位、单位前后缀等。
+- [分析功能](/VBI/vseed/guide/intro/dataAnalysis.md)
+- [数据分页](/VBI/vseed/guide/intro/page.md)
+- [播放器](/VBI/vseed/guide/intro/player.md): VSeed 支持配置 player 属性来实现数据的自动播放展示。
+- [条件样式](/VBI/vseed/guide/intro/conditionalStyle.md)
+- [数据标注](/VBI/vseed/guide/intro/annotation.md)
+- [国际化](/VBI/vseed/guide/intro/internationalization.md): VSeed 内置了国际化支持，可以通过配置 locale 来切换语言环境（如中文 zh-CN、英文 en-US 等）。
+- [跨平台渲染](/VBI/vseed/guide/intro/crossPlatformRender.md): 下面的示例展示了如何将 VSeed 配置序列化为 JSON 字符串（模拟复制），以及如何将 JSON 字符串反序列化并渲染（模拟粘贴）。
+- [分离式构建](/VBI/vseed/guide/intro/separateBuild.md): 下面的示例展示了如何在 React 组件中使用分离式构建流程。
+- [大数据性能](/VBI/vseed/guide/intro/performance.md): VSeed 针对大数据场景进行了优化，能够流畅渲染大量数据点。下例展示了 20K 数据点的渲染性能。
+- [Table](/VBI/vseed/examples/chartType/table.md)
+- [PivotTable](/VBI/vseed/examples/chartType/pivotTable.md)
+- [Line](/VBI/vseed/examples/chartType/line.md)
+- [Column](/VBI/vseed/examples/chartType/column.md)
+- [ColumnPercent](/VBI/vseed/examples/chartType/columnPercent.md)
+- [ColumnParallel](/VBI/vseed/examples/chartType/columnParallel.md)
+- [Bar](/VBI/vseed/examples/chartType/bar.md)
+- [BarPercent](/VBI/vseed/examples/chartType/barPercent.md)
+- [BarParallel](/VBI/vseed/examples/chartType/barParallel.md)
+- [Area](/VBI/vseed/examples/chartType/area.md)
+- [AreaPercent](/VBI/vseed/examples/chartType/areaPercent.md)
+- [Scatter](/VBI/vseed/examples/chartType/scatter.md)
+- [DualAxis](/VBI/vseed/examples/chartType/dualAxis.md)
+- [Rose](/VBI/vseed/examples/chartType/rose.md)
+- [RoseParallel](/VBI/vseed/examples/chartType/roseParallel.md)
+- [Pie](/VBI/vseed/examples/chartType/pie.md)
+- [Donut](/VBI/vseed/examples/chartType/donut.md)
+- [Radar](/VBI/vseed/examples/chartType/radar.md)
+- [RaceScatter](/VBI/vseed/examples/chartType/raceScatter.md)
+- [RaceLine](/VBI/vseed/examples/chartType/raceLine.md)
+- [RaceBar](/VBI/vseed/examples/chartType/raceBar.md)
+- [RaceColumn](/VBI/vseed/examples/chartType/raceColumn.md)
+- [RacePie](/VBI/vseed/examples/chartType/racePie.md)
+- [RaceDonut](/VBI/vseed/examples/chartType/raceDonut.md)
+- [TreeMap](/VBI/vseed/examples/chartType/treeMap.md)
+- [Sunburst](/VBI/vseed/examples/chartType/sunburst.md)
+- [CirclePacking](/VBI/vseed/examples/chartType/circlePacking.md)
+- [Heatmap](/VBI/vseed/examples/chartType/heatmap.md)
+- [Funnel](/VBI/vseed/examples/chartType/funnel.md)
+- [Boxplot](/VBI/vseed/examples/chartType/boxplot.md)
+- [Histogram](/VBI/vseed/examples/chartType/histogram.md)
+- [AnnotationArea](/VBI/vseed/examples/features/annotationArea.md)
+- [AnnotationHorizontalLine](/VBI/vseed/examples/features/annotationHorizontalLine.md)
+- [AnnotationPoint](/VBI/vseed/examples/features/annotationPoint.md)
+- [AnnotationVerticalLine](/VBI/vseed/examples/features/annotationVerticalLine.md)
+- [BarStyle](/VBI/vseed/examples/features/barStyle.md)
+- [BodyCellStyle](/VBI/vseed/examples/features/bodyCellStyle.md)
+- [Brush](/VBI/vseed/examples/features/brush.md)
+- [Color](/VBI/vseed/examples/features/color.md)
+- [Dataset](/VBI/vseed/examples/features/dataset.md)
+- [Dimensions](/VBI/vseed/examples/features/dimensions.md)
+- [I18n](/VBI/vseed/examples/features/i18n.md)
+- [Label](/VBI/vseed/examples/features/label.md)
+- [Legend](/VBI/vseed/examples/features/legend.md)
+- [Measures](/VBI/vseed/examples/features/measures.md)
+- [NumFormat](/VBI/vseed/examples/features/numFormat.md)
+- [PointStyle](/VBI/vseed/examples/features/pointStyle.md)
+- [Polynomial](/VBI/vseed/examples/features/polynomial.md)
+- [Sort](/VBI/vseed/examples/features/sort.md)
+- [Totals](/VBI/vseed/examples/features/totals.md)
+- [](/VBI/vseed/option.md)
+- [Area](/VBI/vseed/option/area.md)
+- [AreaPercent](/VBI/vseed/option/areaPercent.md)
+- [Bar](/VBI/vseed/option/bar.md)
+- [BarParallel](/VBI/vseed/option/barParallel.md)
+- [BarPercent](/VBI/vseed/option/barPercent.md)
+- [BoxPlot](/VBI/vseed/option/boxPlot.md)
+- [CirclePacking](/VBI/vseed/option/circlePacking.md)
+- [Column](/VBI/vseed/option/column.md)
+- [ColumnParallel](/VBI/vseed/option/columnParallel.md)
+- [ColumnPercent](/VBI/vseed/option/columnPercent.md)
+- [Donut](/VBI/vseed/option/donut.md)
+- [DualAxis](/VBI/vseed/option/dualAxis.md)
+- [Funnel](/VBI/vseed/option/funnel.md)
+- [Heatmap](/VBI/vseed/option/heatmap.md)
+- [Histogram](/VBI/vseed/option/histogram.md)
+- [Line](/VBI/vseed/option/line.md)
+- [Pie](/VBI/vseed/option/pie.md)
+- [PivotTable](/VBI/vseed/option/pivotTable.md)
+- [RaceBar](/VBI/vseed/option/raceBar.md)
+- [RaceColumn](/VBI/vseed/option/raceColumn.md)
+- [RaceDonut](/VBI/vseed/option/raceDonut.md)
+- [RaceLine](/VBI/vseed/option/raceLine.md)
+- [RacePie](/VBI/vseed/option/racePie.md)
+- [RaceScatter](/VBI/vseed/option/raceScatter.md)
+- [Radar](/VBI/vseed/option/radar.md)
+- [Rose](/VBI/vseed/option/rose.md)
+- [RoseParallel](/VBI/vseed/option/roseParallel.md)
+- [Scatter](/VBI/vseed/option/scatter.md)
+- [Sunburst](/VBI/vseed/option/sunburst.md)
+- [Table](/VBI/vseed/option/table.md)
+- [TreeMap](/VBI/vseed/option/treeMap.md)
+- [](/VBI/vseed/api.md)
+- [Builder](/VBI/vseed/api/Builder.md)
+- [Register](/VBI/vseed/api/Register.md)
+- [快速启动](/VBI/vseed/development/quickStart.md)
+- [开发流程](/VBI/vseed/development/devProgress.md)
+- [常用脚本](/VBI/vseed/development/devProgress/scripts.md): 为了保持 Monorepo 的一致性，所有脚本必须在项目根目录执行。
+- [发布](/VBI/vseed/development/devProgress/publish.md)
+- [文档](/VBI/vseed/development/devProgress/docs.md): VSeed所有图表类型的文档, 都在 packages/vseed/src/types/chartType 目录下
+- [测试流程](/VBI/vseed/development/devProgress/tests.md): VSeed 采用严格的测试驱动开发流程。所有测试命令必须在项目根目录执行。
+- [架构设计](/VBI/vseed/development/architecture.md): VSeed 是一个基于语义化配置的图表生成器，旨在连接用户意图与底层渲染引擎（VChart/VTable）。 Deep Wiki
+- [VSeed](/VBI/vseed/development/designPhilosophy/vseed.md)
+- [DSL 设计](/VBI/vseed/development/designPhilosophy/dslDesign.md)
+- [TidyData](/VBI/vseed/development/designPhilosophy/dataReshape/tidyData.md)
+- [数据重塑-原理](/VBI/vseed/development/designPhilosophy/dataReshape/dataReshapePrinciple.md): 数据重塑是指将数据从一种结构化形式转换为另一种结构化形式的过程，核心在于改变数据的组织方式（如行、列、索引、层级），以适应不同的分析或处理需求，同时保持数据的完整性。
+- [数据重塑-实现](/VBI/vseed/development/designPhilosophy/dataReshape/dataReshapeImplementation.md)
+- [pipeline 设计](/VBI/vseed/development/designPhilosophy/pipeline/pipelineDesign.md)
+- [spec Pipeline](/VBI/vseed/development/designPhilosophy/pipeline/specPipeline.md)
+- [advanced Pipeline](/VBI/vseed/development/designPhilosophy/pipeline/advancedPipeline.md)
+- [Agent 开发上下文（VSeed）](/VBI/vseed/development/agentContext.md): 本文档面向 agent-code 与贡献者，汇总 VSeed 子包的核心架构、数据流与扩展方式，便于在自动化开发时快速建立全局理解。 这是为 Agent 使用而设计的“上下文索引”。更详细的工程说明请参考：packages/vseed/AGENTS.md。
+- [快速开始](/VBI/vseed/tutorial/vquery/quickStart.md)
+- [快速开始](/VBI/vseed/tutorial/vseed/quickStart.md)
+
+## VQuery
+
+- [VQuery](/VBI/vquery/index.md)
+- [Playground](/VBI/vquery/playground.md)
+- [Select](/VBI/vquery/examples/select.md)
+- [Aggregation](/VBI/vquery/examples/select/aggregation.md)
+- [Date](/VBI/vquery/examples/select/date.md)
+- [Where](/VBI/vquery/examples/where.md)
+- [Having](/VBI/vquery/examples/having.md)
+- [GroupBy](/VBI/vquery/examples/groupBy.md)
+- [OrderBy](/VBI/vquery/examples/orderBy.md)
+- [Limit](/VBI/vquery/examples/limit.md)
+- [常用脚本](/VBI/vquery/development/scripts.md): 为了保持 Monorepo 的一致性，所有脚本必须在项目根目录执行。
+- [测试流程](/VBI/vquery/development/tests.md): VQuery 使用 rstest 框架进行测试。所有命令需在根目录执行。
+
+## VBI
+
+- [VBI](/VBI/vbi/index.md)
+- [Playground](/VBI/vbi/playground.md)
+- [VBI 示例](/VBI/vbi/examples/index.md): 本页面展示 VBI 的各种使用示例。
+- [chartType](/VBI/vbi/examples/chartType.md): {registerDemoConnector()}
+- [dimensions](/VBI/vbi/examples/dimensions.md): {registerDemoConnector()}
+- [havingFilter](/VBI/vbi/examples/havingFilter.md): {registerDemoConnector()}
+- [locale](/VBI/vbi/examples/locale.md): {registerDemoConnector()}
+- [measures](/VBI/vbi/examples/measures.md): {registerDemoConnector()}
+- [theme](/VBI/vbi/examples/theme.md): {registerDemoConnector()}
+- [undoManager](/VBI/vbi/examples/undoManager.md): {registerDemoConnector()}
+- [whereFilter](/VBI/vbi/examples/whereFilter.md): {registerDemoConnector()}
+- [Demo](/VBI/vbi/practices/demo.md)
+- [Minimalist](/VBI/vbi/practices/minimalist.md)
+- [Streamlined](/VBI/vbi/practices/streamlined.md)
+- [Professional](/VBI/vbi/practices/professional.md)
+- [](/VBI/vbi/api/index.md)
+- [VBIBuilder](/VBI/vbi/api/builder.md)
+- [chartType](/VBI/vbi/api/chart-type.md): 图表类型构建器，用于切换和获取图表类型。支持表格、柱状图、折线图、饼图、散点图等多种图表类型
+- [measures](/VBI/vbi/api/measures.md): 度量构建器，用于添加、修改、删除度量配置。度量是数据的数值字段，如：销售额、利润、数量
+- [MeasureNodeBuilder](/VBI/vbi/api/measures/measure-node.md): 度量节点构建器，用于配置单个度量
+- [dimensions](/VBI/vbi/api/dimensions.md): 维度构建器，用于添加、修改、删除维度配置。维度是数据的分类字段，如：时间、地区、产品类别
+- [DimensionNodeBuilder](/VBI/vbi/api/dimensions/dimension-node.md): 维度节点构建器，用于配置单个维度
+- [whereFilter](/VBI/vbi/api/where-filter.md): Where 过滤构建器，用于添加、修改、删除行级过滤条件。Where 过滤在数据查询前生效，用于筛选原始数据
+- [WhereNodeBuilder](/VBI/vbi/api/where-filter/where-node.md): Where 过滤节点构建器，用于配置单个 Where 过滤条件
+- [WhereGroupBuilder](/VBI/vbi/api/where-filter/where-group.md): Where 分组构建器，用于配置一组条件的逻辑关系（AND/OR）
+- [havingFilter](/VBI/vbi/api/having-filter.md): Having 过滤构建器，用于添加、修改、删除分组后过滤条件。Having 过滤在数据聚合后生效，用于筛选分组结果
+- [HavingFilterNodeBuilder](/VBI/vbi/api/having-filter/having-node.md): Having 过滤节点构建器，用于配置单个 Having 过滤条件
+- [HavingGroupBuilder](/VBI/vbi/api/having-filter/having-group.md): Having 分组构建器，用于配置一组条件的逻辑关系（AND/OR）
+- [theme](/VBI/vbi/api/theme.md): 主题构建器，用于设置和获取当前主题
+- [locale](/VBI/vbi/api/locale.md): 语言构建器，用于设置和获取当前语言
+- [limit](/VBI/vbi/api/limit.md): 数据量限制构建器，用于设置和获取当前 limit
+- [undoManager](/VBI/vbi/api/undo-manager.md): 撤销/重做管理器，提供基于 YJS 的撤销和重做功能，支持栈管理和历史清除操作
+- [标签](/VBI/vbi/examples/tags.md): 共 51 个示例，0 个标签。
+
+## Other
+
+- [标题](/VBI/playground/vseed.md)

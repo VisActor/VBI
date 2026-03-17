@@ -1,0 +1,229 @@
+```tsx title="VSeed 示例：玫瑰图" playground
+const Demo = () => {
+  const MeasureNames = '__MeaId__'
+
+  const vseed: VSeed = {
+    chartType: 'table',
+    dataset: [
+      {
+        date: '2019',
+        type: 'A',
+        goalProfit: -10,
+        profit: 10,
+        leftCount: 1,
+        salesCount: 100,
+      },
+      {
+        date: '2020',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 320,
+        leftCount: 2,
+        salesCount: 200,
+      },
+      {
+        date: '2021',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 300,
+        leftCount: 3,
+        salesCount: 300,
+      },
+      {
+        date: '2022',
+        type: 'A',
+        goalProfit: 50,
+        profit: 50,
+        sales: 240,
+        leftCount: 4,
+        salesCount: 400,
+      },
+      {
+        date: '2023',
+        type: 'A',
+        goalProfit: 40,
+        profit: 40,
+        sales: 500,
+        leftCount: 5,
+        salesCount: 500,
+      },
+    ],
+    bodyCellStyle: [
+      {
+        selector: {
+          field: 'goalProfit',
+        },
+        enableProgressBar: true,
+        barPositiveColor: 'green',
+      },
+      {
+        selector: {
+          field: 'profit',
+        },
+        enableBackgroundColorScale: true,
+        backgroundColorScale: {
+          minColor: 'rgba(210,128,128, 0.8)',
+          maxColor: 'rgba(255,10,10, 0.8)',
+        },
+      },
+      {
+        selector: {
+          field: 'sales',
+        },
+        enableBackgroundColorScale: true,
+        enableProgressBar: true,
+      },
+    ],
+  }
+
+  const parseRes = zVSeed.safeParse(vseed)
+  if (parseRes.success) {
+    console.log('zVSeed parse success!!!')
+  } else {
+    console.error('zVSeed parse error!!!', parseRes)
+  }
+
+  return <SimpleVSeedRender vseed={vseed} />
+}
+
+import { useRef, useEffect } from 'react'
+import { useDark } from '@rspress/core/runtime'
+import VChart from '@visactor/vchart'
+import { ListTable, PivotTable, PivotChart, register } from '@visactor/vtable'
+import {
+  registerAll,
+  VSeed,
+  Builder,
+  isPivotChart,
+  isVChart,
+  isPivotTable,
+  isTable,
+  zVSeed,
+  ColorIdEncoding,
+  DATUM_HIDE_KEY,
+} from '@visactor/vseed'
+
+registerAll()
+register.chartModule('vchart', VChart)
+
+const SimpleVSeedRender = (props: { vseed: VSeed }) => {
+  const { vseed } = props
+  const ref = useRef<HTMLDivElement>(null)
+  const builderRef = useRef<Builder>()
+  const dark = useDark()
+  const selectedDimValueRef = useRef<string[]>([])
+  useEffect(() => {
+    let cleanup: (() => void) | undefined
+
+    const initChart = async () => {
+      if (!ref.current) {
+        return
+      }
+      const theme = dark ? 'dark' : 'light'
+      const builder = Builder.from(vseed.theme ? vseed : { ...vseed, theme })
+
+      // 如果有 dynamicFilter code，需要先 prepare 再 build
+      await builder.prepare()
+      let spec = builder.build()
+
+      console.log('final spec = ', spec)
+      console.log('builder', builder)
+      console.log('builder performance', builder.performance)
+
+      builderRef.current = builder
+      if (isPivotChart(vseed)) {
+        const tableInstance = new PivotChart(ref.current, spec)
+
+        tableInstance.on('legend_item_click', (args) => {
+          console.log('LEGEND_ITEM_CLICK', args)
+          tableInstance.updateFilterRules([
+            {
+              filterKey: ColorIdEncoding,
+              filteredValues: args.value,
+            },
+          ])
+        })
+        tableInstance.on('legend_change', (args) => {
+          const maxValue = args.value[1]
+          const minValue = args.value[0]
+
+          if (vseed.chartType === 'heatmap') {
+            tableInstance.updateFilterRules([
+              {
+                filterFunc: (record) => {
+                  const value = record[record[ColorIdEncoding]]
+                  const isShow = value >= minValue && value <= maxValue
+
+                  record[DATUM_HIDE_KEY] = !isShow
+
+                  return true
+                },
+              },
+            ])
+          } else {
+            tableInstance.updateFilterRules([
+              {
+                filterFunc: (record) => {
+                  const value = record[record[ColorIdEncoding]]
+                  if (value >= minValue && value <= maxValue) {
+                    return true
+                  }
+                  return false
+                },
+              },
+            ])
+          }
+        })
+        window.pivotChart = tableInstance
+        cleanup = () => tableInstance.release()
+      } else if (isVChart(vseed)) {
+        const vchart = new VChart(spec, { dom: ref.current })
+        vchart.renderSync()
+
+        vchart.on('brushEnd', (e) => {
+          console.log(e)
+        })
+
+        window.vchart = vchart
+        cleanup = () => vchart.release()
+      } else if (isTable(vseed)) {
+        const tableInstance = new ListTable(ref.current, spec)
+        window.table = tableInstance
+        cleanup = () => tableInstance.release()
+      } else if (isPivotTable(vseed)) {
+        const tableInstance = new PivotTable(ref.current, spec)
+
+        window.table = tableInstance
+        cleanup = () => tableInstance.release()
+      }
+    }
+
+    initChart()
+
+    return () => {
+      cleanup?.()
+    }
+  }, [vseed, dark])
+
+  return (
+    <div
+      ref={ref}
+      style={{ height: 600, width: '100%' }}
+      onClick={() => {
+        console.group(`selected ${vseed.chartType}`)
+        console.log('builder', builderRef.current)
+        console.log('spec', builderRef.current.spec)
+        console.log('vseed', builderRef.current.vseed)
+        console.log('advancedVSeed', builderRef.current.advancedVSeed)
+        console.groupEnd()
+      }}
+    >
+      {' '}
+    </div>
+  )
+}
+
+export default Demo
+```

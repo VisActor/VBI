@@ -1,0 +1,2 @@
+"use strict";(self.rspackChunkwebsite=self.rspackChunkwebsite||[]).push([["1940"],{79903(e,t,n){n.r(t),n.d(t,{default:()=>a});var r=n(56730),i=n(52861);function s(e){return(0,r.jsx)(r.Fragment,{})}function a(){let e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},{wrapper:t}={...(0,i.R)(),...e.components};return t?(0,r.jsx)(t,{...e,children:(0,r.jsx)(s,{...e})}):s(e)}a.__RSPRESS_PAGE_META={},a.__RSPRESS_PAGE_META["zh-CN%2Fvbi%2Fapi%2Findex.md"]={toc:[],title:"",headingTitle:"",frontmatter:{overview:!0}}}}]);
+//# sourceMappingURL=1940.f6ed815d13.js.map

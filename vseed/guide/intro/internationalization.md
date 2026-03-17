@@ -1,0 +1,113 @@
+# 国际化
+
+VSeed 内置了国际化支持，可以通过配置 `locale` 来切换语言环境（如中文 `zh-CN`、英文 `en-US` 等）。
+
+```tsx direction=vertical playground
+const Demo = () => {
+  const vseed: VSeed = {
+    chartType: 'columnParallel',
+    dataset: [
+      { date: '2019', profit: 10000, sales: 200000 },
+      { date: '2020', profit: 20000, sales: 400000 },
+      { date: '2021', profit: 30000, sales: 600000 },
+      { date: '2022', profit: 40000, sales: 800000 },
+      { date: '2023', profit: 50000, sales: 1000000 },
+      { date: '2024', profit: 500000, sales: 1000000 },
+      { date: '2025', profit: 5000000, sales: 100000000 },
+      { date: '2026', profit: 5000000, sales: 1000000000 },
+    ],
+    measures: [
+      { id: 'profit', autoFormat: true },
+      { id: 'sales', autoFormat: true },
+    ],
+    yAxis: {
+      log: true,
+    },
+  }
+
+  if (zVSeed.safeParse(vseed).success) {
+    console.log('zVSeed parse success!!!')
+  } else {
+    console.error('zVSeed parse error!!!')
+  }
+
+  return <SimpleVSeedRender vseed={vseed} />
+}
+
+import { useRef, useEffect, useState } from 'react'
+import { useDark } from '@rspress/core/runtime'
+import VChart, { ISpec } from '@visactor/vchart'
+import {
+  ListTable,
+  ListTableConstructorOptions,
+  PivotChart,
+  PivotChartConstructorOptions,
+  register,
+} from '@visactor/vtable'
+import { registerAll, VSeed, Builder, isPivotChart, isVChart, isVTable, zVSeed, Locale } from '@visactor/vseed'
+
+registerAll()
+register.chartModule('vchart', VChart)
+
+const SimpleVSeedRender = (props: { vseed: VSeed }) => {
+  const { vseed } = props
+  const ref = useRef<HTMLDivElement>(null)
+  const builderRef = useRef<Builder>(Builder.from({ chartType: 'line', dataset: [] }))
+  const dark = useDark()
+  const [locale, setLocale] = useState<Locale>('en-US')
+
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+    const theme = dark ? 'dark' : 'light'
+    const builder = Builder.from({ ...vseed, theme, locale })
+    const spec = builder.build()
+
+    builderRef.current = builder
+    if (isPivotChart(vseed)) {
+      const tableInstance = new PivotChart(ref.current, spec as PivotChartConstructorOptions)
+      return () => tableInstance.release()
+    } else if (isVChart(vseed)) {
+      const vchart = new VChart(spec as ISpec, { dom: ref.current })
+      vchart.renderSync()
+      return () => vchart.release()
+    } else if (isVTable(vseed)) {
+      const tableInstance = new ListTable(ref.current, spec as ListTableConstructorOptions)
+      return () => tableInstance.release()
+    }
+  }, [vseed, dark, locale])
+
+  return (
+    <div
+      style={{ display: 'flex', flexDirection: 'column' }}
+      onClick={() => {
+        console.group(`selected ${vseed.chartType}`)
+        console.log('builder', builderRef.current)
+        console.log('spec', builderRef.current?.spec)
+        console.log('vseed', builderRef.current?.vseed)
+        console.log('advancedVSeed', builderRef.current?.advancedVSeed)
+        console.groupEnd()
+      }}
+    >
+      <div>
+        {['en-US', 'zh-CN'].map((d) => {
+          return (
+            <span key={d} style={{ margin: '0 2px' }}>
+              <button
+                onClick={() => setLocale(d)}
+                style={{ fontSize: 10, padding: '0 2px', border: '1px solid #cccccc' }}
+              >
+                {d}
+              </button>
+            </span>
+          )
+        })}
+      </div>
+      <div ref={ref} style={{ height: 300, width: '100%' }}></div>
+    </div>
+  )
+}
+
+export default Demo
+```
