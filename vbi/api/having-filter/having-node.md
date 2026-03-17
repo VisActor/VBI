@@ -54,6 +54,18 @@ getOperator(): string | undefined
 
 **返回**: `string \| undefined`
 
+### getAggregate
+
+获取聚合配置
+
+**定义**:
+
+```typescript
+getAggregate(): VBIHavingAggregate | undefined
+```
+
+**返回**: `VBIHavingAggregate \| undefined`
+
 ### setValue
 
 设置过滤条件的值
@@ -89,6 +101,24 @@ setOperator(operator: string): this
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `operator` | string | - 操作符 |
+
+### setAggregate
+
+设置聚合配置
+
+**定义**:
+
+```typescript
+setAggregate(aggregate: VBIHavingAggregate): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `aggregate` | VBIHavingAggregate | - 聚合配置 |
 
 ### toJSON
 

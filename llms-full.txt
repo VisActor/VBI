@@ -37284,573 +37284,6 @@ url: /VBI/vseed/examples/features/bodyCellStyle.md
 
 # BodyCellStyle
 
-## 表格条件样式 - 多个条件
-
-表格条件样式 - 多个条件
-
-```tsx preview
-import { VSeedRender } from '@components'
-
-export default () => {
-  const vseedConfig = {
-    chartType: 'table',
-    dataset: [
-      {
-        date: '2019',
-        type: 'A',
-        goalProfit: 10,
-        profit: 10,
-        sales: 100,
-        leftCount: 1,
-        salesCount: 100,
-      },
-      {
-        date: '2020',
-        type: 'A',
-        goalProfit: 30,
-        profit: 30,
-        sales: 320,
-        leftCount: 2,
-        salesCount: 200,
-      },
-      {
-        date: '2021',
-        type: 'A',
-        goalProfit: 30,
-        profit: 30,
-        sales: 300,
-        leftCount: 3,
-        salesCount: 300,
-      },
-      {
-        date: '2022',
-        type: 'A',
-        goalProfit: 50,
-        profit: 50,
-        sales: 240,
-        leftCount: 4,
-        salesCount: 400,
-      },
-      {
-        date: '2023',
-        type: 'A',
-        goalProfit: 40,
-        profit: 40,
-        sales: 500,
-        leftCount: 5,
-        salesCount: 500,
-      },
-    ],
-    bodyCellStyle: [
-      {
-        backgroundColor: 'pink',
-      },
-      {
-        selector: {
-          type: 'A',
-        },
-        backgroundColor: 'red',
-      },
-      {
-        selector: {
-          field: 'sales',
-          operator: 'between',
-          value: [200, 400],
-        },
-        backgroundColor: '#e6fcf5',
-        textColor: '#0b7285',
-      },
-    ],
-  }
-
-  return <VSeedRender vseed={vseedConfig} />
-}
-```
-
-## 表格条件样式 - 根据度量值设置
-
-表格条件样式 - 根据度量值设置
-
-```tsx preview
-import { VSeedRender } from '@components'
-
-export default () => {
-  const vseedConfig = {
-    chartType: 'table',
-    dataset: [
-      {
-        date: '2019',
-        type: 'A',
-        goalProfit: 10,
-        profit: 10,
-        sales: 100,
-        leftCount: 1,
-        salesCount: 100,
-      },
-      {
-        date: '2020',
-        type: 'A',
-        goalProfit: 30,
-        profit: 30,
-        sales: 320,
-        leftCount: 2,
-        salesCount: 200,
-      },
-      {
-        date: '2021',
-        type: 'A',
-        goalProfit: 30,
-        profit: 30,
-        sales: 300,
-        leftCount: 3,
-        salesCount: 300,
-      },
-      {
-        date: '2022',
-        type: 'A',
-        goalProfit: 50,
-        profit: 50,
-        sales: 240,
-        leftCount: 4,
-        salesCount: 400,
-      },
-      {
-        date: '2023',
-        type: 'A',
-        goalProfit: 40,
-        profit: 40,
-        sales: 500,
-        leftCount: 5,
-        salesCount: 500,
-      },
-    ],
-    bodyCellStyle: [
-      {
-        selector: {
-          field: 'sales',
-          operator: '>=',
-          value: 300,
-        },
-        backgroundColor: '#fff3cd',
-        textColor: '#a15c00',
-      },
-    ],
-  }
-
-  return <VSeedRender vseed={vseedConfig} />
-}
-```
-
-## 表格条件样式 - 全局样式
-
-表格条件样式 - 全局样式
-
-```tsx preview
-import { VSeedRender } from '@components'
-
-export default () => {
-  const vseedConfig = {
-    chartType: 'table',
-    dataset: [
-      {
-        date: '2019',
-        type: 'A',
-        goalProfit: 10,
-        profit: 10,
-        sales: 100,
-        leftCount: 1,
-        salesCount: 100,
-      },
-      {
-        date: '2020',
-        type: 'A',
-        goalProfit: 30,
-        profit: 30,
-        sales: 320,
-        leftCount: 2,
-        salesCount: 200,
-      },
-      {
-        date: '2021',
-        type: 'A',
-        goalProfit: 30,
-        profit: 30,
-        sales: 300,
-        leftCount: 3,
-        salesCount: 300,
-      },
-      {
-        date: '2022',
-        type: 'A',
-        goalProfit: 50,
-        profit: 50,
-        sales: 240,
-        leftCount: 4,
-        salesCount: 400,
-      },
-      {
-        date: '2023',
-        type: 'A',
-        goalProfit: 40,
-        profit: 40,
-        sales: 500,
-        leftCount: 5,
-        salesCount: 500,
-      },
-    ],
-    bodyCellStyle: {
-      backgroundColor: '#f8f9fa',
-      textColor: '#333',
-    },
-  }
-
-  return <VSeedRender vseed={vseedConfig} />
-}
-```
-
-## 表格条件样式
-
-表格条件样式
-
-```tsx preview
-import { VSeedRender } from '@components'
-
-export default () => {
-  const vseedConfig = {
-    chartType: 'table',
-    dataset: [
-      {
-        date: '2019',
-        type: 'A',
-        goalProfit: 10,
-        profit: 10,
-        sales: 100,
-        leftCount: 1,
-        salesCount: 100,
-      },
-      {
-        date: '2020',
-        type: 'A',
-        goalProfit: 30,
-        profit: 30,
-        sales: 320,
-        leftCount: 2,
-        salesCount: 200,
-      },
-      {
-        date: '2021',
-        type: 'A',
-        goalProfit: 30,
-        profit: 30,
-        sales: 300,
-        leftCount: 3,
-        salesCount: 300,
-      },
-      {
-        date: '2022',
-        type: 'A',
-        goalProfit: 50,
-        profit: 50,
-        sales: 240,
-        leftCount: 4,
-        salesCount: 400,
-      },
-      {
-        date: '2023',
-        type: 'A',
-        goalProfit: 40,
-        profit: 40,
-        sales: 500,
-        leftCount: 5,
-        salesCount: 500,
-      },
-    ],
-    bodyCellStyle: [
-      {
-        selector: {
-          type: 'A',
-        },
-        backgroundColor: 'pink',
-      },
-      {
-        selector: {
-          field: 'sales',
-          operator: '>=',
-          value: 150,
-        },
-        textColor: 'red',
-      },
-    ],
-  }
-
-  return <VSeedRender vseed={vseedConfig} />
-}
-```
-
-## 透视表条件样式 - 符合条件
-
-透视表条件样式 - 符合条件
-
-```tsx preview
-import { VSeedRender } from '@components'
-
-export default () => {
-  const vseedConfig = {
-    chartType: 'pivotTable',
-    dataset: [
-      {
-        date: '2019',
-        type: 'A',
-        goalProfit: 10,
-        profit: 10,
-        sales: 100,
-        leftCount: 1,
-        salesCount: 100,
-      },
-      {
-        date: '2020',
-        type: 'A',
-        goalProfit: 30,
-        profit: 30,
-        sales: 320,
-        leftCount: 2,
-        salesCount: 200,
-      },
-      {
-        date: '2021',
-        type: 'A',
-        goalProfit: 30,
-        profit: 30,
-        sales: 300,
-        leftCount: 3,
-        salesCount: 300,
-      },
-      {
-        date: '2022',
-        type: 'A',
-        goalProfit: 50,
-        profit: 50,
-        sales: 240,
-        leftCount: 4,
-        salesCount: 400,
-      },
-      {
-        date: '2023',
-        type: 'A',
-        goalProfit: 40,
-        profit: 40,
-        sales: 500,
-        leftCount: 5,
-        salesCount: 500,
-      },
-    ],
-    bodyCellStyle: [
-      {
-        selector: {
-          type: 'A',
-        },
-        backgroundColor: 'pink',
-      },
-      {
-        selector: {
-          field: 'date',
-          operator: 'in',
-          value: ['2019', '2023'],
-        },
-        textColor: 'green',
-      },
-    ],
-    dimensions: [
-      {
-        id: 'date',
-        alias: '日期',
-        encoding: 'column',
-      },
-      {
-        id: 'type',
-        alias: '类型',
-        encoding: 'row',
-      },
-    ],
-    measures: [
-      {
-        id: 'profit',
-        alias: '利润',
-      },
-      {
-        id: 'sales',
-        alias: '销售量',
-      },
-    ],
-  }
-
-  return <VSeedRender vseed={vseedConfig} />
-}
-```
-
-## 透视表条件样式 - 根据度量值设置
-
-透视表条件样式 - 根据度量值设置
-
-```tsx preview
-import { VSeedRender } from '@components'
-
-export default () => {
-  const vseedConfig = {
-    chartType: 'pivotTable',
-    dataset: [
-      {
-        date: '2019',
-        type: 'A',
-        goalProfit: 10,
-        profit: 10,
-        sales: 100,
-        leftCount: 1,
-        salesCount: 100,
-      },
-      {
-        date: '2020',
-        type: 'A',
-        goalProfit: 30,
-        profit: 30,
-        sales: 320,
-        leftCount: 2,
-        salesCount: 200,
-      },
-      {
-        date: '2021',
-        type: 'A',
-        goalProfit: 30,
-        profit: 30,
-        sales: 300,
-        leftCount: 3,
-        salesCount: 300,
-      },
-      {
-        date: '2022',
-        type: 'A',
-        goalProfit: 50,
-        profit: 50,
-        sales: 240,
-        leftCount: 4,
-        salesCount: 400,
-      },
-      {
-        date: '2023',
-        type: 'A',
-        goalProfit: 40,
-        profit: 40,
-        sales: 500,
-        leftCount: 5,
-        salesCount: 500,
-      },
-    ],
-    bodyCellStyle: [
-      {
-        selector: {
-          field: 'sales',
-          operator: '>=',
-          value: 300,
-        },
-        backgroundColor: '#e3f2fd',
-        textColor: '#0d47a1',
-      },
-    ],
-    dimensions: [
-      {
-        id: 'date',
-        alias: '日期',
-        encoding: 'column',
-      },
-      {
-        id: 'type',
-        alias: '类型',
-        encoding: 'row',
-      },
-    ],
-    measures: [
-      {
-        id: 'profit',
-        alias: '利润',
-      },
-      {
-        id: 'sales',
-        alias: '销售量',
-      },
-    ],
-  }
-
-  return <VSeedRender vseed={vseedConfig} />
-}
-```
-
-## 透视表条件样式 - 全局样式
-
-透视表条件样式 - 全局样式
-
-```tsx preview
-import { VSeedRender } from '@components'
-
-export default () => {
-  const vseedConfig = {
-    chartType: 'pivotTable',
-    dataset: [
-      {
-        date: '2019',
-        type: 'A',
-        goalProfit: 10,
-        profit: 10,
-        sales: 100,
-        leftCount: 1,
-        salesCount: 100,
-      },
-      {
-        date: '2020',
-        type: 'A',
-        goalProfit: 30,
-        profit: 30,
-        sales: 320,
-        leftCount: 2,
-        salesCount: 200,
-      },
-      {
-        date: '2021',
-        type: 'A',
-        goalProfit: 30,
-        profit: 30,
-        sales: 300,
-        leftCount: 3,
-        salesCount: 300,
-      },
-      {
-        date: '2022',
-        type: 'A',
-        goalProfit: 50,
-        profit: 50,
-        sales: 240,
-        leftCount: 4,
-        salesCount: 400,
-      },
-      {
-        date: '2023',
-        type: 'A',
-        goalProfit: 40,
-        profit: 40,
-        sales: 500,
-        leftCount: 5,
-        salesCount: 500,
-      },
-    ],
-    bodyCellStyle: {
-      backgroundColor: '#faf0e6',
-      textColor: '#4d342e',
-    },
-  }
-
-  return <VSeedRender vseed={vseedConfig} />
-}
-```
-
 ## 透视表条件样式 - 色阶
 
 透视表条件样式 - 色阶
@@ -38178,6 +37611,573 @@ export default () => {
     chartType: 'table',
     theme: 'light',
     locale: 'zh-CN',
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 表格条件样式 - 全局样式
+
+表格条件样式 - 全局样式
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'table',
+    dataset: [
+      {
+        date: '2019',
+        type: 'A',
+        goalProfit: 10,
+        profit: 10,
+        sales: 100,
+        leftCount: 1,
+        salesCount: 100,
+      },
+      {
+        date: '2020',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 320,
+        leftCount: 2,
+        salesCount: 200,
+      },
+      {
+        date: '2021',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 300,
+        leftCount: 3,
+        salesCount: 300,
+      },
+      {
+        date: '2022',
+        type: 'A',
+        goalProfit: 50,
+        profit: 50,
+        sales: 240,
+        leftCount: 4,
+        salesCount: 400,
+      },
+      {
+        date: '2023',
+        type: 'A',
+        goalProfit: 40,
+        profit: 40,
+        sales: 500,
+        leftCount: 5,
+        salesCount: 500,
+      },
+    ],
+    bodyCellStyle: {
+      backgroundColor: '#f8f9fa',
+      textColor: '#333',
+    },
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 表格条件样式 - 多个条件
+
+表格条件样式 - 多个条件
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'table',
+    dataset: [
+      {
+        date: '2019',
+        type: 'A',
+        goalProfit: 10,
+        profit: 10,
+        sales: 100,
+        leftCount: 1,
+        salesCount: 100,
+      },
+      {
+        date: '2020',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 320,
+        leftCount: 2,
+        salesCount: 200,
+      },
+      {
+        date: '2021',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 300,
+        leftCount: 3,
+        salesCount: 300,
+      },
+      {
+        date: '2022',
+        type: 'A',
+        goalProfit: 50,
+        profit: 50,
+        sales: 240,
+        leftCount: 4,
+        salesCount: 400,
+      },
+      {
+        date: '2023',
+        type: 'A',
+        goalProfit: 40,
+        profit: 40,
+        sales: 500,
+        leftCount: 5,
+        salesCount: 500,
+      },
+    ],
+    bodyCellStyle: [
+      {
+        backgroundColor: 'pink',
+      },
+      {
+        selector: {
+          type: 'A',
+        },
+        backgroundColor: 'red',
+      },
+      {
+        selector: {
+          field: 'sales',
+          operator: 'between',
+          value: [200, 400],
+        },
+        backgroundColor: '#e6fcf5',
+        textColor: '#0b7285',
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 表格条件样式 - 根据度量值设置
+
+表格条件样式 - 根据度量值设置
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'table',
+    dataset: [
+      {
+        date: '2019',
+        type: 'A',
+        goalProfit: 10,
+        profit: 10,
+        sales: 100,
+        leftCount: 1,
+        salesCount: 100,
+      },
+      {
+        date: '2020',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 320,
+        leftCount: 2,
+        salesCount: 200,
+      },
+      {
+        date: '2021',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 300,
+        leftCount: 3,
+        salesCount: 300,
+      },
+      {
+        date: '2022',
+        type: 'A',
+        goalProfit: 50,
+        profit: 50,
+        sales: 240,
+        leftCount: 4,
+        salesCount: 400,
+      },
+      {
+        date: '2023',
+        type: 'A',
+        goalProfit: 40,
+        profit: 40,
+        sales: 500,
+        leftCount: 5,
+        salesCount: 500,
+      },
+    ],
+    bodyCellStyle: [
+      {
+        selector: {
+          field: 'sales',
+          operator: '>=',
+          value: 300,
+        },
+        backgroundColor: '#fff3cd',
+        textColor: '#a15c00',
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 表格条件样式
+
+表格条件样式
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'table',
+    dataset: [
+      {
+        date: '2019',
+        type: 'A',
+        goalProfit: 10,
+        profit: 10,
+        sales: 100,
+        leftCount: 1,
+        salesCount: 100,
+      },
+      {
+        date: '2020',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 320,
+        leftCount: 2,
+        salesCount: 200,
+      },
+      {
+        date: '2021',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 300,
+        leftCount: 3,
+        salesCount: 300,
+      },
+      {
+        date: '2022',
+        type: 'A',
+        goalProfit: 50,
+        profit: 50,
+        sales: 240,
+        leftCount: 4,
+        salesCount: 400,
+      },
+      {
+        date: '2023',
+        type: 'A',
+        goalProfit: 40,
+        profit: 40,
+        sales: 500,
+        leftCount: 5,
+        salesCount: 500,
+      },
+    ],
+    bodyCellStyle: [
+      {
+        selector: {
+          type: 'A',
+        },
+        backgroundColor: 'pink',
+      },
+      {
+        selector: {
+          field: 'sales',
+          operator: '>=',
+          value: 150,
+        },
+        textColor: 'red',
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 透视表条件样式 - 全局样式
+
+透视表条件样式 - 全局样式
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'pivotTable',
+    dataset: [
+      {
+        date: '2019',
+        type: 'A',
+        goalProfit: 10,
+        profit: 10,
+        sales: 100,
+        leftCount: 1,
+        salesCount: 100,
+      },
+      {
+        date: '2020',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 320,
+        leftCount: 2,
+        salesCount: 200,
+      },
+      {
+        date: '2021',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 300,
+        leftCount: 3,
+        salesCount: 300,
+      },
+      {
+        date: '2022',
+        type: 'A',
+        goalProfit: 50,
+        profit: 50,
+        sales: 240,
+        leftCount: 4,
+        salesCount: 400,
+      },
+      {
+        date: '2023',
+        type: 'A',
+        goalProfit: 40,
+        profit: 40,
+        sales: 500,
+        leftCount: 5,
+        salesCount: 500,
+      },
+    ],
+    bodyCellStyle: {
+      backgroundColor: '#faf0e6',
+      textColor: '#4d342e',
+    },
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 透视表条件样式 - 根据度量值设置
+
+透视表条件样式 - 根据度量值设置
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'pivotTable',
+    dataset: [
+      {
+        date: '2019',
+        type: 'A',
+        goalProfit: 10,
+        profit: 10,
+        sales: 100,
+        leftCount: 1,
+        salesCount: 100,
+      },
+      {
+        date: '2020',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 320,
+        leftCount: 2,
+        salesCount: 200,
+      },
+      {
+        date: '2021',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 300,
+        leftCount: 3,
+        salesCount: 300,
+      },
+      {
+        date: '2022',
+        type: 'A',
+        goalProfit: 50,
+        profit: 50,
+        sales: 240,
+        leftCount: 4,
+        salesCount: 400,
+      },
+      {
+        date: '2023',
+        type: 'A',
+        goalProfit: 40,
+        profit: 40,
+        sales: 500,
+        leftCount: 5,
+        salesCount: 500,
+      },
+    ],
+    bodyCellStyle: [
+      {
+        selector: {
+          field: 'sales',
+          operator: '>=',
+          value: 300,
+        },
+        backgroundColor: '#e3f2fd',
+        textColor: '#0d47a1',
+      },
+    ],
+    dimensions: [
+      {
+        id: 'date',
+        alias: '日期',
+        encoding: 'column',
+      },
+      {
+        id: 'type',
+        alias: '类型',
+        encoding: 'row',
+      },
+    ],
+    measures: [
+      {
+        id: 'profit',
+        alias: '利润',
+      },
+      {
+        id: 'sales',
+        alias: '销售量',
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 透视表条件样式 - 符合条件
+
+透视表条件样式 - 符合条件
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'pivotTable',
+    dataset: [
+      {
+        date: '2019',
+        type: 'A',
+        goalProfit: 10,
+        profit: 10,
+        sales: 100,
+        leftCount: 1,
+        salesCount: 100,
+      },
+      {
+        date: '2020',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 320,
+        leftCount: 2,
+        salesCount: 200,
+      },
+      {
+        date: '2021',
+        type: 'A',
+        goalProfit: 30,
+        profit: 30,
+        sales: 300,
+        leftCount: 3,
+        salesCount: 300,
+      },
+      {
+        date: '2022',
+        type: 'A',
+        goalProfit: 50,
+        profit: 50,
+        sales: 240,
+        leftCount: 4,
+        salesCount: 400,
+      },
+      {
+        date: '2023',
+        type: 'A',
+        goalProfit: 40,
+        profit: 40,
+        sales: 500,
+        leftCount: 5,
+        salesCount: 500,
+      },
+    ],
+    bodyCellStyle: [
+      {
+        selector: {
+          type: 'A',
+        },
+        backgroundColor: 'pink',
+      },
+      {
+        selector: {
+          field: 'date',
+          operator: 'in',
+          value: ['2019', '2023'],
+        },
+        textColor: 'green',
+      },
+    ],
+    dimensions: [
+      {
+        id: 'date',
+        alias: '日期',
+        encoding: 'column',
+      },
+      {
+        id: 'type',
+        alias: '类型',
+        encoding: 'row',
+      },
+    ],
+    measures: [
+      {
+        id: 'profit',
+        alias: '利润',
+      },
+      {
+        id: 'sales',
+        alias: '销售量',
+      },
+    ],
   }
 
   return <VSeedRender vseed={vseedConfig} />
@@ -39272,9 +39272,9 @@ export default () => {
 }
 ```
 
-## 透视维度
+## 行维度
 
-透视维度
+行维度
 
 ```tsx preview
 import { VSeedRender } from '@components'
@@ -39290,7 +39290,7 @@ export default () => {
       {
         id: 'date',
         alias: '日期',
-        encoding: 'column',
+        encoding: 'row',
       },
       {
         id: 'region',
@@ -39432,9 +39432,9 @@ export default () => {
 }
 ```
 
-## 行维度
+## 透视维度
 
-行维度
+透视维度
 
 ```tsx preview
 import { VSeedRender } from '@components'
@@ -39450,7 +39450,7 @@ export default () => {
       {
         id: 'date',
         alias: '日期',
-        encoding: 'row',
+        encoding: 'column',
       },
       {
         id: 'region',
@@ -42210,150 +42210,6 @@ export default () => {
 }
 ```
 
-## 维度排序
-
-维度排序
-
-```tsx preview
-import { VSeedRender } from '@components'
-
-export default () => {
-  const vseedConfig = {
-    chartType: 'line',
-    dataset: [
-      {
-        date: '2019',
-        profit: 10,
-        sales: 20,
-        count: 50,
-      },
-      {
-        date: '2020',
-        profit: 30,
-        sales: 60,
-        count: 50,
-      },
-      {
-        date: '2021',
-        profit: 30,
-        sales: 60,
-        count: 50,
-      },
-      {
-        date: '2022',
-        profit: 50,
-        sales: 100,
-        count: 50,
-      },
-      {
-        date: '2023',
-        profit: 40,
-        sales: 80,
-        count: 50,
-      },
-    ],
-    dimensions: [
-      {
-        id: 'date',
-        alias: '日期',
-      },
-    ],
-    measures: [
-      {
-        id: 'profit',
-        alias: '利润',
-      },
-      {
-        id: 'sales',
-        alias: '销售额',
-      },
-      {
-        id: 'count',
-        alias: '数量',
-      },
-    ],
-    sortLegend: {
-      order: 'desc',
-      orderBy: 'date',
-    },
-  }
-
-  return <VSeedRender vseed={vseedConfig} />
-}
-```
-
-## 维度排序
-
-维度排序
-
-```tsx preview
-import { VSeedRender } from '@components'
-
-export default () => {
-  const vseedConfig = {
-    chartType: 'line',
-    dataset: [
-      {
-        date: '2019',
-        profit: 10,
-        sales: 20,
-        count: 50,
-      },
-      {
-        date: '2020',
-        profit: 30,
-        sales: 60,
-        count: 50,
-      },
-      {
-        date: '2021',
-        profit: 30,
-        sales: 60,
-        count: 50,
-      },
-      {
-        date: '2022',
-        profit: 50,
-        sales: 100,
-        count: 50,
-      },
-      {
-        date: '2023',
-        profit: 40,
-        sales: 80,
-        count: 50,
-      },
-    ],
-    dimensions: [
-      {
-        id: 'date',
-        alias: '日期',
-      },
-    ],
-    measures: [
-      {
-        id: 'profit',
-        alias: '利润',
-      },
-      {
-        id: 'sales',
-        alias: '销售额',
-      },
-      {
-        id: 'count',
-        alias: '数量',
-      },
-    ],
-    sort: {
-      order: 'desc',
-      orderBy: 'date',
-    },
-  }
-
-  return <VSeedRender vseed={vseedConfig} />
-}
-```
-
 ## 指标排序
 
 指标排序
@@ -42495,6 +42351,150 @@ export default () => {
     sort: {
       order: 'desc',
       orderBy: 'sales',
+    },
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 维度排序
+
+维度排序
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'line',
+    dataset: [
+      {
+        date: '2019',
+        profit: 10,
+        sales: 20,
+        count: 50,
+      },
+      {
+        date: '2020',
+        profit: 30,
+        sales: 60,
+        count: 50,
+      },
+      {
+        date: '2021',
+        profit: 30,
+        sales: 60,
+        count: 50,
+      },
+      {
+        date: '2022',
+        profit: 50,
+        sales: 100,
+        count: 50,
+      },
+      {
+        date: '2023',
+        profit: 40,
+        sales: 80,
+        count: 50,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'date',
+        alias: '日期',
+      },
+    ],
+    measures: [
+      {
+        id: 'profit',
+        alias: '利润',
+      },
+      {
+        id: 'sales',
+        alias: '销售额',
+      },
+      {
+        id: 'count',
+        alias: '数量',
+      },
+    ],
+    sortLegend: {
+      order: 'desc',
+      orderBy: 'date',
+    },
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 维度排序
+
+维度排序
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'line',
+    dataset: [
+      {
+        date: '2019',
+        profit: 10,
+        sales: 20,
+        count: 50,
+      },
+      {
+        date: '2020',
+        profit: 30,
+        sales: 60,
+        count: 50,
+      },
+      {
+        date: '2021',
+        profit: 30,
+        sales: 60,
+        count: 50,
+      },
+      {
+        date: '2022',
+        profit: 50,
+        sales: 100,
+        count: 50,
+      },
+      {
+        date: '2023',
+        profit: 40,
+        sales: 80,
+        count: 50,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'date',
+        alias: '日期',
+      },
+    ],
+    measures: [
+      {
+        id: 'profit',
+        alias: '利润',
+      },
+      {
+        id: 'sales',
+        alias: '销售额',
+      },
+      {
+        id: 'count',
+        alias: '数量',
+      },
+    ],
+    sort: {
+      order: 'desc',
+      orderBy: 'date',
     },
   }
 
@@ -42573,77 +42573,6 @@ export default () => {
 }
 ```
 
-## 自定义排序(图例名称)
-
-自定义排序(图例名称)
-
-```tsx preview
-import { VSeedRender } from '@components'
-
-export default () => {
-  const vseedConfig = {
-    chartType: 'line',
-    dataset: [
-      {
-        date: '2019',
-        profit: 10,
-        sales: 20,
-        count: 50,
-      },
-      {
-        date: '2020',
-        profit: 30,
-        sales: 60,
-        count: 50,
-      },
-      {
-        date: '2021',
-        profit: 30,
-        sales: 60,
-        count: 50,
-      },
-      {
-        date: '2022',
-        profit: 50,
-        sales: 100,
-        count: 50,
-      },
-      {
-        date: '2023',
-        profit: 40,
-        sales: 80,
-        count: 50,
-      },
-    ],
-    dimensions: [
-      {
-        id: 'date',
-        alias: '日期',
-      },
-    ],
-    measures: [
-      {
-        id: 'profit',
-        alias: '利润',
-      },
-      {
-        id: 'sales',
-        alias: '销售额',
-      },
-      {
-        id: 'count',
-        alias: '数量',
-      },
-    ],
-    sortLegend: {
-      customOrder: ['销售额', '数量', '利润'],
-    },
-  }
-
-  return <VSeedRender vseed={vseedConfig} />
-}
-```
-
 ## 自定义排序(图例Id)
 
 自定义排序(图例Id)
@@ -42708,6 +42637,77 @@ export default () => {
     ],
     sortLegend: {
       customOrder: ['数量-count', '销售额-sales', '利润-profit'],
+    },
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 自定义排序(图例名称)
+
+自定义排序(图例名称)
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'line',
+    dataset: [
+      {
+        date: '2019',
+        profit: 10,
+        sales: 20,
+        count: 50,
+      },
+      {
+        date: '2020',
+        profit: 30,
+        sales: 60,
+        count: 50,
+      },
+      {
+        date: '2021',
+        profit: 30,
+        sales: 60,
+        count: 50,
+      },
+      {
+        date: '2022',
+        profit: 50,
+        sales: 100,
+        count: 50,
+      },
+      {
+        date: '2023',
+        profit: 40,
+        sales: 80,
+        count: 50,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'date',
+        alias: '日期',
+      },
+    ],
+    measures: [
+      {
+        id: 'profit',
+        alias: '利润',
+      },
+      {
+        id: 'sales',
+        alias: '销售额',
+      },
+      {
+        id: 'count',
+        alias: '数量',
+      },
+    ],
+    sortLegend: {
+      customOrder: ['销售额', '数量', '利润'],
     },
   }
 
@@ -146691,7 +146691,7 @@ export default () => {
         {
           field: 'salary',
           aggr: {
-            func: 'variancePop',
+            func: 'variance_pop',
           },
           alias: 'salary_variance_pop',
         },
@@ -148422,7 +148422,10 @@ export default () => {
         op: 'and',
         conditions: [
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: '>',
             value: 5000,
           },
@@ -148521,7 +148524,10 @@ export default () => {
         op: 'and',
         conditions: [
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: 'between',
             value: [5000, 12000],
           },
@@ -148621,6 +148627,9 @@ export default () => {
         conditions: [
           {
             field: 'department',
+            aggr: {
+              func: 'min',
+            },
             op: 'in',
             value: ['HR', 'Engineering'],
           },
@@ -148720,6 +148729,9 @@ export default () => {
         conditions: [
           {
             field: 'department',
+            aggr: {
+              func: 'min',
+            },
             op: 'in',
             value: 'HR',
           },
@@ -148818,7 +148830,10 @@ export default () => {
         op: 'and',
         conditions: [
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: 'is not null',
           },
         ],
@@ -148916,7 +148931,10 @@ export default () => {
         op: 'and',
         conditions: [
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: 'is null',
           },
         ],
@@ -149015,7 +149033,10 @@ export default () => {
         conditions: [
           {
             field: 'salary',
-            op: 'max',
+            aggr: {
+              func: 'max',
+            },
+            op: '=',
             value: 9000,
           },
         ],
@@ -149114,7 +149135,10 @@ export default () => {
         conditions: [
           {
             field: 'salary',
-            op: 'min',
+            aggr: {
+              func: 'min',
+            },
+            op: '=',
             value: 5000,
           },
         ],
@@ -149219,12 +149243,18 @@ export default () => {
         op: 'and',
         conditions: [
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: '>',
             value: 5000,
           },
           {
-            field: 'Count',
+            field: 'salary',
+            aggr: {
+              func: 'count',
+            },
             op: '>',
             value: 1,
           },
@@ -149323,7 +149353,10 @@ export default () => {
         op: 'and',
         conditions: [
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: 'not between',
             value: [5000, 12000],
           },
@@ -149423,6 +149456,9 @@ export default () => {
         conditions: [
           {
             field: 'department',
+            aggr: {
+              func: 'min',
+            },
             op: 'not in',
             value: 'HR',
           },
@@ -149522,6 +149558,9 @@ export default () => {
         conditions: [
           {
             field: 'department',
+            aggr: {
+              func: 'min',
+            },
             op: 'not in',
             value: ['Marketing'],
           },
@@ -149620,12 +149659,18 @@ export default () => {
         op: 'or',
         conditions: [
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: '>',
             value: 15000,
           },
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: '<',
             value: 5000,
           },
@@ -151085,8 +151130,8 @@ export default () => {
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
-        builder.havingFilter.add('销售额', (node) => {
-          node.setOperator('gt').setValue(1000000)
+        builder.havingFilter.add('sales', (node) => {
+          node.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000)
         })
       }
       applyBuilder(builder)
@@ -151135,8 +151180,8 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter
-          .add('销售额', (n) => n.setOperator('gt').setValue(1000000))
-          .add('利润', (n) => n.setOperator('gt').setValue(200000))
+          .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
+          .add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(200000))
       }
       applyBuilder(builder)
 
@@ -151179,8 +151224,8 @@ export default () => {
           id: 'root',
           op: 'and',
           conditions: [
-            { id: 'having-1', field: '销售额', op: 'gt', value: 1000000 },
-            { id: 'having-2', field: '利润', op: 'gt', value: 200000 },
+            { id: 'having-1', field: 'sales', op: 'gt', value: 1000000, aggregate: { func: 'sum' } },
+            { id: 'having-2', field: 'profit', op: 'gt', value: 200000, aggregate: { func: 'sum' } },
           ],
         },
         theme: 'light',
@@ -151233,7 +151278,7 @@ export default () => {
         havingFilter: {
           id: 'root',
           op: 'and',
-          conditions: [{ id: 'old-1', field: '销售额', op: 'gt', value: 999999 }],
+          conditions: [{ id: 'old-1', field: 'sales', op: 'gt', value: 999999, aggregate: { func: 'sum' } }],
         },
         theme: 'light',
         locale: 'zh-CN',
@@ -151244,10 +151289,10 @@ export default () => {
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.clear()
         builder.havingFilter.addGroup('and', (g) => {
-          g.add('销售额', (n) => n.setOperator('gte').setValue(100000))
+          g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(100000))
           g.addGroup('or', (sub) => {
-            sub.add('利润', (n) => n.setOperator('gt').setValue(20000))
-            sub.add('数量', (n) => n.setOperator('gte').setValue(50))
+            sub.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(20000))
+            sub.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(50))
           })
         })
       }
@@ -151300,12 +151345,12 @@ export default () => {
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.addGroup('or', (root) => {
           root.addGroup('and', (g1) => {
-            g1.add('销售额', (n) => n.setOperator('gt').setValue(500000))
-            g1.add('利润', (n) => n.setOperator('gt').setValue(50000))
+            g1.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(500000))
+            g1.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(50000))
           })
           root.addGroup('and', (g2) => {
-            g2.add('数量', (n) => n.setOperator('gt').setValue(100))
-            g2.add('平均折扣', (n) => n.setOperator('lt').setValue(0.3))
+            g2.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100))
+            g2.add('discount', (n) => n.setAggregate({ func: 'avg' }).setOperator('lt').setValue(0.3))
           })
         })
       }
@@ -151355,8 +151400,8 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter
-          .add('销售额', (n) => n.setOperator('gt').setValue(100000))
-          .add('利润', (n) => n.setOperator('gt').setValue(10000))
+          .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
+          .add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(10000))
         const json = builder.havingFilter.toJSON().conditions
         const salesId = json[0].id
         const profitId = json[1].id
@@ -151409,7 +151454,11 @@ export default () => {
           id: 'root',
           op: 'and',
           conditions: [
-            { id: 'group-1', op: 'or', conditions: [{ id: 'cond-1', field: '销售额', op: 'gt', value: 500000 }] },
+            {
+              id: 'group-1',
+              op: 'or',
+              conditions: [{ id: 'cond-1', field: 'sales', op: 'gt', value: 500000, aggregate: { func: 'sum' } }],
+            },
           ],
         },
         theme: 'light',
@@ -151420,8 +151469,8 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.updateGroup('group-1', (group) => {
-          group.add('利润', (n) => n.setOperator('gt').setValue(100000))
-          group.add('数量', (n) => n.setOperator('gte').setValue(200))
+          group.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
+          group.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(200))
         })
       }
       applyBuilder(builder)
@@ -151469,8 +151518,8 @@ export default () => {
               id: 'group-1',
               op: 'and',
               conditions: [
-                { id: 'cond-1', field: '销售额', op: 'gt', value: 100000 },
-                { id: 'cond-2', field: '利润', op: 'gt', value: 10000 },
+                { id: 'cond-1', field: 'sales', op: 'gt', value: 100000, aggregate: { func: 'sum' } },
+                { id: 'cond-2', field: 'profit', op: 'gt', value: 10000, aggregate: { func: 'sum' } },
               ],
             },
           ],
@@ -151533,10 +151582,10 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter
-          .add('销售额', (n) => n.setOperator('gt').setValue(500000))
+          .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(500000))
           .addGroup('or', (group) => {
-            group.add('利润', (n) => n.setOperator('gt').setValue(100000))
-            group.add('数量', (n) => n.setOperator('gte').setValue(30))
+            group.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
+            group.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(30))
           })
       }
       applyBuilder(builder)
@@ -151588,8 +151637,8 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.addGroup('and', (g) => {
-          g.add('平均折扣', (n) => n.setOperator('lt').setValue(0.2))
-          g.add('销售额', (n) => n.setOperator('gt').setValue(100000))
+          g.add('discount', (n) => n.setAggregate({ func: 'avg' }).setOperator('lt').setValue(0.2))
+          g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
         })
       }
       applyBuilder(builder)
@@ -151639,10 +151688,10 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.addGroup('and', (outer) => {
-          outer.add('销售额', (n) => n.setOperator('gt').setValue(1000000))
+          outer.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
           outer.addGroup('or', (inner) => {
-            inner.add('利润', (n) => n.setOperator('gt').setValue(200000))
-            inner.add('数量', (n) => n.setOperator('gte').setValue(50))
+            inner.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(200000))
+            inner.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(50))
           })
         })
       }
@@ -151692,8 +151741,8 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.addGroup('or', (group) => {
-          group.add('销售额', (n) => n.setOperator('gt').setValue(1000000))
-          group.add('利润', (n) => n.setOperator('gt').setValue(200000))
+          group.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
+          group.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(200000))
         })
       }
       applyBuilder(builder)
@@ -151743,9 +151792,9 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.addGroup('and', (g) => {
-          g.add('利润', (n) => n.setOperator('gt').setValue(0))
-          g.add('数量', (n) => n.setOperator('gt').setValue(20))
-          g.add('销售额', (n) => n.setOperator('gt').setValue(10000))
+          g.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(0))
+          g.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(20))
+          g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(10000))
         })
       }
       applyBuilder(builder)
@@ -151793,8 +151842,8 @@ export default () => {
               id: 'group-1',
               op: 'and',
               conditions: [
-                { id: 'cond-1', field: '销售额', op: 'gt', value: 1000000 },
-                { id: 'cond-2', field: '利润', op: 'gt', value: 200000 },
+                { id: 'cond-1', field: 'sales', op: 'gt', value: 1000000, aggregate: { func: 'sum' } },
+                { id: 'cond-2', field: 'profit', op: 'gt', value: 200000, aggregate: { func: 'sum' } },
               ],
             },
           ],
@@ -151857,8 +151906,8 @@ export default () => {
       const applyBuilder = (builder: VBIBuilder) => {
         builder.whereFilter.add('product_type', (n) => n.setOperator('=').setValue('办公用品'))
         builder.havingFilter.addGroup('or', (g) => {
-          g.add('销售额', (n) => n.setOperator('gt').setValue(50000))
-          g.add('利润', (n) => n.setOperator('gt').setValue(10000))
+          g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(50000))
+          g.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(10000))
         })
       }
       applyBuilder(builder)
@@ -151902,8 +151951,8 @@ export default () => {
           id: 'root',
           op: 'and',
           conditions: [
-            { id: 'having-1', field: '销售额', op: 'gt', value: 1000000 },
-            { id: 'having-2', field: '利润', op: 'gt', value: 200000 },
+            { id: 'having-1', field: 'sales', op: 'gt', value: 1000000, aggregate: { func: 'sum' } },
+            { id: 'having-2', field: 'profit', op: 'gt', value: 200000, aggregate: { func: 'sum' } },
           ],
         },
         theme: 'light',
@@ -154695,6 +154744,18 @@ getOperator(): string | undefined
 
 **返回**: `string \| undefined`
 
+### getAggregate
+
+获取聚合配置
+
+**定义**:
+
+```typescript
+getAggregate(): VBIHavingAggregate | undefined
+```
+
+**返回**: `VBIHavingAggregate \| undefined`
+
 ### setValue
 
 设置过滤条件的值
@@ -154730,6 +154791,24 @@ setOperator(operator: string): this
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `operator` | string | - 操作符 |
+
+### setAggregate
+
+设置聚合配置
+
+**定义**:
+
+```typescript
+setAggregate(aggregate: VBIHavingAggregate): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `aggregate` | VBIHavingAggregate | - 聚合配置 |
 
 ### toJSON
 

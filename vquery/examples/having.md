@@ -27,7 +27,10 @@ export default () => {
         op: 'and',
         conditions: [
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: '>',
             value: 5000,
           },
@@ -126,7 +129,10 @@ export default () => {
         op: 'and',
         conditions: [
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: 'between',
             value: [5000, 12000],
           },
@@ -226,6 +232,9 @@ export default () => {
         conditions: [
           {
             field: 'department',
+            aggr: {
+              func: 'min',
+            },
             op: 'in',
             value: ['HR', 'Engineering'],
           },
@@ -325,6 +334,9 @@ export default () => {
         conditions: [
           {
             field: 'department',
+            aggr: {
+              func: 'min',
+            },
             op: 'in',
             value: 'HR',
           },
@@ -423,7 +435,10 @@ export default () => {
         op: 'and',
         conditions: [
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: 'is not null',
           },
         ],
@@ -521,7 +536,10 @@ export default () => {
         op: 'and',
         conditions: [
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: 'is null',
           },
         ],
@@ -620,7 +638,10 @@ export default () => {
         conditions: [
           {
             field: 'salary',
-            op: 'max',
+            aggr: {
+              func: 'max',
+            },
+            op: '=',
             value: 9000,
           },
         ],
@@ -719,7 +740,10 @@ export default () => {
         conditions: [
           {
             field: 'salary',
-            op: 'min',
+            aggr: {
+              func: 'min',
+            },
+            op: '=',
             value: 5000,
           },
         ],
@@ -824,12 +848,18 @@ export default () => {
         op: 'and',
         conditions: [
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: '>',
             value: 5000,
           },
           {
-            field: 'Count',
+            field: 'salary',
+            aggr: {
+              func: 'count',
+            },
             op: '>',
             value: 1,
           },
@@ -928,7 +958,10 @@ export default () => {
         op: 'and',
         conditions: [
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: 'not between',
             value: [5000, 12000],
           },
@@ -1028,6 +1061,9 @@ export default () => {
         conditions: [
           {
             field: 'department',
+            aggr: {
+              func: 'min',
+            },
             op: 'not in',
             value: 'HR',
           },
@@ -1127,6 +1163,9 @@ export default () => {
         conditions: [
           {
             field: 'department',
+            aggr: {
+              func: 'min',
+            },
             op: 'not in',
             value: ['Marketing'],
           },
@@ -1225,12 +1264,18 @@ export default () => {
         op: 'or',
         conditions: [
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: '>',
             value: 15000,
           },
           {
-            field: 'Total Salary',
+            field: 'salary',
+            aggr: {
+              func: 'sum',
+            },
             op: '<',
             value: 5000,
           },

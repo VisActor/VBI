@@ -922,7 +922,7 @@ export default () => {
         {
           field: 'salary',
           aggr: {
-            func: 'variancePop',
+            func: 'variance_pop',
           },
           alias: 'salary_variance_pop',
         },

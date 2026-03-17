@@ -32,8 +32,8 @@ export default () => {
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
-        builder.havingFilter.add('销售额', (node) => {
-          node.setOperator('gt').setValue(1000000)
+        builder.havingFilter.add('sales', (node) => {
+          node.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000)
         })
       }
       applyBuilder(builder)
@@ -82,8 +82,8 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter
-          .add('销售额', (n) => n.setOperator('gt').setValue(1000000))
-          .add('利润', (n) => n.setOperator('gt').setValue(200000))
+          .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
+          .add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(200000))
       }
       applyBuilder(builder)
 
@@ -126,8 +126,8 @@ export default () => {
           id: 'root',
           op: 'and',
           conditions: [
-            { id: 'having-1', field: '销售额', op: 'gt', value: 1000000 },
-            { id: 'having-2', field: '利润', op: 'gt', value: 200000 },
+            { id: 'having-1', field: 'sales', op: 'gt', value: 1000000, aggregate: { func: 'sum' } },
+            { id: 'having-2', field: 'profit', op: 'gt', value: 200000, aggregate: { func: 'sum' } },
           ],
         },
         theme: 'light',
@@ -180,7 +180,7 @@ export default () => {
         havingFilter: {
           id: 'root',
           op: 'and',
-          conditions: [{ id: 'old-1', field: '销售额', op: 'gt', value: 999999 }],
+          conditions: [{ id: 'old-1', field: 'sales', op: 'gt', value: 999999, aggregate: { func: 'sum' } }],
         },
         theme: 'light',
         locale: 'zh-CN',
@@ -191,10 +191,10 @@ export default () => {
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.clear()
         builder.havingFilter.addGroup('and', (g) => {
-          g.add('销售额', (n) => n.setOperator('gte').setValue(100000))
+          g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(100000))
           g.addGroup('or', (sub) => {
-            sub.add('利润', (n) => n.setOperator('gt').setValue(20000))
-            sub.add('数量', (n) => n.setOperator('gte').setValue(50))
+            sub.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(20000))
+            sub.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(50))
           })
         })
       }
@@ -247,12 +247,12 @@ export default () => {
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.addGroup('or', (root) => {
           root.addGroup('and', (g1) => {
-            g1.add('销售额', (n) => n.setOperator('gt').setValue(500000))
-            g1.add('利润', (n) => n.setOperator('gt').setValue(50000))
+            g1.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(500000))
+            g1.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(50000))
           })
           root.addGroup('and', (g2) => {
-            g2.add('数量', (n) => n.setOperator('gt').setValue(100))
-            g2.add('平均折扣', (n) => n.setOperator('lt').setValue(0.3))
+            g2.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100))
+            g2.add('discount', (n) => n.setAggregate({ func: 'avg' }).setOperator('lt').setValue(0.3))
           })
         })
       }
@@ -302,8 +302,8 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter
-          .add('销售额', (n) => n.setOperator('gt').setValue(100000))
-          .add('利润', (n) => n.setOperator('gt').setValue(10000))
+          .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
+          .add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(10000))
         const json = builder.havingFilter.toJSON().conditions
         const salesId = json[0].id
         const profitId = json[1].id
@@ -356,7 +356,11 @@ export default () => {
           id: 'root',
           op: 'and',
           conditions: [
-            { id: 'group-1', op: 'or', conditions: [{ id: 'cond-1', field: '销售额', op: 'gt', value: 500000 }] },
+            {
+              id: 'group-1',
+              op: 'or',
+              conditions: [{ id: 'cond-1', field: 'sales', op: 'gt', value: 500000, aggregate: { func: 'sum' } }],
+            },
           ],
         },
         theme: 'light',
@@ -367,8 +371,8 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.updateGroup('group-1', (group) => {
-          group.add('利润', (n) => n.setOperator('gt').setValue(100000))
-          group.add('数量', (n) => n.setOperator('gte').setValue(200))
+          group.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
+          group.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(200))
         })
       }
       applyBuilder(builder)
@@ -416,8 +420,8 @@ export default () => {
               id: 'group-1',
               op: 'and',
               conditions: [
-                { id: 'cond-1', field: '销售额', op: 'gt', value: 100000 },
-                { id: 'cond-2', field: '利润', op: 'gt', value: 10000 },
+                { id: 'cond-1', field: 'sales', op: 'gt', value: 100000, aggregate: { func: 'sum' } },
+                { id: 'cond-2', field: 'profit', op: 'gt', value: 10000, aggregate: { func: 'sum' } },
               ],
             },
           ],
@@ -480,10 +484,10 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter
-          .add('销售额', (n) => n.setOperator('gt').setValue(500000))
+          .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(500000))
           .addGroup('or', (group) => {
-            group.add('利润', (n) => n.setOperator('gt').setValue(100000))
-            group.add('数量', (n) => n.setOperator('gte').setValue(30))
+            group.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
+            group.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(30))
           })
       }
       applyBuilder(builder)
@@ -535,8 +539,8 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.addGroup('and', (g) => {
-          g.add('平均折扣', (n) => n.setOperator('lt').setValue(0.2))
-          g.add('销售额', (n) => n.setOperator('gt').setValue(100000))
+          g.add('discount', (n) => n.setAggregate({ func: 'avg' }).setOperator('lt').setValue(0.2))
+          g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
         })
       }
       applyBuilder(builder)
@@ -586,10 +590,10 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.addGroup('and', (outer) => {
-          outer.add('销售额', (n) => n.setOperator('gt').setValue(1000000))
+          outer.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
           outer.addGroup('or', (inner) => {
-            inner.add('利润', (n) => n.setOperator('gt').setValue(200000))
-            inner.add('数量', (n) => n.setOperator('gte').setValue(50))
+            inner.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(200000))
+            inner.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(50))
           })
         })
       }
@@ -639,8 +643,8 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.addGroup('or', (group) => {
-          group.add('销售额', (n) => n.setOperator('gt').setValue(1000000))
-          group.add('利润', (n) => n.setOperator('gt').setValue(200000))
+          group.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
+          group.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(200000))
         })
       }
       applyBuilder(builder)
@@ -690,9 +694,9 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.addGroup('and', (g) => {
-          g.add('利润', (n) => n.setOperator('gt').setValue(0))
-          g.add('数量', (n) => n.setOperator('gt').setValue(20))
-          g.add('销售额', (n) => n.setOperator('gt').setValue(10000))
+          g.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(0))
+          g.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(20))
+          g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(10000))
         })
       }
       applyBuilder(builder)
@@ -740,8 +744,8 @@ export default () => {
               id: 'group-1',
               op: 'and',
               conditions: [
-                { id: 'cond-1', field: '销售额', op: 'gt', value: 1000000 },
-                { id: 'cond-2', field: '利润', op: 'gt', value: 200000 },
+                { id: 'cond-1', field: 'sales', op: 'gt', value: 1000000, aggregate: { func: 'sum' } },
+                { id: 'cond-2', field: 'profit', op: 'gt', value: 200000, aggregate: { func: 'sum' } },
               ],
             },
           ],
@@ -804,8 +808,8 @@ export default () => {
       const applyBuilder = (builder: VBIBuilder) => {
         builder.whereFilter.add('product_type', (n) => n.setOperator('=').setValue('办公用品'))
         builder.havingFilter.addGroup('or', (g) => {
-          g.add('销售额', (n) => n.setOperator('gt').setValue(50000))
-          g.add('利润', (n) => n.setOperator('gt').setValue(10000))
+          g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(50000))
+          g.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(10000))
         })
       }
       applyBuilder(builder)
@@ -849,8 +853,8 @@ export default () => {
           id: 'root',
           op: 'and',
           conditions: [
-            { id: 'having-1', field: '销售额', op: 'gt', value: 1000000 },
-            { id: 'having-2', field: '利润', op: 'gt', value: 200000 },
+            { id: 'having-1', field: 'sales', op: 'gt', value: 1000000, aggregate: { func: 'sum' } },
+            { id: 'having-2', field: 'profit', op: 'gt', value: 200000, aggregate: { func: 'sum' } },
           ],
         },
         theme: 'light',

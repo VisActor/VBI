@@ -318,9 +318,9 @@ export default () => {
 }
 ```
 
-## 透视维度
+## 行维度
 
-透视维度
+行维度
 
 ```tsx preview
 import { VSeedRender } from '@components'
@@ -336,7 +336,7 @@ export default () => {
       {
         id: 'date',
         alias: '日期',
-        encoding: 'column',
+        encoding: 'row',
       },
       {
         id: 'region',
@@ -478,9 +478,9 @@ export default () => {
 }
 ```
 
-## 行维度
+## 透视维度
 
-行维度
+透视维度
 
 ```tsx preview
 import { VSeedRender } from '@components'
@@ -496,7 +496,7 @@ export default () => {
       {
         id: 'date',
         alias: '日期',
-        encoding: 'row',
+        encoding: 'column',
       },
       {
         id: 'region',
