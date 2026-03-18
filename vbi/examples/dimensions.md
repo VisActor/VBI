@@ -4,6 +4,58 @@ import { registerDemoConnector } from '@components'
 
 {registerDemoConnector()}
 
+## add-date-dimension-year
+
+添加按年聚合的日期维度
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.dimensions.add('order_date', (node) => {
+          node.setAlias('订单日期')
+        })
+        const dimensionId = builder.dimensions.find((node) => node.getField() === 'order_date')?.getId()
+        if (dimensionId) {
+          builder.dimensions.update(dimensionId, (node) => {
+            node.setAlias('年份').setAggregate({ func: 'toYear' })
+          })
+        }
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
 ## add-dimension
 
 添加维度
@@ -100,6 +152,56 @@ export default () => {
 }
 ```
 
+## mixed-date-and-normal-dimensions
+
+普通维度与按季度聚合的日期维度混合分组
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.dimensions
+          .add('area', (node) => {
+            node.setAlias('区域')
+          })
+          .add('order_date', (node) => {
+            node.setAlias('季度').setAggregate({ func: 'toQuarter' })
+          })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
 ## remove-dimension
 
 删除维度
@@ -137,6 +239,59 @@ export default () => {
             node.setAlias('待删除的产品类型')
           })
           builder.dimensions.remove(dimensionId)
+        }
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## update-date-dimension-month
+
+将已有日期维度更新为按月聚合
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [{ field: 'order_date', alias: '原订单日期' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'order_date')?.id
+        if (dimensionId) {
+          const dimension = builder.dimensions.find((node) => node.getId() === dimensionId)
+          if (dimension) {
+            dimension.setAlias('待调整的订单日期')
+          }
+          builder.dimensions.update(dimensionId, (node) => {
+            node.setAlias('月份').setAggregate({ func: 'toMonth' })
+          })
         }
       }
       applyBuilder(builder)

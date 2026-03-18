@@ -169,7 +169,7 @@
 - [locale](/VBI/vbi/api/locale.md): 语言构建器，用于设置和获取当前语言
 - [limit](/VBI/vbi/api/limit.md): 数据量限制构建器，用于设置和获取当前 limit
 - [undoManager](/VBI/vbi/api/undo-manager.md): 撤销/重做管理器，提供基于 YJS 的撤销和重做功能，支持栈管理和历史清除操作
-- [标签](/VBI/vbi/examples/tags.md): 共 51 个示例，0 个标签。
+- [标签](/VBI/vbi/examples/tags.md): 共 56 个示例，0 个标签。
 
 ## Other
 

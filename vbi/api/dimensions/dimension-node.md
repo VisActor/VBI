@@ -60,6 +60,36 @@ setAlias(alias: string): this
 | --- | --- | --- |
 | `alias` | string | - 显示名称 |
 
+### setAggregate
+
+设置日期聚合函数
+
+**定义**:
+
+```typescript
+setAggregate(aggregate: NonNullable<VBIDimension['aggregate']>): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `aggregate` | NonNullable\<VBIDimension\['aggregate']> | - 日期聚合配置 |
+
+### clearAggregate
+
+清除日期聚合函数
+
+**定义**:
+
+```typescript
+clearAggregate(): this
+```
+
+**返回**: `this`
+
 ### toJSON
 
 导出为 JSON

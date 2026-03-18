@@ -19,33 +19,38 @@
 
 ## dimensions
 
-| 示例                                                            | 描述                     | 标签 |
-| --------------------------------------------------------------- | ------------------------ | ---- |
-| [add-dimension](/VBI/vbi/examples/dimensions.md#add-dimension)                     | 添加维度                 | -    |
-| [add-multiple-dimensions](/VBI/vbi/examples/dimensions.md#add-multiple-dimensions) | 添加多个维度（链式调用） | -    |
-| [remove-dimension](/VBI/vbi/examples/dimensions.md#remove-dimension)               | 删除维度                 | -    |
-| [update-dimension](/VBI/vbi/examples/dimensions.md#update-dimension)               | 更新维度                 | -    |
+| 示例                                                                              | 描述                                   | 标签 |
+| --------------------------------------------------------------------------------- | -------------------------------------- | ---- |
+| [add-date-dimension-year](/VBI/vbi/examples/dimensions.md#add-date-dimension-year)                   | 添加按年聚合的日期维度                 | -    |
+| [add-dimension](/VBI/vbi/examples/dimensions.md#add-dimension)                                       | 添加维度                               | -    |
+| [add-multiple-dimensions](/VBI/vbi/examples/dimensions.md#add-multiple-dimensions)                   | 添加多个维度（链式调用）               | -    |
+| [mixed-date-and-normal-dimensions](/VBI/vbi/examples/dimensions.md#mixed-date-and-normal-dimensions) | 普通维度与按季度聚合的日期维度混合分组 | -    |
+| [remove-dimension](/VBI/vbi/examples/dimensions.md#remove-dimension)                                 | 删除维度                               | -    |
+| [update-date-dimension-month](/VBI/vbi/examples/dimensions.md#update-date-dimension-month)           | 将已有日期维度更新为按月聚合           | -    |
+| [update-dimension](/VBI/vbi/examples/dimensions.md#update-dimension)                                 | 更新维度                               | -    |
 
 ## havingFilter
 
-| 示例                                                                                | 描述                                                                                              | 标签 |
-| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ---- |
-| [add-having-filter](/VBI/vbi/examples/havingFilter.md#add-having-filter)                               | 按区域分组后筛选销售额超过百万的高业绩区域                                                        | -    |
-| [add-multiple-having-filter](/VBI/vbi/examples/havingFilter.md#add-multiple-having-filter)             | 链式添加多个Having条件筛选高销售额且高利润的区域                                                  | -    |
-| [clear-having-filter](/VBI/vbi/examples/havingFilter.md#clear-having-filter)                           | 清空所有Having过滤条件，展示全量分组聚合结果                                                      | -    |
-| [having-clear-and-rebuild](/VBI/vbi/examples/havingFilter.md#having-clear-and-rebuild)                 | 清除已有having条件后重新构建全新的分组筛选，模拟用户重置筛选面板后重新配置                        | -    |
-| [having-deeply-nested-groups](/VBI/vbi/examples/havingFilter.md#having-deeply-nested-groups)           | 三层嵌套分组：OR(AND(销售额超50万, 利润超5万), AND(数量超100, 折扣均值低于0.3))，模拟复杂业务筛选 | -    |
-| [having-find-and-update](/VBI/vbi/examples/havingFilter.md#having-find-and-update)                     | 先添加having条件，然后通过find查找并动态更新阈值和操作符，模拟用户交互式调整筛选条件              | -    |
-| [having-group-add-to-existing](/VBI/vbi/examples/havingFilter.md#having-group-add-to-existing)         | 向已有的having分组中追加新条件，模拟用户逐步细化筛选规则                                          | -    |
-| [having-group-remove-condition](/VBI/vbi/examples/havingFilter.md#having-group-remove-condition)       | 从已有的having分组中移除特定条件，模拟用户取消某个筛选项                                          | -    |
-| [having-mix-filters-and-groups](/VBI/vbi/examples/havingFilter.md#having-mix-filters-and-groups)       | 混合使用独立过滤条件和OR分组：销售额超50万 AND (利润超10万 OR 数量不少于30)                       | -    |
-| [having-multi-dimension-aggregate](/VBI/vbi/examples/havingFilter.md#having-multi-dimension-aggregate) | 按品类和区域双维度分组，筛选平均折扣低于20%且总销售额超过10万的组合，分析高价值低折扣业务         | -    |
-| [having-nested-groups](/VBI/vbi/examples/havingFilter.md#having-nested-groups)                         | 嵌套分组：AND(销售额超100万, OR(利润超20万, 数量不少于50))                                        | -    |
-| [having-or-group](/VBI/vbi/examples/havingFilter.md#having-or-group)                                   | 使用OR分组筛选高销售额或高利润的区域                                                              | -    |
-| [having-scatter-profit-analysis](/VBI/vbi/examples/havingFilter.md#having-scatter-profit-analysis)     | 散点图分析：按品类分组筛选高利润率且交易量超20笔的品类，定位优质业务                              | -    |
-| [having-update-group-operator](/VBI/vbi/examples/havingFilter.md#having-update-group-operator)         | 更新已有Having分组的逻辑操作符从AND改为OR                                                         | -    |
-| [having-with-where-combined](/VBI/vbi/examples/havingFilter.md#having-with-where-combined)             | where与having联合筛选：先按where筛选办公用品品类，再按having筛选销售额超5万或利润超1万的省份      | -    |
-| [remove-having-filter](/VBI/vbi/examples/havingFilter.md#remove-having-filter)                         | 移除多余的Having过滤条件，只保留利润筛选                                                          | -    |
+| 示例                                                                                                      | 描述                                                                                                                                 | 标签 |
+| --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---- |
+| [add-having-filter](/VBI/vbi/examples/havingFilter.md#add-having-filter)                                                     | 按区域分组后筛选销售额超过百万的高业绩区域                                                                                           | -    |
+| [add-multiple-having-filter](/VBI/vbi/examples/havingFilter.md#add-multiple-having-filter)                                   | 链式添加多个Having条件筛选高销售额且高利润的区域                                                                                     | -    |
+| [clear-having-filter](/VBI/vbi/examples/havingFilter.md#clear-having-filter)                                                 | 清空所有Having过滤条件，展示全量分组聚合结果                                                                                         | -    |
+| [having-clear-and-rebuild](/VBI/vbi/examples/havingFilter.md#having-clear-and-rebuild)                                       | 清除已有having条件后重新构建全新的分组筛选，模拟用户重置筛选面板后重新配置                                                           | -    |
+| [having-deeply-nested-groups](/VBI/vbi/examples/havingFilter.md#having-deeply-nested-groups)                                 | 三层嵌套分组：OR(AND(销售额超50万, 利润超5万), AND(数量超100, 折扣均值低于0.3))，模拟复杂业务筛选                                    | -    |
+| [having-empty-dsl-compose-target](/VBI/vbi/examples/havingFilter.md#having-empty-dsl-compose-target)                         | 从空DSL出发，通过builder拼装where/having/measures/dimensions，包含sum与countDistinct聚合的having条件组合                             | -    |
+| [having-field-not-in-measures-and-dimensions](/VBI/vbi/examples/havingFilter.md#having-field-not-in-measures-and-dimensions) | 初始化空DSL，仅通过builder添加维度area与指标sales，并在having中使用未出现在measures/dimensions里的profit字段（SUM(profit) > 100000） | -    |
+| [having-find-and-update](/VBI/vbi/examples/havingFilter.md#having-find-and-update)                                           | 先添加having条件，然后通过find查找并动态更新阈值和操作符，模拟用户交互式调整筛选条件                                                 | -    |
+| [having-group-add-to-existing](/VBI/vbi/examples/havingFilter.md#having-group-add-to-existing)                               | 向已有的having分组中追加新条件，模拟用户逐步细化筛选规则                                                                             | -    |
+| [having-group-remove-condition](/VBI/vbi/examples/havingFilter.md#having-group-remove-condition)                             | 从已有的having分组中移除特定条件，模拟用户取消某个筛选项                                                                             | -    |
+| [having-mix-filters-and-groups](/VBI/vbi/examples/havingFilter.md#having-mix-filters-and-groups)                             | 混合使用独立过滤条件和OR分组：销售额超50万 AND (利润超10万 OR 数量不少于30)                                                          | -    |
+| [having-multi-dimension-aggregate](/VBI/vbi/examples/havingFilter.md#having-multi-dimension-aggregate)                       | 按品类和区域双维度分组，筛选平均折扣低于20%且总销售额超过10万的组合，分析高价值低折扣业务                                            | -    |
+| [having-nested-groups](/VBI/vbi/examples/havingFilter.md#having-nested-groups)                                               | 嵌套分组：AND(销售额超100万, OR(利润超20万, 数量不少于50))                                                                           | -    |
+| [having-or-group](/VBI/vbi/examples/havingFilter.md#having-or-group)                                                         | 使用OR分组筛选高销售额或高利润的区域                                                                                                 | -    |
+| [having-scatter-profit-analysis](/VBI/vbi/examples/havingFilter.md#having-scatter-profit-analysis)                           | 散点图分析：按品类分组筛选高利润率且交易量超20笔的品类，定位优质业务                                                                 | -    |
+| [having-update-group-operator](/VBI/vbi/examples/havingFilter.md#having-update-group-operator)                               | 更新已有Having分组的逻辑操作符从AND改为OR                                                                                            | -    |
+| [having-with-where-combined](/VBI/vbi/examples/havingFilter.md#having-with-where-combined)                                   | where与having联合筛选：先按where筛选办公用品品类，再按having筛选销售额超5万或利润超1万的省份                                         | -    |
+| [remove-having-filter](/VBI/vbi/examples/havingFilter.md#remove-having-filter)                                               | 移除多余的Having过滤条件，只保留利润筛选                                                                                             | -    |
 
 ## locale
 

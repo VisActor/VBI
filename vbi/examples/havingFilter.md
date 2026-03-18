@@ -270,6 +270,119 @@ export default () => {
 }
 ```
 
+## having-empty-dsl-compose-target
+
+从空DSL出发，通过builder拼装where/having/measures/dimensions，包含sum与countDistinct聚合的having条件组合
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'line',
+        dimensions: [],
+        measures: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('table')
+        builder.theme.setTheme('light')
+        builder.locale.setLocale('zh-CN')
+        builder.whereFilter.add('profit', (n) => n.setOperator('<').setValue(0))
+        const whereConds = builder.whereFilter.getConditions()
+        whereConds.get(0).set('id', 'c84825ed-547a-48f0-b4d9-55ebe53aab8c')
+        builder.havingFilter.clear()
+        builder.havingFilter.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('lt').setValue(-100000))
+        builder.havingFilter.add('province', (n) =>
+          n.setAggregate({ func: 'countDistinct' }).setOperator('gt').setValue(4),
+        )
+        const havingConds = builder.havingFilter.getConditions()
+        havingConds.get(0).set('id', 'a6f2f16a-e0fc-4bdc-9729-bbe3a105cfca')
+        havingConds.get(1).set('id', '01c004d2-4041-40ee-a18b-a18fc0cea416')
+        builder.measures.add('sales', (n) => n.setAlias('sales').setEncoding('yAxis').setAggregate({ func: 'sum' }))
+        builder.measures.add('country_or_region', (n) =>
+          n.setAlias('country_or_region').setEncoding('yAxis').setAggregate({ func: 'count' }),
+        )
+        const measures = builder.dsl.get('measures')
+        measures.get(0).set('id', 'a5ba6c4a-31dc-4b2c-a38f-9f23c2bbe850')
+        measures.get(1).set('id', '49f3b33d-4ede-436c-8be9-a51619236916')
+        builder.dimensions.add('area', (n) => n.setAlias('area'))
+        const dimensions = builder.dsl.get('dimensions')
+        dimensions.get(0).set('id', 'c3583433-a2cc-4234-85ff-75ae2472b674')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## having-field-not-in-measures-and-dimensions
+
+初始化空DSL，仅通过builder添加维度area与指标sales，并在having中使用未出现在measures/dimensions里的profit字段（SUM(profit) > 100000）
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'line',
+        dimensions: [],
+        measures: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('bar')
+        builder.dimensions.add('area', (n) => n.setAlias('区域'))
+        builder.measures.add('sales', (n) => n.setAlias('销售额').setEncoding('yAxis').setAggregate({ func: 'sum' }))
+        builder.havingFilter.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
+        builder.limit.setLimit(20)
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
 ## having-find-and-update
 
 先添加having条件，然后通过find查找并动态更新阈值和操作符，模拟用户交互式调整筛选条件

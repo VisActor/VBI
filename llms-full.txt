@@ -150349,33 +150349,38 @@ url: /VBI/vbi/examples/index.md
 
 ## dimensions
 
-| 示例                                                            | 描述                     | 标签 |
-| --------------------------------------------------------------- | ------------------------ | ---- |
-| [add-dimension](/VBI/vbi/examples/dimensions.md#add-dimension)                     | 添加维度                 | -    |
-| [add-multiple-dimensions](/VBI/vbi/examples/dimensions.md#add-multiple-dimensions) | 添加多个维度（链式调用） | -    |
-| [remove-dimension](/VBI/vbi/examples/dimensions.md#remove-dimension)               | 删除维度                 | -    |
-| [update-dimension](/VBI/vbi/examples/dimensions.md#update-dimension)               | 更新维度                 | -    |
+| 示例                                                                              | 描述                                   | 标签 |
+| --------------------------------------------------------------------------------- | -------------------------------------- | ---- |
+| [add-date-dimension-year](/VBI/vbi/examples/dimensions.md#add-date-dimension-year)                   | 添加按年聚合的日期维度                 | -    |
+| [add-dimension](/VBI/vbi/examples/dimensions.md#add-dimension)                                       | 添加维度                               | -    |
+| [add-multiple-dimensions](/VBI/vbi/examples/dimensions.md#add-multiple-dimensions)                   | 添加多个维度（链式调用）               | -    |
+| [mixed-date-and-normal-dimensions](/VBI/vbi/examples/dimensions.md#mixed-date-and-normal-dimensions) | 普通维度与按季度聚合的日期维度混合分组 | -    |
+| [remove-dimension](/VBI/vbi/examples/dimensions.md#remove-dimension)                                 | 删除维度                               | -    |
+| [update-date-dimension-month](/VBI/vbi/examples/dimensions.md#update-date-dimension-month)           | 将已有日期维度更新为按月聚合           | -    |
+| [update-dimension](/VBI/vbi/examples/dimensions.md#update-dimension)                                 | 更新维度                               | -    |
 
 ## havingFilter
 
-| 示例                                                                                | 描述                                                                                              | 标签 |
-| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ---- |
-| [add-having-filter](/VBI/vbi/examples/havingFilter.md#add-having-filter)                               | 按区域分组后筛选销售额超过百万的高业绩区域                                                        | -    |
-| [add-multiple-having-filter](/VBI/vbi/examples/havingFilter.md#add-multiple-having-filter)             | 链式添加多个Having条件筛选高销售额且高利润的区域                                                  | -    |
-| [clear-having-filter](/VBI/vbi/examples/havingFilter.md#clear-having-filter)                           | 清空所有Having过滤条件，展示全量分组聚合结果                                                      | -    |
-| [having-clear-and-rebuild](/VBI/vbi/examples/havingFilter.md#having-clear-and-rebuild)                 | 清除已有having条件后重新构建全新的分组筛选，模拟用户重置筛选面板后重新配置                        | -    |
-| [having-deeply-nested-groups](/VBI/vbi/examples/havingFilter.md#having-deeply-nested-groups)           | 三层嵌套分组：OR(AND(销售额超50万, 利润超5万), AND(数量超100, 折扣均值低于0.3))，模拟复杂业务筛选 | -    |
-| [having-find-and-update](/VBI/vbi/examples/havingFilter.md#having-find-and-update)                     | 先添加having条件，然后通过find查找并动态更新阈值和操作符，模拟用户交互式调整筛选条件              | -    |
-| [having-group-add-to-existing](/VBI/vbi/examples/havingFilter.md#having-group-add-to-existing)         | 向已有的having分组中追加新条件，模拟用户逐步细化筛选规则                                          | -    |
-| [having-group-remove-condition](/VBI/vbi/examples/havingFilter.md#having-group-remove-condition)       | 从已有的having分组中移除特定条件，模拟用户取消某个筛选项                                          | -    |
-| [having-mix-filters-and-groups](/VBI/vbi/examples/havingFilter.md#having-mix-filters-and-groups)       | 混合使用独立过滤条件和OR分组：销售额超50万 AND (利润超10万 OR 数量不少于30)                       | -    |
-| [having-multi-dimension-aggregate](/VBI/vbi/examples/havingFilter.md#having-multi-dimension-aggregate) | 按品类和区域双维度分组，筛选平均折扣低于20%且总销售额超过10万的组合，分析高价值低折扣业务         | -    |
-| [having-nested-groups](/VBI/vbi/examples/havingFilter.md#having-nested-groups)                         | 嵌套分组：AND(销售额超100万, OR(利润超20万, 数量不少于50))                                        | -    |
-| [having-or-group](/VBI/vbi/examples/havingFilter.md#having-or-group)                                   | 使用OR分组筛选高销售额或高利润的区域                                                              | -    |
-| [having-scatter-profit-analysis](/VBI/vbi/examples/havingFilter.md#having-scatter-profit-analysis)     | 散点图分析：按品类分组筛选高利润率且交易量超20笔的品类，定位优质业务                              | -    |
-| [having-update-group-operator](/VBI/vbi/examples/havingFilter.md#having-update-group-operator)         | 更新已有Having分组的逻辑操作符从AND改为OR                                                         | -    |
-| [having-with-where-combined](/VBI/vbi/examples/havingFilter.md#having-with-where-combined)             | where与having联合筛选：先按where筛选办公用品品类，再按having筛选销售额超5万或利润超1万的省份      | -    |
-| [remove-having-filter](/VBI/vbi/examples/havingFilter.md#remove-having-filter)                         | 移除多余的Having过滤条件，只保留利润筛选                                                          | -    |
+| 示例                                                                                                      | 描述                                                                                                                                 | 标签 |
+| --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---- |
+| [add-having-filter](/VBI/vbi/examples/havingFilter.md#add-having-filter)                                                     | 按区域分组后筛选销售额超过百万的高业绩区域                                                                                           | -    |
+| [add-multiple-having-filter](/VBI/vbi/examples/havingFilter.md#add-multiple-having-filter)                                   | 链式添加多个Having条件筛选高销售额且高利润的区域                                                                                     | -    |
+| [clear-having-filter](/VBI/vbi/examples/havingFilter.md#clear-having-filter)                                                 | 清空所有Having过滤条件，展示全量分组聚合结果                                                                                         | -    |
+| [having-clear-and-rebuild](/VBI/vbi/examples/havingFilter.md#having-clear-and-rebuild)                                       | 清除已有having条件后重新构建全新的分组筛选，模拟用户重置筛选面板后重新配置                                                           | -    |
+| [having-deeply-nested-groups](/VBI/vbi/examples/havingFilter.md#having-deeply-nested-groups)                                 | 三层嵌套分组：OR(AND(销售额超50万, 利润超5万), AND(数量超100, 折扣均值低于0.3))，模拟复杂业务筛选                                    | -    |
+| [having-empty-dsl-compose-target](/VBI/vbi/examples/havingFilter.md#having-empty-dsl-compose-target)                         | 从空DSL出发，通过builder拼装where/having/measures/dimensions，包含sum与countDistinct聚合的having条件组合                             | -    |
+| [having-field-not-in-measures-and-dimensions](/VBI/vbi/examples/havingFilter.md#having-field-not-in-measures-and-dimensions) | 初始化空DSL，仅通过builder添加维度area与指标sales，并在having中使用未出现在measures/dimensions里的profit字段（SUM(profit) > 100000） | -    |
+| [having-find-and-update](/VBI/vbi/examples/havingFilter.md#having-find-and-update)                                           | 先添加having条件，然后通过find查找并动态更新阈值和操作符，模拟用户交互式调整筛选条件                                                 | -    |
+| [having-group-add-to-existing](/VBI/vbi/examples/havingFilter.md#having-group-add-to-existing)                               | 向已有的having分组中追加新条件，模拟用户逐步细化筛选规则                                                                             | -    |
+| [having-group-remove-condition](/VBI/vbi/examples/havingFilter.md#having-group-remove-condition)                             | 从已有的having分组中移除特定条件，模拟用户取消某个筛选项                                                                             | -    |
+| [having-mix-filters-and-groups](/VBI/vbi/examples/havingFilter.md#having-mix-filters-and-groups)                             | 混合使用独立过滤条件和OR分组：销售额超50万 AND (利润超10万 OR 数量不少于30)                                                          | -    |
+| [having-multi-dimension-aggregate](/VBI/vbi/examples/havingFilter.md#having-multi-dimension-aggregate)                       | 按品类和区域双维度分组，筛选平均折扣低于20%且总销售额超过10万的组合，分析高价值低折扣业务                                            | -    |
+| [having-nested-groups](/VBI/vbi/examples/havingFilter.md#having-nested-groups)                                               | 嵌套分组：AND(销售额超100万, OR(利润超20万, 数量不少于50))                                                                           | -    |
+| [having-or-group](/VBI/vbi/examples/havingFilter.md#having-or-group)                                                         | 使用OR分组筛选高销售额或高利润的区域                                                                                                 | -    |
+| [having-scatter-profit-analysis](/VBI/vbi/examples/havingFilter.md#having-scatter-profit-analysis)                           | 散点图分析：按品类分组筛选高利润率且交易量超20笔的品类，定位优质业务                                                                 | -    |
+| [having-update-group-operator](/VBI/vbi/examples/havingFilter.md#having-update-group-operator)                               | 更新已有Having分组的逻辑操作符从AND改为OR                                                                                            | -    |
+| [having-with-where-combined](/VBI/vbi/examples/havingFilter.md#having-with-where-combined)                                   | where与having联合筛选：先按where筛选办公用品品类，再按having筛选销售额超5万或利润超1万的省份                                         | -    |
+| [remove-having-filter](/VBI/vbi/examples/havingFilter.md#remove-having-filter)                                               | 移除多余的Having过滤条件，只保留利润筛选                                                                                             | -    |
 
 ## locale
 
@@ -150890,6 +150895,58 @@ import { registerDemoConnector } from '@components'
 
 {registerDemoConnector()}
 
+## add-date-dimension-year
+
+添加按年聚合的日期维度
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.dimensions.add('order_date', (node) => {
+          node.setAlias('订单日期')
+        })
+        const dimensionId = builder.dimensions.find((node) => node.getField() === 'order_date')?.getId()
+        if (dimensionId) {
+          builder.dimensions.update(dimensionId, (node) => {
+            node.setAlias('年份').setAggregate({ func: 'toYear' })
+          })
+        }
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
 ## add-dimension
 
 添加维度
@@ -150986,6 +151043,56 @@ export default () => {
 }
 ```
 
+## mixed-date-and-normal-dimensions
+
+普通维度与按季度聚合的日期维度混合分组
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.dimensions
+          .add('area', (node) => {
+            node.setAlias('区域')
+          })
+          .add('order_date', (node) => {
+            node.setAlias('季度').setAggregate({ func: 'toQuarter' })
+          })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
 ## remove-dimension
 
 删除维度
@@ -151023,6 +151130,59 @@ export default () => {
             node.setAlias('待删除的产品类型')
           })
           builder.dimensions.remove(dimensionId)
+        }
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## update-date-dimension-month
+
+将已有日期维度更新为按月聚合
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [{ field: 'order_date', alias: '原订单日期' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'order_date')?.id
+        if (dimensionId) {
+          const dimension = builder.dimensions.find((node) => node.getId() === dimensionId)
+          if (dimension) {
+            dimension.setAlias('待调整的订单日期')
+          }
+          builder.dimensions.update(dimensionId, (node) => {
+            node.setAlias('月份').setAggregate({ func: 'toMonth' })
+          })
         }
       }
       applyBuilder(builder)
@@ -151353,6 +151513,119 @@ export default () => {
             g2.add('discount', (n) => n.setAggregate({ func: 'avg' }).setOperator('lt').setValue(0.3))
           })
         })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## having-empty-dsl-compose-target
+
+从空DSL出发，通过builder拼装where/having/measures/dimensions，包含sum与countDistinct聚合的having条件组合
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'line',
+        dimensions: [],
+        measures: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('table')
+        builder.theme.setTheme('light')
+        builder.locale.setLocale('zh-CN')
+        builder.whereFilter.add('profit', (n) => n.setOperator('<').setValue(0))
+        const whereConds = builder.whereFilter.getConditions()
+        whereConds.get(0).set('id', 'c84825ed-547a-48f0-b4d9-55ebe53aab8c')
+        builder.havingFilter.clear()
+        builder.havingFilter.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('lt').setValue(-100000))
+        builder.havingFilter.add('province', (n) =>
+          n.setAggregate({ func: 'countDistinct' }).setOperator('gt').setValue(4),
+        )
+        const havingConds = builder.havingFilter.getConditions()
+        havingConds.get(0).set('id', 'a6f2f16a-e0fc-4bdc-9729-bbe3a105cfca')
+        havingConds.get(1).set('id', '01c004d2-4041-40ee-a18b-a18fc0cea416')
+        builder.measures.add('sales', (n) => n.setAlias('sales').setEncoding('yAxis').setAggregate({ func: 'sum' }))
+        builder.measures.add('country_or_region', (n) =>
+          n.setAlias('country_or_region').setEncoding('yAxis').setAggregate({ func: 'count' }),
+        )
+        const measures = builder.dsl.get('measures')
+        measures.get(0).set('id', 'a5ba6c4a-31dc-4b2c-a38f-9f23c2bbe850')
+        measures.get(1).set('id', '49f3b33d-4ede-436c-8be9-a51619236916')
+        builder.dimensions.add('area', (n) => n.setAlias('area'))
+        const dimensions = builder.dsl.get('dimensions')
+        dimensions.get(0).set('id', 'c3583433-a2cc-4234-85ff-75ae2472b674')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## having-field-not-in-measures-and-dimensions
+
+初始化空DSL，仅通过builder添加维度area与指标sales，并在having中使用未出现在measures/dimensions里的profit字段（SUM(profit) > 100000）
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'line',
+        dimensions: [],
+        measures: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('bar')
+        builder.dimensions.add('area', (n) => n.setAlias('区域'))
+        builder.measures.add('sales', (n) => n.setAlias('销售额').setEncoding('yAxis').setAggregate({ func: 'sum' }))
+        builder.havingFilter.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
+        builder.limit.setLimit(20)
       }
       applyBuilder(builder)
 
@@ -153182,6 +153455,7 @@ url: /VBI/vbi/api/builder.md
 | --- | --- | --- |
 | **doc** | `Y.Doc` | - |
 | **dsl** | `Y.Map<any>` | - |
+| **adapters** | `VBIBuilderAdapters<TQueryDSL, TSeedDSL>` | - |
 | **chartType** | `ChartTypeBuilder` | - |
 | **measures** | `MeasuresBuilder` | - |
 | **dimensions** | `DimensionsBuilder` | - |
@@ -153199,7 +153473,7 @@ url: /VBI/vbi/api/builder.md
 **定义**:
 
 ```typescript
-constructor(doc: Y.Doc)
+constructor(doc: Y.Doc, options: VBIBuilderOptions<TQueryDSL, TSeedDSL>)
 ```
 
 **参数**:
@@ -153207,6 +153481,7 @@ constructor(doc: Y.Doc)
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
+| `options` | VBIBuilderOptions\<TQueryDSL, TSeedDSL> | - |
 
 ### applyUpdate
 
@@ -153246,20 +153521,20 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBufferLike>
 **定义**:
 
 ```typescript
-buildVSeed(): Promise<VSeedDSL>
+buildVSeed(): Promise<TSeedDSL>
 ```
 
-**返回**: `Promise<VSeedDSL>`
+**返回**: `Promise<TSeedDSL>`
 
 ### buildVQuery
 
 **定义**:
 
 ```typescript
-buildVQuery(): VQueryDSL
+buildVQuery(): TQueryDSL
 ```
 
-**返回**: `VQueryDSL`
+**返回**: `TQueryDSL`
 
 ### build
 
@@ -153929,6 +154204,36 @@ setAlias(alias: string): this
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `alias` | string | - 显示名称 |
+
+### setAggregate
+
+设置日期聚合函数
+
+**定义**:
+
+```typescript
+setAggregate(aggregate: NonNullable<VBIDimension['aggregate']>): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `aggregate` | NonNullable\<VBIDimension\['aggregate']> | - 日期聚合配置 |
+
+### clearAggregate
+
+清除日期聚合函数
+
+**定义**:
+
+```typescript
+clearAggregate(): this
+```
+
+**返回**: `this`
 
 ### toJSON
 
@@ -155352,7 +155657,7 @@ url: /VBI/vbi/examples/tags.md
 
 # 标签
 
-共 51 个示例，0 个标签。
+共 56 个示例，0 个标签。
 
 | 标签 | 数量 |
 | ---- | ---- |
