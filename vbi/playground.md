@@ -57,13 +57,13 @@ const run = async (setVSeed) => {
 
   builder.doc.transact(() => {
     builder.measures
-      .addMeasure('sales', (node) => {
+      .add('sales', (node) => {
         node.setAlias('Sum(sales)').setAggregate({ func: 'sum' })
       })
-      .addMeasure('profit', (node) => {
+      .add('profit', (node) => {
         node.setAlias('Sum(profit)').setAggregate({ func: 'sum' })
       })
-      .addMeasure('sales', (node) => {
+      .add('sales', (node) => {
         node.setAlias('Quantile(sales, 0.5)').setAggregate({ func: 'quantile', quantile: 0.5 })
       })
 

@@ -351,6 +351,103 @@ export default () => {
 }
 ```
 
+## date\_between
+
+Where with DATE field BETWEEN filter
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+    datasetId: 'where-date-between',
+    description: 'Where with DATE field BETWEEN filter',
+    vquery: {
+      select: [
+        'id',
+        'area',
+        'sales',
+        {
+          field: 'order_date',
+          alias: 'order_day',
+          aggr: {
+            func: 'to_day',
+          },
+        },
+      ],
+      where: {
+        op: 'and',
+        conditions: [
+          {
+            field: 'order_date',
+            op: 'between',
+            value: ['2024-01-01', '2024-01-31'],
+          },
+        ],
+      },
+      orderBy: [
+        {
+          field: 'order_day',
+          order: 'asc',
+        },
+      ],
+    },
+    dataset: [
+      {
+        id: 1,
+        area: 'BEI JING',
+        order_date: '2023-12-31',
+        sales: 80,
+      },
+      {
+        id: 2,
+        area: 'SHANG HAI',
+        order_date: '2024-01-05',
+        sales: 120,
+      },
+      {
+        id: 3,
+        area: 'HANG ZHOU',
+        order_date: '2024-01-20',
+        sales: 260,
+      },
+      {
+        id: 4,
+        area: 'SHEN ZHEN',
+        order_date: '2024-01-31',
+        sales: 310,
+      },
+      {
+        id: 5,
+        area: 'CHENG DU',
+        order_date: '2024-02-01',
+        sales: 500,
+      },
+    ],
+    schema: [
+      {
+        name: 'id',
+        type: 'number',
+      },
+      {
+        name: 'area',
+        type: 'string',
+      },
+      {
+        name: 'order_date',
+        type: 'date',
+      },
+      {
+        name: 'sales',
+        type: 'number',
+      },
+    ],
+  }
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
 ## in\_operator
 
 Where with IN / NOT IN Operator
@@ -713,6 +810,108 @@ export default () => {
       },
       {
         name: 'active',
+        type: 'number',
+      },
+    ],
+  }
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## timestamp\_window
+
+Where with TIMESTAMP comparison window
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+    datasetId: 'where-timestamp-window',
+    description: 'Where with TIMESTAMP comparison window',
+    vquery: {
+      select: [
+        'id',
+        'event',
+        'amount',
+        {
+          field: 'created_at',
+          alias: 'created_minute',
+          aggr: {
+            func: 'to_minute',
+          },
+        },
+      ],
+      where: {
+        op: 'and',
+        conditions: [
+          {
+            field: 'created_at',
+            op: '>=',
+            value: '2024-01-15 12:00:00',
+          },
+          {
+            field: 'created_at',
+            op: '<',
+            value: '2024-02-01 00:00:00',
+          },
+        ],
+      },
+      orderBy: [
+        {
+          field: 'created_minute',
+          order: 'asc',
+        },
+      ],
+    },
+    dataset: [
+      {
+        id: 1,
+        event: 'signup',
+        created_at: '2024-01-15 08:00:00',
+        amount: 0,
+      },
+      {
+        id: 2,
+        event: 'payment',
+        created_at: '2024-01-15 12:00:00',
+        amount: 199,
+      },
+      {
+        id: 3,
+        event: 'refund',
+        created_at: '2024-01-20 18:30:00',
+        amount: -40,
+      },
+      {
+        id: 4,
+        event: 'renewal',
+        created_at: '2024-02-01 00:00:00',
+        amount: 299,
+      },
+      {
+        id: 5,
+        event: 'cancel',
+        created_at: '2024-02-03 09:00:00',
+        amount: 0,
+      },
+    ],
+    schema: [
+      {
+        name: 'id',
+        type: 'number',
+      },
+      {
+        name: 'event',
+        type: 'string',
+      },
+      {
+        name: 'created_at',
+        type: 'timestamp',
+      },
+      {
+        name: 'amount',
         type: 'number',
       },
     ],

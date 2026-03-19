@@ -4,18 +4,20 @@
 
 ## chartType
 
-| 示例                                                         | 描述                                    | 标签 |
-| ------------------------------------------------------------ | --------------------------------------- | ---- |
-| [area-by-order-date](/VBI/vbi/examples/chartType.md#area-by-order-date)         | 面积图 - 按日期销售额趋势               | -    |
-| [bar-by-product-type](/VBI/vbi/examples/chartType.md#bar-by-product-type)       | 柱状图 - 按产品类型销售额               | -    |
-| [chart-type-switching](/VBI/vbi/examples/chartType.md#chart-type-switching)     | Switch between line and bar chart types | -    |
-| [column-by-area](/VBI/vbi/examples/chartType.md#column-by-area)                 | 柱形图 - 按区域销售额                   | -    |
-| [donut-by-customer-type](/VBI/vbi/examples/chartType.md#donut-by-customer-type) | 环形图 - 按客户类型销售占比             | -    |
-| [line-by-province](/VBI/vbi/examples/chartType.md#line-by-province)             | 折线图 - 按省份销售额趋势               | -    |
-| [line-chart](/VBI/vbi/examples/chartType.md#line-chart)                         | 折线图 - 按省份销售额趋势               | -    |
-| [pie-by-area](/VBI/vbi/examples/chartType.md#pie-by-area)                       | 饼图 - 按区域销售占比                   | -    |
-| [rose-by-city](/VBI/vbi/examples/chartType.md#rose-by-city)                     | 玫瑰图 - 按城市销售额                   | -    |
-| [scatter-sales-profit](/VBI/vbi/examples/chartType.md#scatter-sales-profit)     | 散点图 - 销售额与利润关系               | -    |
+| 示例                                                                         | 描述                                                       | 标签 |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------- | ---- |
+| [area-by-order-date](/VBI/vbi/examples/chartType.md#area-by-order-date)                         | 面积图 - 按日期销售额趋势                                  | -    |
+| [bar-by-product-type](/VBI/vbi/examples/chartType.md#bar-by-product-type)                       | 柱状图 - 按产品类型销售额                                  | -    |
+| [chart-type-switching](/VBI/vbi/examples/chartType.md#chart-type-switching)                     | Switch between line and bar chart types                    | -    |
+| [column-by-area](/VBI/vbi/examples/chartType.md#column-by-area)                                 | 柱形图 - 按区域销售额                                      | -    |
+| [donut-by-customer-type](/VBI/vbi/examples/chartType.md#donut-by-customer-type)                 | 环形图 - 按客户类型销售占比                                | -    |
+| [line-by-province](/VBI/vbi/examples/chartType.md#line-by-province)                             | 折线图 - 按省份销售额趋势                                  | -    |
+| [line-chart](/VBI/vbi/examples/chartType.md#line-chart)                                         | 折线图 - 按省份销售额趋势                                  | -    |
+| [pie-by-area](/VBI/vbi/examples/chartType.md#pie-by-area)                                       | 饼图 - 按区域销售占比                                      | -    |
+| [pie-chart-measure-encoding](/VBI/vbi/examples/chartType.md#pie-chart-measure-encoding)         | 饼图度量编码 - 测试 measure-encoding.ts Pie 图表类型       | -    |
+| [rose-by-city](/VBI/vbi/examples/chartType.md#rose-by-city)                                     | 玫瑰图 - 按城市销售额                                      | -    |
+| [scatter-chart-measure-encoding](/VBI/vbi/examples/chartType.md#scatter-chart-measure-encoding) | 散点图度量编码 - 测试 measure-encoding.ts Scatter 图表类型 | -    |
+| [scatter-sales-profit](/VBI/vbi/examples/chartType.md#scatter-sales-profit)                     | 散点图 - 销售额与利润关系                                  | -    |
 
 ## dimensions
 
@@ -36,6 +38,8 @@
 | [add-having-filter](/VBI/vbi/examples/havingFilter.md#add-having-filter)                                                     | 按区域分组后筛选销售额超过百万的高业绩区域                                                                                           | -    |
 | [add-multiple-having-filter](/VBI/vbi/examples/havingFilter.md#add-multiple-having-filter)                                   | 链式添加多个Having条件筛选高销售额且高利润的区域                                                                                     | -    |
 | [clear-having-filter](/VBI/vbi/examples/havingFilter.md#clear-having-filter)                                                 | 清空所有Having过滤条件，展示全量分组聚合结果                                                                                         | -    |
+| [having-array-value-with-in-operator](/VBI/vbi/examples/havingFilter.md#having-array-value-with-in-operator)                 | Having filter with array value that triggers 'in' operator conversion                                                                | -    |
+| [having-array-value-with-not-in-operator](/VBI/vbi/examples/havingFilter.md#having-array-value-with-not-in-operator)         | Having filter with array value that triggers 'not in' operator conversion                                                            | -    |
 | [having-clear-and-rebuild](/VBI/vbi/examples/havingFilter.md#having-clear-and-rebuild)                                       | 清除已有having条件后重新构建全新的分组筛选，模拟用户重置筛选面板后重新配置                                                           | -    |
 | [having-deeply-nested-groups](/VBI/vbi/examples/havingFilter.md#having-deeply-nested-groups)                                 | 三层嵌套分组：OR(AND(销售额超50万, 利润超5万), AND(数量超100, 折扣均值低于0.3))，模拟复杂业务筛选                                    | -    |
 | [having-empty-dsl-compose-target](/VBI/vbi/examples/havingFilter.md#having-empty-dsl-compose-target)                         | 从空DSL出发，通过builder拼装where/having/measures/dimensions，包含sum与countDistinct聚合的having条件组合                             | -    |
@@ -91,6 +95,7 @@
 | [high-discount-tech-profit-analysis](/VBI/vbi/examples/whereFilter.md#high-discount-tech-profit-analysis)     | 高折扣技术类产品利润分析：筛选技术品类且折扣大于0.5的订单，按区域对比利润      | -    |
 | [in-operator-multi-area-delivery](/VBI/vbi/examples/whereFilter.md#in-operator-multi-area-delivery)           | 多区域配送效率对比：使用 in 筛选华东、华北、中南三大区域，按配送方式统计订单量 | -    |
 | [nested-group-region-product-filter](/VBI/vbi/examples/whereFilter.md#nested-group-region-product-filter)     | 华东区域办公用品或家具销售额：使用嵌套分组，AND 连接区域条件与 OR 品类条件     | -    |
+| [not-between-sales-range](/VBI/vbi/examples/whereFilter.md#not-between-sales-range)                           | Not between filter: exclude sales between 1000~10000                           | -    |
 | [office-supplies-sales-by-province](/VBI/vbi/examples/whereFilter.md#office-supplies-sales-by-province)       | 各省份办公用品销售额排名：筛选办公用品品类，按省份汇总销售额                   | -    |
 | [or-group-product-category-comparison](/VBI/vbi/examples/whereFilter.md#or-group-product-category-comparison) | 办公用品与技术类品类对比：使用 OR 分组筛选两个品类，按区域对比销售额           | -    |
 | [remove-condition-from-group](/VBI/vbi/examples/whereFilter.md#remove-condition-from-group)                   | 从分组中移除条件：预设 OR 分组含三个品类，通过 updateGroup 移除其中一个        | -    |

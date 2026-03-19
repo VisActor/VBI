@@ -315,6 +315,116 @@ export default () => {
 }
 ```
 
+## toMonth\_with\_date\_filter
+
+toMonth with DATE range filter
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+    datasetId: 'select-date-toMonth-with-filter',
+    description: 'toMonth with DATE range filter',
+    dataset: [
+      {
+        area: 'BEI JING',
+        date: '2025-01-01',
+        sales: 100,
+      },
+      {
+        area: 'BEI JING',
+        date: '2025-01-15',
+        sales: 150,
+      },
+      {
+        area: 'BEI JING',
+        date: '2025-02-01',
+        sales: 300,
+      },
+      {
+        area: 'HANG ZHOU',
+        date: '2025-01-03',
+        sales: 200,
+      },
+      {
+        area: 'HANG ZHOU',
+        date: '2025-01-25',
+        sales: 350,
+      },
+      {
+        area: 'HANG ZHOU',
+        date: '2025-02-10',
+        sales: 400,
+      },
+      {
+        area: 'SHANG HAI',
+        date: '2025-01-20',
+        sales: 500,
+      },
+      {
+        area: 'SHANG HAI',
+        date: '2025-02-05',
+        sales: 250,
+      },
+    ],
+    schema: [
+      {
+        name: 'area',
+        type: 'string',
+      },
+      {
+        name: 'date',
+        type: 'date',
+      },
+      {
+        name: 'sales',
+        type: 'number',
+      },
+    ],
+    vquery: {
+      select: [
+        'area',
+        {
+          field: 'sales',
+          alias: 'Sum(sales)',
+          aggr: {
+            func: 'sum',
+          },
+        },
+        {
+          field: 'date',
+          alias: 'month',
+          aggr: {
+            func: 'to_month',
+          },
+        },
+      ],
+      groupBy: ['month', 'area'],
+      where: {
+        op: 'and',
+        conditions: [
+          {
+            field: 'date',
+            op: 'between',
+            value: ['2025-01-01', '2025-01-31'],
+          },
+        ],
+      },
+      orderBy: [
+        {
+          field: 'Sum(sales)',
+          order: 'desc',
+        },
+      ],
+      limit: 100,
+    },
+  }
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
 ## toMonth
 
 toMonth

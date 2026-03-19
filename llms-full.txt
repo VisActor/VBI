@@ -145453,223 +145453,6 @@ Coming Soon
 
 
 ---
-url: /VBI/vquery/playground.md
----
-
-```tsx playground
-const run = async (setVSeed) => {
-  const vquery = new VQuery()
-
-  const rawDataset = [
-    { area: 'BEI JING', date: '2025-01-01', sales: 100 },
-    { area: 'BEI JING', date: '2025-01-02', sales: 200 },
-    { area: 'BEI JING', date: '2025-01-03', sales: 300 },
-
-    { area: 'HANG ZHOU', date: '2025-01-01', sales: 100 },
-    { area: 'HANG ZHOU', date: '2025-01-02', sales: 200 },
-    { area: 'HANG ZHOU', date: '2025-01-03', sales: 500 },
-
-    { area: 'SHANG HAI', date: '2025-11-01', sales: 600 },
-    { area: 'SHANG HAI', date: '2025-11-02', sales: 400 },
-    { area: 'SHANG HAI', date: '2025-11-03', sales: 300 },
-  ]
-
-  const datasetId = 'vquery-demo'
-
-  if (await vquery.hasDataset(datasetId)) {
-    await vquery.dropDataset(datasetId)
-  }
-
-  const schema = [
-    { name: 'area', type: 'string' },
-    { name: 'date', type: 'date' },
-    { name: 'sales', type: 'number' },
-  ]
-  await vquery.createDataset(datasetId, schema, { type: 'json', rawDataset })
-
-  const dataset = await vquery.connectDataset(datasetId)
-
-  const queryDSL: QueryDSL<{
-    area: string
-    date: string
-    sales: number
-  }> = {
-    select: [
-      'area',
-      {
-        field: 'sales',
-        alias: 'Sum(sales)',
-        aggr: {
-          func: 'sum',
-        },
-      },
-      {
-        field: 'date',
-        alias: 'year',
-        aggr: {
-          func: 'to_year',
-        },
-      },
-    ],
-    groupBy: ['year', 'area'],
-    orderBy: [
-      {
-        field: 'Sum(sales)',
-        order: 'desc',
-      },
-    ],
-    where: {
-      op: 'and',
-      conditions: [
-        {
-          op: 'or',
-          conditions: [
-            {
-              field: 'area',
-              op: 'in',
-              value: ['BEI JING'],
-            },
-            {
-              field: 'sales',
-              op: '>=',
-              value: 400,
-            },
-          ],
-        },
-      ],
-    },
-    limit: 100,
-  }
-
-  const queryResult = await dataset.query(queryDSL)
-  await dataset.disconnect()
-  await vquery.close()
-
-  const vseed = {
-    dataset: queryResult.dataset,
-    chartType: 'table',
-    locale: 'zh-CN',
-  }
-
-  setVSeed(() => vseed)
-
-  return () => {
-    vquery = null
-  }
-}
-
-const Demo = () => {
-  const [vseed, setVSeed] = useState<VSeed>()
-  const vquery = useRef<VQuery>()
-
-  useEffect(() => {
-    run(setVSeed)
-  }, [])
-
-  return vseed && <SimpleVSeedRender vseed={vseed} />
-}
-
-import { VQuery, QueryDSL } from '@visactor/vquery'
-import { useRef, useEffect, useState } from 'react'
-import { useDark } from '@rspress/core/runtime'
-import VChart from '@visactor/vchart'
-import { ListTable, PivotTable, PivotChart, register } from '@visactor/vtable'
-import {
-  registerAll,
-  VSeed,
-  Builder,
-  isPivotChart,
-  isVChart,
-  isPivotTable,
-  isTable,
-  zVSeed,
-  ColorIdEncoding,
-} from '@visactor/vseed'
-
-registerAll()
-register.chartModule('vchart', VChart)
-
-const SimpleVSeedRender = (props: { vseed: VSeed }) => {
-  const { vseed } = props
-  const ref = useRef<HTMLDivElement>(null)
-  const builderRef = useRef<Builder>()
-  const dark = useDark()
-  useEffect(() => {
-    if (!ref.current) {
-      return
-    }
-    const theme = dark ? 'dark' : 'light'
-    const builder = Builder.from({ ...vseed, theme })
-    const spec = builder.build()
-
-    builderRef.current = builder
-    if (isPivotChart(vseed)) {
-      const tableInstance = new PivotChart(ref.current, spec)
-
-      tableInstance.on('legend_item_click', (args) => {
-        console.log('LEGEND_ITEM_CLICK', args)
-        tableInstance.updateFilterRules([
-          {
-            filterKey: ColorIdEncoding,
-            filteredValues: args.value,
-          },
-        ])
-      })
-
-      tableInstance.on('legend_change', (args) => {
-        const maxValue = args.value[1]
-        const minValue = args.value[0]
-        tableInstance.updateFilterRules([
-          {
-            filterFunc: (record) => {
-              const value = record[record[ColorIdEncoding]]
-              if (value >= minValue && value <= maxValue) {
-                return true
-              }
-              return false
-            },
-          },
-        ])
-      })
-
-      return () => tableInstance.release()
-    } else if (isVChart(vseed)) {
-      const vchart = new VChart(spec, { dom: ref.current })
-      vchart.renderSync()
-      return () => vchart.release()
-    } else if (isTable(vseed)) {
-      const tableInstance = new ListTable(ref.current, spec)
-      return () => tableInstance.release()
-    } else if (isPivotTable(vseed)) {
-      const tableInstance = new PivotTable(ref.current, spec)
-      return () => tableInstance.release()
-    }
-  }, [vseed, dark])
-
-  return (
-    <div
-      ref={ref}
-      style={{ height: 300, width: '100%' }}
-      onClick={() => {
-        console.group(`selected ${vseed.chartType}`)
-        console.log('builder', builderRef.current)
-        console.log('spec', builderRef.current.spec)
-        console.log('vseed', builderRef.current.vseed)
-        console.log('advancedVSeed', builderRef.current.advancedVSeed)
-        console.groupEnd()
-      }}
-    >
-      {' '}
-    </div>
-  )
-}
-
-export default Demo
-```
-
-
-
----
 url: /VBI/vquery/examples/select.md
 ---
 
@@ -147092,6 +146875,116 @@ export default () => {
 }
 ```
 
+## toMonth\_with\_date\_filter
+
+toMonth with DATE range filter
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+    datasetId: 'select-date-toMonth-with-filter',
+    description: 'toMonth with DATE range filter',
+    dataset: [
+      {
+        area: 'BEI JING',
+        date: '2025-01-01',
+        sales: 100,
+      },
+      {
+        area: 'BEI JING',
+        date: '2025-01-15',
+        sales: 150,
+      },
+      {
+        area: 'BEI JING',
+        date: '2025-02-01',
+        sales: 300,
+      },
+      {
+        area: 'HANG ZHOU',
+        date: '2025-01-03',
+        sales: 200,
+      },
+      {
+        area: 'HANG ZHOU',
+        date: '2025-01-25',
+        sales: 350,
+      },
+      {
+        area: 'HANG ZHOU',
+        date: '2025-02-10',
+        sales: 400,
+      },
+      {
+        area: 'SHANG HAI',
+        date: '2025-01-20',
+        sales: 500,
+      },
+      {
+        area: 'SHANG HAI',
+        date: '2025-02-05',
+        sales: 250,
+      },
+    ],
+    schema: [
+      {
+        name: 'area',
+        type: 'string',
+      },
+      {
+        name: 'date',
+        type: 'date',
+      },
+      {
+        name: 'sales',
+        type: 'number',
+      },
+    ],
+    vquery: {
+      select: [
+        'area',
+        {
+          field: 'sales',
+          alias: 'Sum(sales)',
+          aggr: {
+            func: 'sum',
+          },
+        },
+        {
+          field: 'date',
+          alias: 'month',
+          aggr: {
+            func: 'to_month',
+          },
+        },
+      ],
+      groupBy: ['month', 'area'],
+      where: {
+        op: 'and',
+        conditions: [
+          {
+            field: 'date',
+            op: 'between',
+            value: ['2025-01-01', '2025-01-31'],
+          },
+        ],
+      },
+      orderBy: [
+        {
+          field: 'Sum(sales)',
+          order: 'desc',
+        },
+      ],
+      limit: 100,
+    },
+  }
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
 ## toMonth
 
 toMonth
@@ -148016,6 +147909,103 @@ export default () => {
 }
 ```
 
+## date\_between
+
+Where with DATE field BETWEEN filter
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+    datasetId: 'where-date-between',
+    description: 'Where with DATE field BETWEEN filter',
+    vquery: {
+      select: [
+        'id',
+        'area',
+        'sales',
+        {
+          field: 'order_date',
+          alias: 'order_day',
+          aggr: {
+            func: 'to_day',
+          },
+        },
+      ],
+      where: {
+        op: 'and',
+        conditions: [
+          {
+            field: 'order_date',
+            op: 'between',
+            value: ['2024-01-01', '2024-01-31'],
+          },
+        ],
+      },
+      orderBy: [
+        {
+          field: 'order_day',
+          order: 'asc',
+        },
+      ],
+    },
+    dataset: [
+      {
+        id: 1,
+        area: 'BEI JING',
+        order_date: '2023-12-31',
+        sales: 80,
+      },
+      {
+        id: 2,
+        area: 'SHANG HAI',
+        order_date: '2024-01-05',
+        sales: 120,
+      },
+      {
+        id: 3,
+        area: 'HANG ZHOU',
+        order_date: '2024-01-20',
+        sales: 260,
+      },
+      {
+        id: 4,
+        area: 'SHEN ZHEN',
+        order_date: '2024-01-31',
+        sales: 310,
+      },
+      {
+        id: 5,
+        area: 'CHENG DU',
+        order_date: '2024-02-01',
+        sales: 500,
+      },
+    ],
+    schema: [
+      {
+        name: 'id',
+        type: 'number',
+      },
+      {
+        name: 'area',
+        type: 'string',
+      },
+      {
+        name: 'order_date',
+        type: 'date',
+      },
+      {
+        name: 'sales',
+        type: 'number',
+      },
+    ],
+  }
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
 ## in\_operator
 
 Where with IN / NOT IN Operator
@@ -148378,6 +148368,108 @@ export default () => {
       },
       {
         name: 'active',
+        type: 'number',
+      },
+    ],
+  }
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## timestamp\_window
+
+Where with TIMESTAMP comparison window
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+    datasetId: 'where-timestamp-window',
+    description: 'Where with TIMESTAMP comparison window',
+    vquery: {
+      select: [
+        'id',
+        'event',
+        'amount',
+        {
+          field: 'created_at',
+          alias: 'created_minute',
+          aggr: {
+            func: 'to_minute',
+          },
+        },
+      ],
+      where: {
+        op: 'and',
+        conditions: [
+          {
+            field: 'created_at',
+            op: '>=',
+            value: '2024-01-15 12:00:00',
+          },
+          {
+            field: 'created_at',
+            op: '<',
+            value: '2024-02-01 00:00:00',
+          },
+        ],
+      },
+      orderBy: [
+        {
+          field: 'created_minute',
+          order: 'asc',
+        },
+      ],
+    },
+    dataset: [
+      {
+        id: 1,
+        event: 'signup',
+        created_at: '2024-01-15 08:00:00',
+        amount: 0,
+      },
+      {
+        id: 2,
+        event: 'payment',
+        created_at: '2024-01-15 12:00:00',
+        amount: 199,
+      },
+      {
+        id: 3,
+        event: 'refund',
+        created_at: '2024-01-20 18:30:00',
+        amount: -40,
+      },
+      {
+        id: 4,
+        event: 'renewal',
+        created_at: '2024-02-01 00:00:00',
+        amount: 299,
+      },
+      {
+        id: 5,
+        event: 'cancel',
+        created_at: '2024-02-03 09:00:00',
+        amount: 0,
+      },
+    ],
+    schema: [
+      {
+        name: 'id',
+        type: 'number',
+      },
+      {
+        name: 'event',
+        type: 'string',
+      },
+      {
+        name: 'created_at',
+        type: 'timestamp',
+      },
+      {
+        name: 'amount',
         type: 'number',
       },
     ],
@@ -150115,96 +150207,105 @@ pnpm --filter=@visactor/vquery run test:coverage
 
 
 ---
-url: /VBI/vbi/index.md
----
-
-# VBI
-
-:::info In Development
-Coming Soon
-:::
-
-
-
----
-url: /VBI/vbi/playground.md
+url: /VBI/vquery/playground.md
 ---
 
 ```tsx playground
 const run = async (setVSeed) => {
   const vquery = new VQuery()
 
-  const connectorId = 'vbi-demo'
+  const rawDataset = [
+    { area: 'BEI JING', date: '2025-01-01', sales: 100 },
+    { area: 'BEI JING', date: '2025-01-02', sales: 200 },
+    { area: 'BEI JING', date: '2025-01-03', sales: 300 },
 
-  VBI.registerConnector(connectorId, async () => {
-    return {
-      discoverSchema: async () => {
-        return [
-          { name: 'id', type: 'string' },
-          { name: 'order_id', type: 'string' },
-          { name: 'order_date', type: 'date' },
-          { name: 'delivery_date', type: 'date' },
-          { name: 'delivery_method', type: 'string' },
-          { name: 'customer_id', type: 'string' },
-          { name: 'customer_name', type: 'string' },
-          { name: 'customer_type', type: 'string' },
-          { name: 'city', type: 'string' },
-          { name: 'province', type: 'string' },
-          { name: 'country_or_region', type: 'string' },
-          { name: 'area', type: 'string' },
-          { name: 'product_id', type: 'string' },
-          { name: 'product_type', type: 'string' },
-          { name: 'product_sub_type', type: 'string' },
-          { name: 'product_name', type: 'string' },
+    { area: 'HANG ZHOU', date: '2025-01-01', sales: 100 },
+    { area: 'HANG ZHOU', date: '2025-01-02', sales: 200 },
+    { area: 'HANG ZHOU', date: '2025-01-03', sales: 500 },
 
-          { name: 'sales', type: 'number' },
-          { name: 'amount', type: 'number' },
-          { name: 'discount', type: 'number' },
-          { name: 'profit', type: 'number' },
-        ]
+    { area: 'SHANG HAI', date: '2025-11-01', sales: 600 },
+    { area: 'SHANG HAI', date: '2025-11-02', sales: 400 },
+    { area: 'SHANG HAI', date: '2025-11-03', sales: 300 },
+  ]
+
+  const datasetId = 'vquery-demo'
+
+  if (await vquery.hasDataset(datasetId)) {
+    await vquery.dropDataset(datasetId)
+  }
+
+  const schema = [
+    { name: 'area', type: 'string' },
+    { name: 'date', type: 'date' },
+    { name: 'sales', type: 'number' },
+  ]
+  await vquery.createDataset(datasetId, schema, { type: 'json', rawDataset })
+
+  const dataset = await vquery.connectDataset(datasetId)
+
+  const queryDSL: QueryDSL<{
+    area: string
+    date: string
+    sales: number
+  }> = {
+    select: [
+      'area',
+      {
+        field: 'sales',
+        alias: 'Sum(sales)',
+        aggr: {
+          func: 'sum',
+        },
       },
-      query: async ({ queryDSL, schema }) => {
-        if (!(await vquery.hasDataset(connectorId))) {
-          const url = 'https://visactor.github.io/VBI/dataset/supermarket.csv'
-          const datasetSource = { type: 'csv', rawDataset: url }
-          await vquery.createDataset(connectorId, schema, datasetSource)
-        }
-        const dataset = await vquery.connectDataset(connectorId)
-        const queryResult = await dataset.query(queryDSL)
-
-        return {
-          dataset: queryResult.dataset,
-        }
+      {
+        field: 'date',
+        alias: 'year',
+        aggr: {
+          func: 'to_year',
+        },
       },
-    }
-  })
+    ],
+    groupBy: ['year', 'area'],
+    orderBy: [
+      {
+        field: 'Sum(sales)',
+        order: 'desc',
+      },
+    ],
+    where: {
+      op: 'and',
+      conditions: [
+        {
+          op: 'or',
+          conditions: [
+            {
+              field: 'area',
+              op: 'in',
+              value: ['BEI JING'],
+            },
+            {
+              field: 'sales',
+              op: '>=',
+              value: 400,
+            },
+          ],
+        },
+      ],
+    },
+    limit: 100,
+  }
 
-  const builder = VBI.from(VBI.generateEmptyDSL(connectorId))
+  const queryResult = await dataset.query(queryDSL)
+  await dataset.disconnect()
+  await vquery.close()
 
-  builder.doc.on('update', async () => {
-    const vseed = await builder.buildVSeed()
-    console.log('debug update', vseed)
-    setVSeed(() => vseed)
-  })
+  const vseed = {
+    dataset: queryResult.dataset,
+    chartType: 'table',
+    locale: 'zh-CN',
+  }
 
-  builder.doc.transact(() => {
-    builder.measures
-      .addMeasure('sales', (node) => {
-        node.setAlias('Sum(sales)').setAggregate({ func: 'sum' })
-      })
-      .addMeasure('profit', (node) => {
-        node.setAlias('Sum(profit)').setAggregate({ func: 'sum' })
-      })
-      .addMeasure('sales', (node) => {
-        node.setAlias('Quantile(sales, 0.5)').setAggregate({ func: 'quantile', quantile: 0.5 })
-      })
-
-    builder.dimensions.addDimension('area', (node) => {
-      node.setAlias('区域')
-    })
-  })
-
-  window.builder = builder
+  setVSeed(() => vseed)
 
   return () => {
     vquery = null
@@ -150222,9 +150323,7 @@ const Demo = () => {
   return vseed && <SimpleVSeedRender vseed={vseed} />
 }
 
-import * as Y from 'yjs'
 import { VQuery, QueryDSL } from '@visactor/vquery'
-import { VBI } from '@visactor/vbi'
 import { useRef, useEffect, useState } from 'react'
 import { useDark } from '@rspress/core/runtime'
 import VChart from '@visactor/vchart'
@@ -150325,6 +150424,74 @@ export default Demo
 
 
 ---
+url: /VBI/vbi/index.md
+---
+
+# VBI
+
+:::info In Development
+Coming Soon
+:::
+
+
+
+---
+url: /VBI/vbi/practices/standard.md
+---
+
+# Standard
+
+import { APP } from 'demo'
+
+<div style={{ width: '100%', height: '700px' }}>
+  <APP />
+</div>
+
+
+
+---
+url: /VBI/vbi/practices/minimalist.md
+---
+
+# Minimalist
+
+import { APP } from 'minimalist'
+
+<div style={{ width: '100%', height: '700px' }}>
+  <APP />
+</div>
+
+
+
+---
+url: /VBI/vbi/practices/streamlined.md
+---
+
+# Streamlined
+
+import { APP } from 'streamlined'
+
+<div style={{ width: '100%', height: '700px' }}>
+  <APP />
+</div>
+
+
+
+---
+url: /VBI/vbi/practices/professional.md
+---
+
+# Professional
+
+import { APP } from 'professional'
+
+<div style={{ width: '100%', height: '700px' }}>
+  <APP />
+</div>
+
+
+
+---
 url: /VBI/vbi/examples/index.md
 ---
 
@@ -150334,18 +150501,20 @@ url: /VBI/vbi/examples/index.md
 
 ## chartType
 
-| 示例                                                         | 描述                                    | 标签 |
-| ------------------------------------------------------------ | --------------------------------------- | ---- |
-| [area-by-order-date](/VBI/vbi/examples/chartType.md#area-by-order-date)         | 面积图 - 按日期销售额趋势               | -    |
-| [bar-by-product-type](/VBI/vbi/examples/chartType.md#bar-by-product-type)       | 柱状图 - 按产品类型销售额               | -    |
-| [chart-type-switching](/VBI/vbi/examples/chartType.md#chart-type-switching)     | Switch between line and bar chart types | -    |
-| [column-by-area](/VBI/vbi/examples/chartType.md#column-by-area)                 | 柱形图 - 按区域销售额                   | -    |
-| [donut-by-customer-type](/VBI/vbi/examples/chartType.md#donut-by-customer-type) | 环形图 - 按客户类型销售占比             | -    |
-| [line-by-province](/VBI/vbi/examples/chartType.md#line-by-province)             | 折线图 - 按省份销售额趋势               | -    |
-| [line-chart](/VBI/vbi/examples/chartType.md#line-chart)                         | 折线图 - 按省份销售额趋势               | -    |
-| [pie-by-area](/VBI/vbi/examples/chartType.md#pie-by-area)                       | 饼图 - 按区域销售占比                   | -    |
-| [rose-by-city](/VBI/vbi/examples/chartType.md#rose-by-city)                     | 玫瑰图 - 按城市销售额                   | -    |
-| [scatter-sales-profit](/VBI/vbi/examples/chartType.md#scatter-sales-profit)     | 散点图 - 销售额与利润关系               | -    |
+| 示例                                                                         | 描述                                                       | 标签 |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------- | ---- |
+| [area-by-order-date](/VBI/vbi/examples/chartType.md#area-by-order-date)                         | 面积图 - 按日期销售额趋势                                  | -    |
+| [bar-by-product-type](/VBI/vbi/examples/chartType.md#bar-by-product-type)                       | 柱状图 - 按产品类型销售额                                  | -    |
+| [chart-type-switching](/VBI/vbi/examples/chartType.md#chart-type-switching)                     | Switch between line and bar chart types                    | -    |
+| [column-by-area](/VBI/vbi/examples/chartType.md#column-by-area)                                 | 柱形图 - 按区域销售额                                      | -    |
+| [donut-by-customer-type](/VBI/vbi/examples/chartType.md#donut-by-customer-type)                 | 环形图 - 按客户类型销售占比                                | -    |
+| [line-by-province](/VBI/vbi/examples/chartType.md#line-by-province)                             | 折线图 - 按省份销售额趋势                                  | -    |
+| [line-chart](/VBI/vbi/examples/chartType.md#line-chart)                                         | 折线图 - 按省份销售额趋势                                  | -    |
+| [pie-by-area](/VBI/vbi/examples/chartType.md#pie-by-area)                                       | 饼图 - 按区域销售占比                                      | -    |
+| [pie-chart-measure-encoding](/VBI/vbi/examples/chartType.md#pie-chart-measure-encoding)         | 饼图度量编码 - 测试 measure-encoding.ts Pie 图表类型       | -    |
+| [rose-by-city](/VBI/vbi/examples/chartType.md#rose-by-city)                                     | 玫瑰图 - 按城市销售额                                      | -    |
+| [scatter-chart-measure-encoding](/VBI/vbi/examples/chartType.md#scatter-chart-measure-encoding) | 散点图度量编码 - 测试 measure-encoding.ts Scatter 图表类型 | -    |
+| [scatter-sales-profit](/VBI/vbi/examples/chartType.md#scatter-sales-profit)                     | 散点图 - 销售额与利润关系                                  | -    |
 
 ## dimensions
 
@@ -150366,6 +150535,8 @@ url: /VBI/vbi/examples/index.md
 | [add-having-filter](/VBI/vbi/examples/havingFilter.md#add-having-filter)                                                     | 按区域分组后筛选销售额超过百万的高业绩区域                                                                                           | -    |
 | [add-multiple-having-filter](/VBI/vbi/examples/havingFilter.md#add-multiple-having-filter)                                   | 链式添加多个Having条件筛选高销售额且高利润的区域                                                                                     | -    |
 | [clear-having-filter](/VBI/vbi/examples/havingFilter.md#clear-having-filter)                                                 | 清空所有Having过滤条件，展示全量分组聚合结果                                                                                         | -    |
+| [having-array-value-with-in-operator](/VBI/vbi/examples/havingFilter.md#having-array-value-with-in-operator)                 | Having filter with array value that triggers 'in' operator conversion                                                                | -    |
+| [having-array-value-with-not-in-operator](/VBI/vbi/examples/havingFilter.md#having-array-value-with-not-in-operator)         | Having filter with array value that triggers 'not in' operator conversion                                                            | -    |
 | [having-clear-and-rebuild](/VBI/vbi/examples/havingFilter.md#having-clear-and-rebuild)                                       | 清除已有having条件后重新构建全新的分组筛选，模拟用户重置筛选面板后重新配置                                                           | -    |
 | [having-deeply-nested-groups](/VBI/vbi/examples/havingFilter.md#having-deeply-nested-groups)                                 | 三层嵌套分组：OR(AND(销售额超50万, 利润超5万), AND(数量超100, 折扣均值低于0.3))，模拟复杂业务筛选                                    | -    |
 | [having-empty-dsl-compose-target](/VBI/vbi/examples/havingFilter.md#having-empty-dsl-compose-target)                         | 从空DSL出发，通过builder拼装where/having/measures/dimensions，包含sum与countDistinct聚合的having条件组合                             | -    |
@@ -150421,6 +150592,7 @@ url: /VBI/vbi/examples/index.md
 | [high-discount-tech-profit-analysis](/VBI/vbi/examples/whereFilter.md#high-discount-tech-profit-analysis)     | 高折扣技术类产品利润分析：筛选技术品类且折扣大于0.5的订单，按区域对比利润      | -    |
 | [in-operator-multi-area-delivery](/VBI/vbi/examples/whereFilter.md#in-operator-multi-area-delivery)           | 多区域配送效率对比：使用 in 筛选华东、华北、中南三大区域，按配送方式统计订单量 | -    |
 | [nested-group-region-product-filter](/VBI/vbi/examples/whereFilter.md#nested-group-region-product-filter)     | 华东区域办公用品或家具销售额：使用嵌套分组，AND 连接区域条件与 OR 品类条件     | -    |
+| [not-between-sales-range](/VBI/vbi/examples/whereFilter.md#not-between-sales-range)                           | Not between filter: exclude sales between 1000~10000                           | -    |
 | [office-supplies-sales-by-province](/VBI/vbi/examples/whereFilter.md#office-supplies-sales-by-province)       | 各省份办公用品销售额排名：筛选办公用品品类，按省份汇总销售额                   | -    |
 | [or-group-product-category-comparison](/VBI/vbi/examples/whereFilter.md#or-group-product-category-comparison) | 办公用品与技术类品类对比：使用 OR 分组筛选两个品类，按区域对比销售额           | -    |
 | [remove-condition-from-group](/VBI/vbi/examples/whereFilter.md#remove-condition-from-group)                   | 从分组中移除条件：预设 OR 分组含三个品类，通过 updateGroup 移除其中一个        | -    |
@@ -150792,6 +150964,50 @@ export default () => {
 }
 ```
 
+## pie-chart-measure-encoding
+
+饼图度量编码 - 测试 measure-encoding.ts Pie 图表类型
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'pie',
+        dimensions: [{ field: 'product_type', alias: '产品类型' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'angle', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 10,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('pie')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
 ## rose-by-city
 
 玫瑰图 - 按城市销售额
@@ -150821,6 +151037,53 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.chartType.changeChartType('pie')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## scatter-chart-measure-encoding
+
+散点图度量编码 - 测试 measure-encoding.ts Scatter 图表类型
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'scatter',
+        dimensions: [],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'xAxis' },
+          { field: 'profit', alias: '利润', encoding: 'yAxis' },
+        ],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 10,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('scatter')
       }
       applyBuilder(builder)
 
@@ -151396,6 +151659,98 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilter.clear()
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## having-array-value-with-in-operator
+
+Having filter with array value that triggers 'in' operator conversion
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 10,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.havingFilter.add('sales', (node) => {
+          node.setOperator('=').setValue([100, 200, 300])
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## having-array-value-with-not-in-operator
+
+Having filter with array value that triggers 'not in' operator conversion
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 10,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.havingFilter.add('sales', (node) => {
+          node.setOperator('!=').setValue([100, 200])
+        })
       }
       applyBuilder(builder)
 
@@ -152746,6 +153101,61 @@ export default () => {
 
 
 ---
+url: /VBI/vbi/examples/utils.md
+---
+
+# utils
+
+import { registerDemoConnector } from '@components'
+
+{registerDemoConnector()}
+
+## connector-error-handling
+
+测试 connector 未注册时的错误处理
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [],
+        measures: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = async (builder: VBIBuilder) => {
+        await expect(() => builder.getSchema()).rejects.toThrow('connector')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+
+
+---
 url: /VBI/vbi/examples/whereFilter.md
 ---
 
@@ -153045,6 +153455,52 @@ export default () => {
               .add('product_type', (node) => node.setOperator('eq').setValue('办公用品'))
               .add('product_type', (node) => node.setOperator('eq').setValue('家具'))
           })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## not-between-sales-range
+
+Not between filter: exclude sales between 1000~10000
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'column',
+        dimensions: [{ field: 'product_type', alias: '品类' }],
+        measures: [{ field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilter.add('sales', (node) => {
+          node.setOperator('not between').setValue({ min: 1000, max: 10000 })
+        })
       }
       applyBuilder(builder)
 
@@ -153376,62 +153832,6 @@ export default () => {
   return <VSeedRender vseed={vseed} />
 }
 ```
-
-
-
----
-url: /VBI/vbi/practices/demo.md
----
-
-# Demo
-
-import { APP } from 'demo'
-
-<div style={{ width: '100%', height: '700px' }}>
-  <APP />
-</div>
-
-
-
----
-url: /VBI/vbi/practices/minimalist.md
----
-
-# Minimalist
-
-import { APP } from 'minimalist'
-
-<div style={{ width: '100%', height: '700px' }}>
-  <APP />
-</div>
-
-
-
----
-url: /VBI/vbi/practices/streamlined.md
----
-
-# Streamlined
-
-import { APP } from 'streamlined'
-
-<div style={{ width: '100%', height: '700px' }}>
-  <APP />
-</div>
-
-
-
----
-url: /VBI/vbi/practices/professional.md
----
-
-# Professional
-
-import { APP } from 'professional'
-
-<div style={{ width: '100%', height: '700px' }}>
-  <APP />
-</div>
 
 
 
@@ -155746,12 +156146,472 @@ clear(clearUndoStack: boolean, clearRedoStack: boolean): void
 
 
 ---
+url: /VBI/vbi/playground.md
+---
+
+```tsx playground
+const run = async (setVSeed) => {
+  const vquery = new VQuery()
+
+  const connectorId = 'vbi-demo'
+
+  VBI.registerConnector(connectorId, async () => {
+    return {
+      discoverSchema: async () => {
+        return [
+          { name: 'id', type: 'string' },
+          { name: 'order_id', type: 'string' },
+          { name: 'order_date', type: 'date' },
+          { name: 'delivery_date', type: 'date' },
+          { name: 'delivery_method', type: 'string' },
+          { name: 'customer_id', type: 'string' },
+          { name: 'customer_name', type: 'string' },
+          { name: 'customer_type', type: 'string' },
+          { name: 'city', type: 'string' },
+          { name: 'province', type: 'string' },
+          { name: 'country_or_region', type: 'string' },
+          { name: 'area', type: 'string' },
+          { name: 'product_id', type: 'string' },
+          { name: 'product_type', type: 'string' },
+          { name: 'product_sub_type', type: 'string' },
+          { name: 'product_name', type: 'string' },
+
+          { name: 'sales', type: 'number' },
+          { name: 'amount', type: 'number' },
+          { name: 'discount', type: 'number' },
+          { name: 'profit', type: 'number' },
+        ]
+      },
+      query: async ({ queryDSL, schema }) => {
+        if (!(await vquery.hasDataset(connectorId))) {
+          const url = 'https://visactor.github.io/VBI/dataset/supermarket.csv'
+          const datasetSource = { type: 'csv', rawDataset: url }
+          await vquery.createDataset(connectorId, schema, datasetSource)
+        }
+        const dataset = await vquery.connectDataset(connectorId)
+        const queryResult = await dataset.query(queryDSL)
+
+        return {
+          dataset: queryResult.dataset,
+        }
+      },
+    }
+  })
+
+  const builder = VBI.from(VBI.generateEmptyDSL(connectorId))
+
+  builder.doc.on('update', async () => {
+    const vseed = await builder.buildVSeed()
+    console.log('debug update', vseed)
+    setVSeed(() => vseed)
+  })
+
+  builder.doc.transact(() => {
+    builder.measures
+      .add('sales', (node) => {
+        node.setAlias('Sum(sales)').setAggregate({ func: 'sum' })
+      })
+      .add('profit', (node) => {
+        node.setAlias('Sum(profit)').setAggregate({ func: 'sum' })
+      })
+      .add('sales', (node) => {
+        node.setAlias('Quantile(sales, 0.5)').setAggregate({ func: 'quantile', quantile: 0.5 })
+      })
+
+    builder.dimensions.addDimension('area', (node) => {
+      node.setAlias('区域')
+    })
+  })
+
+  window.builder = builder
+
+  return () => {
+    vquery = null
+  }
+}
+
+const Demo = () => {
+  const [vseed, setVSeed] = useState<VSeed>()
+  const vquery = useRef<VQuery>()
+
+  useEffect(() => {
+    run(setVSeed)
+  }, [])
+
+  return vseed && <SimpleVSeedRender vseed={vseed} />
+}
+
+import * as Y from 'yjs'
+import { VQuery, QueryDSL } from '@visactor/vquery'
+import { VBI } from '@visactor/vbi'
+import { useRef, useEffect, useState } from 'react'
+import { useDark } from '@rspress/core/runtime'
+import VChart from '@visactor/vchart'
+import { ListTable, PivotTable, PivotChart, register } from '@visactor/vtable'
+import {
+  registerAll,
+  VSeed,
+  Builder,
+  isPivotChart,
+  isVChart,
+  isPivotTable,
+  isTable,
+  zVSeed,
+  ColorIdEncoding,
+} from '@visactor/vseed'
+
+registerAll()
+register.chartModule('vchart', VChart)
+
+const SimpleVSeedRender = (props: { vseed: VSeed }) => {
+  const { vseed } = props
+  const ref = useRef<HTMLDivElement>(null)
+  const builderRef = useRef<Builder>()
+  const dark = useDark()
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+    const theme = dark ? 'dark' : 'light'
+    const builder = Builder.from({ ...vseed, theme })
+    const spec = builder.build()
+
+    builderRef.current = builder
+    if (isPivotChart(vseed)) {
+      const tableInstance = new PivotChart(ref.current, spec)
+
+      tableInstance.on('legend_item_click', (args) => {
+        console.log('LEGEND_ITEM_CLICK', args)
+        tableInstance.updateFilterRules([
+          {
+            filterKey: ColorIdEncoding,
+            filteredValues: args.value,
+          },
+        ])
+      })
+
+      tableInstance.on('legend_change', (args) => {
+        const maxValue = args.value[1]
+        const minValue = args.value[0]
+        tableInstance.updateFilterRules([
+          {
+            filterFunc: (record) => {
+              const value = record[record[ColorIdEncoding]]
+              if (value >= minValue && value <= maxValue) {
+                return true
+              }
+              return false
+            },
+          },
+        ])
+      })
+
+      return () => tableInstance.release()
+    } else if (isVChart(vseed)) {
+      const vchart = new VChart(spec, { dom: ref.current })
+      vchart.renderSync()
+      return () => vchart.release()
+    } else if (isTable(vseed)) {
+      const tableInstance = new ListTable(ref.current, spec)
+      return () => tableInstance.release()
+    } else if (isPivotTable(vseed)) {
+      const tableInstance = new PivotTable(ref.current, spec)
+      return () => tableInstance.release()
+    }
+  }, [vseed, dark])
+
+  return (
+    <div
+      ref={ref}
+      style={{ height: 300, width: '100%' }}
+      onClick={() => {
+        console.group(`selected ${vseed.chartType}`)
+        console.log('builder', builderRef.current)
+        console.log('spec', builderRef.current.spec)
+        console.log('vseed', builderRef.current.vseed)
+        console.log('advancedVSeed', builderRef.current.advancedVSeed)
+        console.groupEnd()
+      }}
+    >
+      {' '}
+    </div>
+  )
+}
+
+export default Demo
+```
+
+
+
+---
+url: /VBI/vbi/examples/combination.md
+---
+
+# combination
+
+import { registerDemoConnector } from '@components'
+
+{registerDemoConnector()}
+
+## chart-dimension-measure
+
+组合测试：设置图表类型、维度和度量
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [],
+        measures: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('bar')
+        builder.dimensions.add('province', (node) => node.setAlias('省份'))
+        builder.measures.add('sales', (node) =>
+          node.setAlias('销售额').setEncoding('xAxis').setAggregate({ func: 'sum' }),
+        )
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## column-line-combo
+
+柱线组合图
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [],
+        measures: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('dualAxis')
+        builder.dimensions.add('product_type', (node) => node.setAlias('产品类型'))
+        builder.measures.add('sales', (node) =>
+          node.setAlias('销售额').setEncoding('yAxis').setAggregate({ func: 'sum' }),
+        )
+        builder.measures.add('profit', (node) =>
+          node.setAlias('利润').setEncoding('yAxisEnd').setSeriesType('line').setAggregate({ func: 'avg' }),
+        )
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## full-config
+
+完整配置：图表类型、维度、度量、limit、theme、locale
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [],
+        measures: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('line')
+        builder.dimensions.add('product_type', (node) => node.setAlias('产品类型'))
+        builder.measures.add('sales', (node) =>
+          node.setAlias('销售额').setEncoding('yAxis').setAggregate({ func: 'sum' }),
+        )
+        builder.limit.setLimit(50)
+        builder.theme.changeTheme('dark')
+        builder.locale.changeLocale('en-US')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+
+
+---
+url: /VBI/vbi/examples/limit.md
+---
+
+# limit
+
+import { registerDemoConnector } from '@components'
+
+{registerDemoConnector()}
+
+## set-limit-100
+
+设置limit为100
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [],
+        measures: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.limit.setLimit(100)
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## update-limit-50
+
+更新limit从20到50
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [],
+        measures: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.limit.setLimit(50)
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+
+
+---
 url: /VBI/vbi/examples/tags.md
 ---
 
 # 标签
 
-共 56 个示例，0 个标签。
+共 61 个示例，0 个标签。
 
 | 标签 | 数量 |
 | ---- | ---- |

@@ -356,6 +356,50 @@ export default () => {
 }
 ```
 
+## pie-chart-measure-encoding
+
+饼图度量编码 - 测试 measure-encoding.ts Pie 图表类型
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'pie',
+        dimensions: [{ field: 'product_type', alias: '产品类型' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'angle', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 10,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('pie')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
 ## rose-by-city
 
 玫瑰图 - 按城市销售额
@@ -385,6 +429,53 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.chartType.changeChartType('pie')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## scatter-chart-measure-encoding
+
+散点图度量编码 - 测试 measure-encoding.ts Scatter 图表类型
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'scatter',
+        dimensions: [],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'xAxis' },
+          { field: 'profit', alias: '利润', encoding: 'yAxis' },
+        ],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 10,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('scatter')
       }
       applyBuilder(builder)
 

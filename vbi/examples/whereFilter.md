@@ -309,6 +309,52 @@ export default () => {
 }
 ```
 
+## not-between-sales-range
+
+Not between filter: exclude sales between 1000~10000
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'column',
+        dimensions: [{ field: 'product_type', alias: '品类' }],
+        measures: [{ field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilter.add('sales', (node) => {
+          node.setOperator('not between').setValue({ min: 1000, max: 10000 })
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
 ## office-supplies-sales-by-province
 
 各省份办公用品销售额排名：筛选办公用品品类，按省份汇总销售额

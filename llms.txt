@@ -123,7 +123,6 @@
 ## VQuery
 
 - [VQuery](/VBI/vquery/index.md)
-- [Playground](/VBI/vquery/playground.md)
 - [Select](/VBI/vquery/examples/select.md)
 - [Aggregation](/VBI/vquery/examples/select/aggregation.md)
 - [Date](/VBI/vquery/examples/select/date.md)
@@ -134,11 +133,15 @@
 - [Limit](/VBI/vquery/examples/limit.md)
 - [常用脚本](/VBI/vquery/development/scripts.md): 为了保持 Monorepo 的一致性，所有脚本必须在项目根目录执行。
 - [测试流程](/VBI/vquery/development/tests.md): VQuery 使用 rstest 框架进行测试。所有命令需在根目录执行。
+- [Playground](/VBI/vquery/playground.md)
 
 ## VBI
 
 - [VBI](/VBI/vbi/index.md)
-- [Playground](/VBI/vbi/playground.md)
+- [Standard](/VBI/vbi/practices/standard.md)
+- [Minimalist](/VBI/vbi/practices/minimalist.md)
+- [Streamlined](/VBI/vbi/practices/streamlined.md)
+- [Professional](/VBI/vbi/practices/professional.md)
 - [VBI 示例](/VBI/vbi/examples/index.md): 本页面展示 VBI 的各种使用示例。
 - [chartType](/VBI/vbi/examples/chartType.md): {registerDemoConnector()}
 - [dimensions](/VBI/vbi/examples/dimensions.md): {registerDemoConnector()}
@@ -147,11 +150,8 @@
 - [measures](/VBI/vbi/examples/measures.md): {registerDemoConnector()}
 - [theme](/VBI/vbi/examples/theme.md): {registerDemoConnector()}
 - [undoManager](/VBI/vbi/examples/undoManager.md): {registerDemoConnector()}
+- [utils](/VBI/vbi/examples/utils.md): {registerDemoConnector()}
 - [whereFilter](/VBI/vbi/examples/whereFilter.md): {registerDemoConnector()}
-- [Demo](/VBI/vbi/practices/demo.md)
-- [Minimalist](/VBI/vbi/practices/minimalist.md)
-- [Streamlined](/VBI/vbi/practices/streamlined.md)
-- [Professional](/VBI/vbi/practices/professional.md)
 - [](/VBI/vbi/api/index.md)
 - [VBIBuilder](/VBI/vbi/api/builder.md)
 - [chartType](/VBI/vbi/api/chart-type.md): 图表类型构建器，用于切换和获取图表类型。支持表格、柱状图、折线图、饼图、散点图等多种图表类型
@@ -169,7 +169,10 @@
 - [locale](/VBI/vbi/api/locale.md): 语言构建器，用于设置和获取当前语言
 - [limit](/VBI/vbi/api/limit.md): 数据量限制构建器，用于设置和获取当前 limit
 - [undoManager](/VBI/vbi/api/undo-manager.md): 撤销/重做管理器，提供基于 YJS 的撤销和重做功能，支持栈管理和历史清除操作
-- [标签](/VBI/vbi/examples/tags.md): 共 56 个示例，0 个标签。
+- [Playground](/VBI/vbi/playground.md)
+- [combination](/VBI/vbi/examples/combination.md): {registerDemoConnector()}
+- [limit](/VBI/vbi/examples/limit.md): {registerDemoConnector()}
+- [标签](/VBI/vbi/examples/tags.md): 共 61 个示例，0 个标签。
 
 ## Other
 
