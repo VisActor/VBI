@@ -42,6 +42,18 @@ getField(): string
 
 **返回**: `string`
 
+### getEncoding
+
+获取图表编码位置
+
+**定义**:
+
+```typescript
+getEncoding(): VBIMeasure['encoding'] | undefined
+```
+
+**返回**: `VBIMeasure['encoding'] \| undefined`
+
 ### setAlias
 
 设置显示名称
@@ -67,7 +79,7 @@ setAlias(alias: string): this
 **定义**:
 
 ```typescript
-setEncoding(encoding: VBIMeasure['encoding']): this
+setEncoding(encoding: NonNullable<VBIMeasure['encoding']>): this
 ```
 
 **返回**: `this`
@@ -76,7 +88,7 @@ setEncoding(encoding: VBIMeasure['encoding']): this
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `encoding` | VBIMeasure\['encoding'] | - 编码位置（yAxis/xAxis/color/size） |
+| `encoding` | NonNullable\<VBIMeasure\['encoding']> | - 指标编码位置 |
 
 ### setAggregate
 

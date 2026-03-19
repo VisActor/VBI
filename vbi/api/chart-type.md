@@ -13,14 +13,14 @@
 **定义**:
 
 ```typescript
-constructor(_doc: Y.Doc, dsl: Y.Map<any>)
+constructor(doc: Y.Doc, dsl: Y.Map<any>)
 ```
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `_doc` | Y.Doc | - |
+| `doc` | Y.Doc | - |
 | `dsl` | Y.Map<any> | - |
 
 ### observe
@@ -68,6 +68,58 @@ getChartType(): string
 ```
 
 **返回**: `string`
+
+### getSupportedDimensionEncodings
+
+获取当前图表类型支持的维度编码
+
+**定义**:
+
+```typescript
+getSupportedDimensionEncodings()
+```
+
+### getRecommendedDimensionEncodings
+
+根据当前图表类型，按维度顺序返回推荐的维度编码
+
+**定义**:
+
+```typescript
+getRecommendedDimensionEncodings(dimensionCount: number)
+```
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `dimensionCount` | number | - 维度数量，默认使用当前 DSL 中的维度数量 |
+
+### getSupportedMeasureEncodings
+
+获取当前图表类型支持的指标编码
+
+**定义**:
+
+```typescript
+getSupportedMeasureEncodings()
+```
+
+### getRecommendedMeasureEncodings
+
+根据当前图表类型，按指标顺序返回推荐的指标编码
+
+**定义**:
+
+```typescript
+getRecommendedMeasureEncodings(measureCount: number)
+```
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `measureCount` | number | - 指标数量，默认使用当前 DSL 中的指标数量 |
 
 ### toJSON
 

@@ -42,6 +42,18 @@ getField(): string
 
 **返回**: `string`
 
+### getEncoding
+
+获取图表编码位置
+
+**定义**:
+
+```typescript
+getEncoding(): VBIDimension['encoding'] | undefined
+```
+
+**返回**: `VBIDimension['encoding'] \| undefined`
+
 ### setAlias
 
 设置显示名称
@@ -59,6 +71,24 @@ setAlias(alias: string): this
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `alias` | string | - 显示名称 |
+
+### setEncoding
+
+设置图表编码位置
+
+**定义**:
+
+```typescript
+setEncoding(encoding: NonNullable<VBIDimension['encoding']>): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `encoding` | NonNullable\<VBIDimension\['encoding']> | - 维度编码位置 |
 
 ### setAggregate
 
