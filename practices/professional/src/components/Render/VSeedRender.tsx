@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { message } from 'antd';
 import { isVBIFilter } from '@visactor/vbi';
 import { useVBIStore } from 'src/model';
+import type { ProfessionalTheme } from 'src/constants/builder';
 import VChart, { ISpec } from '@visactor/vchart';
 import {
   ListTable,
@@ -28,9 +29,10 @@ register.chartModule('vchart', VChart);
 
 export const VSeedRender = (props: {
   vseed: VSeed;
+  themeMode?: ProfessionalTheme;
   style?: React.CSSProperties;
 }) => {
-  const { vseed, style } = props;
+  const { vseed, themeMode = 'dark', style } = props;
   const ref = useRef<HTMLDivElement>(null);
   const vseedBuilderRef = useRef<VSeedBuilder>(null);
 
@@ -39,8 +41,7 @@ export const VSeedRender = (props: {
       return;
     }
     try {
-      const theme = 'light';
-      const builder = VSeedBuilder.from({ ...vseed, theme });
+      const builder = VSeedBuilder.from({ ...vseed, theme: themeMode });
       const spec = builder.build();
 
       vseedBuilderRef.current = builder;
@@ -117,7 +118,7 @@ export const VSeedRender = (props: {
         });
       }
     }
-  }, [vseed]);
+  }, [themeMode, vseed]);
 
   return (
     <div

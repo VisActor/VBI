@@ -1,4 +1,4 @@
-import { VBI, VBIDSL, isVBIFilter } from '@visactor/vbi';
+import { VBI, type VBIBuilder, VBIDSL, isVBIFilter } from '@visactor/vbi';
 import { VSeed } from '@visactor/vseed';
 import { createLocalConnector } from 'src/utils/localConnector';
 import { create } from 'zustand';
@@ -13,12 +13,12 @@ createLocalConnector(CONNECTOR_ID);
 interface BearState {
   loading: boolean;
   vseed: VSeed | null;
-  builder: ReturnType<typeof VBI.from>;
+  builder: VBIBuilder;
   initialized: boolean;
 
   dsl: VBIDSL;
 
-  initialize: (builder?: ReturnType<typeof VBI.from>) => DestroyCallback;
+  initialize: (builder?: VBIBuilder) => DestroyCallback;
   bindEvent: () => DestroyCallback;
 
   setDsl: (dsl: VBIDSL) => void;
@@ -57,6 +57,13 @@ export const useVBIStore = create<BearState>((set, get) => ({
   bindEvent: () => {
     const { builder, setLoading, setVSeed, setDsl } = get();
     const updateAll = async () => {
+      if (builder.isEmpty()) {
+        setLoading(false);
+        setVSeed(null);
+        setDsl(builder.dsl.toJSON() as VBIDSL);
+        return;
+      }
+
       setLoading(true);
       try {
         const newVSeed = await builder.buildVSeed();
