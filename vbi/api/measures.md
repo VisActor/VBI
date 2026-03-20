@@ -126,7 +126,7 @@ toJSON(): VBIMeasure[]
 **定义**:
 
 ```typescript
-observe(callback: ObserveCallback): () => void
+observe(callback: ObserveDeepCallback): () => void
 ```
 
 **返回**: `() => void`
@@ -135,7 +135,7 @@ observe(callback: ObserveCallback): () => void
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `callback` | ObserveCallback | - 回调函数 |
+| `callback` | ObserveDeepCallback | - 回调函数 |
 
 ### static isMeasureNode
 

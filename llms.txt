@@ -142,6 +142,7 @@
 - [Minimalist](/VBI/vbi/practices/minimalist.md)
 - [Streamlined](/VBI/vbi/practices/streamlined.md)
 - [Professional](/VBI/vbi/practices/professional.md)
+- [vbi-react Starter](/VBI/vbi/practices/vbi-react-starter.md)
 - [VBI 示例](/VBI/vbi/examples/index.md): 本页面展示 VBI 的各种使用示例。
 - [chartType](/VBI/vbi/examples/chartType.md): {registerDemoConnector()}
 - [dimensions](/VBI/vbi/examples/dimensions.md): {registerDemoConnector()}

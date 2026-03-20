@@ -150492,6 +150492,20 @@ import { APP } from 'professional'
 
 
 ---
+url: /VBI/vbi/practices/vbi-react-starter.md
+---
+
+# vbi-react Starter
+
+import { APP } from 'vbi-react-starter'
+
+<div style={{ width: '100%', height: '760px' }}>
+  <APP />
+</div>
+
+
+
+---
 url: /VBI/vbi/examples/index.md
 ---
 
@@ -154517,7 +154531,7 @@ toJSON(): VBIMeasure[]
 **定义**:
 
 ```typescript
-observe(callback: ObserveCallback): () => void
+observe(callback: ObserveDeepCallback): () => void
 ```
 
 **返回**: `() => void`
@@ -154526,7 +154540,7 @@ observe(callback: ObserveCallback): () => void
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `callback` | ObserveCallback | - 回调函数 |
+| `callback` | ObserveDeepCallback | - 回调函数 |
 
 ### static isMeasureNode
 
@@ -154864,7 +154878,7 @@ toJSON(): VBIDimension[]
 **定义**:
 
 ```typescript
-observe(callback: ObserveCallback): () => void
+observe(callback: ObserveDeepCallback): () => void
 ```
 
 **返回**: `() => void`
@@ -154873,7 +154887,7 @@ observe(callback: ObserveCallback): () => void
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `callback` | ObserveCallback | - 回调函数 |
+| `callback` | ObserveDeepCallback | - 回调函数 |
 
 ### static isDimensionNode
 
@@ -155227,7 +155241,7 @@ toJSON(): VBIWhereGroup
 **定义**:
 
 ```typescript
-observe(callback: ObserveCallback): () => void
+observe(callback: ObserveDeepCallback): () => void
 ```
 
 **返回**: `() => void`
@@ -155236,7 +155250,7 @@ observe(callback: ObserveCallback): () => void
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `callback` | ObserveCallback | - 回调函数 |
+| `callback` | ObserveDeepCallback | - 回调函数 |
 
 ### static isGroup
 
@@ -155770,7 +155784,7 @@ toJSON(): VBIHavingGroup
 **定义**:
 
 ```typescript
-observe(callback: ObserveCallback): () => void
+observe(callback: ObserveDeepCallback): () => void
 ```
 
 **返回**: `() => void`
@@ -155779,7 +155793,7 @@ observe(callback: ObserveCallback): () => void
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `callback` | ObserveCallback | - 回调函数 |
+| `callback` | ObserveDeepCallback | - 回调函数 |
 
 ### static isGroup
 
