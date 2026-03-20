@@ -1,610 +1,160 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import type {
+  VBIBuilder,
+  VBIDimension,
+  VBIHavingAggregate,
+  VBIMeasure,
+} from '@visactor/vbi';
+import { isVBIHavingFilter } from '@visactor/vbi';
 import './App.css';
-import { ConfigProvider, theme, Dropdown, Button } from 'antd';
-import { LeftOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+  Button,
+  ConfigProvider,
+  Dropdown,
+  Empty,
+  InputNumber,
+  Segmented,
+  Spin,
+  theme,
+  Tooltip,
+} from 'antd';
+import enUS from 'antd/locale/en_US';
+import zhCN from 'antd/locale/zh_CN';
+import {
+  LeftOutlined,
+  MoonOutlined,
+  RedoOutlined,
+  RightOutlined,
+  SunOutlined,
+  UndoOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
 import DimensionShelf from './components/Shelfs/DimensionShelf';
 import MeasureShelf from './components/Shelfs/MeasureShelf';
 import { FilterPanel, type FilterItem } from './components/Filter/FilterPanel';
-
+import { HavingFilterPanel } from './components/Filter/HavingFilterPanel';
 import { ChartTypeSelector } from './components/ChartType';
-import FieldsList from './components/Fields/FieldList';
+import DimensionFieldList from './components/Fields/DimensionFieldList';
 import MeasureFieldList from './components/Fields/MeasureFieldList';
-import EncodingPanel from './components/Fields/EncodingPanel';
+import EncodingPanel, {
+  type MeasureEncodingInfo,
+} from './components/Fields/EncodingPanel';
 import { VSeedRender } from './components/Render';
+import { useTranslation } from './i18n';
 import { useVBIStore } from './model';
 import { useShallow } from 'zustand/shallow';
+import {
+  useVBIBuilder,
+  useVBIChartType,
+  useVBIDimensions,
+  useVBIHavingFilter,
+  useVBIMeasures,
+  useVBISchemaFields,
+  useVBIUndoManager,
+  useVBIWhereFilter,
+} from './hooks';
 import { setLocalDataWithSchema } from './utils/localConnector';
 import { parseCsv } from './utils/parseCsv';
+import { supermarketSchema } from './utils/supermarketSchema';
 import {
-  supermarketDimensions,
-  supermarketMeasures,
-  supermarketSchema,
-} from './utils/supermarketSchema';
+  PROFESSIONAL_DEFAULT_LIMIT,
+  type ProfessionalLocale,
+  type ProfessionalTheme,
+} from './constants/builder';
 
-type EncodingChannel =
-  | 'yAxis'
-  | 'xAxis'
-  | 'color'
-  | 'label'
-  | 'tooltip'
-  | 'size';
+const ANT_LOCALES = {
+  'zh-CN': zhCN,
+  'en-US': enUS,
+} as const;
+
+const createThemeConfig = (themeMode: ProfessionalTheme) => ({
+  algorithm:
+    themeMode === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
+  token: {
+    colorPrimary: themeMode === 'dark' ? '#6c8cff' : '#275df5',
+    borderRadius: 12,
+    controlHeight: 30,
+    fontSize: 12,
+  },
+});
+
+const normalizeLimit = (value: number) => Math.max(1, Math.round(value));
+type MeasureEncoding = NonNullable<VBIMeasure['encoding']>;
+type MeasureAggregate = NonNullable<VBIMeasure['aggregate']>;
+type DimensionEncoding = NonNullable<VBIDimension['encoding']>;
+type DimensionAggregate = NonNullable<VBIDimension['aggregate']>;
+
+const clearBuilderState = (builder: VBIBuilder) => {
+  const dimensionIds = builder.dimensions.toJSON().map((item) => item.id).reverse();
+  const measureIds = builder.measures.toJSON().map((item) => item.id).reverse();
+
+  builder.doc.transact(() => {
+    dimensionIds.forEach((id) => {
+      builder.dimensions.remove(id);
+    });
+    measureIds.forEach((id) => {
+      builder.measures.remove(id);
+    });
+    builder.whereFilter.clear();
+    builder.havingFilter.clear();
+  });
+
+  builder.chartType.changeChartType('table');
+  builder.limit.setLimit(PROFESSIONAL_DEFAULT_LIMIT);
+};
 
 export function APP() {
-  const [leftWidth, setLeftWidth] = useState(220);
+  const [leftWidth, setLeftWidth] = useState(244);
   const [dragging, setDragging] = useState(false);
   const [builderCollapsed, setBuilderCollapsed] = useState(false);
+  const [schemaRefreshKey, setSchemaRefreshKey] = useState(0);
 
-  // VBI builder 相关
-
-  const builderRef = useRef<any>(null);
-
-  // 可用的字段和选中的字段
-  const [dimensions, setDimensions] = useState<string[]>([]);
-  const [measures, setMeasures] = useState<string[]>([]);
-  const [dimensionFields, setDimensionFields] = useState<string[]>([]);
-  const [measureFields, setMeasureFields] = useState<string[]>([]);
-  const [measuresDetail, setMeasuresDetail] = useState<
-    Record<
-      string,
-      {
-        alias?: string;
-        aggregate?: { func: string; quantile?: number };
-        encoding?: EncodingChannel;
-      }
-    >
-  >({});
-  const [dimensionMeasures, setDimensionMeasures] = useState<string[]>([]);
-  const [chartTypeOptions, setChartTypeOptions] = useState<string[]>([]);
-  const [currentChartType, setCurrentChartType] = useState<string>('table');
-  const [renderKey, setRenderKey] = useState(0);
-
-  // 获取 vbi store 的状态
-  const { initialize, initialized, builder, vseed, dsl } = useVBIStore(
+  const { initialize, initialized, builder, vseed } = useVBIStore(
     useShallow((state) => ({
       initialize: state.initialize,
       initialized: state.initialized,
       builder: state.builder,
       vseed: state.vseed,
-      dsl: state.dsl,
     })),
   );
-
-  const activeFields = useMemo(() => {
-    if (!dsl) return [];
-    const fields = new Set<string>();
-
-    const extractFields = (items: any[]) => {
-      items?.forEach((item) => {
-        if (item && typeof item === 'object') {
-          if ('field' in item && typeof item.field === 'string') {
-            fields.add(item.field);
-          }
-          if ('children' in item && Array.isArray(item.children)) {
-            extractFields(item.children);
-          }
-        }
-      });
-    };
-
-    extractFields(dsl.dimensions || []);
-    extractFields(dsl.measures || []);
-    return Array.from(fields);
-  }, [dsl]);
-
-  const [allFields, setAllFields] = useState<
-    { name: string; role: 'dimension' | 'measure' }[]
-  >([]);
-  const [filters, setFilters] = useState<FilterItem[]>([]);
-
-  const getDimensionIdByField = (field: string) => {
-    const dimension = builderRef.current?.dimensions
-      ?.toJSON?.()
-      ?.find((item: { field: string; id: string }) => item.field === field);
-
-    return dimension?.id;
-  };
-
-  const getMeasureIdByField = (field: string) => {
-    const measure = builderRef.current?.measures
-      ?.toJSON?.()
-      ?.find((item: { field: string; id: string }) => item.field === field);
-
-    return measure?.id;
-  };
+  const { locale, setLocale, t } = useTranslation();
+  const { theme: themeMode, setTheme, limit, setLimit } = useVBIBuilder(builder);
+  const { chartType, changeChartType, availableChartTypes } =
+    useVBIChartType(builder);
+  const { schemaFields, fieldRoleMap, fieldTypeMap } = useVBISchemaFields(
+    builder,
+    schemaRefreshKey,
+  );
+  const { dimensions, addDimension, removeDimension, updateDimension } =
+    useVBIDimensions(builder);
+  const {
+    filters: havingFilters,
+    rootOperator: havingRootOperator,
+    setRootOperator: setHavingRootOperator,
+    replaceFilters: replaceHavingFilters,
+  } = useVBIHavingFilter(builder);
+  const { measures, addMeasure, removeMeasure, updateMeasure } =
+    useVBIMeasures(builder);
+  const {
+    flatFilters,
+    rootOperator: whereRootOperator,
+    setRootOperator: setWhereRootOperator,
+    replaceFilters,
+  } = useVBIWhereFilter(builder);
+  const { canUndo, canRedo, undo, redo } = useVBIUndoManager(builder);
 
   useEffect(() => {
-    const handleFilterError = () => {
-      setFilters((prev) => prev.slice(0, -1));
-    };
-    window.addEventListener('vbi-filter-error', handleFilterError);
-    return () =>
-      window.removeEventListener('vbi-filter-error', handleFilterError);
-  }, []);
+    return initialize();
+  }, [initialize]);
 
   useEffect(() => {
-    if (initialized && builder) {
-      const fetchSchema = async () => {
-        const schema = await builder.getSchema();
-        setAllFields(
-          schema.map((s: { name: string; type: string }) => ({
-            name: s.name,
-            role: s.type === 'number' ? 'measure' : 'dimension',
-          })),
-        );
-      };
-      fetchSchema();
-    }
-  }, [initialized, builder]);
-
-  const handleFilterChange = (newFilters: FilterItem[]) => {
-    setFilters(newFilters);
-    if (builder) {
-      builder.doc.transact(() => {
-        builder.whereFilter.clear();
-        newFilters.forEach((f) => {
-          builder.whereFilter.add(f.field, (node) => {
-            node.setOperator(f.operator);
-            node.setValue(f.value);
-          });
-        });
-      });
-      setRenderKey((prev) => prev + 1);
-    }
-  };
-
-  // 初始化
-  useEffect(() => {
-    initialize();
-    builderRef.current = builder;
-    // setCurrentBuilder(builder);
-
-    // 获取可用的图表类型
-    if (builder?.chartType?.getAvailableChartTypes) {
-      const types = builder.chartType.getAvailableChartTypes();
-      setChartTypeOptions(types);
-    }
-
-    // 从 connector schema 获取可用的字段
-    const loadSchema = async () => {
-      if (builder?.getSchema) {
-        try {
-          const schema = await builder.getSchema();
-          const dims = schema
-            .filter((d: any) => d.type !== 'number')
-            .map((d: any) => d.name);
-          const meas = schema
-            .filter((d: any) => d.type === 'number')
-            .map((d: any) => d.name);
-          setDimensions(dims);
-          setMeasures(meas);
-        } catch (err) {
-          console.error('Failed to load schema:', err);
-        }
-      }
-    };
-
-    loadSchema();
-
-    // 初始化度量字段详情
-    if (builder?.measures?.toJSON) {
-      const measures = builder.measures.toJSON();
-      const detail: Record<
-        string,
-        {
-          alias?: string;
-          aggregate?: { func: string; quantile?: number };
-          encoding?: EncodingChannel;
-        }
-      > = {};
-
-      if (Array.isArray(measures)) {
-        measures.forEach((value: any) => {
-          const field = value.field;
-          const alias = value.alias || '';
-          const aggregate = value.aggregate;
-          // 使用 field 作为 key，而不是 alias
-          detail[field] = {
-            alias,
-            aggregate: aggregate
-              ? { func: aggregate.func, quantile: aggregate.quantile }
-              : undefined,
-            encoding: value.encoding,
-          };
-        });
-      }
-
-      setMeasuresDetail(detail);
-    }
-  }, []);
-
-  // Compute encoding information from DSL as the single source of truth
-  const encodingInfo = useMemo(() => {
-    if (!measureFields.length) {
-      return [];
-    }
-
-    const map: Record<string, string[]> = {};
-
-    for (const field of measureFields) {
-      const detail = measuresDetail[field];
-      const encoding = detail?.encoding ?? 'yAxis';
-      const displayName = detail?.alias || field;
-
-      if (!map[encoding]) {
-        map[encoding] = [];
-      }
-      map[encoding].push(displayName);
-    }
-
-    return Object.entries(map).map(([encoding, measures]) => ({
-      encoding,
-      measures,
-    }));
-  }, [measureFields, measuresDetail]);
-
-  // Compute supported encodings for current chart type
-  const supportedEncodings = useMemo(() => {
-    return [];
-  }, [currentChartType]);
-
-  // 加载 demo 数据
-  const handleLoadDemo = async () => {
-    try {
-      const url = 'https://visactor.github.io/VBI/dataset/supermarket.csv';
-      const response = await fetch(url);
-      const csv = await response.text();
-
-      const [headerRow = [], ...dataRows] = parseCsv(csv);
-      const headers = headerRow.map((header: string) => header.trim());
-      const schemaByName = new Map(
-        supermarketSchema.map((field) => [field.name, field.type]),
-      );
-
-      const data = dataRows
-        .map((values: string[]) => {
-          const row: Record<string, unknown> = {};
-          headers.forEach((header: string, index: number) => {
-            const rawValue = values[index]?.trim() ?? '';
-            const schemaType = schemaByName.get(header);
-
-            if (schemaType === 'number') {
-              row[header] = rawValue === '' ? null : Number(rawValue);
-              return;
-            }
-
-            row[header] = rawValue;
-          });
-          return row;
-        })
-        .filter((row: Record<string, unknown>) =>
-          Object.values(row).some((value) => value !== '' && value !== null),
-        );
-
-      // 设置本地数据
-      setLocalDataWithSchema(data, supermarketSchema);
-
-      if (data.length > 0) {
-        const dims = headers.filter((header: string) =>
-          supermarketDimensions.includes(header),
-        );
-        const meas = headers.filter((header: string) =>
-          supermarketMeasures.includes(header),
-        );
-        setDimensions(dims);
-        setMeasures(meas);
-        setDimensionFields([]);
-        setMeasureFields([]);
-      }
-
-      console.log('Demo 数据已加载');
-    } catch (err) {
-      console.error('加载 Demo 数据失败:', err);
-    }
-  };
-
-  // 上传 CSV
-  const handleUploadCSV = () => {
-    alert(
-      'Function not yet implemented. Currently only demo data is supported.',
-    );
-  };
-
-  const dataMenuItems = [
-    { key: 'demo', label: 'Demo Data' },
-    { key: 'csv', label: 'Upload CSV' },
-  ];
-
-  const handleDataMenuClick = ({ key }: { key: string }) => {
-    if (key === 'demo') {
-      handleLoadDemo();
-    } else if (key === 'csv') {
-      handleUploadCSV();
-    }
-  };
-
-  // 维度字段变化
-  const handleAddDimension = (field: string) => {
-    if (!dimensionFields.includes(field)) {
-      const newDims = [...dimensionFields, field];
-      setDimensionFields(newDims);
-      if (builderRef.current?.dimensions && builderRef.current.doc) {
-        const { dimensions, doc } = builderRef.current;
-        doc.transact(() => {
-          dimensions.add(field, (node: unknown) => {
-            const nodeObj = node as Record<string, (field: string) => void>;
-            if (nodeObj?.setAlias) {
-              nodeObj.setAlias(field);
-            }
-          });
-        });
-      }
-      setRenderKey((prev) => prev + 1);
-    }
-  };
-
-  const handleRemoveDimension = (field: string) => {
-    const newDims = dimensionFields.filter((d) => d !== field);
-    setDimensionFields(newDims);
-    if (builderRef.current?.dimensions && builderRef.current.doc) {
-      const { dimensions, doc } = builderRef.current;
-      const dimensionId = getDimensionIdByField(field);
-
-      if (!dimensionId) {
-        return;
-      }
-
-      doc.transact(() => {
-        dimensions.remove(dimensionId);
-      });
-    }
-    setRenderKey((prev) => prev + 1);
-  };
-
-  // 同步度量字段详情
-  const syncMeasuresDetail = () => {
-    if (builderRef.current?.measures) {
-      const measures = builderRef.current.measures.toJSON();
-      const detail: Record<
-        string,
-        {
-          alias?: string;
-          aggregate?: { func: string; quantile?: number };
-          encoding?: EncodingChannel;
-        }
-      > = {};
-
-      if (Array.isArray(measures)) {
-        measures.forEach((value: any) => {
-          const field = value.field;
-          const alias = value.alias || '';
-          const aggregate = value.aggregate;
-          // 使用 field 作为 key，而不是 alias
-          detail[field] = {
-            alias,
-            aggregate: aggregate
-              ? { func: aggregate.func, quantile: aggregate.quantile }
-              : undefined,
-            encoding: value.encoding,
-          };
-        });
-      }
-
-      setMeasuresDetail(detail);
-    }
-  };
-
-  // 度量字段变化
-  const handleAddMeasure = (field: string) => {
-    if (!measureFields.includes(field)) {
-      const newMeas = [...measureFields, field];
-      setMeasureFields(newMeas);
-      if (builderRef.current?.measures && builderRef.current.doc) {
-        const { measures, doc } = builderRef.current;
-        doc.transact(() => {
-          measures.add(field, (node: unknown) => {
-            const nodeObj = node as Record<string, (field: string) => void>;
-            if (nodeObj?.setAlias) {
-              nodeObj.setAlias(field);
-            }
-          });
-        });
-      }
-      setRenderKey((prev) => prev + 1);
-    }
-  };
-
-  const handleRemoveMeasure = (field: string) => {
-    const newMeas = measureFields.filter((m) => m !== field);
-    setMeasureFields(newMeas);
-    setDimensionMeasures((prev) => prev.filter((measure) => measure !== field));
-    if (builderRef.current?.measures && builderRef.current.doc) {
-      const { measures, doc } = builderRef.current;
-      const measureId = getMeasureIdByField(field);
-
-      if (!measureId) {
-        return;
-      }
-
-      doc.transact(() => {
-        measures.remove(measureId);
-      });
-    }
-    setRenderKey((prev) => prev + 1);
-  };
-
-  const handleRenameMeasure = (field: string, newAlias: string) => {
-    if (builderRef.current?.measures && builderRef.current.doc) {
-      const { measures, doc } = builderRef.current;
-      const measureId = getMeasureIdByField(field);
-
-      if (!measureId) {
-        return;
-      }
-
-      doc.transact(() => {
-        measures.update(
-          measureId,
-          (node: { setAlias: (alias: string) => void }) => {
-            node.setAlias(newAlias);
-          },
-        );
-      });
-      // measureFields 存的是 field，不需要改
-      syncMeasuresDetail();
-      setRenderKey((prev) => prev + 1);
-    }
-  };
-
-  const handleChangeAggregateFunc = (
-    field: string,
-    func: string,
-    quantile?: number,
-  ) => {
-    if (builderRef.current?.measures && builderRef.current.doc) {
-      const { measures, doc } = builderRef.current;
-      const measureId = getMeasureIdByField(field);
-
-      if (!measureId) {
-        return;
-      }
-
-      doc.transact(() => {
-        measures.update(
-          measureId,
-          (node: {
-            setAggregate: (aggregate: {
-              func: string;
-              quantile?: number;
-            }) => void;
-          }) => {
-            node.setAggregate(
-              quantile === undefined ? { func } : { func, quantile },
-            );
-          },
-        );
-      });
-      syncMeasuresDetail();
-      setRenderKey((prev) => prev + 1);
-    }
-  };
-
-  const handleAddMeasureFromDimension = (field: string) => {
-    if (!builderRef.current?.measures || !builderRef.current.doc) {
+    if (!dragging) {
       return;
     }
 
-    const { measures, doc } = builderRef.current;
-    const hasMeasure = measureFields.includes(field);
-
-    if (!hasMeasure) {
-      doc.transact(() => {
-        measures.add(field, (node: unknown) => {
-          const nodeObj = node as any;
-          if (nodeObj?.setAlias) {
-            nodeObj.setAlias(field);
-          }
-          if (nodeObj?.setAggregate) {
-            nodeObj.setAggregate({ func: 'count' });
-          }
-        });
-      });
-      setMeasureFields((prev) => [...prev, field]);
-      setDimensionMeasures((prev) => [...prev, field]);
-      syncMeasuresDetail();
-      setRenderKey((prev) => prev + 1);
-    }
-  };
-
-  const handleDropMeasureToEncoding = (
-    field: string,
-    encoding: EncodingChannel,
-  ) => {
-    if (!builderRef.current?.measures || !builderRef.current.doc) {
-      return;
-    }
-
-    const { measures, doc } = builderRef.current;
-    const hasMeasure = measureFields.includes(field);
-
-    return;
-
-    doc.transact(() => {
-      if (hasMeasure) {
-        measures.modifyEncoding(field, encoding);
-      } else {
-        measures.add(field);
-        measures.modifyEncoding(field, encoding);
-      }
-    });
-
-    if (!hasMeasure) {
-      setMeasureFields((prev) => [...prev, field]);
-    }
-
-    syncMeasuresDetail();
-    setRenderKey((prev) => prev + 1);
-  };
-
-  const handleDropDimensionToEncoding = (
-    field: string,
-    encoding: EncodingChannel,
-  ) => {
-    if (!builderRef.current?.measures || !builderRef.current.doc) {
-      return;
-    }
-
-    const { measures, doc } = builderRef.current;
-    const hasMeasure = measureFields.includes(field);
-
-    return;
-
-    doc.transact(() => {
-      if (hasMeasure) {
-        // Already added as measure, just modify encoding
-        measures.modifyEncoding(field, encoding);
-      } else {
-        // Add dimension as measure with count aggregate
-        measures.add(field, (node: unknown) => {
-          const nodeObj = node as any;
-          if (nodeObj?.setAlias) {
-            nodeObj.setAlias(field);
-          }
-          if (nodeObj?.setAggregate) {
-            nodeObj.setAggregate({ func: 'count' });
-          }
-        });
-        measures.modifyEncoding(field, encoding);
-      }
-    });
-
-    if (!hasMeasure) {
-      setMeasureFields((prev) => [...prev, field]);
-      setDimensionMeasures((prev) => [...prev, field]);
-    }
-
-    syncMeasuresDetail();
-    setRenderKey((prev) => prev + 1);
-  };
-
-  // 图表类型变化
-  const handleChangeChartType = (type: string) => {
-    setCurrentChartType(type);
-    if (builderRef.current?.chartType) {
-      builderRef.current.chartType.changeChartType(type);
-    }
-    setRenderKey((prev) => prev + 1);
-  };
-
-  // 数据筛选变化
-
-  useEffect(() => {
-    if (!dragging) return;
-
-    const onMove = (e: MouseEvent) => {
-      setLeftWidth((w) => Math.max(140, Math.min(400, w + e.movementX)));
+    const onMove = (event: MouseEvent) => {
+      setLeftWidth((width) => Math.max(180, Math.min(360, width + event.movementX)));
     };
-
     const onUp = () => {
       setDragging(false);
       document.body.style.userSelect = '';
@@ -620,209 +170,476 @@ export function APP() {
     };
   }, [dragging]);
 
+  const availableDimensions = useMemo(() => {
+    return schemaFields
+      .filter((field) => field.role === 'dimension')
+      .map((field) => field.name);
+  }, [schemaFields]);
+
+  const availableMeasures = useMemo(() => {
+    return schemaFields
+      .filter((field) => field.role === 'measure')
+      .map((field) => field.name);
+  }, [schemaFields]);
+
+  const dimensionFields = useMemo(() => {
+    return dimensions.map((item) => item.field);
+  }, [dimensions]);
+
+  const measureFields = useMemo(() => {
+    return measures.map((item) => item.field);
+  }, [measures]);
+
+  const measureDetails = useMemo(() => {
+    return Object.fromEntries(
+      measures.map((item) => [
+        item.field,
+        {
+          alias: item.alias,
+          aggregate: item.aggregate,
+          encoding: item.encoding,
+        },
+      ]),
+    );
+  }, [measures]);
+
+  const dimensionMeasureFields = useMemo(() => {
+    return measures
+      .filter((item) => fieldRoleMap[item.field] === 'dimension')
+      .map((item) => item.field);
+  }, [fieldRoleMap, measures]);
+
+  const encodingInfo = useMemo<MeasureEncodingInfo[]>(() => {
+    const grouped = new Map<MeasureEncoding, string[]>();
+
+    measures.forEach((measureItem) => {
+      const encoding = measureItem.encoding;
+      if (!encoding) {
+        return;
+      }
+
+      const list = grouped.get(encoding) ?? [];
+      list.push(measureItem.alias || measureItem.field);
+      grouped.set(encoding, list);
+    });
+
+    return Array.from(grouped.entries()).map(
+      ([encoding, assignedMeasures]) => ({
+        encoding,
+        measures: assignedMeasures,
+      }),
+    );
+  }, [measures]);
+
+  const activeFields = useMemo(() => {
+    return Array.from(new Set([...dimensionFields, ...measureFields]));
+  }, [dimensionFields, measureFields]);
+
+  const allFields = useMemo(() => {
+    return schemaFields.map(({ name, role }) => ({ name, role }));
+  }, [schemaFields]);
+
+  const filterItems = useMemo<FilterItem[]>(() => {
+    return flatFilters.map((item) => ({
+      field: item.field,
+      operator: item.op,
+      value: item.value,
+    }));
+  }, [flatFilters]);
+
+  const supportedEncodings =
+    (builder?.chartType.getSupportedMeasureEncodings() ?? []) as MeasureEncoding[];
+  const supportedDimensionEncodings =
+    (builder?.chartType.getSupportedDimensionEncodings() ?? []) as DimensionEncoding[];
+
+  const havingFilterItems = useMemo(() => {
+    return havingFilters
+      .filter(isVBIHavingFilter)
+      .map((item) => ({
+        field: item.field,
+        aggregate: item.aggregate,
+        operator: item.op,
+        value: item.value,
+      }));
+  }, [havingFilters]);
+
+  const antdLocale = ANT_LOCALES[locale];
+  const themeConfig = useMemo(() => createThemeConfig(themeMode), [themeMode]);
+
+  const addFieldAsDimension = (field: string) => {
+    if (dimensionFields.includes(field)) {
+      return;
+    }
+
+    addDimension(field, (node) => {
+      node.setAlias(field);
+    });
+  };
+
+  const findMeasureByField = (field: string) => {
+    return measures.find((item) => item.field === field);
+  };
+
+  const addFieldAsMeasure = (field: string, encoding?: MeasureEncoding) => {
+    if (findMeasureByField(field)) {
+      return;
+    }
+
+    addMeasure(field, (node) => {
+      node.setAlias(field);
+      if (fieldRoleMap[field] === 'dimension') {
+        node.setAggregate({ func: 'count' });
+      }
+      if (encoding) {
+        node.setEncoding(encoding);
+      }
+    });
+  };
+
+  const handleRemoveDimension = (field: string) => {
+    const target = dimensions.find((item) => item.field === field);
+    if (target) {
+      removeDimension(target.id);
+    }
+  };
+
+  const handleRenameDimension = (id: string, alias: string) => {
+    updateDimension(id, (node) => {
+      node.setAlias(alias);
+    });
+  };
+
+  const handleChangeDimensionEncoding = (
+    id: string,
+    encoding: DimensionEncoding,
+  ) => {
+    updateDimension(id, (node) => {
+      node.setEncoding(encoding);
+    });
+  };
+
+  const handleChangeDimensionAggregate = (
+    id: string,
+    aggregate?: DimensionAggregate,
+  ) => {
+    updateDimension(id, (node) => {
+      if (aggregate) {
+        node.setAggregate(aggregate);
+      } else {
+        node.clearAggregate();
+      }
+    });
+  };
+
+  const handleRemoveMeasure = (field: string) => {
+    const target = findMeasureByField(field);
+    if (target) {
+      removeMeasure(target.id);
+    }
+  };
+
+  const handleRenameMeasure = (field: string, alias: string) => {
+    const target = findMeasureByField(field);
+    if (!target) {
+      return;
+    }
+
+    updateMeasure(target.id, (node) => {
+      node.setAlias(alias);
+    });
+  };
+
+  const handleChangeAggregateFunc = (
+    field: string,
+    func: MeasureAggregate['func'],
+    quantile?: number,
+  ) => {
+    const target = findMeasureByField(field);
+    if (!target) {
+      return;
+    }
+
+    updateMeasure(target.id, (node) => {
+      const aggregate: MeasureAggregate =
+        func === 'quantile' ? { func, quantile } : { func };
+      node.setAggregate(aggregate);
+    });
+  };
+
+  const handleDropMeasureToEncoding = (
+    field: string,
+    encoding: MeasureEncoding,
+  ) => {
+    const target = findMeasureByField(field);
+    if (!target) {
+      addFieldAsMeasure(field, encoding);
+      return;
+    }
+
+    updateMeasure(target.id, (node) => {
+      node.setEncoding(encoding);
+    });
+  };
+
+  const handleDropDimensionToEncoding = (
+    field: string,
+    encoding: MeasureEncoding,
+  ) => {
+    const target = findMeasureByField(field);
+    if (!target) {
+      addMeasure(field, (node) => {
+        node.setAlias(field);
+        node.setAggregate({ func: 'count' });
+        node.setEncoding(encoding);
+      });
+      return;
+    }
+
+    updateMeasure(target.id, (node) => {
+      node.setEncoding(encoding);
+      node.setAggregate({ func: 'count' });
+    });
+  };
+
+  const handleFilterChange = (nextFilters: FilterItem[]) => {
+    replaceFilters(nextFilters);
+  };
+
+  const handleHavingChange = (
+    nextFilters: Array<{
+      field: string;
+      aggregate: VBIHavingAggregate;
+      operator: string;
+      value: unknown;
+    }>,
+  ) => {
+    replaceHavingFilters(nextFilters);
+  };
+
+  const handleLoadDemo = async () => {
+    try {
+      const response = await fetch(
+        'https://visactor.github.io/VBI/dataset/supermarket.csv',
+      );
+      if (!response.ok) {
+        throw new Error(`Failed to fetch demo data: ${response.status}`);
+      }
+
+      const csv = await response.text();
+      const [headerRow = [], ...dataRows] = parseCsv(csv);
+      const headers = headerRow.map((item: string) => item.trim());
+      const schemaByName = new Map(
+        supermarketSchema.map((field) => [field.name, field.type]),
+      );
+
+      const data = dataRows
+        .map((values: string[]) => {
+          const row: Record<string, unknown> = {};
+          headers.forEach((header: string, index: number) => {
+            const rawValue = values[index]?.trim() ?? '';
+            row[header] =
+              schemaByName.get(header) === 'number'
+                ? rawValue === ''
+                  ? null
+                  : Number(rawValue)
+                : rawValue;
+          });
+          return row;
+        })
+        .filter((row) => Object.values(row).some((value) => value !== '' && value !== null));
+
+      setLocalDataWithSchema(data, supermarketSchema);
+      clearBuilderState(builder);
+      setSchemaRefreshKey((value) => value + 1);
+    } catch (error) {
+      console.error('Failed to load demo data:', error);
+    }
+  };
+
+  const handleUploadCsv = () => {
+    window.alert('CSV upload is not connected yet.');
+  };
+
   if (!initialized) {
-    return null;
+    return (
+      <ConfigProvider locale={antdLocale} theme={themeConfig} componentSize="small">
+        <Spin tip={t('appInitializing')} fullscreen />
+      </ConfigProvider>
+    );
   }
 
   return (
-    <ConfigProvider
-      theme={{
-        algorithm: theme.darkAlgorithm,
-      }}
-    >
-      <div className="app-root">
+    <ConfigProvider locale={antdLocale} theme={themeConfig} componentSize="small">
+      <div className={`app-root app-root-${themeMode}`}>
         <div className="builder-layout">
           {!builderCollapsed && (
             <>
               <div className="left-panel" style={{ width: leftWidth }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    paddingRight: 12,
-                  }}
-                  className="title left-panel-title"
-                >
-                  Data
+                <div className="builder-toolbar">
+                  <div className="builder-toolbar-main">
+                    <ChartTypeSelector
+                      value={chartType}
+                      options={availableChartTypes}
+                      onChange={changeChartType}
+                      style={{ flex: 1, minWidth: 0 }}
+                    />
+                    <InputNumber
+                      min={1}
+                      step={50}
+                      value={limit}
+                      onChange={(value) => {
+                        if (typeof value === 'number') {
+                          setLimit(normalizeLimit(value));
+                        }
+                      }}
+                      style={{ width: 96 }}
+                      addonBefore={t('toolbarRows')}
+                    />
+                    <Button
+                      className="collapse-btn"
+                      onClick={() => setBuilderCollapsed(true)}
+                      icon={<LeftOutlined />}
+                    />
+                  </div>
+                  <div className="builder-toolbar-meta">
+                    <div className="toolbar-actions">
+                      <Tooltip title={t('toolbarUndo')}>
+                        <Button
+                          icon={<UndoOutlined />}
+                          disabled={!canUndo}
+                          onClick={() => undo()}
+                        />
+                      </Tooltip>
+                      <Tooltip title={t('toolbarRedo')}>
+                        <Button
+                          icon={<RedoOutlined />}
+                          disabled={!canRedo}
+                          onClick={() => redo()}
+                        />
+                      </Tooltip>
+                    </div>
+                    <Segmented<ProfessionalLocale>
+                      value={locale}
+                      options={[
+                        { label: '中', value: 'zh-CN' },
+                        { label: 'EN', value: 'en-US' },
+                      ]}
+                      onChange={(value) => setLocale(value)}
+                    />
+                    <Segmented<ProfessionalTheme>
+                      value={themeMode}
+                      options={[
+                        { label: <SunOutlined />, value: 'light' },
+                        { label: <MoonOutlined />, value: 'dark' },
+                      ]}
+                      onChange={(value) => setTheme(value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="left-panel-header">
+                  <span className="title">{t('toolbarData')}</span>
                   <Dropdown
                     menu={{
-                      items: dataMenuItems,
-                      onClick: handleDataMenuClick,
+                      items: [
+                        { key: 'demo', label: t('toolbarLoadDemo') },
+                        { key: 'csv', label: t('toolbarUploadCsv') },
+                      ],
+                      onClick: ({ key }) => {
+                        if (key === 'demo') {
+                          void handleLoadDemo();
+                        } else {
+                          handleUploadCsv();
+                        }
+                      },
                     }}
                     placement="bottomRight"
                   >
-                    <Button
-                      type="text"
-                      size="small"
-                      icon={<UploadOutlined />}
-                      style={{ color: '#e0e0e0' }}
-                    />
+                    <Button type="text" icon={<UploadOutlined />} />
                   </Dropdown>
                 </div>
-                {(dimensions.length > 0 || measures.length > 0) && (
-                  <div style={{ padding: '0 12px' }}>
+
+                <div className="left-panel-scroll">
+                  <div className="panel-card">
                     <FilterPanel
-                      fields={
-                        allFields.length > 0
-                          ? allFields
-                          : [
-                              ...dimensions.map((d) => ({
-                                name: d,
-                                role: 'dimension' as const,
-                              })),
-                              ...measures.map((m) => ({
-                                name: m,
-                                role: 'measure' as const,
-                              })),
-                            ]
-                      }
+                      fields={allFields}
                       activeFields={activeFields}
-                      filters={filters}
+                      filters={filterItems}
+                      rootOperator={whereRootOperator}
+                      onRootOperatorChange={setWhereRootOperator}
                       onChange={handleFilterChange}
                     />
                   </div>
-                )}
-                {dimensions.length > 0 && (
-                  <>
-                    <div
-                      style={{
-                        fontSize: 12,
-                        color: '#999',
-                        padding: '8px 12px',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      Dimensions
-                    </div>
-                    <DimensionShelf
-                      items={dimensions}
-                      onAdd={handleAddDimension}
-                      existingFields={dimensionFields}
-                    />
-                  </>
-                )}
-                {measures.length > 0 && (
-                  <>
-                    <div
-                      style={{
-                        fontSize: 12,
-                        color: '#999',
-                        padding: '8px 12px',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      Measures
-                    </div>
-                    <MeasureShelf
-                      items={measures}
-                      onAdd={handleAddMeasure}
-                      existingFields={measureFields}
-                    />
-                  </>
-                )}
-                {dimensions.length === 0 && measures.length === 0 && (
-                  <div
-                    style={{
-                      fontSize: 12,
-                      color: '#666',
-                      padding: '20px 12px',
-                      textAlign: 'center',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      gap: '8px',
-                    }}
-                  >
-                    <UploadOutlined style={{ fontSize: 24, color: '#999' }} />
-                    <div>点击右上角上传数据</div>
-                  </div>
-                )}
-              </div>
-              <div
-                className="splitter"
-                onMouseDown={() => setDragging(true)}
-              ></div>
-              <div className="middle-panel">
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    padding: '12px',
-                  }}
-                >
-                  <ChartTypeSelector
-                    value={currentChartType}
-                    options={chartTypeOptions}
-                    onChange={handleChangeChartType}
-                  />
-                  <button
-                    className="collapse-btn"
-                    onClick={() => setBuilderCollapsed(true)}
-                  >
-                    <LeftOutlined />
-                  </button>
-                </div>
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr',
-                    gap: '12px',
-                    padding: '0 12px 12px 12px',
-                    flex: 1,
-                    minHeight: 0,
-                    overflow: 'hidden',
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '0',
-                      backgroundColor: '#1a1b33',
-                      borderRadius: '4px',
-                      border: '1px solid #2a2b4d',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <FieldsList
-                      title="DIMENSIONS"
-                      items={dimensionFields}
-                      onAdd={handleAddDimension}
-                      onRemove={handleRemoveDimension}
-                      onDropDimension={handleAddDimension}
-                      style={{ flex: 1, minHeight: 0 }}
-                    />
-                    <MeasureFieldList
-                      items={measureFields}
-                      measures={measuresDetail}
-                      dimensionMeasures={Array.from(dimensionMeasures)}
-                      onRename={handleRenameMeasure}
-                      onChangeAggregate={handleChangeAggregateFunc}
-                      onRemove={handleRemoveMeasure}
-                      onDropDimension={handleAddMeasureFromDimension}
-                      style={{
-                        flex: 1,
-                        minHeight: 0,
-                        borderTop: '1px solid #2a2b4d',
-                      }}
+
+                  <div className="panel-card">
+                    <HavingFilterPanel
+                      fields={allFields}
+                      filters={havingFilterItems}
+                      rootOperator={havingRootOperator}
+                      onRootOperatorChange={setHavingRootOperator}
+                      onChange={handleHavingChange}
                     />
                   </div>
 
-                  <div
-                    style={{
-                      backgroundColor: '#1a1b33',
-                      borderRadius: '4px',
-                      border: '1px solid #2a2b4d',
-                      overflow: 'auto',
-                      minHeight: '200px',
-                    }}
-                  >
+                  <div className="panel-section-title">
+                    {t('fieldsAvailableDimensions')}
+                  </div>
+                  <DimensionShelf
+                    items={availableDimensions}
+                    onAdd={addFieldAsDimension}
+                    existingFields={dimensionFields}
+                  />
+
+                  <div className="panel-section-title">
+                    {t('fieldsAvailableMeasures')}
+                  </div>
+                  <MeasureShelf
+                    items={availableMeasures}
+                    onAdd={(field) => addFieldAsMeasure(field)}
+                    existingFields={measureFields}
+                  />
+
+                  {schemaFields.length === 0 && (
+                    <div className="data-hint">{t('dataHint')}</div>
+                  )}
+                </div>
+              </div>
+
+              <div className="splitter" onMouseDown={() => setDragging(true)} />
+
+              <div className="middle-panel">
+                <div className="middle-panel-scroll">
+                  <div className="panel-card panel-stack">
+                    <DimensionFieldList
+                      items={dimensions}
+                      fieldTypeMap={fieldTypeMap}
+                      supportedEncodings={supportedDimensionEncodings}
+                      onRemove={removeDimension}
+                      onRename={handleRenameDimension}
+                      onChangeEncoding={handleChangeDimensionEncoding}
+                      onChangeAggregate={handleChangeDimensionAggregate}
+                      onDropDimension={addFieldAsDimension}
+                    />
+                    <MeasureFieldList
+                      items={measureFields}
+                      measures={measureDetails}
+                      dimensionMeasures={dimensionMeasureFields}
+                      onRename={handleRenameMeasure}
+                      onChangeAggregate={handleChangeAggregateFunc}
+                      onRemove={handleRemoveMeasure}
+                      onDropDimension={(field) => addFieldAsMeasure(field)}
+                    />
+                  </div>
+
+                  <div className="panel-card encoding-card">
                     <EncodingPanel
                       supportedEncodings={supportedEncodings}
                       encodingInfo={encodingInfo}
                       onDropMeasureToEncoding={handleDropMeasureToEncoding}
                       onDropDimensionToEncoding={handleDropDimensionToEncoding}
+                      title={t('encodingTitle')}
+                      emptyText={t('encodingEmpty')}
+                      dropText={t('encodingDrop')}
                       style={{ height: '100%' }}
                     />
                   </div>
@@ -830,16 +647,23 @@ export function APP() {
               </div>
             </>
           )}
+
           <div className="canvas-panel">
             {builderCollapsed && (
-              <button
+              <Button
                 className="expand-btn"
+                icon={<RightOutlined />}
                 onClick={() => setBuilderCollapsed(false)}
-              >
-                <RightOutlined />
-              </button>
+              />
             )}
-            {vseed && <VSeedRender key={renderKey} vseed={vseed} />}
+            {vseed ? (
+              <VSeedRender vseed={vseed} themeMode={themeMode} />
+            ) : (
+              <Empty
+                className="canvas-empty"
+                description={t('canvasEmpty')}
+              />
+            )}
           </div>
         </div>
       </div>

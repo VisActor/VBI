@@ -1,31 +1,29 @@
 import React, { useMemo, useState } from 'react';
+import type { VBIMeasure } from '@visactor/vbi';
 import { Empty, Tag } from 'antd';
 
-type EncodingChannel =
-  | 'yAxis'
-  | 'xAxis'
-  | 'color'
-  | 'label'
-  | 'tooltip'
-  | 'size';
+type MeasureEncoding = NonNullable<VBIMeasure['encoding']>;
 
 export interface MeasureEncodingInfo {
-  encoding: string;
+  encoding: MeasureEncoding;
   measures: string[];
 }
 
 export interface EncodingPanelProps {
   /** Array of supported encoding channels for this chart type */
-  supportedEncodings?: EncodingChannel[];
+  supportedEncodings?: MeasureEncoding[];
   /** Array of {encoding, measures} pairs - currently configured encodings */
   encodingInfo?: MeasureEncodingInfo[];
   /** Handle dropping a measure field into an encoding channel */
-  onDropMeasureToEncoding?: (field: string, encoding: EncodingChannel) => void;
+  onDropMeasureToEncoding?: (field: string, encoding: MeasureEncoding) => void;
   /** Handle dropping a dimension field into an encoding channel (as a measure) */
   onDropDimensionToEncoding?: (
     field: string,
-    encoding: EncodingChannel,
+    encoding: MeasureEncoding,
   ) => void;
+  title?: string;
+  emptyText?: string;
+  dropText?: string;
   style?: React.CSSProperties;
 }
 
@@ -39,20 +37,26 @@ const EncodingPanel: React.FC<EncodingPanelProps> = ({
   encodingInfo = [],
   onDropMeasureToEncoding,
   onDropDimensionToEncoding,
+  title = 'Measure Encoding',
+  emptyText = 'No chart selected',
+  dropText = 'Drop measure here',
   style,
 }) => {
-  const [hoveredEncoding, setHoveredEncoding] = useState<string | null>(null);
+  const [hoveredEncoding, setHoveredEncoding] = useState<MeasureEncoding | null>(
+    null,
+  );
 
   const encodingState = useMemo(() => {
     // Create a map of configured encodings
-    const configuredMap: Record<string, string[]> = {};
+    const configuredMap: Partial<Record<MeasureEncoding, string[]>> = {};
     encodingInfo.forEach((item) => {
       configuredMap[item.encoding] = item.measures;
     });
 
     // Create state for all supported encodings (configured or empty)
-    const state: Record<string, { configured: boolean; measures: string[] }> =
-      {};
+    const state: Partial<
+      Record<MeasureEncoding, { configured: boolean; measures: string[] }>
+    > = {};
     supportedEncodings.forEach((encoding) => {
       state[encoding] = {
         configured: encoding in configuredMap,
@@ -76,9 +80,9 @@ const EncodingPanel: React.FC<EncodingPanelProps> = ({
             fontWeight: 'bold',
           }}
         >
-          Measure Encoding
+          {title}
         </div>
-        <Empty description="No chart selected" style={{ padding: '20px 0' }} />
+        <Empty description={emptyText} style={{ padding: '20px 0' }} />
       </div>
     );
   }
@@ -93,7 +97,7 @@ const EncodingPanel: React.FC<EncodingPanelProps> = ({
           fontWeight: 'bold',
         }}
       >
-        Measure Encoding
+        {title}
       </div>
       <div
         style={{
@@ -103,8 +107,11 @@ const EncodingPanel: React.FC<EncodingPanelProps> = ({
           padding: '8px 0',
         }}
       >
-        {Object.entries(encodingState).map(
-          ([encoding, { configured, measures }]) => (
+        {(
+          Object.entries(encodingState) as Array<
+            [MeasureEncoding, { configured: boolean; measures: string[] }]
+          >
+        ).map(([encoding, { configured, measures }]) => (
             <div
               key={encoding}
               onDragOver={(e) => {
@@ -144,12 +151,9 @@ const EncodingPanel: React.FC<EncodingPanelProps> = ({
 
                 if (field) {
                   if (isMeasure && onDropMeasureToEncoding) {
-                    onDropMeasureToEncoding(field, encoding as EncodingChannel);
+                    onDropMeasureToEncoding(field, encoding);
                   } else if (!isMeasure && onDropDimensionToEncoding) {
-                    onDropDimensionToEncoding(
-                      field,
-                      encoding as EncodingChannel,
-                    );
+                    onDropDimensionToEncoding(field, encoding);
                   }
                 }
                 setHoveredEncoding(null);
@@ -197,7 +201,7 @@ const EncodingPanel: React.FC<EncodingPanelProps> = ({
                   ))
                 ) : (
                   <span style={{ color: '#ccc', fontSize: '11px' }}>
-                    Drop measure here
+                    {dropText}
                   </span>
                 )}
               </div>

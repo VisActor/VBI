@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import type { VBIMeasure } from '@visactor/vbi';
 import {
   DeleteOutlined,
   FontSizeOutlined,
@@ -6,26 +7,36 @@ import {
 } from '@ant-design/icons';
 import { Modal, Input, Select, Form } from 'antd';
 import '../FieldList.css';
+import { useTranslation } from 'src/i18n';
 
 export interface MeasureFieldListProps {
   items: string[];
   measures?: Record<
     string,
-    { alias?: string; aggregate?: { func: string; quantile?: number } }
+    {
+      alias?: string;
+      aggregate?: NonNullable<VBIMeasure['aggregate']>;
+    }
   >;
   dimensionMeasures?: string[];
   onRemove: (field: string) => void;
   onRename?: (field: string, newAlias: string) => void;
-  onChangeAggregate?: (field: string, func: string, quantile?: number) => void;
+  onChangeAggregate?: (
+    field: string,
+    func: NonNullable<VBIMeasure['aggregate']>['func'],
+    quantile?: number,
+  ) => void;
   onDropDimension?: (field: string) => void;
   style?: React.CSSProperties;
 }
+
+type MeasureAggregateFunc = NonNullable<VBIMeasure['aggregate']>['func'];
 
 // 所有 11 种聚合方式的选项
 const ALL_AGGREGATE_OPTIONS = [
   { label: 'Sum', value: 'sum' },
   { label: 'Count', value: 'count' },
-  { label: 'Count Distinct', value: 'count_distinct' },
+  { label: 'Count Distinct', value: 'countDistinct' },
   { label: 'Average', value: 'avg' },
   { label: 'Min', value: 'min' },
   { label: 'Max', value: 'max' },
@@ -39,7 +50,7 @@ const ALL_AGGREGATE_OPTIONS = [
 // Dimension 字段只能用 count 聚合
 const DIMENSION_AGGREGATE_OPTIONS = [
   { label: 'Count', value: 'count' },
-  { label: 'Count Distinct', value: 'count_distinct' },
+  { label: 'Count Distinct', value: 'countDistinct' },
 ];
 
 const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
@@ -52,9 +63,11 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
   onDropDimension,
   style,
 }) => {
+  const { locale } = useTranslation();
+  const isZh = locale === 'zh-CN';
   const [editingField, setEditingField] = useState<string | null>(null);
   const [editAlias, setEditAlias] = useState('');
-  const [editAggregate, setEditAggregate] = useState('sum');
+  const [editAggregate, setEditAggregate] = useState<MeasureAggregateFunc>('sum');
   const [editQuantile, setEditQuantile] = useState(0.5);
   const [hoveredDropZone, setHoveredDropZone] = useState(false);
 
@@ -63,17 +76,18 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
     setEditingField(field);
     setEditAlias(measure?.alias || field);
 
-    // 如果这个字段来自 dimension，聚合函数只能是 count 或 count_distinct
+    // 如果这个字段来自 dimension，聚合函数只能是 count 或 countDistinct
     const isDimensionMeasure = dimensionMeasures.includes(field);
     let defaultFunc = measure?.aggregate?.func || 'sum';
-    if (
-      isDimensionMeasure &&
-      !['count', 'count_distinct'].includes(defaultFunc)
-    ) {
+    if (isDimensionMeasure && !['count', 'countDistinct'].includes(defaultFunc)) {
       defaultFunc = 'count';
     }
     setEditAggregate(defaultFunc);
-    setEditQuantile(measure?.aggregate?.quantile || 0.5);
+    setEditQuantile(
+      measure?.aggregate?.func === 'quantile'
+        ? measure.aggregate.quantile || 0.5
+        : 0.5,
+    );
   };
 
   const handleSave = () => {
@@ -130,7 +144,7 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
             transition: 'background-color 0.2s',
           }}
         >
-          MEASURES
+          {isZh ? '指标' : 'MEASURES'}
         </div>
         <div
           className="fieldlist-items"
@@ -141,7 +155,9 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
           }}
         >
           {items.length === 0 && (
-            <div className="fieldlist-empty">No measures added</div>
+            <div className="fieldlist-empty">
+              {isZh ? '还没有添加指标' : 'No measures added'}
+            </div>
           )}
           {items.map((field) => {
             const measure = measures[field];
@@ -164,7 +180,7 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
                       e.stopPropagation();
                       handleEdit(field);
                     }}
-                    title="Edit"
+                    title={isZh ? '编辑' : 'Edit'}
                   >
                     <EditOutlined />
                   </button>
@@ -185,20 +201,20 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
       </div>
 
       <Modal
-        title="Edit Measure"
+        title={isZh ? '编辑指标' : 'Edit Measure'}
         open={editingField !== null}
         onOk={handleSave}
         onCancel={() => setEditingField(null)}
       >
         <Form layout="vertical">
-          <Form.Item label="Alias">
+          <Form.Item label={isZh ? '显示名' : 'Alias'}>
             <Input
               value={editAlias}
               onChange={(e) => setEditAlias(e.target.value)}
-              placeholder="Enter measure alias"
+              placeholder={isZh ? '输入指标显示名' : 'Enter measure alias'}
             />
           </Form.Item>
-          <Form.Item label="Aggregate Function">
+          <Form.Item label={isZh ? '聚合方式' : 'Aggregate Function'}>
             <Select
               value={editAggregate}
               onChange={setEditAggregate}
@@ -210,7 +226,7 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
             />
           </Form.Item>
           {editAggregate === 'quantile' && (
-            <Form.Item label="Quantile (0-1)">
+            <Form.Item label={isZh ? '分位数 (0-1)' : 'Quantile (0-1)'}>
               <Input
                 type="number"
                 min={0}

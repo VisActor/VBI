@@ -4,8 +4,8 @@
   display: flex;
   flex-direction: column;
   padding: 2px 8px;
-  background: #1a1b33;
-  color: #e0e0e0;
+  background: transparent;
+  color: var(--app-text);
   font-size: 10px;
   flex: 1;
   min-height: 0;
@@ -18,7 +18,7 @@
   font-size: 10px;
   letter-spacing: 0.6px;
   margin-bottom: 4px;
-  color: #b0b0b0;
+  color: var(--app-text-muted);
 }
 
 .shelf-items {
@@ -30,7 +30,7 @@
 
 .shelf-empty {
   font-style: italic;
-  color: #999;
+  color: var(--app-text-muted);
   padding: 4px 0;
   font-size: 10px;
 }
@@ -47,8 +47,7 @@
 }
 
 .shelf-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  /* hover 高亮 */
+  background: var(--app-hover);
 }
 
 .shelf-item-text {

@@ -19,6 +19,7 @@ import {
   PlusOutlined,
   EditOutlined,
 } from '@ant-design/icons';
+import { useTranslation } from 'src/i18n';
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -39,30 +40,36 @@ interface FilterPanelProps {
   fields: FilterField[]; // 可供筛选的字段列表
   activeFields?: string[]; // 正在使用的字段
   filters: FilterItem[];
+  rootOperator?: 'and' | 'or';
+  onRootOperatorChange?: (operator: 'and' | 'or') => void;
   onChange: (filters: FilterItem[]) => void;
 }
 
-const DIMENSION_OPERATORS = [
-  { label: '包含 (in)', value: 'in' },
-  { label: '不包含 (not in)', value: 'not in' },
+const getDimensionOperators = (isZh: boolean) => [
+  { label: isZh ? '包含 (in)' : 'Includes (in)', value: 'in' },
+  { label: isZh ? '不包含 (not in)' : 'Excludes (not in)', value: 'not in' },
 ];
 
-const MEASURE_OPERATORS = [
-  { label: '等于 (=)', value: '=' },
-  { label: '不等于 (!=)', value: '!=' },
-  { label: '大于 (>)', value: '>' },
-  { label: '大于等于 (>=)', value: '>=' },
-  { label: '小于 (<)', value: '<' },
-  { label: '小于等于 (<=)', value: '<=' },
-  { label: '范围 (between)', value: 'between' },
+const getMeasureOperators = (isZh: boolean) => [
+  { label: isZh ? '等于 (=)' : 'Equals (=)', value: '=' },
+  { label: isZh ? '不等于 (!=)' : 'Not equal (!=)', value: '!=' },
+  { label: isZh ? '大于 (>)' : 'Greater than (>)', value: '>' },
+  { label: isZh ? '大于等于 (>=)' : 'Greater or equal (>=)', value: '>=' },
+  { label: isZh ? '小于 (<)' : 'Less than (<)', value: '<' },
+  { label: isZh ? '小于等于 (<=)' : 'Less or equal (<=)', value: '<=' },
+  { label: isZh ? '范围 (between)' : 'Between', value: 'between' },
 ];
 
 export const FilterPanel: React.FC<FilterPanelProps> = ({
   fields,
   activeFields = [],
   filters = [],
+  rootOperator = 'and',
+  onRootOperatorChange,
   onChange,
 }) => {
+  const { locale, t } = useTranslation();
+  const isZh = locale === 'zh-CN';
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [form] = Form.useForm();
@@ -86,8 +93,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   }, [sortedFields, selectedRole]);
 
   const availableOperators = React.useMemo(() => {
-    return selectedRole === 'measure' ? MEASURE_OPERATORS : DIMENSION_OPERATORS;
-  }, [selectedRole]);
+    return selectedRole === 'measure'
+      ? getMeasureOperators(isZh)
+      : getDimensionOperators(isZh);
+  }, [isZh, selectedRole]);
 
   React.useEffect(() => {
     if (isModalOpen) {
@@ -129,11 +138,12 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     const handleFilterError = (e: any) => {
       const lastFilter = e.detail;
       if (lastFilter) {
+        const operator = lastFilter.operator ?? lastFilter.op;
         // Find role based on field
         const fieldRole =
           fields.find((f) => f.name === lastFilter.field)?.role || 'dimension';
         const value =
-          lastFilter.operator === 'between'
+          operator === 'between'
             ? lastFilter.value
             : Array.isArray(lastFilter.value)
               ? lastFilter.value.join(',')
@@ -141,7 +151,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         form.setFieldsValue({
           role: fieldRole,
           field: lastFilter.field,
-          operator: lastFilter.operator,
+          operator,
           value: value,
         });
       }
@@ -231,16 +241,30 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       title={
         <Space>
           <FilterOutlined />
-          数据筛选器
+          {t('filtersTitle')}
         </Space>
       }
       extra={
-        <Button
-          type="text"
-          size="small"
-          icon={<PlusOutlined />}
-          onClick={handleAddClick}
-        />
+        <Space size={4}>
+          {onRootOperatorChange && (
+            <Radio.Group
+              size="small"
+              value={rootOperator}
+              onChange={(event) => onRootOperatorChange(event.target.value)}
+              optionType="button"
+              options={[
+                { label: 'AND', value: 'and' },
+                { label: 'OR', value: 'or' },
+              ]}
+            />
+          )}
+          <Button
+            type="text"
+            size="small"
+            icon={<PlusOutlined />}
+            onClick={handleAddClick}
+          />
+        </Space>
       }
       style={{ marginBottom: 0 }}
       styles={{
@@ -258,7 +282,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             padding: '10px 0',
           }}
         >
-          暂无筛选条件
+          {t('filtersEmpty')}
         </div>
       ) : (
         <List
@@ -269,7 +293,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               <List.Item
                 style={{ padding: '8px 0' }}
                 actions={[
-                  <Tooltip title="编辑" key="edit">
+                  <Tooltip title={t('filtersEdit')} key="edit">
                     <Button
                       type="text"
                       size="small"
@@ -278,7 +302,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                       style={{ color: '#1890ff' }}
                     />
                   </Tooltip>,
-                  <Tooltip title="删除" key="delete">
+                  <Tooltip title={t('filtersDelete')} key="delete">
                     <Button
                       type="text"
                       size="small"
@@ -299,7 +323,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                   {(() => {
                     const displayLabel =
                       item.operator === 'between' && item.value
-                        ? `${item.value.min ?? ''} ${item.value.leftOp ?? '<='} 变量 ${item.value.rightOp ?? '<='} ${item.value.max ?? ''}`
+                        ? `${item.value.min ?? ''} ${item.value.leftOp ?? '<='} ${item.field} ${item.value.rightOp ?? '<='} ${item.value.max ?? ''}`
                         : `${item.operator} ${String(item.value)}`;
                     return (
                       <>
@@ -317,15 +341,15 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       )}
 
       <Modal
-        title={editingIndex !== null ? '编辑筛选器' : '新增筛选器'}
+        title={editingIndex !== null ? t('filtersEdit') : t('filtersAdd')}
         open={isModalOpen}
         onOk={handleSubmit}
         onCancel={() => {
           setIsModalOpen(false);
           setEditingIndex(null);
         }}
-        okText={editingIndex !== null ? '保存' : '添加'}
-        cancelText="取消"
+        okText={isZh ? '保存' : 'Save'}
+        cancelText={isZh ? '取消' : 'Cancel'}
         destroyOnClose
       >
         <Form
@@ -336,7 +360,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             role: 'dimension',
           }}
         >
-          <Form.Item label="字段类型" name="role">
+          <Form.Item label={t('filtersRole')} name="role">
             <Radio.Group
               optionType="button"
               onChange={(e) => {
@@ -347,18 +371,18 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                 });
               }}
             >
-              <Radio value="dimension">维度 (Dimension)</Radio>
-              <Radio value="measure">度量 (Measure)</Radio>
+              <Radio value="dimension">{t('filtersDimension')}</Radio>
+              <Radio value="measure">{t('filtersMeasure')}</Radio>
             </Radio.Group>
           </Form.Item>
 
           <Form.Item
-            label="字段"
+            label={t('filtersField')}
             name="field"
-            rules={[{ required: true, message: '请选择字段' }]}
+            rules={[{ required: true, message: isZh ? '请选择字段' : 'Select a field' }]}
           >
             <Select
-              placeholder="选择要筛选的字段"
+              placeholder={isZh ? '选择要筛选的字段' : 'Choose a field'}
               showSearch
               onChange={() => {
                 form.setFieldsValue({
@@ -376,7 +400,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                         isActive ? { color: '#e39700', fontWeight: 'bold' } : {}
                       }
                     >
-                      {f.name} {isActive ? '(推荐)' : ''}
+                      {f.name} {isActive ? (isZh ? '(推荐)' : '(Recommended)') : ''}
                     </span>
                   </Option>
                 );
@@ -385,7 +409,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           </Form.Item>
 
           <Form.Item
-            label="操作符"
+            label={t('filtersOperator')}
             name="operator"
             rules={[{ required: true }]}
           >
@@ -422,7 +446,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             )}
           </Form.Item>
           {operator === 'between' ? (
-            <Form.Item label="范围设置">
+            <Form.Item label={isZh ? '范围设置' : 'Range'}>
               <div
                 style={{
                   display: 'flex',
@@ -432,7 +456,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               >
                 <Form.Item name={['value', 'min']} noStyle>
                   <InputNumber
-                    placeholder="最小值"
+                    placeholder={isZh ? '最小值' : 'Min'}
                     style={{ width: '80px' }}
                     controls={false}
                   />
@@ -448,7 +472,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                   style={{ maxWidth: '80px', textAlign: 'center' }}
                   title={selectedField || '变量'}
                 >
-                  {selectedField || '变量'}
+                  {selectedField || (isZh ? '变量' : 'Value')}
                 </Text>
                 <Form.Item name={['value', 'rightOp']} noStyle>
                   <Select style={{ width: '60px' }}>
@@ -458,7 +482,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                 </Form.Item>
                 <Form.Item name={['value', 'max']} noStyle>
                   <InputNumber
-                    placeholder="最大值"
+                    placeholder={isZh ? '最大值' : 'Max'}
                     style={{ width: '80px' }}
                     controls={false}
                   />
@@ -467,15 +491,19 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             </Form.Item>
           ) : (
             <Form.Item
-              label="筛选值"
+              label={t('filtersValue')}
               name="value"
-              rules={[{ required: true, message: '请输入筛选值' }]}
+              rules={[{ required: true, message: isZh ? '请输入筛选值' : 'Enter a value' }]}
             >
               <Input
                 placeholder={
                   ['in', 'not in', '=', '!='].includes(operator)
-                    ? '输入筛选值 (如需多选，请用英文逗号分隔)'
-                    : '输入筛选值'
+                    ? isZh
+                      ? '输入筛选值，多个值用英文逗号分隔'
+                      : 'Enter values, separated by commas'
+                    : isZh
+                      ? '输入筛选值'
+                      : 'Enter a value'
                 }
               />
             </Form.Item>
