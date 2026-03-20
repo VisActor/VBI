@@ -108,6 +108,48 @@ setAggregate(aggregate: VBIMeasure['aggregate']): this
 | --- | --- | --- |
 | `aggregate` | VBIMeasure\['aggregate'] | - 聚合配置 |
 
+### setFormat
+
+设置数值格式
+
+**定义**:
+
+```typescript
+setFormat(format: VBIMeasureFormat): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `format` | VBIMeasureFormat | - 格式配置 |
+
+### getFormat
+
+获取数值格式
+
+**定义**:
+
+```typescript
+getFormat(): VBIMeasureFormat | undefined
+```
+
+**返回**: `VBIMeasureFormat \| undefined`
+
+### clearFormat
+
+清除数值格式配置
+
+**定义**:
+
+```typescript
+clearFormat(): this
+```
+
+**返回**: `this`
+
 ### toJSON
 
 导出为 JSON

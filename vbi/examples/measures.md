@@ -104,6 +104,68 @@ export default () => {
 }
 ```
 
+## measure-with-custom-and-auto-format
+
+度量格式化：销售额使用万元自定义格式（¥前缀、保留2位小数），利润率使用自动格式化，折扣使用百分比格式
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [{ field: 'product_type', alias: '品类' }],
+        measures: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.measures
+          .add('sales', (node) => {
+            node.setAlias('销售额（万元）').setAggregate({ func: 'sum' }).setEncoding('column').setFormat({
+              type: 'number',
+              ratio: 10000,
+              symbol: '万',
+              prefix: '¥',
+              fractionDigits: 2,
+            })
+          })
+          .add('profit', (node) => {
+            node.setAlias('利润').setAggregate({ func: 'sum' }).setEncoding('column').setFormat({ autoFormat: true })
+          })
+          .add('discount', (node) => {
+            node.setAlias('平均折扣').setAggregate({ func: 'avg' }).setEncoding('column').setFormat({
+              type: 'percent',
+              fractionDigits: 1,
+            })
+          })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
 ## remove-measure
 
 删除度量

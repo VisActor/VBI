@@ -108,6 +108,119 @@ export default () => {
 }
 ```
 
+## date-filter-period-and-range-combo
+
+日期区间组合过滤：使用 period 筛选2024年Q1数据，同时用 range 限定利润区间，按品类和配送方式交叉分析
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [
+          { field: 'product_type', alias: '品类' },
+          { field: 'delivery_method', alias: '配送方式' },
+        ],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润率', encoding: 'yAxis', aggregate: { func: 'avg' } },
+        ],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 50,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilter
+          .add('order_date', (node) => {
+            node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 1 })
+          })
+          .add('profit', (node) => {
+            node.setOperator('between').setValue({ min: 0, max: 5000, leftOp: '<=', rightOp: '<' })
+          })
+          .add('sales', (node) => node.setOperator('>=').setValue(100))
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## date-filter-relative-with-nested-conditions
+
+日期过滤与嵌套条件组合：筛选近30天内消费者或企业客户的高额订单，按省份统计销售额与利润
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'column',
+        dimensions: [{ field: 'province', alias: '省份' }],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
+        ],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilter
+          .add('order_date', (node) => {
+            node.setDate({ type: 'relative', mode: 'last', amount: 30, unit: 'day' })
+          })
+          .add('sales', (node) => node.setOperator('>').setValue(500))
+          .addGroup('or', (group) => {
+            group
+              .add('customer_type', (n) => n.setOperator('eq').setValue('消费者'))
+              .add('customer_type', (n) => n.setOperator('in').setValue(['公司', '小型企业']))
+          })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
 ## deeply-nested-or-and-groups
 
 多层嵌套分组：消费者当日达或企业客户一级配送的高额订单，三层 AND/OR 嵌套
@@ -339,6 +452,52 @@ export default () => {
       const applyBuilder = (builder: VBIBuilder) => {
         builder.whereFilter.add('sales', (node) => {
           node.setOperator('not between').setValue({ min: 1000, max: 10000 })
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## not-between-with-explicit-operators
+
+Not between filter with explicit leftOp/rightOp to test invert functions
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'column',
+        dimensions: [{ field: 'product_type', alias: '品类' }],
+        measures: [{ field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilter.add('sales', (node) => {
+          node.setOperator('not between').setValue({ min: 1000, max: 10000, leftOp: '<', rightOp: '<' })
         })
       }
       applyBuilder(builder)
@@ -656,6 +815,98 @@ export default () => {
       const applyBuilder = (builder: VBIBuilder) => {
         builder.whereFilter.updateGroup('g-customer', (group) => {
           group.setOperator('and')
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## where-filter-array-value-converts-to-in
+
+Where filter with array value using '=' operator should convert to 'in'
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'column',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilter.add('area', (node) => {
+          node.setOperator('=').setValue(['华东', '华北'])
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## where-filter-array-value-converts-to-not-in
+
+Where filter with array value using '!=' operator should convert to 'not in'
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'column',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilter.add('area', (node) => {
+          node.setOperator('!=').setValue(['华东', '华北'])
         })
       }
       applyBuilder(builder)

@@ -65,12 +65,13 @@
 
 ## measures
 
-| 示例                                                    | 描述               | 标签 |
-| ------------------------------------------------------- | ------------------ | ---- |
-| [add-measure](/VBI/vbi/examples/measures.md#add-measure)                   | 添加度量           | -    |
-| [add-measure-encoding](/VBI/vbi/examples/measures.md#add-measure-encoding) | 添加度量并设置编码 | -    |
-| [remove-measure](/VBI/vbi/examples/measures.md#remove-measure)             | 删除度量           | -    |
-| [update-measure](/VBI/vbi/examples/measures.md#update-measure)             | 更新度量           | -    |
+| 示例                                                                                  | 描述                                                                                                 | 标签 |
+| ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---- |
+| [add-measure](/VBI/vbi/examples/measures.md#add-measure)                                                 | 添加度量                                                                                             | -    |
+| [add-measure-encoding](/VBI/vbi/examples/measures.md#add-measure-encoding)                               | 添加度量并设置编码                                                                                   | -    |
+| [measure-with-custom-and-auto-format](/VBI/vbi/examples/measures.md#measure-with-custom-and-auto-format) | 度量格式化：销售额使用万元自定义格式（¥前缀、保留2位小数），利润率使用自动格式化，折扣使用百分比格式 | -    |
+| [remove-measure](/VBI/vbi/examples/measures.md#remove-measure)                                           | 删除度量                                                                                             | -    |
+| [update-measure](/VBI/vbi/examples/measures.md#update-measure)                                           | 更新度量                                                                                             | -    |
 
 ## theme
 
@@ -87,18 +88,23 @@
 
 ## whereFilter
 
-| 示例                                                                                       | 描述                                                                           | 标签 |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ---- |
-| [between-sales-range-analysis](/VBI/vbi/examples/whereFilter.md#between-sales-range-analysis)                 | 销售额区间分析：使用 between 筛选单笔 1000~10000 元的订单，按品类汇总利润      | -    |
-| [clear-and-rebuild-filters](/VBI/vbi/examples/whereFilter.md#clear-and-rebuild-filters)                       | 清空并重建过滤条件：清除旧的简单筛选，重建为包含分组的复杂条件                 | -    |
-| [deeply-nested-or-and-groups](/VBI/vbi/examples/whereFilter.md#deeply-nested-or-and-groups)                   | 多层嵌套分组：消费者当日达或企业客户一级配送的高额订单，三层 AND/OR 嵌套       | -    |
-| [high-discount-tech-profit-analysis](/VBI/vbi/examples/whereFilter.md#high-discount-tech-profit-analysis)     | 高折扣技术类产品利润分析：筛选技术品类且折扣大于0.5的订单，按区域对比利润      | -    |
-| [in-operator-multi-area-delivery](/VBI/vbi/examples/whereFilter.md#in-operator-multi-area-delivery)           | 多区域配送效率对比：使用 in 筛选华东、华北、中南三大区域，按配送方式统计订单量 | -    |
-| [nested-group-region-product-filter](/VBI/vbi/examples/whereFilter.md#nested-group-region-product-filter)     | 华东区域办公用品或家具销售额：使用嵌套分组，AND 连接区域条件与 OR 品类条件     | -    |
-| [not-between-sales-range](/VBI/vbi/examples/whereFilter.md#not-between-sales-range)                           | Not between filter: exclude sales between 1000~10000                           | -    |
-| [office-supplies-sales-by-province](/VBI/vbi/examples/whereFilter.md#office-supplies-sales-by-province)       | 各省份办公用品销售额排名：筛选办公用品品类，按省份汇总销售额                   | -    |
-| [or-group-product-category-comparison](/VBI/vbi/examples/whereFilter.md#or-group-product-category-comparison) | 办公用品与技术类品类对比：使用 OR 分组筛选两个品类，按区域对比销售额           | -    |
-| [remove-condition-from-group](/VBI/vbi/examples/whereFilter.md#remove-condition-from-group)                   | 从分组中移除条件：预设 OR 分组含三个品类，通过 updateGroup 移除其中一个        | -    |
-| [remove-filter-by-index](/VBI/vbi/examples/whereFilter.md#remove-filter-by-index)                             | 按索引移除过滤条件：移除第一个品类筛选，只保留区域条件                         | -    |
-| [update-filter-switch-province](/VBI/vbi/examples/whereFilter.md#update-filter-switch-province)               | 动态修改过滤条件：将省份筛选从浙江更新为广东，观察销售额变化                   | -    |
-| [update-group-or-to-and](/VBI/vbi/examples/whereFilter.md#update-group-or-to-and)                             | 修改分组逻辑：将预设的 OR 品类分组切换为 AND，收窄筛选范围                     | -    |
+| 示例                                                                                                     | 描述                                                                                                | 标签 |
+| -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ---- |
+| [between-sales-range-analysis](/VBI/vbi/examples/whereFilter.md#between-sales-range-analysis)                               | 销售额区间分析：使用 between 筛选单笔 1000~10000 元的订单，按品类汇总利润                           | -    |
+| [clear-and-rebuild-filters](/VBI/vbi/examples/whereFilter.md#clear-and-rebuild-filters)                                     | 清空并重建过滤条件：清除旧的简单筛选，重建为包含分组的复杂条件                                      | -    |
+| [date-filter-period-and-range-combo](/VBI/vbi/examples/whereFilter.md#date-filter-period-and-range-combo)                   | 日期区间组合过滤：使用 period 筛选2024年Q1数据，同时用 range 限定利润区间，按品类和配送方式交叉分析 | -    |
+| [date-filter-relative-with-nested-conditions](/VBI/vbi/examples/whereFilter.md#date-filter-relative-with-nested-conditions) | 日期过滤与嵌套条件组合：筛选近30天内消费者或企业客户的高额订单，按省份统计销售额与利润              | -    |
+| [deeply-nested-or-and-groups](/VBI/vbi/examples/whereFilter.md#deeply-nested-or-and-groups)                                 | 多层嵌套分组：消费者当日达或企业客户一级配送的高额订单，三层 AND/OR 嵌套                            | -    |
+| [high-discount-tech-profit-analysis](/VBI/vbi/examples/whereFilter.md#high-discount-tech-profit-analysis)                   | 高折扣技术类产品利润分析：筛选技术品类且折扣大于0.5的订单，按区域对比利润                           | -    |
+| [in-operator-multi-area-delivery](/VBI/vbi/examples/whereFilter.md#in-operator-multi-area-delivery)                         | 多区域配送效率对比：使用 in 筛选华东、华北、中南三大区域，按配送方式统计订单量                      | -    |
+| [nested-group-region-product-filter](/VBI/vbi/examples/whereFilter.md#nested-group-region-product-filter)                   | 华东区域办公用品或家具销售额：使用嵌套分组，AND 连接区域条件与 OR 品类条件                          | -    |
+| [not-between-sales-range](/VBI/vbi/examples/whereFilter.md#not-between-sales-range)                                         | Not between filter: exclude sales between 1000~10000                                                | -    |
+| [not-between-with-explicit-operators](/VBI/vbi/examples/whereFilter.md#not-between-with-explicit-operators)                 | Not between filter with explicit leftOp/rightOp to test invert functions                            | -    |
+| [office-supplies-sales-by-province](/VBI/vbi/examples/whereFilter.md#office-supplies-sales-by-province)                     | 各省份办公用品销售额排名：筛选办公用品品类，按省份汇总销售额                                        | -    |
+| [or-group-product-category-comparison](/VBI/vbi/examples/whereFilter.md#or-group-product-category-comparison)               | 办公用品与技术类品类对比：使用 OR 分组筛选两个品类，按区域对比销售额                                | -    |
+| [remove-condition-from-group](/VBI/vbi/examples/whereFilter.md#remove-condition-from-group)                                 | 从分组中移除条件：预设 OR 分组含三个品类，通过 updateGroup 移除其中一个                             | -    |
+| [remove-filter-by-index](/VBI/vbi/examples/whereFilter.md#remove-filter-by-index)                                           | 按索引移除过滤条件：移除第一个品类筛选，只保留区域条件                                              | -    |
+| [update-filter-switch-province](/VBI/vbi/examples/whereFilter.md#update-filter-switch-province)                             | 动态修改过滤条件：将省份筛选从浙江更新为广东，观察销售额变化                                        | -    |
+| [update-group-or-to-and](/VBI/vbi/examples/whereFilter.md#update-group-or-to-and)                                           | 修改分组逻辑：将预设的 OR 品类分组切换为 AND，收窄筛选范围                                          | -    |
+| [where-filter-array-value-converts-to-in](/VBI/vbi/examples/whereFilter.md#where-filter-array-value-converts-to-in)         | Where filter with array value using '=' operator should convert to 'in'                             | -    |
+| [where-filter-array-value-converts-to-not-in](/VBI/vbi/examples/whereFilter.md#where-filter-array-value-converts-to-not-in) | Where filter with array value using '!=' operator should convert to 'not in'                        | -    |

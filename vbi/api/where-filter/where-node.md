@@ -108,6 +108,36 @@ setValue(value: unknown): this
 | --- | --- | --- |
 | `value` | unknown | - 过滤值 |
 
+### setDate
+
+设置日期过滤条件
+
+**定义**:
+
+```typescript
+setDate(predicate: VBIWhereDatePredicate): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `predicate` | VBIWhereDatePredicate | - 日期谓词 |
+
+### getDate
+
+获取日期过滤条件，非日期过滤返回 undefined
+
+**定义**:
+
+```typescript
+getDate(): VBIWhereDatePredicate | undefined
+```
+
+**返回**: `VBIWhereDatePredicate \| undefined`
+
 ### toJSON
 
 导出为 JSON
@@ -115,7 +145,7 @@ setValue(value: unknown): this
 **定义**:
 
 ```typescript
-toJSON(): VBIFilter
+toJSON(): VBIWhereFilter
 ```
 
-**返回**: `VBIFilter`
+**返回**: `VBIWhereFilter`

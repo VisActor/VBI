@@ -150562,12 +150562,13 @@ url: /VBI/vbi/examples/index.md
 
 ## measures
 
-| 示例                                                    | 描述               | 标签 |
-| ------------------------------------------------------- | ------------------ | ---- |
-| [add-measure](/VBI/vbi/examples/measures.md#add-measure)                   | 添加度量           | -    |
-| [add-measure-encoding](/VBI/vbi/examples/measures.md#add-measure-encoding) | 添加度量并设置编码 | -    |
-| [remove-measure](/VBI/vbi/examples/measures.md#remove-measure)             | 删除度量           | -    |
-| [update-measure](/VBI/vbi/examples/measures.md#update-measure)             | 更新度量           | -    |
+| 示例                                                                                  | 描述                                                                                                 | 标签 |
+| ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---- |
+| [add-measure](/VBI/vbi/examples/measures.md#add-measure)                                                 | 添加度量                                                                                             | -    |
+| [add-measure-encoding](/VBI/vbi/examples/measures.md#add-measure-encoding)                               | 添加度量并设置编码                                                                                   | -    |
+| [measure-with-custom-and-auto-format](/VBI/vbi/examples/measures.md#measure-with-custom-and-auto-format) | 度量格式化：销售额使用万元自定义格式（¥前缀、保留2位小数），利润率使用自动格式化，折扣使用百分比格式 | -    |
+| [remove-measure](/VBI/vbi/examples/measures.md#remove-measure)                                           | 删除度量                                                                                             | -    |
+| [update-measure](/VBI/vbi/examples/measures.md#update-measure)                                           | 更新度量                                                                                             | -    |
 
 ## theme
 
@@ -150584,21 +150585,26 @@ url: /VBI/vbi/examples/index.md
 
 ## whereFilter
 
-| 示例                                                                                       | 描述                                                                           | 标签 |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ---- |
-| [between-sales-range-analysis](/VBI/vbi/examples/whereFilter.md#between-sales-range-analysis)                 | 销售额区间分析：使用 between 筛选单笔 1000~10000 元的订单，按品类汇总利润      | -    |
-| [clear-and-rebuild-filters](/VBI/vbi/examples/whereFilter.md#clear-and-rebuild-filters)                       | 清空并重建过滤条件：清除旧的简单筛选，重建为包含分组的复杂条件                 | -    |
-| [deeply-nested-or-and-groups](/VBI/vbi/examples/whereFilter.md#deeply-nested-or-and-groups)                   | 多层嵌套分组：消费者当日达或企业客户一级配送的高额订单，三层 AND/OR 嵌套       | -    |
-| [high-discount-tech-profit-analysis](/VBI/vbi/examples/whereFilter.md#high-discount-tech-profit-analysis)     | 高折扣技术类产品利润分析：筛选技术品类且折扣大于0.5的订单，按区域对比利润      | -    |
-| [in-operator-multi-area-delivery](/VBI/vbi/examples/whereFilter.md#in-operator-multi-area-delivery)           | 多区域配送效率对比：使用 in 筛选华东、华北、中南三大区域，按配送方式统计订单量 | -    |
-| [nested-group-region-product-filter](/VBI/vbi/examples/whereFilter.md#nested-group-region-product-filter)     | 华东区域办公用品或家具销售额：使用嵌套分组，AND 连接区域条件与 OR 品类条件     | -    |
-| [not-between-sales-range](/VBI/vbi/examples/whereFilter.md#not-between-sales-range)                           | Not between filter: exclude sales between 1000~10000                           | -    |
-| [office-supplies-sales-by-province](/VBI/vbi/examples/whereFilter.md#office-supplies-sales-by-province)       | 各省份办公用品销售额排名：筛选办公用品品类，按省份汇总销售额                   | -    |
-| [or-group-product-category-comparison](/VBI/vbi/examples/whereFilter.md#or-group-product-category-comparison) | 办公用品与技术类品类对比：使用 OR 分组筛选两个品类，按区域对比销售额           | -    |
-| [remove-condition-from-group](/VBI/vbi/examples/whereFilter.md#remove-condition-from-group)                   | 从分组中移除条件：预设 OR 分组含三个品类，通过 updateGroup 移除其中一个        | -    |
-| [remove-filter-by-index](/VBI/vbi/examples/whereFilter.md#remove-filter-by-index)                             | 按索引移除过滤条件：移除第一个品类筛选，只保留区域条件                         | -    |
-| [update-filter-switch-province](/VBI/vbi/examples/whereFilter.md#update-filter-switch-province)               | 动态修改过滤条件：将省份筛选从浙江更新为广东，观察销售额变化                   | -    |
-| [update-group-or-to-and](/VBI/vbi/examples/whereFilter.md#update-group-or-to-and)                             | 修改分组逻辑：将预设的 OR 品类分组切换为 AND，收窄筛选范围                     | -    |
+| 示例                                                                                                     | 描述                                                                                                | 标签 |
+| -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ---- |
+| [between-sales-range-analysis](/VBI/vbi/examples/whereFilter.md#between-sales-range-analysis)                               | 销售额区间分析：使用 between 筛选单笔 1000~10000 元的订单，按品类汇总利润                           | -    |
+| [clear-and-rebuild-filters](/VBI/vbi/examples/whereFilter.md#clear-and-rebuild-filters)                                     | 清空并重建过滤条件：清除旧的简单筛选，重建为包含分组的复杂条件                                      | -    |
+| [date-filter-period-and-range-combo](/VBI/vbi/examples/whereFilter.md#date-filter-period-and-range-combo)                   | 日期区间组合过滤：使用 period 筛选2024年Q1数据，同时用 range 限定利润区间，按品类和配送方式交叉分析 | -    |
+| [date-filter-relative-with-nested-conditions](/VBI/vbi/examples/whereFilter.md#date-filter-relative-with-nested-conditions) | 日期过滤与嵌套条件组合：筛选近30天内消费者或企业客户的高额订单，按省份统计销售额与利润              | -    |
+| [deeply-nested-or-and-groups](/VBI/vbi/examples/whereFilter.md#deeply-nested-or-and-groups)                                 | 多层嵌套分组：消费者当日达或企业客户一级配送的高额订单，三层 AND/OR 嵌套                            | -    |
+| [high-discount-tech-profit-analysis](/VBI/vbi/examples/whereFilter.md#high-discount-tech-profit-analysis)                   | 高折扣技术类产品利润分析：筛选技术品类且折扣大于0.5的订单，按区域对比利润                           | -    |
+| [in-operator-multi-area-delivery](/VBI/vbi/examples/whereFilter.md#in-operator-multi-area-delivery)                         | 多区域配送效率对比：使用 in 筛选华东、华北、中南三大区域，按配送方式统计订单量                      | -    |
+| [nested-group-region-product-filter](/VBI/vbi/examples/whereFilter.md#nested-group-region-product-filter)                   | 华东区域办公用品或家具销售额：使用嵌套分组，AND 连接区域条件与 OR 品类条件                          | -    |
+| [not-between-sales-range](/VBI/vbi/examples/whereFilter.md#not-between-sales-range)                                         | Not between filter: exclude sales between 1000~10000                                                | -    |
+| [not-between-with-explicit-operators](/VBI/vbi/examples/whereFilter.md#not-between-with-explicit-operators)                 | Not between filter with explicit leftOp/rightOp to test invert functions                            | -    |
+| [office-supplies-sales-by-province](/VBI/vbi/examples/whereFilter.md#office-supplies-sales-by-province)                     | 各省份办公用品销售额排名：筛选办公用品品类，按省份汇总销售额                                        | -    |
+| [or-group-product-category-comparison](/VBI/vbi/examples/whereFilter.md#or-group-product-category-comparison)               | 办公用品与技术类品类对比：使用 OR 分组筛选两个品类，按区域对比销售额                                | -    |
+| [remove-condition-from-group](/VBI/vbi/examples/whereFilter.md#remove-condition-from-group)                                 | 从分组中移除条件：预设 OR 分组含三个品类，通过 updateGroup 移除其中一个                             | -    |
+| [remove-filter-by-index](/VBI/vbi/examples/whereFilter.md#remove-filter-by-index)                                           | 按索引移除过滤条件：移除第一个品类筛选，只保留区域条件                                              | -    |
+| [update-filter-switch-province](/VBI/vbi/examples/whereFilter.md#update-filter-switch-province)                             | 动态修改过滤条件：将省份筛选从浙江更新为广东，观察销售额变化                                        | -    |
+| [update-group-or-to-and](/VBI/vbi/examples/whereFilter.md#update-group-or-to-and)                                           | 修改分组逻辑：将预设的 OR 品类分组切换为 AND，收窄筛选范围                                          | -    |
+| [where-filter-array-value-converts-to-in](/VBI/vbi/examples/whereFilter.md#where-filter-array-value-converts-to-in)         | Where filter with array value using '=' operator should convert to 'in'                             | -    |
+| [where-filter-array-value-converts-to-not-in](/VBI/vbi/examples/whereFilter.md#where-filter-array-value-converts-to-not-in) | Where filter with array value using '!=' operator should convert to 'not in'                        | -    |
 
 
 
@@ -152824,6 +152830,68 @@ export default () => {
 }
 ```
 
+## measure-with-custom-and-auto-format
+
+度量格式化：销售额使用万元自定义格式（¥前缀、保留2位小数），利润率使用自动格式化，折扣使用百分比格式
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [{ field: 'product_type', alias: '品类' }],
+        measures: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.measures
+          .add('sales', (node) => {
+            node.setAlias('销售额（万元）').setAggregate({ func: 'sum' }).setEncoding('column').setFormat({
+              type: 'number',
+              ratio: 10000,
+              symbol: '万',
+              prefix: '¥',
+              fractionDigits: 2,
+            })
+          })
+          .add('profit', (node) => {
+            node.setAlias('利润').setAggregate({ func: 'sum' }).setEncoding('column').setFormat({ autoFormat: true })
+          })
+          .add('discount', (node) => {
+            node.setAlias('平均折扣').setAggregate({ func: 'avg' }).setEncoding('column').setFormat({
+              type: 'percent',
+              fractionDigits: 1,
+            })
+          })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
 ## remove-measure
 
 删除度量
@@ -153101,61 +153169,6 @@ export default () => {
 
 
 ---
-url: /VBI/vbi/examples/utils.md
----
-
-# utils
-
-import { registerDemoConnector } from '@components'
-
-{registerDemoConnector()}
-
-## connector-error-handling
-
-测试 connector 未注册时的错误处理
-
-```tsx preview
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
-import { useEffect, useState } from 'react'
-
-export default () => {
-  const [vseed, setVSeed] = useState(null)
-
-  useEffect(() => {
-    const run = async () => {
-      const builder = VBI.from({
-        connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
-        whereFilter: { id: 'root', op: 'and', conditions: [] },
-        havingFilter: { id: 'root', op: 'and', conditions: [] },
-        theme: 'light',
-        locale: 'zh-CN',
-        version: 1,
-      })
-
-      const applyBuilder = async (builder: VBIBuilder) => {
-        await expect(() => builder.getSchema()).rejects.toThrow('connector')
-      }
-      applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
-    }
-    run()
-  }, [])
-
-  if (!vseed) return <div>Loading...</div>
-
-  return <VSeedRender vseed={vseed} />
-}
-```
-
-
-
----
 url: /VBI/vbi/examples/whereFilter.md
 ---
 
@@ -153253,6 +153266,119 @@ export default () => {
             group
               .add('area', (n) => n.setOperator('eq').setValue('华东'))
               .add('area', (n) => n.setOperator('eq').setValue('华北'))
+          })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## date-filter-period-and-range-combo
+
+日期区间组合过滤：使用 period 筛选2024年Q1数据，同时用 range 限定利润区间，按品类和配送方式交叉分析
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [
+          { field: 'product_type', alias: '品类' },
+          { field: 'delivery_method', alias: '配送方式' },
+        ],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润率', encoding: 'yAxis', aggregate: { func: 'avg' } },
+        ],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 50,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilter
+          .add('order_date', (node) => {
+            node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 1 })
+          })
+          .add('profit', (node) => {
+            node.setOperator('between').setValue({ min: 0, max: 5000, leftOp: '<=', rightOp: '<' })
+          })
+          .add('sales', (node) => node.setOperator('>=').setValue(100))
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## date-filter-relative-with-nested-conditions
+
+日期过滤与嵌套条件组合：筛选近30天内消费者或企业客户的高额订单，按省份统计销售额与利润
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'column',
+        dimensions: [{ field: 'province', alias: '省份' }],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
+        ],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilter
+          .add('order_date', (node) => {
+            node.setDate({ type: 'relative', mode: 'last', amount: 30, unit: 'day' })
+          })
+          .add('sales', (node) => node.setOperator('>').setValue(500))
+          .addGroup('or', (group) => {
+            group
+              .add('customer_type', (n) => n.setOperator('eq').setValue('消费者'))
+              .add('customer_type', (n) => n.setOperator('in').setValue(['公司', '小型企业']))
           })
       }
       applyBuilder(builder)
@@ -153500,6 +153626,52 @@ export default () => {
       const applyBuilder = (builder: VBIBuilder) => {
         builder.whereFilter.add('sales', (node) => {
           node.setOperator('not between').setValue({ min: 1000, max: 10000 })
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## not-between-with-explicit-operators
+
+Not between filter with explicit leftOp/rightOp to test invert functions
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'column',
+        dimensions: [{ field: 'product_type', alias: '品类' }],
+        measures: [{ field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilter.add('sales', (node) => {
+          node.setOperator('not between').setValue({ min: 1000, max: 10000, leftOp: '<', rightOp: '<' })
         })
       }
       applyBuilder(builder)
@@ -153817,6 +153989,98 @@ export default () => {
       const applyBuilder = (builder: VBIBuilder) => {
         builder.whereFilter.updateGroup('g-customer', (group) => {
           group.setOperator('and')
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## where-filter-array-value-converts-to-in
+
+Where filter with array value using '=' operator should convert to 'in'
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'column',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilter.add('area', (node) => {
+          node.setOperator('=').setValue(['华东', '华北'])
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## where-filter-array-value-converts-to-not-in
+
+Where filter with array value using '!=' operator should convert to 'not in'
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'column',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilter.add('area', (node) => {
+          node.setOperator('!=').setValue(['华东', '华北'])
         })
       }
       applyBuilder(builder)
@@ -154411,6 +154675,48 @@ setAggregate(aggregate: VBIMeasure['aggregate']): this
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `aggregate` | VBIMeasure\['aggregate'] | - 聚合配置 |
+
+### setFormat
+
+设置数值格式
+
+**定义**:
+
+```typescript
+setFormat(format: VBIMeasureFormat): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `format` | VBIMeasureFormat | - 格式配置 |
+
+### getFormat
+
+获取数值格式
+
+**定义**:
+
+```typescript
+getFormat(): VBIMeasureFormat | undefined
+```
+
+**返回**: `VBIMeasureFormat \| undefined`
+
+### clearFormat
+
+清除数值格式配置
+
+**定义**:
+
+```typescript
+clearFormat(): this
+```
+
+**返回**: `this`
 
 ### toJSON
 
@@ -155084,6 +155390,36 @@ setValue(value: unknown): this
 | --- | --- | --- |
 | `value` | unknown | - 过滤值 |
 
+### setDate
+
+设置日期过滤条件
+
+**定义**:
+
+```typescript
+setDate(predicate: VBIWhereDatePredicate): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `predicate` | VBIWhereDatePredicate | - 日期谓词 |
+
+### getDate
+
+获取日期过滤条件，非日期过滤返回 undefined
+
+**定义**:
+
+```typescript
+getDate(): VBIWhereDatePredicate | undefined
+```
+
+**返回**: `VBIWhereDatePredicate \| undefined`
+
 ### toJSON
 
 导出为 JSON
@@ -155091,10 +155427,10 @@ setValue(value: unknown): this
 **定义**:
 
 ```typescript
-toJSON(): VBIFilter
+toJSON(): VBIWhereFilter
 ```
 
-**返回**: `VBIFilter`
+**返回**: `VBIWhereFilter`
 
 
 
@@ -156611,10 +156947,65 @@ url: /VBI/vbi/examples/tags.md
 
 # 标签
 
-共 61 个示例，0 个标签。
+共 67 个示例，0 个标签。
 
 | 标签 | 数量 |
 | ---- | ---- |
+
+
+
+---
+url: /VBI/vbi/examples/utils.md
+---
+
+# utils
+
+import { registerDemoConnector } from '@components'
+
+{registerDemoConnector()}
+
+## connector-error-handling
+
+测试 connector 未注册时的错误处理
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'table',
+        dimensions: [],
+        measures: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = async (builder: VBIBuilder) => {
+        await expect(() => builder.getSchema()).rejects.toThrow('connector')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
 
 
 
