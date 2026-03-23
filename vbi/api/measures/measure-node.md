@@ -54,6 +54,18 @@ getEncoding(): VBIMeasure['encoding'] | undefined
 
 **返回**: `VBIMeasure['encoding'] \| undefined`
 
+### getSort
+
+获取排序配置
+
+**定义**:
+
+```typescript
+getSort(): VBISort | undefined
+```
+
+**返回**: `VBISort \| undefined`
+
 ### setAlias
 
 设置显示名称
@@ -89,6 +101,24 @@ setEncoding(encoding: NonNullable<VBIMeasure['encoding']>): this
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `encoding` | NonNullable\<VBIMeasure\['encoding']> | - 指标编码位置 |
+
+### setSort
+
+设置排序配置
+
+**定义**:
+
+```typescript
+setSort(sort: VBISort): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `sort` | VBISort | - 排序配置 |
 
 ### setAggregate
 
@@ -146,6 +176,18 @@ getFormat(): VBIMeasureFormat | undefined
 
 ```typescript
 clearFormat(): this
+```
+
+**返回**: `this`
+
+### clearSort
+
+清除排序配置
+
+**定义**:
+
+```typescript
+clearSort(): this
 ```
 
 **返回**: `this`

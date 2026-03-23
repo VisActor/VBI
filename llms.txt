@@ -151,6 +151,7 @@
 - [measures](/VBI/vbi/examples/measures.md): {registerDemoConnector()}
 - [theme](/VBI/vbi/examples/theme.md): {registerDemoConnector()}
 - [undoManager](/VBI/vbi/examples/undoManager.md): {registerDemoConnector()}
+- [utils](/VBI/vbi/examples/utils.md): {registerDemoConnector()}
 - [whereFilter](/VBI/vbi/examples/whereFilter.md): {registerDemoConnector()}
 - [](/VBI/vbi/api/index.md)
 - [VBIBuilder](/VBI/vbi/api/builder.md)
@@ -173,7 +174,6 @@
 - [combination](/VBI/vbi/examples/combination.md): {registerDemoConnector()}
 - [limit](/VBI/vbi/examples/limit.md): {registerDemoConnector()}
 - [标签](/VBI/vbi/examples/tags.md): 共 67 个示例，0 个标签。
-- [utils](/VBI/vbi/examples/utils.md): {registerDemoConnector()}
 
 ## Other
 

@@ -72,10 +72,16 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBufferLike>
 **定义**:
 
 ```typescript
-buildVSeed(): Promise<TSeedDSL>
+buildVSeed(options: BuildVSeedOptions): Promise<TSeedDSL>
 ```
 
 **返回**: `Promise<TSeedDSL>`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `options` = {} | BuildVSeedOptions | - |
 
 ### buildVQuery
 
