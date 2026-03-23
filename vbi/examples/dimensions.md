@@ -18,7 +18,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -31,7 +31,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.dimensions.add('order_date', (node) => {
           node.setAlias('订单日期')
         })
@@ -70,7 +70,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -83,7 +83,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.dimensions.add('product_type', (node) => {
           node.setAlias('商品类型')
         })
@@ -122,7 +122,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -135,7 +135,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.dimensions.add('product_type', (n) => n.setAlias('产品类型')).add('province', (n) => n.setAlias('省份'))
       }
       applyBuilder(builder)
@@ -166,7 +166,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -179,7 +179,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.dimensions
           .add('area', (node) => {
             node.setAlias('区域')
@@ -216,7 +216,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [
@@ -232,7 +232,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'product_type')?.id
         if (dimensionId) {
           builder.dimensions.update(dimensionId, (node) => {
@@ -269,7 +269,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [{ field: 'order_date', alias: '原订单日期' }],
@@ -282,7 +282,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'order_date')?.id
         if (dimensionId) {
           const dimension = builder.dimensions.find((node) => node.getId() === dimensionId)
@@ -322,7 +322,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [{ field: 'product_type', alias: '原产品类型' }],
@@ -335,7 +335,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'product_type')?.id
         if (dimensionId) {
           const dimension = builder.dimensions.find((node) => node.getId() === dimensionId)

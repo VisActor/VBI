@@ -154,7 +154,7 @@
 - [utils](/VBI/vbi/examples/utils.md): {registerDemoConnector()}
 - [whereFilter](/VBI/vbi/examples/whereFilter.md): {registerDemoConnector()}
 - [](/VBI/vbi/api/index.md)
-- [VBIBuilder](/VBI/vbi/api/builder.md)
+- [VBIChartBuilder](/VBI/vbi/api/builder.md)
 - [chartType](/VBI/vbi/api/chart-type.md): 图表类型构建器，用于切换和获取图表类型。支持表格、柱状图、折线图、饼图、散点图等多种图表类型
 - [measures](/VBI/vbi/api/measures.md): 度量构建器，用于添加、修改、删除度量配置。度量是数据的数值字段，如：销售额、利润、数量
 - [MeasureNodeBuilder](/VBI/vbi/api/measures/measure-node.md): 度量节点构建器，用于配置单个度量

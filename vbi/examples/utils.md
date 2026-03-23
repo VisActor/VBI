@@ -18,7 +18,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -30,7 +30,7 @@ export default () => {
         version: 1,
       })
 
-      const applyBuilder = async (builder: VBIBuilder) => {
+      const applyBuilder = async (builder: VBIChartBuilder) => {
         await expect(() => builder.getSchema()).rejects.toThrow('connector')
       }
       applyBuilder(builder)

@@ -18,7 +18,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'area',
         dimensions: [{ field: 'order_date', alias: '订单日期' }],
@@ -31,7 +31,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('line')
       }
       applyBuilder(builder)
@@ -62,7 +62,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'product_type', alias: '产品类型' }],
@@ -75,7 +75,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('column')
       }
       applyBuilder(builder)
@@ -106,7 +106,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'line',
         dimensions: [{ field: 'province', alias: '省份' }],
@@ -119,7 +119,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('columnParallel')
       }
       applyBuilder(builder)
@@ -150,7 +150,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: '区域' }],
@@ -163,7 +163,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('bar')
       }
       applyBuilder(builder)
@@ -194,7 +194,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'donut',
         dimensions: [{ field: 'customer_type', alias: '客户类型' }],
@@ -207,7 +207,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('pie')
       }
       applyBuilder(builder)
@@ -238,7 +238,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'line',
         dimensions: [{ field: 'province', alias: '省份' }],
@@ -251,7 +251,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('area')
       }
       applyBuilder(builder)
@@ -282,7 +282,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'line',
         dimensions: [{ field: 'province', alias: '省份' }],
@@ -295,7 +295,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('area')
       }
       applyBuilder(builder)
@@ -326,7 +326,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'pie',
         dimensions: [{ field: 'area', alias: '区域' }],
@@ -339,7 +339,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('donut')
       }
       applyBuilder(builder)
@@ -370,7 +370,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'pie',
         dimensions: [{ field: 'product_type', alias: '产品类型' }],
@@ -383,7 +383,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('pie')
       }
       applyBuilder(builder)
@@ -414,7 +414,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'rose',
         dimensions: [{ field: 'city', alias: '城市' }],
@@ -427,7 +427,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('pie')
       }
       applyBuilder(builder)
@@ -458,7 +458,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'scatter',
         dimensions: [],
@@ -474,7 +474,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('scatter')
       }
       applyBuilder(builder)
@@ -505,7 +505,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'scatter',
         dimensions: [],
@@ -521,7 +521,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('bar')
       }
       applyBuilder(builder)

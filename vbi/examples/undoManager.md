@@ -18,7 +18,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [],
@@ -31,7 +31,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.measures.add('profit', (node) => {
           node.setAlias('利润').setEncoding('yAxis').setAggregate({ func: 'sum' })
         })

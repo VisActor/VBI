@@ -18,7 +18,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -31,7 +31,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('bar')
         builder.dimensions.add('province', (node) => node.setAlias('省份'))
         builder.measures.add('sales', (node) =>
@@ -66,7 +66,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -79,7 +79,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('dualAxis')
         builder.dimensions.add('product_type', (node) => node.setAlias('产品类型'))
         builder.measures.add('sales', (node) =>
@@ -117,7 +117,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -130,7 +130,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.chartType.changeChartType('line')
         builder.dimensions.add('product_type', (node) => node.setAlias('产品类型'))
         builder.measures.add('sales', (node) =>

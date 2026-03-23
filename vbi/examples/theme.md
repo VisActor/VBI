@@ -18,7 +18,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [{ field: 'province', alias: '省份' }],
@@ -31,7 +31,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         const nextTheme = 'dark'
         if (builder.theme.getTheme() !== nextTheme) {
           builder.theme.setTheme(nextTheme)
@@ -65,7 +65,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [{ field: 'province', alias: '省份' }],
@@ -78,7 +78,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         const nextTheme = 'light'
         if (builder.theme.getTheme() !== nextTheme) {
           builder.theme.setTheme(nextTheme)

@@ -47,7 +47,7 @@ const run = async (setVSeed) => {
     }
   })
 
-  const builder = VBI.from(VBI.generateEmptyDSL(connectorId))
+  const builder = VBI.createChart(VBI.generateEmptyChartDSL(connectorId))
 
   builder.doc.on('update', async () => {
     const vseed = await builder.buildVSeed()

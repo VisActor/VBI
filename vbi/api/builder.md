@@ -1,4 +1,4 @@
-# VBIBuilder
+# VBIChartBuilder
 
 ## 属性
 
@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | **doc** | `Y.Doc` | - |
 | **dsl** | `Y.Map<any>` | - |
-| **adapters** | `VBIBuilderAdapters<TQueryDSL, TSeedDSL>` | - |
+| **adapters** | `VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>` | - |
 | **chartType** | `ChartTypeBuilder` | - |
 | **measures** | `MeasuresBuilder` | - |
 | **dimensions** | `DimensionsBuilder` | - |
@@ -24,7 +24,7 @@
 **定义**:
 
 ```typescript
-constructor(doc: Y.Doc, options: VBIBuilderOptions<TQueryDSL, TSeedDSL>)
+constructor(doc: Y.Doc, options: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>)
 ```
 
 **参数**:
@@ -32,7 +32,7 @@ constructor(doc: Y.Doc, options: VBIBuilderOptions<TQueryDSL, TSeedDSL>)
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
-| `options` | VBIBuilderOptions\<TQueryDSL, TSeedDSL> | - |
+| `options` | VBIChartBuilderOptions\<TQueryDSL, TSeedDSL> | - |
 
 ### applyUpdate
 
@@ -98,10 +98,10 @@ buildVQuery(): TQueryDSL
 **定义**:
 
 ```typescript
-build(): VBIDSL
+build(): VBIChartDSL
 ```
 
-**返回**: `VBIDSL`
+**返回**: `VBIChartDSL`
 
 ### isEmpty
 

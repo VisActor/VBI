@@ -18,7 +18,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'product_type', alias: '品类' }],
@@ -31,7 +31,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter.add('sales', (node) => {
           node.setOperator('between').setValue({ min: 1000, max: 10000 })
         })
@@ -64,7 +64,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'province', alias: '省份' }],
@@ -84,7 +84,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter
           .clear()
           .add('profit', (node) => node.setOperator('>').setValue(0))
@@ -122,7 +122,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [
@@ -141,7 +141,7 @@ export default () => {
         limit: 50,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter
           .add('order_date', (node) => {
             node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 1 })
@@ -179,7 +179,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'province', alias: '省份' }],
@@ -195,7 +195,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter
           .add('order_date', (node) => {
             node.setDate({ type: 'relative', mode: 'last', amount: 30, unit: 'day' })
@@ -235,7 +235,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'province', alias: '省份' }],
@@ -248,7 +248,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter
           .add('sales', (node) => node.setOperator('>').setValue(500))
           .addGroup('or', (outerGroup) => {
@@ -294,7 +294,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: '区域' }],
@@ -307,7 +307,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter
           .add('product_type', (node) => node.setOperator('eq').setValue('技术'))
           .add('discount', (node) => node.setOperator('>').setValue(0.5))
@@ -340,7 +340,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'delivery_method', alias: '配送方式' }],
@@ -353,7 +353,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter.add('area', (node) => {
           node.setOperator('in').setValue(['华东', '华北', '中南'])
         })
@@ -386,7 +386,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'city', alias: '城市' }],
@@ -399,7 +399,7 @@ export default () => {
         limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter
           .add('area', (node) => node.setOperator('eq').setValue('华东'))
           .addGroup('or', (group) => {
@@ -436,7 +436,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'product_type', alias: '品类' }],
@@ -449,7 +449,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter.add('sales', (node) => {
           node.setOperator('not between').setValue({ min: 1000, max: 10000 })
         })
@@ -482,7 +482,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'product_type', alias: '品类' }],
@@ -495,7 +495,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter.add('sales', (node) => {
           node.setOperator('not between').setValue({ min: 1000, max: 10000, leftOp: '<', rightOp: '<' })
         })
@@ -528,7 +528,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'province', alias: '省份' }],
@@ -541,7 +541,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter.add('product_type', (node) => {
           node.setOperator('eq').setValue('办公用品')
         })
@@ -574,7 +574,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: '区域' }],
@@ -587,7 +587,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter.addGroup('or', (group) => {
           group
             .add('product_type', (node) => node.setOperator('eq').setValue('办公用品'))
@@ -622,7 +622,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: '区域' }],
@@ -649,7 +649,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter.updateGroup('g-products', (group) => {
           group.remove('f-furniture')
         })
@@ -682,7 +682,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'province', alias: '省份' }],
@@ -702,7 +702,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter.remove(0)
       }
       applyBuilder(builder)
@@ -733,7 +733,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'city', alias: '城市' }],
@@ -753,7 +753,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter.update('f-province', (node) => {
           node.setValue('广东')
         })
@@ -786,7 +786,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: '区域' }],
@@ -812,7 +812,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter.updateGroup('g-customer', (group) => {
           group.setOperator('and')
         })
@@ -845,7 +845,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: '区域' }],
@@ -858,7 +858,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter.add('area', (node) => {
           node.setOperator('=').setValue(['华东', '华北'])
         })
@@ -891,7 +891,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: '区域' }],
@@ -904,7 +904,7 @@ export default () => {
         limit: 20,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
+      const applyBuilder = (builder: VBIChartBuilder) => {
         builder.whereFilter.add('area', (node) => {
           node.setOperator('!=').setValue(['华东', '华北'])
         })
