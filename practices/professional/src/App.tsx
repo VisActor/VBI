@@ -296,13 +296,6 @@ export function APP() {
     });
   };
 
-  const handleRemoveDimension = (field: string) => {
-    const target = dimensions.find((item) => item.field === field);
-    if (target) {
-      removeDimension(target.id);
-    }
-  };
-
   const handleRenameDimension = (id: string, alias: string) => {
     updateDimension(id, (node) => {
       node.setAlias(alias);
