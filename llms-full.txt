@@ -150441,9 +150441,23 @@ url: /VBI/vbi/practices/standard.md
 
 # Standard
 
-import { APP } from 'demo'
+import { APP } from 'standard'
 
 <div style={{ width: '100%', height: '700px' }}>
+  <APP />
+</div>
+
+
+
+---
+url: /VBI/vbi/practices/standard-report.md
+---
+
+# Standard Report
+
+import { APP } from 'standard-report'
+
+<div style={{ width: '100%', height: '760px' }}>
   <APP />
 </div>
 
@@ -154177,7 +154191,7 @@ url: /VBI/vbi/api/index.md
 
 
 ---
-url: /VBI/vbi/api/builder.md
+url: /VBI/vbi/api/chartBuilder/index.md
 ---
 
 # VBIChartBuilder
@@ -154206,7 +154220,7 @@ url: /VBI/vbi/api/builder.md
 **定义**:
 
 ```typescript
-constructor(doc: Y.Doc, options: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>)
+constructor(doc: Y.Doc, options: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>, dsl: Y.Map<any>)
 ```
 
 **参数**:
@@ -154215,6 +154229,7 @@ constructor(doc: Y.Doc, options: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>)
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
 | `options` | VBIChartBuilderOptions\<TQueryDSL, TSeedDSL> | - |
+| `dsl` | Y.Map<any> | - |
 
 ### applyUpdate
 
@@ -154308,10 +154323,10 @@ getSchema(): Promise<any>
 
 
 ---
-url: /VBI/vbi/api/chart-type.md
+url: /VBI/vbi/api/chartBuilder/chartType.md
 ---
 
-# chartType
+# ChartTypeBuilder
 
 图表类型构建器，用于切换和获取图表类型。支持表格、柱状图、折线图、饼图、散点图等多种图表类型
 
@@ -154461,10 +154476,10 @@ getAvailableChartTypes(): string[]
 
 
 ---
-url: /VBI/vbi/api/measures.md
+url: /VBI/vbi/api/chartBuilder/measures/index.md
 ---
 
-# measures
+# MeasuresBuilder
 
 度量构建器，用于添加、修改、删除度量配置。度量是数据的数值字段，如：销售额、利润、数量
 
@@ -154638,12 +154653,14 @@ static isMeasureGroup(node: VBIMeasureTree[0]): node is VBIMeasureGroup
 
 
 ---
-url: /VBI/vbi/api/measures/measure-node.md
+url: /VBI/vbi/api/chartBuilder/measures/measureNode.md
 ---
 
 # MeasureNodeBuilder
 
 度量节点构建器，用于配置单个度量
+
+## 属性
 
 ## 方法
 
@@ -154850,10 +154867,10 @@ toJSON(): VBIMeasure
 
 
 ---
-url: /VBI/vbi/api/dimensions.md
+url: /VBI/vbi/api/chartBuilder/dimensions/index.md
 ---
 
-# dimensions
+# DimensionsBuilder
 
 维度构建器，用于添加、修改、删除维度配置。维度是数据的分类字段，如：时间、地区、产品类别
 
@@ -155027,12 +155044,14 @@ static isDimensionGroup(node: VBIDimensionTree[0]): node is VBIDimensionGroup
 
 
 ---
-url: /VBI/vbi/api/dimensions/dimension-node.md
+url: /VBI/vbi/api/chartBuilder/dimensions/dimensionNode.md
 ---
 
 # DimensionNodeBuilder
 
 维度节点构建器，用于配置单个维度
+
+## 属性
 
 ## 方法
 
@@ -155209,10 +155228,10 @@ toJSON(): VBIDimension
 
 
 ---
-url: /VBI/vbi/api/where-filter.md
+url: /VBI/vbi/api/chartBuilder/whereFilter/index.md
 ---
 
-# whereFilter
+# WhereFilterBuilder
 
 Where 过滤构建器，用于添加、修改、删除行级过滤条件。Where 过滤在数据查询前生效，用于筛选原始数据
 
@@ -155436,12 +155455,14 @@ static isNode(yMap: Y.Map<any>): boolean
 
 
 ---
-url: /VBI/vbi/api/where-filter/where-node.md
+url: /VBI/vbi/api/chartBuilder/whereFilter/whereNode.md
 ---
 
-# WhereNodeBuilder
+# WhereFilterNodeBuilder
 
 Where 过滤节点构建器，用于配置单个 Where 过滤条件
+
+## 属性
 
 ## 方法
 
@@ -155594,12 +155615,14 @@ toJSON(): VBIWhereFilter
 
 
 ---
-url: /VBI/vbi/api/where-filter/where-group.md
+url: /VBI/vbi/api/chartBuilder/whereFilter/whereGroup.md
 ---
 
 # WhereGroupBuilder
 
 Where 分组构建器，用于配置一组条件的逻辑关系（AND/OR）
+
+## 属性
 
 ## 方法
 
@@ -155752,10 +155775,10 @@ toJSON(): VBIWhereGroup
 
 
 ---
-url: /VBI/vbi/api/having-filter.md
+url: /VBI/vbi/api/chartBuilder/havingFilter/index.md
 ---
 
-# havingFilter
+# HavingFilterBuilder
 
 Having 过滤构建器，用于添加、修改、删除分组后过滤条件。Having 过滤在数据聚合后生效，用于筛选分组结果
 
@@ -155979,12 +156002,14 @@ static isNode(yMap: Y.Map<any>): boolean
 
 
 ---
-url: /VBI/vbi/api/having-filter/having-node.md
+url: /VBI/vbi/api/chartBuilder/havingFilter/havingNode.md
 ---
 
 # HavingFilterNodeBuilder
 
 Having 过滤节点构建器，用于配置单个 Having 过滤条件
+
+## 属性
 
 ## 方法
 
@@ -156119,12 +156144,14 @@ toJSON(): VBIHavingFilter
 
 
 ---
-url: /VBI/vbi/api/having-filter/having-group.md
+url: /VBI/vbi/api/chartBuilder/havingFilter/havingGroup.md
 ---
 
 # HavingGroupBuilder
 
 Having 分组构建器，用于配置一组条件的逻辑关系（AND/OR）
+
+## 属性
 
 ## 方法
 
@@ -156277,10 +156304,10 @@ toJSON(): VBIHavingGroup
 
 
 ---
-url: /VBI/vbi/api/theme.md
+url: /VBI/vbi/api/chartBuilder/theme.md
 ---
 
-# theme
+# ThemeBuilder
 
 主题构建器，用于设置和获取当前主题
 
@@ -156366,10 +156393,10 @@ toJSON(): string
 
 
 ---
-url: /VBI/vbi/api/locale.md
+url: /VBI/vbi/api/chartBuilder/locale.md
 ---
 
-# locale
+# LocaleBuilder
 
 语言构建器，用于设置和获取当前语言
 
@@ -156455,10 +156482,10 @@ toJSON(): string
 
 
 ---
-url: /VBI/vbi/api/limit.md
+url: /VBI/vbi/api/chartBuilder/limit.md
 ---
 
-# limit
+# LimitBuilder
 
 数据量限制构建器，用于设置和获取当前 limit
 
@@ -156544,10 +156571,10 @@ toJSON(): number | undefined
 
 
 ---
-url: /VBI/vbi/api/undo-manager.md
+url: /VBI/vbi/api/chartBuilder/undoManager.md
 ---
 
-# undoManager
+# UndoManager
 
 撤销/重做管理器，提供基于 YJS 的撤销和重做功能，支持栈管理和历史清除操作
 
@@ -156637,6 +156664,361 @@ clear(clearUndoStack: boolean, clearRedoStack: boolean): void
 | --- | --- | --- |
 | `clearUndoStack` | boolean | - 是否清除撤销栈，默认 true |
 | `clearRedoStack` | boolean | - 是否清除重做栈，默认 true |
+
+
+
+---
+url: /VBI/vbi/api/reportBuilder/index.md
+---
+
+# VBIReportBuilder
+
+## 属性
+
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| **doc** | `Y.Doc` | - |
+| **dsl** | `Y.Map<any>` | - |
+| **undoManager** | `UndoManager` | - |
+| **page** | `ReportPageCollectionBuilder<TQueryDSL, TSeedDSL>` | - |
+
+## 方法
+
+### constructor
+
+**定义**:
+
+```typescript
+constructor(doc: Y.Doc, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>)
+```
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `doc` | Y.Doc | - |
+| `options` | VBIReportBuilderOptions\<TQueryDSL, TSeedDSL> | - |
+
+### applyUpdate
+
+**定义**:
+
+```typescript
+applyUpdate(update: Uint8Array, transactionOrigin: any): any
+```
+
+**返回**: `any`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `update` | Uint8Array | - |
+| `transactionOrigin` | any | - |
+
+### encodeStateAsUpdate
+
+**定义**:
+
+```typescript
+encodeStateAsUpdate(targetStateVector: Uint8Array): any
+```
+
+**返回**: `any`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `targetStateVector` | Uint8Array | - |
+
+### build
+
+**定义**:
+
+```typescript
+build(): VBIReportDSL
+```
+
+**返回**: `VBIReportDSL`
+
+### isEmpty
+
+**定义**:
+
+```typescript
+isEmpty(): boolean
+```
+
+**返回**: `boolean`
+
+
+
+---
+url: /VBI/vbi/api/reportBuilder/page/index.md
+---
+
+# ReportPageCollectionBuilder
+
+## 属性
+
+## 方法
+
+### constructor
+
+**定义**:
+
+```typescript
+constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, doc: Y.Doc, dsl: Y.Map<any>, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>)
+```
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `parent` | VBIReportBuilder\<TQueryDSL, TSeedDSL> | - |
+| `doc` | Y.Doc | - |
+| `dsl` | Y.Map<any> | - |
+| `options` | VBIReportBuilderOptions\<TQueryDSL, TSeedDSL> | - |
+
+### add
+
+**定义**:
+
+```typescript
+add(title: string, callback: (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void): VBIReportBuilder<TQueryDSL, TSeedDSL>
+```
+
+**返回**: `VBIReportBuilder<TQueryDSL, TSeedDSL>`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `title` | string | - |
+| `callback` | (page: ReportPageBuilder\<TQueryDSL, TSeedDSL>) => void | - |
+
+### remove
+
+**定义**:
+
+```typescript
+remove(pageId: string): VBIReportBuilder<TQueryDSL, TSeedDSL>
+```
+
+**返回**: `VBIReportBuilder<TQueryDSL, TSeedDSL>`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `pageId` | string | - |
+
+### update
+
+**定义**:
+
+```typescript
+update(pageId: string, callback: (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void): VBIReportBuilder<TQueryDSL, TSeedDSL>
+```
+
+**返回**: `VBIReportBuilder<TQueryDSL, TSeedDSL>`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `pageId` | string | - |
+| `callback` | (page: ReportPageBuilder\<TQueryDSL, TSeedDSL>) => void | - |
+
+### get
+
+**定义**:
+
+```typescript
+get(pageId: string): ReportPageBuilder<TQueryDSL, TSeedDSL> | undefined
+```
+
+**返回**: `ReportPageBuilder<TQueryDSL, TSeedDSL> \| undefined`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `pageId` | string | - |
+
+
+
+---
+url: /VBI/vbi/api/reportBuilder/page/reportPage.md
+---
+
+# ReportPageBuilder
+
+## 属性
+
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| **chart** | `VBIChartBuilder<TQueryDSL, TSeedDSL>` | - |
+| **text** | `ReportTextBuilder` | - |
+
+## 方法
+
+### constructor
+
+**定义**:
+
+```typescript
+constructor(doc: Y.Doc, page: Y.Map<any>, chartOptions: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>)
+```
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `doc` | Y.Doc | - |
+| `page` | Y.Map<any> | - |
+| `chartOptions` | VBIChartBuilderOptions\<TQueryDSL, TSeedDSL> | - |
+
+### getId
+
+**定义**:
+
+```typescript
+getId(): string
+```
+
+**返回**: `string`
+
+### setTitle
+
+**定义**:
+
+```typescript
+setTitle(title: string): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `title` | string | - |
+
+### setChart
+
+**定义**:
+
+```typescript
+setChart(chartBuilder: VBIChartBuilder<TQueryDSL, TSeedDSL> | VBIChartDSLInput): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `chartBuilder` | VBIChartBuilder\<TQueryDSL, TSeedDSL> | VBIChartDSLInput | - |
+
+### setText
+
+**定义**:
+
+```typescript
+setText(content: string): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `content` | string | - |
+
+### toJSON
+
+**定义**:
+
+```typescript
+toJSON(): VBIReportPageDSL
+```
+
+**返回**: `VBIReportPageDSL`
+
+
+
+---
+url: /VBI/vbi/api/reportBuilder/page/reportText.md
+---
+
+# ReportTextBuilder
+
+## 属性
+
+## 方法
+
+### constructor
+
+**定义**:
+
+```typescript
+constructor(yMap: Y.Map<any>)
+```
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |
+
+### getContent
+
+**定义**:
+
+```typescript
+getContent(): string
+```
+
+**返回**: `string`
+
+### setContent
+
+**定义**:
+
+```typescript
+setContent(content: string): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `content` | string | - |
+
+### clear
+
+**定义**:
+
+```typescript
+clear(): this
+```
+
+**返回**: `this`
+
+### toJSON
+
+**定义**:
+
+```typescript
+toJSON(): VBIReportTextDSL
+```
+
+**返回**: `VBIReportTextDSL`
 
 
 

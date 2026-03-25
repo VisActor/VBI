@@ -139,6 +139,7 @@
 
 - [VBI](/VBI/vbi/index.md)
 - [Standard](/VBI/vbi/practices/standard.md)
+- [Standard Report](/VBI/vbi/practices/standard-report.md)
 - [Minimalist](/VBI/vbi/practices/minimalist.md)
 - [Streamlined](/VBI/vbi/practices/streamlined.md)
 - [Professional](/VBI/vbi/practices/professional.md)
@@ -153,23 +154,27 @@
 - [undoManager](/VBI/vbi/examples/undoManager.md): {registerDemoConnector()}
 - [utils](/VBI/vbi/examples/utils.md): {registerDemoConnector()}
 - [whereFilter](/VBI/vbi/examples/whereFilter.md): {registerDemoConnector()}
-- [](/VBI/vbi/api/index.md)
-- [VBIChartBuilder](/VBI/vbi/api/builder.md)
-- [chartType](/VBI/vbi/api/chart-type.md): 图表类型构建器，用于切换和获取图表类型。支持表格、柱状图、折线图、饼图、散点图等多种图表类型
-- [measures](/VBI/vbi/api/measures.md): 度量构建器，用于添加、修改、删除度量配置。度量是数据的数值字段，如：销售额、利润、数量
-- [MeasureNodeBuilder](/VBI/vbi/api/measures/measure-node.md): 度量节点构建器，用于配置单个度量
-- [dimensions](/VBI/vbi/api/dimensions.md): 维度构建器，用于添加、修改、删除维度配置。维度是数据的分类字段，如：时间、地区、产品类别
-- [DimensionNodeBuilder](/VBI/vbi/api/dimensions/dimension-node.md): 维度节点构建器，用于配置单个维度
-- [whereFilter](/VBI/vbi/api/where-filter.md): Where 过滤构建器，用于添加、修改、删除行级过滤条件。Where 过滤在数据查询前生效，用于筛选原始数据
-- [WhereNodeBuilder](/VBI/vbi/api/where-filter/where-node.md): Where 过滤节点构建器，用于配置单个 Where 过滤条件
-- [WhereGroupBuilder](/VBI/vbi/api/where-filter/where-group.md): Where 分组构建器，用于配置一组条件的逻辑关系（AND/OR）
-- [havingFilter](/VBI/vbi/api/having-filter.md): Having 过滤构建器，用于添加、修改、删除分组后过滤条件。Having 过滤在数据聚合后生效，用于筛选分组结果
-- [HavingFilterNodeBuilder](/VBI/vbi/api/having-filter/having-node.md): Having 过滤节点构建器，用于配置单个 Having 过滤条件
-- [HavingGroupBuilder](/VBI/vbi/api/having-filter/having-group.md): Having 分组构建器，用于配置一组条件的逻辑关系（AND/OR）
-- [theme](/VBI/vbi/api/theme.md): 主题构建器，用于设置和获取当前主题
-- [locale](/VBI/vbi/api/locale.md): 语言构建器，用于设置和获取当前语言
-- [limit](/VBI/vbi/api/limit.md): 数据量限制构建器，用于设置和获取当前 limit
-- [undoManager](/VBI/vbi/api/undo-manager.md): 撤销/重做管理器，提供基于 YJS 的撤销和重做功能，支持栈管理和历史清除操作
+- [API](/VBI/vbi/api/index.md)
+- [VBIChartBuilder](/VBI/vbi/api/chartBuilder/index.md)
+- [ChartTypeBuilder](/VBI/vbi/api/chartBuilder/chartType.md): 图表类型构建器，用于切换和获取图表类型。支持表格、柱状图、折线图、饼图、散点图等多种图表类型
+- [MeasuresBuilder](/VBI/vbi/api/chartBuilder/measures/index.md): 度量构建器，用于添加、修改、删除度量配置。度量是数据的数值字段，如：销售额、利润、数量
+- [MeasureNodeBuilder](/VBI/vbi/api/chartBuilder/measures/measureNode.md): 度量节点构建器，用于配置单个度量
+- [DimensionsBuilder](/VBI/vbi/api/chartBuilder/dimensions/index.md): 维度构建器，用于添加、修改、删除维度配置。维度是数据的分类字段，如：时间、地区、产品类别
+- [DimensionNodeBuilder](/VBI/vbi/api/chartBuilder/dimensions/dimensionNode.md): 维度节点构建器，用于配置单个维度
+- [WhereFilterBuilder](/VBI/vbi/api/chartBuilder/whereFilter/index.md): Where 过滤构建器，用于添加、修改、删除行级过滤条件。Where 过滤在数据查询前生效，用于筛选原始数据
+- [WhereFilterNodeBuilder](/VBI/vbi/api/chartBuilder/whereFilter/whereNode.md): Where 过滤节点构建器，用于配置单个 Where 过滤条件
+- [WhereGroupBuilder](/VBI/vbi/api/chartBuilder/whereFilter/whereGroup.md): Where 分组构建器，用于配置一组条件的逻辑关系（AND/OR）
+- [HavingFilterBuilder](/VBI/vbi/api/chartBuilder/havingFilter/index.md): Having 过滤构建器，用于添加、修改、删除分组后过滤条件。Having 过滤在数据聚合后生效，用于筛选分组结果
+- [HavingFilterNodeBuilder](/VBI/vbi/api/chartBuilder/havingFilter/havingNode.md): Having 过滤节点构建器，用于配置单个 Having 过滤条件
+- [HavingGroupBuilder](/VBI/vbi/api/chartBuilder/havingFilter/havingGroup.md): Having 分组构建器，用于配置一组条件的逻辑关系（AND/OR）
+- [ThemeBuilder](/VBI/vbi/api/chartBuilder/theme.md): 主题构建器，用于设置和获取当前主题
+- [LocaleBuilder](/VBI/vbi/api/chartBuilder/locale.md): 语言构建器，用于设置和获取当前语言
+- [LimitBuilder](/VBI/vbi/api/chartBuilder/limit.md): 数据量限制构建器，用于设置和获取当前 limit
+- [UndoManager](/VBI/vbi/api/chartBuilder/undoManager.md): 撤销/重做管理器，提供基于 YJS 的撤销和重做功能，支持栈管理和历史清除操作
+- [VBIReportBuilder](/VBI/vbi/api/reportBuilder/index.md)
+- [ReportPageCollectionBuilder](/VBI/vbi/api/reportBuilder/page/index.md)
+- [ReportPageBuilder](/VBI/vbi/api/reportBuilder/page/reportPage.md)
+- [ReportTextBuilder](/VBI/vbi/api/reportBuilder/page/reportText.md)
 - [Playground](/VBI/vbi/playground.md)
 - [combination](/VBI/vbi/examples/combination.md): {registerDemoConnector()}
 - [limit](/VBI/vbi/examples/limit.md): {registerDemoConnector()}
