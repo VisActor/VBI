@@ -33,3 +33,9 @@ tools/llm_test/new-type
 .trae
 
 .worktrees
+
+# 忽略打包产物
+apps/vbi_desktop/release/
+*.exe
+*.asar
+dist/

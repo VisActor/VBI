@@ -10,6 +10,7 @@
   "description": "VSeed, an elegant data composer, transforming complexity into simplicity.",
   "scripts": {
     "dev": "pnpm --filter=website run dev",
+    "dev:desktop": "concurrently \"pnpm --filter website run dev\" \"pnpm --filter @visactor/vbi-desktop run dev\"",
     "build": "turbo build",
     "format": "pnpm prettier --write .",
     "lint": "pnpm -r lint",
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "@changesets/cli": "2.29.5",
+    "concurrently": "9.2.1",
     "husky": "9.1.7",
     "lint-staged": "16.1.6",
     "node-fetch": "2.6.7",
@@ -50,7 +52,7 @@
     "shx": "0.4.0",
     "turbo": "2.8.19"
   },
-  "packageManager": "pnpm@10.26.1",
+  "packageManager": "pnpm@10.33.0",
   "license": "MIT",
   "homepage": "https://visactor.github.io/VSeed",
   "bugs": "https://github.com/VisActor/VSeed/issues",
@@ -69,6 +71,10 @@
       "@visactor/vrender-kits": "1.0.39",
       "@visactor/vrender-components": "1.0.39",
       "@visactor/vrender-animate": "1.0.39"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "electron",
+      "electron-winstaller"
+    ]
   }
 }
