@@ -1,41 +1,63 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
-const express = require('express')
+const http = require('http')
+const fs = require('fs')
 
 let mainWindow
-let server
-let localServerUrl = ''
 
+// 🟢 零依赖的内置 HTTP Web 服务器
 function startLocalServer() {
-  return new Promise((resolve, reject) => {
-    const expressApp = express()
-    const distPath = path.join(__dirname, 'dist')
+  return new Promise((resolve) => {
+    const server = http.createServer((req, res) => {
+      // 1. 解析请求的 URL 路径
+      const urlPath = req.url.split('?')[0]
 
-    // 1. 静态资源托管：映射整个 dist 目录
-    expressApp.use(express.static(distPath))
+      // 2. 映射到本地物理路径 dist
+      let filePath = path.join(__dirname, 'dist', urlPath)
 
-    // 2. 捕获所有其他路由，重定向到 index.html 以支持 History 模式 (SPA)
-    // 因为静态资源在 dist/VBI 下，路由也是以 /VBI 开头
-    expressApp.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'VBI', 'index.html'))
+      // 3. SPA 路由兜底逻辑（核心）
+      // 如果没有后缀名，或者文件在硬盘上根本不存在，强制返回 index.html
+      if (!path.extname(filePath) || !fs.existsSync(filePath)) {
+        filePath = path.join(__dirname, 'dist', 'VBI', 'index.html')
+      }
+
+      // 4. 判断并设置正确的 Content-Type，防止浏览器乱码
+      const ext = path.extname(filePath)
+      const mimeTypes = {
+        '.html': 'text/html',
+        '.js': 'text/javascript',
+        '.css': 'text/css',
+        '.png': 'image/png',
+        '.jpg': 'image/jpeg',
+        '.svg': 'image/svg+xml',
+        '.json': 'application/json',
+        '.woff': 'font/woff',
+        '.woff2': 'font/woff2',
+        '.wasm': 'application/wasm',
+      }
+      const contentType = mimeTypes[ext] || 'application/octet-stream'
+
+      // 5. 读取并返回文件
+      fs.readFile(filePath, (err, content) => {
+        if (err) {
+          res.writeHead(500)
+          res.end('Server Error')
+        } else {
+          res.writeHead(200, { 'Content-Type': contentType })
+          res.end(content, 'utf-8')
+        }
+      })
     })
 
-    // 3. 监听随机可用端口 (0 代表随机可用端口)，避免端口冲突
-    server = expressApp.listen(0, '127.0.0.1', () => {
+    // 让系统分配一个随机绝对空闲的端口
+    server.listen(0, '127.0.0.1', () => {
       const port = server.address().port
-      localServerUrl = `http://127.0.0.1:${port}/VBI/index.html`
-      console.log(`Local server started at ${localServerUrl}`)
-      resolve()
-    })
-
-    server.on('error', (err) => {
-      console.error('Express server error:', err)
-      reject(err)
+      resolve(port)
     })
   })
 }
 
-function createWindow() {
+async function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 768,
@@ -48,13 +70,15 @@ function createWindow() {
   const isDev = !app.isPackaged
 
   if (isDev) {
-    // 开发环境下，加载本地服务器
+    // 开发环境
     mainWindow.loadURL('http://localhost:3000/VBI/')
   } else {
-    // 生产环境下，加载刚启动的 Express 本地服务
-    mainWindow.loadURL(localServerUrl)
-    // 保留控制台，以防万一。如果一切成功，以后可以把它注释掉
-    mainWindow.webContents.openDevTools()
+    // 生产环境：等待内部服务器启动，拿到可用端口
+    const port = await startLocalServer()
+    // 就像在浏览器里一样加载！完美支持 Web Worker 和路由！
+    mainWindow.loadURL(`http://127.0.0.1:${port}/VBI/index.html`)
+
+    //mainWindow.webContents.openDevTools(); // 需要查错可以解除注释
   }
 
   mainWindow.on('closed', () => {
@@ -62,34 +86,13 @@ function createWindow() {
   })
 }
 
-app.whenReady().then(async () => {
-  if (app.isPackaged) {
-    try {
-      // 生产环境先启动本地服务器，再创建窗口
-      await startLocalServer()
-    } catch (e) {
-      console.error('Failed to start local express server', e)
-    }
-  }
-
+app.whenReady().then(() => {
   createWindow()
-
   app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
-    }
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 })
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
-
-app.on('before-quit', () => {
-  // 退出时关闭服务
-  if (server) {
-    server.close()
-  }
+  if (process.platform !== 'darwin') app.quit()
 })

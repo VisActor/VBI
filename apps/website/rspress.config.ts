@@ -6,6 +6,9 @@ import { defineConfig } from '@rspress/core'
 
 import i18nJson from './i18n.json'
 
+// 🟢 核心修改 1：读取环境变量，判断当前是不是在为 Electron 打包
+const isElectron = process.env.IS_ELECTRON === 'true'
+
 export default defineConfig({
   root: './docs',
   base: '/VBI/',
@@ -73,7 +76,8 @@ export default defineConfig({
     },
     output: {
       sourceMap: true,
-      assetPrefix: 'https://visactor.github.io/VBI/',
+      // 🟢 核心修改 2：桌面端走本地 /VBI/，线上网页依然走 github.io
+      assetPrefix: isElectron ? '/VBI/' : 'https://visactor.github.io/VBI/',
     },
   },
 })

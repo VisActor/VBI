@@ -189,9 +189,6 @@ importers:
 
   apps/vbi_desktop:
     dependencies:
-      electron-serve:
-        specifier: 3.0.1
-        version: 3.0.1
       express:
         specifier: 5.2.1
         version: 5.2.1
@@ -5484,10 +5481,6 @@ packages:
 
   electron-publish@26.8.1:
     resolution: {integrity: sha512-q+jrSTIh/Cv4eGZa7oVR+grEJo/FoLMYBAnSL5GCtqwUpr1T+VgKB/dn1pnzxIxqD8S/jP1yilT9VrwCqINR4w==}
-
-  electron-serve@3.0.1:
-    resolution: {integrity: sha512-o40R/CfuxT4ccpD3kK2enFghd2jgXSgI02l4p51f8f2clXC4GPKpi0JQUn1FSRGrIHWH8fjdPlRsznEyItDPLg==}
-    engines: {node: '>=20'}
 
   electron-to-chromium@1.5.321:
     resolution: {integrity: sha512-L2C7Q279W2D/J4PLZLk7sebOILDSWos7bMsMNN06rK482umHUrh/3lM8G7IlHFOYip2oAg5nha1rCMxr/rs6ZQ==}
@@ -14918,8 +14911,6 @@ snapshots:
       mime: 2.6.0
     transitivePeerDependencies:
       - supports-color
-
-  electron-serve@3.0.1: {}
 
   electron-to-chromium@1.5.321: {}
 

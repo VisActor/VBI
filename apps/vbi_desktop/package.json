@@ -1,11 +1,11 @@
 {
   "name": "@visactor/vbi-desktop",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "main": "main.js",
   "scripts": {
     "dev": "wait-on http://localhost:3000 && electron .",
-    "build:exe": "pnpm --filter website run build && electron-builder --win"
+    "build:exe": "set IS_ELECTRON=true&& pnpm --filter website run build && electron-builder --win"
   },
   "build": {
     "appId": "com.visactor.vbidesktop",
@@ -16,7 +16,8 @@
     "win": {
       "target": [
         "nsis"
-      ]
+      ],
+      "icon": "build/icon.ico"
     },
     "files": [
       "main.js",
@@ -37,7 +38,6 @@
     "wait-on": "9.0.4"
   },
   "dependencies": {
-    "electron-serve": "3.0.1",
     "express": "5.2.1"
   }
 }
