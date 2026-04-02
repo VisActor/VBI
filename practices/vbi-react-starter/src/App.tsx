@@ -8,6 +8,7 @@ import type { VSeed } from '@visactor/vseed'
 import './App.css'
 import { StarterEmptyState } from './components/StarterEmptyState'
 import { StarterFooter } from './components/StarterFooter'
+import { StarterLoadingSkeleton } from './components/StarterLoadingSkeleton'
 import { VSeedRender } from './components/Render'
 import { StarterRenderError } from './components/StarterRenderError'
 import { StarterTopBar } from './components/StarterTopBar'
@@ -170,7 +171,7 @@ export function APP() {
             <ChartRenderer
               builder={builder}
               debounce={150}
-              loadingFallback={<StarterEmptyState description="正在构建图表…" title="Building chart" />}
+              loadingFallback={<StarterLoadingSkeleton />}
               renderError={(error: Error, refetch: () => Promise<unknown> | void) => (
                 <StarterRenderError
                   errorMessage={error.message}
