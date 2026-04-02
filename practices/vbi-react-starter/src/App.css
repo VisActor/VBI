@@ -6,9 +6,7 @@
   padding: 16px;
   color: var(--starter-text-primary);
   font-family: var(--starter-font-sans);
-  background:
-    radial-gradient(circle at top right, var(--starter-bg-accent) 0%, transparent 44%),
-    var(--starter-bg);
+  background: radial-gradient(circle at top right, var(--starter-bg-accent) 0%, transparent 44%), var(--starter-bg);
 }
 
 .starter-card {
