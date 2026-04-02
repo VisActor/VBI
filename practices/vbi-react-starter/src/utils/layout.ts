@@ -9,3 +9,7 @@ export function getLeftPanelWidth(viewportWidth: number): number {
 
   return 360
 }
+
+export function isCompactViewport(viewportWidth: number): boolean {
+  return viewportWidth <= 1080
+}

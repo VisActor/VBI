@@ -22,7 +22,7 @@ import {
 import './styles/tokens.css'
 import { createLocalConnector, setLocalDataWithSchema, type LocalRow } from './utils/localConnector'
 import { clearBuilderSelections, inferSchema, rowsToDataset } from './utils/dataset'
-import { getLeftPanelWidth } from './utils/layout'
+import { getLeftPanelWidth, isCompactViewport } from './utils/layout'
 import { parseCsv } from './utils/parseCsv'
 import { supermarketSchema } from './utils/supermarketSchema'
 
@@ -52,6 +52,10 @@ export function APP() {
   const [rowCount, setRowCount] = useState(0)
   const [statusMessage, setStatusMessage] = useState('先加载 demo 数据或上传 CSV，再用 starter components 组装图表。')
   const [statusTone, setStatusTone] = useState<DemoStatusTone>('idle')
+  const [isCompactLayout, setIsCompactLayout] = useState(() =>
+    typeof window === 'undefined' ? false : isCompactViewport(window.innerWidth),
+  )
+  const [isFieldPanelVisible, setIsFieldPanelVisible] = useState(true)
   const [leftPanelWidth, setLeftPanelWidth] = useState(() =>
     typeof window === 'undefined' ? 360 : getLeftPanelWidth(window.innerWidth),
   )
@@ -148,7 +152,15 @@ export function APP() {
 
   useEffect(() => {
     const syncPanelWidth = () => {
-      setLeftPanelWidth(getLeftPanelWidth(window.innerWidth))
+      const nextWidth = window.innerWidth
+      const nextCompact = isCompactViewport(nextWidth)
+
+      setLeftPanelWidth(getLeftPanelWidth(nextWidth))
+      setIsCompactLayout(nextCompact)
+
+      if (!nextCompact) {
+        setIsFieldPanelVisible(true)
+      }
     }
 
     syncPanelWidth()
@@ -174,13 +186,15 @@ export function APP() {
           />
         }
         leftPanel={
-          <FieldPanel
-            builder={builder}
-            dimensionOptions={dimensionOptions}
-            measureOptions={measureOptions}
-            style={fieldPanelStyle}
-            title="Starter Fields"
-          />
+          !isCompactLayout || isFieldPanelVisible ? (
+            <FieldPanel
+              builder={builder}
+              dimensionOptions={dimensionOptions}
+              measureOptions={measureOptions}
+              style={fieldPanelStyle}
+              title="Starter Fields"
+            />
+          ) : undefined
         }
         leftPanelWidth={leftPanelWidth}
         main={
@@ -220,8 +234,13 @@ export function APP() {
         topBar={
           <StarterTopBar
             builder={builder}
+            isFieldPanelVisible={!isCompactLayout || isFieldPanelVisible}
+            isToggleVisible={isCompactLayout}
             onLoadDemoData={() => {
               void handleLoadDemoData()
+            }}
+            onToggleFieldPanel={() => {
+              setIsFieldPanelVisible((visible) => !visible)
             }}
             onUploadClick={handleUploadClick}
           />

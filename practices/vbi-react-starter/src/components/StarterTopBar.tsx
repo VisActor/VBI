@@ -6,7 +6,10 @@ import { cn } from '../utils/cn'
 
 type StarterTopBarProps = {
   builder: VBIChartBuilder
+  isFieldPanelVisible: boolean
+  isToggleVisible: boolean
   onLoadDemoData: () => void
+  onToggleFieldPanel: () => void
   onUploadClick: () => void
 }
 
@@ -16,7 +19,7 @@ const chartTypeSelectorStyle: CSSProperties = {
 }
 
 export function StarterTopBar(props: StarterTopBarProps) {
-  const { builder, onLoadDemoData, onUploadClick } = props
+  const { builder, isFieldPanelVisible, isToggleVisible, onLoadDemoData, onToggleFieldPanel, onUploadClick } = props
 
   return (
     <div className={cn('starter-card', 'starter-topbar')}>
@@ -30,6 +33,15 @@ export function StarterTopBar(props: StarterTopBarProps) {
 
       <div className="starter-top-actions">
         <ChartTypeSelector builder={builder} style={chartTypeSelectorStyle} />
+        {isToggleVisible ? (
+          <button
+            className={cn('starter-button', 'starter-button-secondary')}
+            onClick={onToggleFieldPanel}
+            type="button"
+          >
+            {isFieldPanelVisible ? 'Hide fields' : 'Show fields'}
+          </button>
+        ) : null}
         <button className={cn('starter-button', 'starter-button-primary')} onClick={onLoadDemoData} type="button">
           Load demo data
         </button>
