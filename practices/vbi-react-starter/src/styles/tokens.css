@@ -1,0 +1,33 @@
+.starter-theme {
+  --starter-bg: #f3f7fc;
+  --starter-bg-accent: #eaf1ff;
+  --starter-surface: #ffffff;
+  --starter-surface-muted: #f7f9fc;
+  --starter-panel: #f2f6fd;
+  --starter-canvas: #ffffff;
+  --starter-border: #d6e0ee;
+  --starter-border-strong: #b5c7df;
+
+  --starter-text-primary: #13263f;
+  --starter-text-secondary: #4a5f7a;
+  --starter-text-muted: #6f829c;
+
+  --starter-accent: #1868d8;
+  --starter-accent-hover: #1359ba;
+  --starter-accent-contrast: #ffffff;
+
+  --starter-success: #1f8f56;
+  --starter-success-soft: #e8f7ee;
+  --starter-danger: #c94a4a;
+  --starter-danger-soft: #fdeaea;
+  --starter-idle-soft: #eef3fa;
+
+  --starter-radius-sm: 8px;
+  --starter-radius-md: 12px;
+  --starter-radius-lg: 16px;
+
+  --starter-shadow-card: 0 8px 24px rgba(18, 54, 94, 0.08);
+
+  --starter-font-sans: 'IBM Plex Sans', 'Noto Sans SC', 'Segoe UI', sans-serif;
+  --starter-font-mono: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', ui-monospace, monospace;
+}

@@ -1,0 +1,235 @@
+.starter-page {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 16px;
+  color: var(--starter-text-primary);
+  font-family: var(--starter-font-sans);
+  background:
+    radial-gradient(circle at top right, var(--starter-bg-accent) 0%, transparent 44%),
+    var(--starter-bg);
+}
+
+.starter-card {
+  box-sizing: border-box;
+  border: 1px solid var(--starter-border);
+  border-radius: var(--starter-radius-md);
+  background: var(--starter-surface);
+  box-shadow: var(--starter-shadow-card);
+}
+
+.starter-footer-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.starter-summary-card {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.starter-summary-text {
+  margin-top: 6px;
+  color: var(--starter-text-muted);
+  font-size: 12px;
+}
+
+.starter-stat-grid {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--starter-text-secondary);
+}
+
+.starter-status-box {
+  border: 1px solid var(--starter-border);
+  border-radius: var(--starter-radius-sm);
+  font-size: 13px;
+  padding: 12px;
+}
+
+.starter-status-idle {
+  background: var(--starter-idle-soft);
+  color: var(--starter-text-secondary);
+}
+
+.starter-status-success {
+  background: var(--starter-success-soft);
+  color: var(--starter-success);
+}
+
+.starter-status-error {
+  background: var(--starter-danger-soft);
+  color: var(--starter-danger);
+}
+
+.starter-note {
+  color: var(--starter-text-muted);
+  font-size: 12px;
+}
+
+.starter-dsl-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+}
+
+.starter-dsl-pre {
+  margin: 0;
+  max-height: 220px;
+  overflow: auto;
+  padding: 12px;
+  border-radius: var(--starter-radius-sm);
+  border: 1px solid var(--starter-border);
+  background: var(--starter-surface-muted);
+  color: var(--starter-text-secondary);
+  font-size: 12px;
+  font-family: var(--starter-font-mono);
+  white-space: pre-wrap;
+}
+
+.starter-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+}
+
+.starter-top-intro {
+  display: grid;
+  gap: 6px;
+}
+
+.starter-top-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.starter-top-subtitle {
+  max-width: 580px;
+  color: var(--starter-text-muted);
+  font-size: 12px;
+}
+
+.starter-top-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+}
+
+.starter-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--starter-radius-sm);
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.starter-button-primary {
+  background: var(--starter-accent);
+  border-color: var(--starter-accent);
+  color: var(--starter-accent-contrast);
+}
+
+.starter-button-primary:hover {
+  background: var(--starter-accent-hover);
+}
+
+.starter-button-secondary {
+  background: var(--starter-surface);
+  border-color: var(--starter-border-strong);
+  color: var(--starter-text-secondary);
+}
+
+.starter-button-secondary:hover {
+  background: var(--starter-surface-muted);
+}
+
+.starter-empty-state {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+}
+
+.starter-empty-title {
+  font-size: 16px;
+}
+
+.starter-empty-description {
+  max-width: 440px;
+  color: var(--starter-text-secondary);
+  font-size: 13px;
+}
+
+.starter-main-placeholder {
+  height: 100%;
+  background: var(--starter-panel);
+}
+
+.starter-error-card {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  color: var(--starter-danger);
+  background: var(--starter-danger-soft);
+}
+
+.starter-error-message {
+  margin-top: 6px;
+  color: #a53a3a;
+  font-size: 12px;
+  white-space: pre-wrap;
+}
+
+.starter-error-hint {
+  color: #a53a3a;
+  font-size: 12px;
+}
+
+@media (max-width: 900px) {
+  .starter-topbar {
+    align-items: flex-start;
+  }
+
+  .starter-top-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 720px) {
+  .starter-page {
+    padding: 12px;
+  }
+
+  .starter-footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .starter-top-title {
+    font-size: 18px;
+  }
+
+  .starter-button {
+    height: 34px;
+    padding: 0 12px;
+  }
+}

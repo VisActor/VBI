@@ -9,6 +9,8 @@ import { VSeedRender } from './components/Render'
 import { createLocalConnector, setLocalDataWithSchema, type LocalRow } from './utils/localConnector'
 import { parseCsv } from './utils/parseCsv'
 import { supermarketSchema } from './utils/supermarketSchema'
+import './styles/tokens.css'
+import './App.css'
 
 type DemoStatusTone = 'error' | 'idle' | 'success'
 
@@ -16,40 +18,46 @@ const CONNECTOR_ID = 'vbiReactStarterLocalDataConnector'
 
 let connectorInitialized = false
 
-const pageStyle: CSSProperties = {
-  background: '#0b0c1d',
-  boxSizing: 'border-box',
-  color: '#eef2ff',
-  fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-  height: '100%',
-  minHeight: 0,
-  padding: 16,
-  width: '100%',
-}
-
-const cardStyle: CSSProperties = {
-  background: '#15162b',
-  border: '1px solid #2a2b4d',
+const baseCardStyle: CSSProperties = {
+  background: 'var(--starter-surface)',
+  border: '1px solid var(--starter-border)',
   borderRadius: 12,
   boxSizing: 'border-box',
 }
 
-const primaryButtonStyle: CSSProperties = {
-  background: '#5b8cff',
-  border: '1px solid #5b8cff',
-  borderRadius: 8,
-  color: '#fff',
-  cursor: 'pointer',
-  fontSize: 13,
-  fontWeight: 600,
-  height: 36,
-  padding: '0 14px',
+const fieldPanelStyle: CSSProperties = {
+  ...baseCardStyle,
+  color: 'var(--starter-text-primary)',
+  height: '100%',
+  minHeight: 0,
+  overflow: 'hidden',
+  padding: 16,
 }
 
-const secondaryButtonStyle: CSSProperties = {
-  ...primaryButtonStyle,
-  background: 'transparent',
-  color: '#dce4ff',
+const chartRendererStyle: CSSProperties = {
+  ...baseCardStyle,
+  background: 'var(--starter-panel)',
+  height: '100%',
+  minHeight: 0,
+  minWidth: 0,
+  overflow: 'hidden',
+  padding: 12,
+}
+
+const mainPlaceholderStyle: CSSProperties = {
+  ...baseCardStyle,
+  background: 'var(--starter-panel)',
+  height: '100%',
+}
+
+const chartTypeSelectorStyle: CSSProperties = {
+  color: 'var(--starter-text-primary)',
+  minWidth: 180,
+}
+
+const layoutStyle: CSSProperties = {
+  height: '100%',
+  minHeight: '100%',
 }
 
 function ensureConnector() {
@@ -57,6 +65,10 @@ function ensureConnector() {
     createLocalConnector(CONNECTOR_ID)
     connectorInitialized = true
   }
+}
+
+function cn(...classNames: Array<string | false | null | undefined>) {
+  return classNames.filter(Boolean).join(' ')
 }
 
 function isLikelyDate(value: string): boolean {
@@ -119,22 +131,9 @@ function EmptyState(props: { description: string; title: string }) {
   const { description, title } = props
 
   return (
-    <div
-      style={{
-        alignItems: 'center',
-        color: '#c9d1ff',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 8,
-        height: '100%',
-        justifyContent: 'center',
-        minHeight: 0,
-        padding: 24,
-        textAlign: 'center',
-      }}
-    >
-      <strong style={{ fontSize: 16 }}>{title}</strong>
-      <div style={{ fontSize: 13, maxWidth: 440 }}>{description}</div>
+    <div className="starter-empty-state">
+      <strong className="starter-empty-title">{title}</strong>
+      <div className="starter-empty-description">{description}</div>
     </div>
   )
 }
@@ -244,79 +243,40 @@ export function APP() {
   }, [builder])
 
   return (
-    <div style={pageStyle}>
+    <div className="starter-page starter-theme">
       <BuilderLayout
         footer={
-          <div
-            style={{
-              display: 'grid',
-              gap: 12,
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            }}
-          >
-            <section
-              style={{
-                ...cardStyle,
-                color: '#e7ebff',
-                display: 'grid',
-                gap: 12,
-                padding: 16,
-              }}
-            >
+          <div className="starter-footer-grid">
+            <section className={cn('starter-card', 'starter-summary-card')}>
               <div>
                 <strong>Starter Summary</strong>
-                <div style={{ color: '#9aa4d1', fontSize: 12, marginTop: 6 }}>
+                <div className="starter-summary-text">
                   这个 demo 只使用 `@visactor/vbi-react/components` 来搭建核心编辑区， 用来验证 hooks + slim components
                   这条路线。
                 </div>
               </div>
-              <div style={{ display: 'grid', gap: 6, fontSize: 13 }}>
+              <div className="starter-stat-grid">
                 <div>Data source: {dataSourceLabel}</div>
                 <div>Rows: {rowCount}</div>
                 <div>Available dimensions: {availableDimensions.length}</div>
                 <div>Available measures: {availableMeasures.length}</div>
               </div>
               <div
-                style={{
-                  border: '1px solid #2f335a',
-                  borderRadius: 8,
-                  color: statusTone === 'error' ? '#ffccc7' : statusTone === 'success' ? '#d6ffe5' : '#c9d1ff',
-                  fontSize: 13,
-                  padding: 12,
-                }}
+                className={cn(
+                  'starter-status-box',
+                  statusTone === 'error' ? 'starter-status-error' : undefined,
+                  statusTone === 'success' ? 'starter-status-success' : undefined,
+                  statusTone === 'idle' ? 'starter-status-idle' : undefined,
+                )}
               >
                 {statusMessage}
               </div>
-              <div style={{ color: '#9aa4d1', fontSize: 12 }}>
-                Demo schema 固定使用手工声明的字段类型，不再依赖首行自动猜测。
-              </div>
+              <div className="starter-note">Demo schema 固定使用手工声明的字段类型，不再依赖首行自动猜测。</div>
             </section>
 
-            <section
-              style={{
-                ...cardStyle,
-                color: '#e7ebff',
-                display: 'grid',
-                gap: 8,
-                padding: 16,
-              }}
-            >
+            <section className={cn('starter-card', 'starter-dsl-card')}>
               <strong>Current DSL Snapshot</strong>
-              <pre
-                style={{
-                  background: '#101126',
-                  borderRadius: 8,
-                  color: '#b9c2ff',
-                  fontSize: 12,
-                  margin: 0,
-                  maxHeight: 220,
-                  overflow: 'auto',
-                  padding: 12,
-                  whiteSpace: 'pre-wrap',
-                }}
-              >
-                {JSON.stringify(dsl, null, 2)}
-              </pre>
+              <pre className="starter-dsl-pre">{JSON.stringify(dsl, null, 2)}</pre>
             </section>
           </div>
         }
@@ -325,14 +285,7 @@ export function APP() {
             builder={builder}
             dimensionOptions={dimensionOptions}
             measureOptions={measureOptions}
-            style={{
-              ...cardStyle,
-              color: '#e7ebff',
-              height: '100%',
-              minHeight: 0,
-              overflow: 'hidden',
-              padding: 16,
-            }}
+            style={fieldPanelStyle}
             title="Starter Fields"
           />
         }
@@ -344,38 +297,18 @@ export function APP() {
               debounce={150}
               loadingFallback={<EmptyState description="正在构建图表…" title="Building chart" />}
               renderError={(error, refetch) => (
-                <div
-                  role="alert"
-                  style={{
-                    ...cardStyle,
-                    color: '#ffd8d6',
-                    display: 'grid',
-                    gap: 12,
-                    padding: 16,
-                  }}
-                >
+                <div className={cn('starter-card', 'starter-error-card')} role="alert">
                   <div>
                     <strong>Starter preview build failed</strong>
-                    <div
-                      style={{
-                        color: '#ffb3b0',
-                        fontSize: 12,
-                        marginTop: 6,
-                        whiteSpace: 'pre-wrap',
-                      }}
-                    >
-                      {error.message}
-                    </div>
+                    <div className="starter-error-message">{error.message}</div>
                   </div>
-                  <div style={{ color: '#ffccc7', fontSize: 12 }}>
-                    这通常意味着字段类型、聚合配置或 DSL 组合不匹配。
-                  </div>
+                  <div className="starter-error-hint">这通常意味着字段类型、聚合配置或 DSL 组合不匹配。</div>
                   <div>
                     <button
+                      className={cn('starter-button', 'starter-button-primary')}
                       onClick={() => {
                         void refetch()
                       }}
-                      style={primaryButtonStyle}
                       type="button"
                     >
                       Retry
@@ -386,7 +319,7 @@ export function APP() {
               renderVSeed={(vseed) => (
                 <VSeedRender
                   style={{
-                    background: '#fff',
+                    background: 'var(--starter-canvas)',
                     borderRadius: 8,
                     minHeight: 0,
                     overflow: 'hidden',
@@ -395,25 +328,17 @@ export function APP() {
                   vseed={vseed as VSeed}
                 />
               )}
-              style={{
-                ...cardStyle,
-                background: '#202244',
-                height: '100%',
-                minHeight: 0,
-                minWidth: 0,
-                overflow: 'hidden',
-                padding: 12,
-              }}
+              style={chartRendererStyle}
             />
           ) : hasAvailableFields ? (
-            <div style={{ ...cardStyle, background: '#202244', height: '100%' }}>
+            <div className={cn('starter-card', 'starter-main-placeholder')} style={mainPlaceholderStyle}>
               <EmptyState
                 description="数据已经准备好。先在左侧添加维度和指标，再让 starter components 自动出图。"
                 title="Choose fields to start"
               />
             </div>
           ) : (
-            <div style={{ ...cardStyle, background: '#202244', height: '100%' }}>
+            <div className={cn('starter-card', 'starter-main-placeholder')} style={mainPlaceholderStyle}>
               <EmptyState
                 description="点击上方的 Load demo data，或上传一个 CSV 文件，左侧字段面板就会立即可用。"
                 title="No data loaded yet"
@@ -421,50 +346,33 @@ export function APP() {
             </div>
           )
         }
-        style={{
-          height: '100%',
-          minHeight: '100%',
-        }}
+        style={layoutStyle}
         topBar={
-          <div
-            style={{
-              ...cardStyle,
-              alignItems: 'center',
-              color: '#e7ebff',
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: 16,
-              justifyContent: 'space-between',
-              padding: 16,
-            }}
-          >
-            <div style={{ display: 'grid', gap: 6 }}>
-              <strong>vbi-react Starter</strong>
-              <div style={{ color: '#9aa4d1', fontSize: 12, maxWidth: 560 }}>
+          <div className={cn('starter-card', 'starter-topbar')}>
+            <div className="starter-top-intro">
+              <strong className="starter-top-title">vbi-react Starter</strong>
+              <div className="starter-top-subtitle">
                 `FieldPanel`、`ChartTypeSelector`、`ChartRenderer` 和 `BuilderLayout`
                 直接拼出一个可用的低门槛搭建器；需要深度自定义时，再下钻到 hooks。
               </div>
             </div>
 
-            <div
-              style={{
-                alignItems: 'end',
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: 12,
-              }}
-            >
-              <ChartTypeSelector builder={builder} style={{ color: '#e7ebff', minWidth: 180 }} />
+            <div className="starter-top-actions">
+              <ChartTypeSelector builder={builder} style={chartTypeSelectorStyle} />
               <button
+                className={cn('starter-button', 'starter-button-primary')}
                 onClick={() => {
                   void handleLoadDemoData()
                 }}
-                style={primaryButtonStyle}
                 type="button"
               >
                 Load demo data
               </button>
-              <button onClick={handleUploadClick} style={secondaryButtonStyle} type="button">
+              <button
+                className={cn('starter-button', 'starter-button-secondary')}
+                onClick={handleUploadClick}
+                type="button"
+              >
                 Upload CSV
               </button>
             </div>
