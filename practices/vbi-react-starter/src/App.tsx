@@ -175,15 +175,17 @@ export function APP() {
     <div className="starter-page starter-theme">
       <BuilderLayout
         footer={
-          <StarterFooter
-            availableDimensionsCount={availableDimensions.length}
-            availableMeasuresCount={availableMeasures.length}
-            dataSourceLabel={dataSourceLabel}
-            dsl={dsl}
-            rowCount={rowCount}
-            statusMessage={statusMessage}
-            statusTone={statusTone}
-          />
+          <div className="starter-footer-slot">
+            <StarterFooter
+              availableDimensionsCount={availableDimensions.length}
+              availableMeasuresCount={availableMeasures.length}
+              dataSourceLabel={dataSourceLabel}
+              dsl={dsl}
+              rowCount={rowCount}
+              statusMessage={statusMessage}
+              statusTone={statusTone}
+            />
+          </div>
         }
         leftPanel={
           !isCompactLayout || isFieldPanelVisible ? (

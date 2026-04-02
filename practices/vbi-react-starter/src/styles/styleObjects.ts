@@ -41,6 +41,7 @@ export const chartCanvasStyle: CSSProperties = {
 }
 
 export const layoutStyle: CSSProperties = {
+  gridTemplateRows: 'auto minmax(320px, 1fr) auto',
   height: '100%',
   minHeight: '100%',
 }
