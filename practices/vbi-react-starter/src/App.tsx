@@ -22,6 +22,7 @@ import {
 import './styles/tokens.css'
 import { createLocalConnector, setLocalDataWithSchema, type LocalRow } from './utils/localConnector'
 import { clearBuilderSelections, inferSchema, rowsToDataset } from './utils/dataset'
+import { getLeftPanelWidth } from './utils/layout'
 import { parseCsv } from './utils/parseCsv'
 import { supermarketSchema } from './utils/supermarketSchema'
 
@@ -51,6 +52,9 @@ export function APP() {
   const [rowCount, setRowCount] = useState(0)
   const [statusMessage, setStatusMessage] = useState('先加载 demo 数据或上传 CSV，再用 starter components 组装图表。')
   const [statusTone, setStatusTone] = useState<DemoStatusTone>('idle')
+  const [leftPanelWidth, setLeftPanelWidth] = useState(() =>
+    typeof window === 'undefined' ? 360 : getLeftPanelWidth(window.innerWidth),
+  )
 
   const dimensionOptions = useMemo(
     () => availableDimensions.map((field) => ({ label: field, value: field })),
@@ -142,6 +146,19 @@ export function APP() {
     void refreshAvailableFields()
   }, [builder])
 
+  useEffect(() => {
+    const syncPanelWidth = () => {
+      setLeftPanelWidth(getLeftPanelWidth(window.innerWidth))
+    }
+
+    syncPanelWidth()
+    window.addEventListener('resize', syncPanelWidth)
+
+    return () => {
+      window.removeEventListener('resize', syncPanelWidth)
+    }
+  }, [])
+
   return (
     <div className="starter-page starter-theme">
       <BuilderLayout
@@ -165,7 +182,7 @@ export function APP() {
             title="Starter Fields"
           />
         }
-        leftPanelWidth={360}
+        leftPanelWidth={leftPanelWidth}
         main={
           hasConfiguredFields ? (
             <ChartRenderer
