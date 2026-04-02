@@ -51,8 +51,10 @@ export function StarterFooter(props: StarterFooterProps) {
       </section>
 
       <section className={cn('starter-card', 'starter-dsl-card')}>
-        <strong>Current DSL Snapshot</strong>
-        <pre className="starter-dsl-pre">{JSON.stringify(dsl, null, 2)}</pre>
+        <details className="starter-dsl-details">
+          <summary className="starter-dsl-summary">Current DSL Snapshot</summary>
+          <pre className="starter-dsl-pre">{JSON.stringify(dsl, null, 2)}</pre>
+        </details>
       </section>
     </div>
   )

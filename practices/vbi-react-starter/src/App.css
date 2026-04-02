@@ -75,6 +75,34 @@
   padding: 16px;
 }
 
+.starter-dsl-details {
+  display: grid;
+  gap: 10px;
+}
+
+.starter-dsl-summary {
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  color: var(--starter-text-secondary);
+}
+
+.starter-dsl-summary::-webkit-details-marker {
+  display: none;
+}
+
+.starter-dsl-summary::before {
+  content: '+';
+  display: inline-block;
+  width: 16px;
+  margin-right: 6px;
+  color: var(--starter-accent);
+}
+
+.starter-dsl-details[open] .starter-dsl-summary::before {
+  content: '-';
+}
+
 .starter-dsl-pre {
   margin: 0;
   max-height: 220px;
