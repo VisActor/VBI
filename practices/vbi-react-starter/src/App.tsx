@@ -217,14 +217,26 @@ export function APP() {
           ) : hasAvailableFields ? (
             <div className="starter-card starter-main-placeholder" style={mainPlaceholderStyle}>
               <StarterEmptyState
+                actionLabel={isCompactLayout && !isFieldPanelVisible ? 'Show fields panel' : undefined}
                 description="数据已经准备好。先在左侧添加维度和指标，再让 starter components 自动出图。"
+                onAction={
+                  isCompactLayout && !isFieldPanelVisible
+                    ? () => {
+                        setIsFieldPanelVisible(true)
+                      }
+                    : undefined
+                }
                 title="Choose fields to start"
               />
             </div>
           ) : (
             <div className="starter-card starter-main-placeholder" style={mainPlaceholderStyle}>
               <StarterEmptyState
+                actionLabel="Load demo data"
                 description="点击上方的 Load demo data，或上传一个 CSV 文件，左侧字段面板就会立即可用。"
+                onAction={() => {
+                  void handleLoadDemoData()
+                }}
                 title="No data loaded yet"
               />
             </div>

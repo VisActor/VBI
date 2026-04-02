@@ -205,6 +205,10 @@
   font-size: 13px;
 }
 
+.starter-empty-action {
+  margin-top: 4px;
+}
+
 .starter-main-placeholder {
   height: 100%;
   background: var(--starter-panel);
