@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitest/config'
+import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
   cacheDir: 'node_modules/.vitest',
@@ -22,8 +23,7 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./tests/setup-dom.ts'],
     alias: {
-      '@visactor/vbi-react/components': new URL('./src/components/index.ts', import.meta.url).pathname,
-      '@visactor/vbi-react': new URL('./src/index.ts', import.meta.url).pathname,
+      '@visactor/vbi-react': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 })

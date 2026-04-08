@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitest/config'
+import { fileURLToPath, URL } from 'node:url' // 1. 引入 fileURLToPath
 
 export default defineConfig({
   cacheDir: 'node_modules/.vitest',
@@ -22,8 +23,9 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./vite.setup.ts'],
     alias: {
-      src: new URL('./src', import.meta.url).pathname,
-      '@visactor/vseed': new URL('./src', import.meta.url).pathname,
+      // 2. 修改这里的路径解析方式
+      src: fileURLToPath(new URL('./src', import.meta.url)),
+      '@visactor/vseed': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 })
