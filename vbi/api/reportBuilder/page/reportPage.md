@@ -2,11 +2,6 @@
 
 ## 属性
 
-| 属性 | 类型 | 说明 |
-| --- | --- | --- |
-| **chart** | `VBIChartBuilder<TQueryDSL, TSeedDSL>` | - |
-| **text** | `ReportTextBuilder` | - |
-
 ## 方法
 
 ### constructor
@@ -14,16 +9,15 @@
 **定义**:
 
 ```typescript
-constructor(doc: Y.Doc, page: Y.Map<any>, chartOptions: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>)
+constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, page: Y.Map<any>)
 ```
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `doc` | Y.Doc | - |
+| `parent` | VBIReportBuilder\<TQueryDSL, TSeedDSL> | - |
 | `page` | Y.Map<any> | - |
-| `chartOptions` | VBIChartBuilderOptions\<TQueryDSL, TSeedDSL> | - |
 
 ### getId
 
@@ -51,12 +45,12 @@ setTitle(title: string): this
 | --- | --- | --- |
 | `title` | string | - |
 
-### setChart
+### setChartId
 
 **定义**:
 
 ```typescript
-setChart(chartBuilder: VBIChartBuilder<TQueryDSL, TSeedDSL> | VBIChartDSLInput): this
+setChartId(chart: ResourceReference): this
 ```
 
 **返回**: `this`
@@ -65,14 +59,14 @@ setChart(chartBuilder: VBIChartBuilder<TQueryDSL, TSeedDSL> | VBIChartDSLInput):
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `chartBuilder` | VBIChartBuilder\<TQueryDSL, TSeedDSL> | VBIChartDSLInput | - |
+| `chart` | ResourceReference | - |
 
-### setText
+### setInsightId
 
 **定义**:
 
 ```typescript
-setText(content: string): this
+setInsightId(insight: ResourceReference): this
 ```
 
 **返回**: `this`
@@ -81,7 +75,7 @@ setText(content: string): this
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `content` | string | - |
+| `insight` | ResourceReference | - |
 
 ### toJSON
 

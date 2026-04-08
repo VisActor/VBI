@@ -57,16 +57,26 @@ applyUpdate(update: Uint8Array, transactionOrigin: any): void
 **定义**:
 
 ```typescript
-encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBufferLike>
+encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBuffer>
 ```
 
-**返回**: `Uint8Array<ArrayBufferLike>`
+**返回**: `Uint8Array<ArrayBuffer>`
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `targetStateVector` | Uint8Array | - |
+
+### getUUID
+
+**定义**:
+
+```typescript
+getUUID(): string
+```
+
+**返回**: `string`
 
 ### buildVSeed
 

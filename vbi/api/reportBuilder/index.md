@@ -16,7 +16,7 @@
 **定义**:
 
 ```typescript
-constructor(doc: Y.Doc, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>)
+constructor(doc: Y.Doc, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>, resourceRegistry: VBIResourceRegistry)
 ```
 
 **参数**:
@@ -25,6 +25,7 @@ constructor(doc: Y.Doc, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>)
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
 | `options` | VBIReportBuilderOptions\<TQueryDSL, TSeedDSL> | - |
+| `resourceRegistry` | VBIResourceRegistry | - |
 
 ### applyUpdate
 
@@ -59,6 +60,48 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): any
 | --- | --- | --- |
 | `targetStateVector` | Uint8Array | - |
 
+### getUUID
+
+**定义**:
+
+```typescript
+getUUID(): string
+```
+
+**返回**: `string`
+
+### getChartBuilder
+
+**定义**:
+
+```typescript
+getChartBuilder(chartId: string): VBIChartBuilder<TQueryDSL, TSeedDSL> | undefined
+```
+
+**返回**: `VBIChartBuilder<TQueryDSL, TSeedDSL> \| undefined`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `chartId` | string | - |
+
+### getInsightBuilder
+
+**定义**:
+
+```typescript
+getInsightBuilder(insightId: string): VBIInsightBuilder | undefined
+```
+
+**返回**: `VBIInsightBuilder \| undefined`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `insightId` | string | - |
+
 ### build
 
 **定义**:
@@ -68,6 +111,16 @@ build(): VBIReportDSL
 ```
 
 **返回**: `VBIReportDSL`
+
+### snapshot
+
+**定义**:
+
+```typescript
+snapshot(): VBIReportSnapshotDSL
+```
+
+**返回**: `VBIReportSnapshotDSL`
 
 ### isEmpty
 

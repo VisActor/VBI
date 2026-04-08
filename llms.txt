@@ -171,23 +171,24 @@
 - [WhereGroupBuilder](/VBI/vbi/api/chartBuilder/whereFilter/whereGroup.md): Where 分组构建器，用于配置一组条件的逻辑关系（AND/OR）
 - [WhereFilterNodeBuilder](/VBI/vbi/api/chartBuilder/whereFilter/whereNode.md): Where 过滤节点构建器，用于配置单个 Where 过滤条件
 - [API](/VBI/vbi/api/index.md)
+- [VBIInsightBuilder](/VBI/vbi/api/insightBuilder/index.md)
 - [VBIReportBuilder](/VBI/vbi/api/reportBuilder/index.md)
 - [ReportPageCollectionBuilder](/VBI/vbi/api/reportBuilder/page/index.md)
 - [ReportPageBuilder](/VBI/vbi/api/reportBuilder/page/reportPage.md)
 - [ReportTextBuilder](/VBI/vbi/api/reportBuilder/page/reportText.md)
-- [chartType](/VBI/vbi/examples/chartType.md): {registerDemoConnector()}
-- [combination](/VBI/vbi/examples/combination.md): {registerDemoConnector()}
-- [dimensions](/VBI/vbi/examples/dimensions.md): {registerDemoConnector()}
-- [havingFilter](/VBI/vbi/examples/havingFilter.md): {registerDemoConnector()}
+- [chartType](/VBI/vbi/examples/chart/chartType.md): {registerDemoConnector()}
+- [dimensions](/VBI/vbi/examples/chart/dimensions.md): {registerDemoConnector()}
+- [havingFilter](/VBI/vbi/examples/chart/havingFilter.md): {registerDemoConnector()}
+- [chart](/VBI/vbi/examples/chart/index.md): 本页面展示 chart builder 的示例。
+- [locale](/VBI/vbi/examples/chart/locale.md): {registerDemoConnector()}
+- [measures](/VBI/vbi/examples/chart/measures.md): {registerDemoConnector()}
+- [theme](/VBI/vbi/examples/chart/theme.md): {registerDemoConnector()}
+- [undoManager](/VBI/vbi/examples/chart/undoManager.md): {registerDemoConnector()}
+- [whereFilter](/VBI/vbi/examples/chart/whereFilter.md): {registerDemoConnector()}
 - [VBI 示例](/VBI/vbi/examples/index.md): 本页面展示 VBI 的各种使用示例。
-- [limit](/VBI/vbi/examples/limit.md): {registerDemoConnector()}
-- [locale](/VBI/vbi/examples/locale.md): {registerDemoConnector()}
-- [measures](/VBI/vbi/examples/measures.md): {registerDemoConnector()}
-- [标签](/VBI/vbi/examples/tags.md): 共 67 个示例，0 个标签。
-- [theme](/VBI/vbi/examples/theme.md): {registerDemoConnector()}
-- [undoManager](/VBI/vbi/examples/undoManager.md): {registerDemoConnector()}
-- [utils](/VBI/vbi/examples/utils.md): {registerDemoConnector()}
-- [whereFilter](/VBI/vbi/examples/whereFilter.md): {registerDemoConnector()}
+- [insight](/VBI/vbi/examples/insight/index.md): {registerDemoConnector()}
+- [report](/VBI/vbi/examples/report/index.md): {registerDemoConnector()}
+- [标签](/VBI/vbi/examples/tags.md): 共 69 个示例，1 个标签。
 - [VBI](/VBI/vbi/index.md)
 - [Playground](/VBI/vbi/playground.md)
 - [Minimalist](/VBI/vbi/practices/minimalist.md)

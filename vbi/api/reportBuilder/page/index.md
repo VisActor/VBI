@@ -9,7 +9,7 @@
 **定义**:
 
 ```typescript
-constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, doc: Y.Doc, dsl: Y.Map<any>, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>)
+constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, doc: Y.Doc, dsl: Y.Map<any>)
 ```
 
 **参数**:
@@ -19,7 +19,6 @@ constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, doc: Y.Doc, dsl: Y.Ma
 | `parent` | VBIReportBuilder\<TQueryDSL, TSeedDSL> | - |
 | `doc` | Y.Doc | - |
 | `dsl` | Y.Map<any> | - |
-| `options` | VBIReportBuilderOptions\<TQueryDSL, TSeedDSL> | - |
 
 ### add
 
