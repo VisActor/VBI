@@ -57,10 +57,10 @@ applyUpdate(update: Uint8Array, transactionOrigin: any): void
 **定义**:
 
 ```typescript
-encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBuffer>
+encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBufferLike>
 ```
 
-**返回**: `Uint8Array<ArrayBuffer>`
+**返回**: `Uint8Array<ArrayBufferLike>`
 
 **参数**:
 

@@ -108469,6 +108469,24 @@ url: /VBI/vseed/option/raceBar.md
 
 :::
 
+### fontFamily
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器文本字体
+
+:::
+
+### fontSize
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+播放器文本字号
+
+:::
+
 ### trackColor
 
 **Type:** `string | undefined`
@@ -112935,6 +112953,24 @@ url: /VBI/vseed/option/raceColumn.md
 
 :::note{title=描述}
 播放器进度条轨道颜色
+
+:::
+
+### fontFamily
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器文本字体
+
+:::
+
+### fontSize
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+播放器文本字号
 
 :::
 
@@ -117423,6 +117459,24 @@ url: /VBI/vseed/option/raceDonut.md
 
 :::
 
+### fontFamily
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器文本字体
+
+:::
+
+### fontSize
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+播放器文本字号
+
+:::
+
 ### trackColor
 
 **Type:** `string | undefined`
@@ -118982,6 +119036,24 @@ url: /VBI/vseed/option/raceLine.md
 
 :::note{title=描述}
 播放器进度条轨道颜色
+
+:::
+
+### fontFamily
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器文本字体
+
+:::
+
+### fontSize
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+播放器文本字号
 
 :::
 
@@ -123754,6 +123826,24 @@ url: /VBI/vseed/option/racePie.md
 
 :::
 
+### fontFamily
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器文本字体
+
+:::
+
+### fontSize
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+播放器文本字号
+
+:::
+
 ### trackColor
 
 **Type:** `string | undefined`
@@ -125287,6 +125377,24 @@ url: /VBI/vseed/option/raceScatter.md
 
 :::note{title=描述}
 播放器进度条轨道颜色
+
+:::
+
+### fontFamily
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器文本字体
+
+:::
+
+### fontSize
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+播放器文本字号
 
 :::
 
@@ -152196,10 +152304,10 @@ applyUpdate(update: Uint8Array, transactionOrigin: any): void
 **定义**:
 
 ```typescript
-encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBuffer>
+encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBufferLike>
 ```
 
-**返回**: `Uint8Array<ArrayBuffer>`
+**返回**: `Uint8Array<ArrayBufferLike>`
 
 **参数**:
 

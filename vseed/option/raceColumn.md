@@ -534,6 +534,24 @@
 
 :::
 
+### fontFamily
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器文本字体
+
+:::
+
+### fontSize
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+播放器文本字号
+
+:::
+
 ### trackColor
 
 **Type:** `string | undefined`
