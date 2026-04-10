@@ -1,0 +1,202 @@
+# VisActor/VBI
+
+## VSeed
+
+- [Quick Start](/VBI/en-US/vseed/guide/quickStart.md): VSeed is a standardized DSL (Domain Specific Language) for the analytics domain. It makes data visualization simple through elegant data orchestration. Install the core library vseed along with the underlying rendering engines vchart and vtable. Register Register chart capabilities and themes at the application entry point (only needs to run once). Build Use Builder to convert a VSeed DSL into a renderable Spec configuration. Render Pass the generated Spec to the VChart component for rendering.
+- [Chart Types](/VBI/en-US/vseed/guide/intro/chartTypeSwitch.md): VSeed supports multiple chart types. Use the chartType property to easily switch between different visualization forms, including standard charts, tables, and more.
+- [Data Reshaping](/VBI/en-US/vseed/guide/intro/dataReshape.md): The example below demonstrates the free combination of datasets with different structures and various chartTypes. You can click the buttons below to switch datasets and chart types, and observe how VSeed automatically adapts.
+- [Pivot & Combination](/VBI/en-US/vseed/guide/intro/pivotAndCombine.md)
+- [Number Format](/VBI/en-US/vseed/guide/intro/dataFormat.md): VSeed supports configuring formatting rules for numerical values within measures. autoFormat: Whether to automatically format values.format: Detailed formatting configuration, including type, ratio, thousand separator, fraction digits, prefix/suffix, etc.
+- [Analysis Features](/VBI/en-US/vseed/guide/intro/dataAnalysis.md)
+- [Data Pagination](/VBI/en-US/vseed/guide/intro/page.md)
+- [Player](/VBI/en-US/vseed/guide/intro/player.md): VSeed supports the player property to enable automatic data playback.
+- [Conditional Styles](/VBI/en-US/vseed/guide/intro/conditionalStyle.md)
+- [Data Annotations](/VBI/en-US/vseed/guide/intro/annotation.md)
+- [Internationalization](/VBI/en-US/vseed/guide/intro/internationalization.md): VSeed has built-in internationalization support. Configure the locale property to switch languages (e.g., zh-CN for Chinese, en-US for English).
+- [Cross-Platform Rendering](/VBI/en-US/vseed/guide/intro/crossPlatformRender.md): The example below demonstrates serializing a VSeed config to a JSON string (copy simulation) and deserializing the JSON string for rendering (paste simulation).
+- [Separate Build](/VBI/en-US/vseed/guide/intro/separateBuild.md): The example below demonstrates how to use the separate build flow in a React component.
+- [Large Dataset Performance](/VBI/en-US/vseed/guide/intro/performance.md): VSeed is optimized for large datasets and can smoothly render a large number of data points. The example below demonstrates rendering performance with 20K data points.
+- [Table](/VBI/en-US/vseed/examples/chartType/table.md)
+- [PivotTable](/VBI/en-US/vseed/examples/chartType/pivotTable.md)
+- [Line](/VBI/en-US/vseed/examples/chartType/line.md)
+- [Column](/VBI/en-US/vseed/examples/chartType/column.md)
+- [ColumnPercent](/VBI/en-US/vseed/examples/chartType/columnPercent.md)
+- [ColumnParallel](/VBI/en-US/vseed/examples/chartType/columnParallel.md)
+- [Bar](/VBI/en-US/vseed/examples/chartType/bar.md)
+- [BarPercent](/VBI/en-US/vseed/examples/chartType/barPercent.md)
+- [BarParallel](/VBI/en-US/vseed/examples/chartType/barParallel.md)
+- [Area](/VBI/en-US/vseed/examples/chartType/area.md)
+- [AreaPercent](/VBI/en-US/vseed/examples/chartType/areaPercent.md)
+- [Scatter](/VBI/en-US/vseed/examples/chartType/scatter.md)
+- [DualAxis](/VBI/en-US/vseed/examples/chartType/dualAxis.md)
+- [Rose](/VBI/en-US/vseed/examples/chartType/rose.md)
+- [RoseParallel](/VBI/en-US/vseed/examples/chartType/roseParallel.md)
+- [Pie](/VBI/en-US/vseed/examples/chartType/pie.md)
+- [Donut](/VBI/en-US/vseed/examples/chartType/donut.md)
+- [Radar](/VBI/en-US/vseed/examples/chartType/radar.md)
+- [RaceScatter](/VBI/en-US/vseed/examples/chartType/raceScatter.md)
+- [RaceLine](/VBI/en-US/vseed/examples/chartType/raceLine.md)
+- [RaceBar](/VBI/en-US/vseed/examples/chartType/raceBar.md)
+- [RaceColumn](/VBI/en-US/vseed/examples/chartType/raceColumn.md)
+- [RacePie](/VBI/en-US/vseed/examples/chartType/racePie.md)
+- [RaceDonut](/VBI/en-US/vseed/examples/chartType/raceDonut.md)
+- [TreeMap](/VBI/en-US/vseed/examples/chartType/treeMap.md)
+- [Sunburst](/VBI/en-US/vseed/examples/chartType/sunburst.md)
+- [CirclePacking](/VBI/en-US/vseed/examples/chartType/circlePacking.md)
+- [Heatmap](/VBI/en-US/vseed/examples/chartType/heatmap.md)
+- [Funnel](/VBI/en-US/vseed/examples/chartType/funnel.md)
+- [Boxplot](/VBI/en-US/vseed/examples/chartType/boxplot.md)
+- [Histogram](/VBI/en-US/vseed/examples/chartType/histogram.md)
+- [AnnotationArea](/VBI/en-US/vseed/examples/features/annotationArea.md)
+- [AnnotationHorizontalLine](/VBI/en-US/vseed/examples/features/annotationHorizontalLine.md)
+- [AnnotationPoint](/VBI/en-US/vseed/examples/features/annotationPoint.md)
+- [AnnotationVerticalLine](/VBI/en-US/vseed/examples/features/annotationVerticalLine.md)
+- [BarStyle](/VBI/en-US/vseed/examples/features/barStyle.md)
+- [BodyCellStyle](/VBI/en-US/vseed/examples/features/bodyCellStyle.md)
+- [Brush](/VBI/en-US/vseed/examples/features/brush.md)
+- [Color](/VBI/en-US/vseed/examples/features/color.md)
+- [Dataset](/VBI/en-US/vseed/examples/features/dataset.md)
+- [Dimensions](/VBI/en-US/vseed/examples/features/dimensions.md)
+- [I18n](/VBI/en-US/vseed/examples/features/i18n.md)
+- [Label](/VBI/en-US/vseed/examples/features/label.md)
+- [Legend](/VBI/en-US/vseed/examples/features/legend.md)
+- [Measures](/VBI/en-US/vseed/examples/features/measures.md)
+- [NumFormat](/VBI/en-US/vseed/examples/features/numFormat.md)
+- [PointStyle](/VBI/en-US/vseed/examples/features/pointStyle.md)
+- [Polynomial](/VBI/en-US/vseed/examples/features/polynomial.md)
+- [Sort](/VBI/en-US/vseed/examples/features/sort.md)
+- [Totals](/VBI/en-US/vseed/examples/features/totals.md)
+- [](/VBI/en-US/vseed/option.md)
+- [Area](/VBI/en-US/vseed/option/area.md)
+- [AreaPercent](/VBI/en-US/vseed/option/areaPercent.md)
+- [Bar Chart](/VBI/en-US/vseed/option/bar.md)
+- [BarParallel](/VBI/en-US/vseed/option/barParallel.md)
+- [BarPercent](/VBI/en-US/vseed/option/barPercent.md)
+- [BoxPlot](/VBI/en-US/vseed/option/boxPlot.md)
+- [CirclePacking](/VBI/en-US/vseed/option/circlePacking.md)
+- [Column](/VBI/en-US/vseed/option/column.md)
+- [ColumnParallel](/VBI/en-US/vseed/option/columnParallel.md)
+- [ColumnPercent](/VBI/en-US/vseed/option/columnPercent.md)
+- [Donut](/VBI/en-US/vseed/option/donut.md)
+- [Dual Axis Chart](/VBI/en-US/vseed/option/dualAxis.md)
+- [Funnel](/VBI/en-US/vseed/option/funnel.md)
+- [Heatmap](/VBI/en-US/vseed/option/heatmap.md)
+- [Histogram](/VBI/en-US/vseed/option/histogram.md)
+- [Line](/VBI/en-US/vseed/option/line.md)
+- [Pie](/VBI/en-US/vseed/option/pie.md)
+- [PivotTable](/VBI/en-US/vseed/option/pivotTable.md)
+- [RaceBar](/VBI/en-US/vseed/option/raceBar.md)
+- [RaceColumn](/VBI/en-US/vseed/option/raceColumn.md)
+- [RaceDonut](/VBI/en-US/vseed/option/raceDonut.md)
+- [RaceLine](/VBI/en-US/vseed/option/raceLine.md)
+- [RacePie](/VBI/en-US/vseed/option/racePie.md)
+- [RaceScatter](/VBI/en-US/vseed/option/raceScatter.md)
+- [Radar](/VBI/en-US/vseed/option/radar.md)
+- [Rose](/VBI/en-US/vseed/option/rose.md)
+- [RoseParallel](/VBI/en-US/vseed/option/roseParallel.md)
+- [Scatter](/VBI/en-US/vseed/option/scatter.md)
+- [Sunburst](/VBI/en-US/vseed/option/sunburst.md)
+- [Table](/VBI/en-US/vseed/option/table.md)
+- [TreeMap](/VBI/en-US/vseed/option/treeMap.md)
+- [](/VBI/en-US/vseed/api.md)
+- [Builder](/VBI/en-US/vseed/api/Builder.md)
+- [Register](/VBI/en-US/vseed/api/Register.md)
+- [Quick Start](/VBI/en-US/vseed/development/quickStart.md)
+- [Development Workflow](/VBI/en-US/vseed/development/devProgress.md)
+- [Common Scripts](/VBI/en-US/vseed/development/devProgress/scripts.md): To maintain Monorepo consistency, all scripts must be run from the project root directory.
+- [Publish](/VBI/en-US/vseed/development/devProgress/publish.md)
+- [Documentation](/VBI/en-US/vseed/development/devProgress/docs.md): The documentation for all VSeed chart types is located in the packages/vseed/src/types/chartType directory.
+- [Testing Workflow](/VBI/en-US/vseed/development/devProgress/tests.md): VSeed follows a strict test-driven development workflow. All test commands must be run from the project root directory.
+- [Architecture](/VBI/en-US/vseed/development/architecture.md): VSeed is a chart generator based on semantic configuration, designed to connect user intent with underlying rendering engines (VChart/VTable). Deep Wiki
+- [VSeed](/VBI/en-US/vseed/development/designPhilosophy/vseed.md)
+- [DSL Design](/VBI/en-US/vseed/development/designPhilosophy/dslDesign.md)
+- [TidyData](/VBI/en-US/vseed/development/designPhilosophy/dataReshape/tidyData.md)
+- [Data Reshaping — Principles](/VBI/en-US/vseed/development/designPhilosophy/dataReshape/dataReshapePrinciple.md): Data reshaping refers to the process of converting data from one structured form to another. The core is changing the organization of data (rows, columns, indices, hierarchies) to suit different analysis or processing needs while maintaining data integrity.
+- [Data Reshape-Implementation](/VBI/en-US/vseed/development/designPhilosophy/dataReshape/dataReshapeImplementation.md)
+- [Pipeline Design](/VBI/en-US/vseed/development/designPhilosophy/pipeline/pipelineDesign.md)
+- [Spec Pipeline](/VBI/en-US/vseed/development/designPhilosophy/pipeline/specPipeline.md)
+- [Advanced Pipeline](/VBI/en-US/vseed/development/designPhilosophy/pipeline/advancedPipeline.md)
+- [Agent Development Context (VSeed)](/VBI/en-US/vseed/development/agentContext.md): This document is for agent-code and contributors. It summarizes the core architecture, data flow, and extension patterns of the VSeed package to help quickly establish a global understanding during automated development. This is a "context index" designed for Agent use. For more detailed engineering notes, refer to: packages/vseed/AGENTS.md.
+- [Quick Start](/VBI/en-US/vseed/tutorial/vquery/quickStart.md)
+- [Quick Start](/VBI/en-US/vseed/tutorial/vseed/quickStart.md)
+
+## VQuery
+
+- [VQuery](/VBI/en-US/vquery/index.md)
+- [Select](/VBI/en-US/vquery/examples/select.md)
+- [Aggregation](/VBI/en-US/vquery/examples/select/aggregation.md)
+- [Date](/VBI/en-US/vquery/examples/select/date.md)
+- [Where](/VBI/en-US/vquery/examples/where.md)
+- [Having](/VBI/en-US/vquery/examples/having.md)
+- [GroupBy](/VBI/en-US/vquery/examples/groupBy.md)
+- [OrderBy](/VBI/en-US/vquery/examples/orderBy.md)
+- [Limit](/VBI/en-US/vquery/examples/limit.md)
+- [Common Scripts](/VBI/en-US/vquery/development/scripts.md): To maintain Monorepo consistency, all scripts must be run from the project root directory.
+- [Testing Workflow](/VBI/en-US/vquery/development/tests.md): VQuery uses the rstest framework for testing. All commands must be run from the root directory.
+- [Playground](/VBI/en-US/vquery/playground.md)
+
+## VBI
+
+- [VBI React](/VBI/en-US/vbi-react/index.md): @visactor/vbi-react is the React adapter layer for @visactor/vbi, responsible for integrating VBIChartBuilder into the React component tree. Current exports are split into two layers: Root export @visactor/vbi-react: useVBI, useVSeed, useChartType, useDimensions, useMeasures, useWhereFilter, useHavingFilterSub-path export @visactor/vbi-react/components: BuilderLayout, ChartRenderer, ChartTypeSelector, FieldPanel
+- [Examples Overview](/VBI/en-US/vbi-react/examples/index.md): All examples below can be copied directly into a .tsx file and run. Basic HooksLayout with ComponentsFilter Mutations
+- [Basic Hooks](/VBI/en-US/vbi-react/examples/basicHooks.md): This example demonstrates combining useVBI with useVSeed.
+- [Layout with Components](/VBI/en-US/vbi-react/examples/layoutWithComponents.md): This example demonstrates BuilderLayout + FieldPanel + ChartRenderer + ChartTypeSelector.
+- [Filter Mutations](/VBI/en-US/vbi-react/examples/filterMutations.md): This example demonstrates the mutation entry points for useWhereFilter and useHavingFilter.
+- [API Overview](/VBI/en-US/vbi-react/api/index.md): @visactor/vbi-react exports are split into two parts: All hooks and components work around VBIChartBuilder without maintaining additional business state.
+- [useChartType](/VBI/en-US/vbi-react/api/useChartType.md)
+- [useDimensions](/VBI/en-US/vbi-react/api/useDimensions.md)
+- [useHavingFilter](/VBI/en-US/vbi-react/api/useHavingFilter.md)
+- [useMeasures](/VBI/en-US/vbi-react/api/useMeasures.md)
+- [useVBI](/VBI/en-US/vbi-react/api/useVBI.md)
+- [useVSeed](/VBI/en-US/vbi-react/api/useVSeed.md)
+- [useWhereFilter](/VBI/en-US/vbi-react/api/useWhereFilter.md)
+- [BuilderLayout](/VBI/en-US/vbi-react/api/builderLayout.md)
+- [ChartRenderer](/VBI/en-US/vbi-react/api/chartRenderer.md)
+- [ChartTypeSelector](/VBI/en-US/vbi-react/api/chartTypeSelector.md)
+- [FieldPanel](/VBI/en-US/vbi-react/api/fieldPanel.md)
+- [ChartTypeBuilder](/VBI/en-US/vbi/api/chartBuilder/chartType.md): Chart type builder for switching and retrieving the chart type. Supports various chart types including table, bar, line, pie, scatter, and more.
+- [DimensionNodeBuilder](/VBI/en-US/vbi/api/chartBuilder/dimensions/dimensionNode.md): Dimension node builder for configuring a single dimension.
+- [DimensionsBuilder](/VBI/en-US/vbi/api/chartBuilder/dimensions/index.md): Dimension builder for adding, modifying, and removing dimension configuration. Dimensions are the categorical fields in data, such as: time, region, product category.
+- [HavingGroupBuilder](/VBI/en-US/vbi/api/chartBuilder/havingFilter/havingGroup.md): Having group builder for configuring the logical relationship (AND/OR) of a condition group.
+- [HavingFilterNodeBuilder](/VBI/en-US/vbi/api/chartBuilder/havingFilter/havingNode.md): Having filter node builder for configuring a single Having filter condition.
+- [HavingFilterBuilder](/VBI/en-US/vbi/api/chartBuilder/havingFilter/index.md): Having filter builder for adding, modifying, and removing post-aggregation filter conditions. Having filters take effect after data aggregation and are used to filter grouped results.
+- [VBIChartBuilder](/VBI/en-US/vbi/api/chartBuilder/index.md)
+- [LimitBuilder](/VBI/en-US/vbi/api/chartBuilder/limit.md): Data limit builder for setting and getting the current limit.
+- [LocaleBuilder](/VBI/en-US/vbi/api/chartBuilder/locale.md): Locale builder for setting and getting the current locale.
+- [MeasuresBuilder](/VBI/en-US/vbi/api/chartBuilder/measures/index.md): Measure builder for adding, modifying, and removing measure configuration. Measures are the numeric fields in data, such as: sales, profit, quantity.
+- [MeasureNodeBuilder](/VBI/en-US/vbi/api/chartBuilder/measures/measureNode.md): Measure node builder for configuring a single measure.
+- [ThemeBuilder](/VBI/en-US/vbi/api/chartBuilder/theme.md): Theme builder for setting and getting the current theme.
+- [UndoManager](/VBI/en-US/vbi/api/chartBuilder/undoManager.md): Undo/redo manager providing YJS-based undo and redo functionality, with support for stack management and history clearing.
+- [WhereFilterBuilder](/VBI/en-US/vbi/api/chartBuilder/whereFilter/index.md): Where filter builder for adding, modifying, and removing row-level filter conditions. Where filters take effect before data querying and are used to filter raw data.
+- [WhereGroupBuilder](/VBI/en-US/vbi/api/chartBuilder/whereFilter/whereGroup.md): Where group builder for configuring the logical relationship (AND/OR) of a condition group.
+- [WhereFilterNodeBuilder](/VBI/en-US/vbi/api/chartBuilder/whereFilter/whereNode.md): Where filter node builder for configuring a single Where filter condition.
+- [API](/VBI/en-US/vbi/api/index.md)
+- [VBIReportBuilder](/VBI/en-US/vbi/api/reportBuilder/index.md)
+- [ReportPageCollectionBuilder](/VBI/en-US/vbi/api/reportBuilder/page/index.md)
+- [ReportPageBuilder](/VBI/en-US/vbi/api/reportBuilder/page/reportPage.md)
+- [ReportTextBuilder](/VBI/en-US/vbi/api/reportBuilder/page/reportText.md)
+- [chartType](/VBI/en-US/vbi/examples/chartType.md): {registerDemoConnector()}
+- [combination](/VBI/en-US/vbi/examples/combination.md): {registerDemoConnector()}
+- [dimensions](/VBI/en-US/vbi/examples/dimensions.md): {registerDemoConnector()}
+- [havingFilter](/VBI/en-US/vbi/examples/havingFilter.md): {registerDemoConnector()}
+- [VBI Example](/VBI/en-US/vbi/examples/index.md): This page showcases various examples of VBI.
+- [limit](/VBI/en-US/vbi/examples/limit.md): {registerDemoConnector()}
+- [locale](/VBI/en-US/vbi/examples/locale.md): {registerDemoConnector()}
+- [measures](/VBI/en-US/vbi/examples/measures.md): {registerDemoConnector()}
+- [Tags](/VBI/en-US/vbi/examples/tags.md): Total 67 examples, 0 tags.
+- [theme](/VBI/en-US/vbi/examples/theme.md): {registerDemoConnector()}
+- [undoManager](/VBI/en-US/vbi/examples/undoManager.md): {registerDemoConnector()}
+- [utils](/VBI/en-US/vbi/examples/utils.md): {registerDemoConnector()}
+- [whereFilter](/VBI/en-US/vbi/examples/whereFilter.md): {registerDemoConnector()}
+- [VBI](/VBI/en-US/vbi/index.md)
+- [Playground](/VBI/en-US/vbi/playground.md)
+- [Minimalist](/VBI/en-US/vbi/practices/minimalist.md)
+- [Professional](/VBI/en-US/vbi/practices/professional.md)
+- [Standard Report](/VBI/en-US/vbi/practices/standard-report.md)
+- [Standard](/VBI/en-US/vbi/practices/standard.md)
+- [Streamlined](/VBI/en-US/vbi/practices/streamlined.md)
+- [vbi-react Starter](/VBI/en-US/vbi/practices/vbi-react-starter.md)
+
+## Other
+
+- [VSeed Example：Rose Chart](/VBI/en-US/playground/vseed.md)

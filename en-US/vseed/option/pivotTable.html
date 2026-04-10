@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en-US">
+  <head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PivotTable - VisActor&#x2F;VBI</title>
+<script>{;const saved = localStorage.getItem('rspress-theme-appearance');const preferDark = window.matchMedia('(prefers-color-scheme: dark)').matches;const isDark = !saved || saved === 'auto' ? preferDark : saved === 'dark';document.documentElement.classList.toggle('dark', isDark);document.documentElement.classList.toggle('rp-dark', isDark);document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';}</script>
+<link href="https://visactor.github.io/VBI/static/css/styles.346312a730.css" rel="stylesheet">
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/loader.js" as="script">
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/editor/editor.main.js" as="script">
+<script defer src="https://visactor.github.io/VBI/static/js/styles.5ac1a0d8b8.js"></script>
+<script defer src="https://visactor.github.io/VBI/static/js/lib-router.7f8afa6c4e.js"></script>
+<script defer src="https://visactor.github.io/VBI/static/js/lib-react.a640b90ba9.js"></script>
+<script defer src="https://visactor.github.io/VBI/static/js/2696.ac057d6629.js"></script>
+<script defer src="https://visactor.github.io/VBI/static/js/index.919d477823.js"></script>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Rspress v2.0.5">
+<link rel="icon" href="https://visactor.github.io/VBI/logo.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="PivotTable - VisActor/VBI"></head>
+
+  <body>
+    <div id="__rspress_root"><header class="rp-nav"><div class="rp-nav__left"><div class="rp-nav__title"><a href="/VBI/en-US/" class="rp-nav__title__link rp-link"><span>VisActor VBI</span></a></div></div><div class="rp-nav__right"><button class="rp-search-button"><div class="rp-search-button__content"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 20 21" class="rp-search-button__icon"><path fill="currentColor" d="M8.333 1.913A6.667 6.667 0 0 1 15 8.58c0 1.54-.525 2.957-1.402 4.085l4.49 4.492a.834.834 0 0 1-1.177 1.178l-4.491-4.49a6.64 6.64 0 0 1-4.087 1.402 6.667 6.667 0 0 1 0-13.334m0 1.667a5 5 0 1 0 0 10 5 5 0 0 0 0-10"></path></svg><span class="rp-search-button__word">Search</span></div><div class="rp-search-button__hotkey" style="opacity:0"><span></span><span>K</span></div></button><div class="rp-search-button--mobile"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 20 21"><path fill="currentColor" d="M8.333 1.913A6.667 6.667 0 0 1 15 8.58c0 1.54-.525 2.957-1.402 4.085l4.49 4.492a.834.834 0 0 1-1.177 1.178l-4.491-4.49a6.64 6.64 0 0 1-4.087 1.402 6.667 6.667 0 0 1 0-13.334m0 1.667a5 5 0 1 0 0 10 5 5 0 0 0 0-10"></path></svg></div><ul class="rp-nav-menu rp-nav-menu--right"><li class="rp-nav-menu__item rp-nav-menu__item--active"><a href="/VBI/en-US/vseed/guide/quickStart.html" class="rp-nav-menu__item__container rp-link">VSeed</a></li><li class="rp-nav-menu__item"><a href="/VBI/en-US/vquery.html" class="rp-nav-menu__item__container rp-link">VQuery</a></li><li class="rp-nav-menu__item"><a href="/VBI/en-US/vbi/index.html" class="rp-nav-menu__item__container rp-link">VBI</a></li><li class="rp-nav-menu__item"><a href="/VBI/en-US/vbi-react/index.html" class="rp-nav-menu__item__container rp-link">VBI React</a></li><li class="rp-nav-menu__item"><a href="/VBI/en-US/playground/vseed.html" class="rp-nav-menu__item__container rp-link">Playground</a></li><li class="rp-nav-menu__item"><a href="https://visactor.com/vchart" target="_blank" class="rp-nav-menu__item__container rp-link">VChart</a></li><li class="rp-nav-menu__item"><a href="https://visactor.com/vtable" target="_blank" class="rp-nav-menu__item__container rp-link">VTable</a></li></ul><div class="rp-nav__others"><div class="rp-nav-menu__divider"></div><li class="rp-nav-menu__item"><div class="rp-nav-menu__item__container">English<svg width="1em" height="1em" viewBox="0 0 32 32" class="rp-nav-menu__item__icon"><path fill="currentColor" d="M16 22 6 12l1.4-1.4 8.6 8.6 8.6-8.6L26 12z"></path></svg></div><ul class="rp-hover-group rp-hover-group--hidden rp-hover-group--center"><li class="rp-hover-group__item" style="padding-left:8px" data-depth="0"><a href="/VBI/vseed/option/pivotTable.html" class="rp-hover-group__item__link rp-link" aria-label="简体中文" lang="zh-CN" hrefLang="zh-CN" rel="alternate">简体中文</a></li><li class="rp-hover-group__item rp-hover-group__item--active" style="padding-left:8px" data-depth="0"><a href="/VBI/en-US/vseed/option/pivotTable.html" class="rp-hover-group__item__link rp-link" aria-label="English" lang="en-US" hrefLang="en-US" rel="alternate">English</a></li></ul></li><div class="rp-switch-appearance"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" class="rp-switch-appearance__icon rp-switch-appearance__icon--sun"><path fill="currentColor" d="m7.001 15.848-1.226 1.226a.58.58 0 0 0 0 .818.58.58 0 0 0 .818 0l1.226-1.226a.58.58 0 0 0 0-.818.58.58 0 0 0-.818 0m-.352-8.735a.584.584 0 0 0 .825-.825L6.237 5.051a.584.584 0 0 0-.825.825zM5.011 11.07h-1.75a.584.584 0 0 0 0 1.167h1.75c.324 0 .584-.26.584-.583a.585.585 0 0 0-.584-.584m7.003-5.835c.324 0 .584-.26.584-.584V2.9a.58.58 0 0 0-.584-.584.58.58 0 0 0-.583.583V4.65c0 .323.262.584.583.584m5.616 1.621 1.226-1.225a.58.58 0 0 0 0-.818.58.58 0 0 0-.818 0l-1.226 1.225a.58.58 0 0 0 0 .818.576.576 0 0 0 .818 0m3.138 4.214h-1.75a.58.58 0 0 0-.584.584c0 .324.26.584.583.584h1.751a.584.584 0 1 0 0-1.167m-3.389 5.124a.584.584 0 0 0-.825.825l1.238 1.238a.584.584 0 0 0 .825-.826zm-5.365-9.795a5.256 5.256 0 0 0-5.257 5.258 5.256 5.256 0 0 0 5.257 5.257 5.256 5.256 0 0 0 5.257-5.257 5.256 5.256 0 0 0-5.257-5.258m0 11.675a.58.58 0 0 0-.583.583v1.751a.582.582 0 1 0 1.167 0v-1.75a.584.584 0 0 0-.584-.584"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" viewBox="0 0 19 19" class="rp-switch-appearance__icon rp-switch-appearance__icon--moon"><path fill="currentColor" d="M9.166 0a9.2 9.2 0 0 1 1.857.188.834.834 0 0 1 .042 1.623 4.47 4.47 0 1 0 5.457 5.457l.048-.135a.834.834 0 0 1 1.575.177q.186.902.188 1.856A9.168 9.168 0 1 1 9.166 0"></path></svg></div><div class="rp-social-links"><a href="https://github.com/visactor/vbi" target="_blank" rel="noopener noreferrer" class="rp-social-links__item"><div class="rp-social-links__icon"><div class="rp-social-links__icon"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></div></div></a><ul class="rp-hover-group rp-hover-group--hidden rp-hover-group--right"></ul></div></div><button aria-label="mobile hamburger" class="rp-nav-hamburger rp-nav-hamburger__sm"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="none" viewBox="0 0 21 21"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.667" d="M3.645 5.225h13.333M3.645 10.225h13.333M3.645 15.225h13.333"></path></svg></button><button aria-label="mobile hamburger" class="rp-nav-hamburger rp-nav-hamburger__md"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="none" viewBox="0 0 21 21"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.667" d="M3.645 5.225h13.333M3.645 10.225h13.333M3.645 15.225h13.333"></path></svg><ul class="rp-hover-group rp-hover-group--hidden rp-hover-group--right"><div class="rp-nav-menu__others-mobile__container"><div class="rp-nav-hamburger__md__hover-group"><div class="rp-nav-screen-appearance"><div class="rp-nav-screen-appearance__left">Theme</div><div class="rp-nav-screen-appearance__right"></div></div><div class="rp-nav-screen-langs"><div class="rp-nav-screen-langs__left">Languages</div><div class="rp-nav-screen-langs__right">English<svg width="1em" height="1em" viewBox="0 0 32 32" class="rp-nav-screen-langs__icon "><path fill="currentColor" d="M16 22 6 12l1.4-1.4 8.6 8.6 8.6-8.6L26 12z"></path></svg></div></div><div class="rp-nav-screen-langs-group" style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.2s ease-out"><div class="rp-nav-screen-langs-group__inner"><a href="/VBI/vseed/option/pivotTable.html" class="rp-nav-screen-langs-group__item rp-link" hrefLang="zh-CN" lang="zh-CN" rel="alternate">简体中文</a><span class="rp-nav-screen-langs-group__item rp-nav-screen-langs-group__item--active" aria-current="page" aria-disabled="true">English</span></div></div><div class="rp-nav-screen-divider"></div><div class="rp-social-links"><a href="https://github.com/visactor/vbi" target="_blank" rel="noopener noreferrer" class="rp-social-links__item"><div class="rp-social-links__icon"><div class="rp-social-links__icon"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></div></div></a><ul class="rp-hover-group rp-hover-group--hidden rp-hover-group--right"></ul></div></div></div></ul></button></div></header><div class="rp-doc-layout__menu"><div class="rp-sidebar-menu"><button type="button" class="rp-sidebar-menu__left"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M4 6h24v2H4zm0 18h24v2H4zm0-12h24v2H4zm0 6h24v2H4z"></path></svg><span>Menu</span></button><button type="button" class="rp-sidebar-menu__right"><span class="rp-sidebar-menu__right__text">On This Page</span><svg width="14" height="14" class="rp-progress-circle"><circle cx="7" cy="7" r="6" stroke-linecap="round" fill="none" stroke="var(--rp-c-divider-light)" stroke-width="2"></circle><circle cx="7" cy="7" r="6" stroke-linecap="round" fill="none" stroke="var(--rp-c-brand)" stroke-width="2" stroke-dasharray="37.69911184307752" stroke-dashoffset="37.69911184307752" transform="rotate(-90 7 7)" style="transition:stroke-dashoffset 0.3s"></circle></svg><svg width="1em" height="1em" viewBox="0 0 32 32" class="rp-sidebar-menu__right__icon" style="transform:rotate(0deg);transition:transform 0.2s ease-out"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></button></div></div><div class="rp-doc-layout__container"><aside class="rp-doc-layout__sidebar rp-scrollbar"><div class="rp-sidebar-item rp-sidebar-group" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span>Guide</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(90deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></div><div style="display:grid;grid-template-rows:1fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/VBI/en-US/vseed/guide/quickStart.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>Quick Start</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-item rp-sidebar-group rp-sidebar-item--group-item" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>Overview</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(90deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></div><div style="display:grid;grid-template-rows:1fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/VBI/en-US/vseed/guide/intro/chartTypeSwitch.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Chart Types</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/guide/intro/dataReshape.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Data Reshaping</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/guide/intro/pivotAndCombine.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Pivot &amp; Combination</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/guide/intro/dataFormat.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Number Format</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/guide/intro/dataAnalysis.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Analysis Features</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/guide/intro/page.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Data Pagination</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/guide/intro/player.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Player</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/guide/intro/conditionalStyle.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Conditional Styles</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/guide/intro/annotation.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Data Annotations</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/guide/intro/internationalization.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Internationalization</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/guide/intro/crossPlatformRender.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Cross-Platform Rendering</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/guide/intro/separateBuild.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Separate Build</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/guide/intro/performance.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Large Dataset Performance</span></div><div class="rp-sidebar-item__right"></div></a></div></div></div></div><div class="rp-sidebar-item rp-sidebar-group" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span>Examples</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(0deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></div><div style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><div class="rp-sidebar-item rp-sidebar-group rp-sidebar-item--group-item" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>ChartType</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(0deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></div><div style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/VBI/en-US/vseed/examples/chartType/table.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Table</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/pivotTable.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>PivotTable</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/line.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Line</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/column.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Column</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/columnPercent.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>ColumnPercent</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/columnParallel.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>ColumnParallel</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/bar.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Bar</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/barPercent.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>BarPercent</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/barParallel.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>BarParallel</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/area.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Area</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/areaPercent.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>AreaPercent</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/scatter.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Scatter</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/dualAxis.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>DualAxis</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/rose.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Rose</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/roseParallel.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>RoseParallel</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/pie.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Pie</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/donut.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Donut</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/radar.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Radar</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/raceScatter.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>RaceScatter</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/raceLine.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>RaceLine</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/raceBar.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>RaceBar</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/raceColumn.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>RaceColumn</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/racePie.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>RacePie</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/raceDonut.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>RaceDonut</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/treeMap.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>TreeMap</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/sunburst.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Sunburst</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/circlePacking.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>CirclePacking</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/heatmap.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Heatmap</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/funnel.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Funnel</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/boxplot.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Boxplot</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/chartType/histogram.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Histogram</span></div><div class="rp-sidebar-item__right"></div></a></div></div><div class="rp-sidebar-item rp-sidebar-group rp-sidebar-item--group-item" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>Features</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(0deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></div><div style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/VBI/en-US/vseed/examples/features/annotationArea.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>AnnotationArea</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/annotationHorizontalLine.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>AnnotationHorizontalLine</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/annotationPoint.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>AnnotationPoint</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/annotationVerticalLine.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>AnnotationVerticalLine</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/barStyle.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>BarStyle</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/bodyCellStyle.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>BodyCellStyle</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/brush.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Brush</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/color.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Color</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/dataset.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Dataset</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/dimensions.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Dimensions</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/i18n.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>I18n</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/label.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Label</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/legend.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Legend</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/measures.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Measures</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/numFormat.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>NumFormat</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/pointStyle.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>PointStyle</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/polynomial.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Polynomial</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/sort.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Sort</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/examples/features/totals.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Totals</span></div><div class="rp-sidebar-item__right"></div></a></div></div></div></div><a href="/VBI/en-US/vseed/option.html" class="rp-sidebar-item rp-sidebar-group rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span>Options</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(90deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></a><div style="display:grid;grid-template-rows:1fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/VBI/en-US/vseed/option/area.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>area</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/areaPercent.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>areaPercent</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/bar.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>bar</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/barParallel.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>barParallel</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/barPercent.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>barPercent</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/boxPlot.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>boxPlot</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/circlePacking.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>circlePacking</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/column.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>column</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/columnParallel.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>columnParallel</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/columnPercent.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>columnPercent</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/donut.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>donut</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/dualAxis.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>dualAxis</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/funnel.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>funnel</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/heatmap.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>heatmap</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/histogram.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>histogram</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/line.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>line</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/pie.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>pie</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/pivotTable.html" class="rp-sidebar-item rp-sidebar-item--active rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>pivotTable</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/raceBar.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>raceBar</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/raceColumn.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>raceColumn</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/raceDonut.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>raceDonut</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/raceLine.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>raceLine</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/racePie.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>racePie</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/raceScatter.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>raceScatter</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/radar.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>radar</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/rose.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>rose</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/roseParallel.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>roseParallel</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/scatter.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>scatter</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/sunburst.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>sunburst</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/table.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>table</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/option/treeMap.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>treeMap</span></div><div class="rp-sidebar-item__right"></div></a></div></div><a href="/VBI/en-US/vseed/api.html" class="rp-sidebar-item rp-sidebar-group rp-link" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span>API</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(0deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></a><div style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/VBI/en-US/vseed/api/Builder.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>Builder</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/api/Register.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>Register</span></div><div class="rp-sidebar-item__right"></div></a></div></div><div class="rp-sidebar-item rp-sidebar-group" style="padding-left:12px" data-depth="0"><div class="rp-sidebar-item__left"><span>Contributing</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(0deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></div><div style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/VBI/en-US/vseed/development/quickStart.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>Quick Start</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/development/devProgress.html" class="rp-sidebar-item rp-sidebar-group rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>Dev Progress</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(90deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></a><div style="display:grid;grid-template-rows:1fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/VBI/en-US/vseed/development/devProgress/scripts.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Common Scripts</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/development/devProgress/publish.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Publish</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/development/devProgress/docs.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Documentation</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/development/devProgress/tests.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Testing Workflow</span></div><div class="rp-sidebar-item__right"></div></a></div></div><a href="/VBI/en-US/vseed/development/architecture.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>Architecture</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-item rp-sidebar-group rp-sidebar-item--group-item" style="padding-left:calc(12px * 1 + 12px)" data-depth="1"><div class="rp-sidebar-item__left"><span>Design Philosophy</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(0deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></div><div style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/VBI/en-US/vseed/development/designPhilosophy/vseed.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>VSeed</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/development/designPhilosophy/dslDesign.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>DSL Design</span></div><div class="rp-sidebar-item__right"></div></a><div class="rp-sidebar-item rp-sidebar-group rp-sidebar-item--group-item" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Data Reshape</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(90deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></div><div style="display:grid;grid-template-rows:1fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/VBI/en-US/vseed/development/designPhilosophy/dataReshape/tidyData.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 3 + 12px)" data-depth="3"><div class="rp-sidebar-item__left"><span>TidyData</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/development/designPhilosophy/dataReshape/dataReshapePrinciple.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 3 + 12px)" data-depth="3"><div class="rp-sidebar-item__left"><span>Data Reshaping — Principles</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/development/designPhilosophy/dataReshape/dataReshapeImplementation.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 3 + 12px)" data-depth="3"><div class="rp-sidebar-item__left"><span>Data Reshape-Implementation</span></div><div class="rp-sidebar-item__right"></div></a></div></div><div class="rp-sidebar-item rp-sidebar-group rp-sidebar-item--group-item" style="padding-left:calc(12px * 2 + 12px)" data-depth="2"><div class="rp-sidebar-item__left"><span>Pipeline</span></div><div class="rp-sidebar-item__right"><div style="cursor:pointer;transition:transform 0.2s ease-out;transform:rotate(90deg)"><svg width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></div></div></div><div style="display:grid;grid-template-rows:1fr;transition:grid-template-rows 0.2s ease-out"><div style="overflow:hidden"><a href="/VBI/en-US/vseed/development/designPhilosophy/pipeline/pipelineDesign.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 3 + 12px)" data-depth="3"><div class="rp-sidebar-item__left"><span>Pipeline Design</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/development/designPhilosophy/pipeline/specPipeline.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 3 + 12px)" data-depth="3"><div class="rp-sidebar-item__left"><span>Spec Pipeline</span></div><div class="rp-sidebar-item__right"></div></a><a href="/VBI/en-US/vseed/development/designPhilosophy/pipeline/advancedPipeline.html" class="rp-sidebar-item rp-sidebar-item--group-item rp-link" style="padding-left:calc(12px * 3 + 12px)" data-depth="3"><div class="rp-sidebar-item__left"><span>Advanced Pipeline</span></div><div class="rp-sidebar-item__right"></div></a></div></div></div></div></div></div></aside><div class="rp-doc-layout__doc"><main class="rp-doc-layout__doc-container"><div class="rp-doc rspress-doc"><!--$--><h1 class="rp-toc-include" id="pivottable"><a href="#pivottable" class="rp-header-anchor rp-link" aria-hidden="true">#</a>PivotTable<!-- --> </h1>
+<div class="rp-callout rp-callout--info"><div class="rp-callout__title">Recommended</div><div class="rp-callout__content"><ul>
+<li>Recommended field configuration: <code>1</code> measure(s), <code>1</code> dimension(s)</li>
+<li>Supports Data Reshape: at least <code>1</code> measure(s), <code>0</code> dimension(s)
+:::</li>
+</ul><p>:::info{title=Encoding Mapping}
+The Pivot Table supports the following visual channels:</p><p><code>row</code>    : Row dimensions, supports <code>multiple dimensions</code>, groups data by dimension values on rows.</p><p><code>column</code> : Column dimensions, supports <code>multiple dimensions</code>, groups data by dimension values on columns.</p><p><code>detail</code> : Detail channel, supports <code>multiple measures</code>, displays measure values within cells.</p></div></div>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Pivot Table, suitable for multi-dimensional data cross-analysis scenarios, allowing flexible configuration of row/column dimensions and measure calculation methods.</p><p>Applicable scenarios:</p><ul>
+<li>Complex multi-dimensional statistical analysis.</li>
+<li>Data drilling and aggregated display.</li>
+<li>Business report generation and data exploration.</li>
+</ul></div></div>
+<div class="rp-callout rp-callout--warning"><div class="rp-callout__title">Warning</div><div class="rp-callout__content"><p>
+Data requirements:</p><ul>
+<li>At least 1 row dimension, 1 column dimension, or 1 measure.</li>
+<li>Data must be pre-aggregated.</li>
+<li>Data must be groupable.</li>
+</ul><p>Features enabled by default:</p><ul>
+<li>Row/column sorting, data filtering, aggregation/subtotal calculation, and subtotal/grand total display are enabled by default.</li>
+</ul></div></div>
+<h2 class="rp-toc-include" id="charttype"><a href="#charttype" class="rp-header-anchor rp-link" aria-hidden="true">#</a>chartType</h2>
+<p><strong>Type:</strong> <code>&quot;pivotTable&quot;</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Pivot Table, suitable for multi-dimensional data cross-analysis scenarios.</p></div></div>
+<p><strong>Example</strong>
+&#x27;pivotTable&#x27;</p>
+<h2 class="rp-toc-include" id="dataset"><a href="#dataset" class="rp-header-anchor rp-link" aria-hidden="true">#</a>dataset</h2>
+<p><strong>Type:</strong> <code>Record[]</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Dataset compliant with the TidyData specification and already aggregated, defining the chart&#x27;s data source and structure. User input does not require pre-processing; VSeed features powerful Data Reshape capabilities that handle formatting automatically. Pivot Table data is ultimately converted into a corresponding tree structure, so no manual data manipulation is required.</p></div></div>
+<p><strong>Example</strong>
+[{region:&#x27;East China&#x27;, product:&#x27;A&#x27;, sales:1000}, {region:&#x27;East China&#x27;, product:&#x27;B&#x27;, sales:1500}]</p>
+<h2 class="rp-toc-include" id="dimensions"><a href="#dimensions" class="rp-header-anchor rp-link" aria-hidden="true">#</a>dimensions</h2>
+<p><strong>Type:</strong> <code>TableDimension[] | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Row and column dimensions for the Pivot Table. Data is automatically processed into a tree structure and mapped to row and column axes.</p></div></div>
+<p><strong>Example</strong>
+[{id: &#x27;region&#x27;, alias: &#x27;Region&#x27;, isRow: true}, {id: &#x27;product&#x27;, alias: &#x27;Product&#x27;, isColumn: true}]</p>
+<h3 class="rp-toc-include" id="id"><a href="#id" class="rp-header-anchor rp-link" aria-hidden="true">#</a>id</h3>
+<p><strong>Type:</strong> <code>string</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Field ID corresponding to the dimension</p></div></div>
+<h3 class="rp-toc-include" id="alias"><a href="#alias" class="rp-header-anchor rp-link" aria-hidden="true">#</a>alias</h3>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Dimension alias</p></div></div>
+<h3 class="rp-toc-include" id="timeformat"><a href="#timeformat" class="rp-header-anchor rp-link" aria-hidden="true">#</a>timeFormat</h3>
+<p><strong>Type:</strong> <code>TimeFormat | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Dimension date format configuration</p></div></div>
+<h4 class="rp-toc-include" id="type"><a href="#type" class="rp-header-anchor rp-link" aria-hidden="true">#</a>type</h4>
+<p><strong>Type:</strong> <code>&quot;year&quot; | &quot;quarter&quot; | &quot;month&quot; | &quot;week&quot; | &quot;day&quot; | &quot;hour&quot; | &quot;minute&quot; | &quot;second&quot;</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Time granularity, determines the date display precision</p></div></div>
+<h3 class="rp-toc-include" id="encoding"><a href="#encoding" class="rp-header-anchor rp-link" aria-hidden="true">#</a>encoding</h3>
+<p><strong>Type:</strong> <code>&quot;row&quot; | &quot;column&quot; | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Channel to which the dimension is mapped:</p><ul>
+<li>
+<p>row: supports mapping multiple dimensions to the row channel</p>
+</li>
+<li>
+<p>column: supports mapping multiple dimensions to the column channel</p>
+</li>
+</ul></div></div>
+<h2 class="rp-toc-include" id="measures"><a href="#measures" class="rp-header-anchor rp-link" aria-hidden="true">#</a>measures</h2>
+<p><strong>Type:</strong> <code>TableMeasure[] | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Pivot Table supports multiple dimension measures.</p></div></div>
+<p><strong>Example</strong>
+[{id: &#x27;sales&#x27;, alias: &#x27;Sales&#x27;, aggregation: &#x27;sum&#x27;}]</p>
+<h3 class="rp-toc-include" id="id-1"><a href="#id-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>id</h3>
+<p><strong>Type:</strong> <code>string</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Measure ID, must be unique</p></div></div>
+<h3 class="rp-toc-include" id="alias-1"><a href="#alias-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>alias</h3>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Measure alias, duplicates allowed; when not set, alias defaults to id</p></div></div>
+<h3 class="rp-toc-include" id="autoformat"><a href="#autoformat" class="rp-header-anchor rp-link" aria-hidden="true">#</a>autoFormat</h3>
+<p><strong>Type:</strong> <code>boolean | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Automatic number formatting, enabled by default, highest priority.</p><p>When autoFormat=true, it overrides all numFormat configurations.</p><p>When enabled, chart data labels and tooltips will automatically select the appropriate formatting based on measure values and locale.</p><p>Formatting rules: decimal numbers with compact notation enabled, minimum 0 decimal places, maximum 2 decimal places, automatic rounding, using the browser&#x27;s Intl.NumberFormat implementation.</p><p>For example:</p><ul>
+<li>
+<p>locale=zh-CN: 749740.264 → 74.45~74.45万</p>
+</li>
+<li>
+<p>locale=en-US: 749740.264 → 744.5K</p>
+</li>
+</ul></div></div>
+<h3 class="rp-toc-include" id="numformat"><a href="#numformat" class="rp-header-anchor rp-link" aria-hidden="true">#</a>numFormat</h3>
+<p><strong>Type:</strong> <code>NumFormat | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Custom number formatting for measures; automatically applied to labels and tooltips.</p><p>Note: To use custom formatting, you must explicitly set autoFormat=false; otherwise autoFormat will override this configuration.</p></div></div>
+<h4 class="rp-toc-include" id="type-1"><a href="#type-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>type</h4>
+<p><strong>Type:</strong> <code>&quot;number&quot; | &quot;percent&quot; | &quot;permille&quot; | &quot;scientific&quot; | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Number format type, supports: number (decimal), percent (%), permille (‰), scientific notation</p></div></div>
+<h4 class="rp-toc-include" id="ratio"><a href="#ratio" class="rp-header-anchor rp-link" aria-hidden="true">#</a>ratio</h4>
+<p><strong>Type:</strong> <code>number | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Number format ratio, cannot be 0</p></div></div>
+<p><strong>Example</strong></p>
+<ul>
+<li>100000 converts to 10W, ratio:10000, symbol:&quot;W&quot;</li>
+<li>100000 converts to 10K, ratio:1000, symbol:&quot;K&quot;</li>
+</ul>
+<h4 class="rp-toc-include" id="symbol"><a href="#symbol" class="rp-header-anchor rp-link" aria-hidden="true">#</a>symbol</h4>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Number format symbol, e.g. %, ‰</p></div></div>
+<p><strong>Example</strong></p>
+<ul>
+<li>100000 converts to 10W, ratio:10000, symbol:&quot;W&quot;</li>
+<li>100000 converts to 10K, ratio:1000, symbol:&quot;K&quot;</li>
+</ul>
+<h4 class="rp-toc-include" id="thousandseparator"><a href="#thousandseparator" class="rp-header-anchor rp-link" aria-hidden="true">#</a>thousandSeparator</h4>
+<p><strong>Type:</strong> <code>boolean | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Thousands separator for number formatting</p></div></div>
+<h4 class="rp-toc-include" id="suffix"><a href="#suffix" class="rp-header-anchor rp-link" aria-hidden="true">#</a>suffix</h4>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Number format suffix</p></div></div>
+<h4 class="rp-toc-include" id="prefix"><a href="#prefix" class="rp-header-anchor rp-link" aria-hidden="true">#</a>prefix</h4>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Number format prefix</p></div></div>
+<h4 class="rp-toc-include" id="fractiondigits"><a href="#fractiondigits" class="rp-header-anchor rp-link" aria-hidden="true">#</a>fractionDigits</h4>
+<p><strong>Type:</strong> <code>number | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Decimal places for number formatting, using the browser&#x27;s Intl.NumberFormat minimumFractionDigits and maximumFractionDigits; lower priority than significantDigits.</p></div></div>
+<p><strong>Example</strong></p>
+<ul>
+<li>1234.5678 converts to 1235, fractionDigits:0 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1234.6, fractionDigits:1 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1234.57, fractionDigits:2 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1230.568, fractionDigits:3 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1234.5678, fractionDigits:4 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1234.56780, fractionDigits:5 (roundingMode:halfCeil)</li>
+</ul>
+<h4 class="rp-toc-include" id="significantdigits"><a href="#significantdigits" class="rp-header-anchor rp-link" aria-hidden="true">#</a>significantDigits</h4>
+<p><strong>Type:</strong> <code>number | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Significant digits for number formatting, using the browser&#x27;s Intl.NumberFormat minimumSignificantDigits and maximumSignificantDigits; higher priority than fractionDigits.</p></div></div>
+<p><strong>Example</strong></p>
+<ul>
+<li>1234.5678 converts to 1000, significantDigits:1</li>
+<li>1234.5678 converts to 1200, significantDigits:2</li>
+<li>1234.5678 converts to 1230, significantDigits:3</li>
+<li>1234.5678 converts to 1234, significantDigits:4</li>
+<li>1234.5678 converts to 1234.6, significantDigits:5 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1234.57, significantDigits:6 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1234.568, significantDigits:7 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1234.5678, significantDigits:8 (roundingMode:halfCeil)</li>
+</ul>
+<h4 class="rp-toc-include" id="roundingpriority"><a href="#roundingpriority" class="rp-header-anchor rp-link" aria-hidden="true">#</a>roundingPriority</h4>
+<p><strong>Type:</strong> <code>&quot;morePrecision&quot; | &quot;lessPrecision&quot; | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Rounding priority for number formatting when both significantDigits and fractionDigits are set; uses the browser&#x27;s Intl.NumberFormat, following the same rules as Intl.NumberFormat&#x27;s roundingPriority.</p></div></div>
+<p><strong>Example</strong></p>
+<ul>
+<li>1234.5678 converts to 1230, significantDigits:3 (roundingPriority:lessPrecision)</li>
+<li>1234.5678 converts to 1234.5678, significantDigits:3 (roundingPriority:morePrecision)</li>
+</ul>
+<h4 class="rp-toc-include" id="roundingmode"><a href="#roundingmode" class="rp-header-anchor rp-link" aria-hidden="true">#</a>roundingMode</h4>
+<p><strong>Type:</strong> <code>&quot;floor&quot; | &quot;ceil&quot; | &quot;expand&quot; | &quot;trunc&quot; | &quot;halfCeil&quot; | &quot;halfFloor&quot; | &quot;halfExpand&quot; | &quot;halfTrunc&quot; | &quot;halfEven&quot; | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Rounding mode for number formatting, using the browser&#x27;s Intl.NumberFormat, following the same rules as Intl.NumberFormat&#x27;s roundingMode.</p></div></div>
+<h3 class="rp-toc-include" id="format"><a href="#format" class="rp-header-anchor rp-link" aria-hidden="true">#</a>format</h3>
+<p><strong>Type:</strong> <code>NumFormat | undefined</code></p>
+<h4 class="rp-toc-include" id="type-2"><a href="#type-2" class="rp-header-anchor rp-link" aria-hidden="true">#</a>type</h4>
+<p><strong>Type:</strong> <code>&quot;number&quot; | &quot;percent&quot; | &quot;permille&quot; | &quot;scientific&quot; | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Number format type, supports: number (decimal), percent (%), permille (‰), scientific notation</p></div></div>
+<h4 class="rp-toc-include" id="ratio-1"><a href="#ratio-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>ratio</h4>
+<p><strong>Type:</strong> <code>number | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Number format ratio, cannot be 0</p></div></div>
+<p><strong>Example</strong></p>
+<ul>
+<li>100000 converts to 10W, ratio:10000, symbol:&quot;W&quot;</li>
+<li>100000 converts to 10K, ratio:1000, symbol:&quot;K&quot;</li>
+</ul>
+<h4 class="rp-toc-include" id="symbol-1"><a href="#symbol-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>symbol</h4>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Number format symbol, e.g. %, ‰</p></div></div>
+<p><strong>Example</strong></p>
+<ul>
+<li>100000 converts to 10W, ratio:10000, symbol:&quot;W&quot;</li>
+<li>100000 converts to 10K, ratio:1000, symbol:&quot;K&quot;</li>
+</ul>
+<h4 class="rp-toc-include" id="thousandseparator-1"><a href="#thousandseparator-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>thousandSeparator</h4>
+<p><strong>Type:</strong> <code>boolean | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Thousands separator for number formatting</p></div></div>
+<h4 class="rp-toc-include" id="suffix-1"><a href="#suffix-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>suffix</h4>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Number format suffix</p></div></div>
+<h4 class="rp-toc-include" id="prefix-1"><a href="#prefix-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>prefix</h4>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Number format prefix</p></div></div>
+<h4 class="rp-toc-include" id="fractiondigits-1"><a href="#fractiondigits-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>fractionDigits</h4>
+<p><strong>Type:</strong> <code>number | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Decimal places for number formatting, using the browser&#x27;s Intl.NumberFormat minimumFractionDigits and maximumFractionDigits; lower priority than significantDigits.</p></div></div>
+<p><strong>Example</strong></p>
+<ul>
+<li>1234.5678 converts to 1235, fractionDigits:0 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1234.6, fractionDigits:1 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1234.57, fractionDigits:2 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1230.568, fractionDigits:3 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1234.5678, fractionDigits:4 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1234.56780, fractionDigits:5 (roundingMode:halfCeil)</li>
+</ul>
+<h4 class="rp-toc-include" id="significantdigits-1"><a href="#significantdigits-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>significantDigits</h4>
+<p><strong>Type:</strong> <code>number | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Significant digits for number formatting, using the browser&#x27;s Intl.NumberFormat minimumSignificantDigits and maximumSignificantDigits; higher priority than fractionDigits.</p></div></div>
+<p><strong>Example</strong></p>
+<ul>
+<li>1234.5678 converts to 1000, significantDigits:1</li>
+<li>1234.5678 converts to 1200, significantDigits:2</li>
+<li>1234.5678 converts to 1230, significantDigits:3</li>
+<li>1234.5678 converts to 1234, significantDigits:4</li>
+<li>1234.5678 converts to 1234.6, significantDigits:5 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1234.57, significantDigits:6 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1234.568, significantDigits:7 (roundingMode:halfCeil)</li>
+<li>1234.5678 converts to 1234.5678, significantDigits:8 (roundingMode:halfCeil)</li>
+</ul>
+<h4 class="rp-toc-include" id="roundingpriority-1"><a href="#roundingpriority-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>roundingPriority</h4>
+<p><strong>Type:</strong> <code>&quot;morePrecision&quot; | &quot;lessPrecision&quot; | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Rounding priority for number formatting when both significantDigits and fractionDigits are set; uses the browser&#x27;s Intl.NumberFormat, following the same rules as Intl.NumberFormat&#x27;s roundingPriority.</p></div></div>
+<p><strong>Example</strong></p>
+<ul>
+<li>1234.5678 converts to 1230, significantDigits:3 (roundingPriority:lessPrecision)</li>
+<li>1234.5678 converts to 1234.5678, significantDigits:3 (roundingPriority:morePrecision)</li>
+</ul>
+<h4 class="rp-toc-include" id="roundingmode-1"><a href="#roundingmode-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>roundingMode</h4>
+<p><strong>Type:</strong> <code>&quot;floor&quot; | &quot;ceil&quot; | &quot;expand&quot; | &quot;trunc&quot; | &quot;halfCeil&quot; | &quot;halfFloor&quot; | &quot;halfExpand&quot; | &quot;halfTrunc&quot; | &quot;halfEven&quot; | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Rounding mode for number formatting, using the browser&#x27;s Intl.NumberFormat, following the same rules as Intl.NumberFormat&#x27;s roundingMode.</p></div></div>
+<h3 class="rp-toc-include" id="encoding-1"><a href="#encoding-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>encoding</h3>
+<p><strong>Type:</strong> <code>&quot;column&quot; | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Channel to which the measure is mapped:</p><ul>
+<li>column: measure column</li>
+</ul></div></div>
+<h3 class="rp-toc-include" id="parentid"><a href="#parentid" class="rp-header-anchor rp-link" aria-hidden="true">#</a>parentId</h3>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+In a flat measure configuration, builds a tree-like measure structure. parentId points to the ID of the parent measure group, used for building the hierarchy.</p></div></div>
+<div class="rp-callout rp-callout--tip"><div class="rp-callout__title">Tip</div><div class="rp-callout__content"><p>
+There are two ways to configure the measure tree: Option 1 is directly configuring a measure tree with children; Option 2 is providing a flat measure list with parentId. These two methods cannot be used simultaneously.</p></div></div>
+<h2 class="rp-toc-include" id="page"><a href="#page" class="rp-header-anchor rp-link" aria-hidden="true">#</a>page</h2>
+<p><strong>Type:</strong> <code>Page | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Pagination configuration. Specifies the field name for pagination, which must be a dimension.</p></div></div>
+<h3 class="rp-toc-include" id="field"><a href="#field" class="rp-header-anchor rp-link" aria-hidden="true">#</a>field</h3>
+<p><strong>Type:</strong> <code>string</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Pagination field; specifies the field name for pagination, must be a dimension.</p></div></div>
+<h3 class="rp-toc-include" id="currentvalue"><a href="#currentvalue" class="rp-header-anchor rp-link" aria-hidden="true">#</a>currentValue</h3>
+<p><strong>Type:</strong> <code>string</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Current pagination value; specifies the value used to determine the current page.</p></div></div>
+<p><strong>Example</strong>
+&#x27;2023-01-01&#x27;</p>
+<h2 class="rp-toc-include" id="backgroundcolor"><a href="#backgroundcolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>backgroundColor</h2>
+<p><strong>Type:</strong> <code>BackgroundColor</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Chart background color. Default is transparent. Can be a color string (e.g. &#x27;red&#x27;, &#x27;blue&#x27;), or a hex, rgb, or rgba value (e.g. &#x27;#ff0000&#x27;, &#x27;rgba(255,0,0,0.5)&#x27;).</p></div></div>
+<h2 class="rp-toc-include" id="bordercolor"><a href="#bordercolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>borderColor</h2>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Border color of the table.</p></div></div>
+<h2 class="rp-toc-include" id="bodyfontsize"><a href="#bodyfontsize" class="rp-header-anchor rp-link" aria-hidden="true">#</a>bodyFontSize</h2>
+<p><strong>Type:</strong> <code>number | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Font size of the table body.</p></div></div>
+<h2 class="rp-toc-include" id="bodyfontcolor"><a href="#bodyfontcolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>bodyFontColor</h2>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Font color of the table body.</p></div></div>
+<h2 class="rp-toc-include" id="bodybackgroundcolor"><a href="#bodybackgroundcolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>bodyBackgroundColor</h2>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Background color of the table body.</p></div></div>
+<h2 class="rp-toc-include" id="headerfontsize"><a href="#headerfontsize" class="rp-header-anchor rp-link" aria-hidden="true">#</a>headerFontSize</h2>
+<p><strong>Type:</strong> <code>number | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Font size of row and column headers.</p></div></div>
+<h2 class="rp-toc-include" id="headerfontcolor"><a href="#headerfontcolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>headerFontColor</h2>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Font color of row and column headers.</p></div></div>
+<h2 class="rp-toc-include" id="headerbackgroundcolor"><a href="#headerbackgroundcolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>headerBackgroundColor</h2>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Background color of row and column headers.</p></div></div>
+<h2 class="rp-toc-include" id="hoverheaderbackgroundcolor"><a href="#hoverheaderbackgroundcolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>hoverHeaderBackgroundColor</h2>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Background color when hovering over a row or column header cell, used to highlight the cell at the intersection of the hovered row and column.</p></div></div>
+<h2 class="rp-toc-include" id="hoverheaderinlinebackgroundcolor"><a href="#hoverheaderinlinebackgroundcolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>hoverHeaderInlineBackgroundColor</h2>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Background color when hovering over a row or column header cell, used to highlight all cells in the hovered row and column.</p></div></div>
+<h2 class="rp-toc-include" id="selectedbordercolor"><a href="#selectedbordercolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>selectedBorderColor</h2>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Border color of the selected cell, used for highlighting.</p></div></div>
+<h2 class="rp-toc-include" id="selectedbackgroundcolor"><a href="#selectedbackgroundcolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>selectedBackgroundColor</h2>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Background color of the selected cell, used for highlighting.</p></div></div>
+<h2 class="rp-toc-include" id="bodycellstyle"><a href="#bodycellstyle" class="rp-header-anchor rp-link" aria-hidden="true">#</a>bodyCellStyle</h2>
+<p><strong>Type:</strong> <code>BodyCellStyle | BodyCellStyle[] | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Sets special styles for cells in the table body.</p></div></div>
+<h3 class="rp-toc-include" id="selector"><a href="#selector" class="rp-header-anchor rp-link" aria-hidden="true">#</a>selector</h3>
+<p><strong>Type:</strong> <code>Selector | Selectors | FieldSelector | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Data selector.</p><p>If <code>selector</code> is configured, it provides four types of data matching capabilities: numeric selector, local data selector, conditional dimension selector, and conditional measure selector.</p><p>If <code>selector</code> is not configured, the style applies globally.</p><p>Note: <code>selector</code> and <code>dynamicFilter</code> cannot be used simultaneously; <code>dynamicFilter</code> has higher priority.</p></div></div>
+<p><strong>Example</strong>
+Numeric selector:
+selector = &quot;tool&quot;
+selector = [&quot;tool&quot;, &quot;book&quot;]
+selector = 100
+selector = [100, 200]</p>
+<p>Local data selector:
+selector = { profit: 100 }
+selector = [{ profit: 100 }, { profit: 200 }]</p>
+<p>Conditional dimension selector:
+selector = {
+field: &#x27;category&#x27;,
+operator: &#x27;in&#x27;,
+value: &#x27;tool&#x27;
+}
+selector = {
+field: &#x27;category&#x27;,
+operator: &#x27;not in&#x27;,
+value: &#x27;book&#x27;
+}</p>
+<p>Conditional measure selector:
+selector = {
+field: &#x27;profit&#x27;,
+operator: &#x27;&gt;=&#x27;,
+value: 100
+}
+selector = {
+field: &#x27;profit&#x27;,
+operator: &#x27;between&#x27;
+value: [100, 300]
+}</p>
+<p>Field column filter:
+selector = {
+field: &#x27;category&#x27;
+}
+selector = {
+field: [&#x27;category&#x27;, &#x27;profit&#x27;]
+}</p>
+<h4 class="rp-toc-include" id="field-1"><a href="#field-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>field</h4>
+<p><strong>Type:</strong> <code>string | string[]</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Field name; can be a single field or an array of fields.</p></div></div>
+<p><strong>Example</strong>
+Single field:
+field: &#x27;sales&#x27;</p>
+<p>Multiple fields:
+field: [&#x27;sales&#x27;, &#x27;profit&#x27;, &#x27;revenue&#x27;]</p>
+<h4 class="rp-toc-include" id="operator"><a href="#operator" class="rp-header-anchor rp-link" aria-hidden="true">#</a>operator</h4>
+<p><strong>Type:</strong> <code>&quot;in&quot; | &quot;not in&quot; | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Operator:</p><ul>
+<li>
+<p>in: Select data items where the dimension field value is in the &#x27;value&#x27; list.</p>
+</li>
+<li>
+<p>not in: Select data items where the dimension field value is not in the &#x27;value&#x27; list.</p>
+</li>
+</ul></div></div>
+<h4 class="rp-toc-include" id="op"><a href="#op" class="rp-header-anchor rp-link" aria-hidden="true">#</a>op</h4>
+<p><strong>Type:</strong> <code>&quot;in&quot; | &quot;not in&quot; | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Operator:</p><ul>
+<li>
+<p>in: Select data items where the dimension field value is in the &#x27;value&#x27; list.</p>
+</li>
+<li>
+<p>not in: Select data items where the dimension field value is not in the &#x27;value&#x27; list.</p>
+</li>
+</ul><p>Same as operator.</p></div></div>
+<h4 class="rp-toc-include" id="value"><a href="#value" class="rp-header-anchor rp-link" aria-hidden="true">#</a>value</h4>
+<p><strong>Type:</strong> <code>string | number | (string | number)[]</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Selective dimension values; supports arrays.</p></div></div>
+<h3 class="rp-toc-include" id="dynamicfilter"><a href="#dynamicfilter" class="rp-header-anchor rp-link" aria-hidden="true">#</a>dynamicFilter</h3>
+<p><strong>Type:</strong> <code>TableDynamicFilter | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Dynamic filter (code-driven).</p><p>Implement complex data filtering logic via AI-generated JavaScript code.
+Suitable for Top N, statistical analysis, complex conditions, and other scenarios where static selectors are insufficient.</p><p>Key capabilities:</p><ul>
+<li>
+<p>Supports any complex data filtering conditions.</p>
+</li>
+<li>
+<p>Uses built-in utility functions for data operations.</p>
+</li>
+<li>
+<p>Executes safely in the browser environment (Web Worker sandbox).</p>
+</li>
+</ul><p>Requirements: Supports only browser environments; Node.js environments will use the fallback.</p><p>Note: <code>selector</code> and <code>dynamicFilter</code> cannot be used simultaneously; <code>dynamicFilter</code> has higher priority.</p><p>Configuration for the table dynamic filter.</p><p>Implement precise cell-level filtering via AI-generated JavaScript code.</p></div></div>
+<h4 class="rp-toc-include" id="type-3"><a href="#type-3" class="rp-header-anchor rp-link" aria-hidden="true">#</a>type</h4>
+<p><strong>Type:</strong> <code>&quot;row-with-field&quot;</code></p>
+<h4 class="rp-toc-include" id="description"><a href="#description" class="rp-header-anchor rp-link" aria-hidden="true">#</a>description</h4>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+User&#x27;s filtering requirement description (natural language).</p></div></div>
+<p><strong>Example</strong>
+&quot;Highlight cells where sales are greater than 1000.&quot;</p>
+<p>&quot;Highlight the cell with the maximum value in each row.&quot;</p>
+<h4 class="rp-toc-include" id="code"><a href="#code" class="rp-header-anchor rp-link" aria-hidden="true">#</a>code</h4>
+<p><strong>Type:</strong> <code>string</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+AI-generated JavaScript filtering code.</p><ul>
+<li>
+<p>Can only use built-in utility functions (access via _ or R).</p>
+</li>
+<li>
+<p>Input parameter: data (array); each item includes an <code>_index</code> field representing the row number.</p>
+</li>
+<li>
+<p>Must return an array of cell selectors: Array&lt;{ __row_index: number, field: string }&gt;.</p>
+</li>
+<li>
+<p>When <code>field</code> is &quot;*&quot;, the entire row is highlighted.</p>
+</li>
+<li>
+<p>Prohibited: eval, Function, asynchronous operations, DOM API, network requests.</p>
+</li>
+</ul></div></div>
+<p><strong>Example</strong>
+Top N filter:
+dynamicFilter = {
+type: &#x27;row-with-field&#x27;,
+description: &#x27;Highlight the top 3 products by sales&#x27;,
+code: <code>const sorted = _.sortBy(data, &#x27;sales&#x27;); const reversed = [...sorted].reverse(); const result = _.take(reversed, 3); return _.flatten( _.map(result, item =&gt; [ { __row_index: item._index, field: &#x27;product&#x27; }, { __row_index: item._index, field: &#x27;sales&#x27; } ]) );</code>,
+enabled: true
+}</p>
+<p>Multi-condition filter:
+dynamicFilter = {
+type: &#x27;row-with-field&#x27;,
+description: &#x27;Highlight products with a profit margin &gt; 20% and sales &gt; 5000&#x27;,
+code: <code>const matched = _.filter(data, item =&gt; { const profitRate = (item.profit / item.sales) * 100; return profitRate &gt; 20 &amp;&amp; item.sales &gt; 5000; }); return _.flatten( _.map(matched, item =&gt; [ { __row_index: item._index, field: &#x27;product&#x27; }, { __row_index: item._index, field: &#x27;sales&#x27; } ]) );</code>,
+enabled: true
+}</p>
+<p>Relative value filter:
+dynamicFilter = {
+type: &#x27;row-with-field&#x27;,
+description: &#x27;Highlight products with sales above average&#x27;,
+code: <code>const avgSales = _.meanBy(data, &#x27;sales&#x27;); const matched = _.filter(data, item =&gt; item.sales &gt; avgSales); return _.flatten( _.map(matched, item =&gt; [ { __row_index: item._index, field: &#x27;product&#x27; }, { __row_index: item._index, field: &#x27;sales&#x27; } ]) );</code>,
+enabled: true
+}</p>
+<p>Grouped filter:
+dynamicFilter = {
+type: &#x27;row-with-field&#x27;,
+description: &#x27;Highlight the top-selling product in each region&#x27;,
+code: <code>const grouped = _.groupBy(data, &#x27;region&#x27;); const topByRegion = _.map(_.values(grouped), group =&gt; _.maxBy(group, &#x27;sales&#x27;)); return _.flatten( _.map(topByRegion, item =&gt; [ { __row_index: item._index, field: &#x27;product&#x27; }, { __row_index: item._index, field: &#x27;sales&#x27; } ]) );</code>,
+enabled: true
+}</p>
+<p>Highlight entire row:
+dynamicFilter = {
+description: &#x27;Highlight rows where sales exceed profit&#x27;,
+code: <code>const matched = _.filter(data, item =&gt; item.sales &gt; item.profit); return matched.map(item =&gt; ({ __row_index: item._index, field: &#x27;*&#x27; }));</code>,
+enabled: true
+}</p>
+<h4 class="rp-toc-include" id="fallback"><a href="#fallback" class="rp-header-anchor rp-link" aria-hidden="true">#</a>fallback</h4>
+<p><strong>Type:</strong> <code>Selector | Selectors | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Fallback plan when code execution fails or the environment is not supported.</p></div></div>
+<h5 class="rp-toc-include" id="field-2"><a href="#field-2" class="rp-header-anchor rp-link" aria-hidden="true">#</a>field</h5>
+<p><strong>Type:</strong> <code>string</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Dimension field ID.</p></div></div>
+<h5 class="rp-toc-include" id="operator-1"><a href="#operator-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>operator</h5>
+<p><strong>Type:</strong> <code>&quot;in&quot; | &quot;not in&quot; | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Operator:</p><ul>
+<li>
+<p>in: Select data items where the dimension field value is in the &#x27;value&#x27; list.</p>
+</li>
+<li>
+<p>not in: Select data items where the dimension field value is not in the &#x27;value&#x27; list.</p>
+</li>
+</ul></div></div>
+<h5 class="rp-toc-include" id="op-1"><a href="#op-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>op</h5>
+<p><strong>Type:</strong> <code>&quot;in&quot; | &quot;not in&quot; | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Operator:</p><ul>
+<li>
+<p>in: Select data items where the dimension field value is in the &#x27;value&#x27; list.</p>
+</li>
+<li>
+<p>not in: Select data items where the dimension field value is not in the &#x27;value&#x27; list.</p>
+</li>
+</ul><p>Same as operator.</p></div></div>
+<h5 class="rp-toc-include" id="value-1"><a href="#value-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>value</h5>
+<p><strong>Type:</strong> <code>string | number | (string | number)[]</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Selective dimension values; supports arrays.</p></div></div>
+<h4 class="rp-toc-include" id="result"><a href="#result" class="rp-header-anchor rp-link" aria-hidden="true">#</a>result</h4>
+<p><strong>Type:</strong> <code>DynamicFilterExecutionResult&lt;RowWithFieldRes&gt; | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Dynamic filter execution result (runtime field). Written during the <code>prepare()</code> phase; read-only at runtime.</p></div></div>
+<h5 class="rp-toc-include" id="success"><a href="#success" class="rp-header-anchor rp-link" aria-hidden="true">#</a>success</h5>
+<p><strong>Type:</strong> <code>false | true</code></p>
+<h5 class="rp-toc-include" id="data"><a href="#data" class="rp-header-anchor rp-link" aria-hidden="true">#</a>data</h5>
+<p><strong>Type:</strong> <code>T[] | undefined</code></p>
+<h5 class="rp-toc-include" id="error"><a href="#error" class="rp-header-anchor rp-link" aria-hidden="true">#</a>error</h5>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<h3 class="rp-toc-include" id="backgroundcolor-1"><a href="#backgroundcolor-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>backgroundColor</h3>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Cell background color.</p></div></div>
+<h3 class="rp-toc-include" id="enablebackgroundcolorscale"><a href="#enablebackgroundcolorscale" class="rp-header-anchor rp-link" aria-hidden="true">#</a>enableBackgroundColorScale</h3>
+<p><strong>Type:</strong> <code>boolean | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Whether to enable the color scale for cell backgrounds.</p></div></div>
+<h3 class="rp-toc-include" id="backgroundcolorscale"><a href="#backgroundcolorscale" class="rp-header-anchor rp-link" aria-hidden="true">#</a>backgroundColorScale</h3>
+<p><strong>Type:</strong> <code>{ minValue?: number; maxValue?: number; minColor: string; maxColor: string; } | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Mapping for the cell background color scale; has higher priority than <code>backgroundColor</code>.</p></div></div>
+<h4 class="rp-toc-include" id="minvalue"><a href="#minvalue" class="rp-header-anchor rp-link" aria-hidden="true">#</a>minValue</h4>
+<p><strong>Type:</strong> <code>number | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Minimum value; if not configured, defaults to the minimum value in the current data column.</p></div></div>
+<h4 class="rp-toc-include" id="maxvalue"><a href="#maxvalue" class="rp-header-anchor rp-link" aria-hidden="true">#</a>maxValue</h4>
+<p><strong>Type:</strong> <code>number | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Maximum value; if not configured, defaults to the maximum value in the current data column.</p></div></div>
+<h4 class="rp-toc-include" id="mincolor"><a href="#mincolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>minColor</h4>
+<p><strong>Type:</strong> <code>string</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Color corresponding to the minimum value.</p></div></div>
+<h4 class="rp-toc-include" id="maxcolor"><a href="#maxcolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>maxColor</h4>
+<p><strong>Type:</strong> <code>string</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Color corresponding to the maximum value.</p></div></div>
+<h3 class="rp-toc-include" id="enableprogressbar"><a href="#enableprogressbar" class="rp-header-anchor rp-link" aria-hidden="true">#</a>enableProgressBar</h3>
+<p><strong>Type:</strong> <code>boolean | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Whether to enable background progress bars (a bar reflecting the cell&#x27;s magnitude). Disabled by default.</p></div></div>
+<h3 class="rp-toc-include" id="barpositivecolor"><a href="#barpositivecolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>barPositiveColor</h3>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Color of the background bar when the cell value is positive.</p></div></div>
+<h3 class="rp-toc-include" id="barnegativecolor"><a href="#barnegativecolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>barNegativeColor</h3>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Color of the background bar when the cell value is negative.</p></div></div>
+<h3 class="rp-toc-include" id="barmin"><a href="#barmin" class="rp-header-anchor rp-link" aria-hidden="true">#</a>barMin</h3>
+<p><strong>Type:</strong> <code>number | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Minimum value for the progress bar.
+Automatically calculated from the column minimum if not configured.</p></div></div>
+<h3 class="rp-toc-include" id="barmax"><a href="#barmax" class="rp-header-anchor rp-link" aria-hidden="true">#</a>barMax</h3>
+<p><strong>Type:</strong> <code>number | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Maximum value for the progress bar.
+Automatically calculated from the column maximum if not configured.</p></div></div>
+<h3 class="rp-toc-include" id="textcolor"><a href="#textcolor" class="rp-header-anchor rp-link" aria-hidden="true">#</a>textColor</h3>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Color of cell text.</p></div></div>
+<h3 class="rp-toc-include" id="textfontsize"><a href="#textfontsize" class="rp-header-anchor rp-link" aria-hidden="true">#</a>textFontSize</h3>
+<p><strong>Type:</strong> <code>number | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Size of cell text.</p></div></div>
+<h3 class="rp-toc-include" id="bordercolor-1"><a href="#bordercolor-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>borderColor</h3>
+<p><strong>Type:</strong> <code>string | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Border color of the cell.</p></div></div>
+<h3 class="rp-toc-include" id="borderlinewidth"><a href="#borderlinewidth" class="rp-header-anchor rp-link" aria-hidden="true">#</a>borderLineWidth</h3>
+<p><strong>Type:</strong> <code>number | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Line width of the cell border.</p></div></div>
+<h2 class="rp-toc-include" id="indicatorsascol"><a href="#indicatorsascol" class="rp-header-anchor rp-link" aria-hidden="true">#</a>indicatorsAsCol</h2>
+<p><strong>Type:</strong> <code>boolean | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Whether measures are displayed as columns. When <code>true</code>, measures expand horizontally (columns); when <code>false</code>, they expand vertically (rows).</p></div></div>
+<p><strong>Example</strong>
+true</p>
+<h2 class="rp-toc-include" id="totals"><a href="#totals" class="rp-header-anchor rp-link" aria-hidden="true">#</a>totals</h2>
+<p><strong>Type:</strong> <code>PivotTableTotals | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Grand total and subtotal configuration for the Pivot Table.</p></div></div>
+<p><strong>Example</strong>
+{ row: { showGrandTotals: true, showSubTotals: true, subTotalsDimensions: [&#x27;category&#x27;] } }</p>
+<h3 class="rp-toc-include" id="row"><a href="#row" class="rp-header-anchor rp-link" aria-hidden="true">#</a>row</h3>
+<p><strong>Type:</strong> <code>RowOrColumnTotalConfig | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Grand total and subtotal configuration for rows.</p></div></div>
+<h4 class="rp-toc-include" id="showgrandtotals"><a href="#showgrandtotals" class="rp-header-anchor rp-link" aria-hidden="true">#</a>showGrandTotals</h4>
+<p><strong>Type:</strong> <code>boolean | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Whether to show grand totals (total row/column).</p></div></div>
+<h4 class="rp-toc-include" id="showsubtotals"><a href="#showsubtotals" class="rp-header-anchor rp-link" aria-hidden="true">#</a>showSubTotals</h4>
+<p><strong>Type:</strong> <code>boolean | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Whether to show subtotals.</p></div></div>
+<h4 class="rp-toc-include" id="subtotalsdimensions"><a href="#subtotalsdimensions" class="rp-header-anchor rp-link" aria-hidden="true">#</a>subTotalsDimensions</h4>
+<p><strong>Type:</strong> <code>string[] | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Dimensions for subtotals; group subtotals by these dimensions.</p></div></div>
+<p><strong>Example</strong>
+[&#x27;category&#x27;, &#x27;region&#x27;]</p>
+<h3 class="rp-toc-include" id="column"><a href="#column" class="rp-header-anchor rp-link" aria-hidden="true">#</a>column</h3>
+<p><strong>Type:</strong> <code>RowOrColumnTotalConfig | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Grand total and subtotal configuration for columns.</p></div></div>
+<h4 class="rp-toc-include" id="showgrandtotals-1"><a href="#showgrandtotals-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>showGrandTotals</h4>
+<p><strong>Type:</strong> <code>boolean | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Whether to show grand totals (total row/column).</p></div></div>
+<h4 class="rp-toc-include" id="showsubtotals-1"><a href="#showsubtotals-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>showSubTotals</h4>
+<p><strong>Type:</strong> <code>boolean | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Whether to show subtotals.</p></div></div>
+<h4 class="rp-toc-include" id="subtotalsdimensions-1"><a href="#subtotalsdimensions-1" class="rp-header-anchor rp-link" aria-hidden="true">#</a>subTotalsDimensions</h4>
+<p><strong>Type:</strong> <code>string[] | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Dimensions for subtotals; group subtotals by these dimensions.</p></div></div>
+<p><strong>Example</strong>
+[&#x27;category&#x27;, &#x27;region&#x27;]</p>
+<h2 class="rp-toc-include" id="theme"><a href="#theme" class="rp-header-anchor rp-link" aria-hidden="true">#</a>theme</h2>
+<p><strong>Type:</strong> <code>Theme | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Chart theme. Themes are lower-priority configurations containing general settings shared across all chart types and specific settings shared within a chart category.</p><p>Light and dark themes are built-in; users can define custom themes via the Builder.</p></div></div>
+<p><strong>Example</strong>
+&#x27;dark&#x27;</p>
+<p>&#x27;light&#x27;</p>
+<p>&#x27;customThemeName&#x27;</p>
+<h3 class="rp-toc-include" id="length"><a href="#length" class="rp-header-anchor rp-link" aria-hidden="true">#</a>length</h3>
+<p><strong>Type:</strong> <code>number</code></p>
+<h3 class="rp-toc-include" id="brand"><a href="#brand" class="rp-header-anchor rp-link" aria-hidden="true">#</a>brand</h3>
+<p><strong>Type:</strong> <code>brand</code></p>
+<h2 class="rp-toc-include" id="locale"><a href="#locale" class="rp-header-anchor rp-link" aria-hidden="true">#</a>locale</h2>
+<p><strong>Type:</strong> <code>Locale | undefined</code></p>
+<div class="rp-callout rp-callout--note"><div class="rp-callout__title">Description</div><div class="rp-callout__content"><p>
+Locale. Chart language configuration; supports &#x27;zh-CN&#x27; and &#x27;en-US&#x27;. Alternatively, call <code>intl.setLocale(&#x27;zh-CN&#x27;)</code> to set the language.</p></div></div><!--/$--></div><footer class="rp-doc-footer"><div class="rp-doc-footer__edit"></div><div class="rp-doc-footer__divider"></div><div class="rp-prev-next-page"><a href="/VBI/en-US/vseed/option/pie.html" class="rp-prev-next-page__item rp-prev-next-page__prev rp-link"><span class="rp-prev-next-page__item__desc">Previous page</span><span class="rp-prev-next-page__item__title"><svg width="1em" height="1em" viewBox="0 0 32 32" class="rp-prev-next-page__icon rp-prev-next-page__rotate_180"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg><span>pie</span></span></a><a href="/VBI/en-US/vseed/option/raceBar.html" class="rp-prev-next-page__item rp-prev-next-page__next rp-link"><span class="rp-prev-next-page__item__desc">Next page</span><span class="rp-prev-next-page__item__title"><span>raceBar</span><svg width="1em" height="1em" viewBox="0 0 32 32" class="rp-prev-next-page__icon"><path fill="currentColor" d="M22 16 12 26l-1.4-1.4 8.6-8.6-8.6-8.6L12 6z"></path></svg></span></a></div></footer></main></div><aside class="rp-doc-layout__outline rp-scrollbar"><div class="rp-outline"><div class="rp-outline__title">On This Page<svg width="14" height="14" class="rp-progress-circle"><circle cx="7" cy="7" r="6" stroke-linecap="round" fill="none" stroke="var(--rp-c-divider-light)" stroke-width="2"></circle><circle cx="7" cy="7" r="6" stroke-linecap="round" fill="none" stroke="var(--rp-c-brand)" stroke-width="2" stroke-dasharray="37.69911184307752" stroke-dashoffset="37.69911184307752" transform="rotate(-90 7 7)" style="transition:stroke-dashoffset 0.3s"></circle></svg></div><nav class="rp-outline__toc rp-scrollbar"><a href="#charttype" class="rp-toc-item rp-link" title="chartType" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">chartType</span></a><a href="#dataset" class="rp-toc-item rp-link" title="dataset" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">dataset</span></a><a href="#dimensions" class="rp-toc-item rp-link" title="dimensions" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">dimensions</span></a><a href="#id" class="rp-toc-item rp-link" title="id" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">id</span></a><a href="#alias" class="rp-toc-item rp-link" title="alias" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">alias</span></a><a href="#timeformat" class="rp-toc-item rp-link" title="timeFormat" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">timeFormat</span></a><a href="#type" class="rp-toc-item rp-link" title="type" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">type</span></a><a href="#encoding" class="rp-toc-item rp-link" title="encoding" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">encoding</span></a><a href="#measures" class="rp-toc-item rp-link" title="measures" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">measures</span></a><a href="#id-1" class="rp-toc-item rp-link" title="id" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">id</span></a><a href="#alias-1" class="rp-toc-item rp-link" title="alias" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">alias</span></a><a href="#autoformat" class="rp-toc-item rp-link" title="autoFormat" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">autoFormat</span></a><a href="#numformat" class="rp-toc-item rp-link" title="numFormat" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">numFormat</span></a><a href="#type-1" class="rp-toc-item rp-link" title="type" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">type</span></a><a href="#ratio" class="rp-toc-item rp-link" title="ratio" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">ratio</span></a><a href="#symbol" class="rp-toc-item rp-link" title="symbol" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">symbol</span></a><a href="#thousandseparator" class="rp-toc-item rp-link" title="thousandSeparator" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">thousandSeparator</span></a><a href="#suffix" class="rp-toc-item rp-link" title="suffix" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">suffix</span></a><a href="#prefix" class="rp-toc-item rp-link" title="prefix" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">prefix</span></a><a href="#fractiondigits" class="rp-toc-item rp-link" title="fractionDigits" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">fractionDigits</span></a><a href="#significantdigits" class="rp-toc-item rp-link" title="significantDigits" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">significantDigits</span></a><a href="#roundingpriority" class="rp-toc-item rp-link" title="roundingPriority" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">roundingPriority</span></a><a href="#roundingmode" class="rp-toc-item rp-link" title="roundingMode" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">roundingMode</span></a><a href="#format" class="rp-toc-item rp-link" title="format" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">format</span></a><a href="#type-2" class="rp-toc-item rp-link" title="type" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">type</span></a><a href="#ratio-1" class="rp-toc-item rp-link" title="ratio" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">ratio</span></a><a href="#symbol-1" class="rp-toc-item rp-link" title="symbol" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">symbol</span></a><a href="#thousandseparator-1" class="rp-toc-item rp-link" title="thousandSeparator" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">thousandSeparator</span></a><a href="#suffix-1" class="rp-toc-item rp-link" title="suffix" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">suffix</span></a><a href="#prefix-1" class="rp-toc-item rp-link" title="prefix" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">prefix</span></a><a href="#fractiondigits-1" class="rp-toc-item rp-link" title="fractionDigits" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">fractionDigits</span></a><a href="#significantdigits-1" class="rp-toc-item rp-link" title="significantDigits" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">significantDigits</span></a><a href="#roundingpriority-1" class="rp-toc-item rp-link" title="roundingPriority" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">roundingPriority</span></a><a href="#roundingmode-1" class="rp-toc-item rp-link" title="roundingMode" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">roundingMode</span></a><a href="#encoding-1" class="rp-toc-item rp-link" title="encoding" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">encoding</span></a><a href="#parentid" class="rp-toc-item rp-link" title="parentId" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">parentId</span></a><a href="#page" class="rp-toc-item rp-link" title="page" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">page</span></a><a href="#field" class="rp-toc-item rp-link" title="field" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">field</span></a><a href="#currentvalue" class="rp-toc-item rp-link" title="currentValue" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">currentValue</span></a><a href="#backgroundcolor" class="rp-toc-item rp-link" title="backgroundColor" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">backgroundColor</span></a><a href="#bordercolor" class="rp-toc-item rp-link" title="borderColor" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">borderColor</span></a><a href="#bodyfontsize" class="rp-toc-item rp-link" title="bodyFontSize" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">bodyFontSize</span></a><a href="#bodyfontcolor" class="rp-toc-item rp-link" title="bodyFontColor" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">bodyFontColor</span></a><a href="#bodybackgroundcolor" class="rp-toc-item rp-link" title="bodyBackgroundColor" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">bodyBackgroundColor</span></a><a href="#headerfontsize" class="rp-toc-item rp-link" title="headerFontSize" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">headerFontSize</span></a><a href="#headerfontcolor" class="rp-toc-item rp-link" title="headerFontColor" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">headerFontColor</span></a><a href="#headerbackgroundcolor" class="rp-toc-item rp-link" title="headerBackgroundColor" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">headerBackgroundColor</span></a><a href="#hoverheaderbackgroundcolor" class="rp-toc-item rp-link" title="hoverHeaderBackgroundColor" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">hoverHeaderBackgroundColor</span></a><a href="#hoverheaderinlinebackgroundcolor" class="rp-toc-item rp-link" title="hoverHeaderInlineBackgroundColor" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">hoverHeaderInlineBackgroundColor</span></a><a href="#selectedbordercolor" class="rp-toc-item rp-link" title="selectedBorderColor" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">selectedBorderColor</span></a><a href="#selectedbackgroundcolor" class="rp-toc-item rp-link" title="selectedBackgroundColor" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">selectedBackgroundColor</span></a><a href="#bodycellstyle" class="rp-toc-item rp-link" title="bodyCellStyle" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">bodyCellStyle</span></a><a href="#selector" class="rp-toc-item rp-link" title="selector" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">selector</span></a><a href="#field-1" class="rp-toc-item rp-link" title="field" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">field</span></a><a href="#operator" class="rp-toc-item rp-link" title="operator" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">operator</span></a><a href="#op" class="rp-toc-item rp-link" title="op" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">op</span></a><a href="#value" class="rp-toc-item rp-link" title="value" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">value</span></a><a href="#dynamicfilter" class="rp-toc-item rp-link" title="dynamicFilter" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">dynamicFilter</span></a><a href="#type-3" class="rp-toc-item rp-link" title="type" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">type</span></a><a href="#description" class="rp-toc-item rp-link" title="description" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">description</span></a><a href="#code" class="rp-toc-item rp-link" title="code" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">code</span></a><a href="#fallback" class="rp-toc-item rp-link" title="fallback" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">fallback</span></a><a href="#result" class="rp-toc-item rp-link" title="result" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">result</span></a><a href="#backgroundcolor-1" class="rp-toc-item rp-link" title="backgroundColor" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">backgroundColor</span></a><a href="#enablebackgroundcolorscale" class="rp-toc-item rp-link" title="enableBackgroundColorScale" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">enableBackgroundColorScale</span></a><a href="#backgroundcolorscale" class="rp-toc-item rp-link" title="backgroundColorScale" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">backgroundColorScale</span></a><a href="#minvalue" class="rp-toc-item rp-link" title="minValue" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">minValue</span></a><a href="#maxvalue" class="rp-toc-item rp-link" title="maxValue" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">maxValue</span></a><a href="#mincolor" class="rp-toc-item rp-link" title="minColor" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">minColor</span></a><a href="#maxcolor" class="rp-toc-item rp-link" title="maxColor" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">maxColor</span></a><a href="#enableprogressbar" class="rp-toc-item rp-link" title="enableProgressBar" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">enableProgressBar</span></a><a href="#barpositivecolor" class="rp-toc-item rp-link" title="barPositiveColor" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">barPositiveColor</span></a><a href="#barnegativecolor" class="rp-toc-item rp-link" title="barNegativeColor" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">barNegativeColor</span></a><a href="#barmin" class="rp-toc-item rp-link" title="barMin" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">barMin</span></a><a href="#barmax" class="rp-toc-item rp-link" title="barMax" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">barMax</span></a><a href="#textcolor" class="rp-toc-item rp-link" title="textColor" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">textColor</span></a><a href="#textfontsize" class="rp-toc-item rp-link" title="textFontSize" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">textFontSize</span></a><a href="#bordercolor-1" class="rp-toc-item rp-link" title="borderColor" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">borderColor</span></a><a href="#borderlinewidth" class="rp-toc-item rp-link" title="borderLineWidth" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">borderLineWidth</span></a><a href="#indicatorsascol" class="rp-toc-item rp-link" title="indicatorsAsCol" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">indicatorsAsCol</span></a><a href="#totals" class="rp-toc-item rp-link" title="totals" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">totals</span></a><a href="#row" class="rp-toc-item rp-link" title="row" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">row</span></a><a href="#showgrandtotals" class="rp-toc-item rp-link" title="showGrandTotals" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">showGrandTotals</span></a><a href="#showsubtotals" class="rp-toc-item rp-link" title="showSubTotals" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">showSubTotals</span></a><a href="#subtotalsdimensions" class="rp-toc-item rp-link" title="subTotalsDimensions" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">subTotalsDimensions</span></a><a href="#column" class="rp-toc-item rp-link" title="column" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">column</span></a><a href="#showgrandtotals-1" class="rp-toc-item rp-link" title="showGrandTotals" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">showGrandTotals</span></a><a href="#showsubtotals-1" class="rp-toc-item rp-link" title="showSubTotals" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">showSubTotals</span></a><a href="#subtotalsdimensions-1" class="rp-toc-item rp-link" title="subTotalsDimensions" style="padding-left:24px" data-depth="2"><span class="rp-toc-item__text rp-doc">subTotalsDimensions</span></a><a href="#theme" class="rp-toc-item rp-link" title="theme" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">theme</span></a><a href="#length" class="rp-toc-item rp-link" title="length" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">length</span></a><a href="#brand" class="rp-toc-item rp-link" title="brand" style="padding-left:12px" data-depth="1"><span class="rp-toc-item__text rp-doc">brand</span></a><a href="#locale" class="rp-toc-item rp-link" title="locale" style="padding-left:0" data-depth="0"><span class="rp-toc-item__text rp-doc">locale</span></a></nav><div class="rp-outline__divider"></div><div class="rp-outline__bottom"></div></div></aside></div></div>
+    <div id="__rspress_modal_container"></div>
+  </body>
+</html>

@@ -1,0 +1,2 @@
+"use strict";(self.rspackChunkwebsite=self.rspackChunkwebsite||[]).push([["5795"],{9934(e,t,n){n.r(t),n.d(t,{default:()=>a});var r=n(56730),s=n(52861);function i(e){return(0,r.jsx)(r.Fragment,{})}function a(){let e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},{wrapper:t}={...(0,s.R)(),...e.components};return t?(0,r.jsx)(t,{...e,children:(0,r.jsx)(i,{...e})}):i(e)}a.__RSPRESS_PAGE_META={},a.__RSPRESS_PAGE_META["en-US%2Fvseed%2Fapi.md"]={toc:[],title:"",headingTitle:"",frontmatter:{overview:!0}}}}]);
+//# sourceMappingURL=5795.1b47892695.js.map
