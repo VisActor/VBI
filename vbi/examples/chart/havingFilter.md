@@ -18,7 +18,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'bar',
@@ -86,7 +86,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'bar',
@@ -162,7 +162,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'bar',
@@ -255,7 +255,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'bar',
@@ -323,7 +323,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'bar',
@@ -391,7 +391,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'bar',
@@ -490,7 +490,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'bar',
@@ -589,7 +589,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'line',
@@ -663,7 +663,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'line',
@@ -718,7 +718,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'column',
@@ -803,7 +803,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'bar',
@@ -904,7 +904,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'column',
@@ -1005,7 +1005,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'bar',
@@ -1092,7 +1092,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'bar',
@@ -1173,7 +1173,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'bar',
@@ -1261,7 +1261,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'bar',
@@ -1338,7 +1338,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'scatter',
@@ -1424,7 +1424,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'bar',
@@ -1525,7 +1525,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'column',
@@ -1603,7 +1603,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         ...{
           connectorId: 'demoSupermarket',
           chartType: 'bar',

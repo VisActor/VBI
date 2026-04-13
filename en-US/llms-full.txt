@@ -145577,3514 +145577,261 @@ export default Demo
 
 
 ---
-url: /VBI/en-US/vbi-react/index.md
+url: /VBI/en-US/vbi/index.md
 ---
 
-# VBI React
+# VBI
 
-`@visactor/vbi-react` is the React adapter layer for `@visactor/vbi`, responsible for integrating `VBIChartBuilder` into the React component tree.
+:::info In Development
+Coming Soon
+:::
 
-Current exports are split into two layers:
 
-* Root export `@visactor/vbi-react`: `useVBI`, `useVSeed`, `useChartType`, `useDimensions`, `useMeasures`, `useWhereFilter`, `useHavingFilter`
-* Sub-path export `@visactor/vbi-react/components`: `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel`
 
-## Purpose
-
-* State subscription and rendering encapsulation for React 18+
-* Uses `VBIChartBuilder` as the Single Source of Truth (SSOT) — no additional business state copies
-* Ideal for building BI configuration panels, chart preview areas, and DSL debug panels
-
-## Installation
-
-Standard installation:
-
-```bash
-pnpm add @visactor/vbi-react @visactor/vbi @visactor/vseed react react-dom
-```
-
-For local development within this monorepo, use workspace dependencies:
-
-```bash
-pnpm --filter=<your-app> add @visactor/vbi-react@workspace:* @visactor/vbi@workspace:* @visactor/vseed@workspace:* react react-dom
-```
-
-## Quick Start
-
-The example below demonstrates the minimal closed loop with `useVBI` + `useVSeed`:
-
-```tsx
-import { useMemo } from 'react'
-import { VBI, type VBIConnector } from '@visactor/vbi'
-import { useVBI, useVSeed } from '@visactor/vbi-react'
-
-const connectorId = 'local-demo'
-
-const connector: VBIConnector = {
-  discoverSchema: async () => [
-    { name: 'region', type: 'string' },
-    { name: 'sales', type: 'number' },
-  ],
-  query: async () => ({
-    dataset: [
-      { region: 'East', sales: 120 },
-      { region: 'West', sales: 90 },
-    ],
-  }),
-}
-
-VBI.registerConnector(connectorId, connector)
-
-export function App() {
-  const builder = useMemo(
-    () =>
-      VBI.createChart({
-        ...VBI.generateEmptyChartDSL(connectorId),
-        chartType: 'bar',
-      }),
-    [],
-  )
-
-  const { dsl } = useVBI(builder)
-  const { vseed, loading, error } = useVSeed(builder, { debounce: 0 })
-
-  if (error) return <pre>{error.message}</pre>
-  if (loading || !vseed) return <div>Loading...</div>
-
-  return (
-    <div>
-      <h3>{dsl.chartType}</h3>
-      <pre>{JSON.stringify(vseed, null, 2)}</pre>
-    </div>
-  )
-}
-```
-
-## Documentation
-
-* [API Overview](/VBI/en-US/vbi-react/api/index.md)
-* [Examples](/VBI/en-US/vbi-react/examples/index.md)
-
-
-
----
-url: /VBI/en-US/vbi-react/examples/index.md
----
-
-# Examples Overview
-
-All examples below can be copied directly into a `.tsx` file and run.
-
-* [Basic Hooks](/VBI/en-US/vbi-react/examples/basicHooks.md)
-* [Layout with Components](/VBI/en-US/vbi-react/examples/layoutWithComponents.md)
-* [Filter Mutations](/VBI/en-US/vbi-react/examples/filterMutations.md)
-
-
-
----
-url: /VBI/en-US/vbi-react/examples/basicHooks.md
----
-
-# Basic Hooks
-
-This example demonstrates combining `useVBI` with `useVSeed`.
-
-## Dependencies
-
-* Packages: `@visactor/vbi-react`, `@visactor/vbi`, `@visactor/vseed`, `react`
-* Props: requires an initialized `VBIChartBuilder` (with a bound connector)
-
-## Code Snippet
-
-```tsx
-import type { VBIChartBuilder } from '@visactor/vbi'
-import { useVBI, useVSeed } from '@visactor/vbi-react'
-
-export function BasicHooksDemo({ builder }: { builder: VBIChartBuilder }) {
-  const { dsl } = useVBI(builder)
-  const { vseed, loading, error, refetch } = useVSeed(builder, { debounce: 100 })
-
-  if (error) {
-    return <button onClick={() => void refetch()}>Retry: {error.message}</button>
-  }
-
-  if (loading || !vseed) {
-    return <div>Loading...</div>
-  }
-
-  return (
-    <div>
-      <h4>chartType: {dsl.chartType}</h4>
-      <pre>{JSON.stringify(vseed, null, 2)}</pre>
-    </div>
-  )
-}
-```
-
-## Expected Behavior
-
-* When the builder changes, `dsl` and `vseed` update in sync.
-* Shows `Loading...` on first load or when updating; allows manual retry on failure.
-* On success, displays the current `chartType` and the latest VSeed JSON.
-
-
-
----
-url: /VBI/en-US/vbi-react/examples/layoutWithComponents.md
----
-
-# Layout with Components
-
-This example demonstrates `BuilderLayout` + `FieldPanel` + `ChartRenderer` + `ChartTypeSelector`.
-
-## Dependencies
-
-* Packages: `@visactor/vbi-react/components`, `@visactor/vbi`, `react`
-* Props: `builder` should have available dimension/measure fields for `FieldPanel` add/remove demos
-
-## Code Snippet
-
-```tsx
-import type { VBIChartBuilder } from '@visactor/vbi'
-import { BuilderLayout, ChartRenderer, ChartTypeSelector, FieldPanel } from '@visactor/vbi-react/components'
-
-export function LayoutDemo({ builder }: { builder: VBIChartBuilder }) {
-  return (
-    <BuilderLayout
-      topBar={<ChartTypeSelector builder={builder} />}
-      leftPanel={
-        <FieldPanel
-          builder={builder}
-          dimensionOptions={[{ label: 'Region', value: 'region' }]}
-          measureOptions={[{ label: 'Sales', value: 'sales' }]}
-        />
-      }
-      main={<ChartRenderer builder={builder} debounce={100} />}
-    />
-  )
-}
-```
-
-## Expected Behavior
-
-* Top bar: switch chart type; Left panel: add/remove dimensions/measures; Main area: chart DSL preview.
-* Main area auto-refreshes after field operations — no manual trigger needed.
-* On build failure, `ChartRenderer` shows a default error message and retry button.
-
-
-
----
-url: /VBI/en-US/vbi-react/examples/filterMutations.md
----
-
-# Filter Mutations
-
-This example demonstrates the mutation entry points for `useWhereFilter` and `useHavingFilter`.
-
-## Dependencies
-
-* Packages: `@visactor/vbi-react`, `@visactor/vbi`, `react`
-* Props: `builder` should contain at least `region` and `sales` fields for demonstrating Where/Having mutations
-
-## Code Snippet
-
-```tsx
-import type { VBIChartBuilder } from '@visactor/vbi'
-import { useHavingFilter, useWhereFilter } from '@visactor/vbi-react'
-
-export function FilterDemo({ builder }: { builder: VBIChartBuilder }) {
-  const { whereFilter, mutateWhereFilter, clearWhereFilter } = useWhereFilter(builder)
-  const { havingFilter, mutateHavingFilter, clearHavingFilter } = useHavingFilter(builder)
-
-  return (
-    <div style={{ display: 'grid', gap: 8 }}>
-      <button
-        onClick={() =>
-          mutateWhereFilter((where) => {
-            where.add('region', (node) => node.setOperator('eq').setValue('East'))
-          })
-        }
-      >
-        Add Where Condition
-      </button>
-      <button
-        onClick={() =>
-          mutateHavingFilter((having) => {
-            having.add('sales', (node) => node.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000))
-          })
-        }
-      >
-        Add Having Condition
-      </button>
-      <button onClick={clearWhereFilter}>Clear Where</button>
-      <button onClick={clearHavingFilter}>Clear Having</button>
-      <pre>{JSON.stringify({ whereFilter, havingFilter }, null, 2)}</pre>
-    </div>
-  )
-}
-```
-
-## Expected Behavior
-
-* After clicking buttons, Where/Having conditions are appended to the builder's filter tree.
-* The clear buttons immediately remove the corresponding filter conditions.
-* The JSON at the bottom can be used to confirm the current filter DSL structure.
-
-
-
----
-url: /VBI/en-US/vbi-react/api/index.md
----
-
-# API Overview
-
-`@visactor/vbi-react` exports are split into two parts:
-
-| Module | Import Path | Contents |
-| --- | --- | --- |
-| Hooks | `@visactor/vbi-react` | `useChartType`, `useDimensions`, `useHavingFilter`, `useMeasures`, `useVBI`, `useVSeed`, `useWhereFilter` |
-| Components | `@visactor/vbi-react/components` | `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel` |
-
-All hooks and components work around `VBIChartBuilder` without maintaining additional business state.
-
-
-
----
-url: /VBI/en-US/vbi-react/api/useChartType.md
----
-
-# useChartType
-
-## Import
-
-```ts
-import { useChartType } from '@visactor/vbi-react'
-```
-
-## Signature
-
-```ts
-useChartType(builder: VBIChartBuilder): UseChartTypeReturn
-```
-
-## Description
-
-Reads and updates the current chart type, while exposing the list of available chart types.
-
-## Minimal Example
-
-```tsx
-import type { VBIChartBuilder } from '@visactor/vbi'
-import { useChartType } from '@visactor/vbi-react'
-
-export function Demo({ builder }: { builder: VBIChartBuilder }) {
-  const result = useChartType(builder)
-  return <pre>{JSON.stringify(result, null, 2)}</pre>
-}
-```
-
-
-
----
-url: /VBI/en-US/vbi-react/api/useDimensions.md
----
-
-# useDimensions
-
-## Import
-
-```ts
-import { useDimensions } from '@visactor/vbi-react'
-```
-
-## Signature
-
-```ts
-useDimensions(builder: VBIChartBuilder): UseDimensionsReturn
-```
-
-## Description
-
-Reads and updates dimension configuration, providing the ability to add, remove, and modify dimensions.
-
-## Minimal Example
-
-```tsx
-import type { VBIChartBuilder } from '@visactor/vbi'
-import { useDimensions } from '@visactor/vbi-react'
-
-export function Demo({ builder }: { builder: VBIChartBuilder }) {
-  const result = useDimensions(builder)
-  return <pre>{JSON.stringify(result, null, 2)}</pre>
-}
-```
-
-
-
----
-url: /VBI/en-US/vbi-react/api/useHavingFilter.md
----
-
-# useHavingFilter
-
-## Import
-
-```ts
-import { useHavingFilter } from '@visactor/vbi-react'
-```
-
-## Signature
-
-```ts
-useHavingFilter(builder: VBIChartBuilder): UseHavingFilterReturn
-```
-
-## Description
-
-Manages the Having filter tree and provides mutation entry points.
-
-## Minimal Example
-
-```tsx
-import type { VBIChartBuilder } from '@visactor/vbi'
-import { useHavingFilter } from '@visactor/vbi-react'
-
-export function Demo({ builder }: { builder: VBIChartBuilder }) {
-  const result = useHavingFilter(builder)
-  return <pre>{JSON.stringify(result, null, 2)}</pre>
-}
-```
-
-
-
----
-url: /VBI/en-US/vbi-react/api/useMeasures.md
----
-
-# useMeasures
-
-## Import
-
-```ts
-import { useMeasures } from '@visactor/vbi-react'
-```
-
-## Signature
-
-```ts
-useMeasures(builder: VBIChartBuilder): UseMeasuresReturn
-```
-
-## Description
-
-Reads and updates measure configuration, providing the ability to add, remove, and modify measures.
-
-## Minimal Example
-
-```tsx
-import type { VBIChartBuilder } from '@visactor/vbi'
-import { useMeasures } from '@visactor/vbi-react'
-
-export function Demo({ builder }: { builder: VBIChartBuilder }) {
-  const result = useMeasures(builder)
-  return <pre>{JSON.stringify(result, null, 2)}</pre>
-}
-```
-
-
-
----
-url: /VBI/en-US/vbi-react/api/useVBI.md
----
-
-# useVBI
-
-## Import
-
-```ts
-import { useVBI } from '@visactor/vbi-react'
-```
-
-## Signature
-
-```ts
-useVBI(builder: VBIChartBuilder): UseVBIReturn
-```
-
-## Description
-
-Subscribes to DSL snapshot changes on the builder, returning the latest `dsl` and the original `builder`.
-
-## Minimal Example
-
-```tsx
-import type { VBIChartBuilder } from '@visactor/vbi'
-import { useVBI } from '@visactor/vbi-react'
-
-export function Demo({ builder }: { builder: VBIChartBuilder }) {
-  const result = useVBI(builder)
-  return <pre>{JSON.stringify(result, null, 2)}</pre>
-}
-```
-
-
-
----
-url: /VBI/en-US/vbi-react/api/useVSeed.md
----
-
-# useVSeed
-
-## Import
-
-```ts
-import { useVSeed } from '@visactor/vbi-react'
-```
-
-## Signature
-
-```ts
-useVSeed(builder: VBIChartBuilder, options: UseVSeedOptions =
-```
-
-## Description
-
-Executes the query and VSeed generation pipeline, returning the state and data required for rendering.
-
-## Minimal Example
-
-```tsx
-import type { VBIChartBuilder } from '@visactor/vbi'
-import { useVSeed } from '@visactor/vbi-react'
-
-export function Demo({ builder }: { builder: VBIChartBuilder }) {
-  const { vseed, loading } = useVSeed(builder, { debounce: 100 })
-  if (loading || !vseed) {
-    return <div>Loading...</div>
-  }
-  return <pre>{JSON.stringify(vseed, null, 2)}</pre>
-}
-```
-
-
-
 ---
-url: /VBI/en-US/vbi-react/api/useWhereFilter.md
+url: /VBI/en-US/vbi/practices/standard.md
 ---
-
-# useWhereFilter
-
-## Import
-
-```ts
-import { useWhereFilter } from '@visactor/vbi-react'
-```
 
-## Signature
+# Standard
 
-```ts
-useWhereFilter(builder: VBIChartBuilder): UseWhereFilterReturn
-```
+import { APP } from 'standard'
 
-## Description
+<div style={{ width: '100%', height: '700px' }}>
+  <APP />
+</div>
 
-Manages the Where filter tree and provides mutation entry points.
 
-## Minimal Example
 
-```tsx
-import type { VBIChartBuilder } from '@visactor/vbi'
-import { useWhereFilter } from '@visactor/vbi-react'
-
-export function Demo({ builder }: { builder: VBIChartBuilder }) {
-  const result = useWhereFilter(builder)
-  return <pre>{JSON.stringify(result, null, 2)}</pre>
-}
-```
-
-
-
 ---
-url: /VBI/en-US/vbi-react/api/builderLayout.md
+url: /VBI/en-US/vbi/practices/standard-report.md
 ---
-
-# BuilderLayout
-
-## Import
-
-```ts
-import { BuilderLayout } from '@visactor/vbi-react/components'
-```
-
-## Signature
 
-```ts
-BuilderLayout(props: BuilderLayoutProps)
-```
+# Standard Report
 
-## Description
+import { APP } from 'standard-report'
 
-Provides a standardized three-column/two-column builder layout container.
+<div style={{ width: '100%', height: '760px' }}>
+  <APP />
+</div>
 
-## Minimal Example
 
-```tsx
-import { BuilderLayout } from '@visactor/vbi-react/components'
 
-export function Demo() {
-  return <BuilderLayout main={<div>Main Content</div>} />
-}
-```
-
-
-
 ---
-url: /VBI/en-US/vbi-react/api/chartRenderer.md
+url: /VBI/en-US/vbi/practices/minimalist.md
 ---
-
-# ChartRenderer
-
-## Import
-
-```ts
-import { ChartRenderer } from '@visactor/vbi-react/components'
-```
-
-## Signature
-
-```ts
-ChartRenderer(props: ChartRendererProps)
-```
 
-## Description
+# Minimalist
 
-Renders the chart based on builder output, and handles loading and error states.
+import { APP } from 'minimalist'
 
-## Minimal Example
+<div style={{ width: '100%', height: '700px' }}>
+  <APP />
+</div>
 
-```tsx
-import type { VBIChartBuilder } from '@visactor/vbi'
-import { ChartRenderer } from '@visactor/vbi-react/components'
 
-export function Demo({ builder }: { builder: VBIChartBuilder }) {
-  return <ChartRenderer builder={builder} />
-}
-```
 
-
-
 ---
-url: /VBI/en-US/vbi-react/api/chartTypeSelector.md
+url: /VBI/en-US/vbi/practices/streamlined.md
 ---
-
-# ChartTypeSelector
-
-## Import
-
-```ts
-import { ChartTypeSelector } from '@visactor/vbi-react/components'
-```
-
-## Signature
-
-```ts
-ChartTypeSelector(props: ChartTypeSelectorProps)
-```
-
-## Description
 
-Provides a chart type dropdown selector.
+# Streamlined
 
-## Minimal Example
+import { APP } from 'streamlined'
 
-```tsx
-import type { VBIChartBuilder } from '@visactor/vbi'
-import { ChartTypeSelector } from '@visactor/vbi-react/components'
+<div style={{ width: '100%', height: '700px' }}>
+  <APP />
+</div>
 
-export function Demo({ builder }: { builder: VBIChartBuilder }) {
-  return <ChartTypeSelector builder={builder} />
-}
-```
 
 
-
 ---
-url: /VBI/en-US/vbi-react/api/fieldPanel.md
+url: /VBI/en-US/vbi/practices/professional.md
 ---
-
-# FieldPanel
-
-## Import
-
-```ts
-import { FieldPanel } from '@visactor/vbi-react/components'
-```
-
-## Signature
-
-```ts
-FieldPanel(props: FieldPanelProps)
-```
-
-## Description
-
-Provides a dimension/measure field panel with basic edit interactions.
 
-## Minimal Example
+# Professional
 
-```tsx
-import type { VBIChartBuilder } from '@visactor/vbi'
-import { FieldPanel } from '@visactor/vbi-react/components'
+import { APP } from 'professional'
 
-export function Demo({ builder }: { builder: VBIChartBuilder }) {
-  return <FieldPanel builder={builder} />
-}
-```
+<div style={{ width: '100%', height: '700px' }}>
+  <APP />
+</div>
 
 
 
 ---
-url: /VBI/en-US/vbi/api/chartBuilder/chartType.md
+url: /VBI/en-US/vbi/practices/vbi-react-starter.md
 ---
-
-# ChartTypeBuilder
-
-Chart type builder for switching and retrieving the chart type. Supports various chart types including table, bar, line, pie, scatter, and more.
-
-## Properties
-
-## Methods
-
-### constructor
-
-Constructor
-
-**Definition**:
-
-```typescript
-constructor(doc: Y.Doc, dsl: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
-
-### observe
-
-Listens for chart type changes.
-
-**Definition**:
-
-```typescript
-observe(callback: ObserveCallback): () => void
-```
-
-**Returns**: `() => void`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `callback` | ObserveCallback | - Callback function |
-
-### changeChartType
-
-Sets the chart type.
-
-**Definition**:
-
-```typescript
-changeChartType(chartType: string)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `chartType` | string | - Chart type |
-
-### getChartType
 
-Gets the current chart type.
+# vbi-react Starter
 
-**Definition**:
+import { APP } from 'vbi-react-starter'
 
-```typescript
-getChartType(): string
-```
+<div style={{ width: '100%', height: 'min(78vh, 920px)', minHeight: '640px' }}>
+  <APP />
+</div>
 
-**Returns**: `string`
 
-### getSupportedDimensionEncodings
 
-Gets the dimension encodings supported by the current chart type.
-
-**Definition**:
-
-```typescript
-getSupportedDimensionEncodings()
-```
-
-### getRecommendedDimensionEncodings
-
-Returns recommended dimension encodings in order based on the current chart type.
-
-**Definition**:
-
-```typescript
-getRecommendedDimensionEncodings(dimensionCount: number)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `dimensionCount` | number | - Number of dimensions; defaults to the dimension count in the current DSL |
-
-### getSupportedMeasureEncodings
-
-Gets the measure encodings supported by the current chart type.
-
-**Definition**:
-
-```typescript
-getSupportedMeasureEncodings()
-```
-
-### getRecommendedMeasureEncodings
-
-Returns recommended measure encodings in order based on the current chart type.
-
-**Definition**:
-
-```typescript
-getRecommendedMeasureEncodings(measureCount: number)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `measureCount` | number | - Number of measures; defaults to the measure count in the current DSL |
-
-### toJSON
-
-Exports to JSON.
-
-**Definition**:
-
-```typescript
-toJSON(): string
-```
-
-**Returns**: `string`
-
-### getAvailableChartTypes
-
-Gets all supported chart types.
-
-**Definition**:
-
-```typescript
-getAvailableChartTypes(): string[]
-```
-
-**Returns**: `string[]`
-
-
-
 ---
-url: /VBI/en-US/vbi/api/chartBuilder/dimensions/dimensionNode.md
+url: /VBI/en-US/vbi/examples/index.md
 ---
-
-# DimensionNodeBuilder
-
-Dimension node builder for configuring a single dimension.
 
-## Properties
+# VBI Examples
 
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(yMap: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
-
-### getId
-
-Gets the node ID.
-
-**Definition**:
-
-```typescript
-getId(): string
-```
-
-**Returns**: `string`
-
-### getField
-
-Gets the field name.
-
-**Definition**:
-
-```typescript
-getField(): string
-```
-
-**Returns**: `string`
-
-### getEncoding
-
-Gets the chart encoding position.
-
-**Definition**:
-
-```typescript
-getEncoding(): VBIDimension['encoding'] | undefined
-```
-
-**Returns**: `VBIDimension['encoding'] \| undefined`
-
-### getSort
-
-Gets the sort configuration.
-
-**Definition**:
-
-```typescript
-getSort(): VBISort | undefined
-```
-
-**Returns**: `VBISort \| undefined`
-
-### setAlias
-
-Sets the display name.
-
-**Definition**:
-
-```typescript
-setAlias(alias: string): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `alias` | string | - Display name |
-
-### setEncoding
-
-Sets the chart encoding position.
-
-**Definition**:
-
-```typescript
-setEncoding(encoding: NonNullable<VBIDimension['encoding']>): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `encoding` | NonNullable\<VBIDimension\['encoding']> | - Dimension encoding position |
-
-### setSort
-
-Sets the sort configuration.
-
-**Definition**:
-
-```typescript
-setSort(sort: VBISort): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `sort` | VBISort | - Sort configuration |
-
-### setAggregate
-
-Sets the date aggregation function.
-
-**Definition**:
-
-```typescript
-setAggregate(aggregate: NonNullable<VBIDimension['aggregate']>): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `aggregate` | NonNullable\<VBIDimension\['aggregate']> | - Date aggregation configuration |
-
-### clearAggregate
-
-Clears the date aggregation function.
-
-**Definition**:
-
-```typescript
-clearAggregate(): this
-```
-
-**Returns**: `this`
-
-### clearSort
-
-Clears the sort configuration.
-
-**Definition**:
-
-```typescript
-clearSort(): this
-```
-
-**Returns**: `this`
-
-### toJSON
-
-Exports to JSON.
-
-**Definition**:
-
-```typescript
-toJSON(): VBIDimension
-```
-
-**Returns**: `VBIDimension`
-
-
-
----
-url: /VBI/en-US/vbi/api/chartBuilder/dimensions/index.md
----
-
-# DimensionsBuilder
-
-Dimension builder for adding, modifying, and removing dimension configuration. Dimensions are the categorical fields in data, such as: time, region, product category.
-
-## Properties
-
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(doc: Y.Doc, dsl: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
-
-### add
-
-Adds a dimension.
-
-**Definition**:
-
-```typescript
-add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder
-```
-
-**Returns**: `DimensionsBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `field` | string | - Field name |
-| `callback` | (node: DimensionNodeBuilder) => void | - Callback function |
-
-### remove
-
-Removes the dimension with the specified ID.
-
-**Definition**:
-
-```typescript
-remove(id: string): DimensionsBuilder
-```
-
-**Returns**: `DimensionsBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `id` | string | - Dimension ID |
-
-### update
-
-Updates the configuration of the dimension with the specified ID.
-
-**Definition**:
-
-```typescript
-update(id: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder
-```
-
-**Returns**: `DimensionsBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `id` | string | - Dimension ID |
-| `callback` | (node: DimensionNodeBuilder) => void | - Callback function |
-
-### find
-
-Finds the first dimension matching the callback condition, behaves like `Array.find`.
-
-**Definition**:
-
-```typescript
-find(predicate: (node: DimensionNodeBuilder, index: number) => boolean): DimensionNodeBuilder | undefined
-```
-
-**Returns**: `DimensionNodeBuilder \| undefined`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `predicate` | (node: DimensionNodeBuilder, index: number) => boolean | - Search condition |
-
-### findAll
-
-Gets all dimensions.
-
-**Definition**:
-
-```typescript
-findAll(): DimensionNodeBuilder[]
-```
-
-**Returns**: `DimensionNodeBuilder[]`
-
-### toJSON
-
-Exports all dimensions as a JSON array.
-
-**Definition**:
-
-```typescript
-toJSON(): VBIDimension[]
-```
-
-**Returns**: `VBIDimension[]`
-
-### observe
-
-Listens for dimension changes, returns an unsubscribe function.
-
-**Definition**:
-
-```typescript
-observe(callback: ObserveDeepCallback): () => void
-```
-
-**Returns**: `() => void`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `callback` | ObserveDeepCallback | - Callback function |
-
-### static isDimensionNode
-
-**Definition**:
-
-```typescript
-static isDimensionNode(node: VBIDimensionTree[0]): node is VBIDimension
-```
-
-**Returns**: `node is VBIDimension`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `node` | VBIDimensionTree\[0] | - |
-
-### static isDimensionGroup
-
-**Definition**:
-
-```typescript
-static isDimensionGroup(node: VBIDimensionTree[0]): node is VBIDimensionGroup
-```
-
-**Returns**: `node is VBIDimensionGroup`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `node` | VBIDimensionTree\[0] | - |
-
-
-
----
-url: /VBI/en-US/vbi/api/chartBuilder/havingFilter/havingGroup.md
----
-
-# HavingGroupBuilder
-
-Having group builder for configuring the logical relationship (AND/OR) of a condition group.
-
-## Properties
-
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(yMap: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
-
-### getConditions
-
-**Definition**:
-
-```typescript
-getConditions(): Y.Array<any>
-```
-
-**Returns**: `Y.Array<any>`
-
-### getId
-
-Gets the group ID.
-
-**Definition**:
-
-```typescript
-getId(): string
-```
-
-**Returns**: `string`
-
-### getOperator
-
-Gets the logical operator.
-
-**Definition**:
-
-```typescript
-getOperator(): 'and' | 'or'
-```
-
-**Returns**: `'and' \| 'or'`
-
-### setOperator
-
-Sets the logical operator.
-
-**Definition**:
-
-```typescript
-setOperator(op: 'and' | 'or'): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `op` | 'and' | 'or' | - Logical operator |
-
-### add
-
-Adds a Having filter condition to the group.
-
-**Definition**:
-
-```typescript
-add(field: string, callback: (node: HavingFilterNodeBuilder) => void): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `field` | string | - Field name |
-| `callback` | (node: HavingFilterNodeBuilder) => void | - Callback function |
-
-### addGroup
-
-Adds a nested group to the current group.
-
-**Definition**:
-
-```typescript
-addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `op` | 'and' | 'or' | - Logical operator |
-| `callback` | (group: HavingGroupBuilder) => void | - Callback function |
-
-### remove
-
-Removes the condition with the specified ID or the item at the specified index.
-
-**Definition**:
-
-```typescript
-remove(idOrIndex: string | number): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `idOrIndex` | string | number | - ID or index |
-
-### clear
-
-Clears all conditions in the group.
-
-**Definition**:
-
-```typescript
-clear(): this
-```
-
-**Returns**: `this`
-
-### toJSON
-
-Exports to JSON.
-
-**Definition**:
-
-```typescript
-toJSON(): VBIHavingGroup
-```
-
-**Returns**: `VBIHavingGroup`
-
-
-
----
-url: /VBI/en-US/vbi/api/chartBuilder/havingFilter/havingNode.md
----
-
-# HavingFilterNodeBuilder
-
-Having filter node builder for configuring a single Having filter condition.
-
-## Properties
-
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(yMap: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
-
-### getId
-
-Gets the node ID.
-
-**Definition**:
-
-```typescript
-getId(): string
-```
-
-**Returns**: `string`
-
-### getField
-
-Gets the field name.
-
-**Definition**:
-
-```typescript
-getField(): string
-```
-
-**Returns**: `string`
-
-### getOperator
-
-Gets the filter operator.
-
-**Definition**:
-
-```typescript
-getOperator(): string | undefined
-```
-
-**Returns**: `string \| undefined`
-
-### getAggregate
-
-Gets the aggregate configuration.
-
-**Definition**:
-
-```typescript
-getAggregate(): VBIHavingAggregate | undefined
-```
-
-**Returns**: `VBIHavingAggregate \| undefined`
-
-### setValue
-
-Sets the value for the filter condition.
-
-**Definition**:
-
-```typescript
-setValue(value: unknown): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `value` | unknown | - Filter value |
-
-### setOperator
-
-Sets the filter operator.
-
-**Definition**:
-
-```typescript
-setOperator(operator: string): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `operator` | string | - Operator |
-
-### setAggregate
-
-Sets the aggregate configuration.
-
-**Definition**:
-
-```typescript
-setAggregate(aggregate: VBIHavingAggregate): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `aggregate` | VBIHavingAggregate | - Aggregate configuration |
-
-### toJSON
-
-Exports to JSON.
-
-**Definition**:
-
-```typescript
-toJSON(): VBIHavingFilter
-```
-
-**Returns**: `VBIHavingFilter`
-
-
-
----
-url: /VBI/en-US/vbi/api/chartBuilder/havingFilter/index.md
----
-
-# HavingFilterBuilder
-
-Having filter builder for adding, modifying, and removing post-aggregation filter conditions. Having filters take effect after data aggregation and are used to filter grouped results.
-
-## Properties
-
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(doc: Y.Doc, dsl: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
-
-### getConditions
-
-**Definition**:
-
-```typescript
-getConditions(): Y.Array<any>
-```
-
-**Returns**: `Y.Array<any>`
-
-### add
-
-Adds a Having filter condition.
-
-**Definition**:
-
-```typescript
-add(field: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFilterBuilder
-```
-
-**Returns**: `HavingFilterBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `field` | string | - Field name |
-| `callback` | (node: HavingFilterNodeBuilder) => void | - Callback function |
-
-### addGroup
-
-Adds a Having group.
-
-**Definition**:
-
-```typescript
-addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): HavingFilterBuilder
-```
-
-**Returns**: `HavingFilterBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `op` | 'and' | 'or' | - Logical operator |
-| `callback` | (group: HavingGroupBuilder) => void | - Callback function |
-
-### update
-
-Updates the filter condition with the specified ID.
-
-**Definition**:
-
-```typescript
-update(id: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFilterBuilder
-```
-
-**Returns**: `HavingFilterBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `id` | string | - Filter condition ID |
-| `callback` | (node: HavingFilterNodeBuilder) => void | - Callback function |
-
-### updateGroup
-
-Updates the group with the specified ID.
-
-**Definition**:
-
-```typescript
-updateGroup(id: string, callback: (group: HavingGroupBuilder) => void): HavingFilterBuilder
-```
-
-**Returns**: `HavingFilterBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `id` | string | - Group ID |
-| `callback` | (group: HavingGroupBuilder) => void | - Callback function |
-
-### remove
-
-Removes the condition with the specified ID or the item at the specified index.
-
-**Definition**:
-
-```typescript
-remove(idOrIndex: string | number): HavingFilterBuilder
-```
-
-**Returns**: `HavingFilterBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `idOrIndex` | string | number | - ID or index |
-
-### find
-
-Finds the first condition (filter or group) matching the callback condition, behaves like `Array.find`.
-
-**Definition**:
-
-```typescript
-find(predicate: (entry: HavingFilterNodeBuilder | HavingGroupBuilder, index: number) => boolean): HavingFilterNodeBuilder | HavingGroupBuilder | undefined
-```
-
-**Returns**: `HavingFilterNodeBuilder \| HavingGroupBuilder \| undefined`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `predicate` | (entry: HavingFilterNodeBuilder | HavingGroupBuilder, index: number) => boolean | - Search condition |
-
-### clear
-
-Clears all Having filter conditions.
-
-**Definition**:
-
-```typescript
-clear()
-```
-
-### toJSON
-
-Exports the complete Having filter configuration.
-
-**Definition**:
-
-```typescript
-toJSON(): VBIHavingGroup
-```
-
-**Returns**: `VBIHavingGroup`
-
-### observe
-
-Listens for filter condition changes, returns an unsubscribe function.
-
-**Definition**:
-
-```typescript
-observe(callback: ObserveDeepCallback): () => void
-```
-
-**Returns**: `() => void`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `callback` | ObserveDeepCallback | - Callback function |
-
-### static isGroup
-
-Determines whether the node is a group node.
-
-**Definition**:
-
-```typescript
-static isGroup(yMap: Y.Map<any>): boolean
-```
-
-**Returns**: `boolean`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
-
-### static isNode
-
-Determines whether the node is a leaf node.
-
-**Definition**:
-
-```typescript
-static isNode(yMap: Y.Map<any>): boolean
-```
-
-**Returns**: `boolean`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
-
-
-
----
-url: /VBI/en-US/vbi/api/chartBuilder/index.md
----
-
-# VBIChartBuilder
-
-## Properties
-
-| Property | Type | Description |
-| --- | --- | --- |
-| **doc** | `Y.Doc` | - |
-| **dsl** | `Y.Map<any>` | - |
-| **adapters** | `VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>` | - |
-| **chartType** | `ChartTypeBuilder` | - |
-| **measures** | `MeasuresBuilder` | - |
-| **dimensions** | `DimensionsBuilder` | - |
-| **havingFilter** | `HavingFilterBuilder` | - |
-| **whereFilter** | `WhereFilterBuilder` | - |
-| **theme** | `ThemeBuilder` | - |
-| **locale** | `LocaleBuilder` | - |
-| **limit** | `LimitBuilder` | - |
-| **undoManager** | `UndoManager` | - |
-
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(doc: Y.Doc, options: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>, dsl: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `options` | VBIChartBuilderOptions\<TQueryDSL, TSeedDSL> | - |
-| `dsl` | Y.Map<any> | - |
-
-### applyUpdate
-
-**Definition**:
-
-```typescript
-applyUpdate(update: Uint8Array, transactionOrigin: any): void
-```
-
-**Returns**: `void`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `update` | Uint8Array | - |
-| `transactionOrigin` | any | - |
-
-### encodeStateAsUpdate
-
-**Definition**:
-
-```typescript
-encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBufferLike>
-```
-
-**Returns**: `Uint8Array<ArrayBufferLike>`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `targetStateVector` | Uint8Array | - |
-
-### buildVSeed
-
-**Definition**:
-
-```typescript
-buildVSeed(options: BuildVSeedOptions): Promise<TSeedDSL>
-```
-
-**Returns**: `Promise<TSeedDSL>`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `options` = {} | BuildVSeedOptions | - |
-
-### buildVQuery
-
-**Definition**:
-
-```typescript
-buildVQuery(): TQueryDSL
-```
-
-**Returns**: `TQueryDSL`
-
-### build
-
-**Definition**:
-
-```typescript
-build(): VBIChartDSL
-```
-
-**Returns**: `VBIChartDSL`
-
-### isEmpty
-
-**Definition**:
-
-```typescript
-isEmpty(): boolean
-```
-
-**Returns**: `boolean`
-
-### getSchema
-
-**Definition**:
-
-```typescript
-getSchema(): Promise<any>
-```
-
-**Returns**: `Promise<any>`
-
-
-
----
-url: /VBI/en-US/vbi/api/chartBuilder/limit.md
----
-
-# LimitBuilder
-
-Data limit builder for setting and getting the current limit.
-
-## Properties
-
-## Methods
-
-### constructor
-
-Constructor
-
-**Definition**:
-
-```typescript
-constructor(_doc: Y.Doc, dsl: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `_doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
-
-### observe
-
-Listens for limit changes, returns an unsubscribe function.
-
-**Definition**:
-
-```typescript
-observe(callback: ObserveCallback): () => void
-```
-
-**Returns**: `() => void`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `callback` | ObserveCallback | - Callback function |
-
-### setLimit
-
-Sets the limit.
-
-**Definition**:
-
-```typescript
-setLimit(limit: number)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `limit` | number | - Data limit |
-
-### getLimit
-
-Gets the current limit.
-
-**Definition**:
-
-```typescript
-getLimit(): number | undefined
-```
-
-**Returns**: `number \| undefined`
-
-### toJSON
-
-Exports to JSON.
-
-**Definition**:
-
-```typescript
-toJSON(): number | undefined
-```
-
-**Returns**: `number \| undefined`
-
-
-
----
-url: /VBI/en-US/vbi/api/chartBuilder/locale.md
----
-
-# LocaleBuilder
-
-Locale builder for setting and getting the current locale.
-
-## Properties
-
-## Methods
-
-### constructor
-
-Constructor
-
-**Definition**:
-
-```typescript
-constructor(_doc: Y.Doc, dsl: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `_doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
-
-### observe
-
-Listens for locale changes, returns an unsubscribe function.
-
-**Definition**:
-
-```typescript
-observe(callback: ObserveCallback): () => void
-```
-
-**Returns**: `() => void`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `callback` | ObserveCallback | - Callback function |
-
-### setLocale
-
-Sets the locale.
-
-**Definition**:
-
-```typescript
-setLocale(locale: string)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `locale` | string | - Locale name |
-
-### getLocale
-
-Gets the current locale.
-
-**Definition**:
-
-```typescript
-getLocale(): string
-```
-
-**Returns**: `string`
-
-### toJSON
-
-Exports to JSON.
-
-**Definition**:
-
-```typescript
-toJSON(): string
-```
-
-**Returns**: `string`
-
-
-
----
-url: /VBI/en-US/vbi/api/chartBuilder/measures/index.md
----
-
-# MeasuresBuilder
-
-Measure builder for adding, modifying, and removing measure configuration. Measures are the numeric fields in data, such as: sales, profit, quantity.
-
-## Properties
-
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(doc: Y.Doc, dsl: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
-
-### add
-
-Adds a measure.
-
-**Definition**:
-
-```typescript
-add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
-```
-
-**Returns**: `MeasuresBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `field` | string | - Field name |
-| `callback` | (node: MeasureNodeBuilder) => void | - Callback function |
-
-### remove
-
-Removes the measure with the specified ID.
-
-**Definition**:
-
-```typescript
-remove(id: string): MeasuresBuilder
-```
-
-**Returns**: `MeasuresBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `id` | string | - Measure ID |
-
-### update
-
-Updates the measure configuration.
-
-**Definition**:
-
-```typescript
-update(id: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
-```
-
-**Returns**: `MeasuresBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `id` | string | - Measure ID |
-| `callback` | (node: MeasureNodeBuilder) => void | - Callback function |
-
-### find
-
-Finds the first measure matching the callback condition, behaves like `Array.find`.
-
-**Definition**:
-
-```typescript
-find(predicate: (node: MeasureNodeBuilder, index: number) => boolean): MeasureNodeBuilder | undefined
-```
-
-**Returns**: `MeasureNodeBuilder \| undefined`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `predicate` | (node: MeasureNodeBuilder, index: number) => boolean | - Search condition |
-
-### findAll
-
-Gets all measures.
-
-**Definition**:
-
-```typescript
-findAll(): MeasureNodeBuilder[]
-```
-
-**Returns**: `MeasureNodeBuilder[]`
-
-### toJSON
-
-Exports all measures as a JSON array.
-
-**Definition**:
-
-```typescript
-toJSON(): VBIMeasure[]
-```
-
-**Returns**: `VBIMeasure[]`
-
-### observe
-
-Listens for measure changes.
-
-**Definition**:
-
-```typescript
-observe(callback: ObserveDeepCallback): () => void
-```
-
-**Returns**: `() => void`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `callback` | ObserveDeepCallback | - Callback function |
-
-### static isMeasureNode
-
-**Definition**:
-
-```typescript
-static isMeasureNode(node: VBIMeasureTree[0]): node is VBIMeasure
-```
-
-**Returns**: `node is VBIMeasure`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `node` | VBIMeasureTree\[0] | - |
-
-### static isMeasureGroup
-
-**Definition**:
-
-```typescript
-static isMeasureGroup(node: VBIMeasureTree[0]): node is VBIMeasureGroup
-```
-
-**Returns**: `node is VBIMeasureGroup`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `node` | VBIMeasureTree\[0] | - |
-
-
-
----
-url: /VBI/en-US/vbi/api/chartBuilder/measures/measureNode.md
----
-
-# MeasureNodeBuilder
-
-Measure node builder for configuring a single measure.
-
-## Properties
-
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(yMap: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
-
-### getId
-
-Gets the node ID.
-
-**Definition**:
-
-```typescript
-getId(): string
-```
-
-**Returns**: `string`
-
-### getField
-
-Gets the field name.
-
-**Definition**:
-
-```typescript
-getField(): string
-```
-
-**Returns**: `string`
-
-### getEncoding
-
-Gets the chart encoding position.
-
-**Definition**:
-
-```typescript
-getEncoding(): VBIMeasure['encoding'] | undefined
-```
-
-**Returns**: `VBIMeasure['encoding'] \| undefined`
-
-### getSort
-
-Gets the sort configuration.
-
-**Definition**:
-
-```typescript
-getSort(): VBISort | undefined
-```
-
-**Returns**: `VBISort \| undefined`
-
-### setAlias
-
-Sets the display name.
-
-**Definition**:
-
-```typescript
-setAlias(alias: string): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `alias` | string | - Display name |
-
-### setEncoding
-
-Sets the chart encoding position.
-
-**Definition**:
-
-```typescript
-setEncoding(encoding: NonNullable<VBIMeasure['encoding']>): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `encoding` | NonNullable\<VBIMeasure\['encoding']> | - Measure encoding position |
-
-### setSort
-
-Sets the sort configuration.
-
-**Definition**:
-
-```typescript
-setSort(sort: VBISort): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `sort` | VBISort | - Sort configuration |
-
-### setAggregate
-
-Sets the aggregate function.
-
-**Definition**:
-
-```typescript
-setAggregate(aggregate: VBIMeasure['aggregate']): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `aggregate` | VBIMeasure\['aggregate'] | - Aggregate configuration |
-
-### setFormat
-
-Sets the number format.
-
-**Definition**:
-
-```typescript
-setFormat(format: VBIMeasureFormat): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `format` | VBIMeasureFormat | - Format configuration |
-
-### getFormat
-
-Gets the number format.
-
-**Definition**:
-
-```typescript
-getFormat(): VBIMeasureFormat | undefined
-```
-
-**Returns**: `VBIMeasureFormat \| undefined`
-
-### clearFormat
-
-Clears the number format configuration.
-
-**Definition**:
-
-```typescript
-clearFormat(): this
-```
-
-**Returns**: `this`
-
-### clearSort
-
-Clears the sort configuration.
-
-**Definition**:
-
-```typescript
-clearSort(): this
-```
-
-**Returns**: `this`
-
-### toJSON
-
-Exports to JSON.
-
-**Definition**:
-
-```typescript
-toJSON(): VBIMeasure
-```
-
-**Returns**: `VBIMeasure`
-
-
-
----
-url: /VBI/en-US/vbi/api/chartBuilder/theme.md
----
-
-# ThemeBuilder
-
-Theme builder for setting and getting the current theme.
-
-## Properties
-
-## Methods
-
-### constructor
-
-Constructor
-
-**Definition**:
-
-```typescript
-constructor(_doc: Y.Doc, dsl: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `_doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
-
-### observe
-
-Listens for theme changes, returns an unsubscribe function.
-
-**Definition**:
-
-```typescript
-observe(callback: ObserveCallback): () => void
-```
-
-**Returns**: `() => void`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `callback` | ObserveCallback | - Callback function |
-
-### setTheme
-
-Sets the theme.
-
-**Definition**:
-
-```typescript
-setTheme(theme: string)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `theme` | string | - Theme name |
-
-### getTheme
-
-Gets the current theme.
-
-**Definition**:
-
-```typescript
-getTheme(): string
-```
-
-**Returns**: `string`
-
-### toJSON
-
-Exports to JSON.
-
-**Definition**:
-
-```typescript
-toJSON(): string
-```
-
-**Returns**: `string`
-
-
-
----
-url: /VBI/en-US/vbi/api/chartBuilder/undoManager.md
----
-
-# UndoManager
-
-Undo/redo manager providing YJS-based undo and redo functionality, with support for stack management and history clearing.
-
-## Properties
-
-## Methods
-
-### constructor
-
-Constructor
-
-**Definition**:
-
-```typescript
-constructor(scope: any)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `scope` | any | - YJS document or type scope, used to define the tracking range for undo/redo |
-
-### undo
-
-Undoes the last modification.
-
-**Definition**:
-
-```typescript
-undo(): boolean
-```
-
-**Returns**: `boolean`
-
-### redo
-
-Redoes an undone modification.
-
-**Definition**:
-
-```typescript
-redo(): boolean
-```
-
-**Returns**: `boolean`
-
-### canUndo
-
-Checks whether there are operations that can be undone.
-
-**Definition**:
-
-```typescript
-canUndo(): boolean
-```
-
-**Returns**: `boolean`
-
-### canRedo
-
-Checks whether there are operations that can be redone.
-
-**Definition**:
-
-```typescript
-canRedo(): boolean
-```
-
-**Returns**: `boolean`
-
-### clear
-
-Clears the history.
-
-**Definition**:
-
-```typescript
-clear(clearUndoStack: boolean, clearRedoStack: boolean): void
-```
-
-**Returns**: `void`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `clearUndoStack` | boolean | - Whether to clear the undo stack, defaults to true |
-| `clearRedoStack` | boolean | - Whether to clear the redo stack, defaults to true |
-
-
-
----
-url: /VBI/en-US/vbi/api/chartBuilder/whereFilter/index.md
----
-
-# WhereFilterBuilder
-
-Where filter builder for adding, modifying, and removing row-level filter conditions. Where filters take effect before data querying and are used to filter raw data.
-
-## Properties
-
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(doc: Y.Doc, dsl: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
-
-### getConditions
-
-**Definition**:
-
-```typescript
-getConditions(): Y.Array<any>
-```
-
-**Returns**: `Y.Array<any>`
-
-### add
-
-Adds a Where filter condition.
-
-**Definition**:
-
-```typescript
-add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilterBuilder
-```
-
-**Returns**: `WhereFilterBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `field` | string | - Field name |
-| `callback` | (node: WhereFilterNodeBuilder) => void | - Callback function |
-
-### addGroup
-
-Adds a Where group.
-
-**Definition**:
-
-```typescript
-addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereFilterBuilder
-```
-
-**Returns**: `WhereFilterBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `op` | 'and' | 'or' | - Logical operator |
-| `callback` | (group: WhereGroupBuilder) => void | - Callback function |
-
-### update
-
-Updates the filter condition with the specified ID.
-
-**Definition**:
-
-```typescript
-update(id: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilterBuilder
-```
-
-**Returns**: `WhereFilterBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `id` | string | - Filter condition ID |
-| `callback` | (node: WhereFilterNodeBuilder) => void | - Callback function |
-
-### updateGroup
-
-Updates the group with the specified ID.
-
-**Definition**:
-
-```typescript
-updateGroup(id: string, callback: (group: WhereGroupBuilder) => void): WhereFilterBuilder
-```
-
-**Returns**: `WhereFilterBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `id` | string | - Group ID |
-| `callback` | (group: WhereGroupBuilder) => void | - Callback function |
-
-### remove
-
-Removes the condition with the specified ID or the item at the specified index.
-
-**Definition**:
-
-```typescript
-remove(idOrIndex: string | number): WhereFilterBuilder
-```
-
-**Returns**: `WhereFilterBuilder`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `idOrIndex` | string | number | - ID or index |
-
-### find
-
-Finds the first condition (filter or group) matching the callback condition, behaves like `Array.find`.
-
-**Definition**:
-
-```typescript
-find(predicate: (entry: WhereFilterNodeBuilder | WhereGroupBuilder, index: number) => boolean): WhereFilterNodeBuilder | WhereGroupBuilder | undefined
-```
-
-**Returns**: `WhereFilterNodeBuilder \| WhereGroupBuilder \| undefined`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `predicate` | (entry: WhereFilterNodeBuilder | WhereGroupBuilder, index: number) => boolean | - Search condition |
-
-### clear
-
-Clears all Where filter conditions.
-
-**Definition**:
-
-```typescript
-clear()
-```
-
-### toJSON
-
-Exports the complete Where filter configuration.
-
-**Definition**:
-
-```typescript
-toJSON(): VBIWhereGroup
-```
-
-**Returns**: `VBIWhereGroup`
-
-### observe
-
-Listens for filter condition changes, returns an unsubscribe function.
-
-**Definition**:
-
-```typescript
-observe(callback: ObserveDeepCallback): () => void
-```
-
-**Returns**: `() => void`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `callback` | ObserveDeepCallback | - Callback function |
-
-### static isGroup
-
-Determines whether the node is a group node.
-
-**Definition**:
-
-```typescript
-static isGroup(yMap: Y.Map<any>): boolean
-```
-
-**Returns**: `boolean`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
-
-### static isNode
-
-Determines whether the node is a leaf node.
-
-**Definition**:
-
-```typescript
-static isNode(yMap: Y.Map<any>): boolean
-```
-
-**Returns**: `boolean`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
-
-
-
----
-url: /VBI/en-US/vbi/api/chartBuilder/whereFilter/whereGroup.md
----
-
-# WhereGroupBuilder
-
-Where group builder for configuring the logical relationship (AND/OR) of a condition group.
-
-## Properties
-
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(yMap: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
-
-### getConditions
-
-**Definition**:
-
-```typescript
-getConditions(): Y.Array<any>
-```
-
-**Returns**: `Y.Array<any>`
-
-### getId
-
-Gets the group ID.
-
-**Definition**:
-
-```typescript
-getId(): string
-```
-
-**Returns**: `string`
-
-### getOperator
-
-Gets the logical operator.
-
-**Definition**:
-
-```typescript
-getOperator(): 'and' | 'or'
-```
-
-**Returns**: `'and' \| 'or'`
-
-### setOperator
-
-Sets the logical operator.
-
-**Definition**:
-
-```typescript
-setOperator(op: 'and' | 'or'): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `op` | 'and' | 'or' | - Logical operator |
-
-### add
-
-Adds a Where filter condition to the group.
-
-**Definition**:
-
-```typescript
-add(field: string, callback: (node: WhereFilterNodeBuilder) => void): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `field` | string | - Field name |
-| `callback` | (node: WhereFilterNodeBuilder) => void | - Callback function |
-
-### addGroup
-
-Adds a nested group to the current group.
-
-**Definition**:
-
-```typescript
-addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `op` | 'and' | 'or' | - Logical operator |
-| `callback` | (group: WhereGroupBuilder) => void | - Callback function |
-
-### remove
-
-Removes the condition with the specified ID or the item at the specified index.
-
-**Definition**:
-
-```typescript
-remove(idOrIndex: string | number): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `idOrIndex` | string | number | - ID or index |
-
-### clear
-
-Clears all conditions in the group.
-
-**Definition**:
-
-```typescript
-clear(): this
-```
-
-**Returns**: `this`
-
-### toJSON
-
-Exports to JSON.
-
-**Definition**:
-
-```typescript
-toJSON(): VBIWhereGroup
-```
-
-**Returns**: `VBIWhereGroup`
-
-
-
----
-url: /VBI/en-US/vbi/api/chartBuilder/whereFilter/whereNode.md
----
-
-# WhereFilterNodeBuilder
-
-Where filter node builder for configuring a single Where filter condition.
-
-## Properties
-
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(yMap: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
-
-### getId
-
-Gets the node ID.
-
-**Definition**:
-
-```typescript
-getId(): string
-```
-
-**Returns**: `string`
-
-### getField
-
-Gets the field name.
-
-**Definition**:
-
-```typescript
-getField(): string
-```
-
-**Returns**: `string`
-
-### setField
-
-Sets the field name.
-
-**Definition**:
-
-```typescript
-setField(field: string): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `field` | string | - Field name |
-
-### getOperator
-
-Gets the filter operator.
-
-**Definition**:
-
-```typescript
-getOperator(): string | undefined
-```
-
-**Returns**: `string \| undefined`
-
-### setOperator
-
-Sets the filter operator.
-
-**Definition**:
-
-```typescript
-setOperator(operator: string): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `operator` | string | - Operator |
-
-### setValue
-
-Sets the filter value.
-
-**Definition**:
-
-```typescript
-setValue(value: unknown): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `value` | unknown | - Filter value |
-
-### setDate
-
-Sets the date filter condition.
-
-**Definition**:
-
-```typescript
-setDate(predicate: VBIWhereDatePredicate): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `predicate` | VBIWhereDatePredicate | - Date predicate |
-
-### getDate
-
-Gets the date filter condition; returns `undefined` for non-date filters.
-
-**Definition**:
-
-```typescript
-getDate(): VBIWhereDatePredicate | undefined
-```
-
-**Returns**: `VBIWhereDatePredicate \| undefined`
-
-### toJSON
-
-Exports to JSON.
-
-**Definition**:
-
-```typescript
-toJSON(): VBIWhereFilter
-```
-
-**Returns**: `VBIWhereFilter`
-
-
-
----
-url: /VBI/en-US/vbi/api/index.md
----
-
-
-
-
-
----
-url: /VBI/en-US/vbi/api/reportBuilder/index.md
----
-
-# VBIReportBuilder
-
-## Properties
-
-| Property | Type | Description |
-| --- | --- | --- |
-| **doc** | `Y.Doc` | - |
-| **dsl** | `Y.Map<any>` | - |
-| **undoManager** | `UndoManager` | - |
-| **page** | `ReportPageCollectionBuilder<TQueryDSL, TSeedDSL>` | - |
-
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(doc: Y.Doc, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `options` | VBIReportBuilderOptions\<TQueryDSL, TSeedDSL> | - |
-
-### applyUpdate
-
-**Definition**:
-
-```typescript
-applyUpdate(update: Uint8Array, transactionOrigin: any): any
-```
-
-**Returns**: `any`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `update` | Uint8Array | - |
-| `transactionOrigin` | any | - |
-
-### encodeStateAsUpdate
-
-**Definition**:
-
-```typescript
-encodeStateAsUpdate(targetStateVector: Uint8Array): any
-```
-
-**Returns**: `any`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `targetStateVector` | Uint8Array | - |
-
-### build
-
-**Definition**:
-
-```typescript
-build(): VBIReportDSL
-```
-
-**Returns**: `VBIReportDSL`
-
-### isEmpty
-
-**Definition**:
-
-```typescript
-isEmpty(): boolean
-```
-
-**Returns**: `boolean`
-
-
-
----
-url: /VBI/en-US/vbi/api/reportBuilder/page/index.md
----
-
-# ReportPageCollectionBuilder
-
-## Properties
-
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, doc: Y.Doc, dsl: Y.Map<any>, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `parent` | VBIReportBuilder\<TQueryDSL, TSeedDSL> | - |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
-| `options` | VBIReportBuilderOptions\<TQueryDSL, TSeedDSL> | - |
-
-### add
-
-**Definition**:
-
-```typescript
-add(title: string, callback: (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void): VBIReportBuilder<TQueryDSL, TSeedDSL>
-```
-
-**Returns**: `VBIReportBuilder<TQueryDSL, TSeedDSL>`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `title` | string | - |
-| `callback` | (page: ReportPageBuilder\<TQueryDSL, TSeedDSL>) => void | - |
-
-### remove
-
-**Definition**:
-
-```typescript
-remove(pageId: string): VBIReportBuilder<TQueryDSL, TSeedDSL>
-```
-
-**Returns**: `VBIReportBuilder<TQueryDSL, TSeedDSL>`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `pageId` | string | - |
-
-### update
-
-**Definition**:
-
-```typescript
-update(pageId: string, callback: (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void): VBIReportBuilder<TQueryDSL, TSeedDSL>
-```
-
-**Returns**: `VBIReportBuilder<TQueryDSL, TSeedDSL>`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `pageId` | string | - |
-| `callback` | (page: ReportPageBuilder\<TQueryDSL, TSeedDSL>) => void | - |
-
-### get
-
-**Definition**:
-
-```typescript
-get(pageId: string): ReportPageBuilder<TQueryDSL, TSeedDSL> | undefined
-```
-
-**Returns**: `ReportPageBuilder<TQueryDSL, TSeedDSL> \| undefined`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `pageId` | string | - |
-
-
-
----
-url: /VBI/en-US/vbi/api/reportBuilder/page/reportPage.md
----
-
-# ReportPageBuilder
-
-## Properties
-
-| Property | Type | Description |
-| --- | --- | --- |
-| **chart** | `VBIChartBuilder<TQueryDSL, TSeedDSL>` | - |
-| **text** | `ReportTextBuilder` | - |
-
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(doc: Y.Doc, page: Y.Map<any>, chartOptions: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `page` | Y.Map<any> | - |
-| `chartOptions` | VBIChartBuilderOptions\<TQueryDSL, TSeedDSL> | - |
-
-### getId
-
-**Definition**:
-
-```typescript
-getId(): string
-```
-
-**Returns**: `string`
-
-### setTitle
-
-**Definition**:
-
-```typescript
-setTitle(title: string): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `title` | string | - |
-
-### setChart
-
-**Definition**:
-
-```typescript
-setChart(chartBuilder: VBIChartBuilder<TQueryDSL, TSeedDSL> | VBIChartDSLInput): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `chartBuilder` | VBIChartBuilder\<TQueryDSL, TSeedDSL> | VBIChartDSLInput | - |
-
-### setText
-
-**Definition**:
-
-```typescript
-setText(content: string): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `content` | string | - |
-
-### toJSON
-
-**Definition**:
-
-```typescript
-toJSON(): VBIReportPageDSL
-```
-
-**Returns**: `VBIReportPageDSL`
-
-
-
----
-url: /VBI/en-US/vbi/api/reportBuilder/page/reportText.md
----
-
-# ReportTextBuilder
-
-## Properties
-
-## Methods
-
-### constructor
-
-**Definition**:
-
-```typescript
-constructor(yMap: Y.Map<any>)
-```
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
-
-### getContent
-
-**Definition**:
-
-```typescript
-getContent(): string
-```
-
-**Returns**: `string`
-
-### setContent
-
-**Definition**:
-
-```typescript
-setContent(content: string): this
-```
-
-**Returns**: `this`
-
-**Parameters**:
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `content` | string | - |
-
-### clear
-
-**Definition**:
-
-```typescript
-clear(): this
-```
-
-**Returns**: `this`
-
-### toJSON
-
-**Definition**:
-
-```typescript
-toJSON(): VBIReportTextDSL
-```
-
-**Returns**: `VBIReportTextDSL`
-
-
-
----
-url: /VBI/en-US/vbi/examples/chartType.md
+This page showcases the VBI examples.
+
+## chart
+
+There are 67 examples in total.
+
+| Category                             | Count |
+| ------------------------------------ | ----- |
+| [ChartType](/VBI/en-US/vbi/examples/chart/chartType.md)       | 12    |
+| [Dimensions](/VBI/en-US/vbi/examples/chart/dimensions.md)     | 7     |
+| [HavingFilter](/VBI/en-US/vbi/examples/chart/havingFilter.md) | 20    |
+| [Locale](/VBI/en-US/vbi/examples/chart/locale.md)             | 2     |
+| [Measures](/VBI/en-US/vbi/examples/chart/measures.md)         | 5     |
+| [Theme](/VBI/en-US/vbi/examples/chart/theme.md)               | 2     |
+| [UndoManager](/VBI/en-US/vbi/examples/chart/undoManager.md)   | 1     |
+| [WhereFilter](/VBI/en-US/vbi/examples/chart/whereFilter.md)   | 18    |
+
+## insight
+
+There is 1 example in total.
+
+| Category             | Count |
+| -------------------- | ----- |
+| [Insight](/VBI/en-US/vbi/examples/insight.md) | 1     |
+
+## report
+
+There is 1 example in total.
+
+| Category           | Count |
+| ------------------ | ----- |
+| [Report](/VBI/en-US/vbi/examples/report.md) | 1     |
+
+
+
+---
+url: /VBI/en-US/vbi/examples/chart/index.md
+---
+
+# chart
+
+This page showcases the chart builder examples.
+
+## ChartType
+
+| Example                                                                      | Description                                                                  | Label |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ----- |
+| [area-by-order-date](/VBI/en-US/vbi/examples/chart/chartType.md#area-by-order-date)                         | Area Chart - Sales trend by date                                             | -     |
+| [bar-by-product-type](/VBI/en-US/vbi/examples/chart/chartType.md#bar-by-product-type)                       | Bar Chart - Sales by product type                                            | -     |
+| [chart-type-switching](/VBI/en-US/vbi/examples/chart/chartType.md#chart-type-switching)                     | Switch between line and bar chart types                                      | -     |
+| [column-by-area](/VBI/en-US/vbi/examples/chart/chartType.md#column-by-area)                                 | Column Chart - Sales by region                                               | -     |
+| [donut-by-customer-type](/VBI/en-US/vbi/examples/chart/chartType.md#donut-by-customer-type)                 | Donut Chart - Sales share by customer type                                   | -     |
+| [line-by-province](/VBI/en-US/vbi/examples/chart/chartType.md#line-by-province)                             | Line Chart - Sales trend by province                                         | -     |
+| [line-chart](/VBI/en-US/vbi/examples/chart/chartType.md#line-chart)                                         | Line Chart - Sales trend by province                                         | -     |
+| [pie-by-area](/VBI/en-US/vbi/examples/chart/chartType.md#pie-by-area)                                       | Pie Chart - Sales share by region                                            | -     |
+| [pie-chart-measure-encoding](/VBI/en-US/vbi/examples/chart/chartType.md#pie-chart-measure-encoding)         | Pie Chart Measure Encoding - Test measure-encoding.ts Pie chart type         | -     |
+| [rose-by-city](/VBI/en-US/vbi/examples/chart/chartType.md#rose-by-city)                                     | Rose Chart - Sales by city                                                   | -     |
+| [scatter-chart-measure-encoding](/VBI/en-US/vbi/examples/chart/chartType.md#scatter-chart-measure-encoding) | Scatter Chart Measure Encoding - Test measure-encoding.ts Scatter chart type | -     |
+| [scatter-sales-profit](/VBI/en-US/vbi/examples/chart/chartType.md#scatter-sales-profit)                     | Scatter Chart - Relationship between Sales and Profit                        | -     |
+
+## Dimensions
+
+| Example                                                                           | Description                                                                   | Label |
+| --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----- |
+| [add-date-dimension-year](/VBI/en-US/vbi/examples/chart/dimensions.md#add-date-dimension-year)                   | Add date dimension with yearly aggregation                                    | -     |
+| [add-dimension](/VBI/en-US/vbi/examples/chart/dimensions.md#add-dimension)                                       | Add dimension                                                                 | -     |
+| [add-multiple-dimensions](/VBI/en-US/vbi/examples/chart/dimensions.md#add-multiple-dimensions)                   | Add multiple dimensions (chained calls)                                       | -     |
+| [mixed-date-and-normal-dimensions](/VBI/en-US/vbi/examples/chart/dimensions.md#mixed-date-and-normal-dimensions) | Mixed grouping with regular dimension and quarterly-aggregated date dimension | -     |
+| [remove-dimension](/VBI/en-US/vbi/examples/chart/dimensions.md#remove-dimension)                                 | Remove dimension                                                              | -     |
+| [update-date-dimension-month](/VBI/en-US/vbi/examples/chart/dimensions.md#update-date-dimension-month)           | Update existing date dimension to monthly aggregation                         | -     |
+| [update-dimension](/VBI/en-US/vbi/examples/chart/dimensions.md#update-dimension)                                 | Update dimension                                                              | -     |
+
+## HavingFilter
+
+| Example                                                                                                   | Description                                                                                                                                                                        | Label |
+| --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| [add-having-filter](/VBI/en-US/vbi/examples/chart/havingFilter.md#add-having-filter)                                                     | Filter high-performing regions with sales over 1M after grouping by region                                                                                                         | -     |
+| [add-multiple-having-filter](/VBI/en-US/vbi/examples/chart/havingFilter.md#add-multiple-having-filter)                                   | Chain multiple Having conditions to filter regions with high sales and high profit                                                                                                 | -     |
+| [clear-having-filter](/VBI/en-US/vbi/examples/chart/havingFilter.md#clear-having-filter)                                                 | Clear all Having filter conditions to display full grouped aggregation results                                                                                                     | -     |
+| [having-array-value-with-in-operator](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-array-value-with-in-operator)                 | Having filter with array value that triggers 'in' operator conversion                                                                                                              | -     |
+| [having-array-value-with-not-in-operator](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-array-value-with-not-in-operator)         | Having filter with array value that triggers 'not in' operator conversion                                                                                                          | -     |
+| [having-clear-and-rebuild](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-clear-and-rebuild)                                       | Clear existing having conditions and rebuild new group filters, simulating user resetting the filter panel and reconfiguring                                                       | -     |
+| [having-deeply-nested-groups](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-deeply-nested-groups)                                 | Three-level nested grouping: OR(AND(Sales > 500K, Profit > 50K), AND(Quantity > 100, Avg Discount \< 0.3)), simulating complex business filtering                                   | -     |
+| [having-empty-dsl-compose-target](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-empty-dsl-compose-target)                         | Starting from an empty DSL, use builder to assemble where/having/measures/dimensions, including having conditions combining sum and countDistinct aggregations                     | -     |
+| [having-field-not-in-measures-and-dimensions](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-field-not-in-measures-and-dimensions) | Initialize empty DSL, only add dimension area and measure sales via builder, and use the profit field (SUM(profit) > 100000) in having that does not appear in measures/dimensions | -     |
+| [having-find-and-update](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-find-and-update)                                           | Add having conditions first, then use find to locate and dynamically update thresholds and operators, simulating interactive user filter adjustment                                | -     |
+| [having-group-add-to-existing](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-group-add-to-existing)                               | Append new conditions to an existing having group, simulating a user progressively refining filter rules                                                                           | -     |
+| [having-group-remove-condition](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-group-remove-condition)                             | Remove a specific condition from an existing having group, simulating a user canceling a filter                                                                                    | -     |
+| [having-mix-filters-and-groups](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-mix-filters-and-groups)                             | Mix standalone filter conditions with OR groups: Sales > 500K AND (Profit > 100K OR Quantity >= 30)                                                                                | -     |
+| [having-multi-dimension-aggregate](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-multi-dimension-aggregate)                       | Group by two dimensions (category and region), filter combinations where avg discount \< 20% and total sales > 100K, analyzing high-value low-discount business                     | -     |
+| [having-nested-groups](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-nested-groups)                                               | Nested grouping: AND(Sales > 1M, OR(Profit > 200K, Quantity >= 50))                                                                                                                | -     |
+| [having-or-group](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-or-group)                                                         | Use OR grouping to filter regions with high sales or high profit                                                                                                                   | -     |
+| [having-scatter-profit-analysis](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-scatter-profit-analysis)                           | Scatter chart analysis: Group by category to filter categories with high profit rate and transaction count > 20, identifying high-quality business                                 | -     |
+| [having-update-group-operator](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-update-group-operator)                               | Update the logical operator of an existing Having group from AND to OR                                                                                                             | -     |
+| [having-with-where-combined](/VBI/en-US/vbi/examples/chart/havingFilter.md#having-with-where-combined)                                   | Combined where and having filtering: first filter office products category with where, then filter provinces with sales > 50K or profit > 10K with having                          | -     |
+| [remove-having-filter](/VBI/en-US/vbi/examples/chart/havingFilter.md#remove-having-filter)                                               | Remove redundant Having filter conditions, keeping only the profit filter                                                                                                          | -     |
+
+## Locale
+
+| Example                               | Description          | Label |
+| ------------------------------------- | -------------------- | ----- |
+| [en-US-locale](/VBI/en-US/vbi/examples/chart/locale.md#en-US-locale) | English locale tests | -     |
+| [zh-CN-locale](/VBI/en-US/vbi/examples/chart/locale.md#zh-CN-locale) | Chinese locale tests | -     |
+
+## Measures
+
+| Example                                                                               | Description                                                                                                                                                     | Label |
+| ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| [add-measure](/VBI/en-US/vbi/examples/chart/measures.md#add-measure)                                                 | Add measure                                                                                                                                                     | -     |
+| [add-measure-encoding](/VBI/en-US/vbi/examples/chart/measures.md#add-measure-encoding)                               | Add measure and set encoding                                                                                                                                    | -     |
+| [measure-with-custom-and-auto-format](/VBI/en-US/vbi/examples/chart/measures.md#measure-with-custom-and-auto-format) | Measure formatting: Sales uses 10K (10,000) custom format (¥ prefix, 2 decimal places), Profit growth uses auto formatting, and Discount uses percentage format | -     |
+| [remove-measure](/VBI/en-US/vbi/examples/chart/measures.md#remove-measure)                                           | Remove measure                                                                                                                                                  | -     |
+| [update-measure](/VBI/en-US/vbi/examples/chart/measures.md#update-measure)                                           | Update measure                                                                                                                                                  | -     |
+
+## Theme
+
+| Example                            | Description        | Label |
+| ---------------------------------- | ------------------ | ----- |
+| [dark-theme](/VBI/en-US/vbi/examples/chart/theme.md#dark-theme)   | Dark theme charts  | -     |
+| [light-theme](/VBI/en-US/vbi/examples/chart/theme.md#light-theme) | Light theme charts | -     |
+
+## UndoManager
+
+| Example                              | Description     | Label |
+| ------------------------------------ | --------------- | ----- |
+| [undo-redo](/VBI/en-US/vbi/examples/chart/undoManager.md#undo-redo) | Undo/Redo tests | -     |
+
+## WhereFilter
+
+| Example                                                                                                  | Description                                                                                                                                                         | Label |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| [between-sales-range-analysis](/VBI/en-US/vbi/examples/chart/whereFilter.md#between-sales-range-analysis)                               | Sales range analysis: Use 'between' to filter orders between 1000 and 10000, summarized by category profit.                                                         | -     |
+| [clear-and-rebuild-filters](/VBI/en-US/vbi/examples/chart/whereFilter.md#clear-and-rebuild-filters)                                     | Clear and rebuild filters: Clear old simple filters and rebuild complex conditions with grouping.                                                                   | -     |
+| [date-filter-period-and-range-combo](/VBI/en-US/vbi/examples/chart/whereFilter.md#date-filter-period-and-range-combo)                   | Date range combined filter: Use 'period' to filter 2024 Q1 data, while using 'range' to limit profit range, cross-analyzed by category and shipping mode            | -     |
+| [date-filter-relative-with-nested-conditions](/VBI/en-US/vbi/examples/chart/whereFilter.md#date-filter-relative-with-nested-conditions) | Date filter and nested conditions combo: Filter high-value orders from Consumers or Corporate customers within the last 30 days, statistics by province             | -     |
+| [deeply-nested-or-and-groups](/VBI/en-US/vbi/examples/chart/whereFilter.md#deeply-nested-or-and-groups)                                 | Multi-level nested grouping: High-value orders with Same Day shipping for Consumers or First Class shipping for Corporate customers, three levels of AND/OR nesting | -     |
+| [high-discount-tech-profit-analysis](/VBI/en-US/vbi/examples/chart/whereFilter.md#high-discount-tech-profit-analysis)                   | High discount Technology product profit analysis: Filter technology category orders with discount > 0.5, comparing profit by region.                                | -     |
+| [in-operator-multi-area-delivery](/VBI/en-US/vbi/examples/chart/whereFilter.md#in-operator-multi-area-delivery)                         | Multi-region shipping efficiency comparison: Use 'in' to filter East China, North China, and Central South regions, statistics by shipping mode.                    | -     |
+| [nested-group-region-product-filter](/VBI/en-US/vbi/examples/chart/whereFilter.md#nested-group-region-product-filter)                   | Office Supplies or Furniture sales in East China: Use nested grouping, AND connecting region condition and OR category conditions.                                  | -     |
+| [not-between-sales-range](/VBI/en-US/vbi/examples/chart/whereFilter.md#not-between-sales-range)                                         | Not between filter: exclude sales between 1000~10000                                                                                                                | -     |
+| [not-between-with-explicit-operators](/VBI/en-US/vbi/examples/chart/whereFilter.md#not-between-with-explicit-operators)                 | Not between filter with explicit leftOp/rightOp to test invert functions                                                                                            | -     |
+| [office-supplies-sales-by-province](/VBI/en-US/vbi/examples/chart/whereFilter.md#office-supplies-sales-by-province)                     | Office Supplies sales ranking by province: Filter Office Supplies category, summarized by province sales.                                                           | -     |
+| [or-group-product-category-comparison](/VBI/en-US/vbi/examples/chart/whereFilter.md#or-group-product-category-comparison)               | Office Supplies vs. Technology category comparison: Use OR grouping to filter two categories, comparing sales by region.                                            | -     |
+| [remove-condition-from-group](/VBI/en-US/vbi/examples/chart/whereFilter.md#remove-condition-from-group)                                 | Remove condition from group: Pre-defined OR group with three categories, remove one via updateGroup.                                                                | -     |
+| [remove-filter-by-index](/VBI/en-US/vbi/examples/chart/whereFilter.md#remove-filter-by-index)                                           | Remove filter by index: Remove the first category filter, keeping only the region condition.                                                                        | -     |
+| [update-filter-switch-province](/VBI/en-US/vbi/examples/chart/whereFilter.md#update-filter-switch-province)                             | Animated filter modification: Update province filter from Zhejiang to Guangdong, observing sales changes.                                                           | -     |
+| [update-group-or-to-and](/VBI/en-US/vbi/examples/chart/whereFilter.md#update-group-or-to-and)                                           | Modify group logic: Switch pre-defined OR category group to AND, narrowing the filter scope.                                                                        | -     |
+| [where-filter-array-value-converts-to-in](/VBI/en-US/vbi/examples/chart/whereFilter.md#where-filter-array-value-converts-to-in)         | Where filter with array value using '=' operator should convert to 'in'                                                                                             | -     |
+| [where-filter-array-value-converts-to-not-in](/VBI/en-US/vbi/examples/chart/whereFilter.md#where-filter-array-value-converts-to-not-in) | Where filter with array value using '!=' operator should convert to 'not in'                                                                                        | -     |
+
+
+
+---
+url: /VBI/en-US/vbi/examples/chart/chartType.md
 ---
 
 # chartType
@@ -149630,169 +146377,7 @@ export default () => {
 
 
 ---
-url: /VBI/en-US/vbi/examples/combination.md
----
-
-# combination
-
-import { registerDemoConnector } from '@components'
-
-{registerDemoConnector()}
-
-## chart-dimension-measure
-
-Combination Test: Set chart type, dimensions, and measures
-
-```tsx preview
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
-import { useEffect, useState } from 'react'
-
-export default () => {
-  const [vseed, setVSeed] = useState(null)
-
-  useEffect(() => {
-    const run = async () => {
-      const builder = VBI.createChart({
-        connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
-        whereFilter: { id: 'root', op: 'and', conditions: [] },
-        havingFilter: { id: 'root', op: 'and', conditions: [] },
-        theme: 'light',
-        locale: 'en-US',
-        version: 1,
-        limit: 20,
-      })
-
-      const applyBuilder = (builder: VBIChartBuilder) => {
-        builder.chartType.changeChartType('bar')
-        builder.dimensions.add('province', (node) => node.setAlias('Province'))
-        builder.measures.add('sales', (node) =>
-          node.setAlias('Sales').setEncoding('xAxis').setAggregate({ func: 'sum' }),
-        )
-      }
-      applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
-    }
-    run()
-  }, [])
-
-  if (!vseed) return <div>Loading...</div>
-
-  return <VSeedRender vseed={vseed} />
-}
-```
-
-## column-line-combo
-
-Column-Line Combination Chart
-
-```tsx preview
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
-import { useEffect, useState } from 'react'
-
-export default () => {
-  const [vseed, setVSeed] = useState(null)
-
-  useEffect(() => {
-    const run = async () => {
-      const builder = VBI.createChart({
-        connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
-        whereFilter: { id: 'root', op: 'and', conditions: [] },
-        havingFilter: { id: 'root', op: 'and', conditions: [] },
-        theme: 'light',
-        locale: 'en-US',
-        version: 1,
-        limit: 20,
-      })
-
-      const applyBuilder = (builder: VBIChartBuilder) => {
-        builder.chartType.changeChartType('dualAxis')
-        builder.dimensions.add('product_type', (node) => node.setAlias('Product Type'))
-        builder.measures.add('sales', (node) =>
-          node.setAlias('Sales').setEncoding('yAxis').setAggregate({ func: 'sum' }),
-        )
-        builder.measures.add('profit', (node) =>
-          node.setAlias('Profit').setEncoding('yAxisEnd').setSeriesType('line').setAggregate({ func: 'avg' }),
-        )
-      }
-      applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
-    }
-    run()
-  }, [])
-
-  if (!vseed) return <div>Loading...</div>
-
-  return <VSeedRender vseed={vseed} />
-}
-```
-
-## full-config
-
-Full Configuration: chart type, dimensions, measures, limit, theme, locale
-
-```tsx preview
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
-import { useEffect, useState } from 'react'
-
-export default () => {
-  const [vseed, setVSeed] = useState(null)
-
-  useEffect(() => {
-    const run = async () => {
-      const builder = VBI.createChart({
-        connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
-        whereFilter: { id: 'root', op: 'and', conditions: [] },
-        havingFilter: { id: 'root', op: 'and', conditions: [] },
-        theme: 'light',
-        locale: 'en-US',
-        version: 1,
-        limit: 20,
-      })
-
-      const applyBuilder = (builder: VBIChartBuilder) => {
-        builder.chartType.changeChartType('line')
-        builder.dimensions.add('product_type', (node) => node.setAlias('Product Type'))
-        builder.measures.add('sales', (node) =>
-          node.setAlias('Sales').setEncoding('yAxis').setAggregate({ func: 'sum' }),
-        )
-        builder.limit.setLimit(50)
-        builder.theme.changeTheme('dark')
-        builder.locale.changeLocale('en-US')
-      }
-      applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
-    }
-    run()
-  }, [])
-
-  if (!vseed) return <div>Loading...</div>
-
-  return <VSeedRender vseed={vseed} />
-}
-```
-
-
-
----
-url: /VBI/en-US/vbi/examples/dimensions.md
+url: /VBI/en-US/vbi/examples/chart/dimensions.md
 ---
 
 # dimensions
@@ -150161,7 +146746,7 @@ export default () => {
 
 
 ---
-url: /VBI/en-US/vbi/examples/havingFilter.md
+url: /VBI/en-US/vbi/examples/chart/havingFilter.md
 ---
 
 # havingFilter
@@ -151254,224 +147839,7 @@ export default () => {
 
 
 ---
-url: /VBI/en-US/vbi/examples/index.md
----
-
-# VBI Example
-
-This page showcases various examples of VBI.
-
-## chartType
-
-| Example                                                                      | Description                                                                  | Label |
-| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ----- |
-| [area-by-order-date](/VBI/en-US/vbi/examples/chartType.md#area-by-order-date)                         | Area Chart - Sales trend by date                                             | -     |
-| [bar-by-product-type](/VBI/en-US/vbi/examples/chartType.md#bar-by-product-type)                       | Bar Chart - Sales by product type                                            | -     |
-| [chart-type-switching](/VBI/en-US/vbi/examples/chartType.md#chart-type-switching)                     | Switch between line and bar chart types                                      | -     |
-| [column-by-area](/VBI/en-US/vbi/examples/chartType.md#column-by-area)                                 | Column Chart - Sales by region                                               | -     |
-| [donut-by-customer-type](/VBI/en-US/vbi/examples/chartType.md#donut-by-customer-type)                 | Donut Chart - Sales share by customer type                                   | -     |
-| [line-by-province](/VBI/en-US/vbi/examples/chartType.md#line-by-province)                             | Line Chart - Sales trend by province                                         | -     |
-| [line-chart](/VBI/en-US/vbi/examples/chartType.md#line-chart)                                         | Line Chart - Sales trend by province                                         | -     |
-| [pie-by-area](/VBI/en-US/vbi/examples/chartType.md#pie-by-area)                                       | Pie Chart - Sales share by region                                            | -     |
-| [pie-chart-measure-encoding](/VBI/en-US/vbi/examples/chartType.md#pie-chart-measure-encoding)         | Pie Chart Measure Encoding - Test measure-encoding.ts Pie chart type         | -     |
-| [rose-by-city](/VBI/en-US/vbi/examples/chartType.md#rose-by-city)                                     | Rose Chart - Sales by city                                                   | -     |
-| [scatter-chart-measure-encoding](/VBI/en-US/vbi/examples/chartType.md#scatter-chart-measure-encoding) | Scatter Chart Measure Encoding - Test measure-encoding.ts Scatter chart type | -     |
-| [scatter-sales-profit](/VBI/en-US/vbi/examples/chartType.md#scatter-sales-profit)                     | Scatter Chart - Relationship between Sales and Profit                        | -     |
-
-## dimensions
-
-| Example                                                                           | Description                                                                   | Label |
-| --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----- |
-| [add-date-dimension-year](/VBI/en-US/vbi/examples/dimensions.md#add-date-dimension-year)                   | Add date dimension with yearly aggregation                                    | -     |
-| [add-dimension](/VBI/en-US/vbi/examples/dimensions.md#add-dimension)                                       | Add dimension                                                                 | -     |
-| [add-multiple-dimensions](/VBI/en-US/vbi/examples/dimensions.md#add-multiple-dimensions)                   | Add multiple dimensions (chained calls)                                       | -     |
-| [mixed-date-and-normal-dimensions](/VBI/en-US/vbi/examples/dimensions.md#mixed-date-and-normal-dimensions) | Mixed grouping with regular dimension and quarterly-aggregated date dimension | -     |
-| [remove-dimension](/VBI/en-US/vbi/examples/dimensions.md#remove-dimension)                                 | Remove dimension                                                              | -     |
-| [update-date-dimension-month](/VBI/en-US/vbi/examples/dimensions.md#update-date-dimension-month)           | Update existing date dimension to monthly aggregation                         | -     |
-| [update-dimension](/VBI/en-US/vbi/examples/dimensions.md#update-dimension)                                 | Update dimension                                                              | -     |
-
-## havingFilter
-
-| Example                                                                                                   | Description                                                                                                                                                                        | Label |
-| --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
-| [add-having-filter](/VBI/en-US/vbi/examples/havingFilter.md#add-having-filter)                                                     | Filter high-performing regions with sales over 1M after grouping by region                                                                                                         | -     |
-| [add-multiple-having-filter](/VBI/en-US/vbi/examples/havingFilter.md#add-multiple-having-filter)                                   | Chain multiple Having conditions to filter regions with high sales and high profit                                                                                                 | -     |
-| [clear-having-filter](/VBI/en-US/vbi/examples/havingFilter.md#clear-having-filter)                                                 | Clear all Having filter conditions to display full grouped aggregation results                                                                                                     | -     |
-| [having-array-value-with-in-operator](/VBI/en-US/vbi/examples/havingFilter.md#having-array-value-with-in-operator)                 | Having filter with array value that triggers 'in' operator conversion                                                                                                              | -     |
-| [having-array-value-with-not-in-operator](/VBI/en-US/vbi/examples/havingFilter.md#having-array-value-with-not-in-operator)         | Having filter with array value that triggers 'not in' operator conversion                                                                                                          | -     |
-| [having-clear-and-rebuild](/VBI/en-US/vbi/examples/havingFilter.md#having-clear-and-rebuild)                                       | Clear existing having conditions and rebuild new group filters, simulating user resetting the filter panel and reconfiguring                                                       | -     |
-| [having-deeply-nested-groups](/VBI/en-US/vbi/examples/havingFilter.md#having-deeply-nested-groups)                                 | Three-level nested grouping: OR(AND(Sales > 500K, Profit > 50K), AND(Quantity > 100, Avg Discount \< 0.3)), simulating complex business filtering                                   | -     |
-| [having-empty-dsl-compose-target](/VBI/en-US/vbi/examples/havingFilter.md#having-empty-dsl-compose-target)                         | Starting from an empty DSL, use builder to assemble where/having/measures/dimensions, including having conditions combining sum and countDistinct aggregations                     | -     |
-| [having-field-not-in-measures-and-dimensions](/VBI/en-US/vbi/examples/havingFilter.md#having-field-not-in-measures-and-dimensions) | Initialize empty DSL, only add dimension area and measure sales via builder, and use the profit field (SUM(profit) > 100000) in having that does not appear in measures/dimensions | -     |
-| [having-find-and-update](/VBI/en-US/vbi/examples/havingFilter.md#having-find-and-update)                                           | Add having conditions first, then use find to locate and dynamically update thresholds and operators, simulating interactive user filter adjustment                                | -     |
-| [having-group-add-to-existing](/VBI/en-US/vbi/examples/havingFilter.md#having-group-add-to-existing)                               | Append new conditions to an existing having group, simulating a user progressively refining filter rules                                                                           | -     |
-| [having-group-remove-condition](/VBI/en-US/vbi/examples/havingFilter.md#having-group-remove-condition)                             | Remove a specific condition from an existing having group, simulating a user canceling a filter                                                                                    | -     |
-| [having-mix-filters-and-groups](/VBI/en-US/vbi/examples/havingFilter.md#having-mix-filters-and-groups)                             | Mix standalone filter conditions with OR groups: Sales > 500K AND (Profit > 100K OR Quantity >= 30)                                                                                | -     |
-| [having-multi-dimension-aggregate](/VBI/en-US/vbi/examples/havingFilter.md#having-multi-dimension-aggregate)                       | Group by two dimensions (category and region), filter combinations where avg discount \< 20% and total sales > 100K, analyzing high-value low-discount business                     | -     |
-| [having-nested-groups](/VBI/en-US/vbi/examples/havingFilter.md#having-nested-groups)                                               | Nested grouping: AND(Sales > 1M, OR(Profit > 200K, Quantity >= 50))                                                                                                                | -     |
-| [having-or-group](/VBI/en-US/vbi/examples/havingFilter.md#having-or-group)                                                         | Use OR grouping to filter regions with high sales or high profit                                                                                                                   | -     |
-| [having-scatter-profit-analysis](/VBI/en-US/vbi/examples/havingFilter.md#having-scatter-profit-analysis)                           | Scatter chart analysis: Group by category to filter categories with high profit rate and transaction count > 20, identifying high-quality business                                 | -     |
-| [having-update-group-operator](/VBI/en-US/vbi/examples/havingFilter.md#having-update-group-operator)                               | Update the logical operator of an existing Having group from AND to OR                                                                                                             | -     |
-| [having-with-where-combined](/VBI/en-US/vbi/examples/havingFilter.md#having-with-where-combined)                                   | Combined where and having filtering: first filter office products category with where, then filter provinces with sales > 50K or profit > 10K with having                          | -     |
-| [remove-having-filter](/VBI/en-US/vbi/examples/havingFilter.md#remove-having-filter)                                               | Remove redundant Having filter conditions, keeping only the profit filter                                                                                                          | -     |
-
-## locale
-
-| Example                               | Description          | Label |
-| ------------------------------------- | -------------------- | ----- |
-| [en-US-locale](/VBI/en-US/vbi/examples/locale.md#en-US-locale) | English locale tests | -     |
-| [zh-CN-locale](/VBI/en-US/vbi/examples/locale.md#zh-CN-locale) | Chinese locale tests | -     |
-
-## measures
-
-| Example                                                                               | Description                                                                                                                                                     | Label |
-| ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
-| [add-measure](/VBI/en-US/vbi/examples/measures.md#add-measure)                                                 | Add measure                                                                                                                                                     | -     |
-| [add-measure-encoding](/VBI/en-US/vbi/examples/measures.md#add-measure-encoding)                               | Add measure and set encoding                                                                                                                                    | -     |
-| [measure-with-custom-and-auto-format](/VBI/en-US/vbi/examples/measures.md#measure-with-custom-and-auto-format) | Measure formatting: Sales uses 10K (10,000) custom format (¥ prefix, 2 decimal places), Profit growth uses auto formatting, and Discount uses percentage format | -     |
-| [remove-measure](/VBI/en-US/vbi/examples/measures.md#remove-measure)                                           | Remove measure                                                                                                                                                  | -     |
-| [update-measure](/VBI/en-US/vbi/examples/measures.md#update-measure)                                           | Update measure                                                                                                                                                  | -     |
-
-## theme
-
-| Example                            | Description        | Label |
-| ---------------------------------- | ------------------ | ----- |
-| [dark-theme](/VBI/en-US/vbi/examples/theme.md#dark-theme)   | Dark theme charts  | -     |
-| [light-theme](/VBI/en-US/vbi/examples/theme.md#light-theme) | Light theme charts | -     |
-
-## undoManager
-
-| Example                              | Description     | Label |
-| ------------------------------------ | --------------- | ----- |
-| [undo-redo](/VBI/en-US/vbi/examples/undoManager.md#undo-redo) | Undo/Redo tests | -     |
-
-## whereFilter
-
-| Example                                                                                                  | Description                                                                                                                                                         | Label |
-| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
-| [between-sales-range-analysis](/VBI/en-US/vbi/examples/whereFilter.md#between-sales-range-analysis)                               | Sales range analysis: Use 'between' to filter orders between 1000 and 10000, summarized by category profit.                                                         | -     |
-| [clear-and-rebuild-filters](/VBI/en-US/vbi/examples/whereFilter.md#clear-and-rebuild-filters)                                     | Clear and rebuild filters: Clear old simple filters and rebuild complex conditions with grouping.                                                                   | -     |
-| [date-filter-period-and-range-combo](/VBI/en-US/vbi/examples/whereFilter.md#date-filter-period-and-range-combo)                   | Date range combined filter: Use 'period' to filter 2024 Q1 data, while using 'range' to limit profit range, cross-analyzed by category and shipping mode            | -     |
-| [date-filter-relative-with-nested-conditions](/VBI/en-US/vbi/examples/whereFilter.md#date-filter-relative-with-nested-conditions) | Date filter and nested conditions combo: Filter high-value orders from Consumers or Corporate customers within the last 30 days, statistics by province             | -     |
-| [deeply-nested-or-and-groups](/VBI/en-US/vbi/examples/whereFilter.md#deeply-nested-or-and-groups)                                 | Multi-level nested grouping: High-value orders with Same Day shipping for Consumers or First Class shipping for Corporate customers, three levels of AND/OR nesting | -     |
-| [high-discount-tech-profit-analysis](/VBI/en-US/vbi/examples/whereFilter.md#high-discount-tech-profit-analysis)                   | High discount Technology product profit analysis: Filter technology category orders with discount > 0.5, comparing profit by region.                                | -     |
-| [in-operator-multi-area-delivery](/VBI/en-US/vbi/examples/whereFilter.md#in-operator-multi-area-delivery)                         | Multi-region shipping efficiency comparison: Use 'in' to filter East China, North China, and Central South regions, statistics by shipping mode.                    | -     |
-| [nested-group-region-product-filter](/VBI/en-US/vbi/examples/whereFilter.md#nested-group-region-product-filter)                   | Office Supplies or Furniture sales in East China: Use nested grouping, AND connecting region condition and OR category conditions.                                  | -     |
-| [not-between-sales-range](/VBI/en-US/vbi/examples/whereFilter.md#not-between-sales-range)                                         | Not between filter: exclude sales between 1000~10000                                                                                                                | -     |
-| [not-between-with-explicit-operators](/VBI/en-US/vbi/examples/whereFilter.md#not-between-with-explicit-operators)                 | Not between filter with explicit leftOp/rightOp to test invert functions                                                                                            | -     |
-| [office-supplies-sales-by-province](/VBI/en-US/vbi/examples/whereFilter.md#office-supplies-sales-by-province)                     | Office Supplies sales ranking by province: Filter Office Supplies category, summarized by province sales.                                                           | -     |
-| [or-group-product-category-comparison](/VBI/en-US/vbi/examples/whereFilter.md#or-group-product-category-comparison)               | Office Supplies vs. Technology category comparison: Use OR grouping to filter two categories, comparing sales by region.                                            | -     |
-| [remove-condition-from-group](/VBI/en-US/vbi/examples/whereFilter.md#remove-condition-from-group)                                 | Remove condition from group: Pre-defined OR group with three categories, remove one via updateGroup.                                                                | -     |
-| [remove-filter-by-index](/VBI/en-US/vbi/examples/whereFilter.md#remove-filter-by-index)                                           | Remove filter by index: Remove the first category filter, keeping only the region condition.                                                                        | -     |
-| [update-filter-switch-province](/VBI/en-US/vbi/examples/whereFilter.md#update-filter-switch-province)                             | Animated filter modification: Update province filter from Zhejiang to Guangdong, observing sales changes.                                                           | -     |
-| [update-group-or-to-and](/VBI/en-US/vbi/examples/whereFilter.md#update-group-or-to-and)                                           | Modify group logic: Switch pre-defined OR category group to AND, narrowing the filter scope.                                                                        | -     |
-| [where-filter-array-value-converts-to-in](/VBI/en-US/vbi/examples/whereFilter.md#where-filter-array-value-converts-to-in)         | Where filter with array value using '=' operator should convert to 'in'                                                                                             | -     |
-| [where-filter-array-value-converts-to-not-in](/VBI/en-US/vbi/examples/whereFilter.md#where-filter-array-value-converts-to-not-in) | Where filter with array value using '!=' operator should convert to 'not in'                                                                                        | -     |
-
-
-
----
-url: /VBI/en-US/vbi/examples/limit.md
----
-
-# limit
-
-import { registerDemoConnector } from '@components'
-
-{registerDemoConnector()}
-
-## set-limit-100
-
-Set limit to 100
-
-```tsx preview
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
-import { useEffect, useState } from 'react'
-
-export default () => {
-  const [vseed, setVSeed] = useState(null)
-
-  useEffect(() => {
-    const run = async () => {
-      const builder = VBI.createChart({
-        connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
-        whereFilter: { id: 'root', op: 'and', conditions: [] },
-        havingFilter: { id: 'root', op: 'and', conditions: [] },
-        theme: 'light',
-        locale: 'zh-CN',
-        version: 1,
-        limit: 20,
-      })
-
-      const applyBuilder = (builder: VBIChartBuilder) => {
-        builder.limit.setLimit(100)
-      }
-      applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
-    }
-    run()
-  }, [])
-
-  if (!vseed) return <div>Loading...</div>
-
-  return <VSeedRender vseed={vseed} />
-}
-```
-
-## update-limit-50
-
-Update limit from 20 to 50
-
-```tsx preview
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
-import { useEffect, useState } from 'react'
-
-export default () => {
-  const [vseed, setVSeed] = useState(null)
-
-  useEffect(() => {
-    const run = async () => {
-      const builder = VBI.createChart({
-        connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
-        whereFilter: { id: 'root', op: 'and', conditions: [] },
-        havingFilter: { id: 'root', op: 'and', conditions: [] },
-        theme: 'light',
-        locale: 'zh-CN',
-        version: 1,
-        limit: 20,
-      })
-
-      const applyBuilder = (builder: VBIChartBuilder) => {
-        builder.limit.setLimit(50)
-      }
-      applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
-    }
-    run()
-  }, [])
-
-  if (!vseed) return <div>Loading...</div>
-
-  return <VSeedRender vseed={vseed} />
-}
-```
-
-
-
----
-url: /VBI/en-US/vbi/examples/locale.md
+url: /VBI/en-US/vbi/examples/chart/locale.md
 ---
 
 # locale
@@ -151577,7 +147945,7 @@ export default () => {
 
 
 ---
-url: /VBI/en-US/vbi/examples/measures.md
+url: /VBI/en-US/vbi/examples/chart/measures.md
 ---
 
 # measures
@@ -151853,20 +148221,7 @@ export default () => {
 
 
 ---
-url: /VBI/en-US/vbi/examples/tags.md
----
-
-# Tags
-
-Total 67 examples, 0 tags.
-
-| Tag | Count |
-| --- | ----- |
-
-
-
----
-url: /VBI/en-US/vbi/examples/theme.md
+url: /VBI/en-US/vbi/examples/chart/theme.md
 ---
 
 # theme
@@ -151972,7 +148327,7 @@ export default () => {
 
 
 ---
-url: /VBI/en-US/vbi/examples/undoManager.md
+url: /VBI/en-US/vbi/examples/chart/undoManager.md
 ---
 
 # undoManager
@@ -152038,62 +148393,7 @@ export default () => {
 
 
 ---
-url: /VBI/en-US/vbi/examples/utils.md
----
-
-# utils
-
-import { registerDemoConnector } from '@components'
-
-{registerDemoConnector()}
-
-## connector-error-handling
-
-Test error handling when connector is not registered
-
-```tsx preview
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
-import { useEffect, useState } from 'react'
-
-export default () => {
-  const [vseed, setVSeed] = useState(null)
-
-  useEffect(() => {
-    const run = async () => {
-      const builder = VBI.createChart({
-        connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
-        whereFilter: { id: 'root', op: 'and', conditions: [] },
-        havingFilter: { id: 'root', op: 'and', conditions: [] },
-        theme: 'light',
-        locale: 'en-US',
-        version: 1,
-      })
-
-      const applyBuilder = async (builder: VBIChartBuilder) => {
-        await expect(() => builder.getSchema()).rejects.toThrow('connector')
-      }
-      applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
-    }
-    run()
-  }, [])
-
-  if (!vseed) return <div>Loading...</div>
-
-  return <VSeedRender vseed={vseed} />
-}
-```
-
-
-
----
-url: /VBI/en-US/vbi/examples/whereFilter.md
+url: /VBI/en-US/vbi/examples/chart/whereFilter.md
 ---
 
 # whereFilter
@@ -153024,14 +149324,2917 @@ export default () => {
 
 
 ---
-url: /VBI/en-US/vbi/index.md
+url: /VBI/en-US/vbi/examples/insight/index.md
 ---
 
-# VBI
+# insight
 
-:::info In Development
-Coming Soon
-:::
+import { registerDemoConnector } from '@components'
+
+{registerDemoConnector()}
+
+## basic-content
+
+Set text content with the insight builder.
+
+> Label: `basic`
+
+```tsx preview
+import { VBI, VBIInsightBuilder } from '@visactor/vbi'
+import { JsonRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    try {
+      const builder = VBI.insight.create({
+        content: '',
+        version: 0,
+      })
+      const applyBuilder = (builder: VBIInsightBuilder) => {
+        builder.setContent('Sales in East China continued to grow this week. Keep following up with key customers.')
+      }
+      applyBuilder(builder)
+      setResult(builder.build())
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err))
+    }
+  }, [])
+
+  if (error) return <JsonRender value={{ error }} />
+  if (!result) return <div>Loading...</div>
+
+  return <JsonRender value={result} />
+}
+```
+
+
+
+---
+url: /VBI/en-US/vbi/examples/report/index.md
+---
+
+# report
+
+import { registerDemoConnector } from '@components'
+
+{registerDemoConnector()}
+
+## basic-page
+
+Link chart and insight resources with the report builder to generate a single-page report.
+
+> Label: `basic`
+
+```tsx preview
+import { createVBI, VBIChartBuilder, VBIInsightBuilder, VBIReportBuilder } from '@visactor/vbi'
+import { JsonRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    try {
+      const LocalVBI = createVBI()
+      const resources = {
+        charts: {
+          salesChart: LocalVBI.chart.create({
+            connectorId: 'demoSupermarket',
+            chartType: 'bar',
+            dimensions: [
+              {
+                field: 'province',
+                alias: 'Province',
+              },
+            ],
+            measures: [
+              {
+                field: 'sales',
+                alias: 'Sales',
+                encoding: 'xAxis',
+                aggregate: {
+                  func: 'sum',
+                },
+              },
+            ],
+            whereFilter: {
+              id: 'root',
+              op: 'and',
+              conditions: [],
+            },
+            havingFilter: {
+              id: 'root',
+              op: 'and',
+              conditions: [],
+            },
+            theme: 'light',
+            locale: 'en-US',
+            version: 1,
+          }),
+        },
+        insights: {
+          salesInsight: LocalVBI.insight.create({
+            content: 'Sales are concentrated in East China, with Shanghai and Zhejiang contributing the most.',
+            version: 0,
+          }),
+        },
+      }
+      const builder = LocalVBI.report.create({
+        pages: [],
+        version: 0,
+      })
+      const applyBuilder = (builder: VBIReportBuilder, resources: any) => {
+        builder.page.add('Sales Overview', (page) => {
+          page.setChartId(resources.charts.salesChart)
+          page.setInsightId(resources.insights.salesInsight)
+        })
+      }
+      applyBuilder(builder, resources)
+      setResult(builder.snapshot())
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err))
+    }
+  }, [])
+
+  if (error) return <JsonRender value={{ error }} />
+  if (!result) return <div>Loading...</div>
+
+  return <JsonRender value={result} />
+}
+```
+
+
+
+---
+url: /VBI/en-US/vbi/api/index.md
+---
+
+
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/index.md
+---
+
+# VBIChartBuilder
+
+## Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| **doc** | `Y.Doc` | - |
+| **dsl** | `Y.Map<any>` | - |
+| **adapters** | `VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>` | - |
+| **chartType** | `ChartTypeBuilder` | - |
+| **measures** | `MeasuresBuilder` | - |
+| **dimensions** | `DimensionsBuilder` | - |
+| **havingFilter** | `HavingFilterBuilder` | - |
+| **whereFilter** | `WhereFilterBuilder` | - |
+| **theme** | `ThemeBuilder` | - |
+| **locale** | `LocaleBuilder` | - |
+| **limit** | `LimitBuilder` | - |
+| **undoManager** | `UndoManager` | - |
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(doc: Y.Doc, options: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>, dsl: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `doc` | Y.Doc | - |
+| `options` | VBIChartBuilderOptions\<TQueryDSL, TSeedDSL> | - |
+| `dsl` | Y.Map<any> | - |
+
+### applyUpdate
+
+**Definition**:
+
+```typescript
+applyUpdate(update: Uint8Array, transactionOrigin: any): void
+```
+
+**Returns**: `void`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `update` | Uint8Array | - |
+| `transactionOrigin` | any | - |
+
+### encodeStateAsUpdate
+
+**Definition**:
+
+```typescript
+encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBufferLike>
+```
+
+**Returns**: `Uint8Array<ArrayBufferLike>`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `targetStateVector` | Uint8Array | - |
+
+### buildVSeed
+
+**Definition**:
+
+```typescript
+buildVSeed(options: BuildVSeedOptions): Promise<TSeedDSL>
+```
+
+**Returns**: `Promise<TSeedDSL>`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `options` = {} | BuildVSeedOptions | - |
+
+### buildVQuery
+
+**Definition**:
+
+```typescript
+buildVQuery(): TQueryDSL
+```
+
+**Returns**: `TQueryDSL`
+
+### build
+
+**Definition**:
+
+```typescript
+build(): VBIChartDSL
+```
+
+**Returns**: `VBIChartDSL`
+
+### isEmpty
+
+**Definition**:
+
+```typescript
+isEmpty(): boolean
+```
+
+**Returns**: `boolean`
+
+### getSchema
+
+**Definition**:
+
+```typescript
+getSchema(): Promise<any>
+```
+
+**Returns**: `Promise<any>`
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/chartType.md
+---
+
+# ChartTypeBuilder
+
+Chart type builder for switching and retrieving the chart type. Supports various chart types including table, bar, line, pie, scatter, and more.
+
+## Properties
+
+## Methods
+
+### constructor
+
+Constructor
+
+**Definition**:
+
+```typescript
+constructor(doc: Y.Doc, dsl: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `doc` | Y.Doc | - |
+| `dsl` | Y.Map<any> | - |
+
+### observe
+
+Listens for chart type changes.
+
+**Definition**:
+
+```typescript
+observe(callback: ObserveCallback): () => void
+```
+
+**Returns**: `() => void`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `callback` | ObserveCallback | - Callback function |
+
+### changeChartType
+
+Sets the chart type.
+
+**Definition**:
+
+```typescript
+changeChartType(chartType: string)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `chartType` | string | - Chart type |
+
+### getChartType
+
+Gets the current chart type.
+
+**Definition**:
+
+```typescript
+getChartType(): string
+```
+
+**Returns**: `string`
+
+### getSupportedDimensionEncodings
+
+Gets the dimension encodings supported by the current chart type.
+
+**Definition**:
+
+```typescript
+getSupportedDimensionEncodings()
+```
+
+### getRecommendedDimensionEncodings
+
+Returns recommended dimension encodings in order based on the current chart type.
+
+**Definition**:
+
+```typescript
+getRecommendedDimensionEncodings(dimensionCount: number)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `dimensionCount` | number | - Number of dimensions; defaults to the dimension count in the current DSL |
+
+### getSupportedMeasureEncodings
+
+Gets the measure encodings supported by the current chart type.
+
+**Definition**:
+
+```typescript
+getSupportedMeasureEncodings()
+```
+
+### getRecommendedMeasureEncodings
+
+Returns recommended measure encodings in order based on the current chart type.
+
+**Definition**:
+
+```typescript
+getRecommendedMeasureEncodings(measureCount: number)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `measureCount` | number | - Number of measures; defaults to the measure count in the current DSL |
+
+### toJSON
+
+Exports to JSON.
+
+**Definition**:
+
+```typescript
+toJSON(): string
+```
+
+**Returns**: `string`
+
+### getAvailableChartTypes
+
+Gets all supported chart types.
+
+**Definition**:
+
+```typescript
+getAvailableChartTypes(): string[]
+```
+
+**Returns**: `string[]`
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/measures/index.md
+---
+
+# MeasuresBuilder
+
+Measure builder for adding, modifying, and removing measure configuration. Measures are the numeric fields in data, such as: sales, profit, quantity.
+
+## Properties
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(doc: Y.Doc, dsl: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `doc` | Y.Doc | - |
+| `dsl` | Y.Map<any> | - |
+
+### add
+
+Adds a measure.
+
+**Definition**:
+
+```typescript
+add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
+```
+
+**Returns**: `MeasuresBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `field` | string | - Field name |
+| `callback` | (node: MeasureNodeBuilder) => void | - Callback function |
+
+### remove
+
+Removes the measure with the specified ID.
+
+**Definition**:
+
+```typescript
+remove(id: string): MeasuresBuilder
+```
+
+**Returns**: `MeasuresBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `id` | string | - Measure ID |
+
+### update
+
+Updates the measure configuration.
+
+**Definition**:
+
+```typescript
+update(id: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
+```
+
+**Returns**: `MeasuresBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `id` | string | - Measure ID |
+| `callback` | (node: MeasureNodeBuilder) => void | - Callback function |
+
+### find
+
+Finds the first measure matching the callback condition, behaves like `Array.find`.
+
+**Definition**:
+
+```typescript
+find(predicate: (node: MeasureNodeBuilder, index: number) => boolean): MeasureNodeBuilder | undefined
+```
+
+**Returns**: `MeasureNodeBuilder \| undefined`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `predicate` | (node: MeasureNodeBuilder, index: number) => boolean | - Search condition |
+
+### findAll
+
+Gets all measures.
+
+**Definition**:
+
+```typescript
+findAll(): MeasureNodeBuilder[]
+```
+
+**Returns**: `MeasureNodeBuilder[]`
+
+### toJSON
+
+Exports all measures as a JSON array.
+
+**Definition**:
+
+```typescript
+toJSON(): VBIMeasure[]
+```
+
+**Returns**: `VBIMeasure[]`
+
+### observe
+
+Listens for measure changes.
+
+**Definition**:
+
+```typescript
+observe(callback: ObserveDeepCallback): () => void
+```
+
+**Returns**: `() => void`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `callback` | ObserveDeepCallback | - Callback function |
+
+### static isMeasureNode
+
+**Definition**:
+
+```typescript
+static isMeasureNode(node: VBIMeasureTree[0]): node is VBIMeasure
+```
+
+**Returns**: `node is VBIMeasure`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `node` | VBIMeasureTree\[0] | - |
+
+### static isMeasureGroup
+
+**Definition**:
+
+```typescript
+static isMeasureGroup(node: VBIMeasureTree[0]): node is VBIMeasureGroup
+```
+
+**Returns**: `node is VBIMeasureGroup`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `node` | VBIMeasureTree\[0] | - |
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/measures/measureNode.md
+---
+
+# MeasureNodeBuilder
+
+Measure node builder for configuring a single measure.
+
+## Properties
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(yMap: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |
+
+### getId
+
+Gets the node ID.
+
+**Definition**:
+
+```typescript
+getId(): string
+```
+
+**Returns**: `string`
+
+### getField
+
+Gets the field name.
+
+**Definition**:
+
+```typescript
+getField(): string
+```
+
+**Returns**: `string`
+
+### getEncoding
+
+Gets the chart encoding position.
+
+**Definition**:
+
+```typescript
+getEncoding(): VBIMeasure['encoding'] | undefined
+```
+
+**Returns**: `VBIMeasure['encoding'] \| undefined`
+
+### getSort
+
+Gets the sort configuration.
+
+**Definition**:
+
+```typescript
+getSort(): VBISort | undefined
+```
+
+**Returns**: `VBISort \| undefined`
+
+### setAlias
+
+Sets the display name.
+
+**Definition**:
+
+```typescript
+setAlias(alias: string): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `alias` | string | - Display name |
+
+### setEncoding
+
+Sets the chart encoding position.
+
+**Definition**:
+
+```typescript
+setEncoding(encoding: NonNullable<VBIMeasure['encoding']>): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `encoding` | NonNullable\<VBIMeasure\['encoding']> | - Measure encoding position |
+
+### setSort
+
+Sets the sort configuration.
+
+**Definition**:
+
+```typescript
+setSort(sort: VBISort): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `sort` | VBISort | - Sort configuration |
+
+### setAggregate
+
+Sets the aggregate function.
+
+**Definition**:
+
+```typescript
+setAggregate(aggregate: VBIMeasure['aggregate']): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `aggregate` | VBIMeasure\['aggregate'] | - Aggregate configuration |
+
+### setFormat
+
+Sets the number format.
+
+**Definition**:
+
+```typescript
+setFormat(format: VBIMeasureFormat): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `format` | VBIMeasureFormat | - Format configuration |
+
+### getFormat
+
+Gets the number format.
+
+**Definition**:
+
+```typescript
+getFormat(): VBIMeasureFormat | undefined
+```
+
+**Returns**: `VBIMeasureFormat \| undefined`
+
+### clearFormat
+
+Clears the number format configuration.
+
+**Definition**:
+
+```typescript
+clearFormat(): this
+```
+
+**Returns**: `this`
+
+### clearSort
+
+Clears the sort configuration.
+
+**Definition**:
+
+```typescript
+clearSort(): this
+```
+
+**Returns**: `this`
+
+### toJSON
+
+Exports to JSON.
+
+**Definition**:
+
+```typescript
+toJSON(): VBIMeasure
+```
+
+**Returns**: `VBIMeasure`
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/dimensions/index.md
+---
+
+# DimensionsBuilder
+
+Dimension builder for adding, modifying, and removing dimension configuration. Dimensions are the categorical fields in data, such as: time, region, product category.
+
+## Properties
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(doc: Y.Doc, dsl: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `doc` | Y.Doc | - |
+| `dsl` | Y.Map<any> | - |
+
+### add
+
+Adds a dimension.
+
+**Definition**:
+
+```typescript
+add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder
+```
+
+**Returns**: `DimensionsBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `field` | string | - Field name |
+| `callback` | (node: DimensionNodeBuilder) => void | - Callback function |
+
+### remove
+
+Removes the dimension with the specified ID.
+
+**Definition**:
+
+```typescript
+remove(id: string): DimensionsBuilder
+```
+
+**Returns**: `DimensionsBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `id` | string | - Dimension ID |
+
+### update
+
+Updates the configuration of the dimension with the specified ID.
+
+**Definition**:
+
+```typescript
+update(id: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder
+```
+
+**Returns**: `DimensionsBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `id` | string | - Dimension ID |
+| `callback` | (node: DimensionNodeBuilder) => void | - Callback function |
+
+### find
+
+Finds the first dimension matching the callback condition, behaves like `Array.find`.
+
+**Definition**:
+
+```typescript
+find(predicate: (node: DimensionNodeBuilder, index: number) => boolean): DimensionNodeBuilder | undefined
+```
+
+**Returns**: `DimensionNodeBuilder \| undefined`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `predicate` | (node: DimensionNodeBuilder, index: number) => boolean | - Search condition |
+
+### findAll
+
+Gets all dimensions.
+
+**Definition**:
+
+```typescript
+findAll(): DimensionNodeBuilder[]
+```
+
+**Returns**: `DimensionNodeBuilder[]`
+
+### toJSON
+
+Exports all dimensions as a JSON array.
+
+**Definition**:
+
+```typescript
+toJSON(): VBIDimension[]
+```
+
+**Returns**: `VBIDimension[]`
+
+### observe
+
+Listens for dimension changes, returns an unsubscribe function.
+
+**Definition**:
+
+```typescript
+observe(callback: ObserveDeepCallback): () => void
+```
+
+**Returns**: `() => void`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `callback` | ObserveDeepCallback | - Callback function |
+
+### static isDimensionNode
+
+**Definition**:
+
+```typescript
+static isDimensionNode(node: VBIDimensionTree[0]): node is VBIDimension
+```
+
+**Returns**: `node is VBIDimension`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `node` | VBIDimensionTree\[0] | - |
+
+### static isDimensionGroup
+
+**Definition**:
+
+```typescript
+static isDimensionGroup(node: VBIDimensionTree[0]): node is VBIDimensionGroup
+```
+
+**Returns**: `node is VBIDimensionGroup`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `node` | VBIDimensionTree\[0] | - |
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/dimensions/dimensionNode.md
+---
+
+# DimensionNodeBuilder
+
+Dimension node builder for configuring a single dimension.
+
+## Properties
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(yMap: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |
+
+### getId
+
+Gets the node ID.
+
+**Definition**:
+
+```typescript
+getId(): string
+```
+
+**Returns**: `string`
+
+### getField
+
+Gets the field name.
+
+**Definition**:
+
+```typescript
+getField(): string
+```
+
+**Returns**: `string`
+
+### getEncoding
+
+Gets the chart encoding position.
+
+**Definition**:
+
+```typescript
+getEncoding(): VBIDimension['encoding'] | undefined
+```
+
+**Returns**: `VBIDimension['encoding'] \| undefined`
+
+### getSort
+
+Gets the sort configuration.
+
+**Definition**:
+
+```typescript
+getSort(): VBISort | undefined
+```
+
+**Returns**: `VBISort \| undefined`
+
+### setAlias
+
+Sets the display name.
+
+**Definition**:
+
+```typescript
+setAlias(alias: string): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `alias` | string | - Display name |
+
+### setEncoding
+
+Sets the chart encoding position.
+
+**Definition**:
+
+```typescript
+setEncoding(encoding: NonNullable<VBIDimension['encoding']>): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `encoding` | NonNullable\<VBIDimension\['encoding']> | - Dimension encoding position |
+
+### setSort
+
+Sets the sort configuration.
+
+**Definition**:
+
+```typescript
+setSort(sort: VBISort): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `sort` | VBISort | - Sort configuration |
+
+### setAggregate
+
+Sets the date aggregation function.
+
+**Definition**:
+
+```typescript
+setAggregate(aggregate: NonNullable<VBIDimension['aggregate']>): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `aggregate` | NonNullable\<VBIDimension\['aggregate']> | - Date aggregation configuration |
+
+### clearAggregate
+
+Clears the date aggregation function.
+
+**Definition**:
+
+```typescript
+clearAggregate(): this
+```
+
+**Returns**: `this`
+
+### clearSort
+
+Clears the sort configuration.
+
+**Definition**:
+
+```typescript
+clearSort(): this
+```
+
+**Returns**: `this`
+
+### toJSON
+
+Exports to JSON.
+
+**Definition**:
+
+```typescript
+toJSON(): VBIDimension
+```
+
+**Returns**: `VBIDimension`
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/whereFilter/index.md
+---
+
+# WhereFilterBuilder
+
+Where filter builder for adding, modifying, and removing row-level filter conditions. Where filters take effect before data querying and are used to filter raw data.
+
+## Properties
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(doc: Y.Doc, dsl: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `doc` | Y.Doc | - |
+| `dsl` | Y.Map<any> | - |
+
+### getConditions
+
+**Definition**:
+
+```typescript
+getConditions(): Y.Array<any>
+```
+
+**Returns**: `Y.Array<any>`
+
+### add
+
+Adds a Where filter condition.
+
+**Definition**:
+
+```typescript
+add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilterBuilder
+```
+
+**Returns**: `WhereFilterBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `field` | string | - Field name |
+| `callback` | (node: WhereFilterNodeBuilder) => void | - Callback function |
+
+### addGroup
+
+Adds a Where group.
+
+**Definition**:
+
+```typescript
+addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereFilterBuilder
+```
+
+**Returns**: `WhereFilterBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `op` | 'and' | 'or' | - Logical operator |
+| `callback` | (group: WhereGroupBuilder) => void | - Callback function |
+
+### update
+
+Updates the filter condition with the specified ID.
+
+**Definition**:
+
+```typescript
+update(id: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilterBuilder
+```
+
+**Returns**: `WhereFilterBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `id` | string | - Filter condition ID |
+| `callback` | (node: WhereFilterNodeBuilder) => void | - Callback function |
+
+### updateGroup
+
+Updates the group with the specified ID.
+
+**Definition**:
+
+```typescript
+updateGroup(id: string, callback: (group: WhereGroupBuilder) => void): WhereFilterBuilder
+```
+
+**Returns**: `WhereFilterBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `id` | string | - Group ID |
+| `callback` | (group: WhereGroupBuilder) => void | - Callback function |
+
+### remove
+
+Removes the condition with the specified ID or the item at the specified index.
+
+**Definition**:
+
+```typescript
+remove(idOrIndex: string | number): WhereFilterBuilder
+```
+
+**Returns**: `WhereFilterBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `idOrIndex` | string | number | - ID or index |
+
+### find
+
+Finds the first condition (filter or group) matching the callback condition, behaves like `Array.find`.
+
+**Definition**:
+
+```typescript
+find(predicate: (entry: WhereFilterNodeBuilder | WhereGroupBuilder, index: number) => boolean): WhereFilterNodeBuilder | WhereGroupBuilder | undefined
+```
+
+**Returns**: `WhereFilterNodeBuilder \| WhereGroupBuilder \| undefined`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `predicate` | (entry: WhereFilterNodeBuilder | WhereGroupBuilder, index: number) => boolean | - Search condition |
+
+### clear
+
+Clears all Where filter conditions.
+
+**Definition**:
+
+```typescript
+clear()
+```
+
+### toJSON
+
+Exports the complete Where filter configuration.
+
+**Definition**:
+
+```typescript
+toJSON(): VBIWhereGroup
+```
+
+**Returns**: `VBIWhereGroup`
+
+### observe
+
+Listens for filter condition changes, returns an unsubscribe function.
+
+**Definition**:
+
+```typescript
+observe(callback: ObserveDeepCallback): () => void
+```
+
+**Returns**: `() => void`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `callback` | ObserveDeepCallback | - Callback function |
+
+### static isGroup
+
+Determines whether the node is a group node.
+
+**Definition**:
+
+```typescript
+static isGroup(yMap: Y.Map<any>): boolean
+```
+
+**Returns**: `boolean`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |
+
+### static isNode
+
+Determines whether the node is a leaf node.
+
+**Definition**:
+
+```typescript
+static isNode(yMap: Y.Map<any>): boolean
+```
+
+**Returns**: `boolean`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/whereFilter/whereNode.md
+---
+
+# WhereFilterNodeBuilder
+
+Where filter node builder for configuring a single Where filter condition.
+
+## Properties
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(yMap: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |
+
+### getId
+
+Gets the node ID.
+
+**Definition**:
+
+```typescript
+getId(): string
+```
+
+**Returns**: `string`
+
+### getField
+
+Gets the field name.
+
+**Definition**:
+
+```typescript
+getField(): string
+```
+
+**Returns**: `string`
+
+### setField
+
+Sets the field name.
+
+**Definition**:
+
+```typescript
+setField(field: string): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `field` | string | - Field name |
+
+### getOperator
+
+Gets the filter operator.
+
+**Definition**:
+
+```typescript
+getOperator(): string | undefined
+```
+
+**Returns**: `string \| undefined`
+
+### setOperator
+
+Sets the filter operator.
+
+**Definition**:
+
+```typescript
+setOperator(operator: string): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `operator` | string | - Operator |
+
+### setValue
+
+Sets the filter value.
+
+**Definition**:
+
+```typescript
+setValue(value: unknown): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `value` | unknown | - Filter value |
+
+### setDate
+
+Sets the date filter condition.
+
+**Definition**:
+
+```typescript
+setDate(predicate: VBIWhereDatePredicate): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `predicate` | VBIWhereDatePredicate | - Date predicate |
+
+### getDate
+
+Gets the date filter condition; returns `undefined` for non-date filters.
+
+**Definition**:
+
+```typescript
+getDate(): VBIWhereDatePredicate | undefined
+```
+
+**Returns**: `VBIWhereDatePredicate \| undefined`
+
+### toJSON
+
+Exports to JSON.
+
+**Definition**:
+
+```typescript
+toJSON(): VBIWhereFilter
+```
+
+**Returns**: `VBIWhereFilter`
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/whereFilter/whereGroup.md
+---
+
+# WhereGroupBuilder
+
+Where group builder for configuring the logical relationship (AND/OR) of a condition group.
+
+## Properties
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(yMap: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |
+
+### getConditions
+
+**Definition**:
+
+```typescript
+getConditions(): Y.Array<any>
+```
+
+**Returns**: `Y.Array<any>`
+
+### getId
+
+Gets the group ID.
+
+**Definition**:
+
+```typescript
+getId(): string
+```
+
+**Returns**: `string`
+
+### getOperator
+
+Gets the logical operator.
+
+**Definition**:
+
+```typescript
+getOperator(): 'and' | 'or'
+```
+
+**Returns**: `'and' \| 'or'`
+
+### setOperator
+
+Sets the logical operator.
+
+**Definition**:
+
+```typescript
+setOperator(op: 'and' | 'or'): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `op` | 'and' | 'or' | - Logical operator |
+
+### add
+
+Adds a Where filter condition to the group.
+
+**Definition**:
+
+```typescript
+add(field: string, callback: (node: WhereFilterNodeBuilder) => void): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `field` | string | - Field name |
+| `callback` | (node: WhereFilterNodeBuilder) => void | - Callback function |
+
+### addGroup
+
+Adds a nested group to the current group.
+
+**Definition**:
+
+```typescript
+addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `op` | 'and' | 'or' | - Logical operator |
+| `callback` | (group: WhereGroupBuilder) => void | - Callback function |
+
+### remove
+
+Removes the condition with the specified ID or the item at the specified index.
+
+**Definition**:
+
+```typescript
+remove(idOrIndex: string | number): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `idOrIndex` | string | number | - ID or index |
+
+### clear
+
+Clears all conditions in the group.
+
+**Definition**:
+
+```typescript
+clear(): this
+```
+
+**Returns**: `this`
+
+### toJSON
+
+Exports to JSON.
+
+**Definition**:
+
+```typescript
+toJSON(): VBIWhereGroup
+```
+
+**Returns**: `VBIWhereGroup`
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/havingFilter/index.md
+---
+
+# HavingFilterBuilder
+
+Having filter builder for adding, modifying, and removing post-aggregation filter conditions. Having filters take effect after data aggregation and are used to filter grouped results.
+
+## Properties
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(doc: Y.Doc, dsl: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `doc` | Y.Doc | - |
+| `dsl` | Y.Map<any> | - |
+
+### getConditions
+
+**Definition**:
+
+```typescript
+getConditions(): Y.Array<any>
+```
+
+**Returns**: `Y.Array<any>`
+
+### add
+
+Adds a Having filter condition.
+
+**Definition**:
+
+```typescript
+add(field: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFilterBuilder
+```
+
+**Returns**: `HavingFilterBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `field` | string | - Field name |
+| `callback` | (node: HavingFilterNodeBuilder) => void | - Callback function |
+
+### addGroup
+
+Adds a Having group.
+
+**Definition**:
+
+```typescript
+addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): HavingFilterBuilder
+```
+
+**Returns**: `HavingFilterBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `op` | 'and' | 'or' | - Logical operator |
+| `callback` | (group: HavingGroupBuilder) => void | - Callback function |
+
+### update
+
+Updates the filter condition with the specified ID.
+
+**Definition**:
+
+```typescript
+update(id: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFilterBuilder
+```
+
+**Returns**: `HavingFilterBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `id` | string | - Filter condition ID |
+| `callback` | (node: HavingFilterNodeBuilder) => void | - Callback function |
+
+### updateGroup
+
+Updates the group with the specified ID.
+
+**Definition**:
+
+```typescript
+updateGroup(id: string, callback: (group: HavingGroupBuilder) => void): HavingFilterBuilder
+```
+
+**Returns**: `HavingFilterBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `id` | string | - Group ID |
+| `callback` | (group: HavingGroupBuilder) => void | - Callback function |
+
+### remove
+
+Removes the condition with the specified ID or the item at the specified index.
+
+**Definition**:
+
+```typescript
+remove(idOrIndex: string | number): HavingFilterBuilder
+```
+
+**Returns**: `HavingFilterBuilder`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `idOrIndex` | string | number | - ID or index |
+
+### find
+
+Finds the first condition (filter or group) matching the callback condition, behaves like `Array.find`.
+
+**Definition**:
+
+```typescript
+find(predicate: (entry: HavingFilterNodeBuilder | HavingGroupBuilder, index: number) => boolean): HavingFilterNodeBuilder | HavingGroupBuilder | undefined
+```
+
+**Returns**: `HavingFilterNodeBuilder \| HavingGroupBuilder \| undefined`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `predicate` | (entry: HavingFilterNodeBuilder | HavingGroupBuilder, index: number) => boolean | - Search condition |
+
+### clear
+
+Clears all Having filter conditions.
+
+**Definition**:
+
+```typescript
+clear()
+```
+
+### toJSON
+
+Exports the complete Having filter configuration.
+
+**Definition**:
+
+```typescript
+toJSON(): VBIHavingGroup
+```
+
+**Returns**: `VBIHavingGroup`
+
+### observe
+
+Listens for filter condition changes, returns an unsubscribe function.
+
+**Definition**:
+
+```typescript
+observe(callback: ObserveDeepCallback): () => void
+```
+
+**Returns**: `() => void`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `callback` | ObserveDeepCallback | - Callback function |
+
+### static isGroup
+
+Determines whether the node is a group node.
+
+**Definition**:
+
+```typescript
+static isGroup(yMap: Y.Map<any>): boolean
+```
+
+**Returns**: `boolean`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |
+
+### static isNode
+
+Determines whether the node is a leaf node.
+
+**Definition**:
+
+```typescript
+static isNode(yMap: Y.Map<any>): boolean
+```
+
+**Returns**: `boolean`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/havingFilter/havingNode.md
+---
+
+# HavingFilterNodeBuilder
+
+Having filter node builder for configuring a single Having filter condition.
+
+## Properties
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(yMap: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |
+
+### getId
+
+Gets the node ID.
+
+**Definition**:
+
+```typescript
+getId(): string
+```
+
+**Returns**: `string`
+
+### getField
+
+Gets the field name.
+
+**Definition**:
+
+```typescript
+getField(): string
+```
+
+**Returns**: `string`
+
+### getOperator
+
+Gets the filter operator.
+
+**Definition**:
+
+```typescript
+getOperator(): string | undefined
+```
+
+**Returns**: `string \| undefined`
+
+### getAggregate
+
+Gets the aggregate configuration.
+
+**Definition**:
+
+```typescript
+getAggregate(): VBIHavingAggregate | undefined
+```
+
+**Returns**: `VBIHavingAggregate \| undefined`
+
+### setValue
+
+Sets the value for the filter condition.
+
+**Definition**:
+
+```typescript
+setValue(value: unknown): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `value` | unknown | - Filter value |
+
+### setOperator
+
+Sets the filter operator.
+
+**Definition**:
+
+```typescript
+setOperator(operator: string): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `operator` | string | - Operator |
+
+### setAggregate
+
+Sets the aggregate configuration.
+
+**Definition**:
+
+```typescript
+setAggregate(aggregate: VBIHavingAggregate): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `aggregate` | VBIHavingAggregate | - Aggregate configuration |
+
+### toJSON
+
+Exports to JSON.
+
+**Definition**:
+
+```typescript
+toJSON(): VBIHavingFilter
+```
+
+**Returns**: `VBIHavingFilter`
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/havingFilter/havingGroup.md
+---
+
+# HavingGroupBuilder
+
+Having group builder for configuring the logical relationship (AND/OR) of a condition group.
+
+## Properties
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(yMap: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |
+
+### getConditions
+
+**Definition**:
+
+```typescript
+getConditions(): Y.Array<any>
+```
+
+**Returns**: `Y.Array<any>`
+
+### getId
+
+Gets the group ID.
+
+**Definition**:
+
+```typescript
+getId(): string
+```
+
+**Returns**: `string`
+
+### getOperator
+
+Gets the logical operator.
+
+**Definition**:
+
+```typescript
+getOperator(): 'and' | 'or'
+```
+
+**Returns**: `'and' \| 'or'`
+
+### setOperator
+
+Sets the logical operator.
+
+**Definition**:
+
+```typescript
+setOperator(op: 'and' | 'or'): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `op` | 'and' | 'or' | - Logical operator |
+
+### add
+
+Adds a Having filter condition to the group.
+
+**Definition**:
+
+```typescript
+add(field: string, callback: (node: HavingFilterNodeBuilder) => void): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `field` | string | - Field name |
+| `callback` | (node: HavingFilterNodeBuilder) => void | - Callback function |
+
+### addGroup
+
+Adds a nested group to the current group.
+
+**Definition**:
+
+```typescript
+addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `op` | 'and' | 'or' | - Logical operator |
+| `callback` | (group: HavingGroupBuilder) => void | - Callback function |
+
+### remove
+
+Removes the condition with the specified ID or the item at the specified index.
+
+**Definition**:
+
+```typescript
+remove(idOrIndex: string | number): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `idOrIndex` | string | number | - ID or index |
+
+### clear
+
+Clears all conditions in the group.
+
+**Definition**:
+
+```typescript
+clear(): this
+```
+
+**Returns**: `this`
+
+### toJSON
+
+Exports to JSON.
+
+**Definition**:
+
+```typescript
+toJSON(): VBIHavingGroup
+```
+
+**Returns**: `VBIHavingGroup`
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/theme.md
+---
+
+# ThemeBuilder
+
+Theme builder for setting and getting the current theme.
+
+## Properties
+
+## Methods
+
+### constructor
+
+Constructor
+
+**Definition**:
+
+```typescript
+constructor(_doc: Y.Doc, dsl: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `_doc` | Y.Doc | - |
+| `dsl` | Y.Map<any> | - |
+
+### observe
+
+Listens for theme changes, returns an unsubscribe function.
+
+**Definition**:
+
+```typescript
+observe(callback: ObserveCallback): () => void
+```
+
+**Returns**: `() => void`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `callback` | ObserveCallback | - Callback function |
+
+### setTheme
+
+Sets the theme.
+
+**Definition**:
+
+```typescript
+setTheme(theme: string)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `theme` | string | - Theme name |
+
+### getTheme
+
+Gets the current theme.
+
+**Definition**:
+
+```typescript
+getTheme(): string
+```
+
+**Returns**: `string`
+
+### toJSON
+
+Exports to JSON.
+
+**Definition**:
+
+```typescript
+toJSON(): string
+```
+
+**Returns**: `string`
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/locale.md
+---
+
+# LocaleBuilder
+
+Locale builder for setting and getting the current locale.
+
+## Properties
+
+## Methods
+
+### constructor
+
+Constructor
+
+**Definition**:
+
+```typescript
+constructor(_doc: Y.Doc, dsl: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `_doc` | Y.Doc | - |
+| `dsl` | Y.Map<any> | - |
+
+### observe
+
+Listens for locale changes, returns an unsubscribe function.
+
+**Definition**:
+
+```typescript
+observe(callback: ObserveCallback): () => void
+```
+
+**Returns**: `() => void`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `callback` | ObserveCallback | - Callback function |
+
+### setLocale
+
+Sets the locale.
+
+**Definition**:
+
+```typescript
+setLocale(locale: string)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `locale` | string | - Locale name |
+
+### getLocale
+
+Gets the current locale.
+
+**Definition**:
+
+```typescript
+getLocale(): string
+```
+
+**Returns**: `string`
+
+### toJSON
+
+Exports to JSON.
+
+**Definition**:
+
+```typescript
+toJSON(): string
+```
+
+**Returns**: `string`
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/limit.md
+---
+
+# LimitBuilder
+
+Data limit builder for setting and getting the current limit.
+
+## Properties
+
+## Methods
+
+### constructor
+
+Constructor
+
+**Definition**:
+
+```typescript
+constructor(_doc: Y.Doc, dsl: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `_doc` | Y.Doc | - |
+| `dsl` | Y.Map<any> | - |
+
+### observe
+
+Listens for limit changes, returns an unsubscribe function.
+
+**Definition**:
+
+```typescript
+observe(callback: ObserveCallback): () => void
+```
+
+**Returns**: `() => void`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `callback` | ObserveCallback | - Callback function |
+
+### setLimit
+
+Sets the limit.
+
+**Definition**:
+
+```typescript
+setLimit(limit: number)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `limit` | number | - Data limit |
+
+### getLimit
+
+Gets the current limit.
+
+**Definition**:
+
+```typescript
+getLimit(): number | undefined
+```
+
+**Returns**: `number \| undefined`
+
+### toJSON
+
+Exports to JSON.
+
+**Definition**:
+
+```typescript
+toJSON(): number | undefined
+```
+
+**Returns**: `number \| undefined`
+
+
+
+---
+url: /VBI/en-US/vbi/api/chartBuilder/undoManager.md
+---
+
+# UndoManager
+
+Undo/redo manager providing YJS-based undo and redo functionality, with support for stack management and history clearing.
+
+## Properties
+
+## Methods
+
+### constructor
+
+Constructor
+
+**Definition**:
+
+```typescript
+constructor(scope: any)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `scope` | any | - YJS document or type scope, used to define the tracking range for undo/redo |
+
+### undo
+
+Undoes the last modification.
+
+**Definition**:
+
+```typescript
+undo(): boolean
+```
+
+**Returns**: `boolean`
+
+### redo
+
+Redoes an undone modification.
+
+**Definition**:
+
+```typescript
+redo(): boolean
+```
+
+**Returns**: `boolean`
+
+### canUndo
+
+Checks whether there are operations that can be undone.
+
+**Definition**:
+
+```typescript
+canUndo(): boolean
+```
+
+**Returns**: `boolean`
+
+### canRedo
+
+Checks whether there are operations that can be redone.
+
+**Definition**:
+
+```typescript
+canRedo(): boolean
+```
+
+**Returns**: `boolean`
+
+### clear
+
+Clears the history.
+
+**Definition**:
+
+```typescript
+clear(clearUndoStack: boolean, clearRedoStack: boolean): void
+```
+
+**Returns**: `void`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `clearUndoStack` | boolean | - Whether to clear the undo stack, defaults to true |
+| `clearRedoStack` | boolean | - Whether to clear the redo stack, defaults to true |
+
+
+
+---
+url: /VBI/en-US/vbi/api/reportBuilder/index.md
+---
+
+# VBIReportBuilder
+
+## Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| **doc** | `Y.Doc` | - |
+| **dsl** | `Y.Map<any>` | - |
+| **undoManager** | `UndoManager` | - |
+| **page** | `ReportPageCollectionBuilder<TQueryDSL, TSeedDSL>` | - |
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(doc: Y.Doc, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `doc` | Y.Doc | - |
+| `options` | VBIReportBuilderOptions\<TQueryDSL, TSeedDSL> | - |
+
+### applyUpdate
+
+**Definition**:
+
+```typescript
+applyUpdate(update: Uint8Array, transactionOrigin: any): any
+```
+
+**Returns**: `any`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `update` | Uint8Array | - |
+| `transactionOrigin` | any | - |
+
+### encodeStateAsUpdate
+
+**Definition**:
+
+```typescript
+encodeStateAsUpdate(targetStateVector: Uint8Array): any
+```
+
+**Returns**: `any`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `targetStateVector` | Uint8Array | - |
+
+### build
+
+**Definition**:
+
+```typescript
+build(): VBIReportDSL
+```
+
+**Returns**: `VBIReportDSL`
+
+### isEmpty
+
+**Definition**:
+
+```typescript
+isEmpty(): boolean
+```
+
+**Returns**: `boolean`
+
+
+
+---
+url: /VBI/en-US/vbi/api/reportBuilder/page/index.md
+---
+
+# ReportPageCollectionBuilder
+
+## Properties
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, doc: Y.Doc, dsl: Y.Map<any>, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `parent` | VBIReportBuilder\<TQueryDSL, TSeedDSL> | - |
+| `doc` | Y.Doc | - |
+| `dsl` | Y.Map<any> | - |
+| `options` | VBIReportBuilderOptions\<TQueryDSL, TSeedDSL> | - |
+
+### add
+
+**Definition**:
+
+```typescript
+add(title: string, callback: (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void): VBIReportBuilder<TQueryDSL, TSeedDSL>
+```
+
+**Returns**: `VBIReportBuilder<TQueryDSL, TSeedDSL>`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `title` | string | - |
+| `callback` | (page: ReportPageBuilder\<TQueryDSL, TSeedDSL>) => void | - |
+
+### remove
+
+**Definition**:
+
+```typescript
+remove(pageId: string): VBIReportBuilder<TQueryDSL, TSeedDSL>
+```
+
+**Returns**: `VBIReportBuilder<TQueryDSL, TSeedDSL>`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `pageId` | string | - |
+
+### update
+
+**Definition**:
+
+```typescript
+update(pageId: string, callback: (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void): VBIReportBuilder<TQueryDSL, TSeedDSL>
+```
+
+**Returns**: `VBIReportBuilder<TQueryDSL, TSeedDSL>`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `pageId` | string | - |
+| `callback` | (page: ReportPageBuilder\<TQueryDSL, TSeedDSL>) => void | - |
+
+### get
+
+**Definition**:
+
+```typescript
+get(pageId: string): ReportPageBuilder<TQueryDSL, TSeedDSL> | undefined
+```
+
+**Returns**: `ReportPageBuilder<TQueryDSL, TSeedDSL> \| undefined`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `pageId` | string | - |
+
+
+
+---
+url: /VBI/en-US/vbi/api/reportBuilder/page/reportPage.md
+---
+
+# ReportPageBuilder
+
+## Properties
+
+| Property | Type | Description |
+| --- | --- | --- |
+| **chart** | `VBIChartBuilder<TQueryDSL, TSeedDSL>` | - |
+| **text** | `ReportTextBuilder` | - |
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(doc: Y.Doc, page: Y.Map<any>, chartOptions: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `doc` | Y.Doc | - |
+| `page` | Y.Map<any> | - |
+| `chartOptions` | VBIChartBuilderOptions\<TQueryDSL, TSeedDSL> | - |
+
+### getId
+
+**Definition**:
+
+```typescript
+getId(): string
+```
+
+**Returns**: `string`
+
+### setTitle
+
+**Definition**:
+
+```typescript
+setTitle(title: string): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `title` | string | - |
+
+### setChart
+
+**Definition**:
+
+```typescript
+setChart(chartBuilder: VBIChartBuilder<TQueryDSL, TSeedDSL> | VBIChartDSLInput): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `chartBuilder` | VBIChartBuilder\<TQueryDSL, TSeedDSL> | VBIChartDSLInput | - |
+
+### setText
+
+**Definition**:
+
+```typescript
+setText(content: string): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `content` | string | - |
+
+### toJSON
+
+**Definition**:
+
+```typescript
+toJSON(): VBIReportPageDSL
+```
+
+**Returns**: `VBIReportPageDSL`
 
 
 
@@ -153234,94 +152437,794 @@ export default Demo
 
 
 ---
-url: /VBI/en-US/vbi/practices/minimalist.md
+url: /VBI/en-US/vbi/api/insightBuilder/index.md
 ---
 
-# Minimalist
+# VBIInsightBuilder
 
-import { APP } from 'minimalist'
+## Properties
 
-<div style={{ width: '100%', height: '700px' }}>
-  <APP />
-</div>
+| Property | Type | Description |
+| --- | --- | --- |
+| **doc** | `Y.Doc` | - |
+| **dsl** | `Y.Map<any>` | - |
+| **undoManager** | `UndoManager` | - |
+
+## Methods
+
+### constructor
+
+**Definition**:
+
+```typescript
+constructor(doc: Y.Doc, dsl: Y.Map<any>)
+```
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `doc` | Y.Doc | - |
+| `dsl` | Y.Map<any> | - |
+
+### applyUpdate
+
+**Definition**:
+
+```typescript
+applyUpdate(update: Uint8Array, transactionOrigin: any): any
+```
+
+**Returns**: `any`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `update` | Uint8Array | - |
+| `transactionOrigin` | any | - |
+
+### encodeStateAsUpdate
+
+**Definition**:
+
+```typescript
+encodeStateAsUpdate(targetStateVector: Uint8Array): any
+```
+
+**Returns**: `any`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `targetStateVector` | Uint8Array | - |
+
+### getUUID
+
+**Definition**:
+
+```typescript
+getUUID(): string
+```
+
+**Returns**: `string`
+
+### setContent
+
+**Definition**:
+
+```typescript
+setContent(content: string): this
+```
+
+**Returns**: `this`
+
+**Parameters**:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `content` | string | - |
+
+### build
+
+**Definition**:
+
+```typescript
+build(): VBIInsightDSL
+```
+
+**Returns**: `VBIInsightDSL`
+
+### isEmpty
+
+**Definition**:
+
+```typescript
+isEmpty(): boolean
+```
+
+**Returns**: `boolean`
 
 
 
 ---
-url: /VBI/en-US/vbi/practices/professional.md
+url: /VBI/en-US/vbi/examples/tags.md
 ---
 
-# Professional
+# Tags
 
-import { APP } from 'professional'
+Total 67 examples, 0 tags.
 
-<div style={{ width: '100%', height: '700px' }}>
-  <APP />
-</div>
-
-
-
----
-url: /VBI/en-US/vbi/practices/standard-report.md
----
-
-# Standard Report
-
-import { APP } from 'standard-report'
-
-<div style={{ width: '100%', height: '760px' }}>
-  <APP />
-</div>
+| Tag | Count |
+| --- | ----- |
 
 
 
 ---
-url: /VBI/en-US/vbi/practices/standard.md
+url: /VBI/en-US/vbi-react/index.md
 ---
 
-# Standard
+# VBI React
 
-import { APP } from 'standard'
+`@visactor/vbi-react` is the React adapter layer for `@visactor/vbi`, responsible for integrating `VBIChartBuilder` into the React component tree.
 
-<div style={{ width: '100%', height: '700px' }}>
-  <APP />
-</div>
+Current exports are split into two layers:
+
+* Root export `@visactor/vbi-react`: `useVBI`, `useVSeed`, `useChartType`, `useDimensions`, `useMeasures`, `useWhereFilter`, `useHavingFilter`
+* Sub-path export `@visactor/vbi-react/components`: `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel`
+
+## Purpose
+
+* State subscription and rendering encapsulation for React 18+
+* Uses `VBIChartBuilder` as the Single Source of Truth (SSOT) — no additional business state copies
+* Ideal for building BI configuration panels, chart preview areas, and DSL debug panels
+
+## Installation
+
+Standard installation:
+
+```bash
+pnpm add @visactor/vbi-react @visactor/vbi @visactor/vseed react react-dom
+```
+
+For local development within this monorepo, use workspace dependencies:
+
+```bash
+pnpm --filter=<your-app> add @visactor/vbi-react@workspace:* @visactor/vbi@workspace:* @visactor/vseed@workspace:* react react-dom
+```
+
+## Quick Start
+
+The example below demonstrates the minimal closed loop with `useVBI` + `useVSeed`:
+
+```tsx
+import { useMemo } from 'react'
+import { VBI, type VBIConnector } from '@visactor/vbi'
+import { useVBI, useVSeed } from '@visactor/vbi-react'
+
+const connectorId = 'local-demo'
+
+const connector: VBIConnector = {
+  discoverSchema: async () => [
+    { name: 'region', type: 'string' },
+    { name: 'sales', type: 'number' },
+  ],
+  query: async () => ({
+    dataset: [
+      { region: 'East', sales: 120 },
+      { region: 'West', sales: 90 },
+    ],
+  }),
+}
+
+VBI.registerConnector(connectorId, connector)
+
+export function App() {
+  const builder = useMemo(
+    () =>
+      VBI.createChart({
+        ...VBI.generateEmptyChartDSL(connectorId),
+        chartType: 'bar',
+      }),
+    [],
+  )
+
+  const { dsl } = useVBI(builder)
+  const { vseed, loading, error } = useVSeed(builder, { debounce: 0 })
+
+  if (error) return <pre>{error.message}</pre>
+  if (loading || !vseed) return <div>Loading...</div>
+
+  return (
+    <div>
+      <h3>{dsl.chartType}</h3>
+      <pre>{JSON.stringify(vseed, null, 2)}</pre>
+    </div>
+  )
+}
+```
+
+## Documentation
+
+* [API Overview](/VBI/en-US/vbi-react/api/index.md)
+* [Examples](/VBI/en-US/vbi-react/examples/index.md)
 
 
 
 ---
-url: /VBI/en-US/vbi/practices/streamlined.md
+url: /VBI/en-US/vbi-react/examples/index.md
 ---
 
-# Streamlined
+# Examples Overview
 
-import { APP } from 'streamlined'
+All examples below can be copied directly into a `.tsx` file and run.
 
-<div style={{ width: '100%', height: '700px' }}>
-  <APP />
-</div>
-
-
-
----
-url: /VBI/en-US/vbi/practices/vbi-react-starter.md
----
-
-# vbi-react Starter
-
-import { APP } from 'vbi-react-starter'
-
-<div style={{ width: '100%', height: 'min(78vh, 920px)', minHeight: '640px' }}>
-  <APP />
-</div>
+* [Basic Hooks](/VBI/en-US/vbi-react/examples/basicHooks.md)
+* [Layout with Components](/VBI/en-US/vbi-react/examples/layoutWithComponents.md)
+* [Filter Mutations](/VBI/en-US/vbi-react/examples/filterMutations.md)
 
 
 
 ---
-url: /VBI/en-US/index.md
+url: /VBI/en-US/vbi-react/examples/basicHooks.md
 ---
 
+# Basic Hooks
 
+This example demonstrates combining `useVBI` with `useVSeed`.
+
+## Dependencies
+
+* Packages: `@visactor/vbi-react`, `@visactor/vbi`, `@visactor/vseed`, `react`
+* Props: requires an initialized `VBIChartBuilder` (with a bound connector)
+
+## Code Snippet
+
+```tsx
+import type { VBIChartBuilder } from '@visactor/vbi'
+import { useVBI, useVSeed } from '@visactor/vbi-react'
+
+export function BasicHooksDemo({ builder }: { builder: VBIChartBuilder }) {
+  const { dsl } = useVBI(builder)
+  const { vseed, loading, error, refetch } = useVSeed(builder, { debounce: 100 })
+
+  if (error) {
+    return <button onClick={() => void refetch()}>Retry: {error.message}</button>
+  }
+
+  if (loading || !vseed) {
+    return <div>Loading...</div>
+  }
+
+  return (
+    <div>
+      <h4>chartType: {dsl.chartType}</h4>
+      <pre>{JSON.stringify(vseed, null, 2)}</pre>
+    </div>
+  )
+}
+```
+
+## Expected Behavior
+
+* When the builder changes, `dsl` and `vseed` update in sync.
+* Shows `Loading...` on first load or when updating; allows manual retry on failure.
+* On success, displays the current `chartType` and the latest VSeed JSON.
+
+
+
+---
+url: /VBI/en-US/vbi-react/examples/layoutWithComponents.md
+---
+
+# Layout with Components
+
+This example demonstrates `BuilderLayout` + `FieldPanel` + `ChartRenderer` + `ChartTypeSelector`.
+
+## Dependencies
+
+* Packages: `@visactor/vbi-react/components`, `@visactor/vbi`, `react`
+* Props: `builder` should have available dimension/measure fields for `FieldPanel` add/remove demos
+
+## Code Snippet
+
+```tsx
+import type { VBIChartBuilder } from '@visactor/vbi'
+import { BuilderLayout, ChartRenderer, ChartTypeSelector, FieldPanel } from '@visactor/vbi-react/components'
+
+export function LayoutDemo({ builder }: { builder: VBIChartBuilder }) {
+  return (
+    <BuilderLayout
+      topBar={<ChartTypeSelector builder={builder} />}
+      leftPanel={
+        <FieldPanel
+          builder={builder}
+          dimensionOptions={[{ label: 'Region', value: 'region' }]}
+          measureOptions={[{ label: 'Sales', value: 'sales' }]}
+        />
+      }
+      main={<ChartRenderer builder={builder} debounce={100} />}
+    />
+  )
+}
+```
+
+## Expected Behavior
+
+* Top bar: switch chart type; Left panel: add/remove dimensions/measures; Main area: chart DSL preview.
+* Main area auto-refreshes after field operations — no manual trigger needed.
+* On build failure, `ChartRenderer` shows a default error message and retry button.
+
+
+
+---
+url: /VBI/en-US/vbi-react/examples/filterMutations.md
+---
+
+# Filter Mutations
+
+This example demonstrates the mutation entry points for `useWhereFilter` and `useHavingFilter`.
+
+## Dependencies
+
+* Packages: `@visactor/vbi-react`, `@visactor/vbi`, `react`
+* Props: `builder` should contain at least `region` and `sales` fields for demonstrating Where/Having mutations
+
+## Code Snippet
+
+```tsx
+import type { VBIChartBuilder } from '@visactor/vbi'
+import { useHavingFilter, useWhereFilter } from '@visactor/vbi-react'
+
+export function FilterDemo({ builder }: { builder: VBIChartBuilder }) {
+  const { whereFilter, mutateWhereFilter, clearWhereFilter } = useWhereFilter(builder)
+  const { havingFilter, mutateHavingFilter, clearHavingFilter } = useHavingFilter(builder)
+
+  return (
+    <div style={{ display: 'grid', gap: 8 }}>
+      <button
+        onClick={() =>
+          mutateWhereFilter((where) => {
+            where.add('region', (node) => node.setOperator('eq').setValue('East'))
+          })
+        }
+      >
+        Add Where Condition
+      </button>
+      <button
+        onClick={() =>
+          mutateHavingFilter((having) => {
+            having.add('sales', (node) => node.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000))
+          })
+        }
+      >
+        Add Having Condition
+      </button>
+      <button onClick={clearWhereFilter}>Clear Where</button>
+      <button onClick={clearHavingFilter}>Clear Having</button>
+      <pre>{JSON.stringify({ whereFilter, havingFilter }, null, 2)}</pre>
+    </div>
+  )
+}
+```
+
+## Expected Behavior
+
+* After clicking buttons, Where/Having conditions are appended to the builder's filter tree.
+* The clear buttons immediately remove the corresponding filter conditions.
+* The JSON at the bottom can be used to confirm the current filter DSL structure.
+
+
+
+---
+url: /VBI/en-US/vbi-react/api/index.md
+---
+
+# API Overview
+
+`@visactor/vbi-react` exports are split into two parts:
+
+| Module | Import Path | Contents |
+| --- | --- | --- |
+| Hooks | `@visactor/vbi-react` | `useChartType`, `useDimensions`, `useHavingFilter`, `useMeasures`, `useVBI`, `useVSeed`, `useWhereFilter` |
+| Components | `@visactor/vbi-react/components` | `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel` |
+
+All hooks and components work around `VBIChartBuilder` without maintaining additional business state.
+
+
+
+---
+url: /VBI/en-US/vbi-react/api/useChartType.md
+---
+
+# useChartType
+
+## Import
+
+```ts
+import { useChartType } from '@visactor/vbi-react'
+```
+
+## Signature
+
+```ts
+useChartType(builder: VBIChartBuilder): UseChartTypeReturn
+```
+
+## Description
+
+Reads and updates the current chart type, while exposing the list of available chart types.
+
+## Minimal Example
+
+```tsx
+import type { VBIChartBuilder } from '@visactor/vbi'
+import { useChartType } from '@visactor/vbi-react'
+
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  const result = useChartType(builder)
+  return <pre>{JSON.stringify(result, null, 2)}</pre>
+}
+```
+
+
+
+---
+url: /VBI/en-US/vbi-react/api/useDimensions.md
+---
+
+# useDimensions
+
+## Import
+
+```ts
+import { useDimensions } from '@visactor/vbi-react'
+```
+
+## Signature
+
+```ts
+useDimensions(builder: VBIChartBuilder): UseDimensionsReturn
+```
+
+## Description
+
+Reads and updates dimension configuration, providing the ability to add, remove, and modify dimensions.
+
+## Minimal Example
+
+```tsx
+import type { VBIChartBuilder } from '@visactor/vbi'
+import { useDimensions } from '@visactor/vbi-react'
+
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  const result = useDimensions(builder)
+  return <pre>{JSON.stringify(result, null, 2)}</pre>
+}
+```
+
+
+
+---
+url: /VBI/en-US/vbi-react/api/useHavingFilter.md
+---
+
+# useHavingFilter
+
+## Import
+
+```ts
+import { useHavingFilter } from '@visactor/vbi-react'
+```
+
+## Signature
+
+```ts
+useHavingFilter(builder: VBIChartBuilder): UseHavingFilterReturn
+```
+
+## Description
+
+Manages the Having filter tree and provides mutation entry points.
+
+## Minimal Example
+
+```tsx
+import type { VBIChartBuilder } from '@visactor/vbi'
+import { useHavingFilter } from '@visactor/vbi-react'
+
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  const result = useHavingFilter(builder)
+  return <pre>{JSON.stringify(result, null, 2)}</pre>
+}
+```
+
+
+
+---
+url: /VBI/en-US/vbi-react/api/useMeasures.md
+---
+
+# useMeasures
+
+## Import
+
+```ts
+import { useMeasures } from '@visactor/vbi-react'
+```
+
+## Signature
+
+```ts
+useMeasures(builder: VBIChartBuilder): UseMeasuresReturn
+```
+
+## Description
+
+Reads and updates measure configuration, providing the ability to add, remove, and modify measures.
+
+## Minimal Example
+
+```tsx
+import type { VBIChartBuilder } from '@visactor/vbi'
+import { useMeasures } from '@visactor/vbi-react'
+
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  const result = useMeasures(builder)
+  return <pre>{JSON.stringify(result, null, 2)}</pre>
+}
+```
+
+
+
+---
+url: /VBI/en-US/vbi-react/api/useVBI.md
+---
+
+# useVBI
+
+## Import
+
+```ts
+import { useVBI } from '@visactor/vbi-react'
+```
+
+## Signature
+
+```ts
+useVBI(builder: VBIChartBuilder): UseVBIReturn
+```
+
+## Description
+
+Subscribes to DSL snapshot changes on the builder, returning the latest `dsl` and the original `builder`.
+
+## Minimal Example
+
+```tsx
+import type { VBIChartBuilder } from '@visactor/vbi'
+import { useVBI } from '@visactor/vbi-react'
+
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  const result = useVBI(builder)
+  return <pre>{JSON.stringify(result, null, 2)}</pre>
+}
+```
+
+
+
+---
+url: /VBI/en-US/vbi-react/api/useVSeed.md
+---
+
+# useVSeed
+
+## Import
+
+```ts
+import { useVSeed } from '@visactor/vbi-react'
+```
+
+## Signature
+
+```ts
+useVSeed(builder: VBIChartBuilder, options: UseVSeedOptions =
+```
+
+## Description
+
+Executes the query and VSeed generation pipeline, returning the state and data required for rendering.
+
+## Minimal Example
+
+```tsx
+import type { VBIChartBuilder } from '@visactor/vbi'
+import { useVSeed } from '@visactor/vbi-react'
+
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  const { vseed, loading } = useVSeed(builder, { debounce: 100 })
+  if (loading || !vseed) {
+    return <div>Loading...</div>
+  }
+  return <pre>{JSON.stringify(vseed, null, 2)}</pre>
+}
+```
+
+
+
+---
+url: /VBI/en-US/vbi-react/api/useWhereFilter.md
+---
+
+# useWhereFilter
+
+## Import
+
+```ts
+import { useWhereFilter } from '@visactor/vbi-react'
+```
+
+## Signature
+
+```ts
+useWhereFilter(builder: VBIChartBuilder): UseWhereFilterReturn
+```
+
+## Description
+
+Manages the Where filter tree and provides mutation entry points.
+
+## Minimal Example
+
+```tsx
+import type { VBIChartBuilder } from '@visactor/vbi'
+import { useWhereFilter } from '@visactor/vbi-react'
+
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  const result = useWhereFilter(builder)
+  return <pre>{JSON.stringify(result, null, 2)}</pre>
+}
+```
+
+
+
+---
+url: /VBI/en-US/vbi-react/api/builderLayout.md
+---
+
+# BuilderLayout
+
+## Import
+
+```ts
+import { BuilderLayout } from '@visactor/vbi-react/components'
+```
+
+## Signature
+
+```ts
+BuilderLayout(props: BuilderLayoutProps)
+```
+
+## Description
+
+Provides a standardized three-column/two-column builder layout container.
+
+## Minimal Example
+
+```tsx
+import { BuilderLayout } from '@visactor/vbi-react/components'
+
+export function Demo() {
+  return <BuilderLayout main={<div>Main Content</div>} />
+}
+```
+
+
+
+---
+url: /VBI/en-US/vbi-react/api/chartRenderer.md
+---
+
+# ChartRenderer
+
+## Import
+
+```ts
+import { ChartRenderer } from '@visactor/vbi-react/components'
+```
+
+## Signature
+
+```ts
+ChartRenderer(props: ChartRendererProps)
+```
+
+## Description
+
+Renders the chart based on builder output, and handles loading and error states.
+
+## Minimal Example
+
+```tsx
+import type { VBIChartBuilder } from '@visactor/vbi'
+import { ChartRenderer } from '@visactor/vbi-react/components'
+
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  return <ChartRenderer builder={builder} />
+}
+```
+
+
+
+---
+url: /VBI/en-US/vbi-react/api/chartTypeSelector.md
+---
+
+# ChartTypeSelector
+
+## Import
+
+```ts
+import { ChartTypeSelector } from '@visactor/vbi-react/components'
+```
+
+## Signature
+
+```ts
+ChartTypeSelector(props: ChartTypeSelectorProps)
+```
+
+## Description
+
+Provides a chart type dropdown selector.
+
+## Minimal Example
+
+```tsx
+import type { VBIChartBuilder } from '@visactor/vbi'
+import { ChartTypeSelector } from '@visactor/vbi-react/components'
+
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  return <ChartTypeSelector builder={builder} />
+}
+```
+
+
+
+---
+url: /VBI/en-US/vbi-react/api/fieldPanel.md
+---
+
+# FieldPanel
+
+## Import
+
+```ts
+import { FieldPanel } from '@visactor/vbi-react/components'
+```
+
+## Signature
+
+```ts
+FieldPanel(props: FieldPanelProps)
+```
+
+## Description
+
+Provides a dimension/measure field panel with basic edit interactions.
+
+## Minimal Example
+
+```tsx
+import type { VBIChartBuilder } from '@visactor/vbi'
+import { FieldPanel } from '@visactor/vbi-react/components'
+
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  return <FieldPanel builder={builder} />
+}
+```
 
 
 
@@ -153558,5 +153461,13 @@ const SimpleVSeedRender = (props: { vseed: VSeed }) => {
 
 export default Demo
 ```
+
+
+
+---
+url: /VBI/en-US/index.md
+---
+
+
 
 

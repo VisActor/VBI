@@ -137,6 +137,51 @@
 
 ## VBI
 
+- [VBI](/VBI/en-US/vbi/index.md)
+- [Standard](/VBI/en-US/vbi/practices/standard.md)
+- [Standard Report](/VBI/en-US/vbi/practices/standard-report.md)
+- [Minimalist](/VBI/en-US/vbi/practices/minimalist.md)
+- [Streamlined](/VBI/en-US/vbi/practices/streamlined.md)
+- [Professional](/VBI/en-US/vbi/practices/professional.md)
+- [vbi-react Starter](/VBI/en-US/vbi/practices/vbi-react-starter.md)
+- [VBI Examples](/VBI/en-US/vbi/examples/index.md): This page showcases the VBI examples.
+- [chart](/VBI/en-US/vbi/examples/chart/index.md): This page showcases the chart builder examples.
+- [chartType](/VBI/en-US/vbi/examples/chart/chartType.md): {registerDemoConnector()}
+- [dimensions](/VBI/en-US/vbi/examples/chart/dimensions.md): {registerDemoConnector()}
+- [havingFilter](/VBI/en-US/vbi/examples/chart/havingFilter.md): {registerDemoConnector()}
+- [locale](/VBI/en-US/vbi/examples/chart/locale.md): {registerDemoConnector()}
+- [measures](/VBI/en-US/vbi/examples/chart/measures.md): {registerDemoConnector()}
+- [theme](/VBI/en-US/vbi/examples/chart/theme.md): {registerDemoConnector()}
+- [undoManager](/VBI/en-US/vbi/examples/chart/undoManager.md): {registerDemoConnector()}
+- [whereFilter](/VBI/en-US/vbi/examples/chart/whereFilter.md): {registerDemoConnector()}
+- [insight](/VBI/en-US/vbi/examples/insight/index.md): {registerDemoConnector()}
+- [report](/VBI/en-US/vbi/examples/report/index.md): {registerDemoConnector()}
+- [API](/VBI/en-US/vbi/api/index.md)
+- [VBIChartBuilder](/VBI/en-US/vbi/api/chartBuilder/index.md)
+- [ChartTypeBuilder](/VBI/en-US/vbi/api/chartBuilder/chartType.md): Chart type builder for switching and retrieving the chart type. Supports various chart types including table, bar, line, pie, scatter, and more.
+- [MeasuresBuilder](/VBI/en-US/vbi/api/chartBuilder/measures/index.md): Measure builder for adding, modifying, and removing measure configuration. Measures are the numeric fields in data, such as: sales, profit, quantity.
+- [MeasureNodeBuilder](/VBI/en-US/vbi/api/chartBuilder/measures/measureNode.md): Measure node builder for configuring a single measure.
+- [DimensionsBuilder](/VBI/en-US/vbi/api/chartBuilder/dimensions/index.md): Dimension builder for adding, modifying, and removing dimension configuration. Dimensions are the categorical fields in data, such as: time, region, product category.
+- [DimensionNodeBuilder](/VBI/en-US/vbi/api/chartBuilder/dimensions/dimensionNode.md): Dimension node builder for configuring a single dimension.
+- [WhereFilterBuilder](/VBI/en-US/vbi/api/chartBuilder/whereFilter/index.md): Where filter builder for adding, modifying, and removing row-level filter conditions. Where filters take effect before data querying and are used to filter raw data.
+- [WhereFilterNodeBuilder](/VBI/en-US/vbi/api/chartBuilder/whereFilter/whereNode.md): Where filter node builder for configuring a single Where filter condition.
+- [WhereGroupBuilder](/VBI/en-US/vbi/api/chartBuilder/whereFilter/whereGroup.md): Where group builder for configuring the logical relationship (AND/OR) of a condition group.
+- [HavingFilterBuilder](/VBI/en-US/vbi/api/chartBuilder/havingFilter/index.md): Having filter builder for adding, modifying, and removing post-aggregation filter conditions. Having filters take effect after data aggregation and are used to filter grouped results.
+- [HavingFilterNodeBuilder](/VBI/en-US/vbi/api/chartBuilder/havingFilter/havingNode.md): Having filter node builder for configuring a single Having filter condition.
+- [HavingGroupBuilder](/VBI/en-US/vbi/api/chartBuilder/havingFilter/havingGroup.md): Having group builder for configuring the logical relationship (AND/OR) of a condition group.
+- [ThemeBuilder](/VBI/en-US/vbi/api/chartBuilder/theme.md): Theme builder for setting and getting the current theme.
+- [LocaleBuilder](/VBI/en-US/vbi/api/chartBuilder/locale.md): Locale builder for setting and getting the current locale.
+- [LimitBuilder](/VBI/en-US/vbi/api/chartBuilder/limit.md): Data limit builder for setting and getting the current limit.
+- [UndoManager](/VBI/en-US/vbi/api/chartBuilder/undoManager.md): Undo/redo manager providing YJS-based undo and redo functionality, with support for stack management and history clearing.
+- [VBIReportBuilder](/VBI/en-US/vbi/api/reportBuilder/index.md)
+- [ReportPageCollectionBuilder](/VBI/en-US/vbi/api/reportBuilder/page/index.md)
+- [ReportPageBuilder](/VBI/en-US/vbi/api/reportBuilder/page/reportPage.md)
+- [Playground](/VBI/en-US/vbi/playground.md)
+- [VBIInsightBuilder](/VBI/en-US/vbi/api/insightBuilder/index.md)
+- [Tags](/VBI/en-US/vbi/examples/tags.md): Total 67 examples, 0 tags.
+
+## VBI React
+
 - [VBI React](/VBI/en-US/vbi-react/index.md): @visactor/vbi-react is the React adapter layer for @visactor/vbi, responsible for integrating VBIChartBuilder into the React component tree. Current exports are split into two layers: Root export @visactor/vbi-react: useVBI, useVSeed, useChartType, useDimensions, useMeasures, useWhereFilter, useHavingFilterSub-path export @visactor/vbi-react/components: BuilderLayout, ChartRenderer, ChartTypeSelector, FieldPanel
 - [Examples Overview](/VBI/en-US/vbi-react/examples/index.md): All examples below can be copied directly into a .tsx file and run. Basic HooksLayout with ComponentsFilter Mutations
 - [Basic Hooks](/VBI/en-US/vbi-react/examples/basicHooks.md): This example demonstrates combining useVBI with useVSeed.
@@ -154,49 +199,7 @@
 - [ChartRenderer](/VBI/en-US/vbi-react/api/chartRenderer.md)
 - [ChartTypeSelector](/VBI/en-US/vbi-react/api/chartTypeSelector.md)
 - [FieldPanel](/VBI/en-US/vbi-react/api/fieldPanel.md)
-- [ChartTypeBuilder](/VBI/en-US/vbi/api/chartBuilder/chartType.md): Chart type builder for switching and retrieving the chart type. Supports various chart types including table, bar, line, pie, scatter, and more.
-- [DimensionNodeBuilder](/VBI/en-US/vbi/api/chartBuilder/dimensions/dimensionNode.md): Dimension node builder for configuring a single dimension.
-- [DimensionsBuilder](/VBI/en-US/vbi/api/chartBuilder/dimensions/index.md): Dimension builder for adding, modifying, and removing dimension configuration. Dimensions are the categorical fields in data, such as: time, region, product category.
-- [HavingGroupBuilder](/VBI/en-US/vbi/api/chartBuilder/havingFilter/havingGroup.md): Having group builder for configuring the logical relationship (AND/OR) of a condition group.
-- [HavingFilterNodeBuilder](/VBI/en-US/vbi/api/chartBuilder/havingFilter/havingNode.md): Having filter node builder for configuring a single Having filter condition.
-- [HavingFilterBuilder](/VBI/en-US/vbi/api/chartBuilder/havingFilter/index.md): Having filter builder for adding, modifying, and removing post-aggregation filter conditions. Having filters take effect after data aggregation and are used to filter grouped results.
-- [VBIChartBuilder](/VBI/en-US/vbi/api/chartBuilder/index.md)
-- [LimitBuilder](/VBI/en-US/vbi/api/chartBuilder/limit.md): Data limit builder for setting and getting the current limit.
-- [LocaleBuilder](/VBI/en-US/vbi/api/chartBuilder/locale.md): Locale builder for setting and getting the current locale.
-- [MeasuresBuilder](/VBI/en-US/vbi/api/chartBuilder/measures/index.md): Measure builder for adding, modifying, and removing measure configuration. Measures are the numeric fields in data, such as: sales, profit, quantity.
-- [MeasureNodeBuilder](/VBI/en-US/vbi/api/chartBuilder/measures/measureNode.md): Measure node builder for configuring a single measure.
-- [ThemeBuilder](/VBI/en-US/vbi/api/chartBuilder/theme.md): Theme builder for setting and getting the current theme.
-- [UndoManager](/VBI/en-US/vbi/api/chartBuilder/undoManager.md): Undo/redo manager providing YJS-based undo and redo functionality, with support for stack management and history clearing.
-- [WhereFilterBuilder](/VBI/en-US/vbi/api/chartBuilder/whereFilter/index.md): Where filter builder for adding, modifying, and removing row-level filter conditions. Where filters take effect before data querying and are used to filter raw data.
-- [WhereGroupBuilder](/VBI/en-US/vbi/api/chartBuilder/whereFilter/whereGroup.md): Where group builder for configuring the logical relationship (AND/OR) of a condition group.
-- [WhereFilterNodeBuilder](/VBI/en-US/vbi/api/chartBuilder/whereFilter/whereNode.md): Where filter node builder for configuring a single Where filter condition.
-- [API](/VBI/en-US/vbi/api/index.md)
-- [VBIReportBuilder](/VBI/en-US/vbi/api/reportBuilder/index.md)
-- [ReportPageCollectionBuilder](/VBI/en-US/vbi/api/reportBuilder/page/index.md)
-- [ReportPageBuilder](/VBI/en-US/vbi/api/reportBuilder/page/reportPage.md)
-- [ReportTextBuilder](/VBI/en-US/vbi/api/reportBuilder/page/reportText.md)
-- [chartType](/VBI/en-US/vbi/examples/chartType.md): {registerDemoConnector()}
-- [combination](/VBI/en-US/vbi/examples/combination.md): {registerDemoConnector()}
-- [dimensions](/VBI/en-US/vbi/examples/dimensions.md): {registerDemoConnector()}
-- [havingFilter](/VBI/en-US/vbi/examples/havingFilter.md): {registerDemoConnector()}
-- [VBI Example](/VBI/en-US/vbi/examples/index.md): This page showcases various examples of VBI.
-- [limit](/VBI/en-US/vbi/examples/limit.md): {registerDemoConnector()}
-- [locale](/VBI/en-US/vbi/examples/locale.md): {registerDemoConnector()}
-- [measures](/VBI/en-US/vbi/examples/measures.md): {registerDemoConnector()}
-- [Tags](/VBI/en-US/vbi/examples/tags.md): Total 67 examples, 0 tags.
-- [theme](/VBI/en-US/vbi/examples/theme.md): {registerDemoConnector()}
-- [undoManager](/VBI/en-US/vbi/examples/undoManager.md): {registerDemoConnector()}
-- [utils](/VBI/en-US/vbi/examples/utils.md): {registerDemoConnector()}
-- [whereFilter](/VBI/en-US/vbi/examples/whereFilter.md): {registerDemoConnector()}
-- [VBI](/VBI/en-US/vbi/index.md)
-- [Playground](/VBI/en-US/vbi/playground.md)
-- [Minimalist](/VBI/en-US/vbi/practices/minimalist.md)
-- [Professional](/VBI/en-US/vbi/practices/professional.md)
-- [Standard Report](/VBI/en-US/vbi/practices/standard-report.md)
-- [Standard](/VBI/en-US/vbi/practices/standard.md)
-- [Streamlined](/VBI/en-US/vbi/practices/streamlined.md)
-- [vbi-react Starter](/VBI/en-US/vbi/practices/vbi-react-starter.md)
 
-## Other
+## Playground
 
 - [VSeed Example：Rose Chart](/VBI/en-US/playground/vseed.md)

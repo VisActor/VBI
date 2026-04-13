@@ -21,7 +21,7 @@ export default () => {
 
   useEffect(() => {
     try {
-      const builder = VBI.createInsight({
+      const builder = VBI.insight.create({
         content: '',
         version: 0,
       })
