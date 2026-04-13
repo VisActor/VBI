@@ -158981,7 +158981,7 @@ const run = async (setVSeed) => {
     }
   })
 
-  const builder = VBI.chart.create(VBI.chart.generateEmptyDSL(connectorId))
+  const builder = VBI.chart.create(VBI.chart.createEmpty(connectorId))
 
   builder.doc.on('update', async () => {
     const vseed = await builder.buildVSeed()
@@ -159203,7 +159203,7 @@ export function App() {
   const builder = useMemo(
     () =>
       VBI.chart.create({
-        ...VBI.chart.generateEmptyDSL(connectorId),
+        ...VBI.chart.createEmpty(connectorId),
         chartType: 'bar',
       }),
     [],

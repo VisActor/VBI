@@ -145854,7 +145854,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'area',
         dimensions: [{ field: 'order_date', alias: 'Order Date' }],
@@ -145898,7 +145898,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'product_type', alias: 'Product Type' }],
@@ -145942,7 +145942,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'line',
         dimensions: [{ field: 'province', alias: 'Province' }],
@@ -145986,7 +145986,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -146030,7 +146030,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'donut',
         dimensions: [{ field: 'customer_type', alias: 'Customer Type' }],
@@ -146074,7 +146074,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'line',
         dimensions: [{ field: 'province', alias: 'Province' }],
@@ -146118,7 +146118,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'line',
         dimensions: [{ field: 'province', alias: 'Province' }],
@@ -146162,7 +146162,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'pie',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -146206,7 +146206,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'pie',
         dimensions: [{ field: 'product_type', alias: 'Product Type' }],
@@ -146250,7 +146250,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'rose',
         dimensions: [{ field: 'city', alias: 'City' }],
@@ -146294,7 +146294,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'scatter',
         dimensions: [],
@@ -146341,7 +146341,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'scatter',
         dimensions: [],
@@ -146400,7 +146400,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -146452,7 +146452,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -146504,7 +146504,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -146550,7 +146550,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -146600,7 +146600,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [
@@ -146653,7 +146653,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [{ field: 'order_date', alias: 'Original Order Date' }],
@@ -146706,7 +146706,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [{ field: 'product_type', alias: 'Original Product Type' }],
@@ -146769,7 +146769,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -146815,7 +146815,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -146864,7 +146864,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -146918,7 +146918,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -146964,7 +146964,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -147010,7 +147010,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -147069,7 +147069,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'province', alias: 'Province' }],
@@ -147127,7 +147127,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'line',
         dimensions: [],
@@ -147193,7 +147193,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'line',
         dimensions: [],
@@ -147240,7 +147240,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'product_type', alias: 'Category' }],
@@ -147298,7 +147298,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -147359,7 +147359,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'product_type', alias: 'Category' }],
@@ -147421,7 +147421,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -147474,7 +147474,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [
@@ -147527,7 +147527,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -147581,7 +147581,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -147631,7 +147631,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'scatter',
         dimensions: [{ field: 'product_sub_type', alias: 'Sub-Category' }],
@@ -147683,7 +147683,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -147745,7 +147745,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'province', alias: 'Province' }],
@@ -147796,7 +147796,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -147862,7 +147862,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'province', alias: 'Province' }],
@@ -147909,7 +147909,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'province', alias: 'Province' }],
@@ -147968,7 +147968,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -148020,7 +148020,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -148068,7 +148068,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [{ field: 'product_type', alias: 'Category' }],
@@ -148130,7 +148130,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -148181,7 +148181,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -148244,7 +148244,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [{ field: 'province', alias: 'Province' }],
@@ -148291,7 +148291,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [{ field: 'province', alias: 'Province' }],
@@ -148350,7 +148350,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [],
@@ -148416,7 +148416,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'product_type', alias: 'Category' }],
@@ -148462,7 +148462,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'province', alias: 'Province' }],
@@ -148520,7 +148520,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [
@@ -148577,7 +148577,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'province', alias: 'Province' }],
@@ -148633,7 +148633,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'province', alias: 'Province' }],
@@ -148692,7 +148692,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -148738,7 +148738,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'delivery_method', alias: 'Shipping Mode' }],
@@ -148784,7 +148784,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'city', alias: 'City' }],
@@ -148834,7 +148834,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'product_type', alias: 'Category' }],
@@ -148880,7 +148880,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'product_type', alias: 'Category' }],
@@ -148926,7 +148926,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'province', alias: 'Province' }],
@@ -148972,7 +148972,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -149020,7 +149020,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -149080,7 +149080,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'province', alias: 'Province' }],
@@ -149131,7 +149131,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'city', alias: 'City' }],
@@ -149184,7 +149184,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -149243,7 +149243,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -149289,7 +149289,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: 'Region' }],
@@ -152291,7 +152291,7 @@ const run = async (setVSeed) => {
     }
   })
 
-  const builder = VBI.createChart(VBI.generateEmptyChartDSL(connectorId))
+  const builder = VBI.chart.create(VBI.chart.createEmpty(connectorId))
 
   builder.doc.on('update', async () => {
     const vseed = await builder.buildVSeed()
@@ -152623,8 +152623,8 @@ VBI.registerConnector(connectorId, connector)
 export function App() {
   const builder = useMemo(
     () =>
-      VBI.createChart({
-        ...VBI.generateEmptyChartDSL(connectorId),
+      VBI.chart.create({
+        ...VBI.chart.createEmpty(connectorId),
         chartType: 'bar',
       }),
     [],

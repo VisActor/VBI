@@ -18,7 +18,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -70,7 +70,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -122,7 +122,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -168,7 +168,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [],
@@ -218,7 +218,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [
@@ -271,7 +271,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [{ field: 'order_date', alias: 'Original Order Date' }],
@@ -324,7 +324,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.createChart({
+      const builder = VBI.chart.create({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [{ field: 'product_type', alias: 'Original Product Type' }],

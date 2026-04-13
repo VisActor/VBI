@@ -56,8 +56,8 @@ VBI.registerConnector(connectorId, connector)
 export function App() {
   const builder = useMemo(
     () =>
-      VBI.createChart({
-        ...VBI.generateEmptyChartDSL(connectorId),
+      VBI.chart.create({
+        ...VBI.chart.createEmpty(connectorId),
         chartType: 'bar',
       }),
     [],
