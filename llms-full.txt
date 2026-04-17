@@ -150614,20 +150614,6 @@ import { APP } from 'professional'
 
 
 ---
-url: /VBI/vbi/practices/vbi-react-starter.md
----
-
-# vbi-react Starter
-
-import { APP } from 'vbi-react-starter'
-
-<div style={{ width: '100%', height: 'min(78vh, 920px)', minHeight: '640px' }}>
-  <APP />
-</div>
-
-
-
----
 url: /VBI/vbi/examples/index.md
 ---
 
@@ -159334,6 +159320,20 @@ export function LayoutDemo({ builder }: { builder: VBIChartBuilder }) {
 * 顶部可切换图表类型，左侧可增删维度/度量，主区显示图表 DSL 预览。
 * 字段操作后主区内容会自动刷新，无需手动触发。
 * 当构建失败时，`ChartRenderer` 会显示默认错误与重试按钮。
+
+
+
+---
+url: /VBI/vbi-react/examples/vbi-react-starter.md
+---
+
+# vbi-react Starter
+
+import { APP } from 'vbi-react-starter'
+
+<div style={{ width: '100%', height: 'min(78vh, 920px)', minHeight: '640px' }}>
+  <APP />
+</div>
 
 
 

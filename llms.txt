@@ -143,7 +143,6 @@
 - [Minimalist](/VBI/vbi/practices/minimalist.md)
 - [Streamlined](/VBI/vbi/practices/streamlined.md)
 - [Professional](/VBI/vbi/practices/professional.md)
-- [vbi-react Starter](/VBI/vbi/practices/vbi-react-starter.md)
 - [VBI 示例](/VBI/vbi/examples/index.md): 本页面展示 VBI 的各种使用示例。
 - [chart](/VBI/vbi/examples/chart/index.md): 本页面展示 chart builder 的示例。
 - [chartType](/VBI/vbi/examples/chart/chartType.md): {registerDemoConnector()}
@@ -186,6 +185,7 @@
 - [示例总览](/VBI/vbi-react/examples/index.md): 以下示例都可以直接复制到 .tsx 文件运行。 基础 Hooks组件化布局过滤条件编辑
 - [基础 Hooks](/VBI/vbi-react/examples/basicHooks.md): 该示例展示 useVBI 与 useVSeed 的组合使用。
 - [组件化布局](/VBI/vbi-react/examples/layoutWithComponents.md): 该示例展示 BuilderLayout + FieldPanel + ChartRenderer + ChartTypeSelector。
+- [vbi-react Starter](/VBI/vbi-react/examples/vbi-react-starter.md)
 - [过滤条件编辑](/VBI/vbi-react/examples/filterMutations.md): 该示例展示 useWhereFilter 与 useHavingFilter 的 mutation 入口。
 - [API 总览](/VBI/vbi-react/api/index.md): @visactor/vbi-react 当前导出分为两部分： 所有 hooks/components 都围绕 VBIChartBuilder 工作，不额外维护业务状态源。
 - [useChartType](/VBI/vbi-react/api/useChartType.md)
