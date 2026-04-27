@@ -1255,6 +1255,33 @@ position: 'rightTop'
 **示例**
 maxSize: 2
 
+## regionPadding
+
+**Type:** `RegionPadding | undefined`
+
+:::note{title=描述}
+绘图区内边距
+
+映射到 VChart 的 region\[0].padding，用于为标注、标签等绘图区外扩元素预留空间。
+
+:::
+
+### top
+
+**Type:** `number | undefined`
+
+### right
+
+**Type:** `number | undefined`
+
+### bottom
+
+**Type:** `number | undefined`
+
+### left
+
+**Type:** `number | undefined`
+
 ## tooltip
 
 **Type:** `Tooltip | undefined`
@@ -1415,6 +1442,260 @@ brush的类型
 
 :::note{title=描述}
 描边宽度
+
+:::
+
+## animation
+
+**Type:** `BarLikeAnimation | undefined`
+
+:::note{title=描述}
+动画配置
+
+图表动画配置，按图表类型约束可选效果
+
+:::
+
+### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用条形/柱形图动画
+
+:::
+
+### params
+
+**Type:** `BarLikeAnimationParams | undefined`
+
+:::note{title=描述}
+条形/柱形图动画参数
+
+:::
+
+#### appear
+
+**Type:** `BarLikeAppearAnimation | undefined`
+
+:::note{title=描述}
+条形/柱形图入场动画配置
+
+:::
+
+##### effects
+
+**Type:** `"growth"[] | undefined`
+
+:::note{title=描述}
+条形/柱形图入场效果，支持生长动画
+
+:::
+
+##### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用当前动画阶段
+
+:::
+
+##### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画缓动函数
+
+:::
+
+##### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长，单位为毫秒
+
+:::
+
+##### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画高亮或氛围颜色
+
+:::
+
+#### update
+
+**Type:** `BarLikeUpdateAnimation | undefined`
+
+:::note{title=描述}
+条形/柱形图更新动画配置
+
+:::
+
+##### effects
+
+**Type:** `("growth" | "moveIn")[] | undefined`
+
+:::note{title=描述}
+条形/柱形图更新效果，支持生长和移入动画
+
+:::
+
+##### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用当前动画阶段
+
+:::
+
+##### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画缓动函数
+
+:::
+
+##### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长，单位为毫秒
+
+:::
+
+##### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画高亮或氛围颜色
+
+:::
+
+#### loop
+
+**Type:** `BarLikeAnimationLoop | undefined`
+
+:::note{title=描述}
+条形/柱形图循环动画配置
+
+:::
+
+##### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用循环动画
+
+:::
+
+##### interval
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+循环动画间隔，单位为毫秒
+
+:::
+
+##### loop
+
+**Type:** `BarLikeLoopAnimation | undefined`
+
+:::note{title=描述}
+条形/柱形图循环动画配置
+
+:::
+
+###### effects
+
+**Type:** `BarLikeLoopEffect[] | undefined`
+
+:::note{title=描述}
+条形/柱形图循环效果
+
+:::
+
+###### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用当前动画阶段
+
+:::
+
+###### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画缓动函数
+
+:::
+
+###### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长，单位为毫秒
+
+:::
+
+###### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画高亮或氛围颜色
+
+:::
+
+##### atmosphere
+
+**Type:** `PointAtmosphereConfig | undefined`
+
+:::note{title=描述}
+条形/柱形图氛围动画配置
+
+:::
+
+###### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+氛围动画缓动函数
+
+:::
+
+###### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+氛围动画颜色
+
+:::
+
+###### effect
+
+**Type:** `PointAtmosphereEffect | undefined`
+
+:::note{title=描述}
+氛围动画效果，支持涟漪、显隐和呼吸
 
 :::
 
@@ -2913,6 +3194,15 @@ same as operator
 
 :::
 
+### measureId
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+指定标注点所属的指标 id。在多 measure 场景下，可与 selector 组合以唯一定位目标指标对应的标注点。
+
+:::
+
 ### dynamicFilter
 
 **Type:** `ChartDynamicFilter | undefined`
@@ -4348,6 +4638,206 @@ true
 
 **示例**
 0
+
+## annotationDifferenceLine
+
+**Type:** `AnnotationDifferenceLine | AnnotationDifferenceLine[] | undefined`
+
+:::note{title=描述}
+差异标注线配置，用于绑定两个数据锚点并展示绝对差值或百分比差值。
+
+:::
+
+### start
+
+**Type:** `DifferenceAnchor`
+
+:::note{title=描述}
+差异标注线的起始锚点。
+
+差异标注锚点配置，用于选择起始点或终止点绑定的数据。
+
+:::
+
+#### selector
+
+**Type:** `DifferenceSelector | DifferenceSelector[]`
+
+:::note{title=描述}
+锚点选择器，必须最终定位到一个逻辑锚点。
+
+:::
+
+**示例**
+{ year: '1930', type: 'Autocracies' }
+
+\[{ field: 'year', operator: 'in', value: \['1930'] }, { field: 'type', operator: 'in', value: \['Autocracies'] }]
+
+##### field
+
+**Type:** `string`
+
+:::note{title=描述}
+维度字段, dimensions 某一项的 id
+
+:::
+
+##### operator
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+:::
+
+##### op
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+same as operator
+
+:::
+
+##### value
+
+**Type:** `string | number | (string | number)[]`
+
+:::note{title=描述}
+选择数据项中维度字段的值, 支持数组
+
+:::
+
+### end
+
+**Type:** `DifferenceAnchor`
+
+:::note{title=描述}
+差异标注线的终止锚点。
+
+差异标注锚点配置，用于选择起始点或终止点绑定的数据。
+
+:::
+
+#### selector
+
+**Type:** `DifferenceSelector | DifferenceSelector[]`
+
+:::note{title=描述}
+锚点选择器，必须最终定位到一个逻辑锚点。
+
+:::
+
+**示例**
+{ year: '1930', type: 'Autocracies' }
+
+\[{ field: 'year', operator: 'in', value: \['1930'] }, { field: 'type', operator: 'in', value: \['Autocracies'] }]
+
+##### field
+
+**Type:** `string`
+
+:::note{title=描述}
+维度字段, dimensions 某一项的 id
+
+:::
+
+##### operator
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+:::
+
+##### op
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+same as operator
+
+:::
+
+##### value
+
+**Type:** `string | number | (string | number)[]`
+
+:::note{title=描述}
+选择数据项中维度字段的值, 支持数组
+
+:::
+
+### differenceType
+
+**Type:** `"percent" | "absolute" | undefined`
+
+:::note{title=描述}
+差异值类型。
+
+\- absolute: 显示绝对差值，计算方式为 end - start
+
+\- percent: 显示百分比差值，计算方式为 (end - start) / start
+
+:::
+
+### textFontSize
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+文本字体大小。
+
+:::
+
+### textColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+文本颜色。
+
+:::
+
+### textBackgroundColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+文本背景色。
+
+:::
+
+### lineColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+线条颜色。
+
+:::
 
 ## dimensionLinkage
 

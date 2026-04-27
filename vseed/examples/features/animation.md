@@ -1,0 +1,347 @@
+# Animation
+
+## barLikeAnimation
+
+Bar-like charts support appear, update, and loop animation.
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'column',
+    animation: {
+      enable: true,
+      params: {
+        appear: {
+          enable: true,
+          effects: ['growth'],
+          duration: 0.8,
+          ease: 'cubicOut',
+        },
+        update: {
+          enable: true,
+          effects: ['moveIn'],
+          duration: 0.6,
+          ease: 'quadOut',
+        },
+        loop: {
+          enable: true,
+          interval: 1.2,
+          loop: {
+            enable: true,
+            effects: ['highLight'],
+            duration: 1,
+          },
+          atmosphere: {
+            effect: 'ripple',
+            color: '#4e79a7',
+            ease: 'linear',
+          },
+        },
+      },
+    },
+    dataset: [
+      {
+        date: '2019',
+        sales: 20,
+      },
+      {
+        date: '2020',
+        sales: 60,
+      },
+      {
+        date: '2021',
+        sales: 45,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'date',
+        alias: 'Date',
+      },
+    ],
+    measures: [
+      {
+        id: 'sales',
+        alias: 'Sales',
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## lineAreaAnimation
+
+Line and area charts support appear, update, and loop animation.
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'line',
+    animation: {
+      enable: true,
+      params: {
+        appear: {
+          enable: true,
+          effects: ['load'],
+          duration: 1,
+          ease: 'cubicOut',
+        },
+        update: {
+          enable: true,
+          effects: ['growth'],
+          duration: 0.5,
+        },
+        loop: {
+          enable: true,
+          interval: 1,
+          loop: {
+            enable: true,
+            effects: ['growth'],
+            duration: 1,
+          },
+          atmosphere: {
+            effect: 'breath',
+            color: '#f28e2b',
+            ease: 'quadInOut',
+          },
+        },
+      },
+    },
+    dataset: [
+      {
+        date: '2019',
+        profit: 10,
+      },
+      {
+        date: '2020',
+        profit: 35,
+      },
+      {
+        date: '2021',
+        profit: 28,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'date',
+        alias: 'Date',
+      },
+    ],
+    measures: [
+      {
+        id: 'profit',
+        alias: 'Profit',
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## pieLikeAnimation
+
+Pie-like charts support radial appear, update, and loop animation.
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'pie',
+    animation: {
+      enable: true,
+      params: {
+        appear: {
+          enable: true,
+          effects: ['radial'],
+          duration: 0.8,
+        },
+        update: {
+          enable: true,
+          effects: ['radial'],
+          duration: 0.6,
+        },
+        loop: {
+          enable: true,
+          interval: 1.5,
+          loop: {
+            enable: true,
+            effects: ['enlarge'],
+            duration: 1,
+          },
+          atmosphere: {
+            color: '#59a14f',
+            ease: 'linear',
+          },
+        },
+      },
+    },
+    dataset: [
+      {
+        type: 'A',
+        value: 30,
+      },
+      {
+        type: 'B',
+        value: 45,
+      },
+      {
+        type: 'C',
+        value: 25,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'type',
+        alias: 'Type',
+      },
+    ],
+    measures: [
+      {
+        id: 'value',
+        alias: 'Value',
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## radarAnimation
+
+Radar charts support appear, update, and atmosphere loop animation.
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'radar',
+    animation: {
+      enable: true,
+      params: {
+        appear: {
+          enable: true,
+          effects: ['scale'],
+          duration: 0.8,
+        },
+        update: {
+          enable: true,
+          effects: ['growth'],
+          duration: 0.6,
+        },
+        loop: {
+          enable: true,
+          interval: 1,
+          atmosphere: {
+            effect: 'reveal',
+            color: '#e15759',
+            ease: 'quadInOut',
+          },
+        },
+      },
+    },
+    dataset: [
+      {
+        quality: 82,
+        speed: 76,
+        stability: 91,
+        cost: 64,
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## scatterAnimation
+
+Scatter charts support scale appear, growth update, and point atmosphere animation.
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'scatter',
+    animation: {
+      enable: true,
+      params: {
+        appear: {
+          enable: true,
+          effects: ['scale'],
+          duration: 0.8,
+        },
+        update: {
+          enable: true,
+          effects: ['growth'],
+          duration: 0.5,
+        },
+        loop: {
+          enable: true,
+          interval: 1,
+          loop: {
+            enable: true,
+            effects: ['growth'],
+            duration: 1,
+          },
+          atmosphere: {
+            effect: 'ripple',
+            color: '#76b7b2',
+            ease: 'linear',
+          },
+        },
+      },
+    },
+    dataset: [
+      {
+        date: '2019',
+        sales: 20,
+        profit: 10,
+      },
+      {
+        date: '2020',
+        sales: 60,
+        profit: 35,
+      },
+      {
+        date: '2021',
+        sales: 80,
+        profit: 28,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'date',
+        alias: 'Date',
+      },
+    ],
+    measures: [
+      {
+        id: 'sales',
+        alias: 'Sales',
+        encoding: 'xAxis',
+      },
+      {
+        id: 'profit',
+        alias: 'Profit',
+        encoding: 'yAxis',
+      },
+    ],
+    label: {
+      enable: false,
+    },
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```

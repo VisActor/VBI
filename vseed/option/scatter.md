@@ -1463,6 +1463,260 @@ brush的类型
 
 :::
 
+## animation
+
+**Type:** `ScatterAnimation | undefined`
+
+:::note{title=描述}
+动画配置
+
+图表动画配置，按图表类型约束可选效果
+
+:::
+
+### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用散点图动画
+
+:::
+
+### params
+
+**Type:** `ScatterAnimationParams | undefined`
+
+:::note{title=描述}
+散点图动画参数
+
+:::
+
+#### appear
+
+**Type:** `ScatterAppearAnimation | undefined`
+
+:::note{title=描述}
+散点图入场动画配置
+
+:::
+
+##### effects
+
+**Type:** `("growth" | "scale")[] | undefined`
+
+:::note{title=描述}
+散点图入场效果，支持生长和缩放动画
+
+:::
+
+##### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用当前动画阶段
+
+:::
+
+##### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画缓动函数
+
+:::
+
+##### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长，单位为毫秒
+
+:::
+
+##### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画高亮或氛围颜色
+
+:::
+
+#### update
+
+**Type:** `ScatterUpdateAnimation | undefined`
+
+:::note{title=描述}
+散点图更新动画配置
+
+:::
+
+##### effects
+
+**Type:** `"growth"[] | undefined`
+
+:::note{title=描述}
+散点图更新效果，支持生长动画
+
+:::
+
+##### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用当前动画阶段
+
+:::
+
+##### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画缓动函数
+
+:::
+
+##### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长，单位为毫秒
+
+:::
+
+##### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画高亮或氛围颜色
+
+:::
+
+#### loop
+
+**Type:** `ScatterAnimationLoop | undefined`
+
+:::note{title=描述}
+散点图循环动画配置
+
+:::
+
+##### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用循环动画
+
+:::
+
+##### interval
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+循环动画间隔，单位为毫秒
+
+:::
+
+##### loop
+
+**Type:** `ScatterLoopAnimation | undefined`
+
+:::note{title=描述}
+散点图循环动画配置
+
+:::
+
+###### effects
+
+**Type:** `ScatterLoopEffect[] | undefined`
+
+:::note{title=描述}
+散点图循环效果
+
+:::
+
+###### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用当前动画阶段
+
+:::
+
+###### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画缓动函数
+
+:::
+
+###### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长，单位为毫秒
+
+:::
+
+###### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画高亮或氛围颜色
+
+:::
+
+##### atmosphere
+
+**Type:** `PointAtmosphereConfig | undefined`
+
+:::note{title=描述}
+散点图氛围动画配置
+
+:::
+
+###### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+氛围动画缓动函数
+
+:::
+
+###### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+氛围动画颜色
+
+:::
+
+###### effect
+
+**Type:** `PointAtmosphereEffect | undefined`
+
+:::note{title=描述}
+氛围动画效果，支持涟漪、显隐和呼吸
+
+:::
+
 ## xAxis
 
 **Type:** `XLinearAxis | undefined`
@@ -2948,6 +3202,15 @@ same as operator
 
 :::note{title=描述}
 选择数据项中维度字段的值, 支持数组
+
+:::
+
+### measureId
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+指定标注点所属的指标 id。在多 measure 场景下，可与 selector 组合以唯一定位目标指标对应的标注点。
 
 :::
 

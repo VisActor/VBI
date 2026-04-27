@@ -3234,6 +3234,18 @@ prepare() 阶段写入，运行时只读
 
 :::
 
+### lineStyle
+
+**Type:** `"solid" | "dashed" | "dotted" | undefined`
+
+:::note{title=描述}
+线段样式
+
+:::
+
+**示例**
+`lineStyle: 'solid'`
+
 ## annotationPoint
 
 **Type:** `AnnotationPoint | AnnotationPoint[] | undefined`
@@ -3295,6 +3307,15 @@ same as operator
 
 :::note{title=描述}
 选择数据项中维度字段的值, 支持数组
+
+:::
+
+### measureId
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+指定标注点所属的指标 id。在多 measure 场景下，可与 selector 组合以唯一定位目标指标对应的标注点。
 
 :::
 

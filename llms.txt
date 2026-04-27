@@ -10,6 +10,7 @@
 - [分析功能](/VBI/vseed/guide/intro/dataAnalysis.md)
 - [数据分页](/VBI/vseed/guide/intro/page.md)
 - [播放器](/VBI/vseed/guide/intro/player.md): VSeed 支持配置 player 属性来实现数据的自动播放展示。
+- [动画](/VBI/vseed/guide/intro/animation.md): VSeed 动画能力支持入场、轮播、氛围、更新与离场等阶段。下面将柱图、折线/面积、饼图、雷达图和散点图的动画示例合并展示，便于对比不同图表类型的配置方式。
 - [条件样式](/VBI/vseed/guide/intro/conditionalStyle.md)
 - [数据标注](/VBI/vseed/guide/intro/annotation.md)
 - [国际化](/VBI/vseed/guide/intro/internationalization.md): VSeed 内置了国际化支持，可以通过配置 locale 来切换语言环境（如中文 zh-CN、英文 en-US 等）。
@@ -47,6 +48,7 @@
 - [Funnel](/VBI/vseed/examples/chartType/funnel.md)
 - [Boxplot](/VBI/vseed/examples/chartType/boxplot.md)
 - [Histogram](/VBI/vseed/examples/chartType/histogram.md)
+- [Animation](/VBI/vseed/examples/features/animation.md)
 - [AnnotationArea](/VBI/vseed/examples/features/annotationArea.md)
 - [AnnotationHorizontalLine](/VBI/vseed/examples/features/annotationHorizontalLine.md)
 - [AnnotationPoint](/VBI/vseed/examples/features/annotationPoint.md)

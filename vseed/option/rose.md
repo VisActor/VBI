@@ -1447,6 +1447,251 @@ brush的类型
 
 :::
 
+## animation
+
+**Type:** `PieLikeAnimation | undefined`
+
+:::note{title=描述}
+动画配置
+
+图表动画配置，按图表类型约束可选效果
+
+:::
+
+### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用饼图/环图/玫瑰图动画
+
+:::
+
+### params
+
+**Type:** `PieLikeAnimationParams | undefined`
+
+:::note{title=描述}
+饼图/环图/玫瑰图动画参数
+
+:::
+
+#### appear
+
+**Type:** `PieLikeAppearAnimation | undefined`
+
+:::note{title=描述}
+饼图/环图/玫瑰图入场动画配置
+
+:::
+
+##### effects
+
+**Type:** `("radial" | "scale")[] | undefined`
+
+:::note{title=描述}
+饼图/环图/玫瑰图入场效果，支持径向和缩放动画
+
+:::
+
+##### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用当前动画阶段
+
+:::
+
+##### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画缓动函数
+
+:::
+
+##### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长，单位为毫秒
+
+:::
+
+##### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画高亮或氛围颜色
+
+:::
+
+#### update
+
+**Type:** `PieLikeUpdateAnimation | undefined`
+
+:::note{title=描述}
+饼图/环图/玫瑰图更新动画配置
+
+:::
+
+##### effects
+
+**Type:** `"radial"[] | undefined`
+
+:::note{title=描述}
+饼图/环图/玫瑰图更新效果，支持径向动画
+
+:::
+
+##### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用当前动画阶段
+
+:::
+
+##### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画缓动函数
+
+:::
+
+##### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长，单位为毫秒
+
+:::
+
+##### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画高亮或氛围颜色
+
+:::
+
+#### loop
+
+**Type:** `PieLikeAnimationLoop | undefined`
+
+:::note{title=描述}
+饼图/环图/玫瑰图循环动画配置
+
+:::
+
+##### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用循环动画
+
+:::
+
+##### interval
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+循环动画间隔，单位为毫秒
+
+:::
+
+##### loop
+
+**Type:** `PieLikeLoopAnimation | undefined`
+
+:::note{title=描述}
+饼图/环图/玫瑰图循环动画配置
+
+:::
+
+###### effects
+
+**Type:** `PieLikeLoopEffect[] | undefined`
+
+:::note{title=描述}
+饼图/环图/玫瑰图循环效果
+
+:::
+
+###### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用当前动画阶段
+
+:::
+
+###### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画缓动函数
+
+:::
+
+###### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长，单位为毫秒
+
+:::
+
+###### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画高亮或氛围颜色
+
+:::
+
+##### atmosphere
+
+**Type:** `NoEffectAtmosphereConfig | undefined`
+
+:::note{title=描述}
+饼图/环图/玫瑰图氛围动画配置
+
+:::
+
+###### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+氛围动画缓动函数
+
+:::
+
+###### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+氛围动画颜色
+
+:::
+
 ## theme
 
 **Type:** `Theme | undefined`

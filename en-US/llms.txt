@@ -10,6 +10,7 @@
 - [Analysis Features](/VBI/en-US/vseed/guide/intro/dataAnalysis.md)
 - [Data Pagination](/VBI/en-US/vseed/guide/intro/page.md)
 - [Player](/VBI/en-US/vseed/guide/intro/player.md): VSeed supports the player property to enable automatic data playback.
+- [Animation](/VBI/en-US/vseed/guide/intro/animation.md): VSeed animation supports appear, loop, ambient, update, and exit stages. This guide combines bar, line/area, pie, radar, and scatter examples in one place so you can compare the animation configuration across chart types.
 - [Conditional Styles](/VBI/en-US/vseed/guide/intro/conditionalStyle.md)
 - [Data Annotations](/VBI/en-US/vseed/guide/intro/annotation.md)
 - [Internationalization](/VBI/en-US/vseed/guide/intro/internationalization.md): VSeed has built-in internationalization support. Configure the locale property to switch languages (e.g., zh-CN for Chinese, en-US for English).

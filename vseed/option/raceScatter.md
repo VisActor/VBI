@@ -3073,6 +3073,15 @@ same as operator
 
 :::
 
+### measureId
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+指定标注点所属的指标 id。在多 measure 场景下，可与 selector 组合以唯一定位目标指标对应的标注点。
+
+:::
+
 ### dynamicFilter
 
 **Type:** `ChartDynamicFilter | undefined`

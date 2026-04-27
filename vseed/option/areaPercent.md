@@ -1269,6 +1269,33 @@ position: 'rightTop'
 **示例**
 maxSize: 2
 
+## regionPadding
+
+**Type:** `RegionPadding | undefined`
+
+:::note{title=描述}
+绘图区内边距
+
+映射到 VChart 的 region\[0].padding，用于为标注、标签等绘图区外扩元素预留空间。
+
+:::
+
+### top
+
+**Type:** `number | undefined`
+
+### right
+
+**Type:** `number | undefined`
+
+### bottom
+
+**Type:** `number | undefined`
+
+### left
+
+**Type:** `number | undefined`
+
 ## tooltip
 
 **Type:** `Tooltip | undefined`
@@ -1431,6 +1458,260 @@ brush的类型
 
 :::note{title=描述}
 描边宽度
+
+:::
+
+## animation
+
+**Type:** `LineAreaAnimation | undefined`
+
+:::note{title=描述}
+动画配置
+
+图表动画配置，按图表类型约束可选效果
+
+:::
+
+### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用折线/面积图动画
+
+:::
+
+### params
+
+**Type:** `LineAreaAnimationParams | undefined`
+
+:::note{title=描述}
+折线/面积图动画参数
+
+:::
+
+#### appear
+
+**Type:** `LineAreaAppearAnimation | undefined`
+
+:::note{title=描述}
+折线/面积图入场动画配置
+
+:::
+
+##### effects
+
+**Type:** `("load" | "growth")[] | undefined`
+
+:::note{title=描述}
+折线/面积图入场效果，支持加载和生长动画
+
+:::
+
+##### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用当前动画阶段
+
+:::
+
+##### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画缓动函数
+
+:::
+
+##### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长，单位为毫秒
+
+:::
+
+##### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画高亮或氛围颜色
+
+:::
+
+#### update
+
+**Type:** `LineAreaUpdateAnimation | undefined`
+
+:::note{title=描述}
+折线/面积图更新动画配置
+
+:::
+
+##### effects
+
+**Type:** `"growth"[] | undefined`
+
+:::note{title=描述}
+折线/面积图更新效果，支持生长动画
+
+:::
+
+##### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用当前动画阶段
+
+:::
+
+##### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画缓动函数
+
+:::
+
+##### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长，单位为毫秒
+
+:::
+
+##### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画高亮或氛围颜色
+
+:::
+
+#### loop
+
+**Type:** `LineAreaAnimationLoop | undefined`
+
+:::note{title=描述}
+折线/面积图循环动画配置
+
+:::
+
+##### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用循环动画
+
+:::
+
+##### interval
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+循环动画间隔，单位为毫秒
+
+:::
+
+##### loop
+
+**Type:** `LineAreaLoopAnimation | undefined`
+
+:::note{title=描述}
+折线/面积图循环动画配置
+
+:::
+
+###### effects
+
+**Type:** `LineAreaLoopEffect[] | undefined`
+
+:::note{title=描述}
+折线/面积图循环效果
+
+:::
+
+###### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用当前动画阶段
+
+:::
+
+###### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画缓动函数
+
+:::
+
+###### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长，单位为毫秒
+
+:::
+
+###### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画高亮或氛围颜色
+
+:::
+
+##### atmosphere
+
+**Type:** `PointAtmosphereConfig | undefined`
+
+:::note{title=描述}
+折线/面积图氛围动画配置
+
+:::
+
+###### ease
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+氛围动画缓动函数
+
+:::
+
+###### color
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+氛围动画颜色
+
+:::
+
+###### effect
+
+**Type:** `PointAtmosphereEffect | undefined`
+
+:::note{title=描述}
+氛围动画效果，支持涟漪、显隐和呼吸
 
 :::
 
@@ -3192,6 +3473,18 @@ prepare() 阶段写入，运行时只读
 
 :::
 
+### lineStyle
+
+**Type:** `"solid" | "dashed" | "dotted" | undefined`
+
+:::note{title=描述}
+线段样式
+
+:::
+
+**示例**
+`lineStyle: 'solid'`
+
 ## areaStyle
 
 **Type:** `AreaStyle | AreaStyle[] | undefined`
@@ -3586,6 +3879,15 @@ same as operator
 
 :::note{title=描述}
 选择数据项中维度字段的值, 支持数组
+
+:::
+
+### measureId
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+指定标注点所属的指标 id。在多 measure 场景下，可与 selector 组合以唯一定位目标指标对应的标注点。
 
 :::
 
