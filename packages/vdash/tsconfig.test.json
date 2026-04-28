@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src", "tests/**/*", "tests/**/*.json"],
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true,
+    "lib": ["ESNext", "DOM"],
+    "types": ["node", "@rstest/core/globals"],
+    "paths": {
+      "@visactor/vdash": ["./src"],
+      "src/*": ["./src/*"]
+    }
+  }
+}

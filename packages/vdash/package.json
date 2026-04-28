@@ -1,0 +1,44 @@
+{
+  "name": "@visactor/vdash",
+  "private": true,
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "dev": "rslib build --watch --no-clean",
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "test": "rstest",
+    "test:update": "rstest --update",
+    "test:coverage": "rstest --coverage",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json"
+  },
+  "dependencies": {
+    "lit": "^3.3.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.0",
+    "@rslib/core": "0.20.3",
+    "@rstest/core": "0.8.3",
+    "@types/node": "24.10.1",
+    "eslint": "9.39.0",
+    "globals": "16.4.0",
+    "prettier": "3.6.2",
+    "typescript": "6.0.2",
+    "typescript-eslint": "8.58.1"
+  }
+}
