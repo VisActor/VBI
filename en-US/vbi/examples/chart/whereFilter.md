@@ -1,8 +1,5 @@
 # whereFilter
 
-import { registerDemoConnector } from '@components'
-
-{registerDemoConnector()}
 
 ## between-sales-range-analysis
 
@@ -10,7 +7,8 @@ Sales range analysis: Use 'between' to filter orders between 1000 and 10000, sum
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -56,7 +54,8 @@ Clear and rebuild filters: Clear old simple filters and rebuild complex conditio
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -114,7 +113,8 @@ Date range combined filter: Use 'period' to filter 2024 Q1 data, while using 'ra
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -171,7 +171,8 @@ Date filter and nested conditions combo: Filter high-value orders from Consumers
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -227,7 +228,8 @@ Multi-level nested grouping: High-value orders with Same Day shipping for Consum
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -286,7 +288,8 @@ High discount Technology product profit analysis: Filter technology category ord
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -332,7 +335,8 @@ Multi-region shipping efficiency comparison: Use 'in' to filter East China, Nort
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -378,7 +382,8 @@ Office Supplies or Furniture sales in East China: Use nested grouping, AND conne
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -424,11 +429,12 @@ export default () => {
 
 ## not-between-sales-range
 
-Not between filter: exclude sales between 1000~10000
+Not between filter: exclude sales between 1000\~10000
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -474,7 +480,8 @@ Not between filter with explicit leftOp/rightOp to test invert functions
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -520,7 +527,8 @@ Office Supplies sales ranking by province: Filter Office Supplies category, summ
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -566,7 +574,8 @@ Office Supplies vs. Technology category comparison: Use OR grouping to filter tw
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -614,7 +623,8 @@ Remove condition from group: Pre-defined OR group with three categories, remove 
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -674,7 +684,8 @@ Remove filter by index: Remove the first category filter, keeping only the regio
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -725,7 +736,8 @@ Animated filter modification: Update province filter from Zhejiang to Guangdong,
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -778,7 +790,8 @@ Modify group logic: Switch pre-defined OR category group to AND, narrowing the f
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -837,7 +850,8 @@ Where filter with array value using '=' operator should convert to 'in'
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -883,7 +897,8 @@ Where filter with array value using '!=' operator should convert to 'not in'
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {

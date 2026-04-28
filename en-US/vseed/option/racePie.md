@@ -1,6 +1,6 @@
 # RacePie
 
-:::note{title=Description}
+:::note\{title=Description}
 AnimatedPie Chart (Race Pie Chart)
 
 Suitable for showing the proportion relationship of data changes over time, using the size of the sector area to represent the proportion of each category.
@@ -15,7 +15,7 @@ Applicable scenarios:
 
 :::
 
-:::note{title=Note}
+:::note\{title=Note}
 AnimatedPie Chart:
 
 \- Angle maps measure values, color maps dimension values
@@ -30,7 +30,7 @@ AnimatedPie Chart:
 
 **Type:** `"racePie"`
 
-:::note{title=Description}
+:::note\{title=Description}
 AnimatedPie Chart, suitable for showing the proportion relationship of data changes over time
 
 :::
@@ -39,7 +39,7 @@ AnimatedPie Chart, suitable for showing the proportion relationship of data chan
 
 **Type:** `Record[]`
 
-:::note{title=Description}
+:::note\{title=Description}
 Data source
 
 :::
@@ -48,7 +48,7 @@ Data source
 
 **Type:** `RacePieDimension[] | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Dimensions
 
 :::
@@ -57,7 +57,7 @@ Dimensions
 
 **Type:** `string`
 
-:::note{title=Description}
+:::note\{title=Description}
 Field ID corresponding to the dimension
 
 :::
@@ -66,7 +66,7 @@ Field ID corresponding to the dimension
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Dimension alias
 
 :::
@@ -75,7 +75,7 @@ Dimension alias
 
 **Type:** `TimeFormat | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Dimension date format configuration
 
 :::
@@ -84,7 +84,7 @@ Dimension date format configuration
 
 **Type:** `"year" | "quarter" | "month" | "week" | "day" | "hour" | "minute" | "second"`
 
-:::note{title=Description}
+:::note\{title=Description}
 Time granularity, determines the date display precision
 
 :::
@@ -93,7 +93,7 @@ Time granularity, determines the date display precision
 
 **Type:** `"color" | "detail" | "tooltip" | "label" | "row" | "column" | "player" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Channel to which the dimension is mapped
 
 \- color: supports mapping multiple dimensions to the color channel
@@ -116,7 +116,7 @@ Channel to which the dimension is mapped
 
 **Type:** `PieMeasure[] | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Stroke color
 
 :::
@@ -125,7 +125,7 @@ Stroke color
 
 **Type:** `string`
 
-:::note{title=Description}
+:::note\{title=Description}
 Measure ID, must be unique
 
 :::
@@ -134,7 +134,7 @@ Measure ID, must be unique
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Measure alias, duplicates allowed; when not set, alias defaults to id
 
 :::
@@ -143,7 +143,7 @@ Measure alias, duplicates allowed; when not set, alias defaults to id
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Automatic number formatting, enabled by default, highest priority
 
 When autoFormat=true, it overrides all numFormat configurations
@@ -154,7 +154,7 @@ Formatting rules: decimal numbers with compact notation enabled, minimum 0 decim
 
 For example:
 
-\- locale=zh-CN: 749740.264 → 74.45~74.45万
+\- locale=zh-CN: 749740.264 → 74.45\~74.45万
 
 \- locale=en-US: 749740.264 → 744.5K
 
@@ -164,7 +164,7 @@ For example:
 
 **Type:** `NumFormat | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Custom number formatting for measures; automatically applied to labels and tooltips
 
 Note: To use custom formatting, you must explicitly set autoFormat=false; otherwise autoFormat will override this config
@@ -175,7 +175,7 @@ Note: To use custom formatting, you must explicitly set autoFormat=false; otherw
 
 **Type:** `"number" | "percent" | "permille" | "scientific" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format type, supports: number (decimal), percent (%), permille (‰), scientific notation
 
 :::
@@ -184,7 +184,7 @@ Number format type, supports: number (decimal), percent (%), permille (‰), sci
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format ratio, cannot be 0
 
 :::
@@ -197,7 +197,7 @@ Number format ratio, cannot be 0
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format symbol, e.g. %, ‰
 
 :::
@@ -210,7 +210,7 @@ Number format symbol, e.g. %, ‰
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Thousands separator for number formatting
 
 :::
@@ -219,7 +219,7 @@ Thousands separator for number formatting
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format suffix
 
 :::
@@ -228,7 +228,7 @@ Number format suffix
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format prefix
 
 :::
@@ -237,7 +237,7 @@ Number format prefix
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Decimal places for number formatting, using the browser's Intl.NumberFormat minimumFractionDigits and maximumFractionDigits; lower priority than significantDigits
 
 :::
@@ -254,7 +254,7 @@ Decimal places for number formatting, using the browser's Intl.NumberFormat mini
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Significant digits for number formatting, using the browser's Intl.NumberFormat minimumSignificantDigits and maximumSignificantDigits; higher priority than fractionDigits
 
 :::
@@ -273,7 +273,7 @@ Significant digits for number formatting, using the browser's Intl.NumberFormat 
 
 **Type:** `"morePrecision" | "lessPrecision" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Rounding priority for number formatting when both significantDigits and fractionDigits are set; uses the browser's Intl.NumberFormat, following the same rules as Intl.NumberFormat's roundingPriority
 
 :::
@@ -286,7 +286,7 @@ Rounding priority for number formatting when both significantDigits and fraction
 
 **Type:** `"floor" | "ceil" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Rounding mode for number formatting, using the browser's Intl.NumberFormat, following the same rules as Intl.NumberFormat's roundingMode
 
 :::
@@ -299,7 +299,7 @@ Rounding mode for number formatting, using the browser's Intl.NumberFormat, foll
 
 **Type:** `"number" | "percent" | "permille" | "scientific" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format type, supports: number (decimal), percent (%), permille (‰), scientific notation
 
 :::
@@ -308,7 +308,7 @@ Number format type, supports: number (decimal), percent (%), permille (‰), sci
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format ratio, cannot be 0
 
 :::
@@ -321,7 +321,7 @@ Number format ratio, cannot be 0
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format symbol, e.g. %, ‰
 
 :::
@@ -334,7 +334,7 @@ Number format symbol, e.g. %, ‰
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Thousands separator for number formatting
 
 :::
@@ -343,7 +343,7 @@ Thousands separator for number formatting
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format suffix
 
 :::
@@ -352,7 +352,7 @@ Number format suffix
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format prefix
 
 :::
@@ -361,7 +361,7 @@ Number format prefix
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Decimal places for number formatting, using the browser's Intl.NumberFormat minimumFractionDigits and maximumFractionDigits; lower priority than significantDigits
 
 :::
@@ -378,7 +378,7 @@ Decimal places for number formatting, using the browser's Intl.NumberFormat mini
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Significant digits for number formatting, using the browser's Intl.NumberFormat minimumSignificantDigits and maximumSignificantDigits; higher priority than fractionDigits
 
 :::
@@ -397,7 +397,7 @@ Significant digits for number formatting, using the browser's Intl.NumberFormat 
 
 **Type:** `"morePrecision" | "lessPrecision" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Rounding priority for number formatting when both significantDigits and fractionDigits are set; uses the browser's Intl.NumberFormat, following the same rules as Intl.NumberFormat's roundingPriority
 
 :::
@@ -410,7 +410,7 @@ Rounding priority for number formatting when both significantDigits and fraction
 
 **Type:** `"floor" | "ceil" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Rounding mode for number formatting, using the browser's Intl.NumberFormat, following the same rules as Intl.NumberFormat's roundingMode
 
 :::
@@ -419,7 +419,7 @@ Rounding mode for number formatting, using the browser's Intl.NumberFormat, foll
 
 **Type:** `"color" | "tooltip" | "label" | "angle" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Channel to which the measure is mapped
 
 \- angle: measure mapped to the angle channel
@@ -436,12 +436,12 @@ Channel to which the measure is mapped
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 In flat measure configuration form, builds a tree-shaped measure group. parentId points to the id of the parent measure group, used for building the measure tree
 
 :::
 
-:::tip{title=Tip}
+:::tip\{title=Tip}
 There are two ways to configure the measure tree: Option 1 is directly configuring a measure tree with children; Option 2 is configuring a flat measure list with parentId. These two methods cannot be used simultaneously
 
 :::
@@ -450,7 +450,7 @@ There are two ways to configure the measure tree: Option 1 is directly configuri
 
 **Type:** `Page | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 PaginationConfiguration
 
 :::
@@ -459,7 +459,7 @@ PaginationConfiguration
 
 **Type:** `string`
 
-:::note{title=Description}
+:::note\{title=Description}
 Pagination field; specifies the field name for pagination, must be a dimension
 
 :::
@@ -468,7 +468,7 @@ Pagination field; specifies the field name for pagination, must be a dimension
 
 **Type:** `string`
 
-:::note{title=Description}
+:::note\{title=Description}
 Current pagination value; specifies the value used to determine the current page
 
 :::
@@ -480,14 +480,14 @@ Current pagination value; specifies the value used to determine the current page
 
 **Type:** `Player | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Player configuration, used to specify the time dimension, the core configuration of the AnimatedPie Chart
 
 Player configuration, used to specify the player field name, must be a dimension
 
 :::
 
-:::warning{title=Warning}
+:::warning\{title=Warning}
 This feature does not support chart types such as table, pivotTable, dualAxis, histogram, boxPlot, etc., and does not support use when measure combination or row/column pivot is enabled
 
 :::
@@ -496,7 +496,7 @@ This feature does not support chart types such as table, pivotTable, dualAxis, h
 
 **Type:** `number | false | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Maximum playback count; data exceeding this count will be truncated, set to false for no limit
 
 :::
@@ -505,7 +505,7 @@ Maximum playback count; data exceeding this count will be truncated, set to fals
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Playback interval, unit: ms
 
 :::
@@ -514,7 +514,7 @@ Playback interval, unit: ms
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether to auto play
 
 :::
@@ -523,7 +523,7 @@ Whether to auto play
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether to loop play
 
 :::
@@ -532,7 +532,7 @@ Whether to loop play
 
 **Type:** `"left" | "top" | "right" | "bottom" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Player position
 
 :::
@@ -541,7 +541,7 @@ Player position
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Player progress bar rail color
 
 :::
@@ -550,7 +550,7 @@ Player progress bar rail color
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Player progress bar track color
 
 :::
@@ -559,7 +559,7 @@ Player progress bar track color
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Player progress bar slider handle color
 
 :::
@@ -568,7 +568,7 @@ Player progress bar slider handle color
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Player progress bar slider handle border color
 
 :::
@@ -577,7 +577,7 @@ Player progress bar slider handle border color
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Player start button color
 
 :::
@@ -586,7 +586,7 @@ Player start button color
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Player pause button color
 
 :::
@@ -595,7 +595,7 @@ Player pause button color
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Player backward button color
 
 :::
@@ -604,7 +604,7 @@ Player backward button color
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Player forward button color
 
 :::
@@ -613,7 +613,7 @@ Player forward button color
 
 **Type:** `BackgroundColor`
 
-:::note{title=Description}
+:::note\{title=Description}
 Background color
 
 :::
@@ -622,7 +622,7 @@ Background color
 
 **Type:** `Color | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Color configuration
 
 :::
@@ -631,7 +631,7 @@ Color configuration
 
 **Type:** `string[] | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Discrete color scheme used to define the colors of different elements in the chart
 
 :::
@@ -643,7 +643,7 @@ Discrete color scheme used to define the colors of different elements in the cha
 
 **Type:** `string[] | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Linear gradient color scheme used to define the colors of different elements in the chart
 
 :::
@@ -655,13 +655,13 @@ Linear gradient color scheme used to define the colors of different elements in 
 
 **Type:** `Record<string, string> | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Color mapping used to map data values to specific colors
 
 :::
 
 **Example**
-{
+\{
 'profit': 'red',
 'sales': 'blue',
 }
@@ -670,7 +670,7 @@ Color mapping used to map data values to specific colors
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Positive/negative color configuration; defines the color for positive values in the chart
 
 :::
@@ -679,7 +679,7 @@ Positive/negative color configuration; defines the color for positive values in 
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Positive/negative color configuration; defines the color for negative values in the chart
 
 :::
@@ -688,7 +688,7 @@ Positive/negative color configuration; defines the color for negative values in 
 
 **Type:** `PieLabel | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 LabelConfiguration
 
 :::
@@ -697,7 +697,7 @@ LabelConfiguration
 
 **Type:** `false | true`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether label functionality is enabled
 
 :::
@@ -706,7 +706,7 @@ Whether label functionality is enabled
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether labels wrap to the next line
 
 :::
@@ -715,7 +715,7 @@ Whether labels wrap to the next line
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether labels display measure values
 
 In multi-measure scenarios, there is no concern about conflicting values, because all plot-related measures go through `foldMeasures` processing and are merged into one measure representing a single data point
@@ -728,7 +728,7 @@ Note: encoding's label has higher priority; this config does not affect encoding
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether labels display the percentage of measure values
 
 In multi-measure scenarios, there is no concern about conflicting values, because all plot-related measures go through `foldMeasures` processing and are merged into one measure representing a single data point
@@ -741,7 +741,7 @@ Note: encoding's label has higher priority; this config does not affect encoding
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether labels display dimension labels
 
 Display all dimension labels
@@ -754,7 +754,7 @@ Note: encoding's label has higher priority; this config does not affect encoding
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether label values are automatically formatted; when autoFormat is true, numFormat configuration is ignored
 
 :::
@@ -763,7 +763,7 @@ Whether label values are automatically formatted; when autoFormat is true, numFo
 
 **Type:** `NumFormat | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Label value format configuration; merged with the `format` in `measure`, where `measure`'s `format` has higher priority. numFormat priority is lower than autoFormat
 
 :::
@@ -772,7 +772,7 @@ Label value format configuration; merged with the `format` in `measure`, where `
 
 **Type:** `"number" | "percent" | "permille" | "scientific" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format type, supports: number (decimal), percent (%), permille (‰), scientific notation
 
 :::
@@ -781,7 +781,7 @@ Number format type, supports: number (decimal), percent (%), permille (‰), sci
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format ratio, cannot be 0
 
 :::
@@ -794,7 +794,7 @@ Number format ratio, cannot be 0
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format symbol, e.g. %, ‰
 
 :::
@@ -807,7 +807,7 @@ Number format symbol, e.g. %, ‰
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Thousands separator for number formatting
 
 :::
@@ -816,7 +816,7 @@ Thousands separator for number formatting
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format suffix
 
 :::
@@ -825,7 +825,7 @@ Number format suffix
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format prefix
 
 :::
@@ -834,7 +834,7 @@ Number format prefix
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Decimal places for number formatting, using the browser's Intl.NumberFormat minimumFractionDigits and maximumFractionDigits; lower priority than significantDigits
 
 :::
@@ -851,7 +851,7 @@ Decimal places for number formatting, using the browser's Intl.NumberFormat mini
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Significant digits for number formatting, using the browser's Intl.NumberFormat minimumSignificantDigits and maximumSignificantDigits; higher priority than fractionDigits
 
 :::
@@ -870,7 +870,7 @@ Significant digits for number formatting, using the browser's Intl.NumberFormat 
 
 **Type:** `"morePrecision" | "lessPrecision" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Rounding priority for number formatting when both significantDigits and fractionDigits are set; uses the browser's Intl.NumberFormat, following the same rules as Intl.NumberFormat's roundingPriority
 
 :::
@@ -883,7 +883,7 @@ Rounding priority for number formatting when both significantDigits and fraction
 
 **Type:** `"floor" | "ceil" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Rounding mode for number formatting, using the browser's Intl.NumberFormat, following the same rules as Intl.NumberFormat's roundingMode
 
 :::
@@ -892,7 +892,7 @@ Rounding mode for number formatting, using the browser's Intl.NumberFormat, foll
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Label font size
 
 :::
@@ -901,7 +901,7 @@ Label font size
 
 **Type:** `string | number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Label font weight
 
 :::
@@ -910,7 +910,7 @@ Label font weight
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Label background color
 
 :::
@@ -919,7 +919,7 @@ Label background color
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Label stroke color
 
 :::
@@ -928,7 +928,7 @@ Label stroke color
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Label font color
 
 :::
@@ -937,7 +937,7 @@ Label font color
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether labels automatically invert font color based on the graphical element's color
 
 :::
@@ -946,7 +946,7 @@ Whether labels automatically invert font color based on the graphical element's 
 
 **Type:** `"inside" | "outside" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 label position
 
 :::
@@ -955,7 +955,7 @@ label position
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether label anti-overlap functionality is enabled
 
 :::
@@ -964,7 +964,7 @@ Whether label anti-overlap functionality is enabled
 
 **Type:** `Selector | Selectors | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Label filtering; the default condition relationship between selectors is Or
 
 :::
@@ -973,7 +973,7 @@ Label filtering; the default condition relationship between selectors is Or
 
 **Type:** `string`
 
-:::note{title=Description}
+:::note\{title=Description}
 Dimension field; the id of an item in dimensions
 
 :::
@@ -982,7 +982,7 @@ Dimension field; the id of an item in dimensions
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Operator
 
 \- in: Select data items where the value of the dimension field is in 'value'
@@ -995,7 +995,7 @@ Operator
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Operator
 
 \- in: Select data items where the value of the dimension field is in 'value'
@@ -1010,7 +1010,7 @@ same as operator
 
 **Type:** `string | number | (string | number)[]`
 
-:::note{title=Description}
+:::note\{title=Description}
 Select the value of the dimension field in the data item; supports arrays
 
 :::
@@ -1019,7 +1019,7 @@ Select the value of the dimension field in the data item; supports arrays
 
 **Type:** `ChartDynamicFilter | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Animated filter (AI-generated code execution)
 
 Implement complex data filtering logic via AI-generated JavaScript code
@@ -1050,7 +1050,7 @@ Filter chart symbols (bars, points, etc.) via AI-generated JavaScript code
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 User's filtering requirement description (natural language)
 
 :::
@@ -1064,14 +1064,14 @@ User's filtering requirement description (natural language)
 
 **Type:** `string`
 
-:::note{title=Description}
+:::note\{title=Description}
 AI-generated JavaScript filtering code
 
 \- Can only use built-in utility functions (accessible via \_ or R)
 
 \- Input parameters: data (array), each item contains \_\_row\_index field representing row number
 
-\- Must return an array of row index and field combinations: Array<{ \_\_row\_index: number, field: string }>
+\- Must return an array of row index and field combinations: Array\<\{ \_\_row\_index: number, field: string }>
 
 \- \_\_row\_index represents the row number of the original data item, and field represents the field to be highlighted
 
@@ -1124,7 +1124,7 @@ _.map(filtered, item => [
 
 **Type:** `Selector | Selectors | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Fallback plan when code execution fails or the environment is not supported
 
 :::
@@ -1133,7 +1133,7 @@ Fallback plan when code execution fails or the environment is not supported
 
 **Type:** `string`
 
-:::note{title=Description}
+:::note\{title=Description}
 Dimension field; the id of an item in dimensions
 
 :::
@@ -1142,7 +1142,7 @@ Dimension field; the id of an item in dimensions
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Operator
 
 \- in: Select data items where the value of the dimension field is in 'value'
@@ -1155,7 +1155,7 @@ Operator
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Operator
 
 \- in: Select data items where the value of the dimension field is in 'value'
@@ -1170,7 +1170,7 @@ same as operator
 
 **Type:** `string | number | (string | number)[]`
 
-:::note{title=Description}
+:::note\{title=Description}
 Select the value of the dimension field in the data item; supports arrays
 
 :::
@@ -1179,7 +1179,7 @@ Select the value of the dimension field in the data item; supports arrays
 
 **Type:** `DynamicFilterExecutionResult<RowWithFieldRes> | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Animated filter execution result (runtime field)
 
 Written during the prepare() stage, read-only at runtime
@@ -1202,7 +1202,7 @@ Written during the prepare() stage, read-only at runtime
 
 **Type:** `"arc" | "labelLine" | "edge" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Label layout method; only effective for Pie Chart and Donut Chart when `labelPosition` is `outside`
 
 \- arc: Lay out labels according to an arc shape
@@ -1217,7 +1217,7 @@ Label layout method; only effective for Pie Chart and Donut Chart when `labelPos
 
 **Type:** `Legend | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Legend configuration
 
 :::
@@ -1226,7 +1226,7 @@ Legend configuration
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether the legend function is enabled
 
 :::
@@ -1238,12 +1238,12 @@ enable: true
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether the legend border is enabled
 
 :::
 
-:::warning{title=Warning}
+:::warning\{title=Warning}
 Only effective for discrete legends
 
 :::
@@ -1255,7 +1255,7 @@ border: true
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Legend font color
 
 :::
@@ -1264,7 +1264,7 @@ Legend font color
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Pager icon color
 
 :::
@@ -1273,7 +1273,7 @@ Pager icon color
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Pager icon disabled color
 
 :::
@@ -1282,7 +1282,7 @@ Pager icon disabled color
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Legend font size
 
 :::
@@ -1294,7 +1294,7 @@ labelFontSize: 10
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Legend font color
 
 :::
@@ -1303,7 +1303,7 @@ Legend font color
 
 **Type:** `string | number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Legend font weight
 
 :::
@@ -1315,12 +1315,12 @@ labelFontWeight: 400
 
 **Type:** `"circle" | "cross" | "diamond" | "square" | "arrow" | "arrow2Left" | "arrow2Right" | "wedge" | "thinTriangle" | "triangle" | "triangleUp" | "triangleDown" | "triangleRight" | "triangleLeft" | "stroke" | "star" | "wye" | "rect" | "arrowLeft" | "arrowRight" | "rectRound" | "roundLine" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Legend shape
 
 :::
 
-:::warning{title=Warning}
+:::warning\{title=Warning}
 Only effective for discrete legends
 
 :::
@@ -1332,7 +1332,7 @@ shapeType: 'circle'
 
 **Type:** `"left" | "leftTop" | "leftBottom" | "lt" | "lb" | "top" | "topLeft" | "topRight" | "tl" | "tr" | "right" | "rightTop" | "rightBottom" | "rt" | "rb" | "bottom" | "bottomLeft" | "bottomRight" | "bl" | "br" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Legend position
 
 :::
@@ -1344,7 +1344,7 @@ position: 'rightTop'
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 When there are a large number of legends, the maximum number of columns or rows
 
 If position is horizontal (bottom, bottomLeft, bottomRight, bl, br, top, topLeft, topRight, tl, tr), maxSize controls the number of columns displayed
@@ -1353,7 +1353,7 @@ If position is vertical (left, leftTop, leftBottom, lt, lb, right, rightTop, rig
 
 :::
 
-:::warning{title=Warning}
+:::warning\{title=Warning}
 Only effective for discrete legends
 
 :::
@@ -1365,7 +1365,7 @@ maxSize: 2
 
 **Type:** `Tooltip | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Tooltip configuration
 
 :::
@@ -1374,7 +1374,7 @@ Tooltip configuration
 
 **Type:** `false | true`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether the tooltip function is enabled
 
 :::
@@ -1383,7 +1383,7 @@ Whether the tooltip function is enabled
 
 **Type:** `Brush | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Brush configuration
 
 Chart brush configuration
@@ -1394,7 +1394,7 @@ Chart brush configuration
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether to enable brush selection
 
 :::
@@ -1403,7 +1403,7 @@ Whether to enable brush selection
 
 **Type:** `"rect" | "x" | "y" | "polygon" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Brush type
 
 Define the shape and selection direction of the brush
@@ -1422,7 +1422,7 @@ Define the shape and selection direction of the brush
 
 **Type:** `"single" | "multiple" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Brush mode, single or multiple selection
 
 Define the selection mode
@@ -1437,7 +1437,7 @@ Define the selection mode
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether to clear the selection box when brushing ends
 
 :::
@@ -1446,7 +1446,7 @@ Whether to clear the selection box when brushing ends
 
 **Type:** `{ opacity?: number; stroke?: string; lineWidth?: number; } | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Style of selected data
 
 Define the style of selected data points
@@ -1457,7 +1457,7 @@ Define the style of selected data points
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Opacity
 
 Opacity of selected data points, range 0-1
@@ -1468,7 +1468,7 @@ Opacity of selected data points, range 0-1
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Stroke color
 
 :::
@@ -1477,7 +1477,7 @@ Stroke color
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Stroke width
 
 :::
@@ -1486,7 +1486,7 @@ Stroke width
 
 **Type:** `{ opacity?: number; stroke?: string; lineWidth?: number; } | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Style of unselected data
 
 Define the style of unselected data points
@@ -1497,7 +1497,7 @@ Define the style of unselected data points
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Opacity
 
 Opacity of unselected data points, range 0-1
@@ -1508,7 +1508,7 @@ Opacity of unselected data points, range 0-1
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Stroke color
 
 :::
@@ -1517,7 +1517,7 @@ Stroke color
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Stroke width
 
 :::
@@ -1526,7 +1526,7 @@ Stroke width
 
 **Type:** `Theme | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Theme configuration
 
 Built-in light and dark themes are available, and new themes can be customized via registerTheme.
@@ -1545,7 +1545,7 @@ Built-in light and dark themes are available, and new themes can be customized v
 
 **Type:** `Locale | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Language configuration
 
 :::

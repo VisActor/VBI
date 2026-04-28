@@ -1,8 +1,5 @@
 # insight
 
-import { registerDemoConnector } from '@components'
-
-{registerDemoConnector()}
 
 ## basic-content
 

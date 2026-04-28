@@ -5,7 +5,7 @@
 Select Avg Example
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -92,7 +92,7 @@ export default () => {
 Select Count Distinct Example
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -186,7 +186,7 @@ export default () => {
 Select Count Example
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -273,7 +273,7 @@ export default () => {
 Select Max Example
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -360,7 +360,7 @@ export default () => {
 Select Median Example
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -454,7 +454,7 @@ export default () => {
 Select Min Example
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -541,7 +541,7 @@ export default () => {
 Select Quantile Example
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -636,7 +636,7 @@ export default () => {
 Select Stddev Example
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -730,7 +730,7 @@ export default () => {
 Select Sum Example
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -817,7 +817,7 @@ export default () => {
 Select Variance Example
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -911,7 +911,7 @@ export default () => {
 Select VariancePop Example
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {

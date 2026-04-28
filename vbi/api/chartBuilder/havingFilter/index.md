@@ -16,10 +16,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| 参数    | 类型         | 说明 |
+| ----- | ---------- | -- |
+| `doc` | Y.Doc      | -  |
+| `dsl` | Y.Map<any> | -  |
 
 ### getConditions
 
@@ -45,9 +45,9 @@ add(field: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFil
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `field` | string | - 字段名 |
+| 参数         | 类型                                      | 说明     |
+| ---------- | --------------------------------------- | ------ |
+| `field`    | string                                  | - 字段名  |
 | `callback` | (node: HavingFilterNodeBuilder) => void | - 回调函数 |
 
 ### addGroup
@@ -64,10 +64,10 @@ addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): Havin
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `op` | 'and' | 'or' | - 逻辑操作符 |
-| `callback` | (group: HavingGroupBuilder) => void | - 回调函数 |
+| 参数         | 类型                                  | 说明      |
+| ---------- | ----------------------------------- | ------- |
+| `op`       | 'and' \| 'or'                       | - 逻辑操作符 |
+| `callback` | (group: HavingGroupBuilder) => void | - 回调函数  |
 
 ### update
 
@@ -83,10 +83,10 @@ update(id: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFil
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `id` | string | - 过滤条件 ID |
-| `callback` | (node: HavingFilterNodeBuilder) => void | - 回调函数 |
+| 参数         | 类型                                      | 说明        |
+| ---------- | --------------------------------------- | --------- |
+| `id`       | string                                  | - 过滤条件 ID |
+| `callback` | (node: HavingFilterNodeBuilder) => void | - 回调函数    |
 
 ### updateGroup
 
@@ -102,10 +102,10 @@ updateGroup(id: string, callback: (group: HavingGroupBuilder) => void): HavingFi
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `id` | string | - 分组 ID |
-| `callback` | (group: HavingGroupBuilder) => void | - 回调函数 |
+| 参数         | 类型                                  | 说明      |
+| ---------- | ----------------------------------- | ------- |
+| `id`       | string                              | - 分组 ID |
+| `callback` | (group: HavingGroupBuilder) => void | - 回调函数  |
 
 ### remove
 
@@ -121,9 +121,9 @@ remove(idOrIndex: string | number): HavingFilterBuilder
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `idOrIndex` | string | number | - ID 或索引 |
+| 参数          | 类型               | 说明       |
+| ----------- | ---------------- | -------- |
+| `idOrIndex` | string \| number | - ID 或索引 |
 
 ### find
 
@@ -139,9 +139,9 @@ find(predicate: (entry: HavingFilterNodeBuilder | HavingGroupBuilder, index: num
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `predicate` | (entry: HavingFilterNodeBuilder | HavingGroupBuilder, index: number) => boolean | - 查找条件 |
+| 参数          | 类型                                                                               | 说明     |
+| ----------- | -------------------------------------------------------------------------------- | ------ |
+| `predicate` | (entry: HavingFilterNodeBuilder \| HavingGroupBuilder, index: number) => boolean | - 查找条件 |
 
 ### clear
 
@@ -179,8 +179,8 @@ observe(callback: ObserveDeepCallback): () => void
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数         | 类型                  | 说明     |
+| ---------- | ------------------- | ------ |
 | `callback` | ObserveDeepCallback | - 回调函数 |
 
 ### static isGroup
@@ -197,9 +197,9 @@ static isGroup(yMap: Y.Map<any>): boolean
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| 参数     | 类型         | 说明 |
+| ------ | ---------- | -- |
+| `yMap` | Y.Map<any> | -  |
 
 ### static isNode
 
@@ -215,6 +215,6 @@ static isNode(yMap: Y.Map<any>): boolean
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| 参数     | 类型         | 说明 |
+| ------ | ---------- | -- |
+| `yMap` | Y.Map<any> | -  |

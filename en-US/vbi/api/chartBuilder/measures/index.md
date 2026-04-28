@@ -16,10 +16,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| Parameter | Type       | Description |
+| --------- | ---------- | ----------- |
+| `doc`     | Y.Doc      | -           |
+| `dsl`     | Y.Map<any> | -           |
 
 ### add
 
@@ -35,9 +35,9 @@ add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilde
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `field` | string | - Field name |
+| Parameter  | Type                               | Description         |
+| ---------- | ---------------------------------- | ------------------- |
+| `field`    | string                             | - Field name        |
 | `callback` | (node: MeasureNodeBuilder) => void | - Callback function |
 
 ### remove
@@ -54,9 +54,9 @@ remove(id: string): MeasuresBuilder
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `id` | string | - Measure ID |
+| Parameter | Type   | Description  |
+| --------- | ------ | ------------ |
+| `id`      | string | - Measure ID |
 
 ### update
 
@@ -72,9 +72,9 @@ update(id: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilde
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `id` | string | - Measure ID |
+| Parameter  | Type                               | Description         |
+| ---------- | ---------------------------------- | ------------------- |
+| `id`       | string                             | - Measure ID        |
 | `callback` | (node: MeasureNodeBuilder) => void | - Callback function |
 
 ### find
@@ -91,8 +91,8 @@ find(predicate: (node: MeasureNodeBuilder, index: number) => boolean): MeasureNo
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter   | Type                                                 | Description        |
+| ----------- | ---------------------------------------------------- | ------------------ |
 | `predicate` | (node: MeasureNodeBuilder, index: number) => boolean | - Search condition |
 
 ### findAll
@@ -133,8 +133,8 @@ observe(callback: ObserveDeepCallback): () => void
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter  | Type                | Description         |
+| ---------- | ------------------- | ------------------- |
 | `callback` | ObserveDeepCallback | - Callback function |
 
 ### static isMeasureNode
@@ -149,9 +149,9 @@ static isMeasureNode(node: VBIMeasureTree[0]): node is VBIMeasure
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `node` | VBIMeasureTree\[0] | - |
+| Parameter | Type               | Description |
+| --------- | ------------------ | ----------- |
+| `node`    | VBIMeasureTree\[0] | -           |
 
 ### static isMeasureGroup
 
@@ -165,6 +165,6 @@ static isMeasureGroup(node: VBIMeasureTree[0]): node is VBIMeasureGroup
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `node` | VBIMeasureTree\[0] | - |
+| Parameter | Type               | Description |
+| --------- | ------------------ | ----------- |
+| `node`    | VBIMeasureTree\[0] | -           |

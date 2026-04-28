@@ -1,91 +1,95 @@
-import { PackageManagerTabs, Steps } from '@rspress/core/theme'
-
 # 快速开始
 
 **VSeed** 是面向分析领域的标准化 DSL（领域特定语言）。通过优雅的数据编排，让数据可视化变得简单。
 
-<Steps>
-  ### 安装
+### 安装
+安装核心库 `vseed` 及底层渲染引擎 `vchart`、`vtable`。
 
-  安装核心库 `vseed` 及底层渲染引擎 `vchart`、`vtable`。
+```sh [npm]
+npm install @visactor/vseed @visactor/vchart @visactor/vtable
+```
 
-  <PackageManagerTabs command="install @visactor/vseed @visactor/vchart @visactor/vtable" />
+```sh [yarn]
+yarn add @visactor/vseed @visactor/vchart @visactor/vtable
+```
 
-  ### 注册
+```sh [pnpm]
+pnpm add @visactor/vseed @visactor/vchart @visactor/vtable
+```
 
-  在应用入口处注册图表能力与主题（只需执行一次）。
+```sh [bun]
+bun add @visactor/vseed @visactor/vchart @visactor/vtable
+```
 
-  ```tsx pure title="App.tsx"
-  import { registerAll } from '@visactor/vseed'
+```sh [deno]
+deno add npm:@visactor/vseed npm:@visactor/vchart npm:@visactor/vtable
+```
+### 注册
+在应用入口处注册图表能力与主题（只需执行一次）。
+```tsx pure title="App.tsx"
+import { registerAll } from '@visactor/vseed'
 
-  // 注册所有内置图表类型与主题
-  registerAll()
-  ```
+// 注册所有内置图表类型与主题
+registerAll()
+```
+### 构建
+通过 `Builder` 将 VSeed DSL 转换为可渲染的 Spec 配置。
+```tsx pure title="logic.ts"
+import { VSeed, Builder } from '@visactor/vseed'
 
-  ### 构建
+// 1. 定义分析意图 (DSL)
+const vseed: VSeed = {
+  chartType: 'line', // 图表类型
+  dataset: [
+    // 数据源
+    { date: '2019', profit: 10, sales: 100 },
+    { date: '2020', profit: 30, sales: 200 },
+    { date: '2021', profit: 30, sales: 300 },
+    /* ... */
+  ],
+}
 
-  通过 `Builder` 将 VSeed DSL 转换为可渲染的 Spec 配置。
+// 2. 生成渲染配置 (Spec)
+const spec = Builder.from(vseed).build()
+```
+### 渲染
+将生成的 Spec 传递给 VChart 组件进行渲染。
+```tsx
+import { useRef, useEffect } from 'react'
+import VChart from '@visactor/vchart'
+import { registerAll, VSeed, Builder } from '@visactor/vseed'
 
-  ```tsx pure title="logic.ts"
-  import { VSeed, Builder } from '@visactor/vseed'
+registerAll()
 
-  // 1. 定义分析意图 (DSL)
-  const vseed: VSeed = {
-    chartType: 'line', // 图表类型
-    dataset: [
-      // 数据源
-      { date: '2019', profit: 10, sales: 100 },
-      { date: '2020', profit: 30, sales: 200 },
-      { date: '2021', profit: 30, sales: 300 },
-      /* ... */
-    ],
-  }
+const Demo = () => {
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  // 2. 生成渲染配置 (Spec)
-  const spec = Builder.from(vseed).build()
-  ```
+  useEffect(() => {
+    if (!containerRef.current) return
 
-  ### 渲染
+    const vseed: VSeed = {
+      chartType: 'line',
+      dataset: [
+        { date: '2019', profit: 10, sales: 100 },
+        { date: '2020', profit: 30, sales: 200 },
+        { date: '2021', profit: 30, sales: 300 },
+        { date: '2022', profit: 50, sales: 400 },
+        { date: '2023', profit: 40, sales: 500 },
+      ],
+    }
 
-  将生成的 Spec 传递给 VChart 组件进行渲染。
+    const spec = Builder.from(vseed).build()
+    const vchart = new VChart(spec, { dom: containerRef.current })
 
-  ```tsx
-  import { useRef, useEffect } from 'react'
-  import VChart from '@visactor/vchart'
-  import { registerAll, VSeed, Builder } from '@visactor/vseed'
+    vchart.renderSync()
+    return () => vchart.release()
+  }, [])
 
-  registerAll()
+  return <div ref={containerRef} style={{ height: 300 }} />
+}
 
-  const Demo = () => {
-    const containerRef = useRef<HTMLDivElement>(null)
-
-    useEffect(() => {
-      if (!containerRef.current) return
-
-      const vseed: VSeed = {
-        chartType: 'line',
-        dataset: [
-          { date: '2019', profit: 10, sales: 100 },
-          { date: '2020', profit: 30, sales: 200 },
-          { date: '2021', profit: 30, sales: 300 },
-          { date: '2022', profit: 50, sales: 400 },
-          { date: '2023', profit: 40, sales: 500 },
-        ],
-      }
-
-      const spec = Builder.from(vseed).build()
-      const vchart = new VChart(spec, { dom: containerRef.current })
-
-      vchart.renderSync()
-      return () => vchart.release()
-    }, [])
-
-    return <div ref={containerRef} style={{ height: 300 }} />
-  }
-
-  export default Demo
-  ```
-</Steps>
+export default Demo
+```
 
 ## 核心概念
 

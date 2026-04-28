@@ -16,10 +16,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| 参数    | 类型         | 说明 |
+| ----- | ---------- | -- |
+| `doc` | Y.Doc      | -  |
+| `dsl` | Y.Map<any> | -  |
 
 ### add
 
@@ -35,9 +35,9 @@ add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilde
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `field` | string | - 字段名 |
+| 参数         | 类型                                 | 说明     |
+| ---------- | ---------------------------------- | ------ |
+| `field`    | string                             | - 字段名  |
 | `callback` | (node: MeasureNodeBuilder) => void | - 回调函数 |
 
 ### remove
@@ -54,8 +54,8 @@ remove(id: string): MeasuresBuilder
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数   | 类型     | 说明      |
+| ---- | ------ | ------- |
 | `id` | string | - 度量 ID |
 
 ### update
@@ -72,10 +72,10 @@ update(id: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilde
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `id` | string | - 度量 ID |
-| `callback` | (node: MeasureNodeBuilder) => void | - 回调函数 |
+| 参数         | 类型                                 | 说明      |
+| ---------- | ---------------------------------- | ------- |
+| `id`       | string                             | - 度量 ID |
+| `callback` | (node: MeasureNodeBuilder) => void | - 回调函数  |
 
 ### find
 
@@ -91,8 +91,8 @@ find(predicate: (node: MeasureNodeBuilder, index: number) => boolean): MeasureNo
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数          | 类型                                                   | 说明     |
+| ----------- | ---------------------------------------------------- | ------ |
 | `predicate` | (node: MeasureNodeBuilder, index: number) => boolean | - 查找条件 |
 
 ### findAll
@@ -133,8 +133,8 @@ observe(callback: ObserveDeepCallback): () => void
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数         | 类型                  | 说明     |
+| ---------- | ------------------- | ------ |
 | `callback` | ObserveDeepCallback | - 回调函数 |
 
 ### static isMeasureNode
@@ -149,9 +149,9 @@ static isMeasureNode(node: VBIMeasureTree[0]): node is VBIMeasure
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `node` | VBIMeasureTree\[0] | - |
+| 参数     | 类型                 | 说明 |
+| ------ | ------------------ | -- |
+| `node` | VBIMeasureTree\[0] | -  |
 
 ### static isMeasureGroup
 
@@ -165,6 +165,6 @@ static isMeasureGroup(node: VBIMeasureTree[0]): node is VBIMeasureGroup
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `node` | VBIMeasureTree\[0] | - |
+| 参数     | 类型                 | 说明 |
+| ------ | ------------------ | -- |
+| `node` | VBIMeasureTree\[0] | -  |

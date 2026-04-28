@@ -16,9 +16,9 @@ constructor(yMap: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| Parameter | Type       | Description |
+| --------- | ---------- | ----------- |
+| `yMap`    | Y.Map<any> | -           |
 
 ### getId
 
@@ -82,9 +82,9 @@ setValue(value: unknown): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `value` | unknown | - Filter value |
+| Parameter | Type    | Description    |
+| --------- | ------- | -------------- |
+| `value`   | unknown | - Filter value |
 
 ### setOperator
 
@@ -100,9 +100,9 @@ setOperator(operator: string): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `operator` | string | - Operator |
+| Parameter  | Type   | Description |
+| ---------- | ------ | ----------- |
+| `operator` | string | - Operator  |
 
 ### setAggregate
 
@@ -118,8 +118,8 @@ setAggregate(aggregate: VBIHavingAggregate): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter   | Type               | Description               |
+| ----------- | ------------------ | ------------------------- |
 | `aggregate` | VBIHavingAggregate | - Aggregate configuration |
 
 ### toJSON

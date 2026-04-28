@@ -5,7 +5,7 @@
 toDay
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -110,7 +110,7 @@ export default () => {
 toHour
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -215,7 +215,7 @@ export default () => {
 toMinute
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -320,7 +320,7 @@ export default () => {
 toMonth with DATE range filter
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -430,7 +430,7 @@ export default () => {
 toMonth
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -555,7 +555,7 @@ export default () => {
 toQuarter
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -660,7 +660,7 @@ export default () => {
 toSecond
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -765,7 +765,7 @@ export default () => {
 toWeek
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -870,7 +870,7 @@ export default () => {
 toYear
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {

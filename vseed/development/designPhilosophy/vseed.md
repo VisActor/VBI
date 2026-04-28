@@ -31,8 +31,8 @@
 2. `VSeed` 不需要提供过多的样式设置能力, 应聚焦于处理图表与数据之间的关系.
 3. `VSeed` 应该封装分析领域常用的通用功能, 如数值格式、国际化、主题、常用样式、常用功能, 做到开箱即用.
 4. 更灵活的定制需求, 应由用户二次定制, 因此VSeed仅对外提供一个Spec Builder, 用于构建VChart、VTable的spec.
-   * 用户可以灵活控制VChart Instance与VTable Instance.
-   * 用户可以根据自己的需求, 灵活修改VChart、VTable的spec.
+   - 用户可以灵活控制VChart Instance与VTable Instance.
+   - 用户可以根据自己的需求, 灵活修改VChart、VTable的spec.
 
 ## 为什么要设计 VSeed？
 

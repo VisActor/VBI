@@ -4,14 +4,14 @@
 
 当前导出分为两层：
 
-* 根导出 `@visactor/vbi-react`：`useVBI`、`useVSeed`、`useChartType`、`useDimensions`、`useMeasures`、`useWhereFilter`、`useHavingFilter`
-* 子路径导出 `@visactor/vbi-react/components`：`BuilderLayout`、`ChartRenderer`、`ChartTypeSelector`、`FieldPanel`
+- 根导出 `@visactor/vbi-react`：`useVBI`、`useVSeed`、`useChartType`、`useDimensions`、`useMeasures`、`useWhereFilter`、`useHavingFilter`
+- 子路径导出 `@visactor/vbi-react/components`：`BuilderLayout`、`ChartRenderer`、`ChartTypeSelector`、`FieldPanel`
 
 ## 定位
 
-* 面向 React 18+ 的状态订阅与渲染封装
-* 以 `VBIChartBuilder` 为单一状态源（SSOT），不额外维护业务副本
-* 适合构建 BI 配置面板、图表预览区与 DSL 调试面板
+- 面向 React 18+ 的状态订阅与渲染封装
+- 以 `VBIChartBuilder` 为单一状态源（SSOT），不额外维护业务副本
+- 适合构建 BI 配置面板、图表预览区与 DSL 调试面板
 
 ## 安装
 
@@ -80,5 +80,5 @@ export function App() {
 
 ## 文档导航
 
-* [API 总览](/VBI/vbi-react/api/index.md)
-* [示例](/VBI/vbi-react/examples/index.md)
+- [API 总览](/VBI/vbi-react/api/index.md)
+- [示例](/VBI/vbi-react/examples/index.md)

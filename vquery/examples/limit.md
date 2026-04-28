@@ -5,7 +5,7 @@
 Basic Limit Example
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {

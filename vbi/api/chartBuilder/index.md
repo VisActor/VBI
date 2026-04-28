@@ -2,20 +2,20 @@
 
 ## 属性
 
-| 属性 | 类型 | 说明 |
-| --- | --- | --- |
-| **doc** | `Y.Doc` | - |
-| **dsl** | `Y.Map<any>` | - |
-| **adapters** | `VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>` | - |
-| **chartType** | `ChartTypeBuilder` | - |
-| **measures** | `MeasuresBuilder` | - |
-| **dimensions** | `DimensionsBuilder` | - |
-| **havingFilter** | `HavingFilterBuilder` | - |
-| **whereFilter** | `WhereFilterBuilder` | - |
-| **theme** | `ThemeBuilder` | - |
-| **locale** | `LocaleBuilder` | - |
-| **limit** | `LimitBuilder` | - |
-| **undoManager** | `UndoManager` | - |
+| 属性               | 类型                                             | 说明 |
+| ---------------- | ---------------------------------------------- | -- |
+| **doc**          | `Y.Doc`                                        | -  |
+| **dsl**          | `Y.Map<any>`                                   | -  |
+| **adapters**     | `VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>` | -  |
+| **chartType**    | `ChartTypeBuilder`                             | -  |
+| **measures**     | `MeasuresBuilder`                              | -  |
+| **dimensions**   | `DimensionsBuilder`                            | -  |
+| **havingFilter** | `HavingFilterBuilder`                          | -  |
+| **whereFilter**  | `WhereFilterBuilder`                           | -  |
+| **theme**        | `ThemeBuilder`                                 | -  |
+| **locale**       | `LocaleBuilder`                                | -  |
+| **limit**        | `LimitBuilder`                                 | -  |
+| **undoManager**  | `UndoManager`                                  | -  |
 
 ## 方法
 
@@ -29,11 +29,11 @@ constructor(doc: Y.Doc, options: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>, ds
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `options` | VBIChartBuilderOptions\<TQueryDSL, TSeedDSL> | - |
-| `dsl` | Y.Map<any> | - |
+| 参数        | 类型                                           | 说明 |
+| --------- | -------------------------------------------- | -- |
+| `doc`     | Y.Doc                                        | -  |
+| `options` | VBIChartBuilderOptions\<TQueryDSL, TSeedDSL> | -  |
+| `dsl`     | Y.Map<any>                                   | -  |
 
 ### applyUpdate
 
@@ -47,10 +47,10 @@ applyUpdate(update: Uint8Array, transactionOrigin: any): void
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `update` | Uint8Array | - |
-| `transactionOrigin` | any | - |
+| 参数                  | 类型         | 说明 |
+| ------------------- | ---------- | -- |
+| `update`            | Uint8Array | -  |
+| `transactionOrigin` | any        | -  |
 
 ### encodeStateAsUpdate
 
@@ -64,9 +64,9 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBufferLike>
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `targetStateVector` | Uint8Array | - |
+| 参数                  | 类型         | 说明 |
+| ------------------- | ---------- | -- |
+| `targetStateVector` | Uint8Array | -  |
 
 ### getUUID
 
@@ -90,9 +90,9 @@ buildVSeed(options: BuildVSeedOptions): Promise<TSeedDSL>
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `options` = {} | BuildVSeedOptions | - |
+| 参数              | 类型                | 说明 |
+| --------------- | ----------------- | -- |
+| `options` = \{} | BuildVSeedOptions | -  |
 
 ### buildVQuery
 

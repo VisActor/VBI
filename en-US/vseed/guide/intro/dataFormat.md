@@ -2,8 +2,8 @@
 
 VSeed supports configuring formatting rules for numerical values within `measures`.
 
-* `autoFormat`: Whether to automatically format values.
-* `format`: Detailed formatting configuration, including type, ratio, thousand separator, fraction digits, prefix/suffix, etc.
+- `autoFormat`: Whether to automatically format values.
+- `format`: Detailed formatting configuration, including type, ratio, thousand separator, fraction digits, prefix/suffix, etc.
 
 ```tsx direction=vertical playground
 import { useDark } from '@rspress/core/runtime'

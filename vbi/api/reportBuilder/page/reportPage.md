@@ -14,10 +14,10 @@ constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, page: Y.Map<any>)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `parent` | VBIReportBuilder\<TQueryDSL, TSeedDSL> | - |
-| `page` | Y.Map<any> | - |
+| 参数       | 类型                                     | 说明 |
+| -------- | -------------------------------------- | -- |
+| `parent` | VBIReportBuilder\<TQueryDSL, TSeedDSL> | -  |
+| `page`   | Y.Map<any>                             | -  |
 
 ### getId
 
@@ -41,9 +41,9 @@ setTitle(title: string): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `title` | string | - |
+| 参数      | 类型     | 说明 |
+| ------- | ------ | -- |
+| `title` | string | -  |
 
 ### setChartId
 
@@ -57,9 +57,9 @@ setChartId(chart: ResourceReference): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `chart` | ResourceReference | - |
+| 参数      | 类型                | 说明 |
+| ------- | ----------------- | -- |
+| `chart` | ResourceReference | -  |
 
 ### setInsightId
 
@@ -73,9 +73,9 @@ setInsightId(insight: ResourceReference): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `insight` | ResourceReference | - |
+| 参数        | 类型                | 说明 |
+| --------- | ----------------- | -- |
+| `insight` | ResourceReference | -  |
 
 ### toJSON
 

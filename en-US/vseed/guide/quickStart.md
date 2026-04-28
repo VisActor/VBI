@@ -1,91 +1,95 @@
-import { PackageManagerTabs, Steps } from '@rspress/core/theme'
-
 # Quick Start
 
 **VSeed** is a standardized DSL (Domain Specific Language) for the analytics domain. It makes data visualization simple through elegant data orchestration.
 
-<Steps>
-  ### Install
+### Install
+Install the core library `vseed` along with the underlying rendering engines `vchart` and `vtable`.
 
-  Install the core library `vseed` along with the underlying rendering engines `vchart` and `vtable`.
+```sh [npm]
+npm install @visactor/vseed @visactor/vchart @visactor/vtable
+```
 
-  <PackageManagerTabs command="install @visactor/vseed @visactor/vchart @visactor/vtable" />
+```sh [yarn]
+yarn add @visactor/vseed @visactor/vchart @visactor/vtable
+```
 
-  ### Register
+```sh [pnpm]
+pnpm add @visactor/vseed @visactor/vchart @visactor/vtable
+```
 
-  Register chart capabilities and themes at the application entry point (only needs to run once).
+```sh [bun]
+bun add @visactor/vseed @visactor/vchart @visactor/vtable
+```
 
-  ```tsx pure title="App.tsx"
-  import { registerAll } from '@visactor/vseed'
+```sh [deno]
+deno add npm:@visactor/vseed npm:@visactor/vchart npm:@visactor/vtable
+```
+### Register
+Register chart capabilities and themes at the application entry point (only needs to run once).
+```tsx pure title="App.tsx"
+import { registerAll } from '@visactor/vseed'
 
-  // Register all built-in chart types and themes
-  registerAll()
-  ```
+// Register all built-in chart types and themes
+registerAll()
+```
+### Build
+Use `Builder` to convert a VSeed DSL into a renderable Spec configuration.
+```tsx pure title="logic.ts"
+import { VSeed, Builder } from '@visactor/vseed'
 
-  ### Build
+// 1. Define the analysis intent (DSL)
+const vseed: VSeed = {
+  chartType: 'line', // chart type
+  dataset: [
+    // data source
+    { date: '2019', profit: 10, sales: 100 },
+    { date: '2020', profit: 30, sales: 200 },
+    { date: '2021', profit: 30, sales: 300 },
+    /* ... */
+  ],
+}
 
-  Use `Builder` to convert a VSeed DSL into a renderable Spec configuration.
+// 2. Generate render config (Spec)
+const spec = Builder.from(vseed).build()
+```
+### Render
+Pass the generated Spec to the VChart component for rendering.
+```tsx
+import { useRef, useEffect } from 'react'
+import VChart from '@visactor/vchart'
+import { registerAll, VSeed, Builder } from '@visactor/vseed'
 
-  ```tsx pure title="logic.ts"
-  import { VSeed, Builder } from '@visactor/vseed'
+registerAll()
 
-  // 1. Define the analysis intent (DSL)
-  const vseed: VSeed = {
-    chartType: 'line', // chart type
-    dataset: [
-      // data source
-      { date: '2019', profit: 10, sales: 100 },
-      { date: '2020', profit: 30, sales: 200 },
-      { date: '2021', profit: 30, sales: 300 },
-      /* ... */
-    ],
-  }
+const Demo = () => {
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  // 2. Generate render config (Spec)
-  const spec = Builder.from(vseed).build()
-  ```
+  useEffect(() => {
+    if (!containerRef.current) return
 
-  ### Render
+    const vseed: VSeed = {
+      chartType: 'line',
+      dataset: [
+        { date: '2019', profit: 10, sales: 100 },
+        { date: '2020', profit: 30, sales: 200 },
+        { date: '2021', profit: 30, sales: 300 },
+        { date: '2022', profit: 50, sales: 400 },
+        { date: '2023', profit: 40, sales: 500 },
+      ],
+    }
 
-  Pass the generated Spec to the VChart component for rendering.
+    const spec = Builder.from(vseed).build()
+    const vchart = new VChart(spec, { dom: containerRef.current })
 
-  ```tsx
-  import { useRef, useEffect } from 'react'
-  import VChart from '@visactor/vchart'
-  import { registerAll, VSeed, Builder } from '@visactor/vseed'
+    vchart.renderSync()
+    return () => vchart.release()
+  }, [])
 
-  registerAll()
+  return <div ref={containerRef} style={{ height: 300 }} />
+}
 
-  const Demo = () => {
-    const containerRef = useRef<HTMLDivElement>(null)
-
-    useEffect(() => {
-      if (!containerRef.current) return
-
-      const vseed: VSeed = {
-        chartType: 'line',
-        dataset: [
-          { date: '2019', profit: 10, sales: 100 },
-          { date: '2020', profit: 30, sales: 200 },
-          { date: '2021', profit: 30, sales: 300 },
-          { date: '2022', profit: 50, sales: 400 },
-          { date: '2023', profit: 40, sales: 500 },
-        ],
-      }
-
-      const spec = Builder.from(vseed).build()
-      const vchart = new VChart(spec, { dom: containerRef.current })
-
-      vchart.renderSync()
-      return () => vchart.release()
-    }, [])
-
-    return <div ref={containerRef} style={{ height: 300 }} />
-  }
-
-  export default Demo
-  ```
-</Steps>
+export default Demo
+```
 
 ## Core Concepts
 

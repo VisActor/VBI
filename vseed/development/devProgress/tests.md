@@ -6,18 +6,18 @@ VSeed 采用严格的测试驱动开发流程。**所有测试命令必须在项
 
 ### 1. 单元测试 (Unit Tests)
 
-* **目标**: 测试独立的工具函数、Pipeline 节点逻辑。
-* **位置**: `packages/vseed/tests/unit`
-* **运行**:
+- **目标**: 测试独立的工具函数、Pipeline 节点逻辑。
+- **位置**: `packages/vseed/tests/unit`
+- **运行**:
   ```bash
   pnpm --filter=@visactor/vseed run test:unit
   ```
 
 ### 2. 集成测试 (Integration Tests)
 
-* **目标**: 测试完整的图表生成流程 (VSeed Spec -> VChart Spec)。
-* **机制**: 数据驱动。通过读取 `packages/vseed/tests/integrations` 下的 JSON 文件自动生成测试用例并比对快照。
-* **运行**:
+- **目标**: 测试完整的图表生成流程 (VSeed Spec -> VChart Spec)。
+- **机制**: 数据驱动。通过读取 `packages/vseed/tests/integrations` 下的 JSON 文件自动生成测试用例并比对快照。
+- **运行**:
   ```bash
   pnpm --filter=@visactor/vseed run test:integration
   ```
@@ -53,5 +53,5 @@ pnpm --filter=@visactor/vseed run test:coverage
 
 ## 注意事项
 
-* **自动生成**: 集成测试的 `.test.ts` 文件是由 `g` 脚本生成的，**请勿手动修改**。
-* **新增用例**: 若要新增集成测试，只需在 `packages/vseed/tests/integrations` 下对应的分类目录中添加新的 JSON 配置文件，然后运行 `pnpm run g`。
+- **自动生成**: 集成测试的 `.test.ts` 文件是由 `g` 脚本生成的，**请勿手动修改**。
+- **新增用例**: 若要新增集成测试，只需在 `packages/vseed/tests/integrations` 下对应的分类目录中添加新的 JSON 配置文件，然后运行 `pnpm run g`。

@@ -2,11 +2,11 @@
 
 ## 属性
 
-| 属性 | 类型 | 说明 |
-| --- | --- | --- |
-| **doc** | `Y.Doc` | - |
-| **dsl** | `Y.Map<any>` | - |
-| **undoManager** | `UndoManager` | - |
+| 属性              | 类型            | 说明 |
+| --------------- | ------------- | -- |
+| **doc**         | `Y.Doc`       | -  |
+| **dsl**         | `Y.Map<any>`  | -  |
+| **undoManager** | `UndoManager` | -  |
 
 ## 方法
 
@@ -20,10 +20,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| 参数    | 类型         | 说明 |
+| ----- | ---------- | -- |
+| `doc` | Y.Doc      | -  |
+| `dsl` | Y.Map<any> | -  |
 
 ### applyUpdate
 
@@ -37,10 +37,10 @@ applyUpdate(update: Uint8Array, transactionOrigin: any): any
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `update` | Uint8Array | - |
-| `transactionOrigin` | any | - |
+| 参数                  | 类型         | 说明 |
+| ------------------- | ---------- | -- |
+| `update`            | Uint8Array | -  |
+| `transactionOrigin` | any        | -  |
 
 ### encodeStateAsUpdate
 
@@ -54,9 +54,9 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): any
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `targetStateVector` | Uint8Array | - |
+| 参数                  | 类型         | 说明 |
+| ------------------- | ---------- | -- |
+| `targetStateVector` | Uint8Array | -  |
 
 ### getUUID
 
@@ -80,9 +80,9 @@ setContent(content: string): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `content` | string | - |
+| 参数        | 类型     | 说明 |
+| --------- | ------ | -- |
+| `content` | string | -  |
 
 ### build
 

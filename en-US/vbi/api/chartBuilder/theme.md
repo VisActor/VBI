@@ -18,10 +18,10 @@ constructor(_doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `_doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| Parameter | Type       | Description |
+| --------- | ---------- | ----------- |
+| `_doc`    | Y.Doc      | -           |
+| `dsl`     | Y.Map<any> | -           |
 
 ### observe
 
@@ -37,8 +37,8 @@ observe(callback: ObserveCallback): () => void
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter  | Type            | Description         |
+| ---------- | --------------- | ------------------- |
 | `callback` | ObserveCallback | - Callback function |
 
 ### setTheme
@@ -53,9 +53,9 @@ setTheme(theme: string)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `theme` | string | - Theme name |
+| Parameter | Type   | Description  |
+| --------- | ------ | ------------ |
+| `theme`   | string | - Theme name |
 
 ### getTheme
 

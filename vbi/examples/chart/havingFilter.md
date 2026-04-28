@@ -1,8 +1,5 @@
 # havingFilter
 
-import { registerDemoConnector } from '@components'
-
-{registerDemoConnector()}
 
 ## add-having-filter
 
@@ -10,7 +7,8 @@ import { registerDemoConnector } from '@components'
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -78,7 +76,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -154,7 +153,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -247,7 +247,8 @@ Having filter with array value that triggers 'in' operator conversion
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -315,7 +316,8 @@ Having filter with array value that triggers 'not in' operator conversion
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -383,7 +385,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -482,7 +485,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -581,7 +585,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -655,7 +660,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -710,7 +716,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -795,7 +802,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -896,7 +904,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -997,7 +1006,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -1084,7 +1094,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -1165,7 +1176,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -1253,7 +1265,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -1330,7 +1343,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -1416,7 +1430,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -1517,7 +1532,8 @@ where与having联合筛选：先按where筛选办公用品品类，再按having�
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -1595,7 +1611,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {

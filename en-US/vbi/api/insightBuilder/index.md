@@ -2,11 +2,11 @@
 
 ## Properties
 
-| Property | Type | Description |
-| --- | --- | --- |
-| **doc** | `Y.Doc` | - |
-| **dsl** | `Y.Map<any>` | - |
-| **undoManager** | `UndoManager` | - |
+| Property        | Type          | Description |
+| --------------- | ------------- | ----------- |
+| **doc**         | `Y.Doc`       | -           |
+| **dsl**         | `Y.Map<any>`  | -           |
+| **undoManager** | `UndoManager` | -           |
 
 ## Methods
 
@@ -20,10 +20,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| Parameter | Type       | Description |
+| --------- | ---------- | ----------- |
+| `doc`     | Y.Doc      | -           |
+| `dsl`     | Y.Map<any> | -           |
 
 ### applyUpdate
 
@@ -37,10 +37,10 @@ applyUpdate(update: Uint8Array, transactionOrigin: any): any
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `update` | Uint8Array | - |
-| `transactionOrigin` | any | - |
+| Parameter           | Type       | Description |
+| ------------------- | ---------- | ----------- |
+| `update`            | Uint8Array | -           |
+| `transactionOrigin` | any        | -           |
 
 ### encodeStateAsUpdate
 
@@ -54,9 +54,9 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): any
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `targetStateVector` | Uint8Array | - |
+| Parameter           | Type       | Description |
+| ------------------- | ---------- | ----------- |
+| `targetStateVector` | Uint8Array | -           |
 
 ### getUUID
 
@@ -80,9 +80,9 @@ setContent(content: string): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `content` | string | - |
+| Parameter | Type   | Description |
+| --------- | ------ | ----------- |
+| `content` | string | -           |
 
 ### build
 

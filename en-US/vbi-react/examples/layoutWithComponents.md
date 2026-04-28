@@ -4,8 +4,8 @@ This example demonstrates `BuilderLayout` + `FieldPanel` + `ChartRenderer` + `Ch
 
 ## Dependencies
 
-* Packages: `@visactor/vbi-react/components`, `@visactor/vbi`, `react`
-* Props: `builder` should have available dimension/measure fields for `FieldPanel` add/remove demos
+- Packages: `@visactor/vbi-react/components`, `@visactor/vbi`, `react`
+- Props: `builder` should have available dimension/measure fields for `FieldPanel` add/remove demos
 
 ## Code Snippet
 
@@ -32,6 +32,6 @@ export function LayoutDemo({ builder }: { builder: VBIChartBuilder }) {
 
 ## Expected Behavior
 
-* Top bar: switch chart type; Left panel: add/remove dimensions/measures; Main area: chart DSL preview.
-* Main area auto-refreshes after field operations — no manual trigger needed.
-* On build failure, `ChartRenderer` shows a default error message and retry button.
+- Top bar: switch chart type; Left panel: add/remove dimensions/measures; Main area: chart DSL preview.
+- Main area auto-refreshes after field operations — no manual trigger needed.
+- On build failure, `ChartRenderer` shows a default error message and retry button.

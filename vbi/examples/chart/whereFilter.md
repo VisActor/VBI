@@ -1,16 +1,14 @@
 # whereFilter
 
-import { registerDemoConnector } from '@components'
-
-{registerDemoConnector()}
 
 ## between-sales-range-analysis
 
-销售额区间分析：使用 between 筛选单笔 1000~10000 元的订单，按品类汇总利润
+销售额区间分析：使用 between 筛选单笔 1000\~10000 元的订单，按品类汇总利润
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -78,7 +76,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -164,7 +163,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -249,7 +249,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -332,7 +333,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -413,7 +415,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -481,7 +484,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -549,7 +553,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -617,11 +622,12 @@ export default () => {
 
 ## not-between-sales-range
 
-Not between filter: exclude sales between 1000~10000
+Not between filter: exclude sales between 1000\~10000
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -689,7 +695,8 @@ Not between filter with explicit leftOp/rightOp to test invert functions
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -757,7 +764,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -825,7 +833,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -895,7 +904,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -988,7 +998,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -1067,7 +1078,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -1148,7 +1160,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -1235,7 +1248,8 @@ Where filter with array value using '=' operator should convert to 'in'
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -1303,7 +1317,8 @@ Where filter with array value using '!=' operator should convert to 'not in'
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {

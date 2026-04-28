@@ -6,8 +6,8 @@ This page showcases the VBI examples.
 
 There are 67 examples in total.
 
-| Category                             | Count |
-| ------------------------------------ | ----- |
+| Category                                                      | Count |
+| ------------------------------------------------------------- | ----- |
 | [ChartType](/VBI/en-US/vbi/examples/chart/chartType.md)       | 12    |
 | [Dimensions](/VBI/en-US/vbi/examples/chart/dimensions.md)     | 7     |
 | [HavingFilter](/VBI/en-US/vbi/examples/chart/havingFilter.md) | 20    |
@@ -21,14 +21,14 @@ There are 67 examples in total.
 
 There is 1 example in total.
 
-| Category             | Count |
-| -------------------- | ----- |
+| Category                                      | Count |
+| --------------------------------------------- | ----- |
 | [Insight](/VBI/en-US/vbi/examples/insight.md) | 1     |
 
 ## report
 
 There is 1 example in total.
 
-| Category           | Count |
-| ------------------ | ----- |
+| Category                                    | Count |
+| ------------------------------------------- | ----- |
 | [Report](/VBI/en-US/vbi/examples/report.md) | 1     |

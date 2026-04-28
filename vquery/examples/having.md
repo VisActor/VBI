@@ -5,7 +5,7 @@
 Basic Having Example - filter aggregated results
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -107,7 +107,7 @@ export default () => {
 Having Example with BETWEEN operator
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -209,7 +209,7 @@ export default () => {
 Having Example with array IN operator
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -311,7 +311,7 @@ export default () => {
 Having Example with single value IN operator
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -413,7 +413,7 @@ export default () => {
 Having Example with IS NOT NULL operator
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -514,7 +514,7 @@ export default () => {
 Having Example with IS NULL operator
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -615,7 +615,7 @@ export default () => {
 Having Example with MAX aggregate function
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -717,7 +717,7 @@ export default () => {
 Having Example with MIN aggregate function
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -819,7 +819,7 @@ export default () => {
 Having Example with multiple conditions (AND/OR)
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -936,7 +936,7 @@ export default () => {
 Having Example with NOT BETWEEN operator
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -1038,7 +1038,7 @@ export default () => {
 Having Example with single value NOT IN operator
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -1140,7 +1140,7 @@ export default () => {
 Having Example with NOT IN operator
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -1242,7 +1242,7 @@ export default () => {
 Having Example with OR conditions
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {

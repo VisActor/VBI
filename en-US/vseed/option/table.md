@@ -1,18 +1,18 @@
 # Table
 
-:::info{title=Recommended}
+:::info\{title=Recommended}
 \- Recommended field configuration: `Any` measure(s), `Any` dimension(s)
 
 \- Supports Data Reshape: at least `Any` measure(s), `Any` dimension(s)
 
 :::
 
-:::info{title=Encoding Mapping}
+:::info\{title=Encoding Mapping}
 Only supports configuring dimension and measure trees; defaults to encoding to columns.
 
 :::
 
-:::note{title=Description}
+:::note\{title=Description}
 Table, suitable for detailed data display scenarios, with clear rows and columns for easy viewing of specific values.
 
 Applicable scenarios:
@@ -25,7 +25,7 @@ Applicable scenarios:
 
 :::
 
-:::warning{title=Warning}
+:::warning\{title=Warning}
 Data requirements:
 
 \- At least 1 dimension field
@@ -44,7 +44,7 @@ Features enabled by default:
 
 **Type:** `"table"`
 
-:::note{title=Description}
+:::note\{title=Description}
 Standard table component for displaying detailed data
 
 :::
@@ -56,25 +56,25 @@ Standard table component for displaying detailed data
 
 **Type:** `Record[]`
 
-:::note{title=Description}
+:::note\{title=Description}
 A dataset that conforms to the TidyData specification and is already aggregated, used to define the chart's data source and structure. The dataset provided by the user does not need any preprocessing; each field corresponds to a column, and each record corresponds to a row.
 
 :::
 
 **Example**
-\[{id: 1, name: "A", value: 100}, {id: 2, name: "B", value: 200}]
+\[\{id: 1, name: "A", value: 100}, \{id: 2, name: "B", value: 200}]
 
 ## dimensions
 
 **Type:** `DimensionTree | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Each dimension in the table corresponds to a column.
 
 :::
 
 **Example**
-\[{id: "name", alias: "Name"}]
+\[\{id: "name", alias: "Name"}]
 
 ### id
 
@@ -88,7 +88,7 @@ Each dimension in the table corresponds to a column.
 
 **Type:** `TimeFormat | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Dimension date format configuration
 
 :::
@@ -97,7 +97,7 @@ Dimension date format configuration
 
 **Type:** `"year" | "quarter" | "month" | "week" | "day" | "hour" | "minute" | "second"`
 
-:::note{title=Description}
+:::note\{title=Description}
 Time granularity, determines the date display precision
 
 :::
@@ -106,7 +106,7 @@ Time granularity, determines the date display precision
 
 **Type:** `"row" | "column" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Channel to which the dimension is mapped
 
 \- row: supports mapping multiple dimensions to the row channel
@@ -131,7 +131,7 @@ Channel to which the dimension is mapped
 
 **Type:** `TimeFormat | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Dimension date format configuration
 
 :::
@@ -140,7 +140,7 @@ Dimension date format configuration
 
 **Type:** `"year" | "quarter" | "month" | "week" | "day" | "hour" | "minute" | "second"`
 
-:::note{title=Description}
+:::note\{title=Description}
 Time granularity, determines the date display precision
 
 :::
@@ -149,7 +149,7 @@ Time granularity, determines the date display precision
 
 **Type:** `"row" | "column" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Channel to which the dimension is mapped
 
 \- row: supports mapping multiple dimensions to the row channel
@@ -162,19 +162,19 @@ Channel to which the dimension is mapped
 
 **Type:** `MeasureTree | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Each measure in the table corresponds to a column, and natively supports measure combinations.
 
 :::
 
 **Example**
-\[{id: "value", alias: "Value"}]
+\[\{id: "value", alias: "Value"}]
 
 ### id
 
 **Type:** `string`
 
-:::note{title=Description}
+:::note\{title=Description}
 Measure group ID, must be unique.
 
 :::
@@ -183,7 +183,7 @@ Measure group ID, must be unique.
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Measure group alias, can be duplicate; defaults to the ID if not specified.
 
 :::
@@ -192,7 +192,7 @@ Measure group alias, can be duplicate; defaults to the ID if not specified.
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Automatic number formatting, enabled by default, highest priority
 
 When autoFormat=true, it overrides all numFormat configurations
@@ -203,7 +203,7 @@ Formatting rules: decimal numbers with compact notation enabled, minimum 0 decim
 
 For example:
 
-\- locale=zh-CN: 749740.264 → 74.45~74.45万
+\- locale=zh-CN: 749740.264 → 74.45\~74.45万
 
 \- locale=en-US: 749740.264 → 744.5K
 
@@ -213,7 +213,7 @@ For example:
 
 **Type:** `NumFormat | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Custom number formatting for measures; automatically applied to labels and tooltips
 
 Note: To use custom formatting, you must explicitly set autoFormat=false; otherwise autoFormat will override this config
@@ -224,7 +224,7 @@ Note: To use custom formatting, you must explicitly set autoFormat=false; otherw
 
 **Type:** `"number" | "percent" | "permille" | "scientific" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format type, supports: number (decimal), percent (%), permille (‰), scientific notation
 
 :::
@@ -233,7 +233,7 @@ Number format type, supports: number (decimal), percent (%), permille (‰), sci
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format ratio, cannot be 0
 
 :::
@@ -246,7 +246,7 @@ Number format ratio, cannot be 0
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format symbol, e.g. %, ‰
 
 :::
@@ -259,7 +259,7 @@ Number format symbol, e.g. %, ‰
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Thousands separator for number formatting
 
 :::
@@ -268,7 +268,7 @@ Thousands separator for number formatting
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format suffix
 
 :::
@@ -277,7 +277,7 @@ Number format suffix
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format prefix
 
 :::
@@ -286,7 +286,7 @@ Number format prefix
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Decimal places for number formatting, using the browser's Intl.NumberFormat minimumFractionDigits and maximumFractionDigits; lower priority than significantDigits
 
 :::
@@ -303,7 +303,7 @@ Decimal places for number formatting, using the browser's Intl.NumberFormat mini
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Significant digits for number formatting, using the browser's Intl.NumberFormat minimumSignificantDigits and maximumSignificantDigits; higher priority than fractionDigits
 
 :::
@@ -322,7 +322,7 @@ Significant digits for number formatting, using the browser's Intl.NumberFormat 
 
 **Type:** `"morePrecision" | "lessPrecision" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Rounding priority for number formatting when both significantDigits and fractionDigits are set; uses the browser's Intl.NumberFormat, following the same rules as Intl.NumberFormat's roundingPriority
 
 :::
@@ -335,7 +335,7 @@ Rounding priority for number formatting when both significantDigits and fraction
 
 **Type:** `"floor" | "ceil" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Rounding mode for number formatting, using the browser's Intl.NumberFormat, following the same rules as Intl.NumberFormat's roundingMode
 
 :::
@@ -348,7 +348,7 @@ Rounding mode for number formatting, using the browser's Intl.NumberFormat, foll
 
 **Type:** `"number" | "percent" | "permille" | "scientific" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format type, supports: number (decimal), percent (%), permille (‰), scientific notation
 
 :::
@@ -357,7 +357,7 @@ Number format type, supports: number (decimal), percent (%), permille (‰), sci
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format ratio, cannot be 0
 
 :::
@@ -370,7 +370,7 @@ Number format ratio, cannot be 0
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format symbol, e.g. %, ‰
 
 :::
@@ -383,7 +383,7 @@ Number format symbol, e.g. %, ‰
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Thousands separator for number formatting
 
 :::
@@ -392,7 +392,7 @@ Thousands separator for number formatting
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format suffix
 
 :::
@@ -401,7 +401,7 @@ Number format suffix
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Number format prefix
 
 :::
@@ -410,7 +410,7 @@ Number format prefix
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Decimal places for number formatting, using the browser's Intl.NumberFormat minimumFractionDigits and maximumFractionDigits; lower priority than significantDigits
 
 :::
@@ -427,7 +427,7 @@ Decimal places for number formatting, using the browser's Intl.NumberFormat mini
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Significant digits for number formatting, using the browser's Intl.NumberFormat minimumSignificantDigits and maximumSignificantDigits; higher priority than fractionDigits
 
 :::
@@ -446,7 +446,7 @@ Significant digits for number formatting, using the browser's Intl.NumberFormat 
 
 **Type:** `"morePrecision" | "lessPrecision" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Rounding priority for number formatting when both significantDigits and fractionDigits are set; uses the browser's Intl.NumberFormat, following the same rules as Intl.NumberFormat's roundingPriority
 
 :::
@@ -459,7 +459,7 @@ Rounding priority for number formatting when both significantDigits and fraction
 
 **Type:** `"floor" | "ceil" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Rounding mode for number formatting, using the browser's Intl.NumberFormat, following the same rules as Intl.NumberFormat's roundingMode
 
 :::
@@ -468,7 +468,7 @@ Rounding mode for number formatting, using the browser's Intl.NumberFormat, foll
 
 **Type:** `"column" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Channel to which the measure is mapped
 
 \- column: Measure column
@@ -479,12 +479,12 @@ Channel to which the measure is mapped
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 In flat measure configuration form, builds a tree-shaped measure group. parentId points to the id of the parent measure group, used for building the measure tree
 
 :::
 
-:::tip{title=Tip}
+:::tip\{title=Tip}
 There are two ways to configure the measure tree: Option 1 is directly configuring a measure tree with children; Option 2 is configuring a flat measure list with parentId. These two methods cannot be used simultaneously
 
 :::
@@ -493,7 +493,7 @@ There are two ways to configure the measure tree: Option 1 is directly configuri
 
 **Type:** `(TableMeasure | MeasureGroup)[] | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Child measures or measure groups within the measure group.
 
 :::
@@ -502,7 +502,7 @@ Child measures or measure groups within the measure group.
 
 **Type:** `Page | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Pagination configuration, used to specify the pagination field name, which must be a dimension.
 
 :::
@@ -511,7 +511,7 @@ Pagination configuration, used to specify the pagination field name, which must 
 
 **Type:** `string`
 
-:::note{title=Description}
+:::note\{title=Description}
 Pagination field; specifies the field name for pagination, must be a dimension
 
 :::
@@ -520,7 +520,7 @@ Pagination field; specifies the field name for pagination, must be a dimension
 
 **Type:** `string`
 
-:::note{title=Description}
+:::note\{title=Description}
 Current pagination value; specifies the value used to determine the current page
 
 :::
@@ -532,7 +532,7 @@ Current pagination value; specifies the value used to determine the current page
 
 **Type:** `BackgroundColor`
 
-:::note{title=Description}
+:::note\{title=Description}
 Background color can be a color string (e.g. 'red', 'blue'), or a hex, rgb, or rgba value (e.g. '#ff0000', 'rgba(255,0,0,0.5)')
 
 :::
@@ -541,7 +541,7 @@ Background color can be a color string (e.g. 'red', 'blue'), or a hex, rgb, or r
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Table border color
 
 :::
@@ -550,7 +550,7 @@ Table border color
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Table body font size
 
 :::
@@ -559,7 +559,7 @@ Table body font size
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Table body font color
 
 :::
@@ -568,7 +568,7 @@ Table body font color
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Table body background color
 
 :::
@@ -577,7 +577,7 @@ Table body background color
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Header font size
 
 :::
@@ -586,7 +586,7 @@ Header font size
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Header font color
 
 :::
@@ -595,7 +595,7 @@ Header font color
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Header background color
 
 :::
@@ -604,7 +604,7 @@ Header background color
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Background color when the mouse hovers over a header cell, used to highlight the hovered cell.
 
 :::
@@ -613,7 +613,7 @@ Background color when the mouse hovers over a header cell, used to highlight the
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Background color of the entire row when the mouse hovers over the header, used to highlight the hovered row.
 
 :::
@@ -622,7 +622,7 @@ Background color of the entire row when the mouse hovers over the header, used t
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Border color for selected cells, used to highlight the selection.
 
 :::
@@ -631,7 +631,7 @@ Border color for selected cells, used to highlight the selection.
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Background color for selected cells, used to highlight the selection.
 
 :::
@@ -640,7 +640,7 @@ Background color for selected cells, used to highlight the selection.
 
 **Type:** `BodyCellStyle | BodyCellStyle[] | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Sets special styles for cells in the table body.
 
 :::
@@ -649,7 +649,7 @@ Sets special styles for cells in the table body.
 
 **Type:** `Selector | Selectors | FieldSelector | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Data selector
 
 If a selector is configured, it provides four types of data matching capabilities: numeric selectors, partial data selectors, conditional dimension selectors, and conditional measure selectors.
@@ -668,38 +668,38 @@ selector = 100
 selector = \[100, 200]
 
 Partial data selector
-selector = { profit: 100 }
-selector = \[{ profit: 100 }, { profit: 200 }]
+selector = \{ profit: 100 }
+selector = \[\{ profit: 100 }, \{ profit: 200 }]
 
 Conditional dimension selector
-selector = {
+selector = \{
 field: 'category',
 operator: 'in',
 value: 'tool'
 }
-selector = {
+selector = \{
 field: 'category',
 operator: 'not in',
 value: 'book'
 }
 
 Conditional measure selector
-selector = {
+selector = \{
 field: 'profit',
 operator: '>=',
 value: 100
 }
-selector = {
+selector = \{
 field: 'profit',
 operator: 'between'
 value: \[100, 300]
 }
 
 Field column filtering
-selector = {
+selector = \{
 field: 'category'
 }
-selector = {
+selector = \{
 field: \['category', 'profit']
 }
 
@@ -707,7 +707,7 @@ field: \['category', 'profit']
 
 **Type:** `string | string[]`
 
-:::note{title=Description}
+:::note\{title=Description}
 Field name, can be a single field or an array of multiple fields.
 
 :::
@@ -723,7 +723,7 @@ field: \['sales', 'profit', 'revenue']
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Operator
 
 \- in: Selects data items where the dimension field value is in the value array.
@@ -736,7 +736,7 @@ Operator
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Operator
 
 \- in: Selects data items where the dimension field value is in the value array.
@@ -751,7 +751,7 @@ same as operator
 
 **Type:** `string | number | (string | number)[]`
 
-:::note{title=Description}
+:::note\{title=Description}
 Selects dimension field values; supports arrays.
 
 :::
@@ -760,7 +760,7 @@ Selects dimension field values; supports arrays.
 
 **Type:** `TableDynamicFilter | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Dynamic filter (code-driven)
 
 Implements complex data filtering logic via AI-generated JavaScript code.
@@ -793,7 +793,7 @@ Implements precise cell-level filtering in tables via AI-generated JavaScript co
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 User's filtering requirement description (natural language).
 
 :::
@@ -807,14 +807,14 @@ User's filtering requirement description (natural language).
 
 **Type:** `string`
 
-:::note{title=Description}
+:::note\{title=Description}
 AI-generated JavaScript filtering code.
 
 \- Can only use built-in utility functions (accessible via \_ or R).
 
 \- Input parameters: data (array), where each item includes an \_index field representing the row number.
 
-\- Must return an array of cell selectors: Array<{ \_\_row\_index: number, field: string }>.
+\- Must return an array of cell selectors: Array\<\{ \_\_row\_index: number, field: string }>.
 
 \- When field is "\*", it indicates highlighting the entire row.
 
@@ -824,66 +824,58 @@ AI-generated JavaScript filtering code.
 
 **Example**
 Top N filtering
-dynamicFilter = {
+dynamicFilter = \{
 type: 'row-with-field',
 description: 'Highlight the top 3 products by sales',
 code: `const sorted = _.sortBy(data, 'sales');
 const reversed = [...sorted].reverse();
 const result = _.take(reversed, 3);
-return _.flatten( _.map(result, item => [
-{ __row_index: item._index, field: 'product' },
-{ __row_index: item._index, field: 'sales' }
+return _.flatten( _.map(result, item => [ { __row_index: item._index, field: 'product' }, { __row_index: item._index, field: 'sales' }
 ])
 );`,
 enabled: true
 }
 
 Multi-condition filtering
-dynamicFilter = {
+dynamicFilter = \{
 type: 'row-with-field',
 description: 'Highlight products with profit margin > 20% and sales > 5000',
 code: `const matched = _.filter(data, item => {
 const profitRate = (item.profit / item.sales) * 100;
 return profitRate > 20 && item.sales > 5000;
 });
-return _.flatten( _.map(matched, item => [
-{ __row_index: item._index, field: 'product' },
-{ __row_index: item._index, field: 'sales' }
+return _.flatten( _.map(matched, item => [ { __row_index: item._index, field: 'product' }, { __row_index: item._index, field: 'sales' }
 ])
 );`,
 enabled: true
 }
 
 Relative value filtering
-dynamicFilter = {   \*
+dynamicFilter = \{   \*
 type: 'row-with-field',
 description: 'Highlight products with sales above average',
 code: `const avgSales = _.meanBy(data, 'sales');
 const matched = _.filter(data, item => item.sales > avgSales);
-return _.flatten( _.map(matched, item => [
-{ __row_index: item._index, field: 'product' },
-{ __row_index: item._index, field: 'sales' }
+return _.flatten( _.map(matched, item => [ { __row_index: item._index, field: 'product' }, { __row_index: item._index, field: 'sales' }
 ])
 );`,
 enabled: true
 }
 
 Grouped filtering
-dynamicFilter = {
+dynamicFilter = \{
 type: 'row-with-field',
 description: 'Highlight the product with the highest sales in each region',
 code: `const grouped = _.groupBy(data, 'region');
 const topByRegion = _.map(_.values(grouped), group => _.maxBy(group, 'sales'));
-return _.flatten( _.map(topByRegion, item => [
-{ __row_index: item._index, field: 'product' },
-{ __row_index: item._index, field: 'sales' }
+return _.flatten( _.map(topByRegion, item => [ { __row_index: item._index, field: 'product' }, { __row_index: item._index, field: 'sales' }
 ])
 );`,
 enabled: true
 }
 
 Highlight entire row
-dynamicFilter = {
+dynamicFilter = \{
 description: 'Highlight rows where sales are greater than profit',
 code: `const matched = _.filter(data, item => item.sales > item.profit);
 return matched.map(item => ({ __row_index: item._index,
@@ -896,7 +888,7 @@ enabled: true
 
 **Type:** `Selector | Selectors | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Fallback plan when code execution fails or the environment is not supported.
 
 :::
@@ -905,7 +897,7 @@ Fallback plan when code execution fails or the environment is not supported.
 
 **Type:** `string`
 
-:::note{title=Description}
+:::note\{title=Description}
 Dimension field; ID of an item in dimensions.
 
 :::
@@ -914,7 +906,7 @@ Dimension field; ID of an item in dimensions.
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Operator
 
 \- in: Selects data items where the dimension field value is in the value array.
@@ -927,7 +919,7 @@ Operator
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Operator
 
 \- in: Selects data items where the dimension field value is in the value array.
@@ -942,7 +934,7 @@ same as operator
 
 **Type:** `string | number | (string | number)[]`
 
-:::note{title=Description}
+:::note\{title=Description}
 Selects dimension field values; supports arrays.
 
 :::
@@ -951,7 +943,7 @@ Selects dimension field values; supports arrays.
 
 **Type:** `DynamicFilterExecutionResult<RowWithFieldRes> | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Dynamic filter execution result (runtime field)
 
 Written during the prepare() phase; read-only at runtime
@@ -974,7 +966,7 @@ Written during the prepare() phase; read-only at runtime
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Cell background color
 
 :::
@@ -983,7 +975,7 @@ Cell background color
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether to enable color scale configuration for background colors
 
 :::
@@ -992,7 +984,7 @@ Whether to enable color scale configuration for background colors
 
 **Type:** `{ minValue?: number; maxValue?: number; minColor: string; maxColor: string; } | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Cell background color scale mapping; takes priority over backgroundColor
 
 :::
@@ -1001,7 +993,7 @@ Cell background color scale mapping; takes priority over backgroundColor
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Minimum value; defaults to the minimum value in the current data column if not configured
 
 :::
@@ -1010,7 +1002,7 @@ Minimum value; defaults to the minimum value in the current data column if not c
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Maximum value; defaults to the maximum value in the current data column if not configured
 
 :::
@@ -1019,7 +1011,7 @@ Maximum value; defaults to the maximum value in the current data column if not c
 
 **Type:** `string`
 
-:::note{title=Description}
+:::note\{title=Description}
 Color corresponding to the minimum value
 
 :::
@@ -1028,7 +1020,7 @@ Color corresponding to the minimum value
 
 **Type:** `string`
 
-:::note{title=Description}
+:::note\{title=Description}
 Color corresponding to the maximum value
 
 :::
@@ -1037,7 +1029,7 @@ Color corresponding to the maximum value
 
 **Type:** `boolean | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Whether to enable the progress bar feature (a bar showing the relative size of the cell value); disabled by default
 
 :::
@@ -1046,7 +1038,7 @@ Whether to enable the progress bar feature (a bar showing the relative size of t
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Progress bar color when the cell value is positive
 
 :::
@@ -1055,7 +1047,7 @@ Progress bar color when the cell value is positive
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Progress bar color when the cell value is negative
 
 :::
@@ -1064,7 +1056,7 @@ Progress bar color when the cell value is negative
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Progress bar minimum value
 
 Automatically calculates the column minimum if not configured
@@ -1075,7 +1067,7 @@ Automatically calculates the column minimum if not configured
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Progress bar maximum value
 
 Automatically calculates the column maximum if not configured
@@ -1086,7 +1078,7 @@ Automatically calculates the column maximum if not configured
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Cell text color
 
 :::
@@ -1095,7 +1087,7 @@ Cell text color
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Cell text font size
 
 :::
@@ -1104,7 +1096,7 @@ Cell text font size
 
 **Type:** `string | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Cell border color
 
 :::
@@ -1113,7 +1105,7 @@ Cell border color
 
 **Type:** `number | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Cell border line width
 
 :::
@@ -1122,7 +1114,7 @@ Cell border line width
 
 **Type:** `TotalType | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 The type of summary row to display; only applicable to measure columns
 
 \- 'sum': Displays the sum row
@@ -1156,7 +1148,7 @@ Table summary row type
 
 **Type:** `Theme | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Chart theme. Theme is a lower-priority configuration that includes universal settings shared by all chart types and specific settings for individual chart types. Built-in themes include 'light' and 'dark'; users can customize themes via the Builder.
 
 Theme
@@ -1184,7 +1176,7 @@ Built-in light and dark themes; new themes can be customized using registerTheme
 
 **Type:** `Locale | undefined`
 
-:::note{title=Description}
+:::note\{title=Description}
 Chart language configuration; supports 'zh-CN' and 'en-US'. Additionally, language can be set using the intl.setLocale('zh-CN') method.
 
 :::

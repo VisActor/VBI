@@ -1,5 +1,8 @@
+# Playground
+
 ```tsx playground
 const run = async (setVSeed) => {
+  const { VQuery } = await import('@visactor/vquery')
   const vquery = new VQuery()
 
   const rawDataset = [
@@ -31,11 +34,7 @@ const run = async (setVSeed) => {
 
   const dataset = await vquery.connectDataset(datasetId)
 
-  const queryDSL: QueryDSL<{
-    area: string
-    date: string
-    sales: number
-  }> = {
+  const queryDSL = {
     select: [
       'area',
       {
@@ -94,15 +93,10 @@ const run = async (setVSeed) => {
   }
 
   setVSeed(() => vseed)
-
-  return () => {
-    vquery = null
-  }
 }
 
 const Demo = () => {
   const [vseed, setVSeed] = useState<VSeed>()
-  const vquery = useRef<VQuery>()
 
   useEffect(() => {
     run(setVSeed)
@@ -111,7 +105,6 @@ const Demo = () => {
   return vseed && <SimpleVSeedRender vseed={vseed} />
 }
 
-import { VQuery, QueryDSL } from '@visactor/vquery'
 import { useRef, useEffect, useState } from 'react'
 import { useDark } from '@rspress/core/runtime'
 import VChart from '@visactor/vchart'

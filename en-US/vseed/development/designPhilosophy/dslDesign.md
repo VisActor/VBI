@@ -4,9 +4,9 @@
 
 VSeed is a declarative DSL
 
-* DSL design is the art of expressing domain problems — it effectively simplifies complex issues.
-* DSL allows those familiar with it to code as naturally as writing in their native language. Once you are familiar with VSeed, rendering charts feels as simple as writing plain English.
-* `VChart` and `VTable` follow the same philosophy.
+- DSL design is the art of expressing domain problems — it effectively simplifies complex issues.
+- DSL allows those familiar with it to code as naturally as writing in their native language. Once you are familiar with VSeed, rendering charts feels as simple as writing plain English.
+- `VChart` and `VTable` follow the same philosophy.
 
 :::
 

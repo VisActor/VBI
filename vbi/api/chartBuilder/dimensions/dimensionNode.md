@@ -16,9 +16,9 @@ constructor(yMap: Y.Map<any>)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| 参数     | 类型         | 说明 |
+| ------ | ---------- | -- |
+| `yMap` | Y.Map<any> | -  |
 
 ### getId
 
@@ -82,8 +82,8 @@ setAlias(alias: string): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数      | 类型     | 说明     |
+| ------- | ------ | ------ |
 | `alias` | string | - 显示名称 |
 
 ### setEncoding
@@ -100,8 +100,8 @@ setEncoding(encoding: NonNullable<VBIDimension['encoding']>): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数         | 类型                                      | 说明       |
+| ---------- | --------------------------------------- | -------- |
 | `encoding` | NonNullable\<VBIDimension\['encoding']> | - 维度编码位置 |
 
 ### setSort
@@ -118,8 +118,8 @@ setSort(sort: VBISort): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数     | 类型      | 说明     |
+| ------ | ------- | ------ |
 | `sort` | VBISort | - 排序配置 |
 
 ### setAggregate
@@ -136,8 +136,8 @@ setAggregate(aggregate: NonNullable<VBIDimension['aggregate']>): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数          | 类型                                       | 说明       |
+| ----------- | ---------------------------------------- | -------- |
 | `aggregate` | NonNullable\<VBIDimension\['aggregate']> | - 日期聚合配置 |
 
 ### clearAggregate

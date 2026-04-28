@@ -1,8 +1,5 @@
 # chartType
 
-import { registerDemoConnector } from '@components'
-
-{registerDemoConnector()}
 
 ## area-by-order-date
 
@@ -10,7 +7,8 @@ Area Chart - Sales trend by date
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -54,7 +52,8 @@ Bar Chart - Sales by product type
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -98,7 +97,8 @@ Switch between line and bar chart types
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -142,7 +142,8 @@ Column Chart - Sales by region
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -186,7 +187,8 @@ Donut Chart - Sales share by customer type
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -230,7 +232,8 @@ Line Chart - Sales trend by province
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -274,7 +277,8 @@ Line Chart - Sales trend by province
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -318,7 +322,8 @@ Pie Chart - Sales share by region
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -362,7 +367,8 @@ Pie Chart Measure Encoding - Test measure-encoding.ts Pie chart type
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -406,7 +412,8 @@ Rose Chart - Sales by city
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -450,7 +457,8 @@ Scatter Chart Measure Encoding - Test measure-encoding.ts Scatter chart type
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -497,7 +505,8 @@ Scatter Chart - Relationship between Sales and Profit
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {

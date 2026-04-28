@@ -14,11 +14,11 @@ constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, doc: Y.Doc, dsl: Y.Ma
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `parent` | VBIReportBuilder\<TQueryDSL, TSeedDSL> | - |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| 参数       | 类型                                     | 说明 |
+| -------- | -------------------------------------- | -- |
+| `parent` | VBIReportBuilder\<TQueryDSL, TSeedDSL> | -  |
+| `doc`    | Y.Doc                                  | -  |
+| `dsl`    | Y.Map<any>                             | -  |
 
 ### add
 
@@ -32,10 +32,10 @@ add(title: string, callback: (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => v
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `title` | string | - |
-| `callback` | (page: ReportPageBuilder\<TQueryDSL, TSeedDSL>) => void | - |
+| 参数         | 类型                                                      | 说明 |
+| ---------- | ------------------------------------------------------- | -- |
+| `title`    | string                                                  | -  |
+| `callback` | (page: ReportPageBuilder\<TQueryDSL, TSeedDSL>) => void | -  |
 
 ### remove
 
@@ -49,9 +49,9 @@ remove(pageId: string): VBIReportBuilder<TQueryDSL, TSeedDSL>
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `pageId` | string | - |
+| 参数       | 类型     | 说明 |
+| -------- | ------ | -- |
+| `pageId` | string | -  |
 
 ### update
 
@@ -65,10 +65,10 @@ update(pageId: string, callback: (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) 
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `pageId` | string | - |
-| `callback` | (page: ReportPageBuilder\<TQueryDSL, TSeedDSL>) => void | - |
+| 参数         | 类型                                                      | 说明 |
+| ---------- | ------------------------------------------------------- | -- |
+| `pageId`   | string                                                  | -  |
+| `callback` | (page: ReportPageBuilder\<TQueryDSL, TSeedDSL>) => void | -  |
 
 ### get
 
@@ -82,6 +82,6 @@ get(pageId: string): ReportPageBuilder<TQueryDSL, TSeedDSL> | undefined
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `pageId` | string | - |
+| 参数       | 类型     | 说明 |
+| -------- | ------ | -- |
+| `pageId` | string | -  |

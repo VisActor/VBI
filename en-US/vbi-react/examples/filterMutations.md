@@ -4,8 +4,8 @@ This example demonstrates the mutation entry points for `useWhereFilter` and `us
 
 ## Dependencies
 
-* Packages: `@visactor/vbi-react`, `@visactor/vbi`, `react`
-* Props: `builder` should contain at least `region` and `sales` fields for demonstrating Where/Having mutations
+- Packages: `@visactor/vbi-react`, `@visactor/vbi`, `react`
+- Props: `builder` should contain at least `region` and `sales` fields for demonstrating Where/Having mutations
 
 ## Code Snippet
 
@@ -47,6 +47,6 @@ export function FilterDemo({ builder }: { builder: VBIChartBuilder }) {
 
 ## Expected Behavior
 
-* After clicking buttons, Where/Having conditions are appended to the builder's filter tree.
-* The clear buttons immediately remove the corresponding filter conditions.
-* The JSON at the bottom can be used to confirm the current filter DSL structure.
+- After clicking buttons, Where/Having conditions are appended to the builder's filter tree.
+- The clear buttons immediately remove the corresponding filter conditions.
+- The JSON at the bottom can be used to confirm the current filter DSL structure.

@@ -10,15 +10,15 @@ VSeed 是一个基于语义化配置的图表生成器，旨在连接用户意�
 
 VSeed 采用流水线模式逐步构建图表 Spec。整个过程分为两个主要阶段：
 
-* **AdvancedPipeline**:
-  * 输入: 初始 `VSeed` 对象。
-  * 职责: 数据重塑 (Data Reshape)、应用主题、推断默认配置。
-  * 输出: `AdvancedVSeed` (中间态模版)。
+- **AdvancedPipeline**:
+  - 输入: 初始 `VSeed` 对象。
+  - 职责: 数据重塑 (Data Reshape)、应用主题、推断默认配置。
+  - 输出: `AdvancedVSeed` (中间态模版)。
 
-* **SpecPipeline**:
-  * 输入: `AdvancedVSeed`。
-  * 职责: 将中间态模版转换为具体的 VChart/VTable 配置项。
-  * 输出: 最终的可渲染 Spec。
+- **SpecPipeline**:
+  - 输入: `AdvancedVSeed`。
+  - 职责: 将中间态模版转换为具体的 VChart/VTable 配置项。
+  - 输出: 最终的可渲染 Spec。
 
 ### 2. Builder 模式
 
@@ -28,5 +28,5 @@ VSeed 采用流水线模式逐步构建图表 Spec。整个过程分为两个主
 
 VSeed 的核心能力（如支持的图表类型）完全通过插件注册机制实现。
 
-* **Chart Type Registration**: 每种图表类型（如 `bar`, `line`）都是一个注册插件。
-* **Theme Registration**: 支持注册自定义主题。
+- **Chart Type Registration**: 每种图表类型（如 `bar`, `line`）都是一个注册插件。
+- **Theme Registration**: 支持注册自定义主题。

@@ -1,8 +1,5 @@
 # measures
 
-import { registerDemoConnector } from '@components'
-
-{registerDemoConnector()}
 
 ## add-measure
 
@@ -10,7 +7,8 @@ Add measure
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -62,7 +60,8 @@ Add measure and set encoding
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -110,7 +109,8 @@ Measure formatting: Sales uses 10K (10,000) custom format (¥ prefix, 2 decimal 
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -172,7 +172,8 @@ Remove measure
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -223,7 +224,8 @@ Update measure
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {

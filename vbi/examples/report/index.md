@@ -1,8 +1,5 @@
 # report
 
-import { registerDemoConnector } from '@components'
-
-{registerDemoConnector()}
 
 ## basic-page
 

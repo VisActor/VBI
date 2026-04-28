@@ -4,8 +4,8 @@
 
 VSeed 提供了便捷的排序配置。
 
-* `sort`: 用于配置轴数据的排序规则，支持指定排序字段 `orderBy` 和排序顺序 `order`。
-* `sortLegend`: 用于配置图例的排序顺序。
+- `sort`: 用于配置轴数据的排序规则，支持指定排序字段 `orderBy` 和排序顺序 `order`。
+- `sortLegend`: 用于配置图例的排序顺序。
 
 ```tsx direction=vertical playground
 import { useRef, useEffect, useState } from 'react'

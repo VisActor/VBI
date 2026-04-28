@@ -1,12 +1,9 @@
-import { RaceColumn, RaceBar, RaceScatter, RaceLine, RacePie, RaceDonut } from '@components'
-
 # Player
 
 VSeed supports the `player` property to enable automatic data playback.
 
 ## Race Scatter
 
-<RaceScatter />
 
 ```tsx
 const vseed = {
@@ -27,7 +24,6 @@ const vseed = {
 
 ## Race Bar
 
-<RaceBar />
 
 ```tsx
 const vseed = {
@@ -44,7 +40,6 @@ const vseed = {
 
 ## Race Column
 
-<RaceColumn />
 
 ```tsx
 const vseed = {
@@ -61,7 +56,6 @@ const vseed = {
 
 ## Race Line
 
-<RaceLine />
 
 ```tsx
 const vseed = {
@@ -86,7 +80,6 @@ const vseed = {
 
 ## Race Pie
 
-<RacePie />
 
 ```tsx
 const vseed = {
@@ -110,7 +103,6 @@ const vseed = {
 
 ## Race Donut
 
-<RaceDonut />
 
 ```tsx
 const vseed = {

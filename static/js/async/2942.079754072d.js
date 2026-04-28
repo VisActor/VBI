@@ -1,2 +1,0 @@
-"use strict";(self.rspackChunkwebsite=self.rspackChunkwebsite||[]).push([["2942"],{91581(e,t,n){n.r(t),n.d(t,{default:()=>a});var r=n(41627),i=n(300);function s(e){return(0,r.jsx)(r.Fragment,{})}function a(){let e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},{wrapper:t}={...(0,i.R)(),...e.components};return t?(0,r.jsx)(t,{...e,children:(0,r.jsx)(s,{...e})}):s(e)}a.__RSPRESS_PAGE_META={},a.__RSPRESS_PAGE_META["en-US%2Fvbi%2Fapi%2Findex.md"]={toc:[],title:"API",headingTitle:"",frontmatter:{overview:!0,title:"API"}}}}]);
-//# sourceMappingURL=2942.079754072d.js.map

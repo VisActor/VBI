@@ -2,12 +2,12 @@
 
 ## Properties
 
-| Property | Type | Description |
-| --- | --- | --- |
-| **doc** | `Y.Doc` | - |
-| **dsl** | `Y.Map<any>` | - |
-| **undoManager** | `UndoManager` | - |
-| **page** | `ReportPageCollectionBuilder<TQueryDSL, TSeedDSL>` | - |
+| Property        | Type                                               | Description |
+| --------------- | -------------------------------------------------- | ----------- |
+| **doc**         | `Y.Doc`                                            | -           |
+| **dsl**         | `Y.Map<any>`                                       | -           |
+| **undoManager** | `UndoManager`                                      | -           |
+| **page**        | `ReportPageCollectionBuilder<TQueryDSL, TSeedDSL>` | -           |
 
 ## Methods
 
@@ -21,10 +21,10 @@ constructor(doc: Y.Doc, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `options` | VBIReportBuilderOptions\<TQueryDSL, TSeedDSL> | - |
+| Parameter | Type                                          | Description |
+| --------- | --------------------------------------------- | ----------- |
+| `doc`     | Y.Doc                                         | -           |
+| `options` | VBIReportBuilderOptions\<TQueryDSL, TSeedDSL> | -           |
 
 ### applyUpdate
 
@@ -38,10 +38,10 @@ applyUpdate(update: Uint8Array, transactionOrigin: any): any
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `update` | Uint8Array | - |
-| `transactionOrigin` | any | - |
+| Parameter           | Type       | Description |
+| ------------------- | ---------- | ----------- |
+| `update`            | Uint8Array | -           |
+| `transactionOrigin` | any        | -           |
 
 ### encodeStateAsUpdate
 
@@ -55,9 +55,9 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): any
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `targetStateVector` | Uint8Array | - |
+| Parameter           | Type       | Description |
+| ------------------- | ---------- | ----------- |
+| `targetStateVector` | Uint8Array | -           |
 
 ### build
 

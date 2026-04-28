@@ -1,8 +1,5 @@
 # locale
 
-import { registerDemoConnector } from '@components'
-
-{registerDemoConnector()}
 
 ## en-US-locale
 
@@ -10,7 +7,8 @@ import { registerDemoConnector } from '@components'
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -79,7 +77,8 @@ export default () => {
 
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {

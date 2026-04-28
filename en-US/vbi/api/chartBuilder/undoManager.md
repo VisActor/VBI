@@ -18,9 +18,9 @@ constructor(scope: any)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `scope` | any | - YJS document or type scope, used to define the tracking range for undo/redo |
+| Parameter | Type | Description                                                                   |
+| --------- | ---- | ----------------------------------------------------------------------------- |
+| `scope`   | any  | - YJS document or type scope, used to define the tracking range for undo/redo |
 
 ### undo
 
@@ -84,7 +84,7 @@ clear(clearUndoStack: boolean, clearRedoStack: boolean): void
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter        | Type    | Description                                         |
+| ---------------- | ------- | --------------------------------------------------- |
 | `clearUndoStack` | boolean | - Whether to clear the undo stack, defaults to true |
 | `clearRedoStack` | boolean | - Whether to clear the redo stack, defaults to true |

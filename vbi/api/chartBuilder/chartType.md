@@ -18,10 +18,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| 参数    | 类型         | 说明 |
+| ----- | ---------- | -- |
+| `doc` | Y.Doc      | -  |
+| `dsl` | Y.Map<any> | -  |
 
 ### observe
 
@@ -37,8 +37,8 @@ observe(callback: ObserveCallback): () => void
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数         | 类型              | 说明     |
+| ---------- | --------------- | ------ |
 | `callback` | ObserveCallback | - 回调函数 |
 
 ### changeChartType
@@ -53,8 +53,8 @@ changeChartType(chartType: string)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数          | 类型     | 说明     |
+| ----------- | ------ | ------ |
 | `chartType` | string | - 图表类型 |
 
 ### getChartType
@@ -91,8 +91,8 @@ getRecommendedDimensionEncodings(dimensionCount: number)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数               | 类型     | 说明                       |
+| ---------------- | ------ | ------------------------ |
 | `dimensionCount` | number | - 维度数量，默认使用当前 DSL 中的维度数量 |
 
 ### getSupportedMeasureEncodings
@@ -117,8 +117,8 @@ getRecommendedMeasureEncodings(measureCount: number)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数             | 类型     | 说明                       |
+| -------------- | ------ | ------------------------ |
 | `measureCount` | number | - 指标数量，默认使用当前 DSL 中的指标数量 |
 
 ### toJSON

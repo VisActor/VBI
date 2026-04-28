@@ -16,10 +16,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| Parameter | Type       | Description |
+| --------- | ---------- | ----------- |
+| `doc`     | Y.Doc      | -           |
+| `dsl`     | Y.Map<any> | -           |
 
 ### add
 
@@ -35,9 +35,9 @@ add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBu
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `field` | string | - Field name |
+| Parameter  | Type                                 | Description         |
+| ---------- | ------------------------------------ | ------------------- |
+| `field`    | string                               | - Field name        |
 | `callback` | (node: DimensionNodeBuilder) => void | - Callback function |
 
 ### remove
@@ -54,9 +54,9 @@ remove(id: string): DimensionsBuilder
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `id` | string | - Dimension ID |
+| Parameter | Type   | Description    |
+| --------- | ------ | -------------- |
+| `id`      | string | - Dimension ID |
 
 ### update
 
@@ -72,9 +72,9 @@ update(id: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBu
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `id` | string | - Dimension ID |
+| Parameter  | Type                                 | Description         |
+| ---------- | ------------------------------------ | ------------------- |
+| `id`       | string                               | - Dimension ID      |
 | `callback` | (node: DimensionNodeBuilder) => void | - Callback function |
 
 ### find
@@ -91,8 +91,8 @@ find(predicate: (node: DimensionNodeBuilder, index: number) => boolean): Dimensi
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter   | Type                                                   | Description        |
+| ----------- | ------------------------------------------------------ | ------------------ |
 | `predicate` | (node: DimensionNodeBuilder, index: number) => boolean | - Search condition |
 
 ### findAll
@@ -133,8 +133,8 @@ observe(callback: ObserveDeepCallback): () => void
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter  | Type                | Description         |
+| ---------- | ------------------- | ------------------- |
 | `callback` | ObserveDeepCallback | - Callback function |
 
 ### static isDimensionNode
@@ -149,9 +149,9 @@ static isDimensionNode(node: VBIDimensionTree[0]): node is VBIDimension
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `node` | VBIDimensionTree\[0] | - |
+| Parameter | Type                 | Description |
+| --------- | -------------------- | ----------- |
+| `node`    | VBIDimensionTree\[0] | -           |
 
 ### static isDimensionGroup
 
@@ -165,6 +165,6 @@ static isDimensionGroup(node: VBIDimensionTree[0]): node is VBIDimensionGroup
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `node` | VBIDimensionTree\[0] | - |
+| Parameter | Type                 | Description |
+| --------- | -------------------- | ----------- |
+| `node`    | VBIDimensionTree\[0] | -           |

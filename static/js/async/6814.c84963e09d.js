@@ -1,2 +1,0 @@
-"use strict";(self.rspackChunkwebsite=self.rspackChunkwebsite||[]).push([["6814"],{86029(e,t,n){n.r(t),n.d(t,{default:()=>o});var r=n(41627),s=n(300);function i(e){return(0,r.jsx)(r.Fragment,{})}function o(){let e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},{wrapper:t}={...(0,s.R)(),...e.components};return t?(0,r.jsx)(t,{...e,children:(0,r.jsx)(i,{...e})}):i(e)}o.__RSPRESS_PAGE_META={},o.__RSPRESS_PAGE_META["en-US%2Fvseed%2Foption.md"]={toc:[],title:"",headingTitle:"",frontmatter:{overview:!0}}}}]);
-//# sourceMappingURL=6814.c84963e09d.js.map

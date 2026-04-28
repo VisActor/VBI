@@ -140,7 +140,7 @@
 
 - [VSeed Example：Rose Chart](/VBI/en-US/playground/vseed.md)
 
-## Other
+## Others
 
 - [BuilderLayout](/VBI/en-US/vbi-react/api/builderLayout.md)
 - [ChartRenderer](/VBI/en-US/vbi-react/api/chartRenderer.md)

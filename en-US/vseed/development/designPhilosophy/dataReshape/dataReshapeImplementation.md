@@ -20,9 +20,9 @@ As long as `foldMeasures` and `unfoldDimensions` are properly utilized, any Meas
 
 :::tip The Most Ingenious Part!!!
 
-* `1` measure `0` dimensions -> After `foldMeasures`, you get `1` measure and `2` dimensions (including Measure Name and Measure ID).
-* `4` measures `1` dimension -> After `2` passes of `foldMeasures`, you can get `2` measures and `3` dimensions (including Measure Name and Measure ID), which perfectly supports scenarios like Dual Axis Charts.
-* `N` measures `0` dimensions -> After `Y` (Y ≤ N) passes of `foldMeasures`, you can get `Y` measures and `2` dimensions (including Measure Name and Measure ID).
+- `1` measure `0` dimensions -> After `foldMeasures`, you get `1` measure and `2` dimensions (including Measure Name and Measure ID).
+- `4` measures `1` dimension -> After `2` passes of `foldMeasures`, you can get `2` measures and `3` dimensions (including Measure Name and Measure ID), which perfectly supports scenarios like Dual Axis Charts.
+- `N` measures `0` dimensions -> After `Y` (Y ≤ N) passes of `foldMeasures`, you can get `Y` measures and `2` dimensions (including Measure Name and Measure ID).
 
 :::
 

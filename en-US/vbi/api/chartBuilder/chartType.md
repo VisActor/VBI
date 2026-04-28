@@ -18,10 +18,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| Parameter | Type       | Description |
+| --------- | ---------- | ----------- |
+| `doc`     | Y.Doc      | -           |
+| `dsl`     | Y.Map<any> | -           |
 
 ### observe
 
@@ -37,8 +37,8 @@ observe(callback: ObserveCallback): () => void
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter  | Type            | Description         |
+| ---------- | --------------- | ------------------- |
 | `callback` | ObserveCallback | - Callback function |
 
 ### changeChartType
@@ -53,8 +53,8 @@ changeChartType(chartType: string)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter   | Type   | Description  |
+| ----------- | ------ | ------------ |
 | `chartType` | string | - Chart type |
 
 ### getChartType
@@ -91,8 +91,8 @@ getRecommendedDimensionEncodings(dimensionCount: number)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter        | Type   | Description                                                                |
+| ---------------- | ------ | -------------------------------------------------------------------------- |
 | `dimensionCount` | number | - Number of dimensions; defaults to the dimension count in the current DSL |
 
 ### getSupportedMeasureEncodings
@@ -117,8 +117,8 @@ getRecommendedMeasureEncodings(measureCount: number)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter      | Type   | Description                                                            |
+| -------------- | ------ | ---------------------------------------------------------------------- |
 | `measureCount` | number | - Number of measures; defaults to the measure count in the current DSL |
 
 ### toJSON

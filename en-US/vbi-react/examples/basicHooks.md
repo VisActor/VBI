@@ -4,8 +4,8 @@ This example demonstrates combining `useVBI` with `useVSeed`.
 
 ## Dependencies
 
-* Packages: `@visactor/vbi-react`, `@visactor/vbi`, `@visactor/vseed`, `react`
-* Props: requires an initialized `VBIChartBuilder` (with a bound connector)
+- Packages: `@visactor/vbi-react`, `@visactor/vbi`, `@visactor/vseed`, `react`
+- Props: requires an initialized `VBIChartBuilder` (with a bound connector)
 
 ## Code Snippet
 
@@ -36,6 +36,6 @@ export function BasicHooksDemo({ builder }: { builder: VBIChartBuilder }) {
 
 ## Expected Behavior
 
-* When the builder changes, `dsl` and `vseed` update in sync.
-* Shows `Loading...` on first load or when updating; allows manual retry on failure.
-* On success, displays the current `chartType` and the latest VSeed JSON.
+- When the builder changes, `dsl` and `vseed` update in sync.
+- Shows `Loading...` on first load or when updating; allows manual retry on failure.
+- On success, displays the current `chartType` and the latest VSeed JSON.

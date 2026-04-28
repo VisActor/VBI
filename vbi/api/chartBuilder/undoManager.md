@@ -18,8 +18,8 @@ constructor(scope: any)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数      | 类型  | 说明                            |
+| ------- | --- | ----------------------------- |
 | `scope` | any | - YJS 文档或类型作用域，用于定义撤销/重做的追踪范围 |
 
 ### undo
@@ -84,7 +84,7 @@ clear(clearUndoStack: boolean, clearRedoStack: boolean): void
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数               | 类型      | 说明                |
+| ---------------- | ------- | ----------------- |
 | `clearUndoStack` | boolean | - 是否清除撤销栈，默认 true |
 | `clearRedoStack` | boolean | - 是否清除重做栈，默认 true |

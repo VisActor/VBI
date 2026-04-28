@@ -1,8 +1,5 @@
 # dimensions
 
-import { registerDemoConnector } from '@components'
-
-{registerDemoConnector()}
 
 ## add-date-dimension-year
 
@@ -10,7 +7,8 @@ Add date dimension with yearly aggregation
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -62,7 +60,8 @@ Add dimension
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -114,7 +113,8 @@ Add multiple dimensions (chained calls)
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -160,7 +160,8 @@ Mixed grouping with regular dimension and quarterly-aggregated date dimension
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -210,7 +211,8 @@ Remove dimension
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -263,7 +265,8 @@ Update existing date dimension to monthly aggregation
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -316,7 +319,8 @@ Update dimension
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
+import { VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {

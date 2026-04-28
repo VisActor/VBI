@@ -16,9 +16,9 @@ constructor(yMap: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| Parameter | Type       | Description |
+| --------- | ---------- | ----------- |
+| `yMap`    | Y.Map<any> | -           |
 
 ### getId
 
@@ -82,9 +82,9 @@ setAlias(alias: string): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `alias` | string | - Display name |
+| Parameter | Type   | Description    |
+| --------- | ------ | -------------- |
+| `alias`   | string | - Display name |
 
 ### setEncoding
 
@@ -100,8 +100,8 @@ setEncoding(encoding: NonNullable<VBIDimension['encoding']>): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter  | Type                                    | Description                   |
+| ---------- | --------------------------------------- | ----------------------------- |
 | `encoding` | NonNullable\<VBIDimension\['encoding']> | - Dimension encoding position |
 
 ### setSort
@@ -118,9 +118,9 @@ setSort(sort: VBISort): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `sort` | VBISort | - Sort configuration |
+| Parameter | Type    | Description          |
+| --------- | ------- | -------------------- |
+| `sort`    | VBISort | - Sort configuration |
 
 ### setAggregate
 
@@ -136,8 +136,8 @@ setAggregate(aggregate: NonNullable<VBIDimension['aggregate']>): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter   | Type                                     | Description                      |
+| ----------- | ---------------------------------------- | -------------------------------- |
 | `aggregate` | NonNullable\<VBIDimension\['aggregate']> | - Date aggregation configuration |
 
 ### clearAggregate

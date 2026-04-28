@@ -4,8 +4,8 @@
 
 By configuring the `page` property, you can specify the chart to display data for specific dimension values.
 
-* `field`: The pagination field.
-* `currentValue`: The currently displayed value.
+- `field`: The pagination field.
+- `currentValue`: The currently displayed value.
 
 ```tsx direction=vertical playground
 import { VSeed, Builder, registerAll } from '@visactor/vseed'

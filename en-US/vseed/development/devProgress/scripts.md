@@ -18,9 +18,9 @@ This command is a combination of `build:test`, `build:docs`, and `build:api`, us
 
 **When to use**:
 
-* After modifying chart logic or adding a new chart type.
-* After modifying TypeScript type definitions.
-* Before committing code.
+- After modifying chart logic or adding a new chart type.
+- After modifying TypeScript type definitions.
+- Before committing code.
 
 ## Development & Build
 

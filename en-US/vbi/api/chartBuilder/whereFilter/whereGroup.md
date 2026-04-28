@@ -16,9 +16,9 @@ constructor(yMap: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| Parameter | Type       | Description |
+| --------- | ---------- | ----------- |
+| `yMap`    | Y.Map<any> | -           |
 
 ### getConditions
 
@@ -68,9 +68,9 @@ setOperator(op: 'and' | 'or'): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `op` | 'and' | 'or' | - Logical operator |
+| Parameter | Type          | Description        |
+| --------- | ------------- | ------------------ |
+| `op`      | 'and' \| 'or' | - Logical operator |
 
 ### add
 
@@ -86,9 +86,9 @@ add(field: string, callback: (node: WhereFilterNodeBuilder) => void): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `field` | string | - Field name |
+| Parameter  | Type                                   | Description         |
+| ---------- | -------------------------------------- | ------------------- |
+| `field`    | string                                 | - Field name        |
 | `callback` | (node: WhereFilterNodeBuilder) => void | - Callback function |
 
 ### addGroup
@@ -105,9 +105,9 @@ addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `op` | 'and' | 'or' | - Logical operator |
+| Parameter  | Type                               | Description         |
+| ---------- | ---------------------------------- | ------------------- |
+| `op`       | 'and' \| 'or'                      | - Logical operator  |
 | `callback` | (group: WhereGroupBuilder) => void | - Callback function |
 
 ### remove
@@ -124,9 +124,9 @@ remove(idOrIndex: string | number): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `idOrIndex` | string | number | - ID or index |
+| Parameter   | Type             | Description   |
+| ----------- | ---------------- | ------------- |
+| `idOrIndex` | string \| number | - ID or index |
 
 ### clear
 

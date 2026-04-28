@@ -1,5 +1,8 @@
+# Playground
+
 ```tsx playground
 const run = async (setVSeed) => {
+  const { VQuery } = await import('@visactor/vquery')
   const vquery = new VQuery()
 
   const connectorId = 'vbi-demo'
@@ -73,15 +76,10 @@ const run = async (setVSeed) => {
   })
 
   window.builder = builder
-
-  return () => {
-    vquery = null
-  }
 }
 
 const Demo = () => {
   const [vseed, setVSeed] = useState<VSeed>()
-  const vquery = useRef<VQuery>()
 
   useEffect(() => {
     run(setVSeed)
@@ -91,7 +89,6 @@ const Demo = () => {
 }
 
 import * as Y from 'yjs'
-import { VQuery, QueryDSL } from '@visactor/vquery'
 import { VBI } from '@visactor/vbi'
 import { useRef, useEffect, useState } from 'react'
 import { useDark } from '@rspress/core/runtime'

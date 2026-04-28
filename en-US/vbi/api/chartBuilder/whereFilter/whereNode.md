@@ -16,9 +16,9 @@ constructor(yMap: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| Parameter | Type       | Description |
+| --------- | ---------- | ----------- |
+| `yMap`    | Y.Map<any> | -           |
 
 ### getId
 
@@ -58,9 +58,9 @@ setField(field: string): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `field` | string | - Field name |
+| Parameter | Type   | Description  |
+| --------- | ------ | ------------ |
+| `field`   | string | - Field name |
 
 ### getOperator
 
@@ -88,9 +88,9 @@ setOperator(operator: string): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `operator` | string | - Operator |
+| Parameter  | Type   | Description |
+| ---------- | ------ | ----------- |
+| `operator` | string | - Operator  |
 
 ### setValue
 
@@ -106,9 +106,9 @@ setValue(value: unknown): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `value` | unknown | - Filter value |
+| Parameter | Type    | Description    |
+| --------- | ------- | -------------- |
+| `value`   | unknown | - Filter value |
 
 ### setDate
 
@@ -124,8 +124,8 @@ setDate(predicate: VBIWhereDatePredicate): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter   | Type                  | Description      |
+| ----------- | --------------------- | ---------------- |
 | `predicate` | VBIWhereDatePredicate | - Date predicate |
 
 ### getDate

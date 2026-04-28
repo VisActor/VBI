@@ -16,10 +16,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| 参数    | 类型         | 说明 |
+| ----- | ---------- | -- |
+| `doc` | Y.Doc      | -  |
+| `dsl` | Y.Map<any> | -  |
 
 ### add
 
@@ -35,9 +35,9 @@ add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBu
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `field` | string | - 字段名 |
+| 参数         | 类型                                   | 说明     |
+| ---------- | ------------------------------------ | ------ |
+| `field`    | string                               | - 字段名  |
 | `callback` | (node: DimensionNodeBuilder) => void | - 回调函数 |
 
 ### remove
@@ -54,8 +54,8 @@ remove(id: string): DimensionsBuilder
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数   | 类型     | 说明      |
+| ---- | ------ | ------- |
 | `id` | string | - 维度 ID |
 
 ### update
@@ -72,10 +72,10 @@ update(id: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBu
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `id` | string | - 维度 ID |
-| `callback` | (node: DimensionNodeBuilder) => void | - 回调函数 |
+| 参数         | 类型                                   | 说明      |
+| ---------- | ------------------------------------ | ------- |
+| `id`       | string                               | - 维度 ID |
+| `callback` | (node: DimensionNodeBuilder) => void | - 回调函数  |
 
 ### find
 
@@ -91,8 +91,8 @@ find(predicate: (node: DimensionNodeBuilder, index: number) => boolean): Dimensi
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数          | 类型                                                     | 说明     |
+| ----------- | ------------------------------------------------------ | ------ |
 | `predicate` | (node: DimensionNodeBuilder, index: number) => boolean | - 查找条件 |
 
 ### findAll
@@ -133,8 +133,8 @@ observe(callback: ObserveDeepCallback): () => void
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数         | 类型                  | 说明     |
+| ---------- | ------------------- | ------ |
 | `callback` | ObserveDeepCallback | - 回调函数 |
 
 ### static isDimensionNode
@@ -149,9 +149,9 @@ static isDimensionNode(node: VBIDimensionTree[0]): node is VBIDimension
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `node` | VBIDimensionTree\[0] | - |
+| 参数     | 类型                   | 说明 |
+| ------ | -------------------- | -- |
+| `node` | VBIDimensionTree\[0] | -  |
 
 ### static isDimensionGroup
 
@@ -165,6 +165,6 @@ static isDimensionGroup(node: VBIDimensionTree[0]): node is VBIDimensionGroup
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `node` | VBIDimensionTree\[0] | - |
+| 参数     | 类型                   | 说明 |
+| ------ | -------------------- | -- |
+| `node` | VBIDimensionTree\[0] | -  |

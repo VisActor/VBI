@@ -4,8 +4,8 @@
 
 ## 依赖说明
 
-* 包依赖：`@visactor/vbi-react`、`@visactor/vbi`、`@visactor/vseed`、`react`
-* 入参约束：需要一个已初始化的 `VBIChartBuilder`（已绑定可用 connector）
+- 包依赖：`@visactor/vbi-react`、`@visactor/vbi`、`@visactor/vseed`、`react`
+- 入参约束：需要一个已初始化的 `VBIChartBuilder`（已绑定可用 connector）
 
 ## 代码片段
 
@@ -36,6 +36,6 @@ export function BasicHooksDemo({ builder }: { builder: VBIChartBuilder }) {
 
 ## 预期效果
 
-* 当 builder 变化时，`dsl` 与 `vseed` 同步更新。
-* 首次或更新中显示 `Loading...`，失败时可手动重试。
-* 成功后看到当前 `chartType` 和最新 VSeed JSON。
+- 当 builder 变化时，`dsl` 与 `vseed` 同步更新。
+- 首次或更新中显示 `Loading...`，失败时可手动重试。
+- 成功后看到当前 `chartType` 和最新 VSeed JSON。

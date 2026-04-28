@@ -16,10 +16,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| Parameter | Type       | Description |
+| --------- | ---------- | ----------- |
+| `doc`     | Y.Doc      | -           |
+| `dsl`     | Y.Map<any> | -           |
 
 ### getConditions
 
@@ -45,9 +45,9 @@ add(field: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFil
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `field` | string | - Field name |
+| Parameter  | Type                                    | Description         |
+| ---------- | --------------------------------------- | ------------------- |
+| `field`    | string                                  | - Field name        |
 | `callback` | (node: HavingFilterNodeBuilder) => void | - Callback function |
 
 ### addGroup
@@ -64,9 +64,9 @@ addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): Havin
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `op` | 'and' | 'or' | - Logical operator |
+| Parameter  | Type                                | Description         |
+| ---------- | ----------------------------------- | ------------------- |
+| `op`       | 'and' \| 'or'                       | - Logical operator  |
 | `callback` | (group: HavingGroupBuilder) => void | - Callback function |
 
 ### update
@@ -83,10 +83,10 @@ update(id: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFil
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `id` | string | - Filter condition ID |
-| `callback` | (node: HavingFilterNodeBuilder) => void | - Callback function |
+| Parameter  | Type                                    | Description           |
+| ---------- | --------------------------------------- | --------------------- |
+| `id`       | string                                  | - Filter condition ID |
+| `callback` | (node: HavingFilterNodeBuilder) => void | - Callback function   |
 
 ### updateGroup
 
@@ -102,9 +102,9 @@ updateGroup(id: string, callback: (group: HavingGroupBuilder) => void): HavingFi
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `id` | string | - Group ID |
+| Parameter  | Type                                | Description         |
+| ---------- | ----------------------------------- | ------------------- |
+| `id`       | string                              | - Group ID          |
 | `callback` | (group: HavingGroupBuilder) => void | - Callback function |
 
 ### remove
@@ -121,9 +121,9 @@ remove(idOrIndex: string | number): HavingFilterBuilder
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `idOrIndex` | string | number | - ID or index |
+| Parameter   | Type             | Description   |
+| ----------- | ---------------- | ------------- |
+| `idOrIndex` | string \| number | - ID or index |
 
 ### find
 
@@ -139,9 +139,9 @@ find(predicate: (entry: HavingFilterNodeBuilder | HavingGroupBuilder, index: num
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `predicate` | (entry: HavingFilterNodeBuilder | HavingGroupBuilder, index: number) => boolean | - Search condition |
+| Parameter   | Type                                                                             | Description        |
+| ----------- | -------------------------------------------------------------------------------- | ------------------ |
+| `predicate` | (entry: HavingFilterNodeBuilder \| HavingGroupBuilder, index: number) => boolean | - Search condition |
 
 ### clear
 
@@ -179,8 +179,8 @@ observe(callback: ObserveDeepCallback): () => void
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter  | Type                | Description         |
+| ---------- | ------------------- | ------------------- |
 | `callback` | ObserveDeepCallback | - Callback function |
 
 ### static isGroup
@@ -197,9 +197,9 @@ static isGroup(yMap: Y.Map<any>): boolean
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| Parameter | Type       | Description |
+| --------- | ---------- | ----------- |
+| `yMap`    | Y.Map<any> | -           |
 
 ### static isNode
 
@@ -215,6 +215,6 @@ static isNode(yMap: Y.Map<any>): boolean
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| Parameter | Type       | Description |
+| --------- | ---------- | ----------- |
+| `yMap`    | Y.Map<any> | -           |

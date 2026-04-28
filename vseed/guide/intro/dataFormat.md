@@ -2,8 +2,8 @@
 
 VSeed 支持在 `measures` 中配置数值的格式化规则。
 
-* `autoFormat`: 是否自动格式化。
-* `format`: 详细的格式化配置，包括类型、倍率、千分位、小数位、单位前后缀等。
+- `autoFormat`: 是否自动格式化。
+- `format`: 详细的格式化配置，包括类型、倍率、千分位、小数位、单位前后缀等。
 
 ```tsx direction=vertical playground
 import { useDark } from '@rspress/core/runtime'

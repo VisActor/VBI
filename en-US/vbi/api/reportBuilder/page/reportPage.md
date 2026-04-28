@@ -2,10 +2,10 @@
 
 ## Properties
 
-| Property | Type | Description |
-| --- | --- | --- |
-| **chart** | `VBIChartBuilder<TQueryDSL, TSeedDSL>` | - |
-| **text** | `ReportTextBuilder` | - |
+| Property  | Type                                   | Description |
+| --------- | -------------------------------------- | ----------- |
+| **chart** | `VBIChartBuilder<TQueryDSL, TSeedDSL>` | -           |
+| **text**  | `ReportTextBuilder`                    | -           |
 
 ## Methods
 
@@ -19,11 +19,11 @@ constructor(doc: Y.Doc, page: Y.Map<any>, chartOptions: VBIChartBuilderOptions<T
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `page` | Y.Map<any> | - |
-| `chartOptions` | VBIChartBuilderOptions\<TQueryDSL, TSeedDSL> | - |
+| Parameter      | Type                                         | Description |
+| -------------- | -------------------------------------------- | ----------- |
+| `doc`          | Y.Doc                                        | -           |
+| `page`         | Y.Map<any>                                   | -           |
+| `chartOptions` | VBIChartBuilderOptions\<TQueryDSL, TSeedDSL> | -           |
 
 ### getId
 
@@ -47,9 +47,9 @@ setTitle(title: string): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `title` | string | - |
+| Parameter | Type   | Description |
+| --------- | ------ | ----------- |
+| `title`   | string | -           |
 
 ### setChart
 
@@ -63,9 +63,9 @@ setChart(chartBuilder: VBIChartBuilder<TQueryDSL, TSeedDSL> | VBIChartDSLInput):
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `chartBuilder` | VBIChartBuilder\<TQueryDSL, TSeedDSL> | VBIChartDSLInput | - |
+| Parameter      | Type                                                      | Description |
+| -------------- | --------------------------------------------------------- | ----------- |
+| `chartBuilder` | VBIChartBuilder\<TQueryDSL, TSeedDSL> \| VBIChartDSLInput | -           |
 
 ### setText
 
@@ -79,9 +79,9 @@ setText(content: string): this
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `content` | string | - |
+| Parameter | Type   | Description |
+| --------- | ------ | ----------- |
+| `content` | string | -           |
 
 ### toJSON
 

@@ -16,9 +16,9 @@ constructor(yMap: Y.Map<any>)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| 参数     | 类型         | 说明 |
+| ------ | ---------- | -- |
+| `yMap` | Y.Map<any> | -  |
 
 ### getConditions
 
@@ -68,9 +68,9 @@ setOperator(op: 'and' | 'or'): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `op` | 'and' | 'or' | - 逻辑操作符 |
+| 参数   | 类型            | 说明      |
+| ---- | ------------- | ------- |
+| `op` | 'and' \| 'or' | - 逻辑操作符 |
 
 ### add
 
@@ -86,9 +86,9 @@ add(field: string, callback: (node: WhereFilterNodeBuilder) => void): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `field` | string | - 字段名 |
+| 参数         | 类型                                     | 说明     |
+| ---------- | -------------------------------------- | ------ |
+| `field`    | string                                 | - 字段名  |
 | `callback` | (node: WhereFilterNodeBuilder) => void | - 回调函数 |
 
 ### addGroup
@@ -105,10 +105,10 @@ addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `op` | 'and' | 'or' | - 逻辑操作符 |
-| `callback` | (group: WhereGroupBuilder) => void | - 回调函数 |
+| 参数         | 类型                                 | 说明      |
+| ---------- | ---------------------------------- | ------- |
+| `op`       | 'and' \| 'or'                      | - 逻辑操作符 |
+| `callback` | (group: WhereGroupBuilder) => void | - 回调函数  |
 
 ### remove
 
@@ -124,9 +124,9 @@ remove(idOrIndex: string | number): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `idOrIndex` | string | number | - ID 或索引 |
+| 参数          | 类型               | 说明       |
+| ----------- | ---------------- | -------- |
+| `idOrIndex` | string \| number | - ID 或索引 |
 
 ### clear
 

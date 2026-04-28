@@ -4,8 +4,8 @@
 
 ## 依赖说明
 
-* 包依赖：`@visactor/vbi-react`、`@visactor/vbi`、`react`
-* 入参约束：`builder` 至少包含 `region` 和 `sales` 字段，便于演示 Where/Having 变更
+- 包依赖：`@visactor/vbi-react`、`@visactor/vbi`、`react`
+- 入参约束：`builder` 至少包含 `region` 和 `sales` 字段，便于演示 Where/Having 变更
 
 ## 代码片段
 
@@ -47,6 +47,6 @@ export function FilterDemo({ builder }: { builder: VBIChartBuilder }) {
 
 ## 预期效果
 
-* 点击按钮后，Where/Having 条件分别追加到 builder 的过滤树。
-* 清空按钮会立即移除对应过滤条件。
-* 页面底部 JSON 可用于确认当前过滤 DSL 结构。
+- 点击按钮后，Where/Having 条件分别追加到 builder 的过滤树。
+- 清空按钮会立即移除对应过滤条件。
+- 页面底部 JSON 可用于确认当前过滤 DSL 结构。

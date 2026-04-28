@@ -18,10 +18,10 @@ constructor(_doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `_doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| Parameter | Type       | Description |
+| --------- | ---------- | ----------- |
+| `_doc`    | Y.Doc      | -           |
+| `dsl`     | Y.Map<any> | -           |
 
 ### observe
 
@@ -37,8 +37,8 @@ observe(callback: ObserveCallback): () => void
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
+| Parameter  | Type            | Description         |
+| ---------- | --------------- | ------------------- |
 | `callback` | ObserveCallback | - Callback function |
 
 ### setLimit
@@ -53,9 +53,9 @@ setLimit(limit: number)
 
 **Parameters**:
 
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `limit` | number | - Data limit |
+| Parameter | Type   | Description  |
+| --------- | ------ | ------------ |
+| `limit`   | number | - Data limit |
 
 ### getLimit
 

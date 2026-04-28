@@ -4,8 +4,8 @@
 
 VSeed provides convenient sorting configurations.
 
-* `sort`: Used to configure sorting rules for axis data, supporting the specified sort field `orderBy` and sort order `order`.
-* `sortLegend`: Used to configure the sorting order of the legend.
+- `sort`: Used to configure sorting rules for axis data, supporting the specified sort field `orderBy` and sort order `order`.
+- `sortLegend`: Used to configure the sorting order of the legend.
 
 ```tsx direction=vertical playground
 import { useRef, useEffect, useState } from 'react'

@@ -5,7 +5,7 @@
 Basic Where Example
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -94,7 +94,7 @@ export default () => {
 Where with BETWEEN / NOT BETWEEN Operator
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -225,7 +225,7 @@ export default () => {
 Where with Complex AND/OR Logic
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -356,7 +356,7 @@ export default () => {
 Where with DATE field BETWEEN filter
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -453,7 +453,7 @@ export default () => {
 Where with IN / NOT IN Operator
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -584,7 +584,7 @@ export default () => {
 Where with IS NULL / IS NOT NULL
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -713,7 +713,7 @@ export default () => {
 Where with Single Value IN / NOT IN
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {
@@ -824,7 +824,7 @@ export default () => {
 Where with TIMESTAMP comparison window
 
 ```tsx preview
-import { VQueryResultRender } from '@components'
+import { VQueryResultRender } from '@components/vquery'
 
 export default () => {
   const vqueryConfig = {

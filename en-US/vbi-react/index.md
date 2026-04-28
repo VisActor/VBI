@@ -4,14 +4,14 @@
 
 Current exports are split into two layers:
 
-* Root export `@visactor/vbi-react`: `useVBI`, `useVSeed`, `useChartType`, `useDimensions`, `useMeasures`, `useWhereFilter`, `useHavingFilter`
-* Sub-path export `@visactor/vbi-react/components`: `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel`
+- Root export `@visactor/vbi-react`: `useVBI`, `useVSeed`, `useChartType`, `useDimensions`, `useMeasures`, `useWhereFilter`, `useHavingFilter`
+- Sub-path export `@visactor/vbi-react/components`: `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel`
 
 ## Purpose
 
-* State subscription and rendering encapsulation for React 18+
-* Uses `VBIChartBuilder` as the Single Source of Truth (SSOT) — no additional business state copies
-* Ideal for building BI configuration panels, chart preview areas, and DSL debug panels
+- State subscription and rendering encapsulation for React 18+
+- Uses `VBIChartBuilder` as the Single Source of Truth (SSOT) — no additional business state copies
+- Ideal for building BI configuration panels, chart preview areas, and DSL debug panels
 
 ## Installation
 
@@ -80,5 +80,5 @@ export function App() {
 
 ## Documentation
 
-* [API Overview](/VBI/en-US/vbi-react/api/index.md)
-* [Examples](/VBI/en-US/vbi-react/examples/index.md)
+- [API Overview](/VBI/en-US/vbi-react/api/index.md)
+- [Examples](/VBI/en-US/vbi-react/examples/index.md)

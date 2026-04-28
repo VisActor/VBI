@@ -31,8 +31,8 @@ Bridges flexible business requirements from above, constrains data input formats
 2. `VSeed` should not provide excessive style configuration — it should focus on the relationship between charts and data.
 3. `VSeed` should encapsulate common general-purpose features in the analytics domain, such as number formatting, internationalization, themes, common styles, and common functionality — providing them out of the box.
 4. More flexible customization should be handled by users themselves. Therefore, VSeed only exposes a Spec Builder for building VChart and VTable specs.
-   * Users can flexibly control VChart and VTable instances.
-   * Users can modify VChart and VTable specs according to their needs.
+   - Users can flexibly control VChart and VTable instances.
+   - Users can modify VChart and VTable specs according to their needs.
 
 ## Why Design VSeed?
 

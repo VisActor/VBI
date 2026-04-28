@@ -14,21 +14,21 @@ Pipeline is a powerful abstraction and engineering practice that decomposes a co
 
 ### Pipeline Advantages:
 
-* **Modularity**: Atomic implementation — compose atoms into modules.
-* **Automation**: Simply define the input to automatically get the output, without worrying about internal implementation.
-* **Pure functions**: Given a specified input, the expected output is always produced — a characteristic of pure functions.
-* **Parallelism**: Naturally supports concurrency.
-* **Reusability**: Every module can be reused.
-* **Testability**: In theory, every module is independent and can be tested individually to ensure quality.
-* **Traceability**: Clear inputs and outputs at each stage make it easy to locate issues and monitor process state.
-* **Cacheability**: In theory, the output of individual `Pipe`s can be cached, avoiding redundant computation and improving efficiency.
+- **Modularity**: Atomic implementation — compose atoms into modules.
+- **Automation**: Simply define the input to automatically get the output, without worrying about internal implementation.
+- **Pure functions**: Given a specified input, the expected output is always produced — a characteristic of pure functions.
+- **Parallelism**: Naturally supports concurrency.
+- **Reusability**: Every module can be reused.
+- **Testability**: In theory, every module is independent and can be tested individually to ensure quality.
+- **Traceability**: Clear inputs and outputs at each stage make it easy to locate issues and monitor process state.
+- **Cacheability**: In theory, the output of individual `Pipe`s can be cached, avoiding redundant computation and improving efficiency.
 
 ### Pipeline Disadvantages:
 
-* **Sequential dependencies**: When Pipes have ordering dependencies, the cognitive cost increases — you need to understand earlier stages to understand later ones. Deep overall understanding is needed to quickly locate issues.
-* **Debugging cost**: Since Pipeline executes sequentially, a failure at any stage causes the entire Pipeline to fail. This makes debugging harder, as you need to locate the failing stage and fix it.
-* **Performance**: Since Pipeline executes sequentially, each stage's output must wait for the previous stage to complete, which can cause performance issues — especially when one stage takes a long time.
-* **Functional programming**: Requires learning new concepts, which carries some onboarding cost. As a result, design principles and implementation details need to be documented in the contribution guide for other developers.
+- **Sequential dependencies**: When Pipes have ordering dependencies, the cognitive cost increases — you need to understand earlier stages to understand later ones. Deep overall understanding is needed to quickly locate issues.
+- **Debugging cost**: Since Pipeline executes sequentially, a failure at any stage causes the entire Pipeline to fail. This makes debugging harder, as you need to locate the failing stage and fix it.
+- **Performance**: Since Pipeline executes sequentially, each stage's output must wait for the previous stage to complete, which can cause performance issues — especially when one stage takes a long time.
+- **Functional programming**: Requires learning new concepts, which carries some onboarding cost. As a result, design principles and implementation details need to be documented in the contribution guide for other developers.
 
 ## How to Write Pipelines in VSeed?
 

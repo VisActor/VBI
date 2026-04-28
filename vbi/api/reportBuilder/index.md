@@ -2,12 +2,12 @@
 
 ## 属性
 
-| 属性 | 类型 | 说明 |
-| --- | --- | --- |
-| **doc** | `Y.Doc` | - |
-| **dsl** | `Y.Map<any>` | - |
-| **undoManager** | `UndoManager` | - |
-| **page** | `ReportPageCollectionBuilder<TQueryDSL, TSeedDSL>` | - |
+| 属性              | 类型                                                 | 说明 |
+| --------------- | -------------------------------------------------- | -- |
+| **doc**         | `Y.Doc`                                            | -  |
+| **dsl**         | `Y.Map<any>`                                       | -  |
+| **undoManager** | `UndoManager`                                      | -  |
+| **page**        | `ReportPageCollectionBuilder<TQueryDSL, TSeedDSL>` | -  |
 
 ## 方法
 
@@ -21,11 +21,11 @@ constructor(doc: Y.Doc, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>, r
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `options` | VBIReportBuilderOptions\<TQueryDSL, TSeedDSL> | - |
-| `resourceRegistry` | VBIResourceRegistry | - |
+| 参数                 | 类型                                            | 说明 |
+| ------------------ | --------------------------------------------- | -- |
+| `doc`              | Y.Doc                                         | -  |
+| `options`          | VBIReportBuilderOptions\<TQueryDSL, TSeedDSL> | -  |
+| `resourceRegistry` | VBIResourceRegistry                           | -  |
 
 ### applyUpdate
 
@@ -39,10 +39,10 @@ applyUpdate(update: Uint8Array, transactionOrigin: any): any
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `update` | Uint8Array | - |
-| `transactionOrigin` | any | - |
+| 参数                  | 类型         | 说明 |
+| ------------------- | ---------- | -- |
+| `update`            | Uint8Array | -  |
+| `transactionOrigin` | any        | -  |
 
 ### encodeStateAsUpdate
 
@@ -56,9 +56,9 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): any
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `targetStateVector` | Uint8Array | - |
+| 参数                  | 类型         | 说明 |
+| ------------------- | ---------- | -- |
+| `targetStateVector` | Uint8Array | -  |
 
 ### getUUID
 
@@ -82,9 +82,9 @@ getChartBuilder(chartId: string): VBIChartBuilder<TQueryDSL, TSeedDSL> | undefin
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `chartId` | string | - |
+| 参数        | 类型     | 说明 |
+| --------- | ------ | -- |
+| `chartId` | string | -  |
 
 ### getInsightBuilder
 
@@ -98,9 +98,9 @@ getInsightBuilder(insightId: string): VBIInsightBuilder | undefined
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `insightId` | string | - |
+| 参数          | 类型     | 说明 |
+| ----------- | ------ | -- |
+| `insightId` | string | -  |
 
 ### build
 

@@ -18,10 +18,10 @@ constructor(_doc: Y.Doc, dsl: Y.Map<any>)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `_doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| 参数     | 类型         | 说明 |
+| ------ | ---------- | -- |
+| `_doc` | Y.Doc      | -  |
+| `dsl`  | Y.Map<any> | -  |
 
 ### observe
 
@@ -37,8 +37,8 @@ observe(callback: ObserveCallback): () => void
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数         | 类型              | 说明     |
+| ---------- | --------------- | ------ |
 | `callback` | ObserveCallback | - 回调函数 |
 
 ### setLimit
@@ -53,8 +53,8 @@ setLimit(limit: number)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数      | 类型     | 说明      |
+| ------- | ------ | ------- |
 | `limit` | number | - 数据量限制 |
 
 ### getLimit

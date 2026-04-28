@@ -4,8 +4,8 @@
 
 通过配置 `page` 属性，可以指定图表展示特定维度值的数据。
 
-* `field`: 分页字段。
-* `currentValue`: 当前展示的值。
+- `field`: 分页字段。
+- `currentValue`: 当前展示的值。
 
 ```tsx direction=vertical playground
 import { VSeed, Builder, registerAll } from '@visactor/vseed'

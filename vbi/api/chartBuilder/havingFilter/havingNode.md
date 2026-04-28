@@ -16,9 +16,9 @@ constructor(yMap: Y.Map<any>)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| 参数     | 类型         | 说明 |
+| ------ | ---------- | -- |
+| `yMap` | Y.Map<any> | -  |
 
 ### getId
 
@@ -82,8 +82,8 @@ setValue(value: unknown): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数      | 类型      | 说明    |
+| ------- | ------- | ----- |
 | `value` | unknown | - 过滤值 |
 
 ### setOperator
@@ -100,8 +100,8 @@ setOperator(operator: string): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数         | 类型     | 说明    |
+| ---------- | ------ | ----- |
 | `operator` | string | - 操作符 |
 
 ### setAggregate
@@ -118,8 +118,8 @@ setAggregate(aggregate: VBIHavingAggregate): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数          | 类型                 | 说明     |
+| ----------- | ------------------ | ------ |
 | `aggregate` | VBIHavingAggregate | - 聚合配置 |
 
 ### toJSON

@@ -16,9 +16,9 @@ constructor(yMap: Y.Map<any>)
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| 参数     | 类型         | 说明 |
+| ------ | ---------- | -- |
+| `yMap` | Y.Map<any> | -  |
 
 ### getId
 
@@ -58,8 +58,8 @@ setField(field: string): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数      | 类型     | 说明    |
+| ------- | ------ | ----- |
 | `field` | string | - 字段名 |
 
 ### getOperator
@@ -88,8 +88,8 @@ setOperator(operator: string): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数         | 类型     | 说明    |
+| ---------- | ------ | ----- |
 | `operator` | string | - 操作符 |
 
 ### setValue
@@ -106,8 +106,8 @@ setValue(value: unknown): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数      | 类型      | 说明    |
+| ------- | ------- | ----- |
 | `value` | unknown | - 过滤值 |
 
 ### setDate
@@ -124,8 +124,8 @@ setDate(predicate: VBIWhereDatePredicate): this
 
 **参数**:
 
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
+| 参数          | 类型                    | 说明     |
+| ----------- | --------------------- | ------ |
 | `predicate` | VBIWhereDatePredicate | - 日期谓词 |
 
 ### getDate
