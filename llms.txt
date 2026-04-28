@@ -140,11 +140,10 @@
 ## VBI
 
 - [VBI](/VBI/vbi/index.md)
-- [Standard](/VBI/vbi/practices/standard.md)
-- [Standard Report](/VBI/vbi/practices/standard-report.md)
-- [Minimalist](/VBI/vbi/practices/minimalist.md)
+- [Standard](/VBI/vbi/practices/standard.md): export const StandardPractice = () => { const dark = useDark() const lang = useLang() const locale = lang === 'en-US' ? 'en-US' : 'zh-CN' const theme = dark ? 'dark' : 'light' return ( <div style={{ width: '100%', height: '700px' }}> <APP hideLocale hideTheme locale={locale} theme={theme} /> </div> ) }
+- [Minimalist](/VBI/vbi/practices/minimalist.md): export const MinimalistPractice = () => { const dark = useDark() const lang = useLang() const locale = lang === 'en-US' ? 'en-US' : 'zh-CN' const theme = dark ? 'dark' : 'light' return ( <div style={{ width: '100%', height: '700px' }}> <APP hideLocale hideTheme locale={locale} theme={theme} /> </div> ) }
 - [Streamlined](/VBI/vbi/practices/streamlined.md)
-- [Professional](/VBI/vbi/practices/professional.md)
+- [Professional](/VBI/vbi/practices/professional.md): export const ProfessionalPractice = () => { const dark = useDark() const lang = useLang() const locale = lang === 'en-US' ? 'en-US' : 'zh-CN' const theme = dark ? 'dark' : 'light' return ( <div style={{ width: '100%', height: '700px' }}> <APP hideLocale hideTheme locale={locale} theme={theme} /> </div> ) }
 - [VBI 示例](/VBI/vbi/examples/index.md): 本页面展示 VBI 的各种使用示例。
 - [chart](/VBI/vbi/examples/chart/index.md): 本页面展示 chart builder 的示例。
 - [chartType](/VBI/vbi/examples/chart/chartType.md): {registerDemoConnector()}

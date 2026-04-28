@@ -196,8 +196,7 @@
 - [Tags](/VBI/en-US/vbi/examples/tags.md): Total 67 examples, 0 tags.
 - [VBI](/VBI/en-US/vbi/index.md)
 - [Playground](/VBI/en-US/vbi/playground.md)
-- [Minimalist](/VBI/en-US/vbi/practices/minimalist.md)
-- [Professional](/VBI/en-US/vbi/practices/professional.md)
-- [Standard Report](/VBI/en-US/vbi/practices/standard-report.md)
-- [Standard](/VBI/en-US/vbi/practices/standard.md)
-- [Streamlined](/VBI/en-US/vbi/practices/streamlined.md)
+- [Minimalist](/VBI/en-US/vbi/practices/minimalist.md): export const MinimalistPractice = () => { const dark = useDark() const lang = useLang() const locale = lang === 'en-US' ? 'en-US' : 'zh-CN' const theme = dark ? 'dark' : 'light' return ( <div style={{ width: '100%', height: '700px' }}> <APP hideLocale hideTheme locale={locale} theme={theme} /> </div> ) }
+- [Professional](/VBI/en-US/vbi/practices/professional.md): export const ProfessionalPractice = () => { const dark = useDark() const lang = useLang() const locale = lang === 'en-US' ? 'en-US' : 'zh-CN' const theme = dark ? 'dark' : 'light' return ( <div style={{ width: '100%', height: '700px' }}> <APP hideLocale hideTheme locale={locale} theme={theme} /> </div> ) }
+- [Standard](/VBI/en-US/vbi/practices/standard.md): export const StandardPractice = () => { const dark = useDark() const lang = useLang() const locale = lang === 'en-US' ? 'en-US' : 'zh-CN' const theme = dark ? 'dark' : 'light' return ( <div style={{ width: '100%', height: '700px' }}> <APP hideLocale hideTheme locale={locale} theme={theme} /> </div> ) }
+- [Streamlined](/VBI/en-US/vbi/practices/streamlined.md): export const StreamlinedPractice = () => { const dark = useDark() const lang = useLang() const locale = lang === 'en-US' ? 'en-US' : 'zh-CN' const theme = dark ? 'dark' : 'light' return ( <div style={{ width: '100%', height: '700px' }}> <APP hideLocale hideTheme locale={locale} theme={theme} /> </div> ) }
