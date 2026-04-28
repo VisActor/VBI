@@ -1818,7 +1818,7 @@ VSeed 动画能力支持入场、轮播、氛围、更新与离场等阶段。�
 
 ### 1. 入场动画
 
-入场动画是指图表首次渲染时的动画，用于建立视觉节奏、吸引注意力。\
+入场动画是指图表首次渲染时的动画，用于建立视觉节奏、吸引注意力。
 当前柱/条图系列的入场动画支持 `growth`。
 
 #### 1.1 growth（生长）
@@ -169946,7 +169946,7 @@ url: /VBI/vbi-react/examples/vbi-react-starter.md
 **No data loaded yet**点击上方的 Load demo data，或上传一个 CSV 文件，左侧字段面板就会立即可用。Load demo data**Starter Summary**这个 demo 只使用 `@visactor/vbi-react/components` 来搭建核心编辑区， 用来验证 hooks + slim components 这条路线。Data source: 未加载数据Rows: 0Available dimensions: 0Available measures: 0先加载 demo 数据或上传 CSV，再用 starter components 组装图表。Demo schema 固定使用手工声明的字段类型，不再依赖首行自动猜测。Current DSL Snapshot
 ````
 {
-  "uuid": "ad6cc028-7717-467c-b986-0ebd552cb314",
+  "uuid": "77ab44c0-74d9-474b-9e4e-229e4b1966a0",
   "connectorId": "vbiReactStarterLocalDataConnector",
   "chartType": "table",
   "theme": "light",
