@@ -1,16 +1,23 @@
-import { defineConfig } from "@rslib/core";
-import pkg from "./package.json";
+import { defineConfig } from '@rslib/core'
+import pkg from './package.json'
 
 export default defineConfig({
   lib: [
     {
-      format: "esm",
-      syntax: ["node 18"],
+      format: 'esm',
+      syntax: ['node 18'],
       dts: true,
     },
     {
-      format: "cjs",
-      syntax: ["node 18"],
+      format: 'cjs',
+      syntax: ['node 18'],
+    },
+    // For test, when update later, remove it.
+    {
+      format: 'esm',
+      syntax: ['es2021'],
+      output: { filename: { js: '[name].browser.js' } },
+      autoExternal: false,
     },
   ],
   source: {
@@ -21,4 +28,4 @@ export default defineConfig({
   output: {
     sourceMap: true,
   },
-});
+})
