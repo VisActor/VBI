@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vdash Element Demo</title>
+    <link rel="stylesheet" href="../node_modules/gridstack/dist/gridstack.min.css" />
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel" data-type="module" data-presets="react">
+      import React from 'https://esm.sh/react@19.2.1'
+      import { createRoot } from 'https://esm.sh/react-dom@19.2.1/client'
+      import { vdash } from '../dist/index.browser.js'
+
+      const builder = vdash({
+        uuid: 'demo-2',
+        meta: {
+          title: 'Vdash Demo 2',
+          description: 'Dashboard builder demo',
+          mode: 'view',
+        },
+      })
+        .setMeta({
+          description: 'Dashboard passed via property binding',
+          theme: 'enterprise',
+        })
+        .addWidget({
+          id: 'w-1',
+          type: 'chart',
+          chartId: 'chart-revenue',
+          title: 'Revenue',
+          layouts: { lg: { id: 'l-1', x: 0, y: 0, w: 4, h: 3 } },
+        })
+        .addWidget({
+          id: 'w-2',
+          type: 'chart',
+          chartId: 'chart-sales',
+          title: 'Sales',
+          layouts: { lg: { id: 'l-2', x: 4, y: 0, w: 4, h: 3 } },
+        })
+        .addWidget({
+          id: 'w-3',
+          type: 'insight',
+          insightId: 'insight-conversion',
+          title: 'Conversion',
+          layouts: { lg: { id: 'l-3', x: 8, y: 0, w: 4, h: 3 } },
+        })
+        .addWidget({
+          id: 'w-4',
+          type: 'chart',
+          chartId: 'chart-retention',
+          title: 'Retention',
+          layouts: { lg: { id: 'l-4', x: 0, y: 3, w: 6, h: 4 } },
+        })
+        .addWidget({
+          id: 'w-5',
+          type: 'insight',
+          insightId: 'insight-pipeline',
+          title: 'Pipeline',
+          layouts: { lg: { id: 'l-5', x: 6, y: 3, w: 3, h: 4 } },
+        })
+        .addWidget({
+          id: 'w-6',
+          type: 'chart',
+          title: 'Latency',
+          layouts: { lg: { id: 'l-6', x: 9, y: 3, w: 3, h: 4 } },
+        })
+        .addWidget({
+          id: 'w-temp',
+          type: 'chart',
+          title: 'Temporary Widget',
+          layouts: { lg: { id: 'l-temp', x: 0, y: 7, w: 3, h: 2 } },
+        })
+        .updateWidget('w-6', {
+          description: 'Updated via updateWidget()',
+        })
+        .updateWidgetLayout('w-6', {
+          lg: { id: 'l-6', x: 9, y: 3, w: 3, h: 4, static: false },
+        })
+        .removeWidget('w-temp')
+
+      const dashboard = builder.getDashboard()
+
+      console.log(dashboard)
+
+      const App = () => {
+        return <vdash-app id='dash' dashboard={dashboard}></vdash-app>
+      }
+
+      createRoot(document.getElementById('root')).render(<App />)
+    </script>
+  </body>
+</html>
