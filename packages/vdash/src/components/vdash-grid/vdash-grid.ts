@@ -31,9 +31,9 @@ export interface VdashGridChangeDetail {
  */
 @customElement('vdash-grid')
 export class VdashGrid extends VdashElement {
-  @property({ attribute: false }) items: GridItemLayout[] = []
-
   static override styles = styles
+
+  @property({ type: Array, attribute: false }) items: GridItemLayout[] = []
 
   private grid?: GridStack
   private readonly gridRef = createRef<HTMLElement>()
