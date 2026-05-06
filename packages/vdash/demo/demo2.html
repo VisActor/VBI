@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vdash Grid Demo 3</title>
+    <link rel="stylesheet" href="../node_modules/gridstack/dist/gridstack.min.css" />
+    <style>
+      :root {
+        color-scheme: light;
+      }
+
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(160deg, #f8fafc 0%, #eef2ff 100%);
+        color: #0f172a;
+      }
+
+      .shell {
+        margin: 0 auto;
+        max-width: 1180px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 12px 14px;
+        border: 1px solid #d8e0ee;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(6px);
+      }
+
+      .toolbar h2 {
+        margin: 0;
+        font-size: 17px;
+      }
+
+      .toolbar small {
+        display: block;
+        margin-top: 3px;
+        color: #64748b;
+      }
+
+      .actions {
+        display: inline-flex;
+        gap: 8px;
+      }
+
+      button {
+        border: 1px solid #c5d1e6;
+        border-radius: 8px;
+        background: #fff;
+        color: #1e293b;
+        padding: 8px 12px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      button.primary {
+        border-color: #1d4ed8;
+        background: #1d4ed8;
+        color: #fff;
+      }
+
+      .widget {
+        height: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        display: grid;
+        align-content: start;
+        gap: 8px;
+        /* background: #ffffff;
+        border: 1px solid #dbe3ef; */
+      }
+
+      .widget h3 {
+        margin: 0;
+        font-size: 13px;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        color: #475569;
+      }
+
+      .kpi {
+        font-size: 28px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .muted {
+        font-size: 12px;
+        color: #64748b;
+      }
+
+      .event-box {
+        border: 1px solid #d8e0ee;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 12px;
+      }
+
+      .event-box h4 {
+        margin: 0 0 8px;
+        font-size: 13px;
+        color: #334155;
+      }
+
+      pre {
+        margin: 0;
+        font-size: 12px;
+        line-height: 1.45;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .aaa {
+        color: #1d4ed8;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel" data-type="module" data-presets="react">
+      import React, { useEffect, useRef, useState } from 'https://esm.sh/react@19.2.1'
+      import { createRoot } from 'https://esm.sh/react-dom@19.2.1/client'
+      import '../dist/index.browser.js'
+
+      const baseItems = [
+        { id: 'sales', widgetId: 'sales', x: 0, y: 0, w: 3, h: 3 },
+        { id: 'revenue', widgetId: 'revenue', x: 3, y: 0, w: 4, h: 3 },
+        { id: 'conversion', widgetId: 'conversion', x: 7, y: 0, w: 2, h: 3 },
+        { id: 'retention', widgetId: 'retention', x: 9, y: 0, w: 3, h: 3 },
+      ]
+
+      const baseWidgets = [
+        { id: 'sales', title: 'Sales', value: '$1.92M', note: '+14.2% vs previous quarter' },
+        { id: 'revenue', title: 'Revenue', value: '$7.45M', note: 'ARR trend remains stable' },
+        { id: 'conversion', title: 'Conversion', value: '3.87%', note: 'Web funnel +0.26pp', className: 'aaa' },
+        { id: 'retention', title: 'Retention', value: '91.4%', note: 'Cohort D30 improving' },
+      ]
+
+      const extraItems = [
+        { id: 'pipeline', title: 'Pipeline', value: '128', note: 'Open deals this week', accent: '#0f766e' },
+        { id: 'nps', title: 'NPS', value: '62', note: 'Survey score +4 points', accent: '#b45309' },
+        { id: 'latency', title: 'Latency', value: '184ms', note: 'API p95 trending down', accent: '#7c3aed' },
+      ]
+
+      const widgetById = Object.fromEntries([...baseWidgets, ...extraItems].map((item) => [item.id, item]))
+
+      const cloneBaseItems = () => {
+        return baseItems.map((item) => ({ ...item }))
+      }
+
+      const Widget = ({ config }) => {
+        return (
+          <div slot={`item:${config.id}`} className='widget'>
+            <h3 className={config.className} style={config.accent ? { color: config.accent } : undefined}>
+              {config.title}
+            </h3>
+            <div className='kpi'>{config.value}</div>
+            <div className='muted'>{config.note}</div>
+          </div>
+        )
+      }
+
+      const App = () => {
+        const gridRef = useRef(null)
+        const [currentItems, setCurrentItems] = useState(cloneBaseItems)
+        const [nextExtraIndex, setNextExtraIndex] = useState(0)
+        const [revenueExpanded, setRevenueExpanded] = useState(false)
+        const [eventOutput, setEventOutput] = useState('Waiting for drag/resize finalize...')
+
+        useEffect(() => {
+          if (gridRef.current) {
+            gridRef.current.items = currentItems
+          }
+        }, [currentItems])
+
+        useEffect(() => {
+          const grid = gridRef.current
+          if (!grid) {
+            return undefined
+          }
+
+          const handleChange = (event) => {
+            const nextItems = event.detail.items.map((item) => ({ ...item }))
+            setCurrentItems(nextItems)
+            setEventOutput(JSON.stringify(event.detail, null, 2))
+          }
+
+          grid.addEventListener('vdash-grid-change', handleChange)
+          return () => {
+            grid.removeEventListener('vdash-grid-change', handleChange)
+          }
+        }, [])
+
+        const addItem = () => {
+          const nextConfig = extraItems[nextExtraIndex]
+          if (!nextConfig) {
+            setEventOutput('All demo items have been added.')
+            return
+          }
+
+          const nextItem = {
+            id: nextConfig.id,
+            widgetId: nextConfig.id,
+            x: 0,
+            y: 0,
+            w: 3,
+            h: 3,
+          }
+
+          setCurrentItems((items) => [...items, nextItem])
+          setNextExtraIndex((index) => index + 1)
+          setEventOutput(`Added "${nextItem.id}" at x=0, y=0. Check whether the grid repacks existing items.`)
+        }
+
+        const updateRevenueItem = () => {
+          const nextExpanded = !revenueExpanded
+
+          setCurrentItems((items) =>
+            items.map((item) => {
+              if (item.id !== 'revenue') {
+                return { ...item }
+              }
+
+              return {
+                ...item,
+                x: nextExpanded ? 0 : 3,
+                y: nextExpanded ? 3 : 0,
+                w: nextExpanded ? 6 : 4,
+                h: nextExpanded ? 4 : 3,
+              }
+            }),
+          )
+          setRevenueExpanded(nextExpanded)
+          setEventOutput(
+            nextExpanded
+              ? 'Updated existing "revenue" item to x=0, y=3, w=6, h=4.'
+              : 'Updated existing "revenue" item back to x=3, y=0, w=4, h=3.',
+          )
+        }
+
+        const resetLayout = () => {
+          setCurrentItems(cloneBaseItems())
+          setNextExtraIndex(0)
+          setRevenueExpanded(false)
+          setEventOutput('Layout reset to baseItems.')
+        }
+
+        return (
+          <div className='shell'>
+            <section className='toolbar'>
+              <div>
+                <h2>Demo 3: Basic `vdash-grid`</h2>
+                <small>`items` + slotted widgets + layout change event</small>
+              </div>
+              <div className='actions'>
+                <button className='primary' type='button' onClick={addItem}>
+                  Add Item
+                </button>
+                <button type='button' onClick={updateRevenueItem}>
+                  Update Revenue
+                </button>
+                <button type='button' onClick={resetLayout}>
+                  Reset Layout
+                </button>
+              </div>
+            </section>
+
+            <vdash-grid id='grid' ref={gridRef}>
+              {currentItems.map((item) => {
+                const config = widgetById[item.widgetId]
+                return config ? <Widget key={item.id} config={config} /> : null
+              })}
+            </vdash-grid>
+
+            <section className='event-box'>
+              <h4>Latest `vdash-grid-change`</h4>
+              <pre id='event-output'>{eventOutput}</pre>
+            </section>
+          </div>
+        )
+      }
+
+      createRoot(document.getElementById('root')).render(<App />)
+    </script>
+  </body>
+</html>
