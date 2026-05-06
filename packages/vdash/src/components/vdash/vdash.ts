@@ -1,10 +1,12 @@
-import { html } from 'lit'
+import { html, type PropertyValues } from 'lit'
 import { property } from 'lit/decorators.js'
-import type { VBIDashboardDSL } from '../../types'
+import { repeat } from 'lit/directives/repeat.js'
+import type { DashboardWidget, VBIDashboardDSL } from '../../types'
 import { customElement, VdashElement } from '../_shared/element'
 import '../vdash-grid/vdash-grid'
 import '../vdash-header/vdash-header'
 import styles from './vdash.styles'
+import { renderSlot } from './widget-renderer'
 
 @customElement('vdash-app')
 export class VdashApp extends VdashElement {
@@ -12,9 +14,15 @@ export class VdashApp extends VdashElement {
 
   @property({ type: Object, attribute: false }) dashboard!: VBIDashboardDSL
 
-  protected override willUpdate(): void {
+  private widgetMap = new Map<string, DashboardWidget>()
+
+  protected override willUpdate(changed: PropertyValues<this>): void {
     if (!this.dashboard) {
       this.error('<vdash-app> requires .dashboard to be provided')
+    }
+
+    if (changed.has('dashboard')) {
+      this.widgetMap = new Map(this.dashboard.widgets.map((w) => [w.id, w]))
     }
   }
 
@@ -33,7 +41,17 @@ export class VdashApp extends VdashElement {
   }
 
   private renderGrid() {
-    return html`<vdash-grid .items=${this.dashboard.layout.layouts.lg}></vdash-grid>`
+    const layouts = this.dashboard.layout.layouts.lg
+
+    return html`
+      <vdash-grid .items=${layouts}>
+        ${repeat(
+          layouts,
+          (item) => item.id,
+          (item) => renderSlot(item, this.widgetMap),
+        )}
+      </vdash-grid>
+    `
   }
 }
 
