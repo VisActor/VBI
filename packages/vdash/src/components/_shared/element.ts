@@ -4,9 +4,11 @@ const VERSION = __VDASH_VERSION__
 const CONFIG_KEY = '__vdash_disableRegistryWarning__'
 
 const warn = (message: string, componentInstance?: VdashElement): void => {
-  const prefix = '[Vdash] '
+  console.warn(message, componentInstance)
+}
 
-  console.warn(`${componentInstance ? prefix : ''}${message}`, componentInstance)
+const error = (message: string): Error => {
+  return new Error(message)
 }
 
 export class VdashElement extends LitElement {
@@ -16,6 +18,10 @@ export class VdashElement extends LitElement {
 
   warn(message: string): void {
     warn(message, this)
+  }
+
+  error(message: string): never {
+    throw error(message)
   }
 }
 
