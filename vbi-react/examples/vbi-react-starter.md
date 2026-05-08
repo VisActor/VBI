@@ -7,7 +7,7 @@
 **No data loaded yet**点击上方的 Load demo data，或上传一个 CSV 文件，左侧字段面板就会立即可用。Load demo data**Starter Summary**这个 demo 只使用 `@visactor/vbi-react/components` 来搭建核心编辑区， 用来验证 hooks + slim components 这条路线。Data source: 未加载数据Rows: 0Available dimensions: 0Available measures: 0先加载 demo 数据或上传 CSV，再用 starter components 组装图表。Demo schema 固定使用手工声明的字段类型，不再依赖首行自动猜测。Current DSL Snapshot
 ````
 {
-  "uuid": "3dfd01a0-01c8-4116-afb6-25fab3d52546",
+  "uuid": "36f9724c-787e-44c9-b91b-1467dc58f473",
   "connectorId": "vbiReactStarterLocalDataConnector",
   "chartType": "table",
   "theme": "light",
