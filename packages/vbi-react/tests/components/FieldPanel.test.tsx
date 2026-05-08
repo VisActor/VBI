@@ -19,8 +19,8 @@ describe('FieldPanel', () => {
     fireEvent.click(view.getByRole('button', { name: 'Add dimension' }))
     fireEvent.click(view.getByRole('button', { name: 'Add measure' }))
 
-    expect(view.getByLabelText('Alias for dimension region')).toBeTruthy()
-    expect(view.getByLabelText('Alias for measure sales')).toBeTruthy()
+    fireEvent.click(view.getByRole('button', { name: 'Edit dimension region' }))
+    fireEvent.click(view.getByRole('button', { name: 'Edit measure sales' }))
 
     fireEvent.change(view.getByLabelText('Aggregate for dimension region'), {
       target: { value: 'toMonth' },
@@ -65,5 +65,28 @@ describe('FieldPanel', () => {
 
     expect(view.getByLabelText('Selected dimensions')).toBeTruthy()
     expect(view.getByLabelText('Selected measures')).toBeTruthy()
+  })
+
+  it('supports slot class names on compact field panel', () => {
+    const builder = createTestBuilder()
+
+    const view = render(
+      <FieldPanel
+        builder={builder}
+        dimensionOptions={[{ label: 'Region', value: 'region' }]}
+        measureOptions={[{ label: 'Sales', value: 'sales' }]}
+        slotClassNames={{
+          dimensionsList: 'test-dim-list',
+          measuresList: 'test-mea-list',
+          root: 'test-root',
+        }}
+      />,
+    )
+
+    const root = view.container.querySelector('.vbi-react-field-panel')
+    expect(root?.className).toContain('vbi-react-field-panel--compact')
+    expect(root?.className).toContain('test-root')
+    expect(view.container.querySelector('.test-dim-list')).toBeTruthy()
+    expect(view.container.querySelector('.test-mea-list')).toBeTruthy()
   })
 })

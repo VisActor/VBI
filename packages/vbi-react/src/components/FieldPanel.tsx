@@ -7,91 +7,114 @@ import { joinClassNames } from './utils'
 
 type MeasureAggregateFunction = NonNullable<NonNullable<VBIMeasure['aggregate']>['func']>
 type DimensionAggregateFunction = NonNullable<NonNullable<VBIDimension['aggregate']>['func']>
+type MeasureEncoding = NonNullable<VBIMeasure['encoding']>
+type DimensionEncoding = NonNullable<VBIDimension['encoding']>
+type FieldPanelSlotClassNames = {
+  dimensionsList?: string
+  dimensionsSection?: string
+  measuresList?: string
+  measuresSection?: string
+  root?: string
+}
 
 const defaultMeasureAggregateOptions: Array<SelectOption<MeasureAggregateFunction>> = [
-  { label: 'Sum', value: 'sum' },
-  { label: 'Average', value: 'avg' },
-  { label: 'Count', value: 'count' },
-  { label: 'Max', value: 'max' },
-  { label: 'Min', value: 'min' },
+  { label: 'sum', value: 'sum' },
+  { label: 'avg', value: 'avg' },
+  { label: 'count', value: 'count' },
+  { label: 'countDistinct', value: 'countDistinct' },
+  { label: 'max', value: 'max' },
+  { label: 'min', value: 'min' },
+  { label: 'variance', value: 'variance' },
+  { label: 'variancePop', value: 'variancePop' },
+  { label: 'stddev', value: 'stddev' },
+  { label: 'median', value: 'median' },
+  { label: 'quantile', value: 'quantile' },
 ]
 
-const defaultMeasureEncodingOptions: Array<SelectOption<NonNullable<VBIMeasure['encoding']>>> = [
-  { label: 'Y Axis', value: 'yAxis' },
-  { label: 'X Axis', value: 'xAxis' },
-  { label: 'Color', value: 'color' },
-  { label: 'Label', value: 'label' },
-  { label: 'Tooltip', value: 'tooltip' },
-  { label: 'Size', value: 'size' },
+const defaultMeasureEncodingOptions: Array<SelectOption<MeasureEncoding>> = [
+  { label: 'yAxis', value: 'yAxis' },
+  { label: 'xAxis', value: 'xAxis' },
+  { label: 'primaryYAxis', value: 'primaryYAxis' },
+  { label: 'secondaryYAxis', value: 'secondaryYAxis' },
+  { label: 'color', value: 'color' },
+  { label: 'detail', value: 'detail' },
+  { label: 'label', value: 'label' },
+  { label: 'tooltip', value: 'tooltip' },
+  { label: 'size', value: 'size' },
+  { label: 'angle', value: 'angle' },
+  { label: 'radius', value: 'radius' },
 ]
 
 const defaultDimensionAggregateOptions: Array<SelectOption<DimensionAggregateFunction>> = [
-  { label: 'Year', value: 'toYear' },
-  { label: 'Quarter', value: 'toQuarter' },
-  { label: 'Month', value: 'toMonth' },
-  { label: 'Week', value: 'toWeek' },
-  { label: 'Day', value: 'toDay' },
-  { label: 'Hour', value: 'toHour' },
-  { label: 'Minute', value: 'toMinute' },
-  { label: 'Second', value: 'toSecond' },
+  { label: 'toYear', value: 'toYear' },
+  { label: 'toQuarter', value: 'toQuarter' },
+  { label: 'toMonth', value: 'toMonth' },
+  { label: 'toWeek', value: 'toWeek' },
+  { label: 'toDay', value: 'toDay' },
+  { label: 'toHour', value: 'toHour' },
+  { label: 'toMinute', value: 'toMinute' },
+  { label: 'toSecond', value: 'toSecond' },
 ]
 
-const defaultDimensionEncodingOptions: Array<SelectOption<NonNullable<VBIDimension['encoding']>>> = [
-  { label: 'X Axis', value: 'xAxis' },
-  { label: 'Y Axis', value: 'yAxis' },
-  { label: 'Angle', value: 'angle' },
-  { label: 'Color', value: 'color' },
-  { label: 'Detail', value: 'detail' },
-  { label: 'Tooltip', value: 'tooltip' },
-  { label: 'Label', value: 'label' },
-  { label: 'Row', value: 'row' },
-  { label: 'Column', value: 'column' },
-  { label: 'Player', value: 'player' },
-  { label: 'Hierarchy', value: 'hierarchy' },
+const defaultDimensionEncodingOptions: Array<SelectOption<DimensionEncoding>> = [
+  { label: 'xAxis', value: 'xAxis' },
+  { label: 'yAxis', value: 'yAxis' },
+  { label: 'angle', value: 'angle' },
+  { label: 'color', value: 'color' },
+  { label: 'detail', value: 'detail' },
+  { label: 'tooltip', value: 'tooltip' },
+  { label: 'label', value: 'label' },
+  { label: 'row', value: 'row' },
+  { label: 'column', value: 'column' },
+  { label: 'player', value: 'player' },
+  { label: 'hierarchy', value: 'hierarchy' },
 ]
-
-const sectionTitleStyle = {
-  fontSize: 12,
-  lineHeight: 1.4,
-}
-
-const controlStyle = {
-  border: '1px solid #c7cad1',
-  borderRadius: 6,
-  fontSize: 12,
-  height: 28,
-  minWidth: 0,
-  padding: '0 8px',
-}
-
-const actionButtonStyle = {
-  ...controlStyle,
-  background: '#f5f6f8',
-  cursor: 'pointer',
-  flexShrink: 0,
-  padding: '0 10px',
-  whiteSpace: 'nowrap' as const,
-}
-
-const fieldCardStyle = {
-  border: '1px solid #d9d9d9',
-  borderRadius: 8,
-  display: 'grid',
-  gap: 6,
-  padding: 8,
-}
 
 export interface FieldPanelProps extends BaseComponentProps {
   builder: VBIChartBuilder
   dimensionAggregateOptions?: Array<SelectOption<DimensionAggregateFunction>>
-  dimensionEncodingOptions?: Array<SelectOption<NonNullable<VBIDimension['encoding']>>>
+  dimensionEncodingOptions?: Array<SelectOption<DimensionEncoding>>
   dimensionOptions?: Array<SelectOption<string>>
   dimensionsTitle?: string
   measureAggregateOptions?: Array<SelectOption<MeasureAggregateFunction>>
-  measureEncodingOptions?: Array<SelectOption<NonNullable<VBIMeasure['encoding']>>>
+  measureEncodingOptions?: Array<SelectOption<MeasureEncoding>>
   measureOptions?: Array<SelectOption<string>>
   measuresTitle?: string
+  slotClassNames?: FieldPanelSlotClassNames
   title?: string
+}
+
+function clampQuantile(value: number): number {
+  if (Number.isNaN(value)) return 0.5
+  if (value < 0) return 0
+  if (value > 1) return 1
+  return value
+}
+
+function toActiveSet(items: { field: string }[]): Set<string> {
+  return new Set(items.map((item) => item.field))
+}
+
+function toText(option: SelectOption<string>): string {
+  return typeof option.label === 'string' ? option.label : option.value
+}
+
+function RowTags(props: { aggregate?: string; encoding?: string }) {
+  const { aggregate, encoding } = props
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+      {encoding ? (
+        <span style={{ border: '1px solid #d9d9d9', borderRadius: 999, color: '#5f6673', fontSize: 11, padding: '1px 6px' }}>
+          Enc: {encoding}
+        </span>
+      ) : null}
+      {aggregate ? (
+        <span style={{ border: '1px solid #d9d9d9', borderRadius: 999, color: '#5f6673', fontSize: 11, padding: '1px 6px' }}>
+          Agg: {aggregate}
+        </span>
+      ) : null}
+    </div>
+  )
 }
 
 export function FieldPanel(props: FieldPanelProps) {
@@ -106,302 +129,285 @@ export function FieldPanel(props: FieldPanelProps) {
     measureEncodingOptions = defaultMeasureEncodingOptions,
     measureOptions = [],
     measuresTitle = 'Measures',
+    slotClassNames,
     style,
     title = 'Fields',
   } = props
+  const controlHeight = 24
+  const panelGap = 8
+  const itemPadding = 6
+
   const { addDimension, dimensions, removeDimension, updateDimension } = useDimensions(builder)
   const { addMeasure, measures, removeMeasure, updateMeasure } = useMeasures(builder)
   const [selectedDimension, setSelectedDimension] = useState('')
   const [selectedMeasure, setSelectedMeasure] = useState('')
+  const [editingDimensionId, setEditingDimensionId] = useState<string | null>(null)
+  const [editingMeasureId, setEditingMeasureId] = useState<string | null>(null)
 
-  const availableDimensionOptions = useMemo(() => {
-    const activeFields = new Set(dimensions.map((dimension) => dimension.field))
-    return dimensionOptions.filter((dimensionOption) => !activeFields.has(dimensionOption.value))
+  const availableDimensions = useMemo(() => {
+    const activeSet = toActiveSet(dimensions)
+    return dimensionOptions.filter((option) => !activeSet.has(option.value))
   }, [dimensionOptions, dimensions])
 
-  const availableMeasureOptions = useMemo(() => {
-    const activeFields = new Set(measures.map((measure) => measure.field))
-    return measureOptions.filter((measureOption) => !activeFields.has(measureOption.value))
+  const availableMeasures = useMemo(() => {
+    const activeSet = toActiveSet(measures)
+    return measureOptions.filter((option) => !activeSet.has(option.value))
   }, [measureOptions, measures])
 
   useEffect(() => {
-    if (!availableDimensionOptions.some((dimensionOption) => dimensionOption.value === selectedDimension)) {
-      setSelectedDimension(availableDimensionOptions[0]?.value ?? '')
+    if (!availableDimensions.some((option) => option.value === selectedDimension)) {
+      setSelectedDimension(availableDimensions[0]?.value ?? '')
     }
-  }, [availableDimensionOptions, selectedDimension])
+  }, [availableDimensions, selectedDimension])
 
   useEffect(() => {
-    if (!availableMeasureOptions.some((measureOption) => measureOption.value === selectedMeasure)) {
-      setSelectedMeasure(availableMeasureOptions[0]?.value ?? '')
+    if (!availableMeasures.some((option) => option.value === selectedMeasure)) {
+      setSelectedMeasure(availableMeasures[0]?.value ?? '')
     }
-  }, [availableMeasureOptions, selectedMeasure])
+  }, [availableMeasures, selectedMeasure])
 
   return (
     <section
-      className={joinClassNames('vbi-react-field-panel', className)}
-      style={{
-        display: 'grid',
-        fontSize: 13,
-        gap: 12,
-        gridTemplateRows: 'auto minmax(0, 1fr)',
-        lineHeight: 1.4,
-        minHeight: 0,
-        ...style,
-      }}
+      className={joinClassNames('vbi-react-field-panel', 'vbi-react-field-panel--compact', className, slotClassNames?.root)}
+      style={{ display: 'grid', fontSize: 12, gap: panelGap, gridTemplateRows: 'auto minmax(0, 1fr)', minHeight: 0, ...style }}
     >
       <header>
         <strong>{title}</strong>
       </header>
-
-      <div style={{ display: 'grid', gap: 12, gridTemplateRows: 'minmax(0, 1fr) minmax(0, 1fr)', minHeight: 0 }}>
-        <section style={{ display: 'grid', gap: 10, gridTemplateRows: 'auto minmax(0, 1fr)', minHeight: 0 }}>
+      <div style={{ display: 'grid', gap: panelGap, gridTemplateRows: 'minmax(0, 1fr) minmax(0, 1fr)', minHeight: 0 }}>
+        <section className={slotClassNames?.dimensionsSection} style={{ display: 'grid', gap: 6, gridTemplateRows: 'auto minmax(0, 1fr)', minHeight: 0 }}>
           <div style={{ display: 'grid', gap: 6 }}>
-            <strong style={sectionTitleStyle}>{dimensionsTitle}</strong>
-            <div style={{ display: 'flex', gap: 8 }}>
+            <strong>{dimensionsTitle}</strong>
+            <div style={{ display: 'flex', gap: 6 }}>
               <select
                 aria-label='Available dimensions'
-                onChange={(event) => {
-                  setSelectedDimension(event.target.value)
-                }}
-                style={{ ...controlStyle, flex: 1 }}
+                onChange={(event) => setSelectedDimension(event.target.value)}
+                style={{ border: '1px solid #c7cad1', borderRadius: 6, flex: 1, height: controlHeight, minWidth: 0, padding: '0 8px' }}
                 value={selectedDimension}
               >
-                {availableDimensionOptions.length === 0 ? (
+                {availableDimensions.length === 0 ? (
                   <option value=''>No dimensions available</option>
                 ) : (
-                  availableDimensionOptions.map((dimensionOption) => (
-                    <option key={dimensionOption.value} value={dimensionOption.value}>
-                      {dimensionOption.label ?? dimensionOption.value}
+                  availableDimensions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {toText(option)}
                     </option>
                   ))
                 )}
               </select>
               <button
+                aria-label='Add dimension'
                 disabled={!selectedDimension}
-                onClick={() => {
-                  if (!selectedDimension) {
-                    return
-                  }
-
-                  addDimension(selectedDimension)
-                }}
-                style={actionButtonStyle}
+                onClick={() => addDimension(selectedDimension)}
+                style={{ border: '1px solid #c7cad1', borderRadius: 6, cursor: 'pointer', height: controlHeight, padding: '0 8px' }}
                 type='button'
               >
                 Add dimension
               </button>
             </div>
           </div>
-
-          <div style={{ border: '1px solid #d9d9d9', borderRadius: 8, minHeight: 0, overflow: 'hidden' }}>
-            <ul
-              aria-label='Selected dimensions'
-              style={{
-                alignContent: 'start',
-                display: 'grid',
-                gap: 6,
-                listStyle: 'none',
-                margin: 0,
-                minHeight: 0,
-                overflowY: 'auto',
-                padding: 8,
-              }}
-            >
-              {dimensions.map((dimension) => (
-                <li key={dimension.id} style={fieldCardStyle}>
-                  <div>
-                    <strong style={{ fontSize: 12 }}>{dimension.alias || dimension.field}</strong>
-                    <div style={{ color: '#5f6673', fontSize: 12 }}>{dimension.field}</div>
+          <ul
+            aria-label='Selected dimensions'
+            className={slotClassNames?.dimensionsList}
+            style={{ border: '1px solid #d9d9d9', borderRadius: 8, display: 'grid', gap: 6, listStyle: 'none', margin: 0, minHeight: 0, overflowY: 'auto', padding: 6 }}
+          >
+            {dimensions.length === 0 ? <li style={{ color: '#5f6673' }}>No dimensions selected</li> : null}
+            {dimensions.map((dimension) => (
+              <li key={dimension.id} style={{ background: '#fff', border: '1px solid #d9d9d9', borderRadius: 8, padding: itemPadding }}>
+                <div style={{ alignItems: 'center', display: 'grid', gap: 6, gridTemplateColumns: 'minmax(0, 1fr) auto auto' }}>
+                  <div style={{ minWidth: 0 }}>
+                    <strong style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{dimension.alias || dimension.field}</strong>
+                    <span style={{ color: '#5f6673', display: 'block', fontSize: 11, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{dimension.field}</span>
                   </div>
-                  <label style={{ ...sectionTitleStyle, display: 'grid', gap: 4 }}>
-                    <span>Alias</span>
+                  <RowTags aggregate={dimension.aggregate?.func} encoding={dimension.encoding} />
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    <button
+                      aria-label={editingDimensionId === dimension.id ? `Finish editing dimension ${dimension.field}` : `Edit dimension ${dimension.field}`}
+                      onClick={() => setEditingDimensionId((id) => (id === dimension.id ? null : dimension.id))}
+                      style={{ border: '1px solid #c7cad1', borderRadius: 6, cursor: 'pointer', height: controlHeight, padding: '0 8px' }}
+                      type='button'
+                    >
+                      {editingDimensionId === dimension.id ? 'Done' : 'Edit'}
+                    </button>
+                    <button
+                      aria-label={`Remove dimension ${dimension.field}`}
+                      onClick={() => removeDimension(dimension.id)}
+                      style={{ border: '1px solid #c7cad1', borderRadius: 6, cursor: 'pointer', height: controlHeight, padding: '0 8px' }}
+                      type='button'
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+                {editingDimensionId === dimension.id ? (
+                  <div style={{ display: 'grid', gap: 6, gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', marginTop: 6 }}>
                     <input
                       aria-label={`Alias for dimension ${dimension.field}`}
-                      onChange={(event) => {
-                        updateDimension(dimension.id, { alias: event.target.value })
-                      }}
-                      style={controlStyle}
+                      onChange={(event) => updateDimension(dimension.id, { alias: event.target.value })}
+                      placeholder='Alias'
+                      style={{ border: '1px solid #c7cad1', borderRadius: 6, height: controlHeight, minWidth: 0, padding: '0 8px' }}
                       value={dimension.alias ?? ''}
                     />
-                  </label>
-                  <label style={{ ...sectionTitleStyle, display: 'grid', gap: 4 }}>
-                    <span>Aggregate</span>
+                    <select
+                      aria-label={`Encoding for dimension ${dimension.field}`}
+                      onChange={(event) => updateDimension(dimension.id, { encoding: event.target.value as DimensionEncoding })}
+                      style={{ border: '1px solid #c7cad1', borderRadius: 6, height: controlHeight, minWidth: 0, padding: '0 8px' }}
+                      value={dimension.encoding ?? 'xAxis'}
+                    >
+                      {dimensionEncodingOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {toText(option)}
+                        </option>
+                      ))}
+                    </select>
                     <select
                       aria-label={`Aggregate for dimension ${dimension.field}`}
                       onChange={(event) => {
-                        const aggregateFunc = event.target.value as DimensionAggregateFunction | ''
-                        updateDimension(dimension.id, {
-                          aggregate: aggregateFunc ? { func: aggregateFunc } : null,
-                        })
+                        const nextFunc = event.target.value as DimensionAggregateFunction | ''
+                        updateDimension(dimension.id, { aggregate: nextFunc ? { func: nextFunc } : null })
                       }}
-                      style={controlStyle}
+                      style={{ border: '1px solid #c7cad1', borderRadius: 6, height: controlHeight, minWidth: 0, padding: '0 8px' }}
                       value={dimension.aggregate?.func ?? ''}
                     >
                       <option value=''>None</option>
-                      {dimensionAggregateOptions.map((aggregateOption) => (
-                        <option key={aggregateOption.value} value={aggregateOption.value}>
-                          {aggregateOption.label ?? aggregateOption.value}
+                      {dimensionAggregateOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {toText(option)}
                         </option>
                       ))}
                     </select>
-                  </label>
-                  <label style={{ ...sectionTitleStyle, display: 'grid', gap: 4 }}>
-                    <span>Encoding</span>
-                    <select
-                      aria-label={`Encoding for dimension ${dimension.field}`}
-                      onChange={(event) => {
-                        updateDimension(dimension.id, {
-                          encoding: event.target.value as NonNullable<VBIDimension['encoding']>,
-                        })
-                      }}
-                      style={controlStyle}
-                      value={dimension.encoding ?? 'xAxis'}
-                    >
-                      {dimensionEncodingOptions.map((encodingOption) => (
-                        <option key={encodingOption.value} value={encodingOption.value}>
-                          {encodingOption.label ?? encodingOption.value}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <button
-                    onClick={() => {
-                      removeDimension(dimension.id)
-                    }}
-                    style={actionButtonStyle}
-                    type='button'
-                  >
-                    Remove dimension {dimension.field}
-                  </button>
-                </li>
-              ))}
-              {dimensions.length === 0 ? <li>No dimensions selected.</li> : null}
-            </ul>
-          </div>
+                  </div>
+                ) : null}
+              </li>
+            ))}
+          </ul>
         </section>
-
-        <section style={{ display: 'grid', gap: 10, gridTemplateRows: 'auto minmax(0, 1fr)', minHeight: 0 }}>
+        <section className={slotClassNames?.measuresSection} style={{ display: 'grid', gap: 6, gridTemplateRows: 'auto minmax(0, 1fr)', minHeight: 0 }}>
           <div style={{ display: 'grid', gap: 6 }}>
-            <strong style={sectionTitleStyle}>{measuresTitle}</strong>
-            <div style={{ display: 'flex', gap: 8 }}>
+            <strong>{measuresTitle}</strong>
+            <div style={{ display: 'flex', gap: 6 }}>
               <select
                 aria-label='Available measures'
-                onChange={(event) => {
-                  setSelectedMeasure(event.target.value)
-                }}
-                style={{ ...controlStyle, flex: 1 }}
+                onChange={(event) => setSelectedMeasure(event.target.value)}
+                style={{ border: '1px solid #c7cad1', borderRadius: 6, flex: 1, height: controlHeight, minWidth: 0, padding: '0 8px' }}
                 value={selectedMeasure}
               >
-                {availableMeasureOptions.length === 0 ? (
+                {availableMeasures.length === 0 ? (
                   <option value=''>No measures available</option>
                 ) : (
-                  availableMeasureOptions.map((measureOption) => (
-                    <option key={measureOption.value} value={measureOption.value}>
-                      {measureOption.label ?? measureOption.value}
+                  availableMeasures.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {toText(option)}
                     </option>
                   ))
                 )}
               </select>
               <button
+                aria-label='Add measure'
                 disabled={!selectedMeasure}
-                onClick={() => {
-                  if (!selectedMeasure) {
-                    return
-                  }
-
-                  addMeasure(selectedMeasure)
-                }}
-                style={actionButtonStyle}
+                onClick={() => addMeasure(selectedMeasure)}
+                style={{ border: '1px solid #c7cad1', borderRadius: 6, cursor: 'pointer', height: controlHeight, padding: '0 8px' }}
                 type='button'
               >
                 Add measure
               </button>
             </div>
           </div>
-
-          <div style={{ border: '1px solid #d9d9d9', borderRadius: 8, minHeight: 0, overflow: 'hidden' }}>
-            <ul
-              aria-label='Selected measures'
-              style={{
-                alignContent: 'start',
-                display: 'grid',
-                gap: 6,
-                listStyle: 'none',
-                margin: 0,
-                minHeight: 0,
-                overflowY: 'auto',
-                padding: 8,
-              }}
-            >
-              {measures.map((measure) => (
-                <li key={measure.id} style={fieldCardStyle}>
-                  <div>
-                    <strong style={{ fontSize: 12 }}>{measure.alias || measure.field}</strong>
-                    <div style={{ color: '#5f6673', fontSize: 12 }}>{measure.field}</div>
+          <ul
+            aria-label='Selected measures'
+            className={slotClassNames?.measuresList}
+            style={{ border: '1px solid #d9d9d9', borderRadius: 8, display: 'grid', gap: 6, listStyle: 'none', margin: 0, minHeight: 0, overflowY: 'auto', padding: 6 }}
+          >
+            {measures.length === 0 ? <li style={{ color: '#5f6673' }}>No measures selected</li> : null}
+            {measures.map((measure) => (
+              <li key={measure.id} style={{ background: '#fff', border: '1px solid #d9d9d9', borderRadius: 8, padding: itemPadding }}>
+                <div style={{ alignItems: 'center', display: 'grid', gap: 6, gridTemplateColumns: 'minmax(0, 1fr) auto auto' }}>
+                  <div style={{ minWidth: 0 }}>
+                    <strong style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{measure.alias || measure.field}</strong>
+                    <span style={{ color: '#5f6673', display: 'block', fontSize: 11, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{measure.field}</span>
                   </div>
-                  <label style={{ ...sectionTitleStyle, display: 'grid', gap: 4 }}>
-                    <span>Alias</span>
+                  <RowTags aggregate={measure.aggregate?.func} encoding={measure.encoding} />
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    <button
+                      aria-label={editingMeasureId === measure.id ? `Finish editing measure ${measure.field}` : `Edit measure ${measure.field}`}
+                      onClick={() => setEditingMeasureId((id) => (id === measure.id ? null : measure.id))}
+                      style={{ border: '1px solid #c7cad1', borderRadius: 6, cursor: 'pointer', height: controlHeight, padding: '0 8px' }}
+                      type='button'
+                    >
+                      {editingMeasureId === measure.id ? 'Done' : 'Edit'}
+                    </button>
+                    <button
+                      aria-label={`Remove measure ${measure.field}`}
+                      onClick={() => removeMeasure(measure.id)}
+                      style={{ border: '1px solid #c7cad1', borderRadius: 6, cursor: 'pointer', height: controlHeight, padding: '0 8px' }}
+                      type='button'
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+                {editingMeasureId === measure.id ? (
+                  <div style={{ display: 'grid', gap: 6, gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', marginTop: 6 }}>
                     <input
                       aria-label={`Alias for measure ${measure.field}`}
-                      onChange={(event) => {
-                        updateMeasure(measure.id, { alias: event.target.value })
-                      }}
-                      style={controlStyle}
+                      onChange={(event) => updateMeasure(measure.id, { alias: event.target.value })}
+                      placeholder='Alias'
+                      style={{ border: '1px solid #c7cad1', borderRadius: 6, height: controlHeight, minWidth: 0, padding: '0 8px' }}
                       value={measure.alias ?? ''}
                     />
-                  </label>
-                  <label style={{ ...sectionTitleStyle, display: 'grid', gap: 4 }}>
-                    <span>Aggregate</span>
+                    <select
+                      aria-label={`Encoding for measure ${measure.field}`}
+                      onChange={(event) => updateMeasure(measure.id, { encoding: event.target.value as MeasureEncoding })}
+                      style={{ border: '1px solid #c7cad1', borderRadius: 6, height: controlHeight, minWidth: 0, padding: '0 8px' }}
+                      value={measure.encoding ?? 'yAxis'}
+                    >
+                      {measureEncodingOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {toText(option)}
+                        </option>
+                      ))}
+                    </select>
                     <select
                       aria-label={`Aggregate for measure ${measure.field}`}
                       onChange={(event) => {
-                        updateMeasure(measure.id, {
-                          aggregate: { func: event.target.value as MeasureAggregateFunction },
-                        })
+                        const func = event.target.value as MeasureAggregateFunction
+                        if (func === 'quantile') {
+                          updateMeasure(measure.id, { aggregate: { func: 'quantile', quantile: 0.5 } })
+                          return
+                        }
+                        updateMeasure(measure.id, { aggregate: { func } })
                       }}
-                      style={controlStyle}
+                      style={{ border: '1px solid #c7cad1', borderRadius: 6, height: controlHeight, minWidth: 0, padding: '0 8px' }}
                       value={measure.aggregate?.func ?? 'sum'}
                     >
-                      {measureAggregateOptions.map((aggregateOption) => (
-                        <option key={aggregateOption.value} value={aggregateOption.value}>
-                          {aggregateOption.label ?? aggregateOption.value}
+                      {measureAggregateOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {toText(option)}
                         </option>
                       ))}
                     </select>
-                  </label>
-                  <label style={{ ...sectionTitleStyle, display: 'grid', gap: 4 }}>
-                    <span>Encoding</span>
-                    <select
-                      aria-label={`Encoding for measure ${measure.field}`}
-                      onChange={(event) => {
-                        updateMeasure(measure.id, {
-                          encoding: event.target.value as NonNullable<VBIMeasure['encoding']>,
-                        })
-                      }}
-                      style={controlStyle}
-                      value={measure.encoding ?? 'yAxis'}
-                    >
-                      {measureEncodingOptions.map((encodingOption) => (
-                        <option key={encodingOption.value} value={encodingOption.value}>
-                          {encodingOption.label ?? encodingOption.value}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <button
-                    onClick={() => {
-                      removeMeasure(measure.id)
-                    }}
-                    style={actionButtonStyle}
-                    type='button'
-                  >
-                    Remove measure {measure.field}
-                  </button>
-                </li>
-              ))}
-              {measures.length === 0 ? <li>No measures selected.</li> : null}
-            </ul>
-          </div>
+                    {measure.aggregate?.func === 'quantile' ? (
+                      <input
+                        aria-label={`Quantile for measure ${measure.field}`}
+                        max={1}
+                        min={0}
+                        onChange={(event) => {
+                          const { value } = event.target
+                          const currentQuantile = measure.aggregate?.func === 'quantile' ? (measure.aggregate.quantile ?? 0.5) : 0.5
+                          const quantile = value === '' ? currentQuantile : clampQuantile(Number(value))
+                          updateMeasure(measure.id, { aggregate: { func: 'quantile', quantile } })
+                        }}
+                        step={0.05}
+                        style={{ border: '1px solid #c7cad1', borderRadius: 6, height: controlHeight, minWidth: 0, padding: '0 8px' }}
+                        type='number'
+                        value={measure.aggregate?.func === 'quantile' ? (measure.aggregate.quantile ?? 0.5) : 0.5}
+                      />
+                    ) : null}
+                  </div>
+                ) : null}
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
     </section>
