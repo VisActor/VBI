@@ -104,12 +104,16 @@ function RowTags(props: { aggregate?: string; encoding?: string }) {
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
       {encoding ? (
-        <span style={{ border: '1px solid #d9d9d9', borderRadius: 999, color: '#5f6673', fontSize: 11, padding: '1px 6px' }}>
+        <span
+          style={{ border: '1px solid #d9d9d9', borderRadius: 999, color: '#5f6673', fontSize: 11, padding: '1px 6px' }}
+        >
           Enc: {encoding}
         </span>
       ) : null}
       {aggregate ? (
-        <span style={{ border: '1px solid #d9d9d9', borderRadius: 999, color: '#5f6673', fontSize: 11, padding: '1px 6px' }}>
+        <span
+          style={{ border: '1px solid #d9d9d9', borderRadius: 999, color: '#5f6673', fontSize: 11, padding: '1px 6px' }}
+        >
           Agg: {aggregate}
         </span>
       ) : null}
@@ -168,21 +172,43 @@ export function FieldPanel(props: FieldPanelProps) {
 
   return (
     <section
-      className={joinClassNames('vbi-react-field-panel', 'vbi-react-field-panel--compact', className, slotClassNames?.root)}
-      style={{ display: 'grid', fontSize: 12, gap: panelGap, gridTemplateRows: 'auto minmax(0, 1fr)', minHeight: 0, ...style }}
+      className={joinClassNames(
+        'vbi-react-field-panel',
+        'vbi-react-field-panel--compact',
+        className,
+        slotClassNames?.root,
+      )}
+      style={{
+        display: 'grid',
+        fontSize: 12,
+        gap: panelGap,
+        gridTemplateRows: 'auto minmax(0, 1fr)',
+        minHeight: 0,
+        ...style,
+      }}
     >
       <header>
         <strong>{title}</strong>
       </header>
       <div style={{ display: 'grid', gap: panelGap, gridTemplateRows: 'minmax(0, 1fr) minmax(0, 1fr)', minHeight: 0 }}>
-        <section className={slotClassNames?.dimensionsSection} style={{ display: 'grid', gap: 6, gridTemplateRows: 'auto minmax(0, 1fr)', minHeight: 0 }}>
+        <section
+          className={slotClassNames?.dimensionsSection}
+          style={{ display: 'grid', gap: 6, gridTemplateRows: 'auto minmax(0, 1fr)', minHeight: 0 }}
+        >
           <div style={{ display: 'grid', gap: 6 }}>
             <strong>{dimensionsTitle}</strong>
             <div style={{ display: 'flex', gap: 6 }}>
               <select
                 aria-label='Available dimensions'
                 onChange={(event) => setSelectedDimension(event.target.value)}
-                style={{ border: '1px solid #c7cad1', borderRadius: 6, flex: 1, height: controlHeight, minWidth: 0, padding: '0 8px' }}
+                style={{
+                  border: '1px solid #c7cad1',
+                  borderRadius: 6,
+                  flex: 1,
+                  height: controlHeight,
+                  minWidth: 0,
+                  padding: '0 8px',
+                }}
                 value={selectedDimension}
               >
                 {availableDimensions.length === 0 ? (
@@ -199,7 +225,13 @@ export function FieldPanel(props: FieldPanelProps) {
                 aria-label='Add dimension'
                 disabled={!selectedDimension}
                 onClick={() => addDimension(selectedDimension)}
-                style={{ border: '1px solid #c7cad1', borderRadius: 6, cursor: 'pointer', height: controlHeight, padding: '0 8px' }}
+                style={{
+                  border: '1px solid #c7cad1',
+                  borderRadius: 6,
+                  cursor: 'pointer',
+                  height: controlHeight,
+                  padding: '0 8px',
+                }}
                 type='button'
               >
                 Add dimension
@@ -209,22 +241,67 @@ export function FieldPanel(props: FieldPanelProps) {
           <ul
             aria-label='Selected dimensions'
             className={slotClassNames?.dimensionsList}
-            style={{ border: '1px solid #d9d9d9', borderRadius: 8, display: 'grid', gap: 6, listStyle: 'none', margin: 0, minHeight: 0, overflowY: 'auto', padding: 6 }}
+            style={{
+              border: '1px solid #d9d9d9',
+              borderRadius: 8,
+              display: 'grid',
+              gap: 6,
+              listStyle: 'none',
+              margin: 0,
+              minHeight: 0,
+              overflowY: 'auto',
+              padding: 6,
+            }}
           >
             {dimensions.length === 0 ? <li style={{ color: '#5f6673' }}>No dimensions selected</li> : null}
             {dimensions.map((dimension) => (
-              <li key={dimension.id} style={{ background: '#fff', border: '1px solid #d9d9d9', borderRadius: 8, padding: itemPadding }}>
-                <div style={{ alignItems: 'center', display: 'grid', gap: 6, gridTemplateColumns: 'minmax(0, 1fr) auto auto' }}>
+              <li
+                key={dimension.id}
+                style={{ background: '#fff', border: '1px solid #d9d9d9', borderRadius: 8, padding: itemPadding }}
+              >
+                <div
+                  style={{
+                    alignItems: 'center',
+                    display: 'grid',
+                    gap: 6,
+                    gridTemplateColumns: 'minmax(0, 1fr) auto auto',
+                  }}
+                >
                   <div style={{ minWidth: 0 }}>
-                    <strong style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{dimension.alias || dimension.field}</strong>
-                    <span style={{ color: '#5f6673', display: 'block', fontSize: 11, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{dimension.field}</span>
+                    <strong
+                      style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                    >
+                      {dimension.alias || dimension.field}
+                    </strong>
+                    <span
+                      style={{
+                        color: '#5f6673',
+                        display: 'block',
+                        fontSize: 11,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {dimension.field}
+                    </span>
                   </div>
                   <RowTags aggregate={dimension.aggregate?.func} encoding={dimension.encoding} />
                   <div style={{ display: 'flex', gap: 4 }}>
                     <button
-                      aria-label={editingDimensionId === dimension.id ? `Finish editing dimension ${dimension.field}` : `Edit dimension ${dimension.field}`}
+                      aria-label={
+                        editingDimensionId === dimension.id
+                          ? `Finish editing dimension ${dimension.field}`
+                          : `Edit dimension ${dimension.field}`
+                      }
                       onClick={() => setEditingDimensionId((id) => (id === dimension.id ? null : dimension.id))}
-                      style={{ border: '1px solid #c7cad1', borderRadius: 6, cursor: 'pointer', height: controlHeight, padding: '0 8px' }}
+                      style={{
+                        border: '1px solid #c7cad1',
+                        borderRadius: 6,
+                        cursor: 'pointer',
+                        height: controlHeight,
+                        padding: '0 8px',
+                      }}
                       type='button'
                     >
                       {editingDimensionId === dimension.id ? 'Done' : 'Edit'}
@@ -232,7 +309,13 @@ export function FieldPanel(props: FieldPanelProps) {
                     <button
                       aria-label={`Remove dimension ${dimension.field}`}
                       onClick={() => removeDimension(dimension.id)}
-                      style={{ border: '1px solid #c7cad1', borderRadius: 6, cursor: 'pointer', height: controlHeight, padding: '0 8px' }}
+                      style={{
+                        border: '1px solid #c7cad1',
+                        borderRadius: 6,
+                        cursor: 'pointer',
+                        height: controlHeight,
+                        padding: '0 8px',
+                      }}
                       type='button'
                     >
                       Remove
@@ -240,18 +323,34 @@ export function FieldPanel(props: FieldPanelProps) {
                   </div>
                 </div>
                 {editingDimensionId === dimension.id ? (
-                  <div style={{ display: 'grid', gap: 6, gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', marginTop: 6 }}>
+                  <div
+                    style={{ display: 'grid', gap: 6, gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', marginTop: 6 }}
+                  >
                     <input
                       aria-label={`Alias for dimension ${dimension.field}`}
                       onChange={(event) => updateDimension(dimension.id, { alias: event.target.value })}
                       placeholder='Alias'
-                      style={{ border: '1px solid #c7cad1', borderRadius: 6, height: controlHeight, minWidth: 0, padding: '0 8px' }}
+                      style={{
+                        border: '1px solid #c7cad1',
+                        borderRadius: 6,
+                        height: controlHeight,
+                        minWidth: 0,
+                        padding: '0 8px',
+                      }}
                       value={dimension.alias ?? ''}
                     />
                     <select
                       aria-label={`Encoding for dimension ${dimension.field}`}
-                      onChange={(event) => updateDimension(dimension.id, { encoding: event.target.value as DimensionEncoding })}
-                      style={{ border: '1px solid #c7cad1', borderRadius: 6, height: controlHeight, minWidth: 0, padding: '0 8px' }}
+                      onChange={(event) =>
+                        updateDimension(dimension.id, { encoding: event.target.value as DimensionEncoding })
+                      }
+                      style={{
+                        border: '1px solid #c7cad1',
+                        borderRadius: 6,
+                        height: controlHeight,
+                        minWidth: 0,
+                        padding: '0 8px',
+                      }}
                       value={dimension.encoding ?? 'xAxis'}
                     >
                       {dimensionEncodingOptions.map((option) => (
@@ -266,7 +365,13 @@ export function FieldPanel(props: FieldPanelProps) {
                         const nextFunc = event.target.value as DimensionAggregateFunction | ''
                         updateDimension(dimension.id, { aggregate: nextFunc ? { func: nextFunc } : null })
                       }}
-                      style={{ border: '1px solid #c7cad1', borderRadius: 6, height: controlHeight, minWidth: 0, padding: '0 8px' }}
+                      style={{
+                        border: '1px solid #c7cad1',
+                        borderRadius: 6,
+                        height: controlHeight,
+                        minWidth: 0,
+                        padding: '0 8px',
+                      }}
                       value={dimension.aggregate?.func ?? ''}
                     >
                       <option value=''>None</option>
@@ -282,14 +387,24 @@ export function FieldPanel(props: FieldPanelProps) {
             ))}
           </ul>
         </section>
-        <section className={slotClassNames?.measuresSection} style={{ display: 'grid', gap: 6, gridTemplateRows: 'auto minmax(0, 1fr)', minHeight: 0 }}>
+        <section
+          className={slotClassNames?.measuresSection}
+          style={{ display: 'grid', gap: 6, gridTemplateRows: 'auto minmax(0, 1fr)', minHeight: 0 }}
+        >
           <div style={{ display: 'grid', gap: 6 }}>
             <strong>{measuresTitle}</strong>
             <div style={{ display: 'flex', gap: 6 }}>
               <select
                 aria-label='Available measures'
                 onChange={(event) => setSelectedMeasure(event.target.value)}
-                style={{ border: '1px solid #c7cad1', borderRadius: 6, flex: 1, height: controlHeight, minWidth: 0, padding: '0 8px' }}
+                style={{
+                  border: '1px solid #c7cad1',
+                  borderRadius: 6,
+                  flex: 1,
+                  height: controlHeight,
+                  minWidth: 0,
+                  padding: '0 8px',
+                }}
                 value={selectedMeasure}
               >
                 {availableMeasures.length === 0 ? (
@@ -306,7 +421,13 @@ export function FieldPanel(props: FieldPanelProps) {
                 aria-label='Add measure'
                 disabled={!selectedMeasure}
                 onClick={() => addMeasure(selectedMeasure)}
-                style={{ border: '1px solid #c7cad1', borderRadius: 6, cursor: 'pointer', height: controlHeight, padding: '0 8px' }}
+                style={{
+                  border: '1px solid #c7cad1',
+                  borderRadius: 6,
+                  cursor: 'pointer',
+                  height: controlHeight,
+                  padding: '0 8px',
+                }}
                 type='button'
               >
                 Add measure
@@ -316,22 +437,67 @@ export function FieldPanel(props: FieldPanelProps) {
           <ul
             aria-label='Selected measures'
             className={slotClassNames?.measuresList}
-            style={{ border: '1px solid #d9d9d9', borderRadius: 8, display: 'grid', gap: 6, listStyle: 'none', margin: 0, minHeight: 0, overflowY: 'auto', padding: 6 }}
+            style={{
+              border: '1px solid #d9d9d9',
+              borderRadius: 8,
+              display: 'grid',
+              gap: 6,
+              listStyle: 'none',
+              margin: 0,
+              minHeight: 0,
+              overflowY: 'auto',
+              padding: 6,
+            }}
           >
             {measures.length === 0 ? <li style={{ color: '#5f6673' }}>No measures selected</li> : null}
             {measures.map((measure) => (
-              <li key={measure.id} style={{ background: '#fff', border: '1px solid #d9d9d9', borderRadius: 8, padding: itemPadding }}>
-                <div style={{ alignItems: 'center', display: 'grid', gap: 6, gridTemplateColumns: 'minmax(0, 1fr) auto auto' }}>
+              <li
+                key={measure.id}
+                style={{ background: '#fff', border: '1px solid #d9d9d9', borderRadius: 8, padding: itemPadding }}
+              >
+                <div
+                  style={{
+                    alignItems: 'center',
+                    display: 'grid',
+                    gap: 6,
+                    gridTemplateColumns: 'minmax(0, 1fr) auto auto',
+                  }}
+                >
                   <div style={{ minWidth: 0 }}>
-                    <strong style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{measure.alias || measure.field}</strong>
-                    <span style={{ color: '#5f6673', display: 'block', fontSize: 11, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{measure.field}</span>
+                    <strong
+                      style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                    >
+                      {measure.alias || measure.field}
+                    </strong>
+                    <span
+                      style={{
+                        color: '#5f6673',
+                        display: 'block',
+                        fontSize: 11,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {measure.field}
+                    </span>
                   </div>
                   <RowTags aggregate={measure.aggregate?.func} encoding={measure.encoding} />
                   <div style={{ display: 'flex', gap: 4 }}>
                     <button
-                      aria-label={editingMeasureId === measure.id ? `Finish editing measure ${measure.field}` : `Edit measure ${measure.field}`}
+                      aria-label={
+                        editingMeasureId === measure.id
+                          ? `Finish editing measure ${measure.field}`
+                          : `Edit measure ${measure.field}`
+                      }
                       onClick={() => setEditingMeasureId((id) => (id === measure.id ? null : measure.id))}
-                      style={{ border: '1px solid #c7cad1', borderRadius: 6, cursor: 'pointer', height: controlHeight, padding: '0 8px' }}
+                      style={{
+                        border: '1px solid #c7cad1',
+                        borderRadius: 6,
+                        cursor: 'pointer',
+                        height: controlHeight,
+                        padding: '0 8px',
+                      }}
                       type='button'
                     >
                       {editingMeasureId === measure.id ? 'Done' : 'Edit'}
@@ -339,7 +505,13 @@ export function FieldPanel(props: FieldPanelProps) {
                     <button
                       aria-label={`Remove measure ${measure.field}`}
                       onClick={() => removeMeasure(measure.id)}
-                      style={{ border: '1px solid #c7cad1', borderRadius: 6, cursor: 'pointer', height: controlHeight, padding: '0 8px' }}
+                      style={{
+                        border: '1px solid #c7cad1',
+                        borderRadius: 6,
+                        cursor: 'pointer',
+                        height: controlHeight,
+                        padding: '0 8px',
+                      }}
                       type='button'
                     >
                       Remove
@@ -347,18 +519,34 @@ export function FieldPanel(props: FieldPanelProps) {
                   </div>
                 </div>
                 {editingMeasureId === measure.id ? (
-                  <div style={{ display: 'grid', gap: 6, gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', marginTop: 6 }}>
+                  <div
+                    style={{ display: 'grid', gap: 6, gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', marginTop: 6 }}
+                  >
                     <input
                       aria-label={`Alias for measure ${measure.field}`}
                       onChange={(event) => updateMeasure(measure.id, { alias: event.target.value })}
                       placeholder='Alias'
-                      style={{ border: '1px solid #c7cad1', borderRadius: 6, height: controlHeight, minWidth: 0, padding: '0 8px' }}
+                      style={{
+                        border: '1px solid #c7cad1',
+                        borderRadius: 6,
+                        height: controlHeight,
+                        minWidth: 0,
+                        padding: '0 8px',
+                      }}
                       value={measure.alias ?? ''}
                     />
                     <select
                       aria-label={`Encoding for measure ${measure.field}`}
-                      onChange={(event) => updateMeasure(measure.id, { encoding: event.target.value as MeasureEncoding })}
-                      style={{ border: '1px solid #c7cad1', borderRadius: 6, height: controlHeight, minWidth: 0, padding: '0 8px' }}
+                      onChange={(event) =>
+                        updateMeasure(measure.id, { encoding: event.target.value as MeasureEncoding })
+                      }
+                      style={{
+                        border: '1px solid #c7cad1',
+                        borderRadius: 6,
+                        height: controlHeight,
+                        minWidth: 0,
+                        padding: '0 8px',
+                      }}
                       value={measure.encoding ?? 'yAxis'}
                     >
                       {measureEncodingOptions.map((option) => (
@@ -377,7 +565,13 @@ export function FieldPanel(props: FieldPanelProps) {
                         }
                         updateMeasure(measure.id, { aggregate: { func } })
                       }}
-                      style={{ border: '1px solid #c7cad1', borderRadius: 6, height: controlHeight, minWidth: 0, padding: '0 8px' }}
+                      style={{
+                        border: '1px solid #c7cad1',
+                        borderRadius: 6,
+                        height: controlHeight,
+                        minWidth: 0,
+                        padding: '0 8px',
+                      }}
                       value={measure.aggregate?.func ?? 'sum'}
                     >
                       {measureAggregateOptions.map((option) => (
@@ -393,12 +587,19 @@ export function FieldPanel(props: FieldPanelProps) {
                         min={0}
                         onChange={(event) => {
                           const { value } = event.target
-                          const currentQuantile = measure.aggregate?.func === 'quantile' ? (measure.aggregate.quantile ?? 0.5) : 0.5
+                          const currentQuantile =
+                            measure.aggregate?.func === 'quantile' ? (measure.aggregate.quantile ?? 0.5) : 0.5
                           const quantile = value === '' ? currentQuantile : clampQuantile(Number(value))
                           updateMeasure(measure.id, { aggregate: { func: 'quantile', quantile } })
                         }}
                         step={0.05}
-                        style={{ border: '1px solid #c7cad1', borderRadius: 6, height: controlHeight, minWidth: 0, padding: '0 8px' }}
+                        style={{
+                          border: '1px solid #c7cad1',
+                          borderRadius: 6,
+                          height: controlHeight,
+                          minWidth: 0,
+                          padding: '0 8px',
+                        }}
                         type='number'
                         value={measure.aggregate?.func === 'quantile' ? (measure.aggregate.quantile ?? 0.5) : 0.5}
                       />
