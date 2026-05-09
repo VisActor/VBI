@@ -1,5 +1,5 @@
 # VBI
 
-:::info In Development
-Coming Soon
+:::info Dalam Pengembangan
+Segera hadir
 :::

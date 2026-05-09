@@ -1,5 +1,5 @@
 # VQuery
 
-:::info In Development
-Coming Soon
+:::info En développement
+Bientôt disponible
 :::

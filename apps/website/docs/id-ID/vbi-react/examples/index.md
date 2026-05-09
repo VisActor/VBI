@@ -1,4 +1,4 @@
-# Contoh ikhtisar
+# Ikhtisar Contoh
 
 Contoh berikut dapat disalin langsung ke file `.tsx` dan dijalankan.
 

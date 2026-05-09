@@ -1,10 +1,10 @@
-#Tổng quan về API
+# Tổng quan API
 
-`@visactor/vbi-react`Việc xuất khẩu hiện tại được chia làm 2 phần:
+`@visactor/vbi-react` hiện export hai nhóm:
 
-| mô-đun| đường dẫn nhập khẩu| nội dung|
+| Module | Đường dẫn import | Nội dung |
 | --- | --- | --- |
-| Hooks | `@visactor/vbi-react` | `useChartType`、`useDimensions`、`useHavingFilter`、`useMeasures`、`useVBI`、`useVSeed`、`useWhereFilter` |
-| Components | `@visactor/vbi-react/components` | `BuilderLayout`、`ChartRenderer`、`ChartTypeSelector`、`FieldPanel` |
+| Hooks | `@visactor/vbi-react` | `useChartType`, `useDimensions`, `useHavingFilter`, `useMeasures`, `useVBI`, `useVSeed`, `useWhereFilter` |
+| Components | `@visactor/vbi-react/components` | `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel` |
 
-Tất cả các móc/thành phần hoạt động xung quanh `VBIChartBuilder`và không duy trì các nguồn trạng thái kinh doanh bổ sung.
+Tất cả hooks và components đều xoay quanh `VBIChartBuilder`; chúng không duy trì nguồn state nghiệp vụ riêng.

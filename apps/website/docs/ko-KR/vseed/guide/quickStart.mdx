@@ -22,7 +22,7 @@ import { PackageManagerTabs, Steps } from '@rspress/core/theme'
 ```tsx pure title="App.tsx"
 import { registerAll } from '@visactor/vseed'
 
-// 注册所有内置图表类型与主题
+// 모든 내장 차트 유형과 테마 등록
 registerAll()
 ```
 
@@ -33,11 +33,11 @@ registerAll()
 ```tsx pure title="logic.ts"
 import { VSeed, Builder } from '@visactor/vseed'
 
-// 1. 定义分析意图 (DSL)
+// 1. 분석 의도(DSL) 정의
 const vseed: VSeed = {
-  chartType: 'line', // 图表类型
+  chartType: 'line', // 차트 유형
   dataset: [
-    // 数据源
+    // 데이터 소스
     { date: '2019', profit: 10, sales: 100 },
     { date: '2020', profit: 30, sales: 200 },
     { date: '2021', profit: 30, sales: 300 },
@@ -45,7 +45,7 @@ const vseed: VSeed = {
   ],
 }
 
-// 2. 生成渲染配置 (Spec)
+// 2. 렌더링 가능한 Spec 생성
 const spec = Builder.from(vseed).build()
 ```
 
@@ -107,7 +107,7 @@ const vseed: VSeed = {
     { date: '2019', profit: 10, sales: 100 },
     { date: '2020', profit: 30, sales: 200 },
   ],
-  dimensions: [{ id: 'date', alias: '日期' }],
+  dimensions: [{ id: 'date', alias: '날짜' }],
 }
 ```
 
@@ -116,7 +116,7 @@ const vseed: VSeed = {
 변환 엔진으로, 간결한 DSL을 상세한 VChart/VTable Spec으로 변환합니다. 내장된 대량의 데이터 처리 및 시각적 규칙을 포함합니다.
 
 ```typescript
-// Builder 模式允许链式调用，未来支持更多中间处理
+// Builder 모드는 체이닝 호출을 지원하며, 앞으로 더 많은 중간 처리를 지원할 예정입니다.
 const spec = Builder.from(vseed).build()
 ```
 
@@ -150,18 +150,18 @@ const Demo = () => {
         { date: '2022', profit: 50, sales: 400 },
         { date: '2023', profit: 40, sales: 500 },
       ],
-      // 定义维度与指标
-      dimensions: [{ id: 'date', alias: '日期' }],
+      // 차원과 지표 정의
+      dimensions: [{ id: 'date', alias: '날짜' }],
       measures: [
-        { id: 'profit', alias: '利润', parentId: 'profit-group' },
-        { id: 'sales', alias: '销售额', parentId: 'sales-group' },
+        { id: 'profit', alias: '이익', parentId: 'profit-group' },
+        { id: 'sales', alias: '매출', parentId: 'sales-group' },
       ],
     }
 
     const spec = Builder.from(vseed).build()
     const tableInstance = new PivotChart(containerRef.current, spec)
 
-    // 示例：交互联动
+    // 예: 인터랙션 연동
     tableInstance.on('legend_item_click', (args) => {
       tableInstance.updateFilterRules([
         {

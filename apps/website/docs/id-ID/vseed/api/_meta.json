@@ -2,11 +2,11 @@
   {
     "type": "file",
     "name": "Builder",
-    "label": "Builder "
+    "label": "Builder"
   },
   {
     "type": "file",
     "name": "Register",
-    "label": "Register "
+    "label": "Register"
   }
 ]

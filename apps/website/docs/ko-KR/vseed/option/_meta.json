@@ -2,156 +2,156 @@
   {
     "type": "file",
     "name": "area",
-    "label": "area "
+    "label": "Area"
   },
   {
     "type": "file",
     "name": "areaPercent",
-    "label": "areaPercent "
+    "label": "AreaPercent"
   },
   {
     "type": "file",
     "name": "bar",
-    "label": "bar "
+    "label": "Bar"
   },
   {
     "type": "file",
     "name": "barParallel",
-    "label": "barParallel "
+    "label": "BarParallel"
   },
   {
     "type": "file",
     "name": "barPercent",
-    "label": "barPercent "
+    "label": "BarPercent"
   },
   {
     "type": "file",
     "name": "boxPlot",
-    "label": "boxPlot "
+    "label": "BoxPlot"
   },
   {
     "type": "file",
     "name": "circlePacking",
-    "label": "circlePacking "
+    "label": "CirclePacking"
   },
   {
     "type": "file",
     "name": "column",
-    "label": "column "
+    "label": "Column"
   },
   {
     "type": "file",
     "name": "columnParallel",
-    "label": "columnParallel "
+    "label": "ColumnParallel"
   },
   {
     "type": "file",
     "name": "columnPercent",
-    "label": "columnPercent "
+    "label": "ColumnPercent"
   },
   {
     "type": "file",
     "name": "donut",
-    "label": "donut "
+    "label": "Donut"
   },
   {
     "type": "file",
     "name": "dualAxis",
-    "label": "dualAxis "
+    "label": "DualAxis"
   },
   {
     "type": "file",
     "name": "funnel",
-    "label": "funnel "
+    "label": "Funnel"
   },
   {
     "type": "file",
     "name": "heatmap",
-    "label": "heatmap "
+    "label": "Heatmap"
   },
   {
     "type": "file",
     "name": "histogram",
-    "label": "histogram "
+    "label": "Histogram"
   },
   {
     "type": "file",
     "name": "line",
-    "label": "line "
+    "label": "Line"
   },
   {
     "type": "file",
     "name": "pie",
-    "label": "pie "
+    "label": "Pie"
   },
   {
     "type": "file",
     "name": "pivotTable",
-    "label": "pivotTable "
+    "label": "PivotTable"
   },
   {
     "type": "file",
     "name": "raceBar",
-    "label": "raceBar "
+    "label": "RaceBar"
   },
   {
     "type": "file",
     "name": "raceColumn",
-    "label": "raceColumn "
+    "label": "RaceColumn"
   },
   {
     "type": "file",
     "name": "raceDonut",
-    "label": "raceDonut "
+    "label": "RaceDonut"
   },
   {
     "type": "file",
     "name": "raceLine",
-    "label": "raceLine "
+    "label": "RaceLine"
   },
   {
     "type": "file",
     "name": "racePie",
-    "label": "racePie "
+    "label": "RacePie"
   },
   {
     "type": "file",
     "name": "raceScatter",
-    "label": "raceScatter "
+    "label": "RaceScatter"
   },
   {
     "type": "file",
     "name": "radar",
-    "label": "radar "
+    "label": "Radar"
   },
   {
     "type": "file",
     "name": "rose",
-    "label": "rose "
+    "label": "Rose"
   },
   {
     "type": "file",
     "name": "roseParallel",
-    "label": "roseParallel "
+    "label": "RoseParallel"
   },
   {
     "type": "file",
     "name": "scatter",
-    "label": "산점도 "
+    "label": "Scatter"
   },
   {
     "type": "file",
     "name": "sunburst",
-    "label": "선버스트 "
+    "label": "Sunburst"
   },
   {
     "type": "file",
     "name": "table",
-    "label": "테이블 "
+    "label": "Table"
   },
   {
     "type": "file",
     "name": "treeMap",
-    "label": "트리맵 "
+    "label": "TreeMap"
   }
 ]

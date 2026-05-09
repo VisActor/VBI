@@ -1,6 +1,6 @@
-# Probenübersicht
+# Beispiele
 
-Die folgenden Beispiele können alle direkt kopiert werden `.tsx` Die Datei läuft.
+Die folgenden Beispiele können direkt in eine `.tsx`-Datei kopiert und ausgeführt werden.
 
 - [Basic Hooks](./basicHooks)
 - [Componentized Layout](./layoutWithComponents)

@@ -1,19 +1,19 @@
 # VBI React
 
-`@visactor/vbi-react` Ja `@visactor/vbi` der React-Anpassungsschicht, die verantwortlich ist für `VBIChartBuilder` Greifen Sie auf den React Component Tree zu.
+`@visactor/vbi-react` ist die React-Adapter-Schicht für `@visactor/vbi` und bindet `VBIChartBuilder` in den React-Komponentenbaum ein.
 
-Der aktuelle Export ist in zwei Ebenen unterteilt:
+Die aktuellen Exporte sind in zwei Ebenen gegliedert:
 
-- Root-Export `@visactor/vbi-react`：`useVBI`、`useVSeed`、`useChartType`、`useDimensions`、`useMeasures`、`useWhereFilter`、`useHavingFilter`
-- Subpfadexport `@visactor/vbi-react/components`：`BuilderLayout`、`ChartRenderer`、`ChartTypeSelector`、`FieldPanel`
+- Root-Export `@visactor/vbi-react`: `useVBI`, `useVSeed`, `useChartType`, `useDimensions`, `useMeasures`, `useWhereFilter`, `useHavingFilter`
+- Subpath-Export `@visactor/vbi-react/components`: `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel`
 
 ## Positionierung
 
-- Statusabonnements und Rendering-Fußabdrücke für React 18 +
-- in `VBIChartBuilder` Single-State Source (SSOT) ohne zusätzliche Pflege von Geschäftskopien
-- Geeignet für den Aufbau von BI-Konfigurationspanel, Diagrammvorschaubereich und DSL-Debug-Panel
+- Status-Subscriptions und Rendering-Wrapper für React 18+
+- Verwendet `VBIChartBuilder` als Single Source of Truth (SSOT), ohne eine zusätzliche Kopie des Fachzustands zu pflegen
+- Geeignet für BI-Konfigurationspanels, Diagrammvorschauen und DSL-Debug-Panels
 
-## Installieren
+## Installation
 
 Allgemeine Projektinstallation:
 
@@ -21,7 +21,7 @@ Allgemeine Projektinstallation:
 pnpm add @visactor/vbi-react @visactor/vbi @visactor/vseed react react-dom
 ```
 
-Beim Inline-Tuning in diesem Repository können Arbeitsbereichsabhängigkeiten verwendet werden:
+Beim Debugging in diesem Repository können Workspace-Abhängigkeiten verwendet werden:
 
 ```bash
 pnpm --filter=<your-app> add @visactor/vbi-react@workspace:* @visactor/vbi@workspace:* @visactor/vseed@workspace:* react react-dom
@@ -29,7 +29,7 @@ pnpm --filter=<your-app> add @visactor/vbi-react@workspace:* @visactor/vbi@works
 
 ## Schnellstart
 
-Nachfolgend finden Sie eine Beispieldemonstration `useVBI` + `useVSeed` Minimaler geschlossener Kreislauf:
+Das folgende Beispiel zeigt den minimalen Ablauf mit `useVBI` + `useVSeed`:
 
 ```tsx
 import { useMemo } from 'react'
@@ -78,7 +78,7 @@ export function App() {
 }
 ```
 
-## Dokumentnavigation
+## Dokumentation
 
-- [API Übersicht](./api/index)
-- [Beispiel](./examples/index)
+- [API-Übersicht](./api/index)
+- [Beispiele](./examples/index)

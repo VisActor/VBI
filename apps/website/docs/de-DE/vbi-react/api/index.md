@@ -1,10 +1,10 @@
 # API Übersicht
 
-`@visactor/vbi-react` Der aktuelle Export gliedert sich in zwei Teile:
+`@visactor/vbi-react` exportiert aktuell zwei Gruppen:
 
 | Modul | Importpfad | Inhalt |
 | --- | --- | --- |
-| Hooks | `@visactor/vbi-react` | `useChartType`、`useDimensions`、`useHavingFilter`、`useMeasures`、`useVBI`、`useVSeed`、`useWhereFilter` |
-| Components | `@visactor/vbi-react/components` | `BuilderLayout`、`ChartRenderer`、`ChartTypeSelector`、`FieldPanel` |
+| Hooks | `@visactor/vbi-react` | `useChartType`, `useDimensions`, `useHavingFilter`, `useMeasures`, `useVBI`, `useVSeed`, `useWhereFilter` |
+| Components | `@visactor/vbi-react/components` | `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel` |
 
-Alle Haken/Komponenten um `VBIChartBuilder` Arbeit, ohne zusätzliche Wartung der Geschäftsstatusquelle.
+Alle Hooks und Komponenten arbeiten rund um `VBIChartBuilder`; sie pflegen keine separate Quelle für den Fachzustand.

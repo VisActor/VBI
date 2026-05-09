@@ -1,17 +1,17 @@
 # VBI React
 
-`@visactor/vbi-react` is the React adaptation layer of `@visactor/vbi`, responsible for connecting `VBIChartBuilder` to the React component tree.
+`@visactor/vbi-react` is the React adapter layer for `@visactor/vbi`. It connects `VBIChartBuilder` to the React component tree.
 
-The current export is divided into two tiers:
+The current exports are organized into two layers:
 
 - Root export `@visactor/vbi-react`: `useVBI`, `useVSeed`, `useChartType`, `useDimensions`, `useMeasures`, `useWhereFilter`, `useHavingFilter`
 - Sub-path export `@visactor/vbi-react/components`: `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel`
 
 ## Positioning
 
-- State subscription and rendering packaging for React 18+
-- Use `VBIChartBuilder` as the single status source (SSOT) and do not maintain additional business copies
-- Suitable for building BI configuration panel, chart preview area and DSL debugging panel
+- State subscription and rendering wrappers for React 18+
+- Uses `VBIChartBuilder` as the single source of truth (SSOT), without keeping a separate business-state copy
+- Suitable for BI configuration panels, chart preview areas, and DSL debugging panels
 
 ## Installation
 
@@ -21,7 +21,7 @@ Regular project installation:
 pnpm add @visactor/vbi-react @visactor/vbi @visactor/vseed react react-dom
 ```
 
-When debugging inline in this warehouse, you can use the workspace dependency:
+When debugging inside this repository, you can use workspace dependencies:
 
 ```bash
 pnpm --filter=<your-app> add @visactor/vbi-react@workspace:* @visactor/vbi@workspace:* @visactor/vseed@workspace:* react react-dom
@@ -29,7 +29,7 @@ pnpm --filter=<your-app> add @visactor/vbi-react@workspace:* @visactor/vbi@works
 
 ## Quick Start
 
-The following example demonstrates the minimum closed loop of `useVBI` + `useVSeed`:
+The following example demonstrates the minimal `useVBI` + `useVSeed` loop:
 
 ```tsx
 import { useMemo } from 'react'
@@ -78,7 +78,7 @@ export function App() {
 }
 ```
 
-## Document Navigation
+## Documentation
 
 - [API Overview](./api/index)
-- [Example](./examples/index)
+- [Examples](./examples/index)

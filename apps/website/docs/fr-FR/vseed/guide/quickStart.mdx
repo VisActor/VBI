@@ -22,7 +22,7 @@ Enregistrez les capacités et les thèmes des graphiques à l'entrée de l'appli
 ```tsx pure title="App.tsx"
 import { registerAll } from '@visactor/vseed'
 
-// 注册所有内置图表类型与主题
+// Enregistrer tous les types de graphiques et thèmes intégrés
 registerAll()
 ```
 
@@ -33,11 +33,11 @@ Convertissez VSeed Spec en une configuration Spec rendu via `Builder`.
 ```tsx pure title="logic.ts"
 import { VSeed, Builder } from '@visactor/vseed'
 
-// 1. 定义分析意图 (DSL)
+// 1. Définir l'intention d'analyse (DSL)
 const vseed: VSeed = {
-  chartType: 'line', // 图表类型
+  chartType: 'line', // Type de graphique
   dataset: [
-    // 数据源
+    // Source de données
     { date: '2019', profit: 10, sales: 100 },
     { date: '2020', profit: 30, sales: 200 },
     { date: '2021', profit: 30, sales: 300 },
@@ -45,7 +45,7 @@ const vseed: VSeed = {
   ],
 }
 
-// 2. 生成渲染配置 (Spec)
+// 2. Générer la Spec rendable
 const spec = Builder.from(vseed).build()
 ```
 
@@ -107,7 +107,7 @@ const vseed: VSeed = {
     { date: '2019', profit: 10, sales: 100 },
     { date: '2020', profit: 30, sales: 200 },
   ],
-  dimensions: [{ id: 'date', alias: '日期' }],
+  dimensions: [{ id: 'date', alias: 'Date' }],
 }
 ```
 
@@ -116,7 +116,7 @@ const vseed: VSeed = {
 Un moteur de conversion chargé de traduire le DSL concis en Spec VChart/VTable détaillée. Il intègre de nombreux traitements de données et spécifications visuelles.
 
 ```typescript
-// Builder 模式允许链式调用，未来支持更多中间处理
+// Le mode Builder prend en charge les appels chaînés et pourra intégrer davantage de traitements intermédiaires.
 const spec = Builder.from(vseed).build()
 ```
 
@@ -150,18 +150,18 @@ const Demo = () => {
         { date: '2022', profit: 50, sales: 400 },
         { date: '2023', profit: 40, sales: 500 },
       ],
-      // 定义维度与指标
-      dimensions: [{ id: 'date', alias: '日期' }],
+      // Définir les dimensions et les mesures
+      dimensions: [{ id: 'date', alias: 'Date' }],
       measures: [
-        { id: 'profit', alias: '利润', parentId: 'profit-group' },
-        { id: 'sales', alias: '销售额', parentId: 'sales-group' },
+        { id: 'profit', alias: 'Profit', parentId: 'profit-group' },
+        { id: 'sales', alias: "Chiffre d'affaires", parentId: 'sales-group' },
       ],
     }
 
     const spec = Builder.from(vseed).build()
     const tableInstance = new PivotChart(containerRef.current, spec)
 
-    // 示例：交互联动
+    // Exemple : interaction liée
     tableInstance.on('legend_item_click', (args) => {
       tableInstance.updateFilterRules([
         {

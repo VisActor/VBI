@@ -1,5 +1,5 @@
 [
-  { "type": "dir", "name": "guide", "label": "introduire", "collapsed": false },
+  { "type": "dir", "name": "guide", "label": "Introduction", "collapsed": false },
   { "type": "dir", "name": "examples", "label": "Exemple", "collapsed": true },
   { "type": "dir", "name": "option", "label": "Éléments de configuration", "collapsed": true },
   { "type": "dir", "name": "api", "label": "API", "collapsed": true },

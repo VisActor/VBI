@@ -1,10 +1,10 @@
-# API Ikhtisar
+# Ikhtisar API
 
-`@visactor/vbi-react` Ekspor saat ini dibagi menjadi dua bagian:
+`@visactor/vbi-react` saat ini mengekspor dua grup:
 
-| modul | jalur impor | konten |
+| Modul | Jalur import | Isi |
 | --- | --- | --- |
-| Hooks | `@visactor/vbi-react` | `useChartType`、`useDimensions`、`useHavingFilter`、`useMeasures`、`useVBI`、`useVSeed`、`useWhereFilter` |
-| Components | `@visactor/vbi-react/components` | `BuilderLayout`、`ChartRenderer`、`ChartTypeSelector`、`FieldPanel` |
+| Hooks | `@visactor/vbi-react` | `useChartType`, `useDimensions`, `useHavingFilter`, `useMeasures`, `useVBI`, `useVSeed`, `useWhereFilter` |
+| Components | `@visactor/vbi-react/components` | `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel` |
 
-Semua `VBIChartBuilder` berfungsi di sekitar hooks/components dan tidak mempertahankan sumber status bisnis tambahan.
+Semua hooks dan components bekerja di sekitar `VBIChartBuilder`; keduanya tidak menyimpan sumber state bisnis terpisah.

@@ -1,6 +1,6 @@
-# Exemple d'aperçu
+# Aperçu des exemples
 
-Les exemples suivants peuvent tous être copiés directement dans le fichier `.tsx` et exécutés.
+Les exemples suivants peuvent être copiés directement dans un fichier `.tsx` puis exécutés.
 
 - [Basic Hooks](./basicHooks)
 - [Componentized Layout](./layoutWithComponents)

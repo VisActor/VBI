@@ -22,7 +22,7 @@ import { PackageManagerTabs, Steps } from '@rspress/core/theme'
 ```tsx pure title="App.tsx"
 import { registerAll } from '@visactor/vseed'
 
-// 注册所有内置图表类型与主题
+// すべての組み込みチャートタイプとテーマを登録
 registerAll()
 ```
 
@@ -33,11 +33,11 @@ registerAll()
 ```tsx pure title="logic.ts"
 import { VSeed, Builder } from '@visactor/vseed'
 
-// 1. 定义分析意图 (DSL)
+// 1. 分析意図 (DSL) を定義
 const vseed: VSeed = {
-  chartType: 'line', // 图表类型
+  chartType: 'line', // チャートタイプ
   dataset: [
-    // 数据源
+    // データソース
     { date: '2019', profit: 10, sales: 100 },
     { date: '2020', profit: 30, sales: 200 },
     { date: '2021', profit: 30, sales: 300 },
@@ -45,7 +45,7 @@ const vseed: VSeed = {
   ],
 }
 
-// 2. 生成渲染配置 (Spec)
+// 2. レンダリング用 Spec を生成
 const spec = Builder.from(vseed).build()
 ```
 
@@ -107,7 +107,7 @@ const vseed: VSeed = {
     { date: '2019', profit: 10, sales: 100 },
     { date: '2020', profit: 30, sales: 200 },
   ],
-  dimensions: [{ id: 'date', alias: '日期' }],
+  dimensions: [{ id: 'date', alias: '日付' }],
 }
 ```
 
@@ -116,7 +116,7 @@ const vseed: VSeed = {
 変換エンジンであり、簡潔な DSL を詳細な VChart/VTable Spec へ変換します。多くのデータ処理と視覚仕様を内蔵しています。
 
 ```typescript
-// Builder 模式允许链式调用，未来支持更多中间处理
+// Builder モードはチェーン呼び出しに対応し、今後さらに中間処理を拡張します。
 const spec = Builder.from(vseed).build()
 ```
 
@@ -150,18 +150,18 @@ const Demo = () => {
         { date: '2022', profit: 50, sales: 400 },
         { date: '2023', profit: 40, sales: 500 },
       ],
-      // 定义维度与指标
-      dimensions: [{ id: 'date', alias: '日期' }],
+      // ディメンションとメジャーを定義
+      dimensions: [{ id: 'date', alias: '日付' }],
       measures: [
-        { id: 'profit', alias: '利润', parentId: 'profit-group' },
-        { id: 'sales', alias: '销售额', parentId: 'sales-group' },
+        { id: 'profit', alias: '利益', parentId: 'profit-group' },
+        { id: 'sales', alias: '売上', parentId: 'sales-group' },
       ],
     }
 
     const spec = Builder.from(vseed).build()
     const tableInstance = new PivotChart(containerRef.current, spec)
 
-    // 示例：交互联动
+    // 例: インタラクション連動
     tableInstance.on('legend_item_click', (args) => {
       tableInstance.updateFilterRules([
         {

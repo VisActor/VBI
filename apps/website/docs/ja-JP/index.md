@@ -10,8 +10,8 @@ hero:
       text: クイックスタート
       link: /vseed/guide/quickStart
     - theme: alt
-      text: Github
+      text: GitHub
       link: https://github.com/visactor/vbi
   image: 
     src: /logo.svg
-    alt: Github
+    alt: GitHub

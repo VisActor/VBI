@@ -2,21 +2,21 @@
   {
     "type": "file",
     "name": "standard",
-    "label": "standar"
+    "label": "Standar"
   },
   {
     "type": "file",
     "name": "minimalist",
-    "label": "minimalis"
+    "label": "Minimalis"
   },
   {
     "type": "file",
     "name": "streamlined",
-    "label": "mempersingkat"
+    "label": "Ringkas"
   },
   {
     "type": "file",
     "name": "professional",
-    "label": "besar"
+    "label": "Profesional"
   }
 ]

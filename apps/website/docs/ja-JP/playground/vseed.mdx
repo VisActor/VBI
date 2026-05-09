@@ -50,7 +50,7 @@ const Demo = () => {
         numFormat: {
           type: 'number',
           fractionDigits: 0,
-          suffix: ' 百万元',
+          suffix: 'M',
         },
       },
     ],
@@ -71,7 +71,7 @@ const Demo = () => {
             value: 'net_profit_million',
           },
         ],
-        text: '阶段高点',
+        text: '高値',
       },
       {
         selector: [
@@ -81,12 +81,12 @@ const Demo = () => {
             value: '2025-12',
           },
         ],
-        text: '最新点',
+        text: '最新ポイント',
       },
     ],
     annotationHorizontalLine: {
       yValue: 70,
-      text: '参考线',
+      text: '参照線',
     },
     annotationArea: {
       selector: {
@@ -94,7 +94,7 @@ const Demo = () => {
         operator: 'in',
         value: ['2025-07', '2025-08'],
       },
-      text: '上升',
+      text: '上昇',
     },
     annotationDifferenceLine: [
       {
@@ -129,7 +129,7 @@ const Demo = () => {
       numFormat: {
         type: 'number',
         fractionDigits: 2,
-        suffix: ' 百万元',
+        suffix: 'M',
       },
     },
     theme: 'swiss-modern',
@@ -261,7 +261,7 @@ const SimpleVSeedRender = (props: { vseed: VSeed }) => {
       const theme = dark ? 'dark' : 'light'
       const builder = Builder.from(vseed.theme ? vseed : { ...vseed, theme })
 
-      // 如果有 dynamicFilter code，需要先 prepare 再 build
+      // dynamicFilter code がある場合は、build の前に prepare します。
       await builder.prepare()
       let spec = builder.build()
 

@@ -1,27 +1,27 @@
 # VBI React
 
-`@visactor/vbi-react`là lớp thích ứng React của `@visactor/vbi`, chịu trách nhiệm kết nối `VBIChartBuilder`với cây thành phần React.
+`@visactor/vbi-react` là lớp adapter React cho `@visactor/vbi`. Gói này kết nối `VBIChartBuilder` với cây component React.
 
-Việc xuất khẩu hiện tại được chia thành hai tầng:
+Các export hiện tại được chia thành hai lớp:
 
-- Xuất gốc `@visactor/vbi-react`: `useVBI`, `useVSeed`, `useChartType`, `useDimensions`, `useMeasures`, `useWhereFilter`, `useHavingFilter`
-- Xuất đường dẫn phụ `@visactor/vbi-react/components`: `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel`
+- Export gốc `@visactor/vbi-react`: `useVBI`, `useVSeed`, `useChartType`, `useDimensions`, `useMeasures`, `useWhereFilter`, `useHavingFilter`
+- Export qua subpath `@visactor/vbi-react/components`: `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel`
 
 ## Định vị
 
-- Đăng ký trạng thái và đóng gói kết xuất cho React 18+
-- Sử dụng `VBIChartBuilder`làm nguồn trạng thái duy nhất (SSOT) và không có bản sao kinh doanh bổ sung nào được duy trì
-- Thích hợp để xây dựng bảng cấu hình BI, khu vực xem trước biểu đồ và bảng gỡ lỗi DSL
+- Wrapper cho state subscription và rendering trong React 18+
+- Sử dụng `VBIChartBuilder` làm single source of truth (SSOT), không duy trì bản sao state nghiệp vụ riêng
+- Phù hợp để xây dựng bảng cấu hình BI, khu vực xem trước biểu đồ và bảng debug DSL
 
 ## Cài đặt
 
-Lắp đặt dự án thường xuyên:
+Cài đặt trong dự án thông thường:
 
 ```bash
 pnpm add @visactor/vbi-react @visactor/vbi @visactor/vseed react react-dom
 ```
 
-Khi gỡ lỗi nội tuyến trong kho này, bạn có thể sử dụng phần phụ thuộc không gian làm việc:
+Khi debug trong repository này, bạn có thể dùng dependency workspace:
 
 ```bash
 pnpm --filter=<your-app> add @visactor/vbi-react@workspace:* @visactor/vbi@workspace:* @visactor/vseed@workspace:* react react-dom
@@ -29,7 +29,7 @@ pnpm --filter=<your-app> add @visactor/vbi-react@workspace:* @visactor/vbi@works
 
 ## Bắt đầu nhanh
 
-Ví dụ sau đây minh họa vòng khép kín tối thiểu của `useVBI`+ `useVSeed`:
+Ví dụ sau minh họa luồng tối thiểu với `useVBI` + `useVSeed`:
 
 ```tsx
 import { useMemo } from 'react'

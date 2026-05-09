@@ -1,19 +1,19 @@
 # VBI React
 
-`@visactor/vbi-react` adalah lapisan adaptasi `VBIChartBuilder` dari `@visactor/vbi`, yang bertanggung jawab untuk menghubungkan React ke pohon komponen React.
+`@visactor/vbi-react` adalah lapisan adapter React untuk `@visactor/vbi`. Paket ini menghubungkan `VBIChartBuilder` ke pohon komponen React.
 
-Ekspor saat ini dibagi menjadi dua tingkatan:
+Ekspor saat ini dibagi menjadi dua lapisan:
 
 - Ekspor akar `@visactor/vbi-react`: `useVBI`, `useVSeed`, `useChartType`, `useDimensions`, `useMeasures`, `useWhereFilter`, `useHavingFilter`
 - Ekspor sub-jalur `@visactor/vbi-react/components`: `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel`
 
-## posisi
+## Posisi
 
-- Langganan negara dan kemasan rendering untuk React 18+
-- Gunakan `VBIChartBuilder` sebagai sumber status tunggal (SSOT) dan jangan menyimpan salinan bisnis tambahan
-- Cocok untuk membuat panel konfigurasi BI, area pratinjau bagan, dan panel debug DSL
+- Wrapper subscription state dan rendering untuk React 18+
+- Menggunakan `VBIChartBuilder` sebagai single source of truth (SSOT), tanpa menyimpan salinan state bisnis tambahan
+- Cocok untuk membangun panel konfigurasi BI, area pratinjau chart, dan panel debug DSL
 
-## Instal
+## Instalasi
 
 Instalasi proyek reguler:
 
@@ -21,7 +21,7 @@ Instalasi proyek reguler:
 pnpm add @visactor/vbi-react @visactor/vbi @visactor/vseed react react-dom
 ```
 
-Saat melakukan debug inline di gudang ini, Anda dapat menggunakan ketergantungan ruang kerja:
+Saat melakukan debug di dalam repositori ini, Anda dapat menggunakan dependensi workspace:
 
 ```bash
 pnpm --filter=<your-app> add @visactor/vbi-react@workspace:* @visactor/vbi@workspace:* @visactor/vseed@workspace:* react react-dom
@@ -29,7 +29,7 @@ pnpm --filter=<your-app> add @visactor/vbi-react@workspace:* @visactor/vbi@works
 
 ## Mulai Cepat
 
-Contoh berikut menunjukkan loop tertutup minimum dari `useVBI` + `useVSeed`:
+Contoh berikut menunjukkan alur minimal `useVBI` + `useVSeed`:
 
 ```tsx
 import { useMemo } from 'react'
@@ -80,5 +80,5 @@ export function App() {
 
 ## Navigasi Dokumen
 
-- [./api/index Ikhtisar](./api/index)
+- [Ikhtisar API](./api/index)
 - [Contoh](./examples/index)
