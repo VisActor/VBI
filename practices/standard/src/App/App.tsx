@@ -1,11 +1,17 @@
 import { VBIChartBuilder } from '@visactor/vbi'
 import { theme as antdTheme, Card, ConfigProvider, Flex, Spin } from 'antd'
+import deDE from 'antd/locale/de_DE'
 import enUS from 'antd/locale/en_US'
+import frFR from 'antd/locale/fr_FR'
+import idID from 'antd/locale/id_ID'
+import jaJP from 'antd/locale/ja_JP'
+import koKR from 'antd/locale/ko_KR'
+import viVN from 'antd/locale/vi_VN'
 import zhCN from 'antd/locale/zh_CN'
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ShelfDndProvider } from 'src/components/Shelves/dnd'
 import { Toolbar } from 'src/components/Toolbar'
-import { DEMO_DEFAULT_LOCALE, DEMO_DEFAULT_THEME, type DemoLocale, type DemoTheme } from 'src/constants/builder'
+import { DEMO_DEFAULT_THEME, type DemoLocale, type DemoTheme } from 'src/constants/builder'
 import { useVBIBuilder } from 'src/hooks'
 import { useTranslation } from 'src/i18n'
 import { useVBIStore, VBIStoreProvider } from 'src/model'
@@ -28,7 +34,13 @@ interface APPProps {
 const DEMO_ANTD_LOCALES = {
   'zh-CN': zhCN,
   'en-US': enUS,
-} as const
+  'ja-JP': jaJP,
+  'de-DE': deDE,
+  'id-ID': idID,
+  'fr-FR': frFR,
+  'ko-KR': koKR,
+  'vi-VN': viVN,
+} satisfies Record<DemoLocale, typeof zhCN>
 
 const createThemeConfig = (themeMode: DemoTheme) => {
   return {
@@ -229,7 +241,7 @@ export const APP = ({
   builder,
   hideLocale = false,
   hideTheme = false,
-  locale = DEMO_DEFAULT_LOCALE,
+  locale,
   mode = 'edit',
   theme = DEMO_DEFAULT_THEME,
 }: APPProps) => {

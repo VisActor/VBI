@@ -19,6 +19,6 @@
       "path": "../../packages/vbi"
     }
   ],
-  "include": ["src", "src/**/*.csv"],
+  "include": ["src", "src/**/*.csv", "src/**/*.json"],
   "extends": "../../tsconfig.base.json"
 }

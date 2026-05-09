@@ -51,7 +51,7 @@ export const APP = ({
   builder,
   hideLocale = false,
   hideTheme = false,
-  locale = DEMO_DEFAULT_LOCALE,
+  locale,
   mode = 'edit',
   theme = DEMO_DEFAULT_THEME,
 }: APPProps) => (

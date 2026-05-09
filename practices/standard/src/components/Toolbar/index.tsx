@@ -8,11 +8,11 @@ import {
   UndoOutlined,
   CloudUploadOutlined,
 } from '@ant-design/icons'
-import { Button, InputNumber, Segmented, Space, Tooltip, theme } from 'antd'
+import { Button, InputNumber, Segmented, Select, Space, Tooltip, theme } from 'antd'
 import React, { useState } from 'react'
 import { ChartTypeSelector } from 'src/components/ChartType'
 import { CSVModal } from 'src/components/CSVModal'
-import type { DemoLocale, DemoTheme } from 'src/constants/builder'
+import { DEMO_LOCALE_OPTIONS, type DemoLocale, type DemoTheme } from 'src/constants/builder'
 import { useVBIBuilder, useVBIUndoManager } from 'src/hooks'
 import { useTranslation } from 'src/i18n'
 import { useVBIStore, useVBIStoreConfig } from 'src/model'
@@ -171,13 +171,11 @@ export const Toolbar: React.FC<{
               <ToolbarDivider />
 
               <Tooltip title={`${t('toolbarLocaleLabel')}: ${t('toolbarLocaleDescription')}`}>
-                <Segmented
+                <Select
                   size='small'
                   value={locale}
-                  options={[
-                    { label: t('toolbarLocaleSwitchZh'), value: 'zh-CN' },
-                    { label: t('toolbarLocaleSwitchEn'), value: 'en-US' },
-                  ]}
+                  style={{ width: 138 }}
+                  options={DEMO_LOCALE_OPTIONS}
                   onChange={(value) => setLocale(value as DemoLocale)}
                 />
               </Tooltip>

@@ -1,11 +1,6 @@
 import type { VBIChartBuilder } from '@visactor/vbi'
 import { ProfessionalEditor } from 'src/components/Editor/ProfessionalEditor'
-import {
-  PROFESSIONAL_DEFAULT_LOCALE,
-  PROFESSIONAL_DEFAULT_THEME,
-  type ProfessionalLocale,
-  type ProfessionalTheme,
-} from 'src/constants/builder'
+import { PROFESSIONAL_DEFAULT_THEME, type ProfessionalLocale, type ProfessionalTheme } from 'src/constants/builder'
 import { VBIStoreProvider } from 'src/model'
 import './App.css'
 
@@ -24,7 +19,7 @@ export const APP = ({
   builder,
   hideLocale = false,
   hideTheme = false,
-  locale = PROFESSIONAL_DEFAULT_LOCALE,
+  locale,
   mode = 'edit',
   theme = PROFESSIONAL_DEFAULT_THEME,
 }: APPProps) => (

@@ -8,21 +8,21 @@ import i18nJson from './i18n.json'
 export const supportedLocales = [
   'zh-CN',
   'en-US',
-  'ja-JP',
   'de-DE',
-  'id-ID',
   'fr-FR',
-  'ko-KR',
+  'id-ID',
   'vi-VN',
+  'ko-KR',
+  'ja-JP',
 ] as const
 
 const localeLabels: Record<(typeof supportedLocales)[number], string> = {
   'zh-CN': '简体中文',
   'en-US': 'English',
-  'ja-JP': '日本語',
   'de-DE': 'Deutsch',
-  'id-ID': 'Bahasa Indonesia',
   'fr-FR': 'Français',
+  'id-ID': 'Bahasa Indonesia',
+  'ja-JP': '日本語',
   'ko-KR': '한국어',
   'vi-VN': 'Tiếng Việt',
 }
