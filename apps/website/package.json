@@ -12,7 +12,7 @@
     "preview": "rspress preview"
   },
   "dependencies": {
-    "@rspress/core": "2.0.9",
+    "@rspress/core": "2.0.10",
     "@visactor/vbi": "workspace:*",
     "@visactor/vchart": "2.0.23-alpha.6",
     "@visactor/vquery": "workspace:*",
@@ -27,8 +27,8 @@
     "zustand": "5.0.6"
   },
   "devDependencies": {
-    "@rspress/plugin-playground": "2.0.9",
-    "@rspress/plugin-preview": "2.0.9",
+    "@rspress/plugin-playground": "2.0.10",
+    "@rspress/plugin-preview": "2.0.10",
     "@types/node": "24.10.1",
     "@types/react": "19.2.7",
     "typescript": "6.0.2"
