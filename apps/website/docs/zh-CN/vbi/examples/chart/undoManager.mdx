@@ -1,6 +1,6 @@
 # undoManager
 
-import { registerDemoConnector } from '@components/demoConnector'
+import { registerDemoConnector } from '@components'
 
 {registerDemoConnector()}
 
@@ -8,10 +8,10 @@ import { registerDemoConnector } from '@components/demoConnector'
 
 撤销重做功能测试
 
+
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
-import { VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -21,49 +21,49 @@ export default () => {
     const run = async () => {
       const builder = VBI.chart.create({
         ...{
-          connectorId: 'demoSupermarket',
-          chartType: 'bar',
-          dimensions: [],
-          measures: [
+          "connectorId": "demoSupermarket",
+          "chartType": "bar",
+          "dimensions": [],
+          "measures": [
             {
-              field: 'sales',
-              alias: '销售额',
-              encoding: 'yAxis',
-              aggregate: {
-                func: 'sum',
-              },
-            },
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
           ],
-          whereFilter: {
-            id: 'root',
-            op: 'and',
-            conditions: [],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
           },
-          havingFilter: {
-            id: 'root',
-            op: 'and',
-            conditions: [],
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
           },
-          theme: 'light',
-          locale: 'zh-CN',
-          version: 1,
-          limit: 10,
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 10
         },
         connectorId: DEMO_CONNECTOR_ID,
       })
       const applyBuilder = (builder: VBIChartBuilder) => {
-        builder.measures.add('profit', (node) => {
-          node.setAlias('利润').setEncoding('yAxis').setAggregate({ func: 'sum' })
-        })
+  builder.measures.add('profit', (node) => {
+    node.setAlias('利润').setEncoding('yAxis').setAggregate({ func: 'sum' })
+  })
 
-        if (builder.undoManager.canUndo()) {
-          builder.undoManager.undo()
-        }
+  if (builder.undoManager.canUndo()) {
+    builder.undoManager.undo()
+  }
 
-        if (builder.undoManager.canRedo()) {
-          builder.undoManager.redo()
-        }
-      }
+  if (builder.undoManager.canRedo()) {
+    builder.undoManager.redo()
+  }
+}
       applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
@@ -75,3 +75,4 @@ export default () => {
   return <VSeedRender vseed={result} />
 }
 ```
+

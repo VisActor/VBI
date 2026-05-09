@@ -1,6 +1,6 @@
 # theme
 
-import { registerDemoConnector } from '@components/demoConnector'
+import { registerDemoConnector } from '@components'
 
 {registerDemoConnector()}
 
@@ -8,10 +8,10 @@ import { registerDemoConnector } from '@components/demoConnector'
 
 深色主题图表
 
+
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
-import { VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -21,47 +21,47 @@ export default () => {
     const run = async () => {
       const builder = VBI.chart.create({
         ...{
-          connectorId: 'demoSupermarket',
-          chartType: 'table',
-          dimensions: [
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [
             {
-              field: 'province',
-              alias: '省份',
-            },
+              "field": "province",
+              "alias": "省份"
+            }
           ],
-          measures: [
+          "measures": [
             {
-              field: 'sales',
-              alias: '销售额',
-              encoding: 'yAxis',
-              aggregate: {
-                func: 'sum',
-              },
-            },
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
           ],
-          whereFilter: {
-            id: 'root',
-            op: 'and',
-            conditions: [],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
           },
-          havingFilter: {
-            id: 'root',
-            op: 'and',
-            conditions: [],
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
           },
-          theme: 'light',
-          locale: 'zh-CN',
-          version: 1,
-          limit: 10,
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 10
         },
         connectorId: DEMO_CONNECTOR_ID,
       })
       const applyBuilder = (builder: VBIChartBuilder) => {
-        const nextTheme = 'dark'
-        if (builder.theme.getTheme() !== nextTheme) {
-          builder.theme.setTheme(nextTheme)
-        }
-      }
+  const nextTheme = 'dark'
+  if (builder.theme.getTheme() !== nextTheme) {
+    builder.theme.setTheme(nextTheme)
+  }
+}
       applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
@@ -78,10 +78,10 @@ export default () => {
 
 浅色主题图表
 
+
 ```tsx preview
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
-import { VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -91,47 +91,47 @@ export default () => {
     const run = async () => {
       const builder = VBI.chart.create({
         ...{
-          connectorId: 'demoSupermarket',
-          chartType: 'table',
-          dimensions: [
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [
             {
-              field: 'province',
-              alias: '省份',
-            },
+              "field": "province",
+              "alias": "省份"
+            }
           ],
-          measures: [
+          "measures": [
             {
-              field: 'sales',
-              alias: '销售额',
-              encoding: 'yAxis',
-              aggregate: {
-                func: 'sum',
-              },
-            },
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
           ],
-          whereFilter: {
-            id: 'root',
-            op: 'and',
-            conditions: [],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
           },
-          havingFilter: {
-            id: 'root',
-            op: 'and',
-            conditions: [],
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
           },
-          theme: 'dark',
-          locale: 'zh-CN',
-          version: 1,
-          limit: 10,
+          "theme": "dark",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 10
         },
         connectorId: DEMO_CONNECTOR_ID,
       })
       const applyBuilder = (builder: VBIChartBuilder) => {
-        const nextTheme = 'light'
-        if (builder.theme.getTheme() !== nextTheme) {
-          builder.theme.setTheme(nextTheme)
-        }
-      }
+  const nextTheme = 'light'
+  if (builder.theme.getTheme() !== nextTheme) {
+    builder.theme.setTheme(nextTheme)
+  }
+}
       applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
@@ -143,3 +143,4 @@ export default () => {
   return <VSeedRender vseed={result} />
 }
 ```
+

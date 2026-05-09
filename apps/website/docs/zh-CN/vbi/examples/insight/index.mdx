@@ -1,6 +1,6 @@
 # insight
 
-import { registerDemoConnector } from '@components/demoConnector'
+import { registerDemoConnector } from '@components'
 
 {registerDemoConnector()}
 
@@ -8,7 +8,9 @@ import { registerDemoConnector } from '@components/demoConnector'
 
 通过 insight builder 设置文本内容
 
+
 > 标签: `basic`
+
 
 ```tsx preview
 import { VBI, VBIInsightBuilder } from '@visactor/vbi'
@@ -22,12 +24,12 @@ export default () => {
   useEffect(() => {
     try {
       const builder = VBI.insight.create({
-        content: '',
-        version: 0,
-      })
+          "content": "",
+          "version": 0
+        })
       const applyBuilder = (builder: VBIInsightBuilder) => {
-        builder.setContent('本周华东区域销售额持续增长，建议继续跟进重点客户。')
-      }
+  builder.setContent('本周华东区域销售额持续增长，建议继续跟进重点客户。')
+}
       applyBuilder(builder)
       setResult(builder.build())
     } catch (err) {
@@ -41,3 +43,4 @@ export default () => {
   return <JsonRender value={result} />
 }
 ```
+

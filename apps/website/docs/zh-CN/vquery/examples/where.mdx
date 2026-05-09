@@ -4,86 +4,90 @@
 
 Basic Where Example
 
-```tsx preview
-import { VQueryResultRender } from '@components/vquery'
+```tsx preview 
+import { VQueryResultRender } from '@components'
 
 export default () => {
   const vqueryConfig = {
-    datasetId: 'where-basic',
-    description: 'Basic Where Example',
-    vquery: {
-      select: ['name', 'department', 'salary'],
-      where: {
-        op: 'and',
-        conditions: [
-          {
-            field: 'department',
-            op: '=',
-            value: 'Engineering',
-          },
-        ],
-      },
+  "datasetId": "where-basic",
+  "description": "Basic Where Example",
+  "vquery": {
+    "select": [
+      "name",
+      "department",
+      "salary"
+    ],
+    "where": {
+      "op": "and",
+      "conditions": [
+        {
+          "field": "department",
+          "op": "=",
+          "value": "Engineering"
+        }
+      ]
+    }
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "salary": 5000
     },
-    dataset: [
-      {
-        id: 1,
-        name: 'Alice',
-        age: 25,
-        department: 'HR',
-        salary: 5000,
-      },
-      {
-        id: 2,
-        name: 'Bob',
-        age: 30,
-        department: 'Engineering',
-        salary: 8000,
-      },
-      {
-        id: 3,
-        name: 'Charlie',
-        age: 35,
-        department: 'Engineering',
-        salary: 9000,
-      },
-      {
-        id: 4,
-        name: 'David',
-        age: 40,
-        department: 'HR',
-        salary: 6000,
-      },
-      {
-        id: 5,
-        name: 'Eve',
-        age: 22,
-        department: 'Marketing',
-        salary: 4000,
-      },
-    ],
-    schema: [
-      {
-        name: 'id',
-        type: 'number',
-      },
-      {
-        name: 'name',
-        type: 'string',
-      },
-      {
-        name: 'age',
-        type: 'number',
-      },
-      {
-        name: 'department',
-        type: 'string',
-      },
-      {
-        name: 'salary',
-        type: 'number',
-      },
-    ],
-  }
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "salary": 8000
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 35,
+      "department": "Engineering",
+      "salary": 9000
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 40,
+      "department": "HR",
+      "salary": 6000
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "salary": 4000
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "salary",
+      "type": "number"
+    }
+  ]
+}
 
   return <VQueryResultRender vqueryConfig={vqueryConfig} />
 }
@@ -93,128 +97,145 @@ export default () => {
 
 Where with BETWEEN / NOT BETWEEN Operator
 
-```tsx preview
-import { VQueryResultRender } from '@components/vquery'
+```tsx preview 
+import { VQueryResultRender } from '@components'
 
 export default () => {
   const vqueryConfig = {
-    datasetId: 'where-between-operator',
-    description: 'Where with BETWEEN / NOT BETWEEN Operator',
-    vquery: {
-      select: ['id', 'name', 'age', 'gender'],
-      where: {
-        op: 'or',
-        conditions: [
-          {
-            op: 'and',
-            conditions: [
-              {
-                field: 'age',
-                op: 'between',
-                value: [18, 30],
-              },
-              {
-                field: 'gender',
-                op: 'in',
-                value: ['male', 'female'],
-              },
-            ],
-          },
-          {
-            op: 'and',
-            conditions: [
-              {
-                field: 'age',
-                op: 'not between',
-                value: [18, 30],
-              },
-              {
-                field: 'gender',
-                op: 'not in',
-                value: ['male', 'female'],
-              },
-            ],
-          },
-        ],
-      },
+  "datasetId": "where-between-operator",
+  "description": "Where with BETWEEN / NOT BETWEEN Operator",
+  "vquery": {
+    "select": [
+      "id",
+      "name",
+      "age",
+      "gender"
+    ],
+    "where": {
+      "op": "or",
+      "conditions": [
+        {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "age",
+              "op": "between",
+              "value": [
+                18,
+                30
+              ]
+            },
+            {
+              "field": "gender",
+              "op": "in",
+              "value": [
+                "male",
+                "female"
+              ]
+            }
+          ]
+        },
+        {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "age",
+              "op": "not between",
+              "value": [
+                18,
+                30
+              ]
+            },
+            {
+              "field": "gender",
+              "op": "not in",
+              "value": [
+                "male",
+                "female"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "gender": "female",
+      "active": 1
     },
-    dataset: [
-      {
-        id: 1,
-        name: 'Alice',
-        age: 25,
-        department: 'HR',
-        gender: 'female',
-        active: 1,
-      },
-      {
-        id: 2,
-        name: 'Bob',
-        age: 30,
-        department: 'Engineering',
-        gender: 'male',
-        active: 1,
-      },
-      {
-        id: 3,
-        name: 'Charlie',
-        age: 17,
-        department: 'Engineering',
-        gender: 'male',
-        active: 0,
-      },
-      {
-        id: 4,
-        name: 'David',
-        age: 15,
-        department: 'HR',
-        gender: 'male',
-        active: 1,
-      },
-      {
-        id: 5,
-        name: 'Eve',
-        age: 22,
-        department: 'Marketing',
-        gender: 'female',
-        active: 1,
-      },
-      {
-        id: 6,
-        name: 'Frank',
-        age: null,
-        department: 'Sales',
-        gender: null,
-        active: 0,
-      },
-    ],
-    schema: [
-      {
-        name: 'id',
-        type: 'number',
-      },
-      {
-        name: 'name',
-        type: 'string',
-      },
-      {
-        name: 'age',
-        type: 'number',
-      },
-      {
-        name: 'department',
-        type: 'string',
-      },
-      {
-        name: 'gender',
-        type: 'string',
-      },
-      {
-        name: 'active',
-        type: 'number',
-      },
-    ],
-  }
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "gender": "male",
+      "active": 1
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 17,
+      "department": "Engineering",
+      "gender": "male",
+      "active": 0
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 15,
+      "department": "HR",
+      "gender": "male",
+      "active": 1
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "gender": "female",
+      "active": 1
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "age": null,
+      "department": "Sales",
+      "gender": null,
+      "active": 0
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "gender",
+      "type": "string"
+    },
+    {
+      "name": "active",
+      "type": "number"
+    }
+  ]
+}
 
   return <VQueryResultRender vqueryConfig={vqueryConfig} />
 }
@@ -224,128 +245,133 @@ export default () => {
 
 Where with Complex AND/OR Logic
 
-```tsx preview
-import { VQueryResultRender } from '@components/vquery'
+```tsx preview 
+import { VQueryResultRender } from '@components'
 
 export default () => {
   const vqueryConfig = {
-    datasetId: 'where-complex-logic',
-    description: 'Where with Complex AND/OR Logic',
-    vquery: {
-      select: ['id', 'name', 'age', 'gender'],
-      where: {
-        op: 'or',
-        conditions: [
-          {
-            op: 'and',
-            conditions: [
-              {
-                field: 'age',
-                op: '>=',
-                value: 18,
-              },
-              {
-                field: 'gender',
-                op: '=',
-                value: 'male',
-              },
-            ],
-          },
-          {
-            op: 'and',
-            conditions: [
-              {
-                field: 'age',
-                op: '<',
-                value: 18,
-              },
-              {
-                field: 'gender',
-                op: '=',
-                value: 'female',
-              },
-            ],
-          },
-        ],
-      },
+  "datasetId": "where-complex-logic",
+  "description": "Where with Complex AND/OR Logic",
+  "vquery": {
+    "select": [
+      "id",
+      "name",
+      "age",
+      "gender"
+    ],
+    "where": {
+      "op": "or",
+      "conditions": [
+        {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "age",
+              "op": ">=",
+              "value": 18
+            },
+            {
+              "field": "gender",
+              "op": "=",
+              "value": "male"
+            }
+          ]
+        },
+        {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "age",
+              "op": "<",
+              "value": 18
+            },
+            {
+              "field": "gender",
+              "op": "=",
+              "value": "female"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "gender": "female",
+      "active": 1
     },
-    dataset: [
-      {
-        id: 1,
-        name: 'Alice',
-        age: 25,
-        department: 'HR',
-        gender: 'female',
-        active: 1,
-      },
-      {
-        id: 2,
-        name: 'Bob',
-        age: 30,
-        department: 'Engineering',
-        gender: 'male',
-        active: 1,
-      },
-      {
-        id: 3,
-        name: 'Charlie',
-        age: 17,
-        department: 'Engineering',
-        gender: 'male',
-        active: 0,
-      },
-      {
-        id: 4,
-        name: 'David',
-        age: 15,
-        department: 'HR',
-        gender: 'male',
-        active: 1,
-      },
-      {
-        id: 5,
-        name: 'Eve',
-        age: 22,
-        department: 'Marketing',
-        gender: 'female',
-        active: 1,
-      },
-      {
-        id: 6,
-        name: 'Frank',
-        age: null,
-        department: 'Sales',
-        gender: null,
-        active: 0,
-      },
-    ],
-    schema: [
-      {
-        name: 'id',
-        type: 'number',
-      },
-      {
-        name: 'name',
-        type: 'string',
-      },
-      {
-        name: 'age',
-        type: 'number',
-      },
-      {
-        name: 'department',
-        type: 'string',
-      },
-      {
-        name: 'gender',
-        type: 'string',
-      },
-      {
-        name: 'active',
-        type: 'number',
-      },
-    ],
-  }
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "gender": "male",
+      "active": 1
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 17,
+      "department": "Engineering",
+      "gender": "male",
+      "active": 0
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 15,
+      "department": "HR",
+      "gender": "male",
+      "active": 1
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "gender": "female",
+      "active": 1
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "age": null,
+      "department": "Sales",
+      "gender": null,
+      "active": 0
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "gender",
+      "type": "string"
+    },
+    {
+      "name": "active",
+      "type": "number"
+    }
+  ]
+}
 
   return <VQueryResultRender vqueryConfig={vqueryConfig} />
 }
@@ -355,94 +381,97 @@ export default () => {
 
 Where with DATE field BETWEEN filter
 
-```tsx preview
-import { VQueryResultRender } from '@components/vquery'
+```tsx preview 
+import { VQueryResultRender } from '@components'
 
 export default () => {
   const vqueryConfig = {
-    datasetId: 'where-date-between',
-    description: 'Where with DATE field BETWEEN filter',
-    vquery: {
-      select: [
-        'id',
-        'area',
-        'sales',
+  "datasetId": "where-date-between",
+  "description": "Where with DATE field BETWEEN filter",
+  "vquery": {
+    "select": [
+      "id",
+      "area",
+      "sales",
+      {
+        "field": "order_date",
+        "alias": "order_day",
+        "aggr": {
+          "func": "to_day"
+        }
+      }
+    ],
+    "where": {
+      "op": "and",
+      "conditions": [
         {
-          field: 'order_date',
-          alias: 'order_day',
-          aggr: {
-            func: 'to_day',
-          },
-        },
-      ],
-      where: {
-        op: 'and',
-        conditions: [
-          {
-            field: 'order_date',
-            op: 'between',
-            value: ['2024-01-01', '2024-01-31'],
-          },
-        ],
-      },
-      orderBy: [
-        {
-          field: 'order_day',
-          order: 'asc',
-        },
-      ],
+          "field": "order_date",
+          "op": "between",
+          "value": [
+            "2024-01-01",
+            "2024-01-31"
+          ]
+        }
+      ]
     },
-    dataset: [
+    "orderBy": [
       {
-        id: 1,
-        area: 'BEI JING',
-        order_date: '2023-12-31',
-        sales: 80,
-      },
-      {
-        id: 2,
-        area: 'SHANG HAI',
-        order_date: '2024-01-05',
-        sales: 120,
-      },
-      {
-        id: 3,
-        area: 'HANG ZHOU',
-        order_date: '2024-01-20',
-        sales: 260,
-      },
-      {
-        id: 4,
-        area: 'SHEN ZHEN',
-        order_date: '2024-01-31',
-        sales: 310,
-      },
-      {
-        id: 5,
-        area: 'CHENG DU',
-        order_date: '2024-02-01',
-        sales: 500,
-      },
-    ],
-    schema: [
-      {
-        name: 'id',
-        type: 'number',
-      },
-      {
-        name: 'area',
-        type: 'string',
-      },
-      {
-        name: 'order_date',
-        type: 'date',
-      },
-      {
-        name: 'sales',
-        type: 'number',
-      },
-    ],
-  }
+        "field": "order_day",
+        "order": "asc"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "area": "BEI JING",
+      "order_date": "2023-12-31",
+      "sales": 80
+    },
+    {
+      "id": 2,
+      "area": "SHANG HAI",
+      "order_date": "2024-01-05",
+      "sales": 120
+    },
+    {
+      "id": 3,
+      "area": "HANG ZHOU",
+      "order_date": "2024-01-20",
+      "sales": 260
+    },
+    {
+      "id": 4,
+      "area": "SHEN ZHEN",
+      "order_date": "2024-01-31",
+      "sales": 310
+    },
+    {
+      "id": 5,
+      "area": "CHENG DU",
+      "order_date": "2024-02-01",
+      "sales": 500
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "order_date",
+      "type": "date"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}
 
   return <VQueryResultRender vqueryConfig={vqueryConfig} />
 }
@@ -452,128 +481,139 @@ export default () => {
 
 Where with IN / NOT IN Operator
 
-```tsx preview
-import { VQueryResultRender } from '@components/vquery'
+```tsx preview 
+import { VQueryResultRender } from '@components'
 
 export default () => {
   const vqueryConfig = {
-    datasetId: 'where-in-operator',
-    description: 'Where with IN / NOT IN Operator',
-    vquery: {
-      select: ['id', 'name', 'age', 'gender'],
-      where: {
-        op: 'or',
-        conditions: [
-          {
-            op: 'and',
-            conditions: [
-              {
-                field: 'age',
-                op: '>=',
-                value: 18,
-              },
-              {
-                field: 'gender',
-                op: 'in',
-                value: ['male', 'female'],
-              },
-            ],
-          },
-          {
-            op: 'and',
-            conditions: [
-              {
-                field: 'age',
-                op: '<',
-                value: 18,
-              },
-              {
-                field: 'gender',
-                op: 'not in',
-                value: ['male', 'female'],
-              },
-            ],
-          },
-        ],
-      },
+  "datasetId": "where-in-operator",
+  "description": "Where with IN / NOT IN Operator",
+  "vquery": {
+    "select": [
+      "id",
+      "name",
+      "age",
+      "gender"
+    ],
+    "where": {
+      "op": "or",
+      "conditions": [
+        {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "age",
+              "op": ">=",
+              "value": 18
+            },
+            {
+              "field": "gender",
+              "op": "in",
+              "value": [
+                "male",
+                "female"
+              ]
+            }
+          ]
+        },
+        {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "age",
+              "op": "<",
+              "value": 18
+            },
+            {
+              "field": "gender",
+              "op": "not in",
+              "value": [
+                "male",
+                "female"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "gender": "female",
+      "active": 1
     },
-    dataset: [
-      {
-        id: 1,
-        name: 'Alice',
-        age: 25,
-        department: 'HR',
-        gender: 'female',
-        active: 1,
-      },
-      {
-        id: 2,
-        name: 'Bob',
-        age: 30,
-        department: 'Engineering',
-        gender: 'male',
-        active: 1,
-      },
-      {
-        id: 3,
-        name: 'Charlie',
-        age: 17,
-        department: 'Engineering',
-        gender: 'male',
-        active: 0,
-      },
-      {
-        id: 4,
-        name: 'David',
-        age: 15,
-        department: 'HR',
-        gender: 'male',
-        active: 1,
-      },
-      {
-        id: 5,
-        name: 'Eve',
-        age: 22,
-        department: 'Marketing',
-        gender: 'female',
-        active: 1,
-      },
-      {
-        id: 6,
-        name: 'Frank',
-        age: null,
-        department: 'Sales',
-        gender: null,
-        active: 0,
-      },
-    ],
-    schema: [
-      {
-        name: 'id',
-        type: 'number',
-      },
-      {
-        name: 'name',
-        type: 'string',
-      },
-      {
-        name: 'age',
-        type: 'number',
-      },
-      {
-        name: 'department',
-        type: 'string',
-      },
-      {
-        name: 'gender',
-        type: 'string',
-      },
-      {
-        name: 'active',
-        type: 'number',
-      },
-    ],
-  }
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "gender": "male",
+      "active": 1
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 17,
+      "department": "Engineering",
+      "gender": "male",
+      "active": 0
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 15,
+      "department": "HR",
+      "gender": "male",
+      "active": 1
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "gender": "female",
+      "active": 1
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "age": null,
+      "department": "Sales",
+      "gender": null,
+      "active": 0
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "gender",
+      "type": "string"
+    },
+    {
+      "name": "active",
+      "type": "number"
+    }
+  ]
+}
 
   return <VQueryResultRender vqueryConfig={vqueryConfig} />
 }
@@ -583,126 +623,131 @@ export default () => {
 
 Where with IS NULL / IS NOT NULL
 
-```tsx preview
-import { VQueryResultRender } from '@components/vquery'
+```tsx preview 
+import { VQueryResultRender } from '@components'
 
 export default () => {
   const vqueryConfig = {
-    datasetId: 'where-null-check',
-    description: 'Where with IS NULL / IS NOT NULL',
-    vquery: {
-      select: ['id', 'name', 'age', 'gender'],
-      where: {
-        op: 'or',
-        conditions: [
-          {
-            op: 'and',
-            conditions: [
-              {
-                field: 'age',
-                op: '>=',
-                value: 18,
-              },
-              {
-                field: 'gender',
-                op: 'is null',
-              },
-            ],
-          },
-          {
-            op: 'and',
-            conditions: [
-              {
-                field: 'age',
-                op: '<',
-                value: 18,
-              },
-              {
-                field: 'gender',
-                op: 'is not null',
-              },
-            ],
-          },
-        ],
-      },
+  "datasetId": "where-null-check",
+  "description": "Where with IS NULL / IS NOT NULL",
+  "vquery": {
+    "select": [
+      "id",
+      "name",
+      "age",
+      "gender"
+    ],
+    "where": {
+      "op": "or",
+      "conditions": [
+        {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "age",
+              "op": ">=",
+              "value": 18
+            },
+            {
+              "field": "gender",
+              "op": "is null"
+            }
+          ]
+        },
+        {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "age",
+              "op": "<",
+              "value": 18
+            },
+            {
+              "field": "gender",
+              "op": "is not null"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "gender": "female",
+      "active": 1
     },
-    dataset: [
-      {
-        id: 1,
-        name: 'Alice',
-        age: 25,
-        department: 'HR',
-        gender: 'female',
-        active: 1,
-      },
-      {
-        id: 2,
-        name: 'Bob',
-        age: 30,
-        department: 'Engineering',
-        gender: 'male',
-        active: 1,
-      },
-      {
-        id: 3,
-        name: 'Charlie',
-        age: 17,
-        department: 'Engineering',
-        gender: 'male',
-        active: 0,
-      },
-      {
-        id: 4,
-        name: 'David',
-        age: 15,
-        department: 'HR',
-        gender: 'male',
-        active: 1,
-      },
-      {
-        id: 5,
-        name: 'Eve',
-        age: 22,
-        department: 'Marketing',
-        gender: 'female',
-        active: 1,
-      },
-      {
-        id: 6,
-        name: 'Frank',
-        age: null,
-        department: 'Sales',
-        gender: null,
-        active: 0,
-      },
-    ],
-    schema: [
-      {
-        name: 'id',
-        type: 'number',
-      },
-      {
-        name: 'name',
-        type: 'string',
-      },
-      {
-        name: 'age',
-        type: 'number',
-      },
-      {
-        name: 'department',
-        type: 'string',
-      },
-      {
-        name: 'gender',
-        type: 'string',
-      },
-      {
-        name: 'active',
-        type: 'number',
-      },
-    ],
-  }
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "gender": "male",
+      "active": 1
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 17,
+      "department": "Engineering",
+      "gender": "male",
+      "active": 0
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 15,
+      "department": "HR",
+      "gender": "male",
+      "active": 1
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "gender": "female",
+      "active": 1
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "age": null,
+      "department": "Sales",
+      "gender": null,
+      "active": 0
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "gender",
+      "type": "string"
+    },
+    {
+      "name": "active",
+      "type": "number"
+    }
+  ]
+}
 
   return <VQueryResultRender vqueryConfig={vqueryConfig} />
 }
@@ -712,108 +757,113 @@ export default () => {
 
 Where with Single Value IN / NOT IN
 
-```tsx preview
-import { VQueryResultRender } from '@components/vquery'
+```tsx preview 
+import { VQueryResultRender } from '@components'
 
 export default () => {
   const vqueryConfig = {
-    datasetId: 'where-single-value-in',
-    description: 'Where with Single Value IN / NOT IN',
-    vquery: {
-      select: ['id', 'name', 'age', 'gender'],
-      where: {
-        op: 'or',
-        conditions: [
-          {
-            field: 'gender',
-            op: 'in',
-            value: 'male',
-          },
-          {
-            field: 'gender',
-            op: 'not in',
-            value: 'female',
-          },
-        ],
-      },
+  "datasetId": "where-single-value-in",
+  "description": "Where with Single Value IN / NOT IN",
+  "vquery": {
+    "select": [
+      "id",
+      "name",
+      "age",
+      "gender"
+    ],
+    "where": {
+      "op": "or",
+      "conditions": [
+        {
+          "field": "gender",
+          "op": "in",
+          "value": "male"
+        },
+        {
+          "field": "gender",
+          "op": "not in",
+          "value": "female"
+        }
+      ]
+    }
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "gender": "female",
+      "active": 1
     },
-    dataset: [
-      {
-        id: 1,
-        name: 'Alice',
-        age: 25,
-        department: 'HR',
-        gender: 'female',
-        active: 1,
-      },
-      {
-        id: 2,
-        name: 'Bob',
-        age: 30,
-        department: 'Engineering',
-        gender: 'male',
-        active: 1,
-      },
-      {
-        id: 3,
-        name: 'Charlie',
-        age: 17,
-        department: 'Engineering',
-        gender: 'male',
-        active: 0,
-      },
-      {
-        id: 4,
-        name: 'David',
-        age: 15,
-        department: 'HR',
-        gender: 'male',
-        active: 1,
-      },
-      {
-        id: 5,
-        name: 'Eve',
-        age: 22,
-        department: 'Marketing',
-        gender: 'female',
-        active: 1,
-      },
-      {
-        id: 6,
-        name: 'Frank',
-        age: null,
-        department: 'Sales',
-        gender: null,
-        active: 0,
-      },
-    ],
-    schema: [
-      {
-        name: 'id',
-        type: 'number',
-      },
-      {
-        name: 'name',
-        type: 'string',
-      },
-      {
-        name: 'age',
-        type: 'number',
-      },
-      {
-        name: 'department',
-        type: 'string',
-      },
-      {
-        name: 'gender',
-        type: 'string',
-      },
-      {
-        name: 'active',
-        type: 'number',
-      },
-    ],
-  }
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "gender": "male",
+      "active": 1
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 17,
+      "department": "Engineering",
+      "gender": "male",
+      "active": 0
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 15,
+      "department": "HR",
+      "gender": "male",
+      "active": 1
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "gender": "female",
+      "active": 1
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "age": null,
+      "department": "Sales",
+      "gender": null,
+      "active": 0
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "gender",
+      "type": "string"
+    },
+    {
+      "name": "active",
+      "type": "number"
+    }
+  ]
+}
 
   return <VQueryResultRender vqueryConfig={vqueryConfig} />
 }
@@ -823,100 +873,101 @@ export default () => {
 
 Where with TIMESTAMP comparison window
 
-```tsx preview
-import { VQueryResultRender } from '@components/vquery'
+```tsx preview 
+import { VQueryResultRender } from '@components'
 
 export default () => {
   const vqueryConfig = {
-    datasetId: 'where-timestamp-window',
-    description: 'Where with TIMESTAMP comparison window',
-    vquery: {
-      select: [
-        'id',
-        'event',
-        'amount',
+  "datasetId": "where-timestamp-window",
+  "description": "Where with TIMESTAMP comparison window",
+  "vquery": {
+    "select": [
+      "id",
+      "event",
+      "amount",
+      {
+        "field": "created_at",
+        "alias": "created_minute",
+        "aggr": {
+          "func": "to_minute"
+        }
+      }
+    ],
+    "where": {
+      "op": "and",
+      "conditions": [
         {
-          field: 'created_at',
-          alias: 'created_minute',
-          aggr: {
-            func: 'to_minute',
-          },
+          "field": "created_at",
+          "op": ">=",
+          "value": "2024-01-15 12:00:00"
         },
-      ],
-      where: {
-        op: 'and',
-        conditions: [
-          {
-            field: 'created_at',
-            op: '>=',
-            value: '2024-01-15 12:00:00',
-          },
-          {
-            field: 'created_at',
-            op: '<',
-            value: '2024-02-01 00:00:00',
-          },
-        ],
-      },
-      orderBy: [
         {
-          field: 'created_minute',
-          order: 'asc',
-        },
-      ],
+          "field": "created_at",
+          "op": "<",
+          "value": "2024-02-01 00:00:00"
+        }
+      ]
     },
-    dataset: [
+    "orderBy": [
       {
-        id: 1,
-        event: 'signup',
-        created_at: '2024-01-15 08:00:00',
-        amount: 0,
-      },
-      {
-        id: 2,
-        event: 'payment',
-        created_at: '2024-01-15 12:00:00',
-        amount: 199,
-      },
-      {
-        id: 3,
-        event: 'refund',
-        created_at: '2024-01-20 18:30:00',
-        amount: -40,
-      },
-      {
-        id: 4,
-        event: 'renewal',
-        created_at: '2024-02-01 00:00:00',
-        amount: 299,
-      },
-      {
-        id: 5,
-        event: 'cancel',
-        created_at: '2024-02-03 09:00:00',
-        amount: 0,
-      },
-    ],
-    schema: [
-      {
-        name: 'id',
-        type: 'number',
-      },
-      {
-        name: 'event',
-        type: 'string',
-      },
-      {
-        name: 'created_at',
-        type: 'timestamp',
-      },
-      {
-        name: 'amount',
-        type: 'number',
-      },
-    ],
-  }
+        "field": "created_minute",
+        "order": "asc"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "event": "signup",
+      "created_at": "2024-01-15 08:00:00",
+      "amount": 0
+    },
+    {
+      "id": 2,
+      "event": "payment",
+      "created_at": "2024-01-15 12:00:00",
+      "amount": 199
+    },
+    {
+      "id": 3,
+      "event": "refund",
+      "created_at": "2024-01-20 18:30:00",
+      "amount": -40
+    },
+    {
+      "id": 4,
+      "event": "renewal",
+      "created_at": "2024-02-01 00:00:00",
+      "amount": 299
+    },
+    {
+      "id": 5,
+      "event": "cancel",
+      "created_at": "2024-02-03 09:00:00",
+      "amount": 0
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "event",
+      "type": "string"
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp"
+    },
+    {
+      "name": "amount",
+      "type": "number"
+    }
+  ]
+}
 
   return <VQueryResultRender vqueryConfig={vqueryConfig} />
 }
 ```
+

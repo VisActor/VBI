@@ -4,22 +4,22 @@
 
 enable
 
-```tsx preview
+```tsx preview 
 import { VSeedRender } from '@components'
 
 export default () => {
   const vseedConfig = {
-    chartType: 'column',
-    dataset: [
-      {
-        value: 1,
-      },
-    ],
-    brush: {
-      enable: true,
-      removeOnClick: true,
-    },
+  "chartType": "column",
+  "dataset": [
+    {
+      "value": 1
+    }
+  ],
+  "brush": {
+    "enable": true,
+    "removeOnClick": true
   }
+}
 
   return <VSeedRender vseed={vseedConfig} />
 }
@@ -29,23 +29,24 @@ export default () => {
 
 removeOnClick
 
-```tsx preview
+```tsx preview 
 import { VSeedRender } from '@components'
 
 export default () => {
   const vseedConfig = {
-    chartType: 'column',
-    dataset: [
-      {
-        value: 1,
-      },
-    ],
-    brush: {
-      enable: true,
-      removeOnClick: false,
-    },
+  "chartType": "column",
+  "dataset": [
+    {
+      "value": 1
+    }
+  ],
+  "brush": {
+    "enable": true,
+    "removeOnClick": false
   }
+}
 
   return <VSeedRender vseed={vseedConfig} />
 }
 ```
+

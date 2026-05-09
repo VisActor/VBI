@@ -4,107 +4,108 @@
 
 ## ChartType
 
-| 示例                                                                         | 描述                                                       | 标签 |
-| ---------------------------------------------------------------------------- | ---------------------------------------------------------- | ---- |
-| [area-by-order-date](./chartType#area-by-order-date)                         | 面积图 - 按日期销售额趋势                                  | -    |
-| [bar-by-product-type](./chartType#bar-by-product-type)                       | 柱状图 - 按产品类型销售额                                  | -    |
-| [chart-type-switching](./chartType#chart-type-switching)                     | Switch between line and bar chart types                    | -    |
-| [column-by-area](./chartType#column-by-area)                                 | 柱形图 - 按区域销售额                                      | -    |
-| [donut-by-customer-type](./chartType#donut-by-customer-type)                 | 环形图 - 按客户类型销售占比                                | -    |
-| [line-by-province](./chartType#line-by-province)                             | 折线图 - 按省份销售额趋势                                  | -    |
-| [line-chart](./chartType#line-chart)                                         | 折线图 - 按省份销售额趋势                                  | -    |
-| [pie-by-area](./chartType#pie-by-area)                                       | 饼图 - 按区域销售占比                                      | -    |
-| [pie-chart-measure-encoding](./chartType#pie-chart-measure-encoding)         | 饼图度量编码 - 测试 measure-encoding.ts Pie 图表类型       | -    |
-| [rose-by-city](./chartType#rose-by-city)                                     | 玫瑰图 - 按城市销售额                                      | -    |
-| [scatter-chart-measure-encoding](./chartType#scatter-chart-measure-encoding) | 散点图度量编码 - 测试 measure-encoding.ts Scatter 图表类型 | -    |
-| [scatter-sales-profit](./chartType#scatter-sales-profit)                     | 散点图 - 销售额与利润关系                                  | -    |
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [area-by-order-date](./chartType#area-by-order-date) | 面积图 - 按日期销售额趋势 | - |
+| [bar-by-product-type](./chartType#bar-by-product-type) | 柱状图 - 按产品类型销售额 | - |
+| [chart-type-switching](./chartType#chart-type-switching) | Switch between line and bar chart types | - |
+| [column-by-area](./chartType#column-by-area) | 柱形图 - 按区域销售额 | - |
+| [donut-by-customer-type](./chartType#donut-by-customer-type) | 环形图 - 按客户类型销售占比 | - |
+| [line-by-province](./chartType#line-by-province) | 折线图 - 按省份销售额趋势 | - |
+| [line-chart](./chartType#line-chart) | 折线图 - 按省份销售额趋势 | - |
+| [pie-by-area](./chartType#pie-by-area) | 饼图 - 按区域销售占比 | - |
+| [pie-chart-measure-encoding](./chartType#pie-chart-measure-encoding) | 饼图度量编码 - 测试 measure-encoding.ts Pie 图表类型 | - |
+| [rose-by-city](./chartType#rose-by-city) | 玫瑰图 - 按城市销售额 | - |
+| [scatter-chart-measure-encoding](./chartType#scatter-chart-measure-encoding) | 散点图度量编码 - 测试 measure-encoding.ts Scatter 图表类型 | - |
+| [scatter-sales-profit](./chartType#scatter-sales-profit) | 散点图 - 销售额与利润关系 | - |
 
 ## Dimensions
 
-| 示例                                                                              | 描述                                   | 标签 |
-| --------------------------------------------------------------------------------- | -------------------------------------- | ---- |
-| [add-date-dimension-year](./dimensions#add-date-dimension-year)                   | 添加按年聚合的日期维度                 | -    |
-| [add-dimension](./dimensions#add-dimension)                                       | 添加维度                               | -    |
-| [add-multiple-dimensions](./dimensions#add-multiple-dimensions)                   | 添加多个维度（链式调用）               | -    |
-| [mixed-date-and-normal-dimensions](./dimensions#mixed-date-and-normal-dimensions) | 普通维度与按季度聚合的日期维度混合分组 | -    |
-| [remove-dimension](./dimensions#remove-dimension)                                 | 删除维度                               | -    |
-| [update-date-dimension-month](./dimensions#update-date-dimension-month)           | 将已有日期维度更新为按月聚合           | -    |
-| [update-dimension](./dimensions#update-dimension)                                 | 更新维度                               | -    |
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [add-date-dimension-year](./dimensions#add-date-dimension-year) | 添加按年聚合的日期维度 | - |
+| [add-dimension](./dimensions#add-dimension) | 添加维度 | - |
+| [add-multiple-dimensions](./dimensions#add-multiple-dimensions) | 添加多个维度（链式调用） | - |
+| [mixed-date-and-normal-dimensions](./dimensions#mixed-date-and-normal-dimensions) | 普通维度与按季度聚合的日期维度混合分组 | - |
+| [remove-dimension](./dimensions#remove-dimension) | 删除维度 | - |
+| [update-date-dimension-month](./dimensions#update-date-dimension-month) | 将已有日期维度更新为按月聚合 | - |
+| [update-dimension](./dimensions#update-dimension) | 更新维度 | - |
 
 ## HavingFilter
 
-| 示例                                                                                                      | 描述                                                                                                                                 | 标签 |
-| --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---- |
-| [add-having-filter](./havingFilter#add-having-filter)                                                     | 按区域分组后筛选销售额超过百万的高业绩区域                                                                                           | -    |
-| [add-multiple-having-filter](./havingFilter#add-multiple-having-filter)                                   | 链式添加多个Having条件筛选高销售额且高利润的区域                                                                                     | -    |
-| [clear-having-filter](./havingFilter#clear-having-filter)                                                 | 清空所有Having过滤条件，展示全量分组聚合结果                                                                                         | -    |
-| [having-array-value-with-in-operator](./havingFilter#having-array-value-with-in-operator)                 | Having filter with array value that triggers 'in' operator conversion                                                                | -    |
-| [having-array-value-with-not-in-operator](./havingFilter#having-array-value-with-not-in-operator)         | Having filter with array value that triggers 'not in' operator conversion                                                            | -    |
-| [having-clear-and-rebuild](./havingFilter#having-clear-and-rebuild)                                       | 清除已有having条件后重新构建全新的分组筛选，模拟用户重置筛选面板后重新配置                                                           | -    |
-| [having-deeply-nested-groups](./havingFilter#having-deeply-nested-groups)                                 | 三层嵌套分组：OR(AND(销售额超50万, 利润超5万), AND(数量超100, 折扣均值低于0.3))，模拟复杂业务筛选                                    | -    |
-| [having-empty-dsl-compose-target](./havingFilter#having-empty-dsl-compose-target)                         | 从空DSL出发，通过builder拼装where/having/measures/dimensions，包含sum与countDistinct聚合的having条件组合                             | -    |
-| [having-field-not-in-measures-and-dimensions](./havingFilter#having-field-not-in-measures-and-dimensions) | 初始化空DSL，仅通过builder添加维度area与指标sales，并在having中使用未出现在measures/dimensions里的profit字段（SUM(profit) > 100000） | -    |
-| [having-find-and-update](./havingFilter#having-find-and-update)                                           | 先添加having条件，然后通过find查找并动态更新阈值和操作符，模拟用户交互式调整筛选条件                                                 | -    |
-| [having-group-add-to-existing](./havingFilter#having-group-add-to-existing)                               | 向已有的having分组中追加新条件，模拟用户逐步细化筛选规则                                                                             | -    |
-| [having-group-remove-condition](./havingFilter#having-group-remove-condition)                             | 从已有的having分组中移除特定条件，模拟用户取消某个筛选项                                                                             | -    |
-| [having-mix-filters-and-groups](./havingFilter#having-mix-filters-and-groups)                             | 混合使用独立过滤条件和OR分组：销售额超50万 AND (利润超10万 OR 数量不少于30)                                                          | -    |
-| [having-multi-dimension-aggregate](./havingFilter#having-multi-dimension-aggregate)                       | 按品类和区域双维度分组，筛选平均折扣低于20%且总销售额超过10万的组合，分析高价值低折扣业务                                            | -    |
-| [having-nested-groups](./havingFilter#having-nested-groups)                                               | 嵌套分组：AND(销售额超100万, OR(利润超20万, 数量不少于50))                                                                           | -    |
-| [having-or-group](./havingFilter#having-or-group)                                                         | 使用OR分组筛选高销售额或高利润的区域                                                                                                 | -    |
-| [having-scatter-profit-analysis](./havingFilter#having-scatter-profit-analysis)                           | 散点图分析：按品类分组筛选高利润率且交易量超20笔的品类，定位优质业务                                                                 | -    |
-| [having-update-group-operator](./havingFilter#having-update-group-operator)                               | 更新已有Having分组的逻辑操作符从AND改为OR                                                                                            | -    |
-| [having-with-where-combined](./havingFilter#having-with-where-combined)                                   | where与having联合筛选：先按where筛选办公用品品类，再按having筛选销售额超5万或利润超1万的省份                                         | -    |
-| [remove-having-filter](./havingFilter#remove-having-filter)                                               | 移除多余的Having过滤条件，只保留利润筛选                                                                                             | -    |
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [add-having-filter](./havingFilter#add-having-filter) | 按区域分组后筛选销售额超过百万的高业绩区域 | - |
+| [add-multiple-having-filter](./havingFilter#add-multiple-having-filter) | 链式添加多个Having条件筛选高销售额且高利润的区域 | - |
+| [clear-having-filter](./havingFilter#clear-having-filter) | 清空所有Having过滤条件，展示全量分组聚合结果 | - |
+| [having-array-value-with-in-operator](./havingFilter#having-array-value-with-in-operator) | Having filter with array value that triggers 'in' operator conversion | - |
+| [having-array-value-with-not-in-operator](./havingFilter#having-array-value-with-not-in-operator) | Having filter with array value that triggers 'not in' operator conversion | - |
+| [having-clear-and-rebuild](./havingFilter#having-clear-and-rebuild) | 清除已有having条件后重新构建全新的分组筛选，模拟用户重置筛选面板后重新配置 | - |
+| [having-deeply-nested-groups](./havingFilter#having-deeply-nested-groups) | 三层嵌套分组：OR(AND(销售额超50万, 利润超5万), AND(数量超100, 折扣均值低于0.3))，模拟复杂业务筛选 | - |
+| [having-empty-dsl-compose-target](./havingFilter#having-empty-dsl-compose-target) | 从空DSL出发，通过builder拼装where/having/measures/dimensions，包含sum与countDistinct聚合的having条件组合 | - |
+| [having-field-not-in-measures-and-dimensions](./havingFilter#having-field-not-in-measures-and-dimensions) | 初始化空DSL，仅通过builder添加维度area与指标sales，并在having中使用未出现在measures/dimensions里的profit字段（SUM(profit) > 100000） | - |
+| [having-find-and-update](./havingFilter#having-find-and-update) | 先添加having条件，然后通过find查找并动态更新阈值和操作符，模拟用户交互式调整筛选条件 | - |
+| [having-group-add-to-existing](./havingFilter#having-group-add-to-existing) | 向已有的having分组中追加新条件，模拟用户逐步细化筛选规则 | - |
+| [having-group-remove-condition](./havingFilter#having-group-remove-condition) | 从已有的having分组中移除特定条件，模拟用户取消某个筛选项 | - |
+| [having-mix-filters-and-groups](./havingFilter#having-mix-filters-and-groups) | 混合使用独立过滤条件和OR分组：销售额超50万 AND (利润超10万 OR 数量不少于30) | - |
+| [having-multi-dimension-aggregate](./havingFilter#having-multi-dimension-aggregate) | 按品类和区域双维度分组，筛选平均折扣低于20%且总销售额超过10万的组合，分析高价值低折扣业务 | - |
+| [having-nested-groups](./havingFilter#having-nested-groups) | 嵌套分组：AND(销售额超100万, OR(利润超20万, 数量不少于50)) | - |
+| [having-or-group](./havingFilter#having-or-group) | 使用OR分组筛选高销售额或高利润的区域 | - |
+| [having-scatter-profit-analysis](./havingFilter#having-scatter-profit-analysis) | 散点图分析：按品类分组筛选高利润率且交易量超20笔的品类，定位优质业务 | - |
+| [having-update-group-operator](./havingFilter#having-update-group-operator) | 更新已有Having分组的逻辑操作符从AND改为OR | - |
+| [having-with-where-combined](./havingFilter#having-with-where-combined) | where与having联合筛选：先按where筛选办公用品品类，再按having筛选销售额超5万或利润超1万的省份 | - |
+| [remove-having-filter](./havingFilter#remove-having-filter) | 移除多余的Having过滤条件，只保留利润筛选 | - |
 
 ## Locale
 
-| 示例                                  | 描述             | 标签 |
-| ------------------------------------- | ---------------- | ---- |
-| [en-US-locale](./locale#en-US-locale) | 英文 locale 测试 | -    |
-| [zh-CN-locale](./locale#zh-CN-locale) | 中文 locale 测试 | -    |
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [en-US-locale](./locale#en-US-locale) | 英文 locale 测试 | - |
+| [zh-CN-locale](./locale#zh-CN-locale) | 中文 locale 测试 | - |
 
 ## Measures
 
-| 示例                                                                                  | 描述                                                                                                 | 标签 |
-| ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---- |
-| [add-measure](./measures#add-measure)                                                 | 添加度量                                                                                             | -    |
-| [add-measure-encoding](./measures#add-measure-encoding)                               | 添加度量并设置编码                                                                                   | -    |
-| [measure-with-custom-and-auto-format](./measures#measure-with-custom-and-auto-format) | 度量格式化：销售额使用万元自定义格式（¥前缀、保留2位小数），利润率使用自动格式化，折扣使用百分比格式 | -    |
-| [remove-measure](./measures#remove-measure)                                           | 删除度量                                                                                             | -    |
-| [update-measure](./measures#update-measure)                                           | 更新度量                                                                                             | -    |
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [add-measure](./measures#add-measure) | 添加度量 | - |
+| [add-measure-encoding](./measures#add-measure-encoding) | 添加度量并设置编码 | - |
+| [measure-with-custom-and-auto-format](./measures#measure-with-custom-and-auto-format) | 度量格式化：销售额使用万元自定义格式（¥前缀、保留2位小数），利润率使用自动格式化，折扣使用百分比格式 | - |
+| [remove-measure](./measures#remove-measure) | 删除度量 | - |
+| [update-measure](./measures#update-measure) | 更新度量 | - |
 
 ## Theme
 
-| 示例                               | 描述         | 标签 |
-| ---------------------------------- | ------------ | ---- |
-| [dark-theme](./theme#dark-theme)   | 深色主题图表 | -    |
-| [light-theme](./theme#light-theme) | 浅色主题图表 | -    |
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [dark-theme](./theme#dark-theme) | 深色主题图表 | - |
+| [light-theme](./theme#light-theme) | 浅色主题图表 | - |
 
 ## UndoManager
 
-| 示例                                 | 描述             | 标签 |
-| ------------------------------------ | ---------------- | ---- |
-| [undo-redo](./undoManager#undo-redo) | 撤销重做功能测试 | -    |
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [undo-redo](./undoManager#undo-redo) | 撤销重做功能测试 | - |
 
 ## WhereFilter
 
-| 示例                                                                                                     | 描述                                                                                                | 标签 |
-| -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ---- |
-| [between-sales-range-analysis](./whereFilter#between-sales-range-analysis)                               | 销售额区间分析：使用 between 筛选单笔 1000~10000 元的订单，按品类汇总利润                           | -    |
-| [clear-and-rebuild-filters](./whereFilter#clear-and-rebuild-filters)                                     | 清空并重建过滤条件：清除旧的简单筛选，重建为包含分组的复杂条件                                      | -    |
-| [date-filter-period-and-range-combo](./whereFilter#date-filter-period-and-range-combo)                   | 日期区间组合过滤：使用 period 筛选2024年Q1数据，同时用 range 限定利润区间，按品类和配送方式交叉分析 | -    |
-| [date-filter-relative-with-nested-conditions](./whereFilter#date-filter-relative-with-nested-conditions) | 日期过滤与嵌套条件组合：筛选近30天内消费者或企业客户的高额订单，按省份统计销售额与利润              | -    |
-| [deeply-nested-or-and-groups](./whereFilter#deeply-nested-or-and-groups)                                 | 多层嵌套分组：消费者当日达或企业客户一级配送的高额订单，三层 AND/OR 嵌套                            | -    |
-| [high-discount-tech-profit-analysis](./whereFilter#high-discount-tech-profit-analysis)                   | 高折扣技术类产品利润分析：筛选技术品类且折扣大于0.5的订单，按区域对比利润                           | -    |
-| [in-operator-multi-area-delivery](./whereFilter#in-operator-multi-area-delivery)                         | 多区域配送效率对比：使用 in 筛选华东、华北、中南三大区域，按配送方式统计订单量                      | -    |
-| [nested-group-region-product-filter](./whereFilter#nested-group-region-product-filter)                   | 华东区域办公用品或家具销售额：使用嵌套分组，AND 连接区域条件与 OR 品类条件                          | -    |
-| [not-between-sales-range](./whereFilter#not-between-sales-range)                                         | Not between filter: exclude sales between 1000~10000                                                | -    |
-| [not-between-with-explicit-operators](./whereFilter#not-between-with-explicit-operators)                 | Not between filter with explicit leftOp/rightOp to test invert functions                            | -    |
-| [office-supplies-sales-by-province](./whereFilter#office-supplies-sales-by-province)                     | 各省份办公用品销售额排名：筛选办公用品品类，按省份汇总销售额                                        | -    |
-| [or-group-product-category-comparison](./whereFilter#or-group-product-category-comparison)               | 办公用品与技术类品类对比：使用 OR 分组筛选两个品类，按区域对比销售额                                | -    |
-| [remove-condition-from-group](./whereFilter#remove-condition-from-group)                                 | 从分组中移除条件：预设 OR 分组含三个品类，通过 updateGroup 移除其中一个                             | -    |
-| [remove-filter-by-index](./whereFilter#remove-filter-by-index)                                           | 按索引移除过滤条件：移除第一个品类筛选，只保留区域条件                                              | -    |
-| [update-filter-switch-province](./whereFilter#update-filter-switch-province)                             | 动态修改过滤条件：将省份筛选从浙江更新为广东，观察销售额变化                                        | -    |
-| [update-group-or-to-and](./whereFilter#update-group-or-to-and)                                           | 修改分组逻辑：将预设的 OR 品类分组切换为 AND，收窄筛选范围                                          | -    |
-| [where-filter-array-value-converts-to-in](./whereFilter#where-filter-array-value-converts-to-in)         | Where filter with array value using '=' operator should convert to 'in'                             | -    |
-| [where-filter-array-value-converts-to-not-in](./whereFilter#where-filter-array-value-converts-to-not-in) | Where filter with array value using '!=' operator should convert to 'not in'                        | -    |
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [between-sales-range-analysis](./whereFilter#between-sales-range-analysis) | 销售额区间分析：使用 between 筛选单笔 1000~10000 元的订单，按品类汇总利润 | - |
+| [clear-and-rebuild-filters](./whereFilter#clear-and-rebuild-filters) | 清空并重建过滤条件：清除旧的简单筛选，重建为包含分组的复杂条件 | - |
+| [date-filter-period-and-range-combo](./whereFilter#date-filter-period-and-range-combo) | 日期区间组合过滤：使用 period 筛选2024年Q1数据，同时用 range 限定利润区间，按品类和配送方式交叉分析 | - |
+| [date-filter-relative-with-nested-conditions](./whereFilter#date-filter-relative-with-nested-conditions) | 日期过滤与嵌套条件组合：筛选近30天内消费者或企业客户的高额订单，按省份统计销售额与利润 | - |
+| [deeply-nested-or-and-groups](./whereFilter#deeply-nested-or-and-groups) | 多层嵌套分组：消费者当日达或企业客户一级配送的高额订单，三层 AND/OR 嵌套 | - |
+| [high-discount-tech-profit-analysis](./whereFilter#high-discount-tech-profit-analysis) | 高折扣技术类产品利润分析：筛选技术品类且折扣大于0.5的订单，按区域对比利润 | - |
+| [in-operator-multi-area-delivery](./whereFilter#in-operator-multi-area-delivery) | 多区域配送效率对比：使用 in 筛选华东、华北、中南三大区域，按配送方式统计订单量 | - |
+| [nested-group-region-product-filter](./whereFilter#nested-group-region-product-filter) | 华东区域办公用品或家具销售额：使用嵌套分组，AND 连接区域条件与 OR 品类条件 | - |
+| [not-between-sales-range](./whereFilter#not-between-sales-range) | Not between filter: exclude sales between 1000~10000 | - |
+| [not-between-with-explicit-operators](./whereFilter#not-between-with-explicit-operators) | Not between filter with explicit leftOp/rightOp to test invert functions | - |
+| [office-supplies-sales-by-province](./whereFilter#office-supplies-sales-by-province) | 各省份办公用品销售额排名：筛选办公用品品类，按省份汇总销售额 | - |
+| [or-group-product-category-comparison](./whereFilter#or-group-product-category-comparison) | 办公用品与技术类品类对比：使用 OR 分组筛选两个品类，按区域对比销售额 | - |
+| [remove-condition-from-group](./whereFilter#remove-condition-from-group) | 从分组中移除条件：预设 OR 分组含三个品类，通过 updateGroup 移除其中一个 | - |
+| [remove-filter-by-index](./whereFilter#remove-filter-by-index) | 按索引移除过滤条件：移除第一个品类筛选，只保留区域条件 | - |
+| [update-filter-switch-province](./whereFilter#update-filter-switch-province) | 动态修改过滤条件：将省份筛选从浙江更新为广东，观察销售额变化 | - |
+| [update-group-or-to-and](./whereFilter#update-group-or-to-and) | 修改分组逻辑：将预设的 OR 品类分组切换为 AND，收窄筛选范围 | - |
+| [where-filter-array-value-converts-to-in](./whereFilter#where-filter-array-value-converts-to-in) | Where filter with array value using '=' operator should convert to 'in' | - |
+| [where-filter-array-value-converts-to-not-in](./whereFilter#where-filter-array-value-converts-to-not-in) | Where filter with array value using '!=' operator should convert to 'not in' | - |
+

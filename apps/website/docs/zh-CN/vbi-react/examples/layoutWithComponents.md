@@ -1,13 +1,13 @@
-# 组件化布局
+# Componentized Layout
 
-该示例展示 `BuilderLayout` + `FieldPanel` + `ChartRenderer` + `ChartTypeSelector`。
+This example shows `BuilderLayout` + `FieldPanel` + `ChartRenderer` + `ChartTypeSelector`.
 
-## 依赖说明
+## Dependency Notes
 
-- 包依赖：`@visactor/vbi-react/components`、`@visactor/vbi`、`react`
-- 入参约束：`builder` 中应存在可选维度/度量字段，便于 `FieldPanel` 演示增删操作
+- Package dependencies: `@visactor/vbi-react/components`, `@visactor/vbi`, `react`
+- Input constraint: `builder` should contain selectable dimension/measure fields so `FieldPanel` can demonstrate add/remove operations.
 
-## 代码片段
+## Code Snippet
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'
@@ -20,8 +20,8 @@ export function LayoutDemo({ builder }: { builder: VBIChartBuilder }) {
       leftPanel={
         <FieldPanel
           builder={builder}
-          dimensionOptions={[{ label: '区域', value: 'region' }]}
-          measureOptions={[{ label: '销售额', value: 'sales' }]}
+          dimensionOptions={[{ label: 'Region', value: 'region' }]}
+          measureOptions={[{ label: 'Sales', value: 'sales' }]}
         />
       }
       main={<ChartRenderer builder={builder} debounce={100} />}
@@ -30,8 +30,8 @@ export function LayoutDemo({ builder }: { builder: VBIChartBuilder }) {
 }
 ```
 
-## 预期效果
+## Expected Result
 
-- 顶部可切换图表类型，左侧可增删维度/度量，主区显示图表 DSL 预览。
-- 字段操作后主区内容会自动刷新，无需手动触发。
-- 当构建失败时，`ChartRenderer` 会显示默认错误与重试按钮。
+- The top area can switch chart type, the left side can add/remove dimensions and measures, and the main area shows a chart DSL preview.
+- After field operations, the main-area content refreshes automatically without a manual trigger.
+- When build fails, `ChartRenderer` shows the default error and retry button.

@@ -5281,6 +5281,15 @@ same as operator
 
 :::
 
+### lineStyle
+
+**Type:** `"solid" | "dashed" | "dotted" | undefined`
+
+:::note{title=描述}
+线条样式。
+
+:::
+
 
 ## dimensionLinkage
 

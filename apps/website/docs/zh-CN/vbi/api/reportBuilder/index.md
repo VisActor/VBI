@@ -17,7 +17,7 @@
 **定义**:
 
 ```typescript
-constructor(doc: Y.Doc, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>, resourceRegistry: VBIResourceRegistry)
+constructor(doc: Y.Doc, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>, resourceRegistry: VBIResourceRegistry<TQueryDSL, TSeedDSL>)
 ```
 
 **参数**:
@@ -26,7 +26,7 @@ constructor(doc: Y.Doc, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>, r
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
 | `options` | VBIReportBuilderOptions<TQueryDSL, TSeedDSL> | - |
-| `resourceRegistry` | VBIResourceRegistry | - |
+| `resourceRegistry` | VBIResourceRegistry<TQueryDSL, TSeedDSL> | - |
 
 ### applyUpdate
 

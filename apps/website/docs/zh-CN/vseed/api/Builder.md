@@ -50,6 +50,14 @@ getColorIdMap(): Record
 
 获取颜色字段的详细映射表。Key 为颜色 ID，Value 为详细信息
 
+### getColorValueMap
+
+```ts
+getColorValueMap(): undefined | Record
+```
+
+获取离散颜色图中 colorId 到最终颜色值的映射
+
 ## Static Methods
 
 ### getAdvancedPipeline
