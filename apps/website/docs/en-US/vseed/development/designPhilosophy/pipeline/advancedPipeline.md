@@ -1,9 +1,11 @@
-# Advanced Pipeline
+# advanced Pipeline
 
-## Advanced pipeline
+## advanced pipeline
 
-The `advanced pipeline` receives a VSeed DSL and outputs an advancedVSeed DSL.
+`advanced pipeline` receives a vseed DSL and outputs an advancedVSeed DSL
 
-`advancedVSeed` is a data structure designed based on the grammar of graphics. It is used to uniformly describe charts and tables, acting as a bridge between business requirements and the charting library.
+`advancedVSeed` is a data structure designed based on graphical syntax, used to uniformly Description charts and tables, and is a bridge between business and chart libraries.
 
-`advancedVSeed` itself is fully serializable. Therefore, it can be constructed in a Node.js environment, transmitted via HTTP to the spec pipeline, and finally rendered as a chart on the frontend.
+
+`advancedVSeed` itself is also fully serializable, so it can be built in the Node.js environment, transmitted to the spec pipeline via http, and rendered to the front-end chart.
+

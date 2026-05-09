@@ -18,7 +18,7 @@ constructor(yMap: Y.Map<any>)
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | `Y.Map<any>` | - |
 
 ### getId
 
@@ -102,7 +102,7 @@ setEncoding(encoding: NonNullable<VBIMeasure['encoding']>): this
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `encoding` | NonNullable<VBIMeasure['encoding']> | - 指标编码位置 |
+| `encoding` | `NonNullable<VBIMeasure['encoding']>` | - 指标编码位置 |
 
 ### setSort
 
@@ -120,7 +120,7 @@ setSort(sort: VBISort): this
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `sort` | VBISort | - 排序配置 |
+| `sort` | `VBISort` | - 排序配置 |
 
 ### setAggregate
 
@@ -138,7 +138,7 @@ setAggregate(aggregate: VBIMeasure['aggregate']): this
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `aggregate` | VBIMeasure['aggregate'] | - 聚合配置 |
+| `aggregate` | `VBIMeasure['aggregate']` | - 聚合配置 |
 
 ### setFormat
 
@@ -156,7 +156,7 @@ setFormat(format: VBIMeasureFormat): this
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `format` | VBIMeasureFormat | - 格式配置 |
+| `format` | `VBIMeasureFormat` | - 格式配置 |
 
 ### getFormat
 

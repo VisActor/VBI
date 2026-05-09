@@ -1,27 +1,27 @@
 # VBI React
 
-`@visactor/vbi-react` is the React adapter layer for `@visactor/vbi`, responsible for integrating `VBIChartBuilder` into the React component tree.
+`@visactor/vbi-react` is the React adaptation layer of `@visactor/vbi`, responsible for connecting `VBIChartBuilder` to the React component tree.
 
-Current exports are split into two layers:
+The current export is divided into two tiers:
 
 - Root export `@visactor/vbi-react`: `useVBI`, `useVSeed`, `useChartType`, `useDimensions`, `useMeasures`, `useWhereFilter`, `useHavingFilter`
 - Sub-path export `@visactor/vbi-react/components`: `BuilderLayout`, `ChartRenderer`, `ChartTypeSelector`, `FieldPanel`
 
-## Purpose
+## Positioning
 
-- State subscription and rendering encapsulation for React 18+
-- Uses `VBIChartBuilder` as the Single Source of Truth (SSOT) — no additional business state copies
-- Ideal for building BI configuration panels, chart preview areas, and DSL debug panels
+- State subscription and rendering packaging for React 18+
+- Use `VBIChartBuilder` as the single status source (SSOT) and do not maintain additional business copies
+- Suitable for building BI configuration panel, chart preview area and DSL debugging panel
 
 ## Installation
 
-Standard installation:
+Regular project installation:
 
 ```bash
 pnpm add @visactor/vbi-react @visactor/vbi @visactor/vseed react react-dom
 ```
 
-For local development within this monorepo, use workspace dependencies:
+When debugging inline in this warehouse, you can use the workspace dependency:
 
 ```bash
 pnpm --filter=<your-app> add @visactor/vbi-react@workspace:* @visactor/vbi@workspace:* @visactor/vseed@workspace:* react react-dom
@@ -29,7 +29,7 @@ pnpm --filter=<your-app> add @visactor/vbi-react@workspace:* @visactor/vbi@works
 
 ## Quick Start
 
-The example below demonstrates the minimal closed loop with `useVBI` + `useVSeed`:
+The following example demonstrates the minimum closed loop of `useVBI` + `useVSeed`:
 
 ```tsx
 import { useMemo } from 'react'
@@ -78,7 +78,7 @@ export function App() {
 }
 ```
 
-## Documentation
+## Document Navigation
 
 - [API Overview](./api/index)
-- [Examples](./examples/index)
+- [Example](./examples/index)

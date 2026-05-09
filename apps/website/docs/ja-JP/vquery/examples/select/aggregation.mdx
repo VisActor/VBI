@@ -1,0 +1,1002 @@
+# Aggregation
+
+## avg
+
+Avg を使用する Select の例
+
+```tsx preview 
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "select-aggregation-avg",
+  "description": "Select Avg Example",
+  "vquery": {
+    "select": [
+      {
+        "field": "salary",
+        "aggr": {
+          "func": "avg"
+        },
+        "alias": "avg_salary"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "salary": 5000
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "salary": 8000
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 35,
+      "department": "Engineering",
+      "salary": 9000
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 40,
+      "department": "HR",
+      "salary": 6000
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "salary": 4000
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "salary",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## count_distinct
+
+Count Distinct を使用する Select の例
+
+```tsx preview 
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "select-aggregation-count-distinct",
+  "description": "Select Count Distinct Example",
+  "vquery": {
+    "select": [
+      {
+        "field": "department",
+        "aggr": {
+          "func": "count_distinct"
+        },
+        "alias": "distinct_departments"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "salary": 5000
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "salary": 8000
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 35,
+      "department": "Engineering",
+      "salary": 9000
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 40,
+      "department": "HR",
+      "salary": 6000
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "salary": 4000
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "age": 28,
+      "department": "Engineering",
+      "salary": 7000
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "salary",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## count
+
+Count を使用する Select の例
+
+```tsx preview 
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "select-aggregation-count",
+  "description": "Select Count Example",
+  "vquery": {
+    "select": [
+      {
+        "field": "id",
+        "aggr": {
+          "func": "count"
+        },
+        "alias": "total_count"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "salary": 5000
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "salary": 8000
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 35,
+      "department": "Engineering",
+      "salary": 9000
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 40,
+      "department": "HR",
+      "salary": 6000
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "salary": 4000
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "salary",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## max
+
+Max を使用する Select の例
+
+```tsx preview 
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "select-aggregation-max",
+  "description": "Select Max Example",
+  "vquery": {
+    "select": [
+      {
+        "field": "salary",
+        "aggr": {
+          "func": "max"
+        },
+        "alias": "max_salary"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "salary": 5000
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "salary": 8000
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 35,
+      "department": "Engineering",
+      "salary": 9000
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 40,
+      "department": "HR",
+      "salary": 6000
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "salary": 4000
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "salary",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## median
+
+Median を使用する Select の例
+
+```tsx preview 
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "select-aggregation-median",
+  "description": "Select Median Example",
+  "vquery": {
+    "select": [
+      {
+        "field": "salary",
+        "aggr": {
+          "func": "median"
+        },
+        "alias": "salary_median"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "salary": 5000
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "salary": 8000
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 35,
+      "department": "Engineering",
+      "salary": 9000
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 40,
+      "department": "HR",
+      "salary": 6000
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "salary": 4000
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "age": 28,
+      "department": "Engineering",
+      "salary": 7000
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "salary",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## min
+
+Min を使用する Select の例
+
+```tsx preview 
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "select-aggregation-min",
+  "description": "Select Min Example",
+  "vquery": {
+    "select": [
+      {
+        "field": "salary",
+        "aggr": {
+          "func": "min"
+        },
+        "alias": "min_salary"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "salary": 5000
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "salary": 8000
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 35,
+      "department": "Engineering",
+      "salary": 9000
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 40,
+      "department": "HR",
+      "salary": 6000
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "salary": 4000
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "salary",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## quantile
+
+Quantile を使用する Select の例
+
+```tsx preview 
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "select-aggregation-quantile",
+  "description": "Select Quantile Example",
+  "vquery": {
+    "select": [
+      {
+        "field": "salary",
+        "aggr": {
+          "func": "quantile",
+          "quantile": 0.9
+        },
+        "alias": "salary_quantile"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "salary": 5000
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "salary": 8000
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 35,
+      "department": "Engineering",
+      "salary": 9000
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 40,
+      "department": "HR",
+      "salary": 6000
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "salary": 4000
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "age": 28,
+      "department": "Engineering",
+      "salary": 7000
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "salary",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## stddev
+
+Stddev を使用する Select の例
+
+```tsx preview 
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "select-aggregation-stddev",
+  "description": "Select Stddev Example",
+  "vquery": {
+    "select": [
+      {
+        "field": "salary",
+        "aggr": {
+          "func": "stddev"
+        },
+        "alias": "salary_stddev"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "salary": 5000
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "salary": 8000
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 35,
+      "department": "Engineering",
+      "salary": 9000
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 40,
+      "department": "HR",
+      "salary": 6000
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "salary": 4000
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "age": 28,
+      "department": "Engineering",
+      "salary": 7000
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "salary",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## sum
+
+Sum を使用する Select の例
+
+```tsx preview 
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "select-aggregation-sum",
+  "description": "Select Sum Example",
+  "vquery": {
+    "select": [
+      {
+        "field": "salary",
+        "aggr": {
+          "func": "sum"
+        },
+        "alias": "total_salary"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "salary": 5000
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "salary": 8000
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 35,
+      "department": "Engineering",
+      "salary": 9000
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 40,
+      "department": "HR",
+      "salary": 6000
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "salary": 4000
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "salary",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## variance
+
+Variance を使用する Select の例
+
+```tsx preview 
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "select-aggregation-variance",
+  "description": "Select Variance Example",
+  "vquery": {
+    "select": [
+      {
+        "field": "salary",
+        "aggr": {
+          "func": "variance"
+        },
+        "alias": "salary_variance"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "salary": 5000
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "salary": 8000
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 35,
+      "department": "Engineering",
+      "salary": 9000
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 40,
+      "department": "HR",
+      "salary": 6000
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "salary": 4000
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "age": 28,
+      "department": "Engineering",
+      "salary": 7000
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "salary",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## variancePop
+
+VariancePop を使用する Select の例
+
+```tsx preview 
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "select-aggregation-variance-pop",
+  "description": "Select VariancePop Example",
+  "vquery": {
+    "select": [
+      {
+        "field": "salary",
+        "aggr": {
+          "func": "variance_pop"
+        },
+        "alias": "salary_variance_pop"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "age": 25,
+      "department": "HR",
+      "salary": 5000
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "age": 30,
+      "department": "Engineering",
+      "salary": 8000
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "age": 35,
+      "department": "Engineering",
+      "salary": 9000
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "age": 40,
+      "department": "HR",
+      "salary": 6000
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "age": 22,
+      "department": "Marketing",
+      "salary": 4000
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "age": 28,
+      "department": "Engineering",
+      "salary": 7000
+    }
+  ],
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "number"
+    },
+    {
+      "name": "department",
+      "type": "string"
+    },
+    {
+      "name": "salary",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+

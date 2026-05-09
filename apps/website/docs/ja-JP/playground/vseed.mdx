@@ -1,0 +1,366 @@
+---
+title: タイトル
+playgroundDirection: horizontal
+pageType: custom
+---
+
+```tsx title="VSeed 示例：玫瑰图" playground
+const Demo = () => {
+  const MeasureNames = '__MeaId__'
+
+  const vseed: VSeed = {
+    chartType: 'line',
+    dataset: [
+      {
+        month: '2025-07',
+        net_profit_million: 62.61,
+      },
+      {
+        month: '2025-08',
+        net_profit_million: 81.91,
+      },
+      {
+        month: '2025-09',
+        net_profit_million: 83.69,
+      },
+      {
+        month: '2025-10',
+        net_profit_million: 82.54,
+      },
+      {
+        month: '2025-11',
+        net_profit_million: 83.99,
+      },
+      {
+        month: '2025-12',
+        net_profit_million: 83.71,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'month',
+        encoding: 'xAxis',
+      },
+    ],
+    measures: [
+      {
+        id: 'net_profit_million',
+        encoding: 'yAxis',
+        autoFormat: false,
+        numFormat: {
+          type: 'number',
+          fractionDigits: 0,
+          suffix: ' 百万元',
+        },
+      },
+    ],
+    label: {
+      enable: false,
+    },
+    annotationPoint: [
+      {
+        selector: [
+          {
+            field: 'month',
+            operator: '=',
+            value: '2025-11',
+          },
+          {
+            field: 'net_profit_million',
+            operator: '=',
+            value: 'net_profit_million',
+          },
+        ],
+        text: '阶段高点',
+      },
+      {
+        selector: [
+          {
+            field: 'month',
+            operator: '=',
+            value: '2025-12',
+          },
+        ],
+        text: '最新点',
+      },
+    ],
+    annotationHorizontalLine: {
+      yValue: 70,
+      text: '参考线',
+    },
+    annotationArea: {
+      selector: {
+        field: 'month',
+        operator: 'in',
+        value: ['2025-07', '2025-08'],
+      },
+      text: '上升',
+    },
+    annotationDifferenceLine: [
+      {
+        start: {
+          selector: [
+            {
+              field: 'month',
+              operator: 'in',
+              value: ['2025-07'],
+            },
+            {
+              field: 'net_profit_million',
+              operator: '=',
+              value: 62.61,
+            },
+          ],
+        },
+        end: {
+          selector: [
+            {
+              field: 'month',
+              operator: 'in',
+              value: ['2025-12'],
+            },
+          ],
+        },
+        differenceType: 'absolute',
+      },
+    ],
+    yAxis: {
+      autoFormat: false,
+      numFormat: {
+        type: 'number',
+        fractionDigits: 2,
+        suffix: ' 百万元',
+      },
+    },
+    theme: 'swiss-modern',
+  }
+
+  const parseRes = zVSeed.safeParse(vseed)
+  if (parseRes.success) {
+    console.log('zVSeed parse success!!!')
+  } else {
+    console.error('zVSeed parse error!!!', parseRes)
+  }
+
+  return <SimpleVSeedRender vseed={vseed} />
+}
+
+import { useRef, useEffect } from 'react'
+import { useDark } from '@rspress/core/runtime'
+import VChart from '@visactor/vchart'
+import { ListTable, PivotTable, PivotChart, register } from '@visactor/vtable'
+import {
+  registerAll,
+  VSeed,
+  Builder,
+  isPivotChart,
+  isVChart,
+  isPivotTable,
+  isTable,
+  zVSeed,
+  ColorIdEncoding,
+  DATUM_HIDE_KEY,
+  registerTokenThemes,
+} from '@visactor/vseed'
+
+registerAll()
+register.chartModule('vchart', VChart)
+
+const BUILTIN_BUSINESS_THEME_TOKENS = {
+  'dark-botanical': {
+    baseTheme: 'dark',
+    colorScheme: ['#F0A868', '#7BAA9A', '#D97C7C', '#8FB3C7', '#B9A888', '#9A8FBC', '#82A370', '#E8C46A'],
+    linearColorScheme: ['#7BAA9A', '#F0A868'],
+    textPrimary: '#DEDCCA',
+    textSecondary: '#A9A796',
+    borderColor: 'rgba(222, 220, 202, 0.16)',
+    surfaceColor: '#1E252D',
+    tooltipBackgroundColor: 'rgba(30, 37, 45, 0.95)',
+    axisGridColor: '#3A4047',
+    axisLineColor: '#3A4047',
+    tableHeaderBackgroundColor: '#1E252D',
+    tableSelectedBorderColor: '#F0A868',
+  },
+  'paper-and-ink': {
+    baseTheme: 'light',
+    colorScheme: ['#C41E3A', '#4E8AF8', '#50C878', '#E68A00', '#8B6194', '#2E6B5A', '#D4763A', '#4A6FA5'],
+    linearColorScheme: ['#F6C2CB', '#C41E3A'],
+    textPrimary: '#1A1A1A',
+    textSecondary: '#5E564C',
+    borderColor: 'rgba(26, 26, 26, 0.10)',
+    surfaceColor: '#FFFDF9',
+    tooltipBackgroundColor: 'rgba(255, 253, 250, 0.95)',
+    tableHeaderBackgroundColor: '#F4F0EB',
+    tableSelectedBorderColor: '#C41E3A',
+  },
+  'pudding-neon': {
+    baseTheme: 'dark',
+    colorScheme: ['#F9D75A', '#FF6B6B', '#4ECDC4', '#A08BFF', '#FF9770', '#8EEB94', '#6A9BFF', '#E85D9A'],
+    linearColorScheme: ['#4ECDC4', '#F9D75A'],
+    textPrimary: '#F2F2F2',
+    textSecondary: '#B8B8B8',
+    borderColor: '#444444',
+    surfaceColor: '#2C2C2C',
+    tooltipBackgroundColor: 'rgba(44, 44, 44, 0.95)',
+    axisGridColor: '#444444',
+    axisLineColor: '#444444',
+    tableHeaderBackgroundColor: '#2C2C2C',
+    tableSelectedBorderColor: '#F9D75A',
+  },
+  'swiss-modern': {
+    baseTheme: 'light',
+    colorScheme: ['#D64D4D', '#4A78A8', '#F28E2B', '#59A14F', '#B6992D', '#AF7AA1', '#8C8C8C', '#FF6B4A'],
+    linearColorScheme: ['#F3C8C8', '#D64D4D'],
+    textPrimary: '#121212',
+    textSecondary: '#666666',
+    borderColor: 'rgba(0, 0, 0, 0.12)',
+    surfaceColor: '#F5F5F5',
+    tooltipBackgroundColor: 'rgba(245, 245, 245, 0.95)',
+    tableHeaderBackgroundColor: '#F5F5F5',
+    tableSelectedBorderColor: '#D64D4D',
+  },
+  'vintage-editorial': {
+    baseTheme: 'light',
+    colorScheme: ['#9E2F50', '#007A70', '#4B79C2', '#E68A00', '#705F84', '#2E7D6F', '#C45833', '#6B7B8D'],
+    linearColorScheme: ['#E4BEC9', '#9E2F50'],
+    textPrimary: '#2F2F2F',
+    textSecondary: '#6B6B6B',
+    borderColor: 'rgba(234, 223, 215, 0.60)',
+    surfaceColor: '#FFFFFF',
+    tooltipBackgroundColor: 'rgba(255, 255, 255, 0.95)',
+    tableHeaderBackgroundColor: '#F8EEE5',
+    tableSelectedBorderColor: '#9E2F50',
+  },
+  'warm-earth': {
+    baseTheme: 'light',
+    colorScheme: ['#E29E86', '#BCD2CA', '#EBCECF', '#6A9BCC', '#D1BCD2', '#C4A882', '#8BAFAB', '#B8937A'],
+    linearColorScheme: ['#F1DDD6', '#E29E86'],
+    textPrimary: '#2D2A26',
+    textSecondary: '#7A746B',
+    borderColor: 'rgba(45, 42, 38, 0.10)',
+    surfaceColor: '#FFFFFF',
+    tooltipBackgroundColor: 'rgba(255, 255, 255, 0.95)',
+    tableHeaderBackgroundColor: '#F4F1EC',
+    tableSelectedBorderColor: '#E29E86',
+  },
+}
+registerTokenThemes(BUILTIN_BUSINESS_THEME_TOKENS)
+const SimpleVSeedRender = (props: { vseed: VSeed }) => {
+  const { vseed } = props
+  const ref = useRef<HTMLDivElement>(null)
+  const builderRef = useRef<Builder>()
+  const dark = useDark()
+  const selectedDimValueRef = useRef<string[]>([])
+  useEffect(() => {
+    let cleanup: (() => void) | undefined
+
+    const initChart = async () => {
+      if (!ref.current) {
+        return
+      }
+      const theme = dark ? 'dark' : 'light'
+      const builder = Builder.from(vseed.theme ? vseed : { ...vseed, theme })
+
+      // 如果有 dynamicFilter code，需要先 prepare 再 build
+      await builder.prepare()
+      let spec = builder.build()
+
+      console.log('final spec = ', spec)
+      console.log('builder', builder)
+      console.log('builder performance', builder.performance)
+
+      builderRef.current = builder
+      if (isPivotChart(vseed)) {
+        const tableInstance = new PivotChart(ref.current, spec)
+
+        tableInstance.on('legend_item_click', (args) => {
+          console.log('LEGEND_ITEM_CLICK', args)
+          tableInstance.updateFilterRules([
+            {
+              filterKey: ColorIdEncoding,
+              filteredValues: args.value,
+            },
+          ])
+        })
+        tableInstance.on('legend_change', (args) => {
+          const maxValue = args.value[1]
+          const minValue = args.value[0]
+
+          if (vseed.chartType === 'heatmap') {
+            tableInstance.updateFilterRules([
+              {
+                filterFunc: (record) => {
+                  const value = record[record[ColorIdEncoding]]
+                  const isShow = value >= minValue && value <= maxValue
+
+                  record[DATUM_HIDE_KEY] = !isShow
+
+                  return true
+                },
+              },
+            ])
+          } else {
+            tableInstance.updateFilterRules([
+              {
+                filterFunc: (record) => {
+                  const value = record[record[ColorIdEncoding]]
+                  if (value >= minValue && value <= maxValue) {
+                    return true
+                  }
+                  return false
+                },
+              },
+            ])
+          }
+        })
+        window.pivotChart = tableInstance
+        cleanup = () => tableInstance.release()
+      } else if (isVChart(vseed)) {
+        const vchart = new VChart(spec, { dom: ref.current })
+        vchart.renderSync()
+
+        vchart.on('brushEnd', (e) => {
+          console.log(e)
+        })
+
+        window.vchart = vchart
+        cleanup = () => vchart.release()
+      } else if (isTable(vseed)) {
+        const tableInstance = new ListTable(ref.current, spec)
+        window.table = tableInstance
+        cleanup = () => tableInstance.release()
+      } else if (isPivotTable(vseed)) {
+        const tableInstance = new PivotTable(ref.current, spec)
+
+        window.table = tableInstance
+        cleanup = () => tableInstance.release()
+      }
+    }
+
+    initChart()
+
+    return () => {
+      cleanup?.()
+    }
+  }, [vseed, dark])
+
+  return (
+    <div
+      ref={ref}
+      style={{ height: 600, width: '100%' }}
+      onClick={() => {
+        console.group(`selected ${vseed.chartType}`)
+        console.log('builder', builderRef.current)
+        console.log('spec', builderRef.current.spec)
+        console.log('vseed', builderRef.current.vseed)
+        console.log('advancedVSeed', builderRef.current.advancedVSeed)
+        console.groupEnd()
+      }}
+    >
+      {' '}
+    </div>
+  )
+}
+
+export default Demo
+```

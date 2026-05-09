@@ -14,9 +14,9 @@ useDimensions(builder: VBIChartBuilder): UseDimensionsReturn
 
 ## Description
 
-Reads and updates dimension configuration, providing the ability to add, remove, and modify dimensions.
+Read and update dimension configuration, providing the ability to add, delete, and modify dimensions.
 
-## Minimal Example
+## Minimal example
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'

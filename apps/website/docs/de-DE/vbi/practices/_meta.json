@@ -1,0 +1,6 @@
+[
+  { "type": "file", "name": "standard", "label": "Standard" },
+  { "type": "file", "name": "minimalist", "label": "Minimalistisch" },
+  { "type": "file", "name": "streamlined", "label": "Vereinfacht" },
+  { "type": "file", "name": "professional", "label": "Professionell" }
+]

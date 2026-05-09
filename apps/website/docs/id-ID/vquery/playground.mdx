@@ -1,0 +1,206 @@
+---
+title: Playground
+playgroundDirection: vertical
+---
+
+```tsx playground
+const run = async (setVSeed) => {
+  const { VQuery } = await import('@visactor/vquery')
+  const vquery = new VQuery()
+
+  const rawDataset = [
+    { area: 'BEI JING', date: '2025-01-01', sales: 100 },
+    { area: 'BEI JING', date: '2025-01-02', sales: 200 },
+    { area: 'BEI JING', date: '2025-01-03', sales: 300 },
+
+    { area: 'HANG ZHOU', date: '2025-01-01', sales: 100 },
+    { area: 'HANG ZHOU', date: '2025-01-02', sales: 200 },
+    { area: 'HANG ZHOU', date: '2025-01-03', sales: 500 },
+
+    { area: 'SHANG HAI', date: '2025-11-01', sales: 600 },
+    { area: 'SHANG HAI', date: '2025-11-02', sales: 400 },
+    { area: 'SHANG HAI', date: '2025-11-03', sales: 300 },
+  ]
+
+  const datasetId = 'vquery-demo'
+
+  if (await vquery.hasDataset(datasetId)) {
+    await vquery.dropDataset(datasetId)
+  }
+
+  const schema = [
+    { name: 'area', type: 'string' },
+    { name: 'date', type: 'date' },
+    { name: 'sales', type: 'number' },
+  ]
+  await vquery.createDataset(datasetId, schema, { type: 'json', rawDataset })
+
+  const dataset = await vquery.connectDataset(datasetId)
+
+  const queryDSL = {
+    select: [
+      'area',
+      {
+        field: 'sales',
+        alias: 'Sum(sales)',
+        aggr: {
+          func: 'sum',
+        },
+      },
+      {
+        field: 'date',
+        alias: 'year',
+        aggr: {
+          func: 'to_year',
+        },
+      },
+    ],
+    groupBy: ['year', 'area'],
+    orderBy: [
+      {
+        field: 'Sum(sales)',
+        order: 'desc',
+      },
+    ],
+    where: {
+      op: 'and',
+      conditions: [
+        {
+          op: 'or',
+          conditions: [
+            {
+              field: 'area',
+              op: 'in',
+              value: ['BEI JING'],
+            },
+            {
+              field: 'sales',
+              op: '>=',
+              value: 400,
+            },
+          ],
+        },
+      ],
+    },
+    limit: 100,
+  }
+
+  const queryResult = await dataset.query(queryDSL)
+  await dataset.disconnect()
+  await vquery.close()
+
+  const vseed = {
+    dataset: queryResult.dataset,
+    chartType: 'table',
+    locale: 'zh-CN',
+  }
+
+  setVSeed(() => vseed)
+}
+
+const Demo = () => {
+  const [vseed, setVSeed] = useState<VSeed>()
+
+  useEffect(() => {
+    run(setVSeed)
+  }, [])
+
+  return vseed && <SimpleVSeedRender vseed={vseed} />
+}
+
+import { useRef, useEffect, useState } from 'react'
+import { useDark } from '@rspress/core/runtime'
+import VChart from '@visactor/vchart'
+import { ListTable, PivotTable, PivotChart, register } from '@visactor/vtable'
+import {
+  registerAll,
+  VSeed,
+  Builder,
+  isPivotChart,
+  isVChart,
+  isPivotTable,
+  isTable,
+  zVSeed,
+  ColorIdEncoding,
+} from '@visactor/vseed'
+
+registerAll()
+register.chartModule('vchart', VChart)
+
+const SimpleVSeedRender = (props: { vseed: VSeed }) => {
+  const { vseed } = props
+  const ref = useRef<HTMLDivElement>(null)
+  const builderRef = useRef<Builder>()
+  const dark = useDark()
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+    const theme = dark ? 'dark' : 'light'
+    const builder = Builder.from({ ...vseed, theme })
+    const spec = builder.build()
+
+    builderRef.current = builder
+    if (isPivotChart(vseed)) {
+      const tableInstance = new PivotChart(ref.current, spec)
+
+      tableInstance.on('legend_item_click', (args) => {
+        console.log('LEGEND_ITEM_CLICK', args)
+        tableInstance.updateFilterRules([
+          {
+            filterKey: ColorIdEncoding,
+            filteredValues: args.value,
+          },
+        ])
+      })
+
+      tableInstance.on('legend_change', (args) => {
+        const maxValue = args.value[1]
+        const minValue = args.value[0]
+        tableInstance.updateFilterRules([
+          {
+            filterFunc: (record) => {
+              const value = record[record[ColorIdEncoding]]
+              if (value >= minValue && value <= maxValue) {
+                return true
+              }
+              return false
+            },
+          },
+        ])
+      })
+
+      return () => tableInstance.release()
+    } else if (isVChart(vseed)) {
+      const vchart = new VChart(spec, { dom: ref.current })
+      vchart.renderSync()
+      return () => vchart.release()
+    } else if (isTable(vseed)) {
+      const tableInstance = new ListTable(ref.current, spec)
+      return () => tableInstance.release()
+    } else if (isPivotTable(vseed)) {
+      const tableInstance = new PivotTable(ref.current, spec)
+      return () => tableInstance.release()
+    }
+  }, [vseed, dark])
+
+  return (
+    <div
+      ref={ref}
+      style={{ height: 300, width: '100%' }}
+      onClick={() => {
+        console.group(`selected ${vseed.chartType}`)
+        console.log('builder', builderRef.current)
+        console.log('spec', builderRef.current.spec)
+        console.log('vseed', builderRef.current.vseed)
+        console.log('advancedVSeed', builderRef.current.advancedVSeed)
+        console.groupEnd()
+      }}
+    >
+      {' '}
+    </div>
+  )
+}
+
+export default Demo
+```

@@ -20,8 +20,8 @@ constructor(_doc: Y.Doc, dsl: Y.Map<any>)
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `_doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `_doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### observe
 

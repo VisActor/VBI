@@ -1,10 +1,10 @@
 # WhereFilterNodeBuilder
 
-Where filter node builder for configuring a single Where filter condition.
+Where filter node builder for configuring a single Where filter condition
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
@@ -16,13 +16,13 @@ constructor(yMap: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | `Y.Map<any>` | - |
 
 ### getId
 
-Gets the node ID.
+Get node ID
 
 **Definition**:
 
@@ -30,11 +30,11 @@ Gets the node ID.
 getId(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### getField
 
-Gets the field name.
+Get field name
 
 **Definition**:
 
@@ -42,11 +42,11 @@ Gets the field name.
 getField(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### setField
 
-Sets the field name.
+Set field name
 
 **Definition**:
 
@@ -54,17 +54,17 @@ Sets the field name.
 setField(field: string): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `field` | string | - Field name |
+| `field` | string | - field name |
 
 ### getOperator
 
-Gets the filter operator.
+Get filter operator
 
 **Definition**:
 
@@ -72,11 +72,11 @@ Gets the filter operator.
 getOperator(): string | undefined
 ```
 
-**Returns**: `string \| undefined`
+**Return**: `() => void`
 
 ### setOperator
 
-Sets the filter operator.
+Set filter operator
 
 **Definition**:
 
@@ -84,17 +84,17 @@ Sets the filter operator.
 setOperator(operator: string): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `operator` | string | - Operator |
+| `operator` | string | - operator |
 
 ### setValue
 
-Sets the filter value.
+Set filter value
 
 **Definition**:
 
@@ -102,17 +102,17 @@ Sets the filter value.
 setValue(value: unknown): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `value` | unknown | - Filter value |
+| `value` | unknown | - filter value |
 
 ### setDate
 
-Sets the date filter condition.
+Set date filters
 
 **Definition**:
 
@@ -120,17 +120,17 @@ Sets the date filter condition.
 setDate(predicate: VBIWhereDatePredicate): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `predicate` | VBIWhereDatePredicate | - Date predicate |
+| `predicate` | `VBIWhereDatePredicate` | - date predicate |
 
 ### getDate
 
-Gets the date filter condition; returns `undefined` for non-date filters.
+Get date filter conditions, non-date filter returns undefined
 
 **Definition**:
 
@@ -138,11 +138,11 @@ Gets the date filter condition; returns `undefined` for non-date filters.
 getDate(): VBIWhereDatePredicate | undefined
 ```
 
-**Returns**: `VBIWhereDatePredicate \| undefined`
+**Return**: `() => void`
 
 ### toJSON
 
-Exports to JSON.
+Export as JSON
 
 **Definition**:
 
@@ -150,4 +150,4 @@ Exports to JSON.
 toJSON(): VBIWhereFilter
 ```
 
-**Returns**: `VBIWhereFilter`
+**Return**: `() => void`

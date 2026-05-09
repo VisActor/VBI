@@ -2,10 +2,10 @@
 pageType: doc
 ---
 
-# Separate Build
+# Separate construction
 
 :::tip
-In most cases, chart data processing is time-consuming. VSeed supports splitting data processing and rendering. Use `buildAdvanced` and `buildSpec` for a separate build workflow.
+Normally, chart data processing is time-consuming. VSeed supports split data processing and data rendering. `build` provides `buildAdvanced` and `buildSpec` for separate construction.
 :::
 
 ```tsx pure title="Separate Build"
@@ -17,10 +17,10 @@ const advancedVSeed = builder.buildAdvanced()
 // Web Browser
 const spec = builder.buildSpec(advancedVSeed)
 
-// spec used for rendering
+// spec用于渲染
 ```
 
-The example below demonstrates how to use the separate build flow in a React component.
+The following example shows how to use the decoupled build process with the React component.
 
 ```tsx direction=vertical playground
 import { useRef, useEffect } from 'react'

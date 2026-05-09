@@ -23,8 +23,8 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### applyUpdate
 
@@ -40,7 +40,7 @@ applyUpdate(update: Uint8Array, transactionOrigin: any): any
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `update` | Uint8Array | - |
+| `update` | `Uint8Array` | - |
 | `transactionOrigin` | any | - |
 
 ### encodeStateAsUpdate
@@ -57,7 +57,7 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): any
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `targetStateVector` | Uint8Array | - |
+| `targetStateVector` | `Uint8Array` | - |
 
 ### getUUID
 

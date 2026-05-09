@@ -1,0 +1,276 @@
+---
+pageType: doc
+---
+
+#Phong cách có điều kiện
+
+## Kiểu nguyên thủy hình chữ nhật
+
+Định cấu hình kiểu nguyên thủy hình chữ nhật thông qua thuộc tính `barStyle`. Mục đầu tiên trong mảng là kiểu mặc định và các mục tiếp theo là kiểu có điều kiện. Dữ liệu đáp ứng điều kiện `selector`sẽ được áp dụng kiểu tương ứng.
+
+```tsx direction=vertical playground
+import { useRef, useEffect } from 'react'
+import VChart from '@visactor/vchart'
+import { registerAll, VSeed, Builder } from '@visactor/vseed'
+registerAll()
+
+const Demo = () => {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+
+    const vseed: VSeed = {
+      chartType: 'column',
+      dataset: [
+        { date: '2019', profit: 10, sales: 100 },
+        { date: '2020', profit: 30, sales: 200 },
+        { date: '2021', profit: 30, sales: 300 },
+        { date: '2022', profit: 50, sales: 400 },
+        { date: '2023', profit: 40, sales: 500 },
+        { date: '2024', profit: 70, sales: 100 },
+      ],
+      barStyle: [
+        {
+          barRadius: 10,
+          barColorOpacity: 0.25,
+        },
+        {
+          selector: {
+            field: 'sales',
+            op: '>',
+            value: 400,
+          },
+          // selector: {
+          //   field: 'sales',
+          //   op: '>=',
+          //   value: 400,
+          // },
+          // selector: 30,
+          // selector: [40,30,50],
+          // selector: { date:"2019" },
+          // selector: [{ date:"2019" },{ date:"2020", profit: 30 }],
+          barColorOpacity: 1,
+          barRadius: 0,
+        },
+      ],
+    }
+
+    const spec = Builder.from(vseed).build()
+
+    const vchart = new VChart(spec, { dom: ref.current })
+    vchart.renderSync()
+
+    return () => vchart.release()
+  })
+
+  return <div ref={ref} style={{ height: 260, width: '100%' }}></div>
+}
+
+export default Demo
+```
+
+## Kiểu nguyên thủy điểm
+
+Định cấu hình kiểu gốc của điểm thông qua thuộc tính `pointStyle`, thuộc tính này cũng hỗ trợ cấu hình kiểu có điều kiện.
+
+```tsx direction=vertical playground
+import { useRef, useEffect } from 'react'
+import VChart from '@visactor/vchart'
+import { registerAll, VSeed, Builder } from '@visactor/vseed'
+registerAll()
+
+const Demo = () => {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+
+    const vseed: VSeed = {
+      chartType: 'line',
+      dataset: [
+        { date: '2019', profit: 10, sales: 100 },
+        { date: '2020', profit: 30, sales: 200 },
+        { date: '2021', profit: 30, sales: 300 },
+        { date: '2022', profit: 50, sales: 400 },
+        { date: '2023', profit: 40, sales: 500 },
+        { date: '2024', profit: 70, sales: 100 },
+      ],
+      pointStyle: [
+        {
+          pointSize: 10,
+          pointColorOpacity: 0.25,
+        },
+        {
+          selector: {
+            field: 'profit',
+            op: '>',
+            value: 40,
+          },
+          // selector: {
+          //   field: 'sales',
+          //   op: '>=',
+          //   value: 400,
+          // },
+          // selector: 30,
+          // selector: [40,30,50],
+          // selector: { date:"2019" },
+          // selector: [{ date:"2019" },{ date:"2020", profit: 30 }],
+          pointColorOpacity: 1,
+          pointSize: 20,
+        },
+      ],
+    }
+
+    const spec = Builder.from(vseed).build()
+
+    const vchart = new VChart(spec, { dom: ref.current })
+    vchart.renderSync()
+
+    return () => vchart.release()
+  })
+
+  return <div ref={ref} style={{ height: 260, width: '100%' }}></div>
+}
+
+export default Demo
+```
+
+## Kiểu nguyên thủy của dòng
+
+Định cấu hình kiểu nguyên thủy của dòng thông qua thuộc tính `lineStyle`.
+
+```tsx direction=vertical playground
+import { useRef, useEffect } from 'react'
+import VChart from '@visactor/vchart'
+import { registerAll, VSeed, Builder } from '@visactor/vseed'
+registerAll()
+
+const Demo = () => {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+
+    const vseed: VSeed = {
+      chartType: 'line',
+      dataset: [
+        { date: '2019', profit: 10, sales: 100 },
+        { date: '2020', profit: 30, sales: 200 },
+        { date: '2021', profit: 30, sales: 300 },
+        { date: '2022', profit: 50, sales: 400 },
+        { date: '2023', profit: 40, sales: 500 },
+        { date: '2024', profit: 70, sales: 100 },
+      ],
+      lineStyle: [
+        {
+          lineWidth: 2,
+          lineColorOpacity: 0.25,
+          lineSmooth: true,
+        },
+        {
+          selector: {
+            field: 'profit',
+            op: '>',
+            value: 40,
+          },
+          // selector: {
+          //   field: 'sales',
+          //   op: '>=',
+          //   value: 400,
+          // },
+          // selector: 30,
+          // selector: [40,30,50],
+          // selector: { date:"2019" },
+          // selector: [{ date:"2019" },{ date:"2020", profit: 30 }],
+          lineColorOpacity: 1,
+          lineWidth: 5,
+        },
+      ],
+    }
+
+    const spec = Builder.from(vseed).build()
+
+    const vchart = new VChart(spec, { dom: ref.current })
+    vchart.renderSync()
+
+    return () => vchart.release()
+  })
+
+  return <div ref={ref} style={{ height: 260, width: '100%' }}></div>
+}
+
+export default Demo
+```
+
+## Phong cách nguyên thủy bề mặt
+
+Định cấu hình kiểu nguyên thủy của đa giác thông qua thuộc tính `areaStyle`.
+
+```tsx direction=vertical playground
+import { useRef, useEffect } from 'react'
+import VChart from '@visactor/vchart'
+import { registerAll, VSeed, Builder } from '@visactor/vseed'
+registerAll()
+
+const Demo = () => {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+
+    const vseed: VSeed = {
+      chartType: 'area',
+      dataset: [
+        { date: '2019', profit: 10, sales: 100 },
+        { date: '2020', profit: 30, sales: 200 },
+        { date: '2021', profit: 30, sales: 300 },
+        { date: '2022', profit: 50, sales: 400 },
+        { date: '2023', profit: 40, sales: 500 },
+        { date: '2024', profit: 70, sales: 100 },
+      ],
+      areaStyle: [
+        {
+          areaColorOpacity: 0.2,
+        },
+        {
+          selector: {
+            field: 'profit',
+            op: '>',
+            value: 40,
+          },
+          // selector: {
+          //   field: 'sales',
+          //   op: '>=',
+          //   value: 400,
+          // },
+          // selector: 30,
+          // selector: [40,30,50],
+          // selector: { date:"2019" },
+          // selector: [{ date:"2019" },{ date:"2020", profit: 30 }],
+          areaColorOpacity: 1,
+        },
+      ],
+    }
+
+    const spec = Builder.from(vseed).build()
+
+    const vchart = new VChart(spec, { dom: ref.current })
+    vchart.renderSync()
+
+    return () => vchart.release()
+  })
+
+  return <div ref={ref} style={{ height: 260, width: '100%' }}></div>
+}
+
+export default Demo
+```

@@ -1,10 +1,10 @@
 # ChartTypeBuilder
 
-Chart type builder for switching and retrieving the chart type. Supports various chart types including table, bar, line, pie, scatter, and more.
+Chart type builder for switching and getting chart types. Supports various chart types such as tables, bar charts, line charts, pie charts, scatter charts, etc.
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
@@ -18,14 +18,14 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### observe
 
-Listens for chart type changes.
+Monitor chart type changes
 
 **Definition**:
 
@@ -33,17 +33,17 @@ Listens for chart type changes.
 observe(callback: ObserveCallback): () => void
 ```
 
-**Returns**: `() => void`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `callback` | ObserveCallback | - Callback function |
+| `callback` | ObserveCallback | - callback function |
 
 ### changeChartType
 
-Sets the chart type.
+Set chart type
 
 **Definition**:
 
@@ -53,13 +53,13 @@ changeChartType(chartType: string)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `chartType` | string | - Chart type |
+| `chartType` | string | - chart type |
 
 ### getChartType
 
-Gets the current chart type.
+Get the current chart type
 
 **Definition**:
 
@@ -67,11 +67,11 @@ Gets the current chart type.
 getChartType(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### getSupportedDimensionEncodings
 
-Gets the dimension encodings supported by the current chart type.
+Get the dimension encoding supported by the current chart type
 
 **Definition**:
 
@@ -81,7 +81,7 @@ getSupportedDimensionEncodings()
 
 ### getRecommendedDimensionEncodings
 
-Returns recommended dimension encodings in order based on the current chart type.
+Returns recommended dimension codes in dimension order based on the current chart type.
 
 **Definition**:
 
@@ -91,13 +91,13 @@ getRecommendedDimensionEncodings(dimensionCount: number)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `dimensionCount` | number | - Number of dimensions; defaults to the dimension count in the current DSL |
+| `dimensionCount` | number | - the number of dimensions, the default number is the number of dimensions in the current DSL |
 
 ### getSupportedMeasureEncodings
 
-Gets the measure encodings supported by the current chart type.
+Get the measure codes supported by the current chart type
 
 **Definition**:
 
@@ -107,7 +107,7 @@ getSupportedMeasureEncodings()
 
 ### getRecommendedMeasureEncodings
 
-Returns recommended measure encodings in order based on the current chart type.
+Returns recommended measure codes in measure order based on the current chart type.
 
 **Definition**:
 
@@ -117,13 +117,13 @@ getRecommendedMeasureEncodings(measureCount: number)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `measureCount` | number | - Number of measures; defaults to the measure count in the current DSL |
+| `measureCount` | number | - the number of measures, the default number is the number of measures in the current DSL |
 
 ### toJSON
 
-Exports to JSON.
+Export as JSON
 
 **Definition**:
 
@@ -131,11 +131,11 @@ Exports to JSON.
 toJSON(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### getAvailableChartTypes
 
-Gets all supported chart types.
+Get all supported chart types
 
 **Definition**:
 
@@ -143,4 +143,4 @@ Gets all supported chart types.
 getAvailableChartTypes(): string[]
 ```
 
-**Returns**: `string[]`
+**Return**: `() => void`

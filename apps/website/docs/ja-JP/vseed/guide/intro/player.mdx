@@ -1,0 +1,136 @@
+---
+pageType: doc
+---
+
+import { RaceColumn, RaceBar, RaceScatter, RaceLine, RacePie, RaceDonut } from '@components'
+
+# プレイヤー
+
+VSeed は `player` 属性の設定により、データの自動再生表示を実現できます。
+
+## Race Scatter
+
+<RaceScatter />
+```tsx
+const vseed = {
+  chartType: 'raceScatter',
+  dimensions: [
+    { id: 'year',    encoding: 'player' },
+    { id: 'region',  encoding: 'color'  },
+    { id: 'country', encoding: 'label'  },
+  ],
+  measures: [
+    { id: 'income',         encoding: 'xAxis' },
+    { id: 'lifeExpectancy', encoding: 'yAxis' },
+    { id: 'population',     encoding: 'size'  },
+  ],
+  dataset: [......],
+}
+```
+
+## Race Bar
+
+<RaceBar />
+
+```tsx
+const vseed = {
+  chartType: 'raceBar',
+  dimensions: [
+    { id: 'name', encoding: 'yAxis' },
+    { id: 'category', encoding: 'color' },
+    { id: 'year', encoding: 'player' },
+  ],
+  measures: [{ id: 'value', encoding: 'xAxis' }],
+  dataset: [......],
+}
+```
+
+## Race Column
+
+<RaceColumn />
+
+```tsx
+const vseed = {
+  chartType: 'raceColumn',
+  dimensions: [
+    { id: 'name', encoding: 'xAxis' },
+    { id: 'category', encoding: 'color' },
+    { id: 'year', encoding: 'player' },
+  ],
+  measures: [{ id: 'value', encoding: 'yAxis' }],
+  dataset: [......]
+}
+```
+
+## Race Line
+
+<RaceLine />
+
+```tsx
+const vseed = {
+  chartType: 'raceLine',
+  dimensions: [
+    { id: 'date', encoding: 'xAxis' },
+    { id: 'category', encoding: 'color' },
+  ],
+  measures: [{ id: 'sales', encoding: 'yAxis' }],
+  dataset: [......],
+  config: {
+    raceLine: {
+      player: {
+        autoPlay: true,
+        interval: 1000,
+        maxCount: 4,
+      },
+    },
+  },
+}
+```
+
+## Race Pie
+
+<RacePie />
+
+```tsx
+const vseed = {
+  chartType: 'racePie',
+  dimensions: [
+    { id: 'date', encoding: 'player' },
+    { id: 'category', encoding: 'color' },
+  ],
+  measures: [{ id: 'sales', encoding: 'angle' }],
+  dataset: [......],
+  config: {
+    racePie: {
+      player: {
+        autoPlay: true,
+        interval: 1000,
+      },
+    },
+  },
+}
+```
+
+## Race Donut
+
+<RaceDonut />
+
+```tsx
+const vseed = {
+  chartType: 'raceDonut',
+  dimensions: [
+    { id: 'date', encoding: 'player' },
+    { id: 'category', encoding: 'color' },
+  ],
+  measures: [{ id: 'sales', encoding: 'angle' }],
+  dataset: [......],
+  config: {
+    raceDonut: {
+      player: {
+        autoPlay: true,
+        interval: 1000,
+      },
+    },
+  },
+}
+```

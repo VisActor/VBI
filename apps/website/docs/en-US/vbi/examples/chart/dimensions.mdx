@@ -1,59 +1,76 @@
 # dimensions
 
-import { registerDemoConnector } from '@components/demoConnector'
+import { registerDemoConnector } from '@components'
 
 {registerDemoConnector()}
 
 ## add-date-dimension-year
 
-Add date dimension with yearly aggregation
+Add date dimension aggregated by year
+
 
 ```tsx preview
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
-import { VSeedRender } from '@components'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
-  const [vseed, setVSeed] = useState(null)
+  const [result, setResult] = useState<any>(null)
 
   useEffect(() => {
     const run = async () => {
       const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
         connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [],
-        measures: [{ field: 'sales', alias: 'Sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
-        whereFilter: { id: 'root', op: 'and', conditions: [] },
-        havingFilter: { id: 'root', op: 'and', conditions: [] },
-        theme: 'light',
-        locale: 'en-US',
-        version: 1,
-        limit: 20,
       })
-
       const applyBuilder = (builder: VBIChartBuilder) => {
-        builder.dimensions.add('order_date', (node) => {
-          node.setAlias('Order Date')
-        })
-        const dimensionId = builder.dimensions.find((node) => node.getField() === 'order_date')?.getId()
-        if (dimensionId) {
-          builder.dimensions.update(dimensionId, (node) => {
-            node.setAlias('Year').setAggregate({ func: 'toYear' })
-          })
-        }
-      }
+  builder.dimensions.add('order_date', node => {
+    node.setAlias('订单日期')
+  })
+  const dimensionId = builder.dimensions.find(node => node.getField() === 'order_date')?.getId()
+  if (dimensionId) {
+    builder.dimensions.update(dimensionId, node => {
+      node.setAlias('年份').setAggregate({ func: 'toYear' })
+    })
+  }
+}
       applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
+      setResult(await builder.buildVSeed())
     }
     run()
   }, [])
 
-  if (!vseed) return <div>Loading...</div>
+  if (!result) return <div>Loading...</div>
 
-  return <VSeedRender vseed={vseed} />
+  return <VSeedRender vseed={result} />
 }
 ```
 
@@ -61,52 +78,60 @@ export default () => {
 
 Add dimension
 
+
 ```tsx preview
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
-import { VSeedRender } from '@components'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
-  const [vseed, setVSeed] = useState(null)
+  const [result, setResult] = useState<any>(null)
 
   useEffect(() => {
     const run = async () => {
       const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [],
+          "measures": [],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
         connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
-        whereFilter: { id: 'root', op: 'and', conditions: [] },
-        havingFilter: { id: 'root', op: 'and', conditions: [] },
-        theme: 'light',
-        locale: 'en-US',
-        version: 1,
-        limit: 20,
       })
-
       const applyBuilder = (builder: VBIChartBuilder) => {
-        builder.dimensions.add('product_type', (node) => {
-          node.setAlias('Category')
-        })
-        const dimensionId = builder.dimensions.find((node) => node.getField() === 'product_type')?.getId()
-        if (dimensionId) {
-          builder.dimensions.update(dimensionId, (node) => {
-            node.setAlias('Product Type')
-          })
-        }
-      }
+  builder.dimensions.add('product_type', node => {
+    node.setAlias('商品类型')
+  })
+  const dimensionId = builder.dimensions.find(node => node.getField() === 'product_type')?.getId()
+  if (dimensionId) {
+    builder.dimensions.update(dimensionId, node => {
+      node.setAlias('产品类型')
+    })
+  }
+}
       applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
+      setResult(await builder.buildVSeed())
     }
     run()
   }, [])
 
-  if (!vseed) return <div>Loading...</div>
+  if (!result) return <div>Loading...</div>
 
-  return <VSeedRender vseed={vseed} />
+  return <VSeedRender vseed={result} />
 }
 ```
 
@@ -114,256 +139,327 @@ export default () => {
 
 Add multiple dimensions (chained calls)
 
+
 ```tsx preview
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
-import { VSeedRender } from '@components'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
-  const [vseed, setVSeed] = useState(null)
+  const [result, setResult] = useState<any>(null)
 
   useEffect(() => {
     const run = async () => {
       const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [],
+          "measures": [],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
         connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
-        whereFilter: { id: 'root', op: 'and', conditions: [] },
-        havingFilter: { id: 'root', op: 'and', conditions: [] },
-        theme: 'light',
-        locale: 'en-US',
-        version: 1,
-        limit: 20,
       })
-
-      const applyBuilder = (builder: VBIChartBuilder) => {
-        builder.dimensions
-          .add('product_type', (n) => n.setAlias('Product Type'))
-          .add('province', (n) => n.setAlias('Province'))
-      }
+      const applyBuilder = (builder: VBIChartBuilder) => { builder.dimensions.add('product_type', n => n.setAlias('产品类型')).add('province', n => n.setAlias('省份')); }
       applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
+      setResult(await builder.buildVSeed())
     }
     run()
   }, [])
 
-  if (!vseed) return <div>Loading...</div>
+  if (!result) return <div>Loading...</div>
 
-  return <VSeedRender vseed={vseed} />
+  return <VSeedRender vseed={result} />
 }
 ```
 
 ## mixed-date-and-normal-dimensions
 
-Mixed grouping with regular dimension and quarterly-aggregated date dimension
+Mixed grouping of ordinary dimensions and date dimensions aggregated by quarter
+
 
 ```tsx preview
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
-import { VSeedRender } from '@components'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
-  const [vseed, setVSeed] = useState(null)
+  const [result, setResult] = useState<any>(null)
 
   useEffect(() => {
     const run = async () => {
       const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
         connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [],
-        measures: [{ field: 'sales', alias: 'Sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
-        whereFilter: { id: 'root', op: 'and', conditions: [] },
-        havingFilter: { id: 'root', op: 'and', conditions: [] },
-        theme: 'light',
-        locale: 'en-US',
-        version: 1,
-        limit: 20,
       })
-
       const applyBuilder = (builder: VBIChartBuilder) => {
-        builder.dimensions
-          .add('area', (node) => {
-            node.setAlias('Region')
-          })
-          .add('order_date', (node) => {
-            node.setAlias('Quarter').setAggregate({ func: 'toQuarter' })
-          })
-      }
+  builder.dimensions
+    .add('area', node => {
+      node.setAlias('区域')
+    })
+    .add('order_date', node => {
+      node.setAlias('季度').setAggregate({ func: 'toQuarter' })
+    })
+}
       applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
+      setResult(await builder.buildVSeed())
     }
     run()
   }, [])
 
-  if (!vseed) return <div>Loading...</div>
+  if (!result) return <div>Loading...</div>
 
-  return <VSeedRender vseed={vseed} />
+  return <VSeedRender vseed={result} />
 }
 ```
 
 ## remove-dimension
 
-Remove dimension
+Delete dimension
+
 
 ```tsx preview
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
-import { VSeedRender } from '@components'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
-  const [vseed, setVSeed] = useState(null)
+  const [result, setResult] = useState<any>(null)
 
   useEffect(() => {
     const run = async () => {
       const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [
+            {
+              "field": "product_type",
+              "alias": "产品类型"
+            },
+            {
+              "field": "province",
+              "alias": "省份"
+            }
+          ],
+          "measures": [],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
         connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [
-          { field: 'product_type', alias: 'Product Type' },
-          { field: 'province', alias: 'Province' },
-        ],
-        measures: [],
-        whereFilter: { id: 'root', op: 'and', conditions: [] },
-        havingFilter: { id: 'root', op: 'and', conditions: [] },
-        theme: 'light',
-        locale: 'en-US',
-        version: 1,
-        limit: 20,
       })
-
       const applyBuilder = (builder: VBIChartBuilder) => {
-        const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'product_type')?.id
-        if (dimensionId) {
-          builder.dimensions.update(dimensionId, (node) => {
-            node.setAlias('Product Type to Remove')
-          })
-          builder.dimensions.remove(dimensionId)
-        }
-      }
+  const dimensionId = builder.dimensions.toJSON().find(item => item.field === 'product_type')?.id
+  if (dimensionId) {
+    builder.dimensions.update(dimensionId, node => {
+      node.setAlias('待删除的产品类型')
+    })
+    builder.dimensions.remove(dimensionId)
+  }
+}
       applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
+      setResult(await builder.buildVSeed())
     }
     run()
   }, [])
 
-  if (!vseed) return <div>Loading...</div>
+  if (!result) return <div>Loading...</div>
 
-  return <VSeedRender vseed={vseed} />
+  return <VSeedRender vseed={result} />
 }
 ```
 
 ## update-date-dimension-month
 
-Update existing date dimension to monthly aggregation
+Update the existing date dimension to be aggregated by month
+
 
 ```tsx preview
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
-import { VSeedRender } from '@components'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
-  const [vseed, setVSeed] = useState(null)
+  const [result, setResult] = useState<any>(null)
 
   useEffect(() => {
     const run = async () => {
       const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [
+            {
+              "field": "order_date",
+              "alias": "原订单日期"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
         connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [{ field: 'order_date', alias: 'Original Order Date' }],
-        measures: [{ field: 'sales', alias: 'Sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
-        whereFilter: { id: 'root', op: 'and', conditions: [] },
-        havingFilter: { id: 'root', op: 'and', conditions: [] },
-        theme: 'light',
-        locale: 'en-US',
-        version: 1,
-        limit: 20,
       })
-
       const applyBuilder = (builder: VBIChartBuilder) => {
-        const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'order_date')?.id
-        if (dimensionId) {
-          const dimension = builder.dimensions.find((node) => node.getId() === dimensionId)
-          if (dimension) {
-            dimension.setAlias('Order Date to Update')
-          }
-          builder.dimensions.update(dimensionId, (node) => {
-            node.setAlias('Month').setAggregate({ func: 'toMonth' })
-          })
-        }
-      }
+  const dimensionId = builder.dimensions.toJSON().find(item => item.field === 'order_date')?.id
+  if (dimensionId) {
+    const dimension = builder.dimensions.find((node) => node.getId() === dimensionId)
+    if (dimension) {
+      dimension.setAlias('待调整的订单日期')
+    }
+    builder.dimensions.update(dimensionId, node => {
+      node.setAlias('月份').setAggregate({ func: 'toMonth' })
+    })
+  }
+}
       applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
+      setResult(await builder.buildVSeed())
     }
     run()
   }, [])
 
-  if (!vseed) return <div>Loading...</div>
+  if (!result) return <div>Loading...</div>
 
-  return <VSeedRender vseed={vseed} />
+  return <VSeedRender vseed={result} />
 }
 ```
 
 ## update-dimension
 
-Update dimension
+Update dimensions
+
 
 ```tsx preview
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID } from '@components/demoConnector'
-import { VSeedRender } from '@components'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
-  const [vseed, setVSeed] = useState(null)
+  const [result, setResult] = useState<any>(null)
 
   useEffect(() => {
     const run = async () => {
       const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [
+            {
+              "field": "product_type",
+              "alias": "原产品类型"
+            }
+          ],
+          "measures": [],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
         connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [{ field: 'product_type', alias: 'Original Product Type' }],
-        measures: [],
-        whereFilter: { id: 'root', op: 'and', conditions: [] },
-        havingFilter: { id: 'root', op: 'and', conditions: [] },
-        theme: 'light',
-        locale: 'en-US',
-        version: 1,
-        limit: 20,
       })
-
       const applyBuilder = (builder: VBIChartBuilder) => {
-        const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'product_type')?.id
-        if (dimensionId) {
-          const dimension = builder.dimensions.find((node) => node.getId() === dimensionId)
-          if (dimension) {
-            dimension.setAlias('Product Type to Update')
-          }
-          builder.dimensions.update(dimensionId, (n) => n.setAlias('New Product Type'))
-        }
-      }
+  const dimensionId = builder.dimensions.toJSON().find(item => item.field === 'product_type')?.id
+  if (dimensionId) {
+    const dimension = builder.dimensions.find((node) => node.getId() === dimensionId)
+    if (dimension) {
+      dimension.setAlias('待调整的产品类型')
+    }
+    builder.dimensions.update(dimensionId, n => n.setAlias('新产品类型'))
+  }
+}
       applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
+      setResult(await builder.buildVSeed())
     }
     run()
   }, [])
 
-  if (!vseed) return <div>Loading...</div>
+  if (!result) return <div>Loading...</div>
 
-  return <VSeedRender vseed={vseed} />
+  return <VSeedRender vseed={result} />
 }
 ```
+

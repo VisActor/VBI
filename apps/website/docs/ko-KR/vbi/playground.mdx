@@ -1,0 +1,191 @@
+---
+title: 플레이그라운드
+playgroundDirection: vertical
+---
+
+```tsx playground
+const run = async (setVSeed) => {
+  const { VQuery } = await import('@visactor/vquery')
+  const vquery = new VQuery()
+
+  const connectorId = 'vbi-demo'
+
+  VBI.registerConnector(connectorId, async () => {
+    return {
+      discoverSchema: async () => {
+        return [
+          { name: 'id', type: 'string' },
+          { name: 'order_id', type: 'string' },
+          { name: 'order_date', type: 'date' },
+          { name: 'delivery_date', type: 'date' },
+          { name: 'delivery_method', type: 'string' },
+          { name: 'customer_id', type: 'string' },
+          { name: 'customer_name', type: 'string' },
+          { name: 'customer_type', type: 'string' },
+          { name: 'city', type: 'string' },
+          { name: 'province', type: 'string' },
+          { name: 'country_or_region', type: 'string' },
+          { name: 'area', type: 'string' },
+          { name: 'product_id', type: 'string' },
+          { name: 'product_type', type: 'string' },
+          { name: 'product_sub_type', type: 'string' },
+          { name: 'product_name', type: 'string' },
+
+          { name: 'sales', type: 'number' },
+          { name: 'amount', type: 'number' },
+          { name: 'discount', type: 'number' },
+          { name: 'profit', type: 'number' },
+        ]
+      },
+      query: async ({ queryDSL, schema }) => {
+        if (!(await vquery.hasDataset(connectorId))) {
+          const url = 'https://visactor.github.io/VBI/dataset/supermarket.csv'
+          const datasetSource = { type: 'csv', rawDataset: url }
+          await vquery.createDataset(connectorId, schema, datasetSource)
+        }
+        const dataset = await vquery.connectDataset(connectorId)
+        const queryResult = await dataset.query(queryDSL)
+
+        return {
+          dataset: queryResult.dataset,
+        }
+      },
+    }
+  })
+
+  const builder = VBI.chart.create(VBI.chart.createEmpty(connectorId))
+
+  builder.doc.on('update', async () => {
+    const vseed = await builder.buildVSeed()
+    console.log('debug update', vseed)
+    setVSeed(() => vseed)
+  })
+
+  builder.doc.transact(() => {
+    builder.measures
+      .add('sales', (node) => {
+        node.setAlias('Sum(sales)').setAggregate({ func: 'sum' })
+      })
+      .add('profit', (node) => {
+        node.setAlias('Sum(profit)').setAggregate({ func: 'sum' })
+      })
+      .add('sales', (node) => {
+        node.setAlias('Quantile(sales, 0.5)').setAggregate({ func: 'quantile', quantile: 0.5 })
+      })
+
+    builder.dimensions.addDimension('area', (node) => {
+      node.setAlias('区域')
+    })
+  })
+
+  window.builder = builder
+}
+
+const Demo = () => {
+  const [vseed, setVSeed] = useState<VSeed>()
+
+  useEffect(() => {
+    run(setVSeed)
+  }, [])
+
+  return vseed && <SimpleVSeedRender vseed={vseed} />
+}
+
+import * as Y from 'yjs'
+import { VBI } from '@visactor/vbi'
+import { useRef, useEffect, useState } from 'react'
+import { useDark } from '@rspress/core/runtime'
+import VChart from '@visactor/vchart'
+import { ListTable, PivotTable, PivotChart, register } from '@visactor/vtable'
+import {
+  registerAll,
+  VSeed,
+  Builder,
+  isPivotChart,
+  isVChart,
+  isPivotTable,
+  isTable,
+  zVSeed,
+  ColorIdEncoding,
+} from '@visactor/vseed'
+
+registerAll()
+register.chartModule('vchart', VChart)
+
+const SimpleVSeedRender = (props: { vseed: VSeed }) => {
+  const { vseed } = props
+  const ref = useRef<HTMLDivElement>(null)
+  const builderRef = useRef<Builder>()
+  const dark = useDark()
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+    const theme = dark ? 'dark' : 'light'
+    const builder = Builder.from({ ...vseed, theme })
+    const spec = builder.build()
+
+    builderRef.current = builder
+    if (isPivotChart(vseed)) {
+      const tableInstance = new PivotChart(ref.current, spec)
+
+      tableInstance.on('legend_item_click', (args) => {
+        console.log('LEGEND_ITEM_CLICK', args)
+        tableInstance.updateFilterRules([
+          {
+            filterKey: ColorIdEncoding,
+            filteredValues: args.value,
+          },
+        ])
+      })
+
+      tableInstance.on('legend_change', (args) => {
+        const maxValue = args.value[1]
+        const minValue = args.value[0]
+        tableInstance.updateFilterRules([
+          {
+            filterFunc: (record) => {
+              const value = record[record[ColorIdEncoding]]
+              if (value >= minValue && value <= maxValue) {
+                return true
+              }
+              return false
+            },
+          },
+        ])
+      })
+
+      return () => tableInstance.release()
+    } else if (isVChart(vseed)) {
+      const vchart = new VChart(spec, { dom: ref.current })
+      vchart.renderSync()
+      return () => vchart.release()
+    } else if (isTable(vseed)) {
+      const tableInstance = new ListTable(ref.current, spec)
+      return () => tableInstance.release()
+    } else if (isPivotTable(vseed)) {
+      const tableInstance = new PivotTable(ref.current, spec)
+      return () => tableInstance.release()
+    }
+  }, [vseed, dark])
+
+  return (
+    <div
+      ref={ref}
+      style={{ height: 300, width: '100%' }}
+      onClick={() => {
+        console.group(`selected ${vseed.chartType}`)
+        console.log('builder', builderRef.current)
+        console.log('spec', builderRef.current.spec)
+        console.log('vseed', builderRef.current.vseed)
+        console.log('advancedVSeed', builderRef.current.advancedVSeed)
+        console.groupEnd()
+      }}
+    >
+      {' '}
+    </div>
+  )
+}
+
+export default Demo
+```

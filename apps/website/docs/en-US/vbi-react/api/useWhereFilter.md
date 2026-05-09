@@ -14,9 +14,9 @@ useWhereFilter(builder: VBIChartBuilder): UseWhereFilterReturn
 
 ## Description
 
-Manages the Where filter tree and provides mutation entry points.
+Manage the Where filter tree and provide mutation entry.
 
-## Minimal Example
+## Minimal example
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'

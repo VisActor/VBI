@@ -2,13 +2,14 @@
 
 ## Properties
 
-| Property | Type | Description |
+| Properties | Type | Description |
 | --- | --- | --- |
 | **doc** | `Y.Doc` | - |
 | **dsl** | `Y.Map<any>` | - |
 | **undoManager** | `UndoManager` | - |
 
-## Methods
+
+## Method
 
 ### constructor
 
@@ -20,10 +21,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### applyUpdate
 
@@ -33,13 +34,13 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 applyUpdate(update: Uint8Array, transactionOrigin: any): any
 ```
 
-**Returns**: `any`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `update` | Uint8Array | - |
+| `update` | `Uint8Array` | - |
 | `transactionOrigin` | any | - |
 
 ### encodeStateAsUpdate
@@ -50,13 +51,13 @@ applyUpdate(update: Uint8Array, transactionOrigin: any): any
 encodeStateAsUpdate(targetStateVector: Uint8Array): any
 ```
 
-**Returns**: `any`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `targetStateVector` | Uint8Array | - |
+| `targetStateVector` | `Uint8Array` | - |
 
 ### getUUID
 
@@ -66,7 +67,7 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): any
 getUUID(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### setContent
 
@@ -76,11 +77,11 @@ getUUID(): string
 setContent(content: string): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `content` | string | - |
 
@@ -92,7 +93,7 @@ setContent(content: string): this
 build(): VBIInsightDSL
 ```
 
-**Returns**: `VBIInsightDSL`
+**Return**: `() => void`
 
 ### isEmpty
 
@@ -102,4 +103,4 @@ build(): VBIInsightDSL
 isEmpty(): boolean
 ```
 
-**Returns**: `boolean`
+**Return**: `() => void`

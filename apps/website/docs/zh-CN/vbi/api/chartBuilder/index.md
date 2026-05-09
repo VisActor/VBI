@@ -32,9 +32,9 @@ constructor(doc: Y.Doc, options: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>, ds
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `options` | VBIChartBuilderOptions<TQueryDSL, TSeedDSL> | - |
-| `dsl` | Y.Map<any> | - |
+| `doc` | `Y.Doc` | - |
+| `options` | `VBIChartBuilderOptions<TQueryDSL, TSeedDSL>` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### applyUpdate
 
@@ -50,7 +50,7 @@ applyUpdate(update: Uint8Array, transactionOrigin: any): void
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `update` | Uint8Array | - |
+| `update` | `Uint8Array` | - |
 | `transactionOrigin` | any | - |
 
 ### encodeStateAsUpdate
@@ -67,7 +67,7 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBufferLike>
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `targetStateVector` | Uint8Array | - |
+| `targetStateVector` | `Uint8Array` | - |
 
 ### getUUID
 

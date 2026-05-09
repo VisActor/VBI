@@ -1,0 +1,221 @@
+---
+pageType: doc
+---
+
+# 데이터 어노테이션
+
+## 데이터 포인트 어노테이션
+
+`annotationPoint` 속성을 통해 데이터 포인트 어노테이션을 구성하며, 필터 조건 `selector`와 표시 텍스트 `text`를 구성할 수 있습니다.
+
+```tsx direction=vertical playground
+import { useRef, useEffect } from 'react'
+import VChart from '@visactor/vchart'
+import { registerAll, VSeed, Builder } from '@visactor/vseed'
+registerAll()
+
+const Demo = () => {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+
+    const vseed: VSeed = {
+      chartType: 'area',
+      dataset: [
+        { date: '2019', profit: 10, sales: 100 },
+        { date: '2020', profit: 30, sales: 200 },
+        { date: '2021', profit: 30, sales: 300 },
+        { date: '2022', profit: 50, sales: 400 },
+        { date: '2023', profit: 40, sales: 500 },
+        { date: '2024', profit: 70, sales: 100 },
+      ],
+      annotationPoint: {
+        selector: {
+          field: 'profit',
+          op: '>',
+          value: 10,
+        },
+        // selector: {
+        //   field: 'sales',
+        //   op: '>=',
+        //   value: 400,
+        // },
+        // selector: 30,
+        // selector: [40,30,50],
+        // selector: { date:"2019" },
+        // selector: [{ date:"2019" },{ date:"2020", profit: 30 }],
+
+        text: '数据点标注',
+      },
+    }
+
+    const spec = Builder.from(vseed).build()
+
+    const vchart = new VChart(spec, { dom: ref.current })
+    vchart.renderSync()
+
+    return () => vchart.release()
+  })
+
+  return <div ref={ref} style={{ height: 260, width: '100%' }}></div>
+}
+
+export default Demo
+```
+
+## 데이터 수평선 어노테이션
+
+`annotationHorizontalLine` 속성을 통해 수평선 어노테이션을 구성하며, `yValue` 값을 지정해야 합니다.
+
+```tsx direction=vertical {23-26}
+import { useRef, useEffect } from 'react'
+import VChart from '@visactor/vchart'
+import { registerAll, VSeed, Builder } from '@visactor/vseed'
+registerAll()
+
+const Demo = () => {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+
+    const vseed: VSeed = {
+      chartType: 'area',
+      dataset: [
+        { date: '2019', profit: 10, sales: 100 },
+        { date: '2020', profit: 30, sales: 200 },
+        { date: '2021', profit: 30, sales: 300 },
+        { date: '2022', profit: 50, sales: 400 },
+        { date: '2023', profit: 40, sales: 500 },
+        { date: '2024', profit: 70, sales: 100 },
+      ],
+      annotationHorizontalLine: {
+        yValue: 170,
+        text: '利润 70',
+      },
+    }
+
+    const spec = Builder.from(vseed).build()
+
+    const vchart = new VChart(spec, { dom: ref.current })
+    vchart.renderSync()
+
+    return () => vchart.release()
+  })
+
+  return <div ref={ref} style={{ height: 260, width: '100%' }}></div>
+}
+
+export default Demo
+```
+
+## 데이터 수직선 어노테이션
+
+`annotationVerticalLine` 속성을 통해 수직선 어노테이션을 구성하며, `selector`를 통해 차원 값을 지정할 수 있습니다.
+
+```tsx direction=vertical {25-28}
+import { useRef, useEffect } from 'react'
+import VChart from '@visactor/vchart'
+import { registerAll, VSeed, Builder } from '@visactor/vseed'
+registerAll()
+
+const Demo = () => {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+
+    const vseed: VSeed = {
+      chartType: 'columnParallel',
+      dataset: [
+        { date: '2019', profit: 10, sales: 100 },
+        { date: '2020', profit: 30, sales: 200 },
+        { date: '2021', profit: 30, sales: 300 },
+        { date: '2022', profit: 50, sales: 400 },
+        { date: '2023', profit: 40, sales: 500 },
+        { date: '2024', profit: 70, sales: 100 },
+      ],
+      annotationVerticalLine: {
+        selector: '2023',
+        text: '23年',
+      },
+    }
+
+    const spec = Builder.from(vseed).build()
+
+    const vchart = new VChart(spec, { dom: ref.current })
+    vchart.renderSync()
+
+    return () => vchart.release()
+  })
+
+  return <div ref={ref} style={{ height: 260, width: '100%' }}></div>
+}
+
+export default Demo
+```
+
+## 데이터 영역 어노테이션
+
+`annotationArea` 속성을 통해 영역 어노테이션을 구성하며, 시작 및 종료 조건의 `selector`를 구성할 수 있습니다.
+
+```tsx direction=vertical {25-38}
+import { useRef, useEffect } from 'react'
+import VChart from '@visactor/vchart'
+import { registerAll, VSeed, Builder } from '@visactor/vseed'
+registerAll()
+
+const Demo = () => {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+
+    const vseed: VSeed = {
+      chartType: 'columnParallel',
+      dataset: [
+        { date: '2019', profit: 10, sales: 100 },
+        { date: '2020', profit: 30, sales: 200 },
+        { date: '2021', profit: 30, sales: 300 },
+        { date: '2022', profit: 50, sales: 400 },
+        { date: '2023', profit: 40, sales: 500 },
+        { date: '2024', profit: 70, sales: 100 },
+      ],
+      annotationArea: [
+        {
+          selector: [{ date: '2021' }],
+          text: '22~23年',
+          textPosition: 'top',
+          textAlign: 'center',
+        },
+        {
+          selector: [{ date: '2022' }],
+          text: '22~23年',
+          textPosition: 'top',
+          textAlign: 'center',
+        },
+      ],
+    }
+
+    const spec = Builder.from(vseed).build()
+
+    const vchart = new VChart(spec, { dom: ref.current })
+    vchart.renderSync()
+
+    return () => vchart.release()
+  })
+
+  return <div ref={ref} style={{ height: 260, width: '100%' }}></div>
+}
+
+export default Demo
+```

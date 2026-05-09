@@ -1,0 +1,22 @@
+[
+  {
+    "type": "file",
+    "name": "standard",
+    "label": "standar"
+  },
+  {
+    "type": "file",
+    "name": "minimalist",
+    "label": "minimalis"
+  },
+  {
+    "type": "file",
+    "name": "streamlined",
+    "label": "mempersingkat"
+  },
+  {
+    "type": "file",
+    "name": "professional",
+    "label": "besar"
+  }
+]

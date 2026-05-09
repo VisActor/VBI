@@ -1,6 +1,22 @@
 [
-  { "type": "file", "name": "standard", "label": "Standard" },
-  { "type": "file", "name": "minimalist", "label": "Minimalist" },
-  { "type": "file", "name": "streamlined", "label": "Streamlined" },
-  { "type": "file", "name": "professional", "label": "Professional" }
+  {
+    "type": "file",
+    "name": "standard",
+    "label": "Standard"
+  },
+  {
+    "type": "file",
+    "name": "minimalist",
+    "label": "minimalist"
+  },
+  {
+    "type": "file",
+    "name": "streamlined",
+    "label": "Streamline"
+  },
+  {
+    "type": "file",
+    "name": "professional",
+    "label": "Professional"
+  }
 ]

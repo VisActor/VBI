@@ -1,10 +1,10 @@
 # MeasureNodeBuilder
 
-Measure node builder for configuring a single measure.
+Metric node builder for configuring individual metrics
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
@@ -16,13 +16,13 @@ constructor(yMap: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | `Y.Map<any>` | - |
 
 ### getId
 
-Gets the node ID.
+Get node ID
 
 **Definition**:
 
@@ -30,11 +30,11 @@ Gets the node ID.
 getId(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### getField
 
-Gets the field name.
+Get field name
 
 **Definition**:
 
@@ -42,11 +42,11 @@ Gets the field name.
 getField(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### getEncoding
 
-Gets the chart encoding position.
+Get the chart encoding position
 
 **Definition**:
 
@@ -54,11 +54,11 @@ Gets the chart encoding position.
 getEncoding(): VBIMeasure['encoding'] | undefined
 ```
 
-**Returns**: `VBIMeasure['encoding'] \| undefined`
+**Return**: `() => void`
 
 ### getSort
 
-Gets the sort configuration.
+Get sorting configuration
 
 **Definition**:
 
@@ -66,11 +66,11 @@ Gets the sort configuration.
 getSort(): VBISort | undefined
 ```
 
-**Returns**: `VBISort \| undefined`
+**Return**: `() => void`
 
 ### setAlias
 
-Sets the display name.
+Set display name
 
 **Definition**:
 
@@ -78,17 +78,17 @@ Sets the display name.
 setAlias(alias: string): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `alias` | string | - Display name |
+| `alias` | string | - display name |
 
 ### setEncoding
 
-Sets the chart encoding position.
+Set chart encoding position
 
 **Definition**:
 
@@ -96,17 +96,17 @@ Sets the chart encoding position.
 setEncoding(encoding: NonNullable<VBIMeasure['encoding']>): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `encoding` | NonNullable<VBIMeasure['encoding']> | - Measure encoding position |
+| `encoding` | `NonNullable<VBIMeasure['encoding']>` | - Measure encoding position |
 
 ### setSort
 
-Sets the sort configuration.
+Set sorting configuration
 
 **Definition**:
 
@@ -114,17 +114,17 @@ Sets the sort configuration.
 setSort(sort: VBISort): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `sort` | VBISort | - Sort configuration |
+| `sort` | `VBISort` | - Sort Configuration |
 
 ### setAggregate
 
-Sets the aggregate function.
+Set aggregate function
 
 **Definition**:
 
@@ -132,17 +132,17 @@ Sets the aggregate function.
 setAggregate(aggregate: VBIMeasure['aggregate']): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `aggregate` | VBIMeasure['aggregate'] | - Aggregate configuration |
+| `aggregate` | `VBIMeasure['aggregate']` | - Aggregation configuration |
 
 ### setFormat
 
-Sets the number format.
+Format a number
 
 **Definition**:
 
@@ -150,17 +150,17 @@ Sets the number format.
 setFormat(format: VBIMeasureFormat): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `format` | VBIMeasureFormat | - Format configuration |
+| `format` | `VBIMeasureFormat` | - format configuration |
 
 ### getFormat
 
-Gets the number format.
+Get numeric format
 
 **Definition**:
 
@@ -168,11 +168,11 @@ Gets the number format.
 getFormat(): VBIMeasureFormat | undefined
 ```
 
-**Returns**: `VBIMeasureFormat \| undefined`
+**Return**: `() => void`
 
 ### clearFormat
 
-Clears the number format configuration.
+Clear numeric format configuration
 
 **Definition**:
 
@@ -180,11 +180,11 @@ Clears the number format configuration.
 clearFormat(): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 ### clearSort
 
-Clears the sort configuration.
+Clear sort configuration
 
 **Definition**:
 
@@ -192,11 +192,11 @@ Clears the sort configuration.
 clearSort(): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 ### toJSON
 
-Exports to JSON.
+Export as JSON
 
 **Definition**:
 
@@ -204,4 +204,4 @@ Exports to JSON.
 toJSON(): VBIMeasure
 ```
 
-**Returns**: `VBIMeasure`
+**Return**: `() => void`

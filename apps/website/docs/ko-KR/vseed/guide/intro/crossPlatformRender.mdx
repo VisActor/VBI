@@ -1,0 +1,93 @@
+---
+pageType: doc
+---
+
+# 크로스 플랫폼 렌더링
+
+:::tip
+`vseed`는 무손실 직렬화를 지원하므로, `크로스 플랫폼 전송`, `복사 및 붙여넣기`가 가능하며, Node 환경과 브라우저 환경에서 모두 `builder`를 통해 완전한 spec을 얻을 수 있습니다.
+:::
+
+아래 예제는 VSeed 구성을 JSON 문자열로 직렬화(복사 시뮬레이션)하고, JSON 문자열을 역직렬화하여 렌더링(붙여넣기 시뮬레이션)하는 방법을 보여줍니다.
+
+```tsx direction=vertical playground
+import { useRef, useEffect, useState } from 'react'
+import VChart from '@visactor/vchart'
+import { registerAll, VSeed, Builder } from '@visactor/vseed'
+registerAll()
+
+const Demo = () => {
+  const [vseed, setVSeed] = useState()
+  const ref = useRef()
+  const chartRef = useRef()
+  const vseed1: VSeed = {
+    chartType: 'line',
+    dataset: [
+      { date: '2019', profit: 10, sales: 100 },
+      { date: '2020', profit: 30, sales: 200 },
+      { date: '2021', profit: 30, sales: 300 },
+      { date: '2022', profit: 50, sales: 400 },
+      { date: '2023', profit: 40, sales: 500 },
+    ],
+  }
+
+  const vseed2: VSeed = {
+    chartType: 'bar',
+    dataset: [
+      { date: '2019', profit: 10, sales: 100 },
+      { date: '2020', profit: 30, sales: 200 },
+      { date: '2021', profit: 30, sales: 300 },
+      { date: '2022', profit: 50, sales: 400 },
+      { date: '2023', profit: 40, sales: 500 },
+    ],
+  }
+
+  const copyVSeed1 = async () => {
+    await navigator.clipboard.writeText(JSON.stringify(vseed1))
+  }
+  const copyVSeed2 = async () => {
+    await navigator.clipboard.writeText(JSON.stringify(vseed2))
+  }
+
+  const paste = async () => {
+    try {
+      if (chartRef.current) {
+        chartRef.current.release()
+      }
+      const clipboardText = await navigator.clipboard.readText()
+      const parsedVSeed = JSON.parse(clipboardText)
+
+      const builder = Builder.from(parsedVSeed)
+      const advancedVSeed = builder.buildAdvanced()
+      const spec = builder.buildSpec(advancedVSeed)
+      const vchart = new VChart(spec, { dom: ref.current })
+      vchart.renderSync()
+
+      chartRef.current = vchart
+    } catch (error) {
+      console.log('debug', error)
+      alert('从剪切板读取内容时出错')
+    }
+  }
+
+  return (
+    <div style={{ display: 'flex' }}>
+      <div style={{ width: 100 }}>
+        <button onClick={copyVSeed1} style={{ width: 100, marginBottom: 4 }}>
+          copy demo1
+        </button>
+        <button onClick={copyVSeed2} style={{ width: 100, marginBottom: 4 }}>
+          copy demo2
+        </button>
+        <button onClick={paste} style={{ width: 100 }}>
+          paste
+        </button>
+      </div>
+
+      <div ref={ref} style={{ height: 260, width: 'calc(100% - 100px)' }}></div>
+    </div>
+  )
+}
+
+export default Demo
+```

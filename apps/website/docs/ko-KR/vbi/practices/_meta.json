@@ -1,0 +1,6 @@
+[
+  { "type": "file", "name": "standard", "label": "표준" },
+  { "type": "file", "name": "minimalist", "label": "미니멀" },
+  { "type": "file", "name": "streamlined", "label": "간소화" },
+  { "type": "file", "name": "professional", "label": "전문" }
+]

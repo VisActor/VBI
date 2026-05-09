@@ -1,10 +1,10 @@
 # DimensionsBuilder
 
-Dimension builder for adding, modifying, and removing dimension configuration. Dimensions are the categorical fields in data, such as: time, region, product category.
+Dimension builder, used to add, modify, and delete dimension configurations. Dimensions are classification fields of data, such as: time, region, product category
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
@@ -16,14 +16,14 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### add
 
-Adds a dimension.
+add a dimension
 
 **Definition**:
 
@@ -31,18 +31,18 @@ Adds a dimension.
 add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder
 ```
 
-**Returns**: `DimensionsBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `field` | string | - Field name |
-| `callback` | (node: DimensionNodeBuilder) => void | - Callback function |
+| `field` | string | - field name |
+| `callback` | (node: DimensionNodeBuilder) => void | - callback function |
 
 ### remove
 
-Removes the dimension with the specified ID.
+Delete the dimension with the specified ID
 
 **Definition**:
 
@@ -50,17 +50,17 @@ Removes the dimension with the specified ID.
 remove(id: string): DimensionsBuilder
 ```
 
-**Returns**: `DimensionsBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `id` | string | - Dimension ID |
 
 ### update
 
-Updates the configuration of the dimension with the specified ID.
+Update the configuration for the specified dimension ID
 
 **Definition**:
 
@@ -68,18 +68,18 @@ Updates the configuration of the dimension with the specified ID.
 update(id: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder
 ```
 
-**Returns**: `DimensionsBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `id` | string | - Dimension ID |
-| `callback` | (node: DimensionNodeBuilder) => void | - Callback function |
+| `callback` | (node: DimensionNodeBuilder) => void | - callback function |
 
 ### find
 
-Finds the first dimension matching the callback condition, behaves like `Array.find`.
+Find the first dimension according to the callback condition, the behavior is consistent with Array.find
 
 **Definition**:
 
@@ -87,17 +87,17 @@ Finds the first dimension matching the callback condition, behaves like `Array.f
 find(predicate: (node: DimensionNodeBuilder, index: number) => boolean): DimensionNodeBuilder | undefined
 ```
 
-**Returns**: `DimensionNodeBuilder \| undefined`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `predicate` | (node: DimensionNodeBuilder, index: number) => boolean | - Search condition |
+| `predicate` | (node: DimensionNodeBuilder, index: number) => boolean | - Search conditions |
 
 ### findAll
 
-Gets all dimensions.
+Get all dimensions
 
 **Definition**:
 
@@ -105,11 +105,11 @@ Gets all dimensions.
 findAll(): DimensionNodeBuilder[]
 ```
 
-**Returns**: `DimensionNodeBuilder[]`
+**Return**: `() => void`
 
 ### toJSON
 
-Exports all dimensions as a JSON array.
+Export all dimensions as JSON array
 
 **Definition**:
 
@@ -117,11 +117,11 @@ Exports all dimensions as a JSON array.
 toJSON(): VBIDimension[]
 ```
 
-**Returns**: `VBIDimension[]`
+**Return**: `() => void`
 
 ### observe
 
-Listens for dimension changes, returns an unsubscribe function.
+Monitor dimension changes and return a function to cancel monitoring.
 
 **Definition**:
 
@@ -129,13 +129,13 @@ Listens for dimension changes, returns an unsubscribe function.
 observe(callback: ObserveDeepCallback): () => void
 ```
 
-**Returns**: `() => void`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `callback` | ObserveDeepCallback | - Callback function |
+| `callback` | ObserveDeepCallback | - callback function |
 
 ### static isDimensionNode
 
@@ -145,13 +145,13 @@ observe(callback: ObserveDeepCallback): () => void
 static isDimensionNode(node: VBIDimensionTree[0]): node is VBIDimension
 ```
 
-**Returns**: `node is VBIDimension`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `node` | VBIDimensionTree[0] | - |
+| `node` | `VBIDimensionTree[0]` | - |
 
 ### static isDimensionGroup
 
@@ -161,10 +161,10 @@ static isDimensionNode(node: VBIDimensionTree[0]): node is VBIDimension
 static isDimensionGroup(node: VBIDimensionTree[0]): node is VBIDimensionGroup
 ```
 
-**Returns**: `node is VBIDimensionGroup`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `node` | VBIDimensionTree[0] | - |
+| `node` | `VBIDimensionTree[0]` | - |

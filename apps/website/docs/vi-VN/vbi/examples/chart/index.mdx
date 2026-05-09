@@ -1,0 +1,111 @@
+# chart
+
+Trang này hiển thị các ví dụ về trình tạo biểu đồ.
+
+## ChartType
+
+| Ví dụ | Mô tả | Thẻ |
+| --- | --- | --- |
+| [area-by-order-date](./chartType#area-by-order-date) | Biểu đồ khu vực - Xu hướng bán hàng theo ngày| - |
+| [bar-by-product-type](./chartType#bar-by-product-type) | Biểu đồ thanh - Doanh số theo loại sản phẩm| - |
+| [chart-type-switching](./chartType#chart-type-switching) | Switch between line and bar chart types | - |
+| [column-by-area](./chartType#column-by-area) | Biểu đồ cột - Doanh số theo khu vực| - |
+| [donut-by-customer-type](./chartType#donut-by-customer-type) | Biểu đồ Donut - Chia sẻ doanh số theo loại khách hàng| - |
+| [line-by-province](./chartType#line-by-province) | Biểu đồ đường - Xu hướng bán hàng theo tỉnh thành| - |
+| [line-chart](./chartType#line-chart) | Biểu đồ đường - Xu hướng bán hàng theo tỉnh thành| - |
+| [pie-by-area](./chartType#pie-by-area) | Biểu đồ hình tròn - Chia sẻ doanh số theo khu vực| - |
+| [pie-chart-measure-encoding](./chartType#pie-chart-measure-encoding) | Mã hóa số đo biểu đồ hình tròn - kiểm tra số đo-encoding.ts Loại biểu đồ hình tròn| - |
+| [rose-by-city](./chartType#rose-by-city) | Biểu đồ hoa hồng - Doanh số theo thành phố| - |
+| [scatter-chart-measure-encoding](./chartType#scatter-chart-measure-encoding) |Mã hóa thước đo phân tán - test Measure-encoding.ts Loại biểu đồ phân tán| - |
+| [scatter-sales-profit](./chartType#scatter-sales-profit) | Biểu đồ phân tán - Mối quan hệ giữa doanh thu và lợi nhuận| - |
+
+## Dimensions
+
+| Ví dụ | Mô tả | Thẻ |
+| --- | --- | --- |
+| [add-date-dimension-year](./dimensions#add-date-dimension-year) | Thêm thứ nguyên ngày được tổng hợp theo năm| - |
+| [add-dimension](./dimensions#add-dimension) | Thêm thứ nguyên| - |
+| [add-multiple-dimensions](./dimensions#add-multiple-dimensions) | Thêm nhiều thứ nguyên (các cuộc gọi được xâu chuỗi)| - |
+| [mixed-date-and-normal-dimensions](./dimensions#mixed-date-and-normal-dimensions) | Nhóm hỗn hợp các thứ nguyên thông thường và thứ nguyên ngày được tổng hợp theo quý| - |
+| [remove-dimension](./dimensions#remove-dimension) | Xóa thứ nguyên| - |
+| [update-date-dimension-month](./dimensions#update-date-dimension-month) | Cập nhật thứ nguyên ngày hiện tại để được tổng hợp theo tháng| - |
+| [update-dimension](./dimensions#update-dimension) | Cập nhật thứ nguyên| - |
+
+## HavingFilter
+
+| Ví dụ | Mô tả | Thẻ |
+| --- | --- | --- |
+| [add-having-filter](./havingFilter#add-having-filter) | Sau khi nhóm theo khu vực, hãy lọc các khu vực có hiệu suất cao với doanh số trên một triệu| - |
+| [add-multiple-having-filter](./havingFilter#add-multiple-having-filter) | Thêm nhiều điều kiện vào chuỗi để lọc các khu vực có doanh thu và lợi nhuận cao| - |
+| [clear-having-filter](./havingFilter#clear-having-filter) | Xóa tất cả Có điều kiện lọc và hiển thị kết quả nhóm và tổng hợp đầy đủ| - |
+| [having-array-value-with-in-operator](./havingFilter#having-array-value-with-in-operator) | Having filter with array value that triggers 'in' operator conversion | - |
+| [having-array-value-with-not-in-operator](./havingFilter#having-array-value-with-not-in-operator) | Having filter with array value that triggers 'not in' operator conversion | - |
+| [having-clear-and-rebuild](./havingFilter#having-clear-and-rebuild) | Xây dựng lại bộ lọc nhóm mới sau khi xóa các điều kiện hiện có và mô phỏng người dùng đặt lại bảng bộ lọc rồi cấu hình lại nó.| - |
+| [having-deeply-nested-groups](./havingFilter#having-deeply-nested-groups) | Phân nhóm lồng nhau ba cấp: OR(AND (doanh số vượt quá 500.000, lợi nhuận vượt quá 50.000), AND (số lượng vượt quá 100, chiết khấu trung bình nhỏ hơn 0,3)), mô phỏng sàng lọc doanh nghiệp phức tạp| - |
+| [having-empty-dsl-compose-target](./havingFilter#having-empty-dsl-compose-target) |Bắt đầu từ DSL trống, tập hợp vị trí/có/số đo/kích thước thông qua trình tạo, bao gồm tổ hợp điều kiện có của tổng hợp tổng và đếm riêng biệt| - |
+| [having-field-not-in-measures-and-dimensions](./havingFilter#having-field-not-in-measures-and-dimensions) | Khởi tạo DSL trống, chỉ thêm khu vực thứ nguyên và chỉ số doanh số thông qua trình tạo và sử dụng trường lợi nhuận không xuất hiện trong các thước đo/thứ nguyên khi có (SUM(profit) > 100000)| - |
+| [having-find-and-update](./havingFilter#having-find-and-update) | Trước tiên, hãy thêm điều kiện có, sau đó tìm và cập nhật động ngưỡng và toán tử thông qua tìm kiếm để mô phỏng việc điều chỉnh tương tác của người dùng đối với các điều kiện lọc.| - |
+| [having-group-add-to-existing](./havingFilter#having-group-add-to-existing) | Thêm điều kiện mới vào nhóm hiện có để mô phỏng người dùng tinh chỉnh dần các quy tắc lọc| - |
+| [having-group-remove-condition](./havingFilter#having-group-remove-condition) | Xóa các điều kiện cụ thể khỏi nhóm hiện có và mô phỏng người dùng hủy một mục bộ lọc| - |
+| [having-mix-filters-and-groups](./havingFilter#having-mix-filters-and-groups) | Kết hợp các điều kiện lọc độc lập và nhóm HOẶC: doanh số vượt quá 500.000 AND (lợi nhuận vượt quá 100.000 HOẶC số lượng không dưới 30)| - |
+| [having-multi-dimension-aggregate](./havingFilter#having-multi-dimension-aggregate) | Nhóm theo danh mục và khu vực, kết hợp sàng lọc với mức giảm giá trung bình dưới 20% và tổng doanh số vượt quá 100.000 và phân tích các doanh nghiệp có giá trị cao, chiết khấu thấp| - |
+| [having-nested-groups](./havingFilter#having-nested-groups) | Nhóm lồng nhau: AND (doanh số vượt quá 1 triệu, HOẶC (lợi nhuận vượt quá 200.000, số lượng không dưới 50))| - |
+| [having-or-group](./havingFilter#having-or-group) |Sử dụng nhóm HOẶC để lọc các khu vực có doanh thu hoặc lợi nhuận cao| - |
+| [having-scatter-profit-analysis](./havingFilter#having-scatter-profit-analysis) | Phân tích biểu đồ phân tán: Sàng lọc các danh mục có tỷ suất lợi nhuận cao và hơn 20 giao dịch theo nhóm danh mục để xác định vị trí các doanh nghiệp chất lượng cao| - |
+| [having-update-group-operator](./havingFilter#having-update-group-operator) | Cập nhật toán tử logic của nhóm Có hiện có từ AND thành OR.| - |
+| [having-with-where-combined](./havingFilter#having-with-where-combined) | Sàng lọc chung về địa điểm và sở hữu: đầu tiên lọc danh mục vật tư văn phòng theo địa điểm, sau đó lọc các tỉnh có doanh thu vượt quá 50.000 nhân dân tệ hoặc lợi nhuận vượt quá 10.000 nhân dân tệ theo sở hữu.| - |
+| [remove-having-filter](./havingFilter#remove-having-filter) | Loại bỏ dư thừa có điều kiện lọc và chỉ giữ lại bộ lọc lợi nhuận| - |
+
+## Locale
+
+| Ví dụ | Mô tả | Thẻ |
+| --- | --- | --- |
+| [en-US-locale](./locale#en-US-locale) | Kiểm tra ngôn ngữ tiếng Anh| - |
+| [zh-CN-locale](./locale#zh-CN-locale) | Kiểm tra ngôn ngữ Trung Quốc| - |
+
+## Measures
+
+| Ví dụ | Mô tả | Thẻ |
+| --- | --- | --- |
+| [add-measure](./measures#add-measure) | Thêm số đo| - |
+| [add-measure-encoding](./measures#add-measure-encoding) | Thêm số liệu và đặt mã hóa| - |
+| [measure-with-custom-and-auto-format](./measures#measure-with-custom-and-auto-format) | Định dạng đo lường: Khối lượng bán hàng sử dụng định dạng tùy chỉnh 10.000 nhân dân tệ (tiền tố ¥, giữ lại 2 chữ số thập phân), tỷ suất lợi nhuận sử dụng định dạng tự động và chiết khấu sử dụng định dạng phần trăm.| - |
+| [remove-measure](./measures#remove-measure) | Xóa thước đo| - |
+| [update-measure](./measures#update-measure) | Cập nhật thước đo| - |
+
+## Theme
+
+| Ví dụ | Mô tả | Thẻ |
+| --- | --- | --- |
+| [dark-theme](./theme#dark-theme) | Biểu đồ chủ đề tối| - |
+| [light-theme](./theme#light-theme) | Biểu đồ chủ đề ánh sáng| - |
+
+## UndoManager
+
+| Ví dụ | Mô tả | Thẻ |
+| --- | --- | --- |
+| [undo-redo](./undoManager#undo-redo) | Hoàn tác làm lại các bài kiểm tra chức năng| - |
+
+## WhereFilter
+
+| Ví dụ | Mô tả | Thẻ |
+| --- | --- | --- |
+| [between-sales-range-analysis](./whereFilter#between-sales-range-analysis) |Phân tích phạm vi bán hàng: sử dụng giữa để lọc các đơn hàng riêng lẻ từ 1.000 đến 10.000 nhân dân tệ và tóm tắt lợi nhuận theo danh mục| - |
+| [clear-and-rebuild-filters](./whereFilter#clear-and-rebuild-filters) | Xóa và xây dựng lại bộ lọc: xóa các bộ lọc đơn giản cũ và xây dựng lại chúng thành các điều kiện phức tạp bao gồm các nhóm| - |
+| [date-filter-period-and-range-combo](./whereFilter#date-filter-period-and-range-combo) | Lọc kết hợp phạm vi ngày: Sử dụng khoảng thời gian để lọc dữ liệu Q1 vào năm 2024 và sử dụng phạm vi để giới hạn phạm vi lợi nhuận, đồng thời phân tích chéo theo danh mục và phương thức phân phối| - |
+| [date-filter-relative-with-nested-conditions](./whereFilter#date-filter-relative-with-nested-conditions) | Kết hợp lọc ngày và điều kiện lồng: lọc các đơn hàng có giá trị cao từ người tiêu dùng hoặc khách hàng doanh nghiệp trong 30 ngày qua và tính toán doanh thu, lợi nhuận theo tỉnh thành| - |
+| [deeply-nested-or-and-groups](./whereFilter#deeply-nested-or-and-groups) | Nhóm lồng ghép đa cấp: các đơn hàng có giá trị cao giao hàng trong ngày cho người tiêu dùng hoặc giao hàng cấp một cho khách hàng doanh nghiệp, lồng ghép VÀ/HOẶC ba cấp độ| - |
+| [high-discount-tech-profit-analysis](./whereFilter#high-discount-tech-profit-analysis) | Phân tích lợi nhuận các sản phẩm công nghệ chiết khấu cao: Sàng lọc đơn hàng thuộc danh mục công nghệ có mức chiết khấu lớn hơn 0,5 và so sánh lợi nhuận theo khu vực| - |
+| [in-operator-multi-area-delivery](./whereFilter#in-operator-multi-area-delivery) | So sánh hiệu quả phân phối đa khu vực: sử dụng in để lọc ba khu vực chính là Đông Trung Quốc, Bắc Trung Quốc, Trung và Nam Trung Quốc, đồng thời đếm số lượng đơn hàng theo phương thức giao hàng.| - |
+| [nested-group-region-product-filter](./whereFilter#nested-group-region-product-filter) |Bán vật tư văn phòng hoặc đồ nội thất ở miền Đông Trung Quốc: Sử dụng nhóm lồng nhau VÀ kết nối các điều kiện khu vực và điều kiện danh mục HOẶC| - |
+| [not-between-sales-range](./whereFilter#not-between-sales-range) | Not between filter: exclude sales between 1000~10000 | - |
+| [not-between-with-explicit-operators](./whereFilter#not-between-with-explicit-operators) | Not between filter with explicit leftOp/rightOp to test invert functions | - |
+| [office-supplies-sales-by-province](./whereFilter#office-supplies-sales-by-province) | Xếp hạng doanh số bán vật tư văn phòng theo tỉnh: lọc danh mục vật tư văn phòng và tổng hợp doanh số theo tỉnh| - |
+| [or-group-product-category-comparison](./whereFilter#or-group-product-category-comparison) | So sánh danh mục vật tư văn phòng và công nghệ: sử dụng nhóm HOẶC để lọc hai danh mục và so sánh doanh số theo khu vực| - |
+| [remove-condition-from-group](./whereFilter#remove-condition-from-group) | Xóa điều kiện khỏi nhóm: Nhóm OR mặc định chứa ba danh mục, xóa một trong số chúng thông qua updateGroup| - |
+| [remove-filter-by-index](./whereFilter#remove-filter-by-index) | Xóa điều kiện lọc theo chỉ mục: xóa bộ lọc danh mục đầu tiên và chỉ giữ lại điều kiện khu vực| - |
+| [update-filter-switch-province](./whereFilter#update-filter-switch-province) | Tự động sửa đổi các điều kiện lọc: cập nhật bộ lọc tỉnh từ Chiết Giang đến Quảng Đông và quan sát những thay đổi về doanh số| - |
+| [update-group-or-to-and](./whereFilter#update-group-or-to-and) | Sửa đổi logic nhóm: chuyển nhóm danh mục OR mặc định thành AND và thu hẹp phạm vi lọc| - |
+| [where-filter-array-value-converts-to-in](./whereFilter#where-filter-array-value-converts-to-in) | Where filter with array value using '=' operator should convert to 'in' | - |
+| [where-filter-array-value-converts-to-not-in](./whereFilter#where-filter-array-value-converts-to-not-in) | Where filter with array value using '!=' operator should convert to 'not in' | - |
+

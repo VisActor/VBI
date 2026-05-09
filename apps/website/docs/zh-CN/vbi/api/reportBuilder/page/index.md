@@ -16,9 +16,9 @@ constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, doc: Y.Doc, dsl: Y.Ma
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `parent` | VBIReportBuilder<TQueryDSL, TSeedDSL> | - |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `parent` | `VBIReportBuilder<TQueryDSL, TSeedDSL>` | - |
+| `doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### add
 
@@ -35,7 +35,7 @@ add(title: string, callback: (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => v
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `title` | string | - |
-| `callback` | (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void | - |
+| `callback` | `(page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void` | - |
 
 ### remove
 
@@ -68,7 +68,7 @@ update(pageId: string, callback: (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `pageId` | string | - |
-| `callback` | (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void | - |
+| `callback` | `(page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void` | - |
 
 ### get
 

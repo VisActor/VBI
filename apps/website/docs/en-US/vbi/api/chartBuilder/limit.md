@@ -1,10 +1,10 @@
 # LimitBuilder
 
-Data limit builder for setting and getting the current limit.
+Data volume limit builder, used to set and get the current limit
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
@@ -18,14 +18,14 @@ constructor(_doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `_doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `_doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### observe
 
-Listens for limit changes, returns an unsubscribe function.
+Monitor limit changes and return a function to cancel monitoring
 
 **Definition**:
 
@@ -33,17 +33,17 @@ Listens for limit changes, returns an unsubscribe function.
 observe(callback: ObserveCallback): () => void
 ```
 
-**Returns**: `() => void`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `callback` | ObserveCallback | - Callback function |
+| `callback` | ObserveCallback | - callback function |
 
 ### setLimit
 
-Sets the limit.
+set limit
 
 **Definition**:
 
@@ -53,13 +53,13 @@ setLimit(limit: number)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `limit` | number | - Data limit |
+| `limit` | number | - data size limit |
 
 ### getLimit
 
-Gets the current limit.
+Get the current limit
 
 **Definition**:
 
@@ -67,11 +67,11 @@ Gets the current limit.
 getLimit(): number | undefined
 ```
 
-**Returns**: `number \| undefined`
+**Return**: `() => void`
 
 ### toJSON
 
-Exports to JSON.
+Export as JSON
 
 **Definition**:
 
@@ -79,4 +79,4 @@ Exports to JSON.
 toJSON(): number | undefined
 ```
 
-**Returns**: `number \| undefined`
+**Return**: `() => void`

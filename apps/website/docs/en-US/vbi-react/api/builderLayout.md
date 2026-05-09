@@ -14,9 +14,9 @@ BuilderLayout(props: BuilderLayoutProps)
 
 ## Description
 
-Provides a standardized three-column/two-column builder layout container.
+Provides standardized three-column/two-column builder layout containers.
 
-## Minimal Example
+## Minimal example
 
 ```tsx
 import { BuilderLayout } from '@visactor/vbi-react/components'

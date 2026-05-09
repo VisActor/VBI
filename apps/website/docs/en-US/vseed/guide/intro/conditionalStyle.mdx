@@ -2,11 +2,11 @@
 pageType: doc
 ---
 
-# Conditional Styles
+# Conditional style
 
-## Bar Mark Styles
+## Rectangular primitive style
 
-Configure bar mark styles via the `barStyle` property. The first item in the array is the default style, and subsequent items are conditional styles. Data satisfying the `selector` condition will apply the corresponding style.
+Configure the style of the rectangular primitive through the `barStyle` attribute. The first item in the array is the default style, and subsequent items are conditional styles. Data that meets the `selector` condition will have the corresponding style applied.
 
 ```tsx direction=vertical playground
 import { useRef, useEffect } from 'react'
@@ -72,9 +72,9 @@ const Demo = () => {
 export default Demo
 ```
 
-## Point Mark Styles
+## Point primitive style
 
-Configure point mark styles via the `pointStyle` property, also with conditional style support.
+Configure the style of point primitives through the `pointStyle` attribute. Conditional style configuration is also supported.
 
 ```tsx direction=vertical playground
 import { useRef, useEffect } from 'react'
@@ -140,9 +140,9 @@ const Demo = () => {
 export default Demo
 ```
 
-## Line Mark Styles
+## Line primitive style
 
-Configure line mark styles via the `lineStyle` property.
+Configure the style of line primitives through the `lineStyle` attribute.
 
 ```tsx direction=vertical playground
 import { useRef, useEffect } from 'react'
@@ -209,9 +209,9 @@ const Demo = () => {
 export default Demo
 ```
 
-## Area Mark Styles
+## Surface primitive style
 
-Configure area mark styles via the `areaStyle` property.
+Configure the style of the polygon primitive through the `areaStyle` attribute.
 
 ```tsx direction=vertical playground
 import { useRef, useEffect } from 'react'

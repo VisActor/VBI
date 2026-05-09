@@ -2,29 +2,22 @@
 
 ## Properties
 
-| Property | Type | Description |
-| --- | --- | --- |
-| **chart** | `VBIChartBuilder<TQueryDSL, TSeedDSL>` | - |
-| **text** | `ReportTextBuilder` | - |
-
-
-## Methods
+## Method
 
 ### constructor
 
 **Definition**:
 
 ```typescript
-constructor(doc: Y.Doc, page: Y.Map<any>, chartOptions: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>)
+constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, page: Y.Map<any>)
 ```
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `page` | Y.Map<any> | - |
-| `chartOptions` | VBIChartBuilderOptions<TQueryDSL, TSeedDSL> | - |
+| `parent` | `VBIReportBuilder<TQueryDSL, TSeedDSL>` | - |
+| `page` | `Y.Map<any>` | - |
 
 ### getId
 
@@ -34,7 +27,7 @@ constructor(doc: Y.Doc, page: Y.Map<any>, chartOptions: VBIChartBuilderOptions<T
 getId(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### setTitle
 
@@ -44,45 +37,45 @@ getId(): string
 setTitle(title: string): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `title` | string | - |
 
-### setChart
+### setChartId
 
 **Definition**:
 
 ```typescript
-setChart(chartBuilder: VBIChartBuilder<TQueryDSL, TSeedDSL> | VBIChartDSLInput): this
+setChartId(chart: ResourceReference): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `chartBuilder` | VBIChartBuilder<TQueryDSL, TSeedDSL> \| VBIChartDSLInput | - |
+| `chart` | ResourceReference | - |
 
-### setText
+### setInsightId
 
 **Definition**:
 
 ```typescript
-setText(content: string): this
+setInsightId(insight: ResourceReference): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `content` | string | - |
+| `insight` | ResourceReference | - |
 
 ### toJSON
 
@@ -92,4 +85,4 @@ setText(content: string): this
 toJSON(): VBIReportPageDSL
 ```
 
-**Returns**: `VBIReportPageDSL`
+**Return**: `() => void`

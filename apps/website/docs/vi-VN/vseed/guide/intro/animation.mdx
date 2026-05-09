@@ -1,0 +1,4052 @@
+---
+pageType: doc
+---
+
+#hoạt hình
+
+Khả năng hoạt ảnh của VSeed hỗ trợ các giai đoạn vào, băng chuyền, bầu không khí, cập nhật và thoát. Dưới đây, các ví dụ hoạt hình về biểu đồ cột, đường/khu vực, biểu đồ hình tròn, biểu đồ radar và biểu đồ phân tán được kết hợp và hiển thị để tạo điều kiện so sánh các phương pháp cấu hình của các loại biểu đồ khác nhau.
+
+## Hoạt hình biểu đồ cột/biểu đồ thanh
+
+Tất cả các ví dụ đều dựa trên chủ đề màn hình lớn (tối) và danh sách chủ đề được cung cấp để chuyển đổi các chủ đề khác nhau.
+Nguồn danh sách chủ đề: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
+
+### 1. Hoạt hình lối vào
+
+Hoạt ảnh đầu vào đề cập đến hoạt ảnh khi biểu đồ được hiển thị lần đầu tiên và được sử dụng để thiết lập nhịp điệu trực quan và thu hút sự chú ý.
+Hoạt ảnh nhập cho chuỗi biểu đồ thanh/thanh hiện tại hỗ trợ `growth`.
+
+#### tăng trưởng 1,1
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes } from '@visactor/vseed'
+
+const THEME_URL = 'https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json'
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+const DIMENSIONS = [
+  { id: 'HqlYadRdHJ5c', alias: '类目' },
+  { id: '7ti8XuX4kcY1', alias: '年份' },
+]
+const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: '销售额' }]
+
+const useLargeScreenThemes = () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    fetch(THEME_URL)
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        const firstKey = Object.keys(remote)[0] || ''
+        setThemeKey(firstKey)
+      })
+      .catch(() => {})
+  }, [])
+  return { themes, themeKey, setThemeKey }
+}
+
+const ThemeSelect = ({ themes, themeKey, onChange }) => (
+  <select
+    value={themeKey}
+    onChange={(e) => onChange(e.target.value)}
+    style={{
+      marginBottom: 12,
+      color: '#EAF7FF',
+      background: 'rgba(0, 213, 255, 0.18)',
+      border: '1px solid rgba(0, 213, 255, 0.45)',
+      padding: '6px 12px',
+    }}
+  >
+    {Object.entries(themes).map(([key, value]) => (
+      <option key={key} value={key} style={{ color: '#000' }}>
+        {value?.name || key}
+      </option>
+    ))}
+  </select>
+)
+
+export default () => {
+  const { themes, themeKey, setThemeKey } = useLargeScreenThemes()
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'columnParallel',
+    dataset: DATASET,
+    dimensions: DIMENSIONS,
+    measures: MEASURES,
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: {
+        appear: { enable: true, effects: ['growth'], ease: 'circInOut', duration: 1 },
+      },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <ThemeSelect themes={themes} themeKey={themeKey} onChange={setThemeKey} />
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+### 2. Hoạt ảnh băng chuyền
+
+Hoạt ảnh băng chuyền đề cập đến hoạt ảnh mà biểu đồ tiếp tục lặp lại sau khi hoàn thành mục nhập, được sử dụng để nhấn mạnh các điểm chính hoặc duy trì cảm giác động.
+
+#### 2.1 điểm nổi bật (điểm nổi bật nhóm) + bầu không khí (hiệu ứng bầu không khí)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes } from '@visactor/vseed'
+
+const THEME_URL = 'https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json'
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'columnParallel',
+    dataset: DATASET,
+    dimensions: [
+      { id: 'HqlYadRdHJ5c', alias: '类目' },
+      { id: '7ti8XuX4kcY1', alias: '年份' },
+    ],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: {
+        appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1 },
+        loop: {
+          enable: true,
+          interval: 3,
+          loop: { enable: true, effects: ['highLight'], ease: 'linear', duration: 1 },
+          atmosphere: { effect: 'breath', ease: 'linear', color: '#4A90E2' },
+        },
+      },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+#### tăng trưởng 2,2 (băng chuyền tăng trưởng) + bầu không khí (hiệu ứng khí quyển)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'barParallel',
+    dataset: DATASET,
+    dimensions: [
+      { id: 'HqlYadRdHJ5c', alias: '类目' },
+      { id: '7ti8XuX4kcY1', alias: '年份' },
+    ],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: {
+        appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1 },
+        loop: {
+          enable: true,
+          interval: 2,
+          loop: { enable: true, effects: ['growth'], ease: 'linear', duration: 1 },
+          atmo: { effect: 'breath', ease: 'linear', color: '#4A90E2' },
+        },
+      },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+#### 2.3 moveIn (di chuyển vào băng chuyền) + bầu không khí (hiệu ứng bầu không khí)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'columnParallel',
+    dataset: DATASET,
+    dimensions: [
+      { id: 'HqlYadRdHJ5c', alias: '类目' },
+      { id: '7ti8XuX4kcY1', alias: '年份' },
+    ],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: {
+        appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1 },
+        loop: {
+          enable: true,
+          interval: 2,
+          loop: { enable: true, effects: ['moveIn'], ease: 'linear', duration: 1 },
+          atmo: { effect: 'breath', ease: 'linear', color: '#4A90E2' },
+        },
+      },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+## Hoạt hình biểu đồ đường/biểu đồ vùng
+
+Tất cả các ví dụ đều dựa trên chủ đề màn hình lớn (tối) và danh sách chủ đề được cung cấp để chuyển đổi các chủ đề khác nhau.
+Nguồn danh sách chủ đề: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
+
+### 1. Hoạt hình lối vào
+
+Hoạt ảnh mục nhập được sử dụng làm hướng dẫn trực quan khi biểu đồ lần đầu tiên vào trang.
+
+#### tải 1,1
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes, Builder } from '@visactor/vseed'
+
+const THEME_URL = 'https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json'
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+const DIMENSIONS = [
+  { id: 'HqlYadRdHJ5c', alias: '类目' },
+  { id: '7ti8XuX4kcY1', alias: '年份' },
+]
+const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: '销售额' }]
+
+const useLargeScreenThemes = () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    Builder.updateSpec('line', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+    }))
+    Builder.updateSpec('area', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+    }))
+    Builder.updateSpec('areaPercent', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+    }))
+    fetch(THEME_URL)
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  return { themes, themeKey, setThemeKey }
+}
+
+const ThemeSelect = ({ themes, themeKey, onChange }) => (
+  <select
+    value={themeKey}
+    onChange={(e) => onChange(e.target.value)}
+    style={{
+      marginBottom: 12,
+      color: '#EAF7FF',
+      background: 'rgba(0, 213, 255, 0.18)',
+      border: '1px solid rgba(0, 213, 255, 0.45)',
+      padding: '6px 12px',
+    }}
+  >
+    {Object.entries(themes).map(([key, value]) => (
+      <option key={key} value={key} style={{ color: '#000' }}>
+        {value?.name || key}
+      </option>
+    ))}
+  </select>
+)
+
+export default () => {
+  const { themes, themeKey, setThemeKey } = useLargeScreenThemes()
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'line',
+    dataset: DATASET,
+    dimensions: DIMENSIONS,
+    measures: MEASURES,
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: { appear: { enable: true, effects: ['load'], ease: 'circInOut', duration: 1 } },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <ThemeSelect themes={themes} themeKey={themeKey} onChange={setThemeKey} />
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+#### tăng trưởng 1,2
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes, Builder } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    Builder.updateSpec('line', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+    }))
+    Builder.updateSpec('area', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+    }))
+    Builder.updateSpec('areaPercent', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+    }))
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'area',
+    dataset: DATASET,
+    dimensions: [
+      { id: 'HqlYadRdHJ5c', alias: '类目' },
+      { id: '7ti8XuX4kcY1', alias: '年份' },
+    ],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: { appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1 } },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+### 2. Hoạt ảnh băng chuyền
+
+Hoạt ảnh băng chuyền được sử dụng để phát lại biểu đồ theo vòng lặp liên tục nhằm nâng cao khả năng biểu đạt động.
+
+#### 2.1 tải (tải băng chuyền) + bầu không khí (hiệu ứng bầu không khí: hơi thở)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes, Builder } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    Builder.updateSpec('line', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+    }))
+    Builder.updateSpec('area', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+    }))
+    Builder.updateSpec('areaPercent', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+    }))
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'line',
+    dataset: DATASET,
+    dimensions: [
+      { id: 'HqlYadRdHJ5c', alias: '类目' },
+      { id: '7ti8XuX4kcY1', alias: '年份' },
+    ],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: {
+        appear: { enable: true, effects: ['load'], ease: 'linear', duration: 1 },
+        loop: {
+          enable: true,
+          interval: 2,
+          loop: { enable: true, effects: ['load'], ease: 'linear', duration: 1 },
+          atmosphere: { effect: 'breath', ease: 'linear' },
+        },
+      },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+#### 2.2 tải (tải băng chuyền) + bầu không khí (hiệu ứng bầu không khí: gợn sóng)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes, Builder } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    Builder.updateSpec('line', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+    }))
+    Builder.updateSpec('area', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+    }))
+    Builder.updateSpec('areaPercent', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+    }))
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'areaPercent',
+    dataset: DATASET,
+    dimensions: [
+      { id: 'HqlYadRdHJ5c', alias: '类目' },
+      { id: '7ti8XuX4kcY1', alias: '年份' },
+    ],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: {
+        appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1 },
+        loop: {
+          enable: true,
+          interval: 3,
+          loop: { enable: true, effects: ['load'], ease: 'circInOut', duration: 1 },
+          atmosphere: { effect: 'ripple', ease: 'linear' },
+        },
+      },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+## Biểu đồ tròn/biểu đồ vòng/hoạt hình biểu đồ hoa hồng
+
+Tất cả các ví dụ đều dựa trên chủ đề màn hình lớn (tối) và danh sách chủ đề được cung cấp để chuyển đổi các chủ đề khác nhau.
+Nguồn danh sách chủ đề: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
+
+### 1. Hoạt hình lối vào
+
+Hoạt ảnh mục nhập được sử dụng để biết cách một khu vực hoạt động khi nó được đưa vào chế độ xem lần đầu tiên.
+
+#### 1.1 xuyên tâm (radial)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes } from '@visactor/vseed'
+
+const THEME_URL = 'https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json'
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+const DIMENSIONS = [{ id: 'HqlYadRdHJ5c', alias: '类目' }]
+const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: '销售额' }]
+
+const useLargeScreenThemes = () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    fetch(THEME_URL)
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  return { themes, themeKey, setThemeKey }
+}
+
+const ThemeSelect = ({ themes, themeKey, onChange }) => (
+  <select
+    value={themeKey}
+    onChange={(e) => onChange(e.target.value)}
+    style={{
+      marginBottom: 12,
+      color: '#EAF7FF',
+      background: 'rgba(0, 213, 255, 0.18)',
+      border: '1px solid rgba(0, 213, 255, 0.45)',
+      padding: '6px 12px',
+    }}
+  >
+    {Object.entries(themes).map(([key, value]) => (
+      <option key={key} value={key} style={{ color: '#000' }}>
+        {value?.name || key}
+      </option>
+    ))}
+  </select>
+)
+
+export default () => {
+  const { themes, themeKey, setThemeKey } = useLargeScreenThemes()
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'pie',
+    dataset: DATASET,
+    dimensions: DIMENSIONS,
+    measures: MEASURES,
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: { appear: { enable: true, effects: ['radial'], ease: 'circInOut', duration: 1 } },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <ThemeSelect themes={themes} themeKey={themeKey} onChange={setThemeKey} />
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+#### tỷ lệ 1,2
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'donut',
+    dataset: DATASET,
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: { appear: { enable: true, effects: ['scale'], ease: 'circInOut', duration: 1 } },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+### 2. Hoạt ảnh băng chuyền
+
+Hoạt ảnh băng chuyền được sử dụng để duyệt qua và nhấn mạnh một số lĩnh vực nhất định.
+
+#### phóng to 2.1 (thay đổi kích thước)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'pie',
+    dataset: DATASET,
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: {
+        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1 },
+        loop: { enable: true, interval: 2, loop: { enable: true, effects: ['enlarge'], ease: 'linear', duration: 1 } },
+      },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+#### 2.2 di dời (thay đổi trung tâm)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'pie',
+    dataset: DATASET,
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: {
+        appear: { enable: true, effects: ['radial'], ease: 'linear', duration: 1 },
+        loop: { enable: true, interval: 2, loop: { enable: true, effects: ['relocate'], ease: 'linear', duration: 1 } },
+      },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+## Hoạt hình biểu đồ radar
+
+Tất cả các ví dụ đều dựa trên chủ đề màn hình lớn (tối) và danh sách chủ đề được cung cấp để chuyển đổi các chủ đề khác nhau.
+Nguồn danh sách chủ đề: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
+
+### 1. Hoạt hình lối vào
+
+Hoạt ảnh lối vào được sử dụng để hiển thị lần đầu tiên các bề mặt và nút radar.
+
+#### 1.1 xuyên tâm (radial)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes, Builder } from '@visactor/vseed'
+
+const THEME_URL = 'https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json'
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+const DIMENSIONS = [{ id: 'HqlYadRdHJ5c', alias: '类目' }]
+const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: '销售额' }]
+
+const useLargeScreenThemes = () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    Builder.updateSpec('radar', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+      axes: [
+        {
+          orient: 'radius',
+          tick: { forceTickCount: 3 },
+          grid: { smooth: false, style: { stroke: 'rgba(255,255,255,0.15)', lineWidth: 1 } },
+          label: { visible: false, style: { fontFamily: 'D-DIN' } },
+        },
+        {
+          orient: 'angle',
+          sampling: false,
+          tick: { visible: true, style: () => ({ visible: false }) },
+          domainLine: { style: { visible: false } },
+          grid: { style: () => ({ stroke: 'rgba(255,255,255,0.15)', lineDash: [2, 1], lineWidth: 1 }) },
+          label: { style: { fontFamily: 'D-DIN', fill: 'rgba(255,255,255,0.65)', fontSize: 12 }, visible: true },
+        },
+      ],
+    }))
+    fetch(THEME_URL)
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  return { themes, themeKey, setThemeKey }
+}
+
+const ThemeSelect = ({ themes, themeKey, onChange }) => (
+  <select
+    value={themeKey}
+    onChange={(e) => onChange(e.target.value)}
+    style={{
+      marginBottom: 12,
+      color: '#EAF7FF',
+      background: 'rgba(0, 213, 255, 0.18)',
+      border: '1px solid rgba(0, 213, 255, 0.45)',
+      padding: '6px 12px',
+    }}
+  >
+    {Object.entries(themes).map(([key, value]) => (
+      <option key={key} value={key} style={{ color: '#000' }}>
+        {value?.name || key}
+      </option>
+    ))}
+  </select>
+)
+
+export default () => {
+  const { themes, themeKey, setThemeKey } = useLargeScreenThemes()
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'radar',
+    dataset: DATASET,
+    dimensions: DIMENSIONS,
+    measures: MEASURES,
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: { appear: { enable: true, effects: ['radial'], ease: 'circInOut', duration: 1 } },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <ThemeSelect themes={themes} themeKey={themeKey} onChange={setThemeKey} />
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+#### tỷ lệ 1,2
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes, Builder } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    Builder.updateSpec('radar', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+      axes: [
+        {
+          orient: 'radius',
+          tick: { forceTickCount: 3 },
+          grid: { smooth: false, style: { stroke: 'rgba(255,255,255,0.15)', lineWidth: 1 } },
+          label: { visible: false, style: { fontFamily: 'D-DIN' } },
+        },
+        {
+          orient: 'angle',
+          sampling: false,
+          tick: { visible: true, style: () => ({ visible: false }) },
+          domainLine: { style: { visible: false } },
+          grid: { style: () => ({ stroke: 'rgba(255,255,255,0.15)', lineDash: [2, 1], lineWidth: 1 }) },
+          label: { style: { fontFamily: 'D-DIN', fill: 'rgba(255,255,255,0.65)', fontSize: 12 }, visible: true },
+        },
+      ],
+    }))
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'radar',
+    dataset: DATASET,
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: { appear: { enable: true, effects: ['scale'], ease: 'circInOut', duration: 1 } },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+### 2. Hoạt ảnh băng chuyền
+
+Hoạt hình băng chuyền biểu đồ radar cung cấp bầu không khí liên tục thông qua `atmosphere.effect`.
+
+#### 2.1 không (băng chuyền) + bầu không khí (hiệu ứng bầu không khí: gợn sóng)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes, Builder } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    Builder.updateSpec('radar', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+      axes: [
+        {
+          orient: 'radius',
+          tick: { forceTickCount: 3 },
+          grid: { smooth: false, style: { stroke: 'rgba(255,255,255,0.15)', lineWidth: 1 } },
+          label: { visible: false, style: { fontFamily: 'D-DIN' } },
+        },
+        {
+          orient: 'angle',
+          sampling: false,
+          tick: { visible: true, style: () => ({ visible: false }) },
+          domainLine: { style: { visible: false } },
+          grid: { style: () => ({ stroke: 'rgba(255,255,255,0.15)', lineDash: [2, 1], lineWidth: 1 }) },
+          label: { style: { fontFamily: 'D-DIN', fill: 'rgba(255,255,255,0.65)', fontSize: 12 }, visible: true },
+        },
+      ],
+    }))
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'radar',
+    dataset: DATASET,
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: {
+        appear: { enable: true, effects: ['radial'], ease: 'linear', duration: 1 },
+        loop: { enable: true, interval: 2, atmosphere: { effect: 'ripple', ease: 'linear' } },
+      },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+#### 2.2 không (băng chuyền) + bầu không khí (hiệu ứng bầu không khí: tiết lộ)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes, Builder } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    Builder.updateSpec('radar', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+      axes: [
+        {
+          orient: 'radius',
+          tick: { forceTickCount: 3 },
+          grid: { smooth: false, style: { stroke: 'rgba(255,255,255,0.15)', lineWidth: 1 } },
+          label: { visible: false, style: { fontFamily: 'D-DIN' } },
+        },
+        {
+          orient: 'angle',
+          sampling: false,
+          tick: { visible: true, style: () => ({ visible: false }) },
+          domainLine: { style: { visible: false } },
+          grid: { style: () => ({ stroke: 'rgba(255,255,255,0.15)', lineDash: [2, 1], lineWidth: 1 }) },
+          label: { style: { fontFamily: 'D-DIN', fill: 'rgba(255,255,255,0.65)', fontSize: 12 }, visible: true },
+        },
+      ],
+    }))
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'radar',
+    dataset: DATASET,
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: {
+        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1 },
+        loop: { enable: true, interval: 3, atmosphere: { effect: 'reveal', ease: 'linear' } },
+      },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+#### 2.3 không (băng chuyền) + bầu không khí (hiệu ứng bầu không khí: hơi thở)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes, Builder } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    Builder.updateSpec('radar', (spec) => ({
+      ...spec,
+      point: { ...spec.point, style: { ...(spec.point && spec.point.style), lineWidth: 0, stroke: null } },
+      axes: [
+        {
+          orient: 'radius',
+          tick: { forceTickCount: 3 },
+          grid: { smooth: false, style: { stroke: 'rgba(255,255,255,0.15)', lineWidth: 1 } },
+          label: { visible: false, style: { fontFamily: 'D-DIN' } },
+        },
+        {
+          orient: 'angle',
+          sampling: false,
+          tick: { visible: true, style: () => ({ visible: false }) },
+          domainLine: { style: { visible: false } },
+          grid: { style: () => ({ stroke: 'rgba(255,255,255,0.15)', lineDash: [2, 1], lineWidth: 1 }) },
+          label: { style: { fontFamily: 'D-DIN', fill: 'rgba(255,255,255,0.65)', fontSize: 12 }, visible: true },
+        },
+      ],
+    }))
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'radar',
+    dataset: DATASET,
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: {
+        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1 },
+        loop: { enable: true, interval: 2, atmosphere: { effect: 'breath', ease: 'linear' } },
+      },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+## Hoạt hình cốt truyện phân tán
+
+Tất cả các ví dụ đều dựa trên chủ đề màn hình lớn (tối) và danh sách chủ đề được cung cấp để chuyển đổi các chủ đề khác nhau.
+Nguồn danh sách chủ đề: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
+
+### 1. Hoạt hình lối vào
+
+Hoạt ảnh mục nhập được sử dụng khi phân tán lần đầu tiên được đưa vào chế độ xem.
+
+#### tỷ lệ 1,1
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes } from '@visactor/vseed'
+
+const THEME_URL = 'https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json'
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+const DIMENSIONS = [{ id: 'HqlYadRdHJ5c', alias: '类目' }]
+const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: '销售额' }]
+
+const useLargeScreenThemes = () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    fetch(THEME_URL)
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  return { themes, themeKey, setThemeKey }
+}
+
+const ThemeSelect = ({ themes, themeKey, onChange }) => (
+  <select
+    value={themeKey}
+    onChange={(e) => onChange(e.target.value)}
+    style={{
+      marginBottom: 12,
+      color: '#EAF7FF',
+      background: 'rgba(0, 213, 255, 0.18)',
+      border: '1px solid rgba(0, 213, 255, 0.45)',
+      padding: '6px 12px',
+    }}
+  >
+    {Object.entries(themes).map(([key, value]) => (
+      <option key={key} value={key} style={{ color: '#000' }}>
+        {value?.name || key}
+      </option>
+    ))}
+  </select>
+)
+
+export default () => {
+  const { themes, themeKey, setThemeKey } = useLargeScreenThemes()
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'scatter',
+    dataset: DATASET,
+    dimensions: DIMENSIONS,
+    measures: MEASURES,
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: { appear: { enable: true, effects: ['scale'], ease: 'circInOut', duration: 1 } },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <ThemeSelect themes={themes} themeKey={themeKey} onChange={setThemeKey} />
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+#### 1.2 fadeIn (làm mờ dần)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'scatter',
+    dataset: DATASET,
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: { appear: { enable: true, effects: ['fadeIn'], ease: 'circInOut', duration: 1 } },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+### 2. Hoạt ảnh băng chuyền
+
+Hoạt ảnh băng chuyền phân tán mang lại nhịp điệu liên tục trong bầu không khí.
+
+#### 2.1 không (băng chuyền) + bầu không khí (hiệu ứng bầu không khí: gợn sóng)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'scatter',
+    dataset: DATASET,
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: {
+        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1 },
+        loop: { enable: true, interval: 2, atmosphere: { effect: 'ripple', ease: 'linear' } },
+      },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+#### 2.2 không (băng chuyền) + bầu không khí (hiệu ứng bầu không khí: hơi thở)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'scatter',
+    dataset: DATASET,
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: {
+        appear: { enable: true, effects: ['fadeIn'], ease: 'linear', duration: 1 },
+        loop: { enable: true, interval: 2, atmosphere: { effect: 'breath', ease: 'linear' } },
+      },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```
+
+#### 2.3 không (băng chuyền) + bầu không khí (hiệu ứng bầu không khí: tiết lộ)
+
+```tsx preview
+import { useEffect, useState } from 'react'
+import { VSeedRender } from '@components'
+import { registerTokenThemes } from '@visactor/vseed'
+
+const DATASET = [
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 24,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Labels',
+    Tn97A7q0XVDq: 24,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Tables',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 40,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 40,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 20,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Storage',
+    Tn97A7q0XVDq: 20,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 10,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Furn',
+    Tn97A7q0XVDq: 10,
+    '7ti8XuX4kcY1': '2022',
+  },
+  {
+    10001: 'Sales',
+    10002: 50,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2023',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 50,
+    '7ti8XuX4kcY1': '2023',
+  },
+  {
+    10001: 'Sales',
+    10002: 30,
+    10003: 'Tn97A7q0XVDq',
+    30001: '2022',
+    HqlYadRdHJ5c: 'Art',
+    Tn97A7q0XVDq: 30,
+    '7ti8XuX4kcY1': '2022',
+  },
+]
+
+export default () => {
+  const [themes, setThemes] = useState({})
+  const [themeKey, setThemeKey] = useState('')
+  useEffect(() => {
+    fetch('https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json')
+      .then((r) => r.json())
+      .then((remote) => {
+        const registry = {}
+        Object.entries(remote).forEach(([key, value]) => {
+          const colors = value?.colors || []
+          registry[key] = {
+            baseTheme: 'dark',
+            colorScheme: colors.length >= 2 ? colors : [colors[0] || '#00D5FF', '#227BFF'],
+            linearColorScheme: [colors[0] || '#003B73', colors[1] || '#00D5FF'],
+            textPrimary: '#EAF7FF',
+            textSecondary: '#8FC7FF',
+            borderColor: 'rgba(82, 191, 255, 0.28)',
+            surfaceColor: '#071A33',
+            tooltipBackgroundColor: 'rgba(5, 18, 38, 0.92)',
+            axisGridColor: 'rgba(82, 191, 255, 0.18)',
+            accentColor: colors[0] || '#00D5FF',
+          }
+        })
+        registerTokenThemes(registry, { ensureRegisterAll: false })
+        setThemes(remote)
+        setThemeKey(Object.keys(remote)[0] || '')
+      })
+      .catch(() => {})
+  }, [])
+  if (!themeKey) return null
+  const vseedConfig = {
+    theme: themeKey,
+    chartType: 'scatter',
+    dataset: DATASET,
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
+    label: { enable: false },
+    animation: {
+      enable: true,
+      params: {
+        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1 },
+        loop: { enable: true, interval: 3, atmosphere: { effect: 'reveal', ease: 'linear' } },
+      },
+    },
+  }
+  return (
+    <div style={{ padding: 16, background: '#061A33' }}>
+      <select
+        value={themeKey}
+        onChange={(e) => setThemeKey(e.target.value)}
+        style={{
+          marginBottom: 12,
+          color: '#EAF7FF',
+          background: 'rgba(0, 213, 255, 0.18)',
+          border: '1px solid rgba(0, 213, 255, 0.45)',
+          padding: '6px 12px',
+        }}
+      >
+        {Object.entries(themes).map(([key, value]) => (
+          <option key={key} value={key} style={{ color: '#000' }}>
+            {value?.name || key}
+          </option>
+        ))}
+      </select>
+      <VSeedRender vseed={vseedConfig} />
+    </div>
+  )
+}
+```

@@ -1,7 +1,7 @@
-# Examples Overview
+# Example overview
 
-All examples below can be copied directly into a `.tsx` file and run.
+The following examples can be copied directly to the `.tsx` file and run.
 
 - [Basic Hooks](./basicHooks)
-- [Layout with Components](./layoutWithComponents)
+- [Componentized Layout](./layoutWithComponents)
 - [Filter Mutations](./filterMutations)

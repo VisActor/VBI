@@ -1,70 +1,70 @@
-# Common Scripts
+# Commonly used scripts
 
-To maintain Monorepo consistency, **all scripts must be run from the project root directory**.
+To maintain the consistency of Monorepo, **all scripts must be executed in the project root directory**.
 
 ## Core Script (g)
 
-`g` (Generator) is the most critical helper script in VSeed development.
+`g` (Generator) is the most critical auxiliary script in the development of VSeed.
 
 ```bash
 pnpm run g
 ```
 
-**Description**:
-This command is a combination of `build:test`, `build:docs`, and `build:api`, used to keep development environment resources in sync:
-1. **Generate test cases**: Parses JSON Specs under `tests/integrations` and generates corresponding `.test.ts` files.
-2. **Generate documentation**: Parses TypeScript type definitions and updates API documentation in `apps/website`.
+**Function description**:
+This command is a combination of `build:test`, `build:docs`, and `build:api`, which is used to ensure resource synchronization in the development environment:
+1. **Generate test cases**: Parse JSON Spec under `tests/integrations` and generate the corresponding `.test.ts` file.
+2. **Generate document**: Parse the TypeScript type definition and update the API document in `apps/website`.
 
-**When to use**:
-- After modifying chart logic or adding a new chart type.
-- After modifying TypeScript type definitions.
-- Before committing code.
+**Usage Scenario**:
+- After modifying the chart logic or adding a new chart type.
+- After modifying the TypeScript type definition.
+- Before submitting code.
 
-## Development & Build
+## Develop and build
 
-### Start Development Environment
-Start VSeed watch mode and the documentation site simultaneously.
+### Start the development environment
+Also start the VSeed listening and documentation site.
 ```bash
 pnpm run dev
 ```
 
-### Build the Project
+### Build project
 Build the VSeed core library.
 ```bash
 pnpm --filter=@visactor/vseed run build
 ```
 
-## Testing
+## Test related
 
-### Run All Tests
+### Run all tests
 ```bash
 pnpm --filter=@visactor/vseed run test
 ```
 
-### Run Unit Tests
+### Run unit tests
 ```bash
 pnpm --filter=@visactor/vseed run test:unit
 ```
 
-### Run Integration Tests
+### Run integration tests
 ```bash
 pnpm --filter=@visactor/vseed run test:integration
 ```
 
-### Update Test Snapshots
-Run this when your code changes cause snapshot diffs (that are expected):
+### Update test snapshot
+Run when your code changes cause the snapshot to change (as expected):
 ```bash
 pnpm --filter=@visactor/vseed run test:update
 ```
 
-## Code Quality
+## Code quality
 
-### Lint Check
+### Lint check
 ```bash
 pnpm run lint
 ```
 
-### Type Check
+### Type checking
 ```bash
 pnpm run typecheck
 ```

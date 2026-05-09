@@ -1,0 +1,55 @@
+[
+  {
+    "type": "file",
+    "name": "chartType",
+    "label": "chartBuilder.chartType"
+  },
+  {
+    "type": "dir",
+    "name": "measures",
+    "label": "chartBuilder.measures",
+    "collapsible": true,
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "dimensions",
+    "label": "chartBuilder.dimensions",
+    "collapsible": true,
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "whereFilter",
+    "label": "chartBuilder.whereFilter",
+    "collapsible": true,
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "havingFilter",
+    "label": "chartBuilder.havingFilter",
+    "collapsible": true,
+    "collapsed": true
+  },
+  {
+    "type": "file",
+    "name": "theme",
+    "label": "chartBuilder.theme"
+  },
+  {
+    "type": "file",
+    "name": "locale",
+    "label": "chartBuilder.locale"
+  },
+  {
+    "type": "file",
+    "name": "limit",
+    "label": "chartBuilder.limit"
+  },
+  {
+    "type": "file",
+    "name": "undoManager",
+    "label": "chartBuilder.undoManager"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  "vseed",
+  "dslDesign",
+  {
+    "type": "dir",
+    "name": "dataReshape",
+    "label": "Pembentukan kembali data"
+  },
+  {
+    "type": "dir",
+    "name": "pipeline",
+    "label": "saluran pipa"
+  }
+]

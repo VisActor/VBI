@@ -1,0 +1,9 @@
+[
+  {
+    "type": "dir",
+    "name": "page",
+    "label": "reportBuilder.page",
+    "collapsible": true,
+    "collapsed": true
+  }
+]

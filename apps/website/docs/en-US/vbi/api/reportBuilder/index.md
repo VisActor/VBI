@@ -2,7 +2,7 @@
 
 ## Properties
 
-| Property | Type | Description |
+| Properties | Type | Description |
 | --- | --- | --- |
 | **doc** | `Y.Doc` | - |
 | **dsl** | `Y.Map<any>` | - |
@@ -10,22 +10,23 @@
 | **page** | `ReportPageCollectionBuilder<TQueryDSL, TSeedDSL>` | - |
 
 
-## Methods
+## Method
 
 ### constructor
 
 **Definition**:
 
 ```typescript
-constructor(doc: Y.Doc, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>)
+constructor(doc: Y.Doc, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>, resourceRegistry: VBIResourceRegistry<TQueryDSL, TSeedDSL>)
 ```
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `options` | VBIReportBuilderOptions<TQueryDSL, TSeedDSL> | - |
+| `doc` | `Y.Doc` | - |
+| `options` | `VBIReportBuilderOptions<TQueryDSL, TSeedDSL>` | - |
+| `resourceRegistry` | `VBIResourceRegistry<TQueryDSL, TSeedDSL>` | - |
 
 ### applyUpdate
 
@@ -35,13 +36,13 @@ constructor(doc: Y.Doc, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>)
 applyUpdate(update: Uint8Array, transactionOrigin: any): any
 ```
 
-**Returns**: `any`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `update` | Uint8Array | - |
+| `update` | `Uint8Array` | - |
 | `transactionOrigin` | any | - |
 
 ### encodeStateAsUpdate
@@ -52,13 +53,55 @@ applyUpdate(update: Uint8Array, transactionOrigin: any): any
 encodeStateAsUpdate(targetStateVector: Uint8Array): any
 ```
 
-**Returns**: `any`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `targetStateVector` | Uint8Array | - |
+| `targetStateVector` | `Uint8Array` | - |
+
+### getUUID
+
+**Definition**:
+
+```typescript
+getUUID(): string
+```
+
+**Return**: `() => void`
+
+### getChartBuilder
+
+**Definition**:
+
+```typescript
+getChartBuilder(chartId: string): VBIChartBuilder<TQueryDSL, TSeedDSL> | undefined
+```
+
+**Return**: `() => void`
+
+**Parameters**:
+
+| Parameters | Type | Description |
+| --- | --- | --- |
+| `chartId` | string | - |
+
+### getInsightBuilder
+
+**Definition**:
+
+```typescript
+getInsightBuilder(insightId: string): VBIInsightBuilder | undefined
+```
+
+**Return**: `() => void`
+
+**Parameters**:
+
+| Parameters | Type | Description |
+| --- | --- | --- |
+| `insightId` | string | - |
 
 ### build
 
@@ -68,7 +111,17 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): any
 build(): VBIReportDSL
 ```
 
-**Returns**: `VBIReportDSL`
+**Return**: `() => void`
+
+### snapshot
+
+**Definition**:
+
+```typescript
+snapshot(): VBIReportSnapshotDSL
+```
+
+**Return**: `() => void`
 
 ### isEmpty
 
@@ -78,4 +131,4 @@ build(): VBIReportDSL
 isEmpty(): boolean
 ```
 
-**Returns**: `boolean`
+**Return**: `() => void`

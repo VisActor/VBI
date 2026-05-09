@@ -1,13 +1,13 @@
 # Histogram
 
-:::info{title=编码映射}
+:::info{title="编码映射"}
 直方图支持以下视觉通道:
 
 `xAxis`  : x轴通道, 支持`一个维度`, 按维度值分箱计算后显示到x轴
 
 :::
 
-:::note{title=描述}
+:::note{title="描述"}
 直方图，适用于展示数据分布情况的场景，X轴为数值轴（连续数据），Y轴为数值轴（连续数据），柱子纵向排列
 
 适用场景:
@@ -25,7 +25,7 @@
 
 **Type:** `"histogram"`
 
-:::note{title=描述}
+:::note{title="描述"}
 直方图，适用于展示数据分布情况
 
 :::
@@ -35,37 +35,41 @@
 
 **Type:** `Record[]`
 
-:::note{title=描述}
+:::note{title="描述"}
 符合TidyData规范的且已经聚合的数据集，用于定义图表的数据来源和结构, 用户输入的数据集并不需要进行任何处理, VSeed带有强大的数据重塑功能, 会自行进行数据重塑, 柱状图的数据最终会被转换为2个维度, 1个指标.
 
 :::
 
 **示例**
+```ts
 [{category:'A', value:100}, {category:'B', value:200}]
 
 
 
 
+```
 ## dimensions
 
 **Type:** `HistogramDimension[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 直方图通常不需要维度
 
 :::
 
 **示例**
+```ts
 [{id: "category", alias: "类别"}]
 
 
 
 
+```
 ### id
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 维度对应的字段id
 
 :::
@@ -74,7 +78,7 @@
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 维度别名
 
 :::
@@ -83,7 +87,7 @@
 
 **Type:** `TimeFormat | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 维度时间格式化配置
 
 :::
@@ -93,7 +97,7 @@
 
 **Type:** `"year" | "quarter" | "month" | "week" | "day" | "hour" | "minute" | "second"`
 
-:::note{title=描述}
+:::note{title="描述"}
 时间粒度，决定日期展示精度
 
 :::
@@ -102,7 +106,7 @@
 
 **Type:** `"tooltip" | "label" | "row" | "column" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 维度映射的通道
 
 \- color: 支持将多个维度映射到颜色通道
@@ -124,22 +128,24 @@
 
 **Type:** `HistogramMeasure[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 直方图仅支持一个维度，并且数据为离散数据
 
 :::
 
 **示例**
+```ts
 [{id: "value", alias: "数值"}]
 
 
 
 
+```
 ### id
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 指标id, 不能重复
 
 :::
@@ -148,7 +154,7 @@
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 指标别名, 允许重复, 未填写时, alias 为 id
 
 :::
@@ -157,7 +163,7 @@
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 自动数值格式化，默认开启，优先级最高
 
 当 autoFormat=true 时，会覆盖 numFormat 的所有配置
@@ -178,7 +184,7 @@
 
 **Type:** `NumFormat | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 自定义指标的数值格式化，会自动应用于 label、tooltip
 
 注意：若要使用自定义格式化，必须显式设置 autoFormat=false，否则 autoFormat 会覆盖此配置
@@ -190,7 +196,7 @@
 
 **Type:** `"number" | "percent" | "permille" | "scientific" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数字格式化类型, 支持数值(十进制)、百分比(%)、千分比(‰)、科学计数法
 
 :::
@@ -199,37 +205,41 @@
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化比例, 不能为0
 
 :::
 
 **示例**
+```ts
 \- 100000 转换为 10万, ratio:10000, symbol:"万"
 \- 100000 转换为 10K, ratio:1000, symbol:"K"
 
 
 
+```
 #### symbol
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化符号, 例如%、‰
 
 :::
 
 **示例**
+```ts
 \- 100000 转换为 10万, ratio:10000, symbol:"万"
 \- 100000 转换为 10K, ratio:1000, symbol:"K"
 
 
 
+```
 #### thousandSeparator
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化千分位分隔符
 
 :::
@@ -238,7 +248,7 @@
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化后缀
 
 :::
@@ -247,7 +257,7 @@
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化前缀
 
 :::
@@ -256,12 +266,13 @@
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化小数位, 使用浏览器提供的 Intl.NumberFormat 中的 minimumFractionDigits 和 maximumFractionDigits 进行格式化, 优先级低于 significantDigits
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1235, fractionDigits:0 (roundingMode:halfCeil)
 \- 1234.5678 转换为 1234.6, fractionDigits:1 (roundingMode:halfCeil)
 \- 1234.5678 转换为 1234.57, fractionDigits:2 (roundingMode:halfCeil)
@@ -271,16 +282,18 @@
 
 
 
+```
 #### significantDigits
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化有效位, 使用浏览器提供的 Intl.NumberFormat 中的 minimumSignificantDigits 和 maximumSignificantDigits 进行格式化, 优先级高于 fractionDigits
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1000, significantDigits:1
 \- 1234.5678 转换为 1200, significantDigits:2
 \- 1234.5678 转换为 1230, significantDigits:3
@@ -292,26 +305,29 @@
 
 
 
+```
 #### roundingPriority
 
 **Type:** `"morePrecision" | "lessPrecision" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化舍入优先级, 处理同时设置了 significantDigits 和 fractionDigits 时的舍入优先级, 使用浏览器提供的 Intl.NumberFormat 进行格式化, 规则同 Intl.NumberFormat 中的 roundingPriority
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1230, significantDigits:3 (roundingPriority:lessPrecision)
 \- 1234.5678 转换为 1234.5678, significantDigits:3 (roundingPriority:morePrecision)
 
 
 
+```
 #### roundingMode
 
 **Type:** `"floor" | "ceil" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化舍入模式, 使用浏览器提供的 Intl.NumberFormat 进行格式化, 规则同 Intl.NumberFormat 中的 roundingMode
 
 :::
@@ -325,7 +341,7 @@
 
 **Type:** `"number" | "percent" | "permille" | "scientific" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数字格式化类型, 支持数值(十进制)、百分比(%)、千分比(‰)、科学计数法
 
 :::
@@ -334,37 +350,41 @@
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化比例, 不能为0
 
 :::
 
 **示例**
+```ts
 \- 100000 转换为 10万, ratio:10000, symbol:"万"
 \- 100000 转换为 10K, ratio:1000, symbol:"K"
 
 
 
+```
 #### symbol
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化符号, 例如%、‰
 
 :::
 
 **示例**
+```ts
 \- 100000 转换为 10万, ratio:10000, symbol:"万"
 \- 100000 转换为 10K, ratio:1000, symbol:"K"
 
 
 
+```
 #### thousandSeparator
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化千分位分隔符
 
 :::
@@ -373,7 +393,7 @@
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化后缀
 
 :::
@@ -382,7 +402,7 @@
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化前缀
 
 :::
@@ -391,12 +411,13 @@
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化小数位, 使用浏览器提供的 Intl.NumberFormat 中的 minimumFractionDigits 和 maximumFractionDigits 进行格式化, 优先级低于 significantDigits
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1235, fractionDigits:0 (roundingMode:halfCeil)
 \- 1234.5678 转换为 1234.6, fractionDigits:1 (roundingMode:halfCeil)
 \- 1234.5678 转换为 1234.57, fractionDigits:2 (roundingMode:halfCeil)
@@ -406,16 +427,18 @@
 
 
 
+```
 #### significantDigits
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化有效位, 使用浏览器提供的 Intl.NumberFormat 中的 minimumSignificantDigits 和 maximumSignificantDigits 进行格式化, 优先级高于 fractionDigits
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1000, significantDigits:1
 \- 1234.5678 转换为 1200, significantDigits:2
 \- 1234.5678 转换为 1230, significantDigits:3
@@ -427,26 +450,29 @@
 
 
 
+```
 #### roundingPriority
 
 **Type:** `"morePrecision" | "lessPrecision" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化舍入优先级, 处理同时设置了 significantDigits 和 fractionDigits 时的舍入优先级, 使用浏览器提供的 Intl.NumberFormat 进行格式化, 规则同 Intl.NumberFormat 中的 roundingPriority
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1230, significantDigits:3 (roundingPriority:lessPrecision)
 \- 1234.5678 转换为 1234.5678, significantDigits:3 (roundingPriority:morePrecision)
 
 
 
+```
 #### roundingMode
 
 **Type:** `"floor" | "ceil" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化舍入模式, 使用浏览器提供的 Intl.NumberFormat 进行格式化, 规则同 Intl.NumberFormat 中的 roundingMode
 
 :::
@@ -455,7 +481,7 @@
 
 **Type:** `"value" | "color" | "tooltip" | "label" | "x0" | "x1" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 指标映射的通道
 
 \- value: 直方图的值通道
@@ -476,12 +502,12 @@
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 以扁平的指标配置形式, 构建树形指标组, parentId指向父级指标组的id, 用于构建指标树
 
 :::
 
-:::tip{title=Tip}
+:::tip{title="Tip"}
 指标树的配置存在两种形式, 方式一是直接配置带children的指标树, 方式二是配置parentId的扁平指标列表, 两种方式不能同时配置
 
 :::
@@ -491,7 +517,7 @@
 
 **Type:** `Page | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 分页配置
 
 :::
@@ -501,7 +527,7 @@
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 分页字段, 用于指定分页的字段名, 必须是维度
 
 :::
@@ -510,22 +536,24 @@
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 当前分页值, 用于指定当前分页的依据值
 
 :::
 
 **示例**
+```ts
 '2023\-01\-01'
 
 
 
 
+```
 ## backgroundColor
 
 **Type:** `BackgroundColor`
 
-:::note{title=描述}
+:::note{title="描述"}
 图表的背景颜色, 背景颜色可以是颜色字符串, 默认为透明背景, 例如'red', 'blue', 也可以是hex, rgb或rgba'#ff0000', 'rgba(255,0,0,0.5)'
 
 :::
@@ -535,7 +563,7 @@
 
 **Type:** `Color | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 颜色配置, 用于定义图表的颜色方案, 包括颜色列表, 颜色映射, 颜色渐变等.
 
 :::
@@ -545,40 +573,45 @@
 
 **Type:** `string[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 离散颜色配色方案, 颜色配色方案用于定义图表中不同元素的颜色
 
 :::
 
 **示例**
+```ts
 ['#FFCDD2,#F8BBD0,#E1BEE7,#D1C4E9,#C5CAE9,#BBDEFB,#B3E5FC,#B2EBF2,#B2DFDB,#C8E6C9,#DCEDC8,#F0F4C3,#FFF9C4,#FFECB3,#FFE0B2']
 
 
 
+```
 ### linearColorScheme
 
 **Type:** `string[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 线性渐变颜色配色方案, 线性渐变颜色配色方案用于定义图表中不同元素的颜色
 
 :::
 
 **示例**
+```ts
 ['#FFCDD2, #F8BBD0]
 
 
 
+```
 ### colorMapping
 
 **Type:** `Record<string, string> | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 颜色映射, 颜色映射用于将数据值映射到具体的颜色
 
 :::
 
 **示例**
+```ts
 {
  'profit': 'red',
  'sales': 'blue',
@@ -586,11 +619,12 @@
 
 
 
+```
 ### positiveColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 正负颜色配置, 用于定义图表中正值的颜色
 
 :::
@@ -599,7 +633,7 @@
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 正负颜色配置, 用于定义图表中负值的颜色
 
 :::
@@ -609,7 +643,7 @@
 
 **Type:** `Label | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签配置, 用于定义图表的数据标签, 包括数据标签的位置, 格式, 样式等.
 
 :::
@@ -619,7 +653,7 @@
 
 **Type:** `false | true`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签功能是否开启
 
 :::
@@ -628,7 +662,7 @@
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签是否换行
 
 :::
@@ -637,7 +671,7 @@
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签是否显示指标值
 
 多指标的场景, 无需担心多个指标的值会矛盾, 因为所有的绘图相关的指标, 都会经过`foldMeasures`处理, 合并为一个指标, 代表一个数据点, 所以不会矛盾
@@ -650,7 +684,7 @@
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签是否显示指标值的百分比
 
 多指标的场景, 无需担心多个指标的值会矛盾, 因为所有的绘图相关的指标, 都会经过`foldMeasures`处理, 合并为一个指标, 代表一个数据点, 所以不会矛盾
@@ -663,7 +697,7 @@
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签是否显示维度标签
 
 展示所有维度标签
@@ -676,7 +710,7 @@
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签数值是否自动格式化, autoFormat 为 true 时, numFormat 配置失效
 
 :::
@@ -685,7 +719,7 @@
 
 **Type:** `NumFormat | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签数值格式化配置, 会和 `measure` 中的 `format` 进行合并, `measure` 中的 `format` 优先级更高. numFormat 优先级低于 autoFormat
 
 :::
@@ -695,7 +729,7 @@
 
 **Type:** `"number" | "percent" | "permille" | "scientific" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数字格式化类型, 支持数值(十进制)、百分比(%)、千分比(‰)、科学计数法
 
 :::
@@ -704,37 +738,41 @@
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化比例, 不能为0
 
 :::
 
 **示例**
+```ts
 \- 100000 转换为 10万, ratio:10000, symbol:"万"
 \- 100000 转换为 10K, ratio:1000, symbol:"K"
 
 
 
+```
 #### symbol
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化符号, 例如%、‰
 
 :::
 
 **示例**
+```ts
 \- 100000 转换为 10万, ratio:10000, symbol:"万"
 \- 100000 转换为 10K, ratio:1000, symbol:"K"
 
 
 
+```
 #### thousandSeparator
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化千分位分隔符
 
 :::
@@ -743,7 +781,7 @@
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化后缀
 
 :::
@@ -752,7 +790,7 @@
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化前缀
 
 :::
@@ -761,12 +799,13 @@
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化小数位, 使用浏览器提供的 Intl.NumberFormat 中的 minimumFractionDigits 和 maximumFractionDigits 进行格式化, 优先级低于 significantDigits
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1235, fractionDigits:0 (roundingMode:halfCeil)
 \- 1234.5678 转换为 1234.6, fractionDigits:1 (roundingMode:halfCeil)
 \- 1234.5678 转换为 1234.57, fractionDigits:2 (roundingMode:halfCeil)
@@ -776,16 +815,18 @@
 
 
 
+```
 #### significantDigits
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化有效位, 使用浏览器提供的 Intl.NumberFormat 中的 minimumSignificantDigits 和 maximumSignificantDigits 进行格式化, 优先级高于 fractionDigits
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1000, significantDigits:1
 \- 1234.5678 转换为 1200, significantDigits:2
 \- 1234.5678 转换为 1230, significantDigits:3
@@ -797,26 +838,29 @@
 
 
 
+```
 #### roundingPriority
 
 **Type:** `"morePrecision" | "lessPrecision" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化舍入优先级, 处理同时设置了 significantDigits 和 fractionDigits 时的舍入优先级, 使用浏览器提供的 Intl.NumberFormat 进行格式化, 规则同 Intl.NumberFormat 中的 roundingPriority
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1230, significantDigits:3 (roundingPriority:lessPrecision)
 \- 1234.5678 转换为 1234.5678, significantDigits:3 (roundingPriority:morePrecision)
 
 
 
+```
 #### roundingMode
 
 **Type:** `"floor" | "ceil" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化舍入模式, 使用浏览器提供的 Intl.NumberFormat 进行格式化, 规则同 Intl.NumberFormat 中的 roundingMode
 
 :::
@@ -825,7 +869,7 @@
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签字体大小
 
 :::
@@ -834,7 +878,7 @@
 
 **Type:** `string | number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签字体粗细
 
 :::
@@ -843,7 +887,7 @@
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签背景色
 
 :::
@@ -852,7 +896,7 @@
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签描边颜色
 
 :::
@@ -861,7 +905,7 @@
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签字体颜色
 
 :::
@@ -870,7 +914,7 @@
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签是否自动根据图元颜色进行字体颜色的反转
 
 :::
@@ -879,7 +923,7 @@
 
 **Type:** `"inside" | "outside" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签位置
 
 :::
@@ -888,7 +932,7 @@
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签防重叠功能是否启用
 
 :::
@@ -897,7 +941,7 @@
 
 **Type:** `Selector | Selectors | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签筛选，默认selectors之间条件关系为Or
 
 :::
@@ -907,7 +951,7 @@
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 维度字段, dimensions 某一项的 id
 
 :::
@@ -916,7 +960,7 @@
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 操作符
 
 \- in: 选择数据项中维度字段的值在 value 中的数据项
@@ -929,7 +973,7 @@
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 操作符
 
 \- in: 选择数据项中维度字段的值在 value 中的数据项
@@ -944,7 +988,7 @@ same as operator
 
 **Type:** `string | number | (string | number)[]`
 
-:::note{title=描述}
+:::note{title="描述"}
 选择数据项中维度字段的值, 支持数组
 
 :::
@@ -953,7 +997,7 @@ same as operator
 
 **Type:** `ChartDynamicFilter | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 动态筛选器（AI生成代码执行）
 
 
@@ -997,23 +1041,25 @@ same as operator
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 用户的筛选需求描述（自然语言）
 
 :::
 
 **示例**
+```ts
 "高亮销售额大于1000的柱子"
 
 "高亮每个区域中利润率最高的柱子"
 
 
 
+```
 #### code
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 AI 生成的 JavaScript 筛选代码
 
 
@@ -1022,7 +1068,7 @@ AI 生成的 JavaScript 筛选代码
 
 \- 输入参数: data (数组)，每个 item 包含 __row_index 字段表示行号
 
-\- 必须返回行索引与字段组合的数组: Array<{ __row_index: number, field: string }>
+\- 必须返回行索引与字段组合的数组: ``Array<{ __row_index: number, field: string }>``
 
 \- __row_index 表示原始数据项的行号，field 表示需要高亮的字段
 
@@ -1031,6 +1077,7 @@ AI 生成的 JavaScript 筛选代码
 :::
 
 **示例**
+```ts
 高亮销售额大于1000的数据项的 sales 字段
 ```javascript
 const filtered = _.filter(data, item => item.sales > 1000);
@@ -1070,11 +1117,12 @@ _.map(filtered, item => [
 
 
 
+```
 #### fallback
 
 **Type:** `Selector | Selectors | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 代码执行失败或环境不支持时的降级方案
 
 :::
@@ -1084,7 +1132,7 @@ _.map(filtered, item => [
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 维度字段, dimensions 某一项的 id
 
 :::
@@ -1093,7 +1141,7 @@ _.map(filtered, item => [
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 操作符
 
 \- in: 选择数据项中维度字段的值在 value 中的数据项
@@ -1106,7 +1154,7 @@ _.map(filtered, item => [
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 操作符
 
 \- in: 选择数据项中维度字段的值在 value 中的数据项
@@ -1121,7 +1169,7 @@ same as operator
 
 **Type:** `string | number | (string | number)[]`
 
-:::note{title=描述}
+:::note{title="描述"}
 选择数据项中维度字段的值, 支持数组
 
 :::
@@ -1130,12 +1178,12 @@ same as operator
 
 **Type:** `DynamicFilterExecutionResult<RowWithFieldRes> | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 动态筛选执行结果（运行期字段）
 
 
 
-prepare() 阶段写入，运行时只读
+`prepare() 阶段写入，运行时只读`
 
 :::
 
@@ -1157,7 +1205,7 @@ prepare() 阶段写入，运行时只读
 
 **Type:** `Legend | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 图例配置, 用于定义图表的图例, 包括图例的位置, 格式, 样式等.
 
 :::
@@ -1167,40 +1215,44 @@ prepare() 阶段写入，运行时只读
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 图例功能是否开启
 
 :::
 
 **示例**
+```ts
 enable: true
 
 
 
+```
 ### border
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 图例边框是否开启
 
 :::
 
-:::warning{title=Warning}
+:::warning{title="Warning"}
 仅离散图例生效
 
 :::
 
 **示例**
+```ts
 border: true
 
 
 
+```
 ### labelColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 图例字体颜色
 
 :::
@@ -1209,7 +1261,7 @@ border: true
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 分页器icon颜色
 
 :::
@@ -1218,7 +1270,7 @@ border: true
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 分页器icon置灰颜色
 
 :::
@@ -1227,21 +1279,23 @@ border: true
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 图例字体大小
 
 :::
 
 **示例**
+```ts
 labelFontSize: 10
 
 
 
+```
 ### labelFontColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 图例字体颜色
 
 :::
@@ -1250,54 +1304,60 @@ labelFontSize: 10
 
 **Type:** `string | number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 图例字体粗细
 
 :::
 
 **示例**
+```ts
 labelFontWeight: 400
 
 
 
+```
 ### shapeType
 
 **Type:** `"circle" | "cross" | "diamond" | "square" | "arrow" | "arrow2Left" | "arrow2Right" | "wedge" | "thinTriangle" | "triangle" | "triangleUp" | "triangleDown" | "triangleRight" | "triangleLeft" | "stroke" | "star" | "wye" | "rect" | "arrowLeft" | "arrowRight" | "rectRound" | "roundLine" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 图例形状
 
 :::
 
-:::warning{title=Warning}
+:::warning{title="Warning"}
 仅离散图例生效
 
 :::
 
 **示例**
+```ts
 shapeType: 'circle'
 
 
 
+```
 ### position
 
 **Type:** `"left" | "leftTop" | "leftBottom" | "lt" | "lb" | "top" | "topLeft" | "topRight" | "tl" | "tr" | "right" | "rightTop" | "rightBottom" | "rt" | "rb" | "bottom" | "bottomLeft" | "bottomRight" | "bl" | "br" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 图例位置
 
 :::
 
 **示例**
+```ts
 position: 'rightTop'
 
 
 
+```
 ### maxSize
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 存在大量图例时, 最大列数 或 图例最大行数
 
 如果position为水平方向(bottom, bottomLeft, bottomRight, bl, br, top, topLeft, topRight, tl, tr), maxSize控制显示的列数
@@ -1306,22 +1366,24 @@ position: 'rightTop'
 
 :::
 
-:::warning{title=Warning}
+:::warning{title="Warning"}
 仅离散图例生效
 
 :::
 
 **示例**
+```ts
 maxSize: 2
 
 
 
 
+```
 ## tooltip
 
 **Type:** `Tooltip | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 提示信息配置, 用于定义图表的提示信息, 包括提示信息的位置, 格式, 样式等.
 
 :::
@@ -1331,7 +1393,7 @@ maxSize: 2
 
 **Type:** `false | true`
 
-:::note{title=描述}
+:::note{title="描述"}
 提示信息功能是否开启
 
 :::
@@ -1341,7 +1403,7 @@ maxSize: 2
 
 **Type:** `Brush | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 框选
 
 
@@ -1359,7 +1421,7 @@ maxSize: 2
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否开启brush框选
 
 :::
@@ -1368,7 +1430,7 @@ maxSize: 2
 
 **Type:** `"rect" | "x" | "y" | "polygon" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 brush的类型
 
 
@@ -1389,7 +1451,7 @@ brush的类型
 
 **Type:** `"single" | "multiple" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 框选模式，单选还是多选
 
 
@@ -1406,7 +1468,7 @@ brush的类型
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 框选结束是否清除选框
 
 :::
@@ -1415,7 +1477,7 @@ brush的类型
 
 **Type:** `{ opacity?: number; stroke?: string; lineWidth?: number; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 被框选中的数据样式
 
 
@@ -1429,7 +1491,7 @@ brush的类型
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 不透明度
 
 
@@ -1442,7 +1504,7 @@ brush的类型
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 描边颜色
 
 :::
@@ -1451,7 +1513,7 @@ brush的类型
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 描边宽度
 
 :::
@@ -1460,7 +1522,7 @@ brush的类型
 
 **Type:** `{ opacity?: number; stroke?: string; lineWidth?: number; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 未被框选中的数据样式
 
 
@@ -1474,7 +1536,7 @@ brush的类型
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 不透明度
 
 
@@ -1487,7 +1549,7 @@ brush的类型
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 描边颜色
 
 :::
@@ -1496,7 +1558,7 @@ brush的类型
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 描边宽度
 
 :::
@@ -1506,7 +1568,7 @@ brush的类型
 
 **Type:** `XLinearAxis | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格式, 样式等.
 
 :::
@@ -1516,7 +1578,7 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 轴是否可见
 
 :::
@@ -1525,7 +1587,7 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 轴的最小值, 优先级高于 nice 与 zero
 
 :::
@@ -1534,7 +1596,7 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `number | boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 轴的最大值, 优先级高于 nice 与 zero, 如果为true, 则自动根据数据范围计算最大值
 
 :::
@@ -1543,7 +1605,7 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否使用对数轴, 仅对数值轴生效
 
 :::
@@ -1552,7 +1614,7 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 对数轴的底数, 仅对数值轴生效
 
 :::
@@ -1561,7 +1623,7 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否自动调整轴的刻度间隔，使刻度标签更易读, 当配置了 min 和 max, 该配置项失效, 仅对数值轴生效
 
 :::
@@ -1570,7 +1632,7 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 轴是否反向展示, 仅对数值轴生效
 
 :::
@@ -1579,7 +1641,7 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否在坐标轴上强制显示 0 值, 当配置了 min 和 max, 该配置项失效, 仅对数值轴生效
 
 :::
@@ -1588,7 +1650,7 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否自动格式化数值轴的刻度标签, 仅对数值轴生效, autoFormat 为 true 时, numFormat 配置失效
 
 :::
@@ -1597,7 +1659,7 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `NumFormat | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值轴的数字格式化, 仅对数值轴生效, 优先级低于 autoFormat
 
 :::
@@ -1607,7 +1669,7 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `"number" | "percent" | "permille" | "scientific" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数字格式化类型, 支持数值(十进制)、百分比(%)、千分比(‰)、科学计数法
 
 :::
@@ -1616,37 +1678,41 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化比例, 不能为0
 
 :::
 
 **示例**
+```ts
 \- 100000 转换为 10万, ratio:10000, symbol:"万"
 \- 100000 转换为 10K, ratio:1000, symbol:"K"
 
 
 
+```
 #### symbol
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化符号, 例如%、‰
 
 :::
 
 **示例**
+```ts
 \- 100000 转换为 10万, ratio:10000, symbol:"万"
 \- 100000 转换为 10K, ratio:1000, symbol:"K"
 
 
 
+```
 #### thousandSeparator
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化千分位分隔符
 
 :::
@@ -1655,7 +1721,7 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化后缀
 
 :::
@@ -1664,7 +1730,7 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化前缀
 
 :::
@@ -1673,12 +1739,13 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化小数位, 使用浏览器提供的 Intl.NumberFormat 中的 minimumFractionDigits 和 maximumFractionDigits 进行格式化, 优先级低于 significantDigits
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1235, fractionDigits:0 (roundingMode:halfCeil)
 \- 1234.5678 转换为 1234.6, fractionDigits:1 (roundingMode:halfCeil)
 \- 1234.5678 转换为 1234.57, fractionDigits:2 (roundingMode:halfCeil)
@@ -1688,16 +1755,18 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 
 
+```
 #### significantDigits
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化有效位, 使用浏览器提供的 Intl.NumberFormat 中的 minimumSignificantDigits 和 maximumSignificantDigits 进行格式化, 优先级高于 fractionDigits
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1000, significantDigits:1
 \- 1234.5678 转换为 1200, significantDigits:2
 \- 1234.5678 转换为 1230, significantDigits:3
@@ -1709,26 +1778,29 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 
 
+```
 #### roundingPriority
 
 **Type:** `"morePrecision" | "lessPrecision" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化舍入优先级, 处理同时设置了 significantDigits 和 fractionDigits 时的舍入优先级, 使用浏览器提供的 Intl.NumberFormat 进行格式化, 规则同 Intl.NumberFormat 中的 roundingPriority
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1230, significantDigits:3 (roundingPriority:lessPrecision)
 \- 1234.5678 转换为 1234.5678, significantDigits:3 (roundingPriority:morePrecision)
 
 
 
+```
 #### roundingMode
 
 **Type:** `"floor" | "ceil" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化舍入模式, 使用浏览器提供的 Intl.NumberFormat 进行格式化, 规则同 Intl.NumberFormat 中的 roundingMode
 
 :::
@@ -1737,7 +1809,7 @@ x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格
 
 **Type:** `{ visible?: boolean; labelColor?: string; labelFontSize?: number; labelFontWeight?: number; labelAngle?: number; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 X轴刻度标签
 
 :::
@@ -1747,7 +1819,7 @@ X轴刻度标签
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签是否可见
 
 :::
@@ -1756,7 +1828,7 @@ X轴刻度标签
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签颜色
 
 :::
@@ -1765,7 +1837,7 @@ X轴刻度标签
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签字体大小
 
 :::
@@ -1774,7 +1846,7 @@ X轴刻度标签
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签字体粗细
 
 :::
@@ -1783,7 +1855,7 @@ X轴刻度标签
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签旋转角度
 
 :::
@@ -1792,7 +1864,7 @@ X轴刻度标签
 
 **Type:** `{ visible?: boolean; lineColor?: string; lineWidth?: number; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 X轴线
 
 :::
@@ -1802,7 +1874,7 @@ X轴线
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 轴线是否可见
 
 :::
@@ -1811,7 +1883,7 @@ X轴线
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 轴线颜色
 
 :::
@@ -1820,7 +1892,7 @@ X轴线
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 轴线宽度
 
 :::
@@ -1829,7 +1901,7 @@ X轴线
 
 **Type:** `{ visible?: boolean; tickInside?: boolean; tickColor?: string; tickSize?: number; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 X轴刻度
 
 :::
@@ -1839,7 +1911,7 @@ X轴刻度
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 刻度是否可见
 
 :::
@@ -1848,7 +1920,7 @@ X轴刻度
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 刻度是否朝内
 
 :::
@@ -1857,7 +1929,7 @@ X轴刻度
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 刻度颜色
 
 :::
@@ -1866,7 +1938,7 @@ X轴刻度
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 刻度尺寸
 
 :::
@@ -1875,7 +1947,7 @@ X轴刻度
 
 **Type:** `{ visible?: boolean; titleText?: string; titleColor?: string; titleFontSize?: number; titleFontWeight?: number; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 X轴标题
 
 :::
@@ -1885,7 +1957,7 @@ X轴标题
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标题是否可见
 
 :::
@@ -1894,7 +1966,7 @@ X轴标题
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标题文本, 默认跟随字段配置
 
 :::
@@ -1903,7 +1975,7 @@ X轴标题
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标题颜色
 
 :::
@@ -1912,7 +1984,7 @@ X轴标题
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标题字体大小
 
 :::
@@ -1921,7 +1993,7 @@ X轴标题
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标题字体粗细
 
 :::
@@ -1930,7 +2002,7 @@ X轴标题
 
 **Type:** `{ visible?: boolean; gridColor?: string; gridWidth?: number; gridLineDash?: number[]; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 X轴网格线
 
 :::
@@ -1944,7 +2016,7 @@ X轴网格线
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 网格线颜色
 
 :::
@@ -1953,7 +2025,7 @@ X轴网格线
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 网格线宽度
 
 :::
@@ -1962,7 +2034,7 @@ X轴网格线
 
 **Type:** `number[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 网格线类型
 
 :::
@@ -1971,7 +2043,7 @@ X轴网格线
 
 **Type:** `{ duration?: number; easing?: string; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 Y轴动画配置
 
 :::
@@ -1981,7 +2053,7 @@ Y轴动画配置
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 动画时长
 
 :::
@@ -1990,7 +2062,7 @@ Y轴动画配置
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 动画 easing 函数
 
 :::
@@ -2000,7 +2072,7 @@ Y轴动画配置
 
 **Type:** `YLinearAxis | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格式, 样式等.
 
 :::
@@ -2010,7 +2082,7 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 轴是否可见
 
 :::
@@ -2019,7 +2091,7 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 轴的最小值, 优先级高于 nice 与 zero
 
 :::
@@ -2028,7 +2100,7 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `number | boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 轴的最大值, 优先级高于 nice 与 zero, 如果为true, 则自动根据数据范围计算最大值
 
 :::
@@ -2037,7 +2109,7 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否使用对数轴, 仅对数值轴生效
 
 :::
@@ -2046,7 +2118,7 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 对数轴的底数, 仅对数值轴生效
 
 :::
@@ -2055,7 +2127,7 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否自动调整轴的刻度间隔，使刻度标签更易读, 当配置了 min 和 max, 该配置项失效, 仅对数值轴生效
 
 :::
@@ -2064,7 +2136,7 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 轴是否反向展示, 仅对数值轴生效
 
 :::
@@ -2073,7 +2145,7 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否在坐标轴上强制显示 0 值, 当配置了 min 和 max, 该配置项失效, 仅对数值轴生效
 
 :::
@@ -2082,7 +2154,7 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否自动格式化数值轴的刻度标签, 仅对数值轴生效, autoFormat 为 true 时, numFormat 配置失效
 
 :::
@@ -2091,7 +2163,7 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `NumFormat | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值轴的数字格式化, 仅对数值轴生效, 优先级低于 autoFormat
 
 :::
@@ -2101,7 +2173,7 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `"number" | "percent" | "permille" | "scientific" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数字格式化类型, 支持数值(十进制)、百分比(%)、千分比(‰)、科学计数法
 
 :::
@@ -2110,37 +2182,41 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化比例, 不能为0
 
 :::
 
 **示例**
+```ts
 \- 100000 转换为 10万, ratio:10000, symbol:"万"
 \- 100000 转换为 10K, ratio:1000, symbol:"K"
 
 
 
+```
 #### symbol
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化符号, 例如%、‰
 
 :::
 
 **示例**
+```ts
 \- 100000 转换为 10万, ratio:10000, symbol:"万"
 \- 100000 转换为 10K, ratio:1000, symbol:"K"
 
 
 
+```
 #### thousandSeparator
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化千分位分隔符
 
 :::
@@ -2149,7 +2225,7 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化后缀
 
 :::
@@ -2158,7 +2234,7 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化前缀
 
 :::
@@ -2167,12 +2243,13 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化小数位, 使用浏览器提供的 Intl.NumberFormat 中的 minimumFractionDigits 和 maximumFractionDigits 进行格式化, 优先级低于 significantDigits
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1235, fractionDigits:0 (roundingMode:halfCeil)
 \- 1234.5678 转换为 1234.6, fractionDigits:1 (roundingMode:halfCeil)
 \- 1234.5678 转换为 1234.57, fractionDigits:2 (roundingMode:halfCeil)
@@ -2182,16 +2259,18 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 
 
+```
 #### significantDigits
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化有效位, 使用浏览器提供的 Intl.NumberFormat 中的 minimumSignificantDigits 和 maximumSignificantDigits 进行格式化, 优先级高于 fractionDigits
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1000, significantDigits:1
 \- 1234.5678 转换为 1200, significantDigits:2
 \- 1234.5678 转换为 1230, significantDigits:3
@@ -2203,26 +2282,29 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 
 
+```
 #### roundingPriority
 
 **Type:** `"morePrecision" | "lessPrecision" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化舍入优先级, 处理同时设置了 significantDigits 和 fractionDigits 时的舍入优先级, 使用浏览器提供的 Intl.NumberFormat 进行格式化, 规则同 Intl.NumberFormat 中的 roundingPriority
 
 :::
 
 **示例**
+```ts
 \- 1234.5678 转换为 1230, significantDigits:3 (roundingPriority:lessPrecision)
 \- 1234.5678 转换为 1234.5678, significantDigits:3 (roundingPriority:morePrecision)
 
 
 
+```
 #### roundingMode
 
 **Type:** `"floor" | "ceil" | "expand" | "trunc" | "halfCeil" | "halfFloor" | "halfExpand" | "halfTrunc" | "halfEven" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值格式化舍入模式, 使用浏览器提供的 Intl.NumberFormat 进行格式化, 规则同 Intl.NumberFormat 中的 roundingMode
 
 :::
@@ -2231,7 +2313,7 @@ y轴, 数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格
 
 **Type:** `{ visible?: boolean; labelColor?: string; labelFontSize?: number; labelFontWeight?: number; labelAngle?: number; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 X轴刻度标签
 
 :::
@@ -2241,7 +2323,7 @@ X轴刻度标签
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签是否可见
 
 :::
@@ -2250,7 +2332,7 @@ X轴刻度标签
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签颜色
 
 :::
@@ -2259,7 +2341,7 @@ X轴刻度标签
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签字体大小
 
 :::
@@ -2268,7 +2350,7 @@ X轴刻度标签
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签字体粗细
 
 :::
@@ -2277,7 +2359,7 @@ X轴刻度标签
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标签旋转角度
 
 :::
@@ -2286,7 +2368,7 @@ X轴刻度标签
 
 **Type:** `{ visible?: boolean; lineColor?: string; lineWidth?: number; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 X轴线
 
 :::
@@ -2296,7 +2378,7 @@ X轴线
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 轴线是否可见
 
 :::
@@ -2305,7 +2387,7 @@ X轴线
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 轴线颜色
 
 :::
@@ -2314,7 +2396,7 @@ X轴线
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 轴线宽度
 
 :::
@@ -2323,7 +2405,7 @@ X轴线
 
 **Type:** `{ visible?: boolean; tickInside?: boolean; tickColor?: string; tickSize?: number; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 X轴刻度
 
 :::
@@ -2333,7 +2415,7 @@ X轴刻度
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 刻度是否可见
 
 :::
@@ -2342,7 +2424,7 @@ X轴刻度
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 刻度是否朝内
 
 :::
@@ -2351,7 +2433,7 @@ X轴刻度
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 刻度颜色
 
 :::
@@ -2360,7 +2442,7 @@ X轴刻度
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 刻度尺寸
 
 :::
@@ -2369,7 +2451,7 @@ X轴刻度
 
 **Type:** `{ visible?: boolean; titleText?: string; titleColor?: string; titleFontSize?: number; titleFontWeight?: number; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 X轴标题
 
 :::
@@ -2379,7 +2461,7 @@ X轴标题
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标题是否可见
 
 :::
@@ -2388,7 +2470,7 @@ X轴标题
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标题文本, 默认跟随字段配置
 
 :::
@@ -2397,7 +2479,7 @@ X轴标题
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标题颜色
 
 :::
@@ -2406,7 +2488,7 @@ X轴标题
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标题字体大小
 
 :::
@@ -2415,7 +2497,7 @@ X轴标题
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标题字体粗细
 
 :::
@@ -2424,7 +2506,7 @@ X轴标题
 
 **Type:** `{ visible?: boolean; gridColor?: string; gridWidth?: number; gridLineDash?: number[]; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 X轴网格线
 
 :::
@@ -2438,7 +2520,7 @@ X轴网格线
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 网格线颜色
 
 :::
@@ -2447,7 +2529,7 @@ X轴网格线
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 网格线宽度
 
 :::
@@ -2456,7 +2538,7 @@ X轴网格线
 
 **Type:** `number[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 网格线类型
 
 :::
@@ -2465,7 +2547,7 @@ X轴网格线
 
 **Type:** `{ duration?: number; easing?: string; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 Y轴动画配置
 
 :::
@@ -2475,7 +2557,7 @@ Y轴动画配置
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 动画时长
 
 :::
@@ -2484,7 +2566,7 @@ Y轴动画配置
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 动画 easing 函数
 
 :::
@@ -2494,7 +2576,7 @@ Y轴动画配置
 
 **Type:** `CrosshairRect | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 垂直提示框配置, 用于定义图表的垂直提示框, 包括垂直提示框的颜色、标签样式等.
 
 
@@ -2508,7 +2590,7 @@ Y轴动画配置
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否显示十字准星线矩形区域
 
 :::
@@ -2517,7 +2599,7 @@ Y轴动画配置
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 十字准星线矩形区域颜色
 
 :::
@@ -2526,7 +2608,7 @@ Y轴动画配置
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 十字准星线矩形区域标签颜色
 
 :::
@@ -2535,7 +2617,7 @@ Y轴动画配置
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否显示十字准星线矩形区域标签
 
 :::
@@ -2544,7 +2626,7 @@ Y轴动画配置
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 十字准星线矩形区域标签背景颜色
 
 :::
@@ -2554,7 +2636,7 @@ Y轴动画配置
 
 **Type:** `number | number[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 柱状图 堆叠圆角
 
 :::
@@ -2564,7 +2646,7 @@ Y轴动画配置
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 直方图分箱数量, 用于定义直方图的分箱矩形（柱子）的数量
 
 :::
@@ -2574,7 +2656,7 @@ Y轴动画配置
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 分箱步长，用于计算分箱的宽度，也会影响最终直方图中矩形（柱子）的宽度。如果同时设置了 binCount 和 binStep，则以 binStep 为准
 
 :::
@@ -2584,7 +2666,7 @@ Y轴动画配置
 
 **Type:** `"count" | "percentage" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 直方图分箱值类型, 用于定义直方图的分箱矩形（柱子）值类型, 默认为'count'
 
 :::
@@ -2594,7 +2676,7 @@ Y轴动画配置
 
 **Type:** `Theme | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 图表的主题, 主题是优先级较低的功能配置, 包含所有图表类型共用的通用配置, 与单类图表类型共用的图表配置, 内置light与dark两种主题, 用户可以通过Builder自定义主题
 
 
@@ -2608,6 +2690,7 @@ Y轴动画配置
 :::
 
 **示例**
+```ts
 'dark'
 
 'light'
@@ -2617,6 +2700,7 @@ Y轴动画配置
 
 
 
+```
 ### length
 
 **Type:** `number`
@@ -2630,7 +2714,7 @@ Y轴动画配置
 
 **Type:** `BarStyle | BarStyle[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 矩形图元样式, 柱状图样式配置, 用于定义图表的柱状图样式, 包括柱状图的颜色, 边框, 圆角等.
 
 支持全局样式或条件样式配置
@@ -2648,7 +2732,7 @@ Y轴动画配置
 
 **Type:** `Selector | Selectors | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数据选择器
 
 
@@ -2660,6 +2744,7 @@ Y轴动画配置
 :::
 
 **示例**
+```ts
 数值选择器
 selector = "tool"
 selector = ["tool", "book"]
@@ -2697,11 +2782,12 @@ value: [100, 300]
 
 
 
+```
 #### field
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 维度字段, dimensions 某一项的 id
 
 :::
@@ -2710,7 +2796,7 @@ value: [100, 300]
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 操作符
 
 \- in: 选择数据项中维度字段的值在 value 中的数据项
@@ -2723,7 +2809,7 @@ value: [100, 300]
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 操作符
 
 \- in: 选择数据项中维度字段的值在 value 中的数据项
@@ -2738,7 +2824,7 @@ same as operator
 
 **Type:** `string | number | (string | number)[]`
 
-:::note{title=描述}
+:::note{title="描述"}
 选择数据项中维度字段的值, 支持数组
 
 :::
@@ -2747,7 +2833,7 @@ same as operator
 
 **Type:** `ChartDynamicFilter | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 动态筛选器（AI生成代码执行）
 
 
@@ -2793,23 +2879,25 @@ same as operator
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 用户的筛选需求描述（自然语言）
 
 :::
 
 **示例**
+```ts
 "高亮销售额大于1000的柱子"
 
 "高亮每个区域中利润率最高的柱子"
 
 
 
+```
 #### code
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 AI 生成的 JavaScript 筛选代码
 
 
@@ -2818,7 +2906,7 @@ AI 生成的 JavaScript 筛选代码
 
 \- 输入参数: data (数组)，每个 item 包含 __row_index 字段表示行号
 
-\- 必须返回行索引与字段组合的数组: Array<{ __row_index: number, field: string }>
+\- 必须返回行索引与字段组合的数组: ``Array<{ __row_index: number, field: string }>``
 
 \- __row_index 表示原始数据项的行号，field 表示需要高亮的字段
 
@@ -2827,6 +2915,7 @@ AI 生成的 JavaScript 筛选代码
 :::
 
 **示例**
+```ts
 高亮销售额大于1000的数据项的 sales 字段
 ```javascript
 const filtered = _.filter(data, item => item.sales > 1000);
@@ -2866,11 +2955,12 @@ _.map(filtered, item => [
 
 
 
+```
 #### fallback
 
 **Type:** `Selector | Selectors | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 代码执行失败或环境不支持时的降级方案
 
 :::
@@ -2880,7 +2970,7 @@ _.map(filtered, item => [
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 维度字段, dimensions 某一项的 id
 
 :::
@@ -2889,7 +2979,7 @@ _.map(filtered, item => [
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 操作符
 
 \- in: 选择数据项中维度字段的值在 value 中的数据项
@@ -2902,7 +2992,7 @@ _.map(filtered, item => [
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 操作符
 
 \- in: 选择数据项中维度字段的值在 value 中的数据项
@@ -2917,7 +3007,7 @@ same as operator
 
 **Type:** `string | number | (string | number)[]`
 
-:::note{title=描述}
+:::note{title="描述"}
 选择数据项中维度字段的值, 支持数组
 
 :::
@@ -2926,12 +3016,12 @@ same as operator
 
 **Type:** `DynamicFilterExecutionResult<RowWithFieldRes> | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 动态筛选执行结果（运行期字段）
 
 
 
-prepare() 阶段写入，运行时只读
+`prepare() 阶段写入，运行时只读`
 
 :::
 
@@ -2952,7 +3042,7 @@ prepare() 阶段写入，运行时只读
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 柱图元(矩形图元)是否可见
 
 :::
@@ -2961,7 +3051,7 @@ prepare() 阶段写入，运行时只读
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 柱图元(矩形图元)颜色
 
 :::
@@ -2970,7 +3060,7 @@ prepare() 阶段写入，运行时只读
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 柱图元(矩形图元)颜色透明度
 
 :::
@@ -2979,7 +3069,7 @@ prepare() 阶段写入，运行时只读
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 柱图元(矩形图元)边框颜色
 
 :::
@@ -2988,7 +3078,7 @@ prepare() 阶段写入，运行时只读
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 柱图元(矩形图元)边框宽度
 
 :::
@@ -2997,12 +3087,13 @@ prepare() 阶段写入，运行时只读
 
 **Type:** `"solid" | "dashed" | "dotted" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 柱图元(矩形图元)边框样式
 
 :::
 
 **示例**
+```ts
 solid
 
 dashed
@@ -3011,11 +3102,12 @@ dotted
 
 
 
+```
 ### barBorderOpacity
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 柱图元(矩形图元)圆角
 
 
@@ -3025,12 +3117,14 @@ dotted
 :::
 
 **示例**
+```ts
 4
 
 [0, 0, 10, 10]
 
 
 
+```
 ### barRadius
 
 **Type:** `number | number[] | undefined`
@@ -3040,7 +3134,7 @@ dotted
 
 **Type:** `AnnotationPoint | AnnotationPoint[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注点配置, 根据选择的数据, 定义图表的标注点, 包括标注点的位置, 格式, 样式等.
 
 :::
@@ -3050,7 +3144,7 @@ dotted
 
 **Type:** `Selector | Selectors | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注点的选择器, 用于选择数据点.
 
 :::
@@ -3060,7 +3154,7 @@ dotted
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 维度字段, dimensions 某一项的 id
 
 :::
@@ -3069,7 +3163,7 @@ dotted
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 操作符
 
 \- in: 选择数据项中维度字段的值在 value 中的数据项
@@ -3082,7 +3176,7 @@ dotted
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 操作符
 
 \- in: 选择数据项中维度字段的值在 value 中的数据项
@@ -3097,7 +3191,7 @@ same as operator
 
 **Type:** `string | number | (string | number)[]`
 
-:::note{title=描述}
+:::note{title="描述"}
 选择数据项中维度字段的值, 支持数组
 
 :::
@@ -3106,7 +3200,7 @@ same as operator
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 指定标注点所属的指标 id。在多 measure 场景下，可与 selector 组合以唯一定位目标指标对应的标注点。
 
 :::
@@ -3115,7 +3209,7 @@ same as operator
 
 **Type:** `ChartDynamicFilter | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 动态筛选器（AI生成代码执行）
 
 
@@ -3161,23 +3255,25 @@ same as operator
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 用户的筛选需求描述（自然语言）
 
 :::
 
 **示例**
+```ts
 "高亮销售额大于1000的柱子"
 
 "高亮每个区域中利润率最高的柱子"
 
 
 
+```
 #### code
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 AI 生成的 JavaScript 筛选代码
 
 
@@ -3186,7 +3282,7 @@ AI 生成的 JavaScript 筛选代码
 
 \- 输入参数: data (数组)，每个 item 包含 __row_index 字段表示行号
 
-\- 必须返回行索引与字段组合的数组: Array<{ __row_index: number, field: string }>
+\- 必须返回行索引与字段组合的数组: ``Array<{ __row_index: number, field: string }>``
 
 \- __row_index 表示原始数据项的行号，field 表示需要高亮的字段
 
@@ -3195,6 +3291,7 @@ AI 生成的 JavaScript 筛选代码
 :::
 
 **示例**
+```ts
 高亮销售额大于1000的数据项的 sales 字段
 ```javascript
 const filtered = _.filter(data, item => item.sales > 1000);
@@ -3234,11 +3331,12 @@ _.map(filtered, item => [
 
 
 
+```
 #### fallback
 
 **Type:** `Selector | Selectors | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 代码执行失败或环境不支持时的降级方案
 
 :::
@@ -3248,7 +3346,7 @@ _.map(filtered, item => [
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 维度字段, dimensions 某一项的 id
 
 :::
@@ -3257,7 +3355,7 @@ _.map(filtered, item => [
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 操作符
 
 \- in: 选择数据项中维度字段的值在 value 中的数据项
@@ -3270,7 +3368,7 @@ _.map(filtered, item => [
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 操作符
 
 \- in: 选择数据项中维度字段的值在 value 中的数据项
@@ -3285,7 +3383,7 @@ same as operator
 
 **Type:** `string | number | (string | number)[]`
 
-:::note{title=描述}
+:::note{title="描述"}
 选择数据项中维度字段的值, 支持数组
 
 :::
@@ -3294,12 +3392,12 @@ same as operator
 
 **Type:** `DynamicFilterExecutionResult<RowWithFieldRes> | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 动态筛选执行结果（运行期字段）
 
 
 
-prepare() 阶段写入，运行时只读
+`prepare() 阶段写入，运行时只读`
 
 :::
 
@@ -3320,63 +3418,71 @@ prepare() 阶段写入，运行时只读
 
 **Type:** `string | string[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注的文本
 
 :::
 
 **示例**
+```ts
 '标注文本'
 
 
 
+```
 ### textColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### textFontSize
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本字体大小
 
 :::
 
 **示例**
+```ts
 12
 
 
 
+```
 ### textFontWeight
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本字体重量
 
 :::
 
 **示例**
+```ts
 400
 
 
 
+```
 ### textAlign
 
 **Type:** `"left" | "right" | "center" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本对齐方式, 一般情况下, 设置为right, 文本显示在标注点左侧, 确保显示在图表的可见区域
 
 建议设置为'right', 这样可以确保文本在标注点的左侧
@@ -3390,15 +3496,17 @@ center: 文本在标注点的中心, 文本的中心对齐标注点
 :::
 
 **示例**
+```ts
 'right' 文本在标注点的左侧
 
 
 
+```
 ### textBaseline
 
 **Type:** `"top" | "bottom" | "middle" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本垂直对齐方式, 一般情况下, 设置为top, 文本显示在标注点底部, 确保显示在图表的可见区域
 
 建议设置为'top', 这样可以确保文本完整的显示在图表的可见区域
@@ -3412,99 +3520,113 @@ bottom: 文本在标注点的顶部, 文本的底部边缘对齐标注点
 :::
 
 **示例**
+```ts
 'top' 文本在标注点的底部
 
 
 
+```
 ### textBackgroundVisible
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景可见
 
 :::
 
 **示例**
+```ts
 true
 
 
 
+```
 ### textBackgroundColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### textBackgroundBorderColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景边框颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### textBackgroundBorderWidth
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景边框宽度
 
 :::
 
 **示例**
+```ts
 2
 
 
 
+```
 ### textBackgroundBorderRadius
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景边框圆角
 
 :::
 
 **示例**
+```ts
 4
 
 
 
+```
 ### textBackgroundPadding
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景内边距
 
 :::
 
 **示例**
+```ts
 4
 
 
 
+```
 ### offsetY
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注点整体在Y方向的偏移像素距离, 当标注点在图表上方(数值较大时)时, 建议设置为正值, 标注点在图表下方(数值较小时)时, 建议设置为负值.
 
 负值则整体向上偏移, 例如设置为\-10, 则整个标注点组件包括文本、文本背景, 一起向上偏移10像素
@@ -3514,15 +3636,17 @@ true
 :::
 
 **示例**
+```ts
 offsetY: 5, 标注点整体向下偏移5像素
 
 
 
+```
 ### offsetX
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注点整体在X方向的偏移像素距离, 当标注点在图表左侧(类目轴起点)时, 建议设置为正值, 标注点在图表右侧(类目轴终点)时, 建议设置为负值.
 
 负值则整体向左偏移, 例如设置为\-10, 则整个标注点组件包括文本、文本背景, 一起向左偏移10像素
@@ -3532,16 +3656,18 @@ offsetY: 5, 标注点整体向下偏移5像素
 :::
 
 **示例**
+```ts
 offsetX: 5, 标注点整体向右偏移5像素
 
 
 
 
+```
 ## annotationVerticalLine
 
 **Type:** `AnnotationVerticalLine | AnnotationVerticalLine[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值标注线(分箱值)，竖直方向展示，能够设置标注线的位置, 样式等，如需分箱值对应的标注线，可以使用该配置
 
 :::
@@ -3551,7 +3677,7 @@ offsetX: 5, 标注点整体向右偏移5像素
 
 **Type:** `string | number | (string | number)[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 固定的x值, 用于标注垂直线, 类目轴在x方向, 则可输入维值, 数值轴在x方向, 则可输入具体的数值
 
 :::
@@ -3560,7 +3686,7 @@ offsetX: 5, 标注点整体向右偏移5像素
 
 **Type:** `ValueDynamicFilter | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 动态筛选器（AI生成代码执行）
 
 
@@ -3584,23 +3710,25 @@ offsetX: 5, 标注点整体向右偏移5像素
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 用户的筛选需求描述（自然语言）
 
 :::
 
 **示例**
+```ts
 "获取销售额最高的值作为标注线参考"
 
 "计算平均销售额用于标注线"
 
 
 
+```
 #### code
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 AI 生成的 JavaScript 筛选代码
 
 
@@ -3618,6 +3746,7 @@ AI 生成的 JavaScript 筛选代码
 :::
 
 **示例**
+```ts
 获取销售额最大值作为标注线值
 ```javascript
 const maxSales = _.maxBy(data, 'sales')?.sales;
@@ -3648,11 +3777,12 @@ return currentYearTotal;
 
 
 
+```
 #### fallback
 
 **Type:** `string | number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 代码执行失败或环境不支持时的降级方案
 
 :::
@@ -3661,12 +3791,12 @@ return currentYearTotal;
 
 **Type:** `{ success: boolean; data?: number | string; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 动态筛选执行结果（运行期字段）
 
 
 
-prepare() 阶段写入，运行时只读
+`prepare() 阶段写入，运行时只读`
 
 :::
 
@@ -3683,77 +3813,87 @@ prepare() 阶段写入，运行时只读
 
 **Type:** `string | string[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注的文本
 
 :::
 
 **示例**
+```ts
 '标注文本'
 
 
 
+```
 ### textPosition
 
 **Type:** `"outsideStart" | "outsideEnd" | "outsideMiddle" | "insideStart" | "insideMiddle" | "insideEnd" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本位置, 标注线的标签位置（标签相对线的相对位置）。
 
 :::
 
 **示例**
+```ts
 'outsideEnd'
 
 
 
+```
 ### textColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### textFontSize
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本字体大小
 
 :::
 
 **示例**
+```ts
 12
 
 
 
+```
 ### textFontWeight
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本字体重量
 
 :::
 
 **示例**
+```ts
 400
 
 
 
+```
 ### textAlign
 
 **Type:** `"left" | "right" | "center" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本对齐方式, 一般情况下, 无需设置
 
 建议设置为'right', 这样可以确保文本在标注线的左侧
@@ -3767,15 +3907,17 @@ center: 文本在参考线的中心, 文本的中心对齐(垂直)标注线
 :::
 
 **示例**
+```ts
 'right'
 
 
 
+```
 ### textBaseline
 
 **Type:** `"top" | "bottom" | "middle" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本垂直对齐方式, 一般情况下, 无需设置
 
 建议设置为'top', 这样可以确保文本完整的显示在图表的可见区域
@@ -3789,156 +3931,178 @@ bottom: 文本在参考线的顶部, 文本的底部边缘对齐(垂直)标注�
 :::
 
 **示例**
+```ts
 'top'
 
 
 
+```
 ### lineVisible
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 线可见
 
 :::
 
 **示例**
+```ts
 true
 
 
 
+```
 ### lineColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 线颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### lineWidth
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 线宽度
 
 :::
 
 **示例**
+```ts
 2
 
 
 
+```
 ### lineStyle
 
 **Type:** `"solid" | "dashed" | "dotted" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 线样式
 
 :::
 
 **示例**
+```ts
 'solid'
 
 
 
+```
 ### textBackgroundVisible
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景可见
 
 :::
 
 **示例**
+```ts
 true
 
 
 
+```
 ### textBackgroundColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### textBackgroundBorderColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景边框颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### textBackgroundBorderWidth
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景边框宽度
 
 :::
 
 **示例**
+```ts
 2
 
 
 
+```
 ### textBackgroundBorderRadius
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景边框圆角
 
 :::
 
 **示例**
+```ts
 4
 
 
 
+```
 ### textBackgroundPadding
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景内边距
 
 :::
 
 **示例**
+```ts
 4
 
 
 
 
+```
 ## annotationHorizontalLine
 
 **Type:** `AnnotationHorizontalLine | AnnotationHorizontalLine[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 数值标注线(包括均值线、最大值线、最小值线等)，水平方向展示，能够设置标注线的位置, 样式等，如需绘制分箱值对应的标注线请使用该配置；注意分箱值受`binValueType` 影响
 
 :::
@@ -3948,7 +4112,7 @@ true
 
 **Type:** `string | number | (string | number)[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 固定的y值, 用于标注水平线, 类目轴在y方向, 则可输入维值, 数值轴在y方向, 则可输入具体的数值
 
 :::
@@ -3957,7 +4121,7 @@ true
 
 **Type:** `ValueDynamicFilter | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 动态筛选器（AI生成代码执行）
 
 
@@ -3981,23 +4145,25 @@ true
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 用户的筛选需求描述（自然语言）
 
 :::
 
 **示例**
+```ts
 "获取销售额最高的值作为标注线参考"
 
 "计算平均销售额用于标注线"
 
 
 
+```
 #### code
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 AI 生成的 JavaScript 筛选代码
 
 
@@ -4015,6 +4181,7 @@ AI 生成的 JavaScript 筛选代码
 :::
 
 **示例**
+```ts
 获取销售额最大值作为标注线值
 ```javascript
 const maxSales = _.maxBy(data, 'sales')?.sales;
@@ -4045,11 +4212,12 @@ return currentYearTotal;
 
 
 
+```
 #### fallback
 
 **Type:** `string | number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 代码执行失败或环境不支持时的降级方案
 
 :::
@@ -4058,12 +4226,12 @@ return currentYearTotal;
 
 **Type:** `{ success: boolean; data?: number | string; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 动态筛选执行结果（运行期字段）
 
 
 
-prepare() 阶段写入，运行时只读
+`prepare() 阶段写入，运行时只读`
 
 :::
 
@@ -4080,21 +4248,23 @@ prepare() 阶段写入，运行时只读
 
 **Type:** `string | string[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注的文本
 
 :::
 
 **示例**
+```ts
 '标注文本'
 
 
 
+```
 ### textPosition
 
 **Type:** `"outsideStart" | "outsideEnd" | "outsideMiddle" | "insideStart" | "insideMiddle" | "insideEnd" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本位置
 
 
@@ -4104,57 +4274,65 @@ prepare() 阶段写入，运行时只读
 :::
 
 **示例**
+```ts
 'outsideEnd'
 
 
 
+```
 ### textColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### textFontSize
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本字体大小
 
 :::
 
 **示例**
+```ts
 12
 
 
 
+```
 ### textFontWeight
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本字体重量
 
 :::
 
 **示例**
+```ts
 400
 
 
 
+```
 ### textAlign
 
 **Type:** `"left" | "right" | "center" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本对齐方式, 一般情况下, 无需设置
 
 建议设置为'right', 这样可以确保文本在标注线的左侧
@@ -4168,15 +4346,17 @@ center: 文本在参考线的中心, 文本的中心对齐(水平)标注线的�
 :::
 
 **示例**
+```ts
 'right'
 
 
 
+```
 ### textBaseline
 
 **Type:** `"top" | "bottom" | "middle" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本垂直对齐方式, 一般情况下, 无需设置
 
 建议设置为'top', 这样可以确保文本完整的显示在图表的可见区域
@@ -4190,57 +4370,65 @@ bottom: 文本在参考线的顶部, 文本的底部边缘对齐(水平)标注�
 :::
 
 **示例**
+```ts
 'top'
 
 
 
+```
 ### textBackgroundVisible
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景可见
 
 :::
 
 **示例**
+```ts
 true
 
 
 
+```
 ### textBackgroundColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### textBackgroundBorderColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景边框颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### textBackgroundBorderWidth
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景边框宽度
 
 
@@ -4250,43 +4438,49 @@ true
 :::
 
 **示例**
+```ts
 2
 
 
 
+```
 ### textBackgroundBorderRadius
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景边框圆角
 
 :::
 
 **示例**
+```ts
 4
 
 
 
+```
 ### textBackgroundPadding
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景内边距
 
 :::
 
 **示例**
+```ts
 4
 
 
 
+```
 ### lineVisible
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 线可见
 
 
@@ -4296,57 +4490,65 @@ true
 :::
 
 **示例**
+```ts
 true
 
 
 
+```
 ### lineColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 线颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### lineWidth
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 线宽度
 
 :::
 
 **示例**
+```ts
 2
 
 
 
+```
 ### lineStyle
 
 **Type:** `"solid" | "dashed" | "dotted" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 线样式
 
 :::
 
 **示例**
+```ts
 'solid'
 
 
 
+```
 ### splitLine
 
 **Type:** `boolean | { positiveColor?: string; negativeColor?: string; } | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否开启将主线分隔成两段的功能
 
 :::
@@ -4356,7 +4558,7 @@ true
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 大于标注值的部分，对应的主色
 
 :::
@@ -4365,7 +4567,7 @@ true
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 小于标注值的部分，对应的主色
 
 :::
@@ -4375,7 +4577,7 @@ true
 
 **Type:** `AnnotationArea | AnnotationArea[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注区域配置, 根据选择的数据, 定义图表的标注区域, 包括标注区域的位置, 样式等.
 
 :::
@@ -4385,7 +4587,7 @@ true
 
 **Type:** `AreaSelector | AreaSelectors | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 依赖选择的数据, 进行数据标记.
 
 :::
@@ -4395,7 +4597,7 @@ true
 
 **Type:** `string`
 
-:::note{title=描述}
+:::note{title="描述"}
 维度字段, dimensions 某一项的 id
 
 :::
@@ -4404,7 +4606,7 @@ true
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 操作符
 
 \- in: 选择数据项中维度字段的值在 value 中的数据项
@@ -4417,7 +4619,7 @@ true
 
 **Type:** `"in" | "not in" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 操作符
 
 \- in: 选择数据项中维度字段的值在 value 中的数据项
@@ -4432,7 +4634,7 @@ same as operator
 
 **Type:** `string | number | (string | number)[]`
 
-:::note{title=描述}
+:::note{title="描述"}
 选择数据项中维度字段的值, 支持数组
 
 :::
@@ -4441,77 +4643,87 @@ same as operator
 
 **Type:** `string | string[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注的文本
 
 :::
 
 **示例**
+```ts
 '标注文本'
 
 
 
+```
 ### textPosition
 
 **Type:** `"left" | "top" | "topLeft" | "topRight" | "right" | "bottom" | "bottomLeft" | "bottomRight" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本位置
 
 :::
 
 **示例**
+```ts
 'top'
 
 
 
+```
 ### textColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### textFontSize
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本字体大小
 
 :::
 
 **示例**
+```ts
 12
 
 
 
+```
 ### textFontWeight
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本字体重量
 
 :::
 
 **示例**
+```ts
 400
 
 
 
+```
 ### textAlign
 
 **Type:** `"left" | "right" | "center" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本对齐方式, 一般情况下, 设置为right, 文本显示在标注区域中间, 确保显示在图表的可见区域
 
 建议设置为'center', 这样可以确保文本在标注区域的中间
@@ -4525,15 +4737,17 @@ center: 文本在标注区域的中心, 文本的中心对齐标注区域
 :::
 
 **示例**
+```ts
 'center' 文本在标注区域的中间
 
 
 
+```
 ### textBaseline
 
 **Type:** `"top" | "bottom" | "middle" | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本垂直对齐方式, 一般情况下, 设置为top, 文本显示在标注区域底部, 确保显示在图表的可见区域
 
 建议设置为'top', 这样可以确保文本完整的显示在图表的可见区域
@@ -4547,43 +4761,49 @@ bottom: 文本在标注区域的顶部, 文本的底部边缘对齐标注区域
 :::
 
 **示例**
+```ts
 'top' 文本在标注区域的底部
 
 
 
+```
 ### textBackgroundVisible
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景可见
 
 :::
 
 **示例**
+```ts
 true
 
 
 
+```
 ### textBackgroundColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### textBackgroundBorderColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景边框颜色
 
 
@@ -4593,29 +4813,33 @@ true
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### textBackgroundBorderWidth
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景边框宽度
 
 :::
 
 **示例**
+```ts
 2
 
 
 
+```
 ### textBackgroundBorderRadius
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景边框圆角
 
 
@@ -4625,128 +4849,146 @@ true
 :::
 
 **示例**
+```ts
 4
 
 
 
+```
 ### textBackgroundPadding
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 背景内边距
 
 :::
 
 **示例**
+```ts
 4
 
 
 
+```
 ### areaColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注区域区域颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### areaColorOpacity
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注区域区域颜色透明度
 
 :::
 
 **示例**
+```ts
 0.5
 
 
 
+```
 ### areaBorderColor
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注区域区域边框颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### areaBorderWidth
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注区域区域边框宽度
 
 :::
 
 **示例**
+```ts
 2
 
 
 
+```
 ### areaBorderRadius
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注区域区域边框圆角
 
 :::
 
 **示例**
+```ts
 4
 
 
 
+```
 ### areaLineDash
 
 **Type:** `number[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注区域区域边框的线型
 
 :::
 
 **示例**
+```ts
 [2, 2]
 
 
 
+```
 ### outerPadding
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 标注区域区域的边距
 
 :::
 
 **示例**
+```ts
 0
 
 
 
 
+```
 ## kdeRegressionLine
 
 **Type:** `KdeRegressionLine | KdeRegressionLine[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 核密度回归线配置, 用于展示数据的趋势和分布情况
 
 :::
@@ -4756,7 +4998,7 @@ true
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否开启回归线功能
 
 :::
@@ -4765,7 +5007,7 @@ true
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 回归线颜色
 
 用于设置回归线的颜色，如果不设置，默认使用图表的主颜色
@@ -4776,7 +5018,7 @@ true
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 回归线宽度
 
 用于设置回归线的宽度，单位为像素，默认值为1
@@ -4787,7 +5029,7 @@ true
 
 **Type:** `number[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 回归线样式
 
 用于设置回归线的样式，例如实线、虚线等，默认值为实线
@@ -4798,7 +5040,7 @@ true
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 回归线标签文本
 
 用于设置回归线的标签文本，空字符串表示不显示标签
@@ -4809,50 +5051,56 @@ true
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### textFontSize
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本字体大小
 
 :::
 
 **示例**
+```ts
 12
 
 
 
+```
 ### textFontWeight
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本字体重量
 
 :::
 
 **示例**
+```ts
 400
 
 
 
 
+```
 ## ecdfRegressionLine
 
 **Type:** `EcdfRegressionLine | EcdfRegressionLine[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 经验累积分布函数回归线配置, 用于展示数据的累积分布情况
 
 :::
@@ -4862,7 +5110,7 @@ true
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否开启
 
 :::
@@ -4871,7 +5119,7 @@ true
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 回归线颜色
 
 用于设置回归线的颜色，如果不设置，默认使用图表的主颜色
@@ -4882,7 +5130,7 @@ true
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 回归线宽度
 
 用于设置回归线的宽度，单位为像素，默认值为1
@@ -4893,7 +5141,7 @@ true
 
 **Type:** `number[] | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 回归线样式
 
 用于设置回归线的样式，例如实线、虚线等，默认值为实线
@@ -4904,7 +5152,7 @@ true
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 回归线标签文本
 
 用于设置回归线的标签文本，空字符串表示不显示标签
@@ -4915,50 +5163,56 @@ true
 
 **Type:** `string | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本颜色
 
 :::
 
 **示例**
+```ts
 'red'
 
 
 
+```
 ### textFontSize
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本字体大小
 
 :::
 
 **示例**
+```ts
 12
 
 
 
+```
 ### textFontWeight
 
 **Type:** `number | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 文本字体重量
 
 :::
 
 **示例**
+```ts
 400
 
 
 
 
+```
 ## dimensionLinkage
 
 **Type:** `DimensionLinkage | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 当图表开启透视功能或者指标组合的是否，是否开启维度联动功能
 
 当hover 到某个维度值时，联动高亮其他图表中相同维度值的数据
@@ -4974,7 +5228,7 @@ true
 
 **Type:** `false | true`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否开启透视图表维度联动
 
 :::
@@ -4983,7 +5237,7 @@ true
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否显示所有维度对应子图表的Tooltip提示信息
 
 :::
@@ -4992,7 +5246,7 @@ true
 
 **Type:** `boolean | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 是否显示crosshair 对应的标签
 
 :::
@@ -5002,7 +5256,7 @@ true
 
 **Type:** `Locale | undefined`
 
-:::note{title=描述}
+:::note{title="描述"}
 图表语言配置, 支持'zh\-CN'与'en\-US'两种语言, 另外可以调用 intl.setLocale('zh\-CN') 方法设置语言
 
 :::

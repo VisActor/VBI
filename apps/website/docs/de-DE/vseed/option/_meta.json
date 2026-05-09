@@ -1,0 +1,157 @@
+[
+  {
+    "type": "file",
+    "name": "area",
+    "label": "area "
+  },
+  {
+    "type": "file",
+    "name": "areaPercent",
+    "label": "areaPercent "
+  },
+  {
+    "type": "file",
+    "name": "bar",
+    "label": "bar "
+  },
+  {
+    "type": "file",
+    "name": "barParallel",
+    "label": "barParallel "
+  },
+  {
+    "type": "file",
+    "name": "barPercent",
+    "label": "barPercent "
+  },
+  {
+    "type": "file",
+    "name": "boxPlot",
+    "label": "boxPlot "
+  },
+  {
+    "type": "file",
+    "name": "circlePacking",
+    "label": "circlePacking "
+  },
+  {
+    "type": "file",
+    "name": "column",
+    "label": "column "
+  },
+  {
+    "type": "file",
+    "name": "columnParallel",
+    "label": "columnParallel "
+  },
+  {
+    "type": "file",
+    "name": "columnPercent",
+    "label": "columnPercent "
+  },
+  {
+    "type": "file",
+    "name": "donut",
+    "label": "donut "
+  },
+  {
+    "type": "file",
+    "name": "dualAxis",
+    "label": "dualAxis "
+  },
+  {
+    "type": "file",
+    "name": "funnel",
+    "label": "funnel "
+  },
+  {
+    "type": "file",
+    "name": "heatmap",
+    "label": "heatmap "
+  },
+  {
+    "type": "file",
+    "name": "histogram",
+    "label": "histogram "
+  },
+  {
+    "type": "file",
+    "name": "line",
+    "label": "line "
+  },
+  {
+    "type": "file",
+    "name": "pie",
+    "label": "pie "
+  },
+  {
+    "type": "file",
+    "name": "pivotTable",
+    "label": "pivotTable "
+  },
+  {
+    "type": "file",
+    "name": "raceBar",
+    "label": "raceBar "
+  },
+  {
+    "type": "file",
+    "name": "raceColumn",
+    "label": "raceColumn "
+  },
+  {
+    "type": "file",
+    "name": "raceDonut",
+    "label": "raceDonut "
+  },
+  {
+    "type": "file",
+    "name": "raceLine",
+    "label": "raceLine "
+  },
+  {
+    "type": "file",
+    "name": "racePie",
+    "label": "racePie "
+  },
+  {
+    "type": "file",
+    "name": "raceScatter",
+    "label": "raceScatter "
+  },
+  {
+    "type": "file",
+    "name": "radar",
+    "label": "radar "
+  },
+  {
+    "type": "file",
+    "name": "rose",
+    "label": "rose "
+  },
+  {
+    "type": "file",
+    "name": "roseParallel",
+    "label": "roseParallel "
+  },
+  {
+    "type": "file",
+    "name": "scatter",
+    "label": "scatter "
+  },
+  {
+    "type": "file",
+    "name": "sunburst",
+    "label": "sunburst "
+  },
+  {
+    "type": "file",
+    "name": "table",
+    "label": "table "
+  },
+  {
+    "type": "file",
+    "name": "treeMap",
+    "label": "treeMap "
+  }
+]

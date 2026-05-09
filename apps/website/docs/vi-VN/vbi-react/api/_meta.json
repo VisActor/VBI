@@ -1,0 +1,62 @@
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "Tổng quan"
+  },
+  {
+    "type": "file",
+    "name": "useChartType",
+    "label": "useChartType"
+  },
+  {
+    "type": "file",
+    "name": "useDimensions",
+    "label": "useDimensions"
+  },
+  {
+    "type": "file",
+    "name": "useHavingFilter",
+    "label": "useHavingFilter"
+  },
+  {
+    "type": "file",
+    "name": "useMeasures",
+    "label": "useMeasures"
+  },
+  {
+    "type": "file",
+    "name": "useVBI",
+    "label": "useVBI"
+  },
+  {
+    "type": "file",
+    "name": "useVSeed",
+    "label": "useVSeed"
+  },
+  {
+    "type": "file",
+    "name": "useWhereFilter",
+    "label": "useWhereFilter"
+  },
+  {
+    "type": "file",
+    "name": "builderLayout",
+    "label": "BuilderLayout"
+  },
+  {
+    "type": "file",
+    "name": "chartRenderer",
+    "label": "ChartRenderer"
+  },
+  {
+    "type": "file",
+    "name": "chartTypeSelector",
+    "label": "ChartTypeSelector"
+  },
+  {
+    "type": "file",
+    "name": "fieldPanel",
+    "label": "FieldPanel"
+  }
+]

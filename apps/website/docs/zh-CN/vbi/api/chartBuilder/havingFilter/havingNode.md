@@ -18,7 +18,7 @@ constructor(yMap: Y.Map<any>)
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | `Y.Map<any>` | - |
 
 ### getId
 
@@ -120,7 +120,7 @@ setAggregate(aggregate: VBIHavingAggregate): this
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `aggregate` | VBIHavingAggregate | - 聚合配置 |
+| `aggregate` | `VBIHavingAggregate` | - 聚合配置 |
 
 ### toJSON
 

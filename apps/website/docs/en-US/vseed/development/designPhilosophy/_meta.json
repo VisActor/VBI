@@ -4,11 +4,11 @@
   {
     "type": "dir",
     "name": "dataReshape",
-    "label": "Data Reshape"
+    "label": "Data reshaping"
   },
   {
     "type": "dir",
     "name": "pipeline",
-    "label": "Pipeline"
+    "label": "pipe"
   }
 ]

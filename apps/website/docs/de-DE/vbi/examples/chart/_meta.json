@@ -1,0 +1,42 @@
+[
+  {
+    "type": "file",
+    "name": "chartType",
+    "label": "ChartType"
+  },
+  {
+    "type": "file",
+    "name": "dimensions",
+    "label": "Dimensions"
+  },
+  {
+    "type": "file",
+    "name": "havingFilter",
+    "label": "HavingFilter"
+  },
+  {
+    "type": "file",
+    "name": "locale",
+    "label": "Locale"
+  },
+  {
+    "type": "file",
+    "name": "measures",
+    "label": "Measures"
+  },
+  {
+    "type": "file",
+    "name": "theme",
+    "label": "Theme"
+  },
+  {
+    "type": "file",
+    "name": "undoManager",
+    "label": "UndoManager"
+  },
+  {
+    "type": "file",
+    "name": "whereFilter",
+    "label": "WhereFilter"
+  }
+]

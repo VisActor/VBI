@@ -14,9 +14,9 @@ useVSeed(builder: VBIChartBuilder, options: UseVSeedOptions =
 
 ## Description
 
-Executes the query and VSeed generation pipeline, returning the state and data required for rendering.
+Execute the query and VSeed generation process to return the status and data required for rendering.
 
-## Minimal Example
+## Minimal example
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'

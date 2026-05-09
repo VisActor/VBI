@@ -1,10 +1,10 @@
 # ThemeBuilder
 
-Theme builder for setting and getting the current theme.
+Theme builder for setting and getting the current theme
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
@@ -18,14 +18,14 @@ constructor(_doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `_doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `_doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### observe
 
-Listens for theme changes, returns an unsubscribe function.
+Monitor topic changes and return a function to cancel monitoring
 
 **Definition**:
 
@@ -33,17 +33,17 @@ Listens for theme changes, returns an unsubscribe function.
 observe(callback: ObserveCallback): () => void
 ```
 
-**Returns**: `() => void`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `callback` | ObserveCallback | - Callback function |
+| `callback` | ObserveCallback | - callback function |
 
 ### setTheme
 
-Sets the theme.
+Set theme
 
 **Definition**:
 
@@ -53,13 +53,13 @@ setTheme(theme: string)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `theme` | string | - Theme name |
+| `theme` | string | - topic name |
 
 ### getTheme
 
-Gets the current theme.
+Get the current topic
 
 **Definition**:
 
@@ -67,11 +67,11 @@ Gets the current theme.
 getTheme(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### toJSON
 
-Exports to JSON.
+Export as JSON
 
 **Definition**:
 
@@ -79,4 +79,4 @@ Exports to JSON.
 toJSON(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`

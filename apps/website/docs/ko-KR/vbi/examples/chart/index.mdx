@@ -1,0 +1,111 @@
+# chart
+
+이 페이지는 chart builder의 예제를 보여줍니다.
+
+## ChartType
+
+| 예제 | 설명 | 태그 |
+| --- | --- | --- |
+| [area-by-order-date](./chartType#area-by-order-date) | 면적 차트 - 일자별 매출 추이 | - |
+| [bar-by-product-type](./chartType#bar-by-product-type) | 세로 막대 차트 - 제품 유형별 매출 | - |
+| [차트 유형 전환](./chartType#chart-type-switching) | 라인 차트와 막대 차트 유형 간 전환 | - |
+| [column-by-area](./chartType#column-by-area) | 세로 막대 차트 - 지역별 매출 | - |
+| [donut-by-customer-type](./chartType#donut-by-customer-type) | 도넛 차트 - 고객 유형별 판매 비율 | - |
+| [line-by-province](./chartType#line-by-province) | 꺾은선 차트 - 성별 매출 추이 | - |
+| [line-chart](./chartType#line-chart) | 꺾은선 차트 - 성별 매출 추이 | - |
+| [pie-by-area](./chartType#pie-by-area) | 원형 차트 - 지역별 판매 비율 | - |
+| [pie-chart-measure-encoding](./chartType#pie-chart-measure-encoding) | 원형 차트 측정값 인코딩 - measure-encoding.ts Pie 차트 유형 테스트 | - |
+| [rose-by-city](./chartType#rose-by-city) | 장미 차트 - 도시별 매출 | - |
+| [scatter-chart-measure-encoding](./chartType#scatter-chart-measure-encoding) | 산점도 측정값 인코딩 - measure-encoding.ts Scatter 차트 유형 테스트 | - |
+| [scatter-sales-profit](./chartType#scatter-sales-profit) | 산점도 - 매출과 이익 관계 | - |
+
+## Dimensions
+
+| 예제 | 설명 | 태그 |
+| --- | --- | --- |
+| [add-date-dimension-year](./dimensions#add-date-dimension-year) | 연간 집계 기준 날짜 차원 추가 | - |
+| [add-dimension](./dimensions#add-dimension) | 차원 추가 | - |
+| [add-multiple-dimensions](./dimensions#add-multiple-dimensions) | 여러 차원 추가 (체이닝 호출) | - |
+| [mixed-date-and-normal-dimensions](./dimensions#mixed-date-and-normal-dimensions) | 일반 차원과 분기별 집계 날짜 차원 혼합 그룹화 | - |
+| [remove-dimension](./dimensions#remove-dimension) | 차원 삭제 | - |
+| [update-date-dimension-month](./dimensions#update-date-dimension-month) | 기존 날짜 차원을 월별 집계로 업데이트 | - |
+| [update-dimension](./dimensions#update-dimension) | 차원 업데이트 | - |
+
+## HavingFilter
+
+| 예제 | 설명 | 태그 |
+| --- | --- | --- |
+| [add-having-filter](./havingFilter#add-having-filter) | 지역별 그룹화 후 매출이 백만을 초과하는 고성과 지역 필터링 | - |
+| [add-multiple-having-filter](./havingFilter#add-multiple-having-filter) | 체이닝으로 여러 Having 조건을 추가하여 높은 매출 및 높은 이익 지역 필터링 | - |
+| [clear-having-filter](./havingFilter#clear-having-filter) | 모든 Having 필터 조건 지우기, 전체 그룹 집계 결과 표시 | - |
+| [배열 값과 IN 연산자를 사용한 Having 필터](./havingFilter#having-array-value-with-in-operator) | 'in' 연산자 변환을 유발하는 배열 값을 가진 Having 필터 | - |
+| [배열 값과 NOT IN 연산자를 사용한 Having 필터](./havingFilter#having-array-value-with-not-in-operator) | 'not in' 연산자 변환을 유발하는 배열 값을 가진 Having 필터 | - |
+| [having-clear-and-rebuild](./havingFilter#having-clear-and-rebuild) | 기존 Having 조건을 지운 후 새 그룹 필터를 재구축하여, 사용자가 필터 패널을 초기화한 후 재구성하는 것을 시뮬레이션 | - |
+| [having-deeply-nested-groups](./havingFilter#having-deeply-nested-groups) | 3중 중첩 그룹: OR(AND(매출 50만 초과, 이익 5만 초과), AND(수량 100 초과, 평균 할인율 0.3 미만)), 복잡한 비즈니스 필터 시뮬레이션 | - |
+| [having-empty-dsl-compose-target](./havingFilter#having-empty-dsl-compose-target) | 빈 DSL에서 시작하여 builder를 통해 where/having/measures/dimensions를 조립, sum 및 countDistinct 집계의 having 조건 조합 포함 | - |
+| [having-field-not-in-measures-and-dimensions](./havingFilter#having-field-not-in-measures-and-dimensions) | 빈 DSL을 초기화하고, builder를 통해 차원 area와 지표 sales만 추가한 후, having에서 measures/dimensions에 없는 profit 필드(SUM(profit) > 100000) 사용 | - |
+| [having-find-and-update](./havingFilter#having-find-and-update) | 먼저 having 조건을 추가한 후, find로 찾아 임계값과 연산자를 동적으로 업데이트하여 사용자의 대화식 필터 조건 조정 시뮬레이션 | - |
+| [having-group-add-to-existing](./havingFilter#having-group-add-to-existing) | 기존 having 그룹에 새 조건을 추가하여 사용자가 필터 규칙을 점진적으로 세분화하는 과정 시뮬레이션 | - |
+| [having-group-remove-condition](./havingFilter#having-group-remove-condition) | 기존 having 그룹에서 특정 조건을 제거하여 사용자가 특정 필터 항목을 취소하는 과정 시뮬레이션 | - |
+| [having-mix-filters-and-groups](./havingFilter#having-mix-filters-and-groups) | 독립 필터 조건과 OR 그룹 혼합 사용: 매출 50만 초과 AND (이익 10만 초과 OR 수량 30 이상) | - |
+| [having-multi-dimension-aggregate](./havingFilter#having-multi-dimension-aggregate) | 카테고리와 지역 이중 차원으로 그룹화하여 평균 할인율 20% 미만이고 총 매출 10만 초과인 조합 필터링, 고가치 저할인 비즈니스 분석 | - |
+| [having-nested-groups](./havingFilter#having-nested-groups) | 중첩 그룹: AND(매출 100만 초과, OR(이익 20만 초과, 수량 50 이상)) | - |
+| [having-or-group](./havingFilter#having-or-group) | OR 그룹을 사용하여 높은 매출 또는 높은 이익의 지역 필터링 | - |
+| [having-scatter-profit-analysis](./havingFilter#having-scatter-profit-analysis) | 산점도 분석: 카테고리별로 그룹화하여 높은 이익률이고 거래량 20건 초과인 카테고리 필터링, 우수 비즈니스 식별 | - |
+| [having-update-group-operator](./havingFilter#having-update-group-operator) | 기존 Having 그룹의 논리 연산자를 AND에서 OR로 업데이트 | - |
+| [having-with-where-combined](./havingFilter#having-with-where-combined) | where과 having 결합 필터링: 먼저 where로 사무용품 카테고리 필터링, 그다음 having으로 매출 5만 초과 또는 이익 1만 초과인 지역 필터링 | - |
+| [remove-having-filter](./havingFilter#remove-having-filter) | 불필요한 Having 필터 조건 제거, 이익 필터만 유지 | - |
+
+## Locale
+
+| 예제 | 설명 | 태그 |
+| --- | --- | --- |
+| [en-US-locale](./locale#en-US-locale) | 영문 locale 테스트 | - |
+| [zh-CN-locale](./locale#zh-CN-locale) | 중문 locale 테스트 | - |
+
+## Measures
+
+| 예제 | 설명 | 태그 |
+| --- | --- | --- |
+| [add-measure](./measures#add-measure) | 측정값 추가 | - |
+| [add-measure-encoding](./measures#add-measure-encoding) | 측정값 추가 및 인코딩 설정 | - |
+| [measure-with-custom-and-auto-format](./measures#measure-with-custom-and-auto-format) | 측정값 서식 지정: 매출은 만원 단위 사용자 정의 서식(¥ 접두사, 소수점 2자리), 이익률은 자동 서식, 할인율은 백분율 서식 사용 | - |
+| [remove-measure](./measures#remove-measure) | 측정값 삭제 | - |
+| [update-measure](./measures#update-measure) | 측정값 업데이트 | - |
+
+## 테마(Theme)
+
+| 예제 | 설명 | 태그 |
+| --- | --- | --- |
+| [dark-theme](./theme#dark-theme) | 다크 테마 차트 | - |
+| [light-theme](./theme#light-theme) | 라이트 테마 차트 | - |
+
+## UndoManager
+
+| 예제 | 설명 | 태그 |
+| --- | --- | --- |
+| [undo-redo](./undoManager#undo-redo) | 실행 취소/재실행 기능 테스트 | - |
+
+## WhereFilter
+
+| 예제 | 설명 | 태그 |
+| --- | --- | --- |
+| [between-sales-range-analysis](./whereFilter#between-sales-range-analysis) | 매출 구간 분석: between을 사용하여 건당 1000~10000위안의 주문 필터링, 카테고리별 이익 합계 | - |
+| [clear-and-rebuild-filters](./whereFilter#clear-and-rebuild-filters) | 필터 조건 초기화 및 재구축: 기존 단순 필터를 제거하고 그룹이 포함된 복잡한 조건으로 재구축 | - |
+| [date-filter-period-and-range-combo](./whereFilter#date-filter-period-and-range-combo) | 날짜 구간 조합 필터: period로 2024년 Q1 데이터 필터링, 동시에 range로 이익 구간 제한, 카테고리와 배송 방식별 교차 분석 | - |
+| [date-filter-relative-with-nested-conditions](./whereFilter#date-filter-relative-with-nested-conditions) | 날짜 필터와 중첩 조건 조합: 최근 30일 내 소비자 또는 기업 고객의 고액 주문 필터링, 지역별 매출 및 이익 통계 | - |
+| [deeply-nested-or-and-groups](./whereFilter#deeply-nested-or-and-groups) | 다중 중첩 그룹: 소비자 당일 배송 또는 기업 고객 1등급 배송의 고액 주문, 3계층 AND/OR 중첩 | - |
+| [high-discount-tech-profit-analysis](./whereFilter#high-discount-tech-profit-analysis) | 고할인 기술 제품 이익 분석: 기술 카테고리이고 할인율 0.5 초과인 주문 필터링, 지역별 이익 비교 | - |
+| [in-operator-multi-area-delivery](./whereFilter#in-operator-multi-area-delivery) | 다중 지역 배송 효율 비교: in을 사용하여 화동, 화북, 중남 3대 지역 필터링, 배송 방식별 주문량 통계 | - |
+| [nested-group-region-product-filter](./whereFilter#nested-group-region-product-filter) | 화동 지역 사무용품 또는 가구 매출: 중첩 그룹 사용, AND로 지역 조건과 OR 카테고리 조건 연결 | - |
+| [판매 범위가 BETWEEN이 아닌 경우](./whereFilter#not-between-sales-range) | Between이 아닌 필터: 판매액이 1000~10000 사이인 경우 제외 | - |
+| [명시적 연산자를 사용한 NOT BETWEEN](./whereFilter#not-between-with-explicit-operators) | leftOp/rightOp를 명시적으로 사용하여 invert 함수를 테스트하는 NOT BETWEEN 필터 | - |
+| [office-supplies-sales-by-province](./whereFilter#office-supplies-sales-by-province) | 각 지역별 사무용품 매출 순위: 사무용품 카테고리 필터링, 지역별 매출 합계 | - |
+| [or-group-product-category-comparison](./whereFilter#or-group-product-category-comparison) | 사무용품과 기술 카테고리 비교: OR 그룹을 사용하여 두 카테고리 필터링, 지역별 매출 비교 | - |
+| [remove-condition-from-group](./whereFilter#remove-condition-from-group) | 그룹에서 조건 제거: 사전 설정된 OR 그룹에 세 개의 카테고리가 포함되어 있음, updateGroup으로 그중 하나 제거 | - |
+| [remove-filter-by-index](./whereFilter#remove-filter-by-index) | 인덱스로 필터 조건 제거: 첫 번째 카테고리 필터 제거, 지역 조건만 유지 | - |
+| [update-filter-switch-province](./whereFilter#update-filter-switch-province) | 필터 조건 동적 수정: 지역 필터를 저장에서 광동으로 업데이트, 매출 변화 관찰 | - |
+| [update-group-or-to-and](./whereFilter#update-group-or-to-and) | 그룹 논리 수정: 사전 설정된 OR 카테고리 그룹을 AND로 전환, 필터 범위 축소 | - |
+| [배열 값이 IN으로 변환되는 Where 필터](./whereFilter#where-filter-array-value-converts-to-in) | '=' 연산자를 사용하는 배열 값이 'in'으로 변환되어야 하는 Where 필터 | - |
+| [배열 값이 NOT IN으로 변환되는 Where 필터](./whereFilter#where-filter-array-value-converts-to-not-in) | '!=' 연산자를 사용하는 배열 값이 'not in'으로 변환되어야 하는 Where 필터 | - |
+

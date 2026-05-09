@@ -2,19 +2,19 @@
 pageType: doc
 ---
 
-# Animation
+# animation
 
-VSeed animation supports appear, loop, ambient, update, and exit stages. This guide combines bar, line/area, pie, radar, and scatter examples in one place so you can compare the animation configuration across chart types.
+VSeed animation capability supports entry, carousel, atmosphere, update and exit stages. Below, animation examples of column charts, line/areas, pie charts, radar charts, and scatter charts are combined and displayed to facilitate comparison of the configuration methods of different chart types.
 
-## Bar / Column Animation
+## Column chart/bar chart animation
 
-All examples are based on the large-screen (dark) theme and provide a dropdown to switch between different themes.
-Themes are loaded from: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
+All examples are based on the large screen theme (dark), and a theme list is provided for switching different themes.
+Topic list source: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
 
-### 1. Appear Animation
+### 1. Entrance animation
 
-Appear animation is the motion played when a chart first enters the view.
-For bar/column series, the appear effect currently supports `growth`.
+The entry animation refers to the animation when the chart is first rendered and is used to establish visual rhythm and attract attention.
+The entry animation for the current bar/bar chart series supports `growth`.
 
 #### 1.1 growth
 
@@ -118,10 +118,10 @@ const DATASET = [
 ]
 
 const DIMENSIONS = [
-  { id: 'HqlYadRdHJ5c', alias: 'Category' },
-  { id: '7ti8XuX4kcY1', alias: 'Year' },
+  { id: 'HqlYadRdHJ5c', alias: '类目' },
+  { id: '7ti8XuX4kcY1', alias: '年份' },
 ]
-const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }]
+const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: '销售额' }]
 
 const useLargeScreenThemes = () => {
   const [themes, setThemes] = useState({})
@@ -202,17 +202,18 @@ export default () => {
 }
 ```
 
-### 2. Loop Animation
+### 2. Carousel animation
 
-Loop animation is the continuous motion after initial rendering, useful for emphasis and dynamic rhythm.
+Carousel animation refers to the animation that the chart continues to loop after completing the entry, used to emphasize key points or maintain a sense of dynamics.
 
-#### 2.1 highlight (group highlight) + atmo (ambient effect)
+#### 2.1 highlight (group highlight) + atmosphere (atmosphere effect)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
 import { VSeedRender } from '@components'
 import { registerTokenThemes } from '@visactor/vseed'
 
+const THEME_URL = 'https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json'
 const DATASET = [
   {
     10001: 'Sales',
@@ -341,10 +342,10 @@ export default () => {
     chartType: 'columnParallel',
     dataset: DATASET,
     dimensions: [
-      { id: 'HqlYadRdHJ5c', alias: 'Category' },
-      { id: '7ti8XuX4kcY1', alias: 'Year' },
+      { id: 'HqlYadRdHJ5c', alias: '类目' },
+      { id: '7ti8XuX4kcY1', alias: '年份' },
     ],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
@@ -354,7 +355,7 @@ export default () => {
           enable: true,
           interval: 3,
           loop: { enable: true, effects: ['highLight'], ease: 'linear', duration: 1 },
-          atmo: { effect: 'breath', ease: 'linear', color: '#4A90E2' },
+          atmosphere: { effect: 'breath', ease: 'linear', color: '#4A90E2' },
         },
       },
     },
@@ -384,7 +385,7 @@ export default () => {
 }
 ```
 
-#### 2.2 growth (loop) + atmo (ambient effect)
+#### 2.2 growth (growth carousel) + atmosphere (atmosphere effect)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -519,10 +520,10 @@ export default () => {
     chartType: 'barParallel',
     dataset: DATASET,
     dimensions: [
-      { id: 'HqlYadRdHJ5c', alias: 'Category' },
-      { id: '7ti8XuX4kcY1', alias: 'Year' },
+      { id: 'HqlYadRdHJ5c', alias: '类目' },
+      { id: '7ti8XuX4kcY1', alias: '年份' },
     ],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
@@ -562,7 +563,7 @@ export default () => {
 }
 ```
 
-#### 2.3 moveIn (loop) + atmo (ambient effect)
+#### 2.3 moveIn (move into carousel) + atmosphere (atmosphere effect)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -697,10 +698,10 @@ export default () => {
     chartType: 'columnParallel',
     dataset: DATASET,
     dimensions: [
-      { id: 'HqlYadRdHJ5c', alias: 'Category' },
-      { id: '7ti8XuX4kcY1', alias: 'Year' },
+      { id: 'HqlYadRdHJ5c', alias: '类目' },
+      { id: '7ti8XuX4kcY1', alias: '年份' },
     ],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
@@ -740,14 +741,14 @@ export default () => {
 }
 ```
 
-## Line / Area Animation
+## Line chart/area chart animation
 
-All examples are based on the large-screen (dark) theme and provide a dropdown to switch between different themes.
-Themes are loaded from: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
+All examples are based on the large screen theme (dark), and a theme list is provided for switching different themes.
+Topic list source: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
 
-### 1. Appear Animation
+### 1. Entrance animation
 
-Appear animation introduces the chart when it first enters the page.
+The entry animation is used as a visual guide when the chart first enters the page.
 
 #### 1.1 load
 
@@ -851,10 +852,10 @@ const DATASET = [
 ]
 
 const DIMENSIONS = [
-  { id: 'HqlYadRdHJ5c', alias: 'Category' },
-  { id: '7ti8XuX4kcY1', alias: 'Year' },
+  { id: 'HqlYadRdHJ5c', alias: '类目' },
+  { id: '7ti8XuX4kcY1', alias: '年份' },
 ]
-const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }]
+const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: '销售额' }]
 
 const useLargeScreenThemes = () => {
   const [themes, setThemes] = useState({})
@@ -1091,10 +1092,10 @@ export default () => {
     chartType: 'area',
     dataset: DATASET,
     dimensions: [
-      { id: 'HqlYadRdHJ5c', alias: 'Category' },
-      { id: '7ti8XuX4kcY1', alias: 'Year' },
+      { id: 'HqlYadRdHJ5c', alias: '类目' },
+      { id: '7ti8XuX4kcY1', alias: '年份' },
     ],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
@@ -1126,11 +1127,11 @@ export default () => {
 }
 ```
 
-### 2. Loop Animation
+### 2. Carousel animation
 
-Loop animation keeps the chart in a cyclic motion for long-running display states.
+Carousel animation is used for continuous loop playback of charts to enhance dynamic expression.
 
-#### 2.1 load + atmo (breath)
+#### 2.1 load (loading carousel) + atmosphere (atmosphere effect: breath)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -1277,10 +1278,10 @@ export default () => {
     chartType: 'line',
     dataset: DATASET,
     dimensions: [
-      { id: 'HqlYadRdHJ5c', alias: 'Category' },
-      { id: '7ti8XuX4kcY1', alias: 'Year' },
+      { id: 'HqlYadRdHJ5c', alias: '类目' },
+      { id: '7ti8XuX4kcY1', alias: '年份' },
     ],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
@@ -1290,7 +1291,7 @@ export default () => {
           enable: true,
           interval: 2,
           loop: { enable: true, effects: ['load'], ease: 'linear', duration: 1 },
-          atmo: { effect: 'breath', ease: 'linear' },
+          atmosphere: { effect: 'breath', ease: 'linear' },
         },
       },
     },
@@ -1320,7 +1321,7 @@ export default () => {
 }
 ```
 
-#### 2.2 load + atmo (ripple)
+#### 2.2 load (loading carousel) + atmosphere (atmosphere effect: ripple)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -1467,10 +1468,10 @@ export default () => {
     chartType: 'areaPercent',
     dataset: DATASET,
     dimensions: [
-      { id: 'HqlYadRdHJ5c', alias: 'Category' },
-      { id: '7ti8XuX4kcY1', alias: 'Year' },
+      { id: 'HqlYadRdHJ5c', alias: '类目' },
+      { id: '7ti8XuX4kcY1', alias: '年份' },
     ],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
@@ -1480,7 +1481,7 @@ export default () => {
           enable: true,
           interval: 3,
           loop: { enable: true, effects: ['load'], ease: 'circInOut', duration: 1 },
-          atmo: { effect: 'ripple', ease: 'linear' },
+          atmosphere: { effect: 'ripple', ease: 'linear' },
         },
       },
     },
@@ -1510,16 +1511,16 @@ export default () => {
 }
 ```
 
-## Pie / Donut / Rose Animation
+## Pie chart/ring chart/rose chart animation
 
-All examples are based on the large-screen (dark) theme and provide a dropdown to switch between different themes.
-Themes are loaded from: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
+All examples are based on the large screen theme (dark), and a theme list is provided for switching different themes.
+Topic list source: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
 
-### 1. Appear Animation
+### 1. Entrance animation
 
-Appear animation controls how sectors first enter the view.
+The entry animation is used for how a sector behaves when it first enters view.
 
-#### 1.1 radial
+#### 1.1 radial (radial)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -1620,8 +1621,8 @@ const DATASET = [
   },
 ]
 
-const DIMENSIONS = [{ id: 'HqlYadRdHJ5c', alias: 'Category' }]
-const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }]
+const DIMENSIONS = [{ id: 'HqlYadRdHJ5c', alias: '类目' }]
+const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: '销售额' }]
 
 const useLargeScreenThemes = () => {
   const [themes, setThemes] = useState({})
@@ -1833,8 +1834,8 @@ export default () => {
     theme: themeKey,
     chartType: 'donut',
     dataset: DATASET,
-    dimensions: [{ id: 'HqlYadRdHJ5c', alias: 'Category' }],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
@@ -1866,11 +1867,11 @@ export default () => {
 }
 ```
 
-### 2. Loop Animation
+### 2. Carousel animation
 
-Loop animation keeps emphasizing sectors in a periodic way.
+Carousel animations are used to cycle through and emphasize certain sectors.
 
-#### 2.1 enlarge
+#### 2.1 enlarge (change size)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -2004,8 +2005,8 @@ export default () => {
     theme: themeKey,
     chartType: 'pie',
     dataset: DATASET,
-    dimensions: [{ id: 'HqlYadRdHJ5c', alias: 'Category' }],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
@@ -2040,7 +2041,7 @@ export default () => {
 }
 ```
 
-#### 2.2 relocate
+#### 2.2 relocate (change center)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -2174,8 +2175,8 @@ export default () => {
     theme: themeKey,
     chartType: 'pie',
     dataset: DATASET,
-    dimensions: [{ id: 'HqlYadRdHJ5c', alias: 'Category' }],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
@@ -2210,16 +2211,16 @@ export default () => {
 }
 ```
 
-## Radar Animation
+## Radar chart animation
 
-All examples are based on the large-screen (dark) theme and provide a dropdown to switch between different themes.
-Themes are loaded from: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
+All examples are based on the large screen theme (dark), and a theme list is provided for switching different themes.
+Topic list source: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
 
-### 1. Appear Animation
+### 1. Entrance animation
 
-Appear animation controls the first entrance of radar polygons and points.
+The entrance animation is used for the first display of radar surfaces and nodes.
 
-#### 1.1 radial
+#### 1.1 radial (radial)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -2320,8 +2321,8 @@ const DATASET = [
   },
 ]
 
-const DIMENSIONS = [{ id: 'HqlYadRdHJ5c', alias: 'Category' }]
-const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }]
+const DIMENSIONS = [{ id: 'HqlYadRdHJ5c', alias: '类目' }]
+const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: '销售额' }]
 
 const useLargeScreenThemes = () => {
   const [themes, setThemes] = useState({})
@@ -2573,8 +2574,8 @@ export default () => {
     theme: themeKey,
     chartType: 'radar',
     dataset: DATASET,
-    dimensions: [{ id: 'HqlYadRdHJ5c', alias: 'Category' }],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
@@ -2606,11 +2607,11 @@ export default () => {
 }
 ```
 
-### 2. Loop Animation
+### 2. Carousel animation
 
-Radar loop animation is expressed through `atmo.effect` for continuous ambient motion.
+Radar chart carousel animation provides constant atmosphere via `atmosphere.effect`.
 
-#### 2.1 none + atmo (ripple)
+#### 2.1 none (carousel) + atmosphere (atmosphere effect: ripple)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -2764,14 +2765,14 @@ export default () => {
     theme: themeKey,
     chartType: 'radar',
     dataset: DATASET,
-    dimensions: [{ id: 'HqlYadRdHJ5c', alias: 'Category' }],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
       params: {
         appear: { enable: true, effects: ['radial'], ease: 'linear', duration: 1 },
-        loop: { enable: true, interval: 2, atmo: { effect: 'ripple', ease: 'linear' } },
+        loop: { enable: true, interval: 2, atmosphere: { effect: 'ripple', ease: 'linear' } },
       },
     },
   }
@@ -2800,7 +2801,7 @@ export default () => {
 }
 ```
 
-#### 2.2 none + atmo (reveal)
+#### 2.2 none (carousel) + atmosphere (atmosphere effect: reveal)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -2954,14 +2955,14 @@ export default () => {
     theme: themeKey,
     chartType: 'radar',
     dataset: DATASET,
-    dimensions: [{ id: 'HqlYadRdHJ5c', alias: 'Category' }],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
       params: {
         appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1 },
-        loop: { enable: true, interval: 3, atmo: { effect: 'reveal', ease: 'linear' } },
+        loop: { enable: true, interval: 3, atmosphere: { effect: 'reveal', ease: 'linear' } },
       },
     },
   }
@@ -2990,7 +2991,7 @@ export default () => {
 }
 ```
 
-#### 2.3 none + atmo (breath)
+#### 2.3 none (carousel) + atmosphere (atmosphere effect: breath)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -3144,14 +3145,14 @@ export default () => {
     theme: themeKey,
     chartType: 'radar',
     dataset: DATASET,
-    dimensions: [{ id: 'HqlYadRdHJ5c', alias: 'Category' }],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
       params: {
         appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1 },
-        loop: { enable: true, interval: 2, atmo: { effect: 'breath', ease: 'linear' } },
+        loop: { enable: true, interval: 2, atmosphere: { effect: 'breath', ease: 'linear' } },
       },
     },
   }
@@ -3180,14 +3181,14 @@ export default () => {
 }
 ```
 
-## Scatter Animation
+## Scatter plot animation
 
-All examples are based on the large-screen (dark) theme and provide a dropdown to switch between different themes.
-Themes are loaded from: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
+All examples are based on the large screen theme (dark), and a theme list is provided for switching different themes.
+Topic list source: `https://lf9-dp-fe-cms-tos.byteorg.com/obj/bit-cloud/theme.json`
 
-### 1. Appear Animation
+### 1. Entrance animation
 
-Appear animation controls how scatter points first appear.
+The entry animation is used when a scatter first enters view.
 
 #### 1.1 scale
 
@@ -3290,8 +3291,8 @@ const DATASET = [
   },
 ]
 
-const DIMENSIONS = [{ id: 'HqlYadRdHJ5c', alias: 'Category' }]
-const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }]
+const DIMENSIONS = [{ id: 'HqlYadRdHJ5c', alias: '类目' }]
+const MEASURES = [{ id: 'Tn97A7q0XVDq', alias: '销售额' }]
 
 const useLargeScreenThemes = () => {
   const [themes, setThemes] = useState({})
@@ -3369,7 +3370,7 @@ export default () => {
 }
 ```
 
-#### 1.2 fadeIn
+#### 1.2 fadeIn (fade in)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -3503,8 +3504,8 @@ export default () => {
     theme: themeKey,
     chartType: 'scatter',
     dataset: DATASET,
-    dimensions: [{ id: 'HqlYadRdHJ5c', alias: 'Category' }],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
@@ -3536,11 +3537,11 @@ export default () => {
 }
 ```
 
-### 2. Loop Animation
+### 2. Carousel animation
 
-Scatter loop animation is typically expressed with `atmo` for continuous rhythm.
+Scatter carousel animations provide continuous rhythm through atmosphere.
 
-#### 2.1 none + atmo (ripple)
+#### 2.1 none (carousel) + atmosphere (atmosphere effect: ripple)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -3674,14 +3675,14 @@ export default () => {
     theme: themeKey,
     chartType: 'scatter',
     dataset: DATASET,
-    dimensions: [{ id: 'HqlYadRdHJ5c', alias: 'Category' }],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
       params: {
         appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1 },
-        loop: { enable: true, interval: 2, atmo: { effect: 'ripple', ease: 'linear' } },
+        loop: { enable: true, interval: 2, atmosphere: { effect: 'ripple', ease: 'linear' } },
       },
     },
   }
@@ -3710,7 +3711,7 @@ export default () => {
 }
 ```
 
-#### 2.2 none + atmo (breath)
+#### 2.2 none (carousel) + atmosphere (atmosphere effect: breath)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -3844,14 +3845,14 @@ export default () => {
     theme: themeKey,
     chartType: 'scatter',
     dataset: DATASET,
-    dimensions: [{ id: 'HqlYadRdHJ5c', alias: 'Category' }],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
       params: {
         appear: { enable: true, effects: ['fadeIn'], ease: 'linear', duration: 1 },
-        loop: { enable: true, interval: 2, atmo: { effect: 'breath', ease: 'linear' } },
+        loop: { enable: true, interval: 2, atmosphere: { effect: 'breath', ease: 'linear' } },
       },
     },
   }
@@ -3880,7 +3881,7 @@ export default () => {
 }
 ```
 
-#### 2.3 none + atmo (reveal)
+#### 2.3 none (carousel) + atmosphere (atmosphere effect: reveal)
 
 ```tsx preview
 import { useEffect, useState } from 'react'
@@ -4014,14 +4015,14 @@ export default () => {
     theme: themeKey,
     chartType: 'scatter',
     dataset: DATASET,
-    dimensions: [{ id: 'HqlYadRdHJ5c', alias: 'Category' }],
-    measures: [{ id: 'Tn97A7q0XVDq', alias: 'Sales' }],
+    dimensions: [{ id: 'HqlYadRdHJ5c', alias: '类目' }],
+    measures: [{ id: 'Tn97A7q0XVDq', alias: '销售额' }],
     label: { enable: false },
     animation: {
       enable: true,
       params: {
         appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1 },
-        loop: { enable: true, interval: 3, atmo: { effect: 'reveal', ease: 'linear' } },
+        loop: { enable: true, interval: 3, atmosphere: { effect: 'reveal', ease: 'linear' } },
       },
     },
   }

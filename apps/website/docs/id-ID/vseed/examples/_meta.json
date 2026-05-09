@@ -1,0 +1,14 @@
+[
+  {
+    "type": "dir",
+    "name": "chartType",
+    "label": "ChartType",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "features",
+    "label": "Features",
+    "collapsed": true
+  }
+]

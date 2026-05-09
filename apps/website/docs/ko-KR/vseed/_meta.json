@@ -1,0 +1,7 @@
+[
+  { "type": "dir", "name": "guide", "label": "소개", "collapsed": false },
+  { "type": "dir", "name": "examples", "label": "예제", "collapsed": true },
+  { "type": "dir", "name": "option", "label": "설정 항목", "collapsed": true },
+  { "type": "dir", "name": "api", "label": "API", "collapsed": true },
+  { "type": "dir", "name": "development", "label": "기여 가이드", "collapsed": true }
+]

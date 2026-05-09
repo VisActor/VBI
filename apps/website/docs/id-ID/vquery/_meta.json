@@ -1,0 +1,16 @@
+[
+  "index",
+  {
+    "type": "dir",
+    "name": "examples",
+    "label": "Contoh",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "development",
+    "label": "Panduan Kontribusi",
+    "collapsed": true
+  },
+  "playground"
+]

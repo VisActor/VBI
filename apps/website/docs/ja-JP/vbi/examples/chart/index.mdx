@@ -1,0 +1,110 @@
+# chart
+
+このページでは chart builder のサンプルを紹介します。
+
+## ChartType
+
+| サンプル | 説明 | タグ |
+| --- | --- | --- |
+| [area-by-order-date](./chartType#area-by-order-date) | 面グラフ - 日付別の売上推移 | - |
+| [bar-by-product-type](./chartType#bar-by-product-type) | 横棒グラフ - 商品タイプ別の売上 | - |
+| [chart-type-switching](./chartType#chart-type-switching) | Switch between line and bar chart types | - |
+| [column-by-area](./chartType#column-by-area) | 縦棒グラフ - 地域別の売上 | - |
+| [donut-by-customer-type](./chartType#donut-by-customer-type) | ドーナツグラフ - 顧客タイプ別の売上構成比 | - |
+| [line-by-province](./chartType#line-by-province) | 折れ線グラフ - 省別の売上推移 | - |
+| [line-chart](./chartType#line-chart) | 折れ線グラフ - 省別の売上推移 | - |
+| [pie-by-area](./chartType#pie-by-area) | 円グラフ - 地域別の売上構成比 | - |
+| [pie-chart-measure-encoding](./chartType#pie-chart-measure-encoding) | 円グラフのメジャーエンコーディング - measure-encoding.ts の Pie チャートタイプをテスト | - |
+| [rose-by-city](./chartType#rose-by-city) | ローズチャート - 都市別の売上 | - |
+| [scatter-chart-measure-encoding](./chartType#scatter-chart-measure-encoding) | 散布図のメジャーエンコーディング - measure-encoding.ts の Scatter チャートタイプをテスト | - |
+| [scatter-sales-profit](./chartType#scatter-sales-profit) | 散布図 - 売上と利益の関係 | - |
+
+## Dimensions
+
+| サンプル | 説明 | タグ |
+| --- | --- | --- |
+| [add-date-dimension-year](./dimensions#add-date-dimension-year) | 年単位で集約する日付ディメンションを追加 | - |
+| [add-dimension](./dimensions#add-dimension) | ディメンションを追加 | - |
+| [add-multiple-dimensions](./dimensions#add-multiple-dimensions) | 複数のディメンションを追加（チェーン呼び出し） | - |
+| [mixed-date-and-normal-dimensions](./dimensions#mixed-date-and-normal-dimensions) | 通常ディメンションと四半期集約の日付ディメンションを組み合わせてグループ化 | - |
+| [remove-dimension](./dimensions#remove-dimension) | ディメンションを削除 | - |
+| [update-date-dimension-month](./dimensions#update-date-dimension-month) | 既存の日付ディメンションを月単位の集約に更新 | - |
+| [update-dimension](./dimensions#update-dimension) | ディメンションを更新 | - |
+
+## HavingFilter
+
+| サンプル | 説明 | タグ |
+| --- | --- | --- |
+| [add-having-filter](./havingFilter#add-having-filter) | 地域別にグループ化した後、売上が 100 万を超える高業績地域を絞り込み | - |
+| [add-multiple-having-filter](./havingFilter#add-multiple-having-filter) | 複数の Having 条件をチェーンで追加し、高売上かつ高利益の地域を絞り込み | - |
+| [clear-having-filter](./havingFilter#clear-having-filter) | すべての Having フィルター条件をクリアし、全量のグループ集計結果を表示 | - |
+| [having-array-value-with-in-operator](./havingFilter#having-array-value-with-in-operator) | Having filter with array value that triggers 'in' operator conversion | - |
+| [having-array-value-with-not-in-operator](./havingFilter#having-array-value-with-not-in-operator) | Having filter with array value that triggers 'not in' operator conversion | - |
+| [having-clear-and-rebuild](./havingFilter#having-clear-and-rebuild) | 既存の having 条件をクリアして新しいグループ絞り込みを再構築し、ユーザーがフィルターパネルをリセットして再設定する流れを再現 | - |
+| [having-deeply-nested-groups](./havingFilter#having-deeply-nested-groups) | 3 階層のネストグループ: OR(AND(売上 50 万超, 利益 5 万超), AND(数量 100 超, 平均割引 0.3 未満)) による複雑な業務絞り込み | - |
+| [having-empty-dsl-compose-target](./havingFilter#having-empty-dsl-compose-target) | 空の DSL から builder で where/having/measures/dimensions を組み立て、sum と countDistinct 集約を含む having 条件を構成 | - |
+| [having-field-not-in-measures-and-dimensions](./havingFilter#having-field-not-in-measures-and-dimensions) | 空の DSL を初期化し、builder でディメンション area とメジャー sales だけを追加しつつ、measures/dimensions に含まれない profit フィールドを having で使用（SUM(profit) > 100000） | - |
+| [having-find-and-update](./havingFilter#having-find-and-update) | having 条件を追加した後、find で検索してしきい値と演算子を動的に更新し、対話的なフィルター調整を再現 | - |
+| [having-group-add-to-existing](./havingFilter#having-group-add-to-existing) | 既存の having グループに新しい条件を追加し、絞り込みルールを段階的に細分化する操作を再現 | - |
+| [having-group-remove-condition](./havingFilter#having-group-remove-condition) | 既存の having グループから特定条件を削除し、ユーザーがフィルター項目を解除する操作を再現 | - |
+| [having-mix-filters-and-groups](./havingFilter#having-mix-filters-and-groups) | 独立したフィルター条件と OR グループを併用: 売上 50 万超 AND (利益 10 万超 OR 数量 30 以上) | - |
+| [having-multi-dimension-aggregate](./havingFilter#having-multi-dimension-aggregate) | 品類と地域の 2 ディメンションでグループ化し、平均割引 20% 未満かつ総売上 10 万超の組み合わせを絞り込んで、高価値・低割引の業務を分析 | - |
+| [having-nested-groups](./havingFilter#having-nested-groups) | ネストグループ: AND(売上 100 万超, OR(利益 20 万超, 数量 50 以上)) | - |
+| [having-or-group](./havingFilter#having-or-group) | OR グループで高売上または高利益の地域を絞り込み | - |
+| [having-scatter-profit-analysis](./havingFilter#having-scatter-profit-analysis) | 散布図分析: 品類別に高利益率かつ取引数 20 件超の品類を絞り込み、有望な業務を特定 | - |
+| [having-update-group-operator](./havingFilter#having-update-group-operator) | 既存の Having グループの論理演算子を AND から OR に更新 | - |
+| [having-with-where-combined](./havingFilter#having-with-where-combined) | where と having の組み合わせ: 先に where でオフィス用品カテゴリを絞り込み、次に having で売上 5 万超または利益 1 万超の省を絞り込み | - |
+| [remove-having-filter](./havingFilter#remove-having-filter) | 余分な Having フィルター条件を削除し、利益フィルターだけを残す | - |
+
+## Locale
+
+| サンプル | 説明 | タグ |
+| --- | --- | --- |
+| [en-US-locale](./locale#en-US-locale) | 英語 locale のテスト | - |
+| [zh-CN-locale](./locale#zh-CN-locale) | 中国語 locale のテスト | - |
+
+## Measures
+
+| サンプル | 説明 | タグ |
+| --- | --- | --- |
+| [add-measure](./measures#add-measure) | メジャーを追加 | - |
+| [add-measure-encoding](./measures#add-measure-encoding) | メジャーを追加してエンコーディングを設定 | - |
+| [measure-with-custom-and-auto-format](./measures#measure-with-custom-and-auto-format) | メジャーのフォーマット: 売上は万元単位のカスタム形式（¥ プレフィックス、小数 2 桁）、利益率は自動フォーマット、割引はパーセント形式を使用 | - |
+| [remove-measure](./measures#remove-measure) | メジャーを削除 | - |
+| [update-measure](./measures#update-measure) | メジャーを更新 | - |
+
+## Theme
+
+| サンプル | 説明 | タグ |
+| --- | --- | --- |
+| [dark-theme](./theme#dark-theme) | ダークテーマのチャート | - |
+| [light-theme](./theme#light-theme) | ライトテーマのチャート | - |
+
+## UndoManager
+
+| サンプル | 説明 | タグ |
+| --- | --- | --- |
+| [undo-redo](./undoManager#undo-redo) | Undo/Redo 機能のテスト | - |
+
+## WhereFilter
+
+| サンプル | 説明 | タグ |
+| --- | --- | --- |
+| [between-sales-range-analysis](./whereFilter#between-sales-range-analysis) | 売上レンジ分析: between で 1 件あたり 1000〜10000 元の注文を絞り込み、品類別に利益を集計 | - |
+| [clear-and-rebuild-filters](./whereFilter#clear-and-rebuild-filters) | フィルター条件のクリアと再構築: 古い単純フィルターを削除し、グループを含む複雑な条件を再構築 | - |
+| [date-filter-period-and-range-combo](./whereFilter#date-filter-period-and-range-combo) | 日付範囲の組み合わせフィルター: period で 2024 年 Q1 データを絞り込み、range で利益範囲も限定して、品類と配送方式をクロス分析 | - |
+| [date-filter-relative-with-nested-conditions](./whereFilter#date-filter-relative-with-nested-conditions) | 日付フィルターとネスト条件の組み合わせ: 直近 30 日以内の消費者または法人顧客の高額注文を絞り込み、省別に売上と利益を集計 | - |
+| [deeply-nested-or-and-groups](./whereFilter#deeply-nested-or-and-groups) | 多階層ネストグループ: 消費者の当日配送または法人顧客の一級配送の高額注文を、3 階層の AND/OR ネストで表現 | - |
+| [high-discount-tech-profit-analysis](./whereFilter#high-discount-tech-profit-analysis) | 高割引のテクノロジー商品利益分析: テクノロジー品類かつ割引 0.5 超の注文を絞り込み、地域別に利益を比較 | - |
+| [in-operator-multi-area-delivery](./whereFilter#in-operator-multi-area-delivery) | 複数地域の配送効率比較: in で華東、華北、中南の 3 大地域を絞り込み、配送方式別に注文数を集計 | - |
+| [nested-group-region-product-filter](./whereFilter#nested-group-region-product-filter) | 華東地域のオフィス用品または家具の売上: ネストグループを使い、地域条件を AND、品類条件を OR で接続 | - |
+| [not-between-sales-range](./whereFilter#not-between-sales-range) | Not between filter: exclude sales between 1000~10000 | - |
+| [not-between-with-explicit-operators](./whereFilter#not-between-with-explicit-operators) | Not between filter with explicit leftOp/rightOp to test invert functions | - |
+| [office-supplies-sales-by-province](./whereFilter#office-supplies-sales-by-province) | 省別オフィス用品売上ランキング: オフィス用品カテゴリを絞り込み、省別に売上を集計 | - |
+| [or-group-product-category-comparison](./whereFilter#or-group-product-category-comparison) | オフィス用品とテクノロジー品類の比較: OR グループで 2 つの品類を絞り込み、地域別に売上を比較 | - |
+| [remove-condition-from-group](./whereFilter#remove-condition-from-group) | グループから条件を削除: 3 つの品類を含む事前設定の OR グループから、updateGroup で 1 つを削除 | - |
+| [remove-filter-by-index](./whereFilter#remove-filter-by-index) | インデックスでフィルター条件を削除: 最初の品類フィルターを削除し、地域条件だけを残す | - |
+| [update-filter-switch-province](./whereFilter#update-filter-switch-province) | フィルター条件を動的に変更: 省フィルターを浙江から広東に更新し、売上の変化を確認 | - |
+| [update-group-or-to-and](./whereFilter#update-group-or-to-and) | グループロジックを変更: 事前設定の OR 品類グループを AND に切り替え、絞り込み範囲を狭める | - |
+| [where-filter-array-value-converts-to-in](./whereFilter#where-filter-array-value-converts-to-in) | Where filter with array value using '=' operator should convert to 'in' | - |
+| [where-filter-array-value-converts-to-not-in](./whereFilter#where-filter-array-value-converts-to-not-in) | Where filter with array value using '!=' operator should convert to 'not in' | - |

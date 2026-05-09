@@ -1,0 +1,7 @@
+[
+  { "type": "dir", "name": "guide", "label": "Einführung", "collapsed": false },
+  { "type": "dir", "name": "examples", "label": "Beispiel", "collapsed": true },
+  { "type": "dir", "name": "option", "label": "Konfigurationsoptionen", "collapsed": true },
+  { "type": "dir", "name": "api", "label": "API", "collapsed": true },
+  { "type": "dir", "name": "development", "label": "Beitragsleitfaden", "collapsed": true }
+]

@@ -2,13 +2,13 @@
 pageType: doc
 ---
 
-# Cross-Platform Rendering
+# Cross-platform rendering
 
 :::tip
-`vseed` supports lossless serialization, enabling cross-platform transfer, copy-paste, and direct spec generation via `builder` in both Node.js and browser environments
+`vseed` supports lossless serialization, so `cross-platform transfer`, `copy and paste`, in Node environment and browser environment, you can directly obtain the complete spec through `builder`
 :::
 
-The example below demonstrates serializing a VSeed config to a JSON string (copy simulation) and deserializing the JSON string for rendering (paste simulation).
+The following example shows how to serialize a VSeed configuration into a JSON string (simulating a copy), and how to deserialize and render a JSON string (simulating a paste).
 
 ```tsx direction=vertical playground
 import { useRef, useEffect, useState } from 'react'
@@ -66,7 +66,7 @@ const Demo = () => {
       chartRef.current = vchart
     } catch (error) {
       console.log('debug', error)
-      alert('Error reading from clipboard')
+      alert('从剪切板读取内容时出错')
     }
   }
 

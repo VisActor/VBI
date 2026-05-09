@@ -1,0 +1,1386 @@
+# whereFilter
+
+import { registerDemoConnector } from '@components'
+
+{registerDemoConnector()}
+
+## between-sales-range-analysis
+
+Phân tích phạm vi bán hàng: sử dụng giữa để lọc các đơn hàng riêng lẻ từ 1.000 đến 10.000 nhân dân tệ và tóm tắt lợi nhuận theo danh mục
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "product_type",
+              "alias": "品类"
+            }
+          ],
+          "measures": [
+            {
+              "field": "profit",
+              "alias": "利润",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter.add('sales', node => {
+    node.setOperator('between').setValue({ min: 1000, max: 10000 });
+  });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## clear-and-rebuild-filters
+
+Xóa và xây dựng lại bộ lọc: xóa các bộ lọc đơn giản cũ và xây dựng lại chúng thành các điều kiện phức tạp bao gồm các nhóm
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "province",
+              "alias": "省份"
+            }
+          ],
+          "measures": [
+            {
+              "field": "profit",
+              "alias": "利润",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": [
+              {
+                "id": "f-old1",
+                "field": "product_type",
+                "op": "eq",
+                "value": "办公用品"
+              },
+              {
+                "id": "f-old2",
+                "field": "area",
+                "op": "eq",
+                "value": "华东"
+              }
+            ]
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter
+    .clear()
+    .add('profit', node => node.setOperator('>').setValue(0))
+    .addGroup('or', group => {
+      group
+        .add('area', n => n.setOperator('eq').setValue('华东'))
+        .add('area', n => n.setOperator('eq').setValue('华北'));
+    });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## date-filter-period-and-range-combo
+
+Lọc kết hợp phạm vi ngày: Sử dụng khoảng thời gian để lọc dữ liệu Q1 vào năm 2024 và sử dụng phạm vi để giới hạn phạm vi lợi nhuận, đồng thời phân tích chéo theo danh mục và phương thức phân phối
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "bar",
+          "dimensions": [
+            {
+              "field": "product_type",
+              "alias": "品类"
+            },
+            {
+              "field": "delivery_method",
+              "alias": "配送方式"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            },
+            {
+              "field": "profit",
+              "alias": "利润率",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "avg"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 50
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter
+    .add('order_date', node => {
+      node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 1 });
+    })
+    .add('profit', node => {
+      node.setOperator('between').setValue({ min: 0, max: 5000, leftOp: '<=', rightOp: '<' });
+    })
+    .add('sales', node => node.setOperator('>=').setValue(100));
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## date-filter-relative-with-nested-conditions
+
+Kết hợp lọc ngày và điều kiện lồng: lọc các đơn hàng có giá trị cao từ người tiêu dùng hoặc khách hàng doanh nghiệp trong 30 ngày qua và tính toán doanh thu, lợi nhuận theo tỉnh thành
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "province",
+              "alias": "省份"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            },
+            {
+              "field": "profit",
+              "alias": "利润",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter
+    .add('order_date', node => {
+      node.setDate({ type: 'relative', mode: 'last', amount: 30, unit: 'day' });
+    })
+    .add('sales', node => node.setOperator('>').setValue(500))
+    .addGroup('or', group => {
+      group
+        .add('customer_type', n => n.setOperator('eq').setValue('消费者'))
+        .add('customer_type', n => n.setOperator('in').setValue(['公司', '小型企业']));
+    });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## deeply-nested-or-and-groups
+
+Nhóm lồng ghép đa cấp: các đơn hàng có giá trị cao giao hàng trong ngày cho người tiêu dùng hoặc giao hàng cấp một cho khách hàng doanh nghiệp, lồng ghép VÀ/HOẶC ba cấp độ
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "province",
+              "alias": "省份"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter
+    .add('sales', node => node.setOperator('>').setValue(500))
+    .addGroup('or', outerGroup => {
+      outerGroup
+        .addGroup('and', g1 => {
+          g1.add('customer_type', n => n.setOperator('eq').setValue('消费者'))
+            .add('delivery_method', n => n.setOperator('eq').setValue('当日'));
+        })
+        .addGroup('and', g2 => {
+          g2.add('customer_type', n => n.setOperator('in').setValue(['公司', '小型企业']))
+            .add('delivery_method', n => n.setOperator('eq').setValue('一级'));
+        });
+    });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## high-discount-tech-profit-analysis
+
+Phân tích lợi nhuận các sản phẩm công nghệ chiết khấu cao: Sàng lọc đơn hàng thuộc danh mục công nghệ có mức chiết khấu lớn hơn 0,5 và so sánh lợi nhuận theo khu vực
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "field": "profit",
+              "alias": "利润",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter
+    .add('product_type', node => node.setOperator('eq').setValue('技术'))
+    .add('discount', node => node.setOperator('>').setValue(0.5));
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## in-operator-multi-area-delivery
+
+So sánh hiệu quả phân phối đa khu vực: sử dụng in để lọc ba khu vực chính là Đông Trung Quốc, Bắc Trung Quốc, Trung và Nam Trung Quốc, đồng thời đếm số lượng đơn hàng theo phương thức giao hàng.
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "bar",
+          "dimensions": [
+            {
+              "field": "delivery_method",
+              "alias": "配送方式"
+            }
+          ],
+          "measures": [
+            {
+              "field": "amount",
+              "alias": "订单量",
+              "encoding": "xAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter.add('area', node => {
+    node.setOperator('in').setValue(['华东', '华北', '中南']);
+  });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## nested-group-region-product-filter
+
+Bán vật tư văn phòng hoặc đồ nội thất ở miền Đông Trung Quốc: Sử dụng nhóm lồng nhau VÀ kết nối các điều kiện khu vực và điều kiện danh mục HOẶC
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "city",
+              "alias": "城市"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 10
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter
+    .add('area', node => node.setOperator('eq').setValue('华东'))
+    .addGroup('or', group => {
+      group
+        .add('product_type', node => node.setOperator('eq').setValue('办公用品'))
+        .add('product_type', node => node.setOperator('eq').setValue('家具'));
+    });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## not-between-sales-range
+
+Not between filter: exclude sales between 1000~10000
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "product_type",
+              "alias": "品类"
+            }
+          ],
+          "measures": [
+            {
+              "field": "profit",
+              "alias": "利润",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter.add('sales', node => {
+    node.setOperator('not between').setValue({ min: 1000, max: 10000 });
+  });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## not-between-with-explicit-operators
+
+Not between filter with explicit leftOp/rightOp to test invert functions
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "product_type",
+              "alias": "品类"
+            }
+          ],
+          "measures": [
+            {
+              "field": "profit",
+              "alias": "利润",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter.add('sales', node => {
+    node.setOperator('not between').setValue({ min: 1000, max: 10000, leftOp: '<', rightOp: '<' });
+  });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## office-supplies-sales-by-province
+
+Xếp hạng doanh số bán vật tư văn phòng theo tỉnh: lọc danh mục vật tư văn phòng và tổng hợp doanh số theo tỉnh
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "bar",
+          "dimensions": [
+            {
+              "field": "province",
+              "alias": "省份"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "xAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter.add('product_type', node => {
+    node.setOperator('eq').setValue('办公用品');
+  });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## or-group-product-category-comparison
+
+So sánh danh mục vật tư văn phòng và công nghệ: sử dụng nhóm HOẶC để lọc hai danh mục và so sánh doanh số theo khu vực
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter.addGroup('or', group => {
+    group
+      .add('product_type', node => node.setOperator('eq').setValue('办公用品'))
+      .add('product_type', node => node.setOperator('eq').setValue('技术'));
+  });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## remove-condition-from-group
+
+Xóa điều kiện khỏi nhóm: nhóm OR được thiết lập sẵn có ba danh mục, xóa một điều kiện bằng updateGroup
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": [
+              {
+                "id": "g-products",
+                "op": "or",
+                "conditions": [
+                  {
+                    "id": "f-office",
+                    "field": "product_type",
+                    "op": "eq",
+                    "value": "办公用品"
+                  },
+                  {
+                    "id": "f-tech",
+                    "field": "product_type",
+                    "op": "eq",
+                    "value": "技术"
+                  },
+                  {
+                    "id": "f-furniture",
+                    "field": "product_type",
+                    "op": "eq",
+                    "value": "家具"
+                  }
+                ]
+              }
+            ]
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter.updateGroup('g-products', group => {
+    group.remove('f-furniture');
+  });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## remove-filter-by-index
+
+Xóa điều kiện lọc theo chỉ mục: xóa bộ lọc danh mục đầu tiên và chỉ giữ lại điều kiện khu vực
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "province",
+              "alias": "省份"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": [
+              {
+                "id": "f-product",
+                "field": "product_type",
+                "op": "eq",
+                "value": "办公用品"
+              },
+              {
+                "id": "f-area",
+                "field": "area",
+                "op": "in",
+                "value": [
+                  "华东",
+                  "华北",
+                  "中南"
+                ]
+              }
+            ]
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter.remove(0);
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## update-filter-switch-province
+
+Tự động sửa đổi các điều kiện lọc: cập nhật bộ lọc tỉnh từ Chiết Giang đến Quảng Đông và quan sát những thay đổi về doanh số
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "bar",
+          "dimensions": [
+            {
+              "field": "city",
+              "alias": "城市"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "xAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": [
+              {
+                "id": "f-province",
+                "field": "province",
+                "op": "eq",
+                "value": "浙江"
+              },
+              {
+                "id": "f-product",
+                "field": "product_type",
+                "op": "eq",
+                "value": "技术"
+              }
+            ]
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter.update('f-province', node => {
+    node.setValue('广东');
+  });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## update-group-or-to-and
+
+Sửa đổi logic nhóm: chuyển nhóm danh mục OR mặc định thành AND và thu hẹp phạm vi lọc
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": [
+              {
+                "id": "g-customer",
+                "op": "or",
+                "conditions": [
+                  {
+                    "id": "f-ct1",
+                    "field": "customer_type",
+                    "op": "eq",
+                    "value": "公司"
+                  },
+                  {
+                    "id": "f-ct2",
+                    "field": "customer_type",
+                    "op": "eq",
+                    "value": "消费者"
+                  }
+                ]
+              }
+            ]
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter.updateGroup('g-customer', group => {
+    group.setOperator('and');
+  });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## where-filter-array-value-converts-to-in
+
+Where filter with array value using '=' operator should convert to 'in'
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter.add('area', node => {
+    node.setOperator('=').setValue(['华东', '华北']);
+  });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## where-filter-array-value-converts-to-not-in
+
+Where filter with array value using '!=' operator should convert to 'not in'
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter.add('area', node => {
+    node.setOperator('!=').setValue(['华东', '华北']);
+  });
+}
+      applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+

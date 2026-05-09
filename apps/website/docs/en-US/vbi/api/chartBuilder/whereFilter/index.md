@@ -1,10 +1,10 @@
 # WhereFilterBuilder
 
-Where filter builder for adding, modifying, and removing row-level filter conditions. Where filters take effect before data querying and are used to filter raw data.
+Where filter builder, used to add, modify, and delete row-level filter conditions. Where filtering takes effect before data query and is used to filter original data
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
@@ -16,10 +16,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### getConditions
 
@@ -29,11 +29,11 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 getConditions(): Y.Array<any>
 ```
 
-**Returns**: `Y.Array<any>`
+**Return**: `() => void`
 
 ### add
 
-Adds a Where filter condition.
+Add a Where filter
 
 **Definition**:
 
@@ -41,18 +41,18 @@ Adds a Where filter condition.
 add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilterBuilder
 ```
 
-**Returns**: `WhereFilterBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `field` | string | - Field name |
-| `callback` | (node: WhereFilterNodeBuilder) => void | - Callback function |
+| `field` | string | - field name |
+| `callback` | (node: WhereFilterNodeBuilder) => void | - callback function |
 
 ### addGroup
 
-Adds a Where group.
+Add a Where group
 
 **Definition**:
 
@@ -60,18 +60,18 @@ Adds a Where group.
 addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereFilterBuilder
 ```
 
-**Returns**: `WhereFilterBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `op` | 'and' \| 'or' | - Logical operator |
-| `callback` | (group: WhereGroupBuilder) => void | - Callback function |
+| `callback` | (group: WhereGroupBuilder) => void | - callback function |
 
 ### update
 
-Updates the filter condition with the specified ID.
+Update filter for specified ID
 
 **Definition**:
 
@@ -79,18 +79,18 @@ Updates the filter condition with the specified ID.
 update(id: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilterBuilder
 ```
 
-**Returns**: `WhereFilterBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `id` | string | - Filter condition ID |
-| `callback` | (node: WhereFilterNodeBuilder) => void | - Callback function |
+| `id` | string | - filter ID |
+| `callback` | (node: WhereFilterNodeBuilder) => void | - callback function |
 
 ### updateGroup
 
-Updates the group with the specified ID.
+Update the group with the specified ID
 
 **Definition**:
 
@@ -98,18 +98,18 @@ Updates the group with the specified ID.
 updateGroup(id: string, callback: (group: WhereGroupBuilder) => void): WhereFilterBuilder
 ```
 
-**Returns**: `WhereFilterBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `id` | string | - Group ID |
-| `callback` | (group: WhereGroupBuilder) => void | - Callback function |
+| `id` | string | - group ID |
+| `callback` | (group: WhereGroupBuilder) => void | - callback function |
 
 ### remove
 
-Removes the condition with the specified ID or the item at the specified index.
+Delete the condition of the specified ID or the item of the specified index
 
 **Definition**:
 
@@ -117,17 +117,17 @@ Removes the condition with the specified ID or the item at the specified index.
 remove(idOrIndex: string | number): WhereFilterBuilder
 ```
 
-**Returns**: `WhereFilterBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `idOrIndex` | string \| number | - ID or index |
 
 ### find
 
-Finds the first condition (filter or group) matching the callback condition, behaves like `Array.find`.
+Find the first condition (filtering or grouping) by callback condition, behaves the same as Array.find
 
 **Definition**:
 
@@ -135,17 +135,17 @@ Finds the first condition (filter or group) matching the callback condition, beh
 find(predicate: (entry: WhereFilterNodeBuilder | WhereGroupBuilder, index: number) => boolean): WhereFilterNodeBuilder | WhereGroupBuilder | undefined
 ```
 
-**Returns**: `WhereFilterNodeBuilder \| WhereGroupBuilder \| undefined`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `predicate` | (entry: WhereFilterNodeBuilder \| WhereGroupBuilder, index: number) => boolean | - Search condition |
+| `predicate` | (entry: WhereFilterNodeBuilder \| WhereGroupBuilder, index: number) => boolean | - Search conditions |
 
 ### clear
 
-Clears all Where filter conditions.
+Clear all Where filters
 
 **Definition**:
 
@@ -155,7 +155,7 @@ clear()
 
 ### toJSON
 
-Exports the complete Where filter configuration.
+Export complete Where filtering configuration
 
 **Definition**:
 
@@ -163,11 +163,11 @@ Exports the complete Where filter configuration.
 toJSON(): VBIWhereGroup
 ```
 
-**Returns**: `VBIWhereGroup`
+**Return**: `() => void`
 
 ### observe
 
-Listens for filter condition changes, returns an unsubscribe function.
+Monitor changes in filter conditions and return a function to cancel monitoring.
 
 **Definition**:
 
@@ -175,17 +175,17 @@ Listens for filter condition changes, returns an unsubscribe function.
 observe(callback: ObserveDeepCallback): () => void
 ```
 
-**Returns**: `() => void`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `callback` | ObserveDeepCallback | - Callback function |
+| `callback` | ObserveDeepCallback | - callback function |
 
 ### static isGroup
 
-Determines whether the node is a group node.
+Determine whether it is a group node
 
 **Definition**:
 
@@ -193,17 +193,17 @@ Determines whether the node is a group node.
 static isGroup(yMap: Y.Map<any>): boolean
 ```
 
-**Returns**: `boolean`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | `Y.Map<any>` | - |
 
 ### static isNode
 
-Determines whether the node is a leaf node.
+Determine whether it is a leaf node
 
 **Definition**:
 
@@ -211,10 +211,10 @@ Determines whether the node is a leaf node.
 static isNode(yMap: Y.Map<any>): boolean
 ```
 
-**Returns**: `boolean`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | `Y.Map<any>` | - |

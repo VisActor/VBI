@@ -2,11 +2,11 @@
 pageType: doc
 ---
 
-# Pivot & Combination
+# Perspective and composition
 
-## Measure Grouping
+## Measure grouping
 
-Use the `parentId` property in `measures` to group measures for display.
+Through the `parentId` attribute in `measures`, measures can be displayed in groups.
 
 ```tsx direction=vertical playground
 import { useRef, useEffect, memo } from 'react'
@@ -34,10 +34,10 @@ const Demo = () => {
         { date: '2022', profit: 50, sales: 400 },
         { date: '2023', profit: 40, sales: 500 },
       ],
-      dimensions: [{ id: 'date', alias: 'Date' }],
+      dimensions: [{ id: 'date', alias: '日期' }],
       measures: [
-        { id: 'profit', alias: 'Profit', parentId: 'profit-group' },
-        { id: 'sales', alias: 'Sales', parentId: 'sales-group' },
+        { id: 'profit', alias: '利润', parentId: 'profit-group' },
+        { id: 'sales', alias: '销售额', parentId: 'sales-group' },
       ],
     }
 
@@ -65,9 +65,9 @@ const Demo = () => {
 export default Demo
 ```
 
-## Row & Column Pivot
+## Rank perspective
 
-Configure the `encoding` property on dimensions to control their row/column position in the pivot table. Dimensions are placed in rows by default; set `encoding: 'column'` to place them in columns.
+By configuring the `encoding` attribute of the dimension, you can control the row and column position of the dimension in the pivot table. The default dimension is on rows, setting `encoding: 'column'` places it on columns.
 
 ```tsx direction=vertical {100-103}
 import { useRef, useEffect, memo } from 'react'
@@ -102,12 +102,12 @@ const Demo = () => {
         { date: '2021', category: 'tools', profit: 15, sales: 50 },
       ],
       dimensions: [
-        { id: 'date', alias: 'Date' },
-        { id: 'category', alias: 'Category', encoding: 'column' },
+        { id: 'date', alias: '日期' },
+        { id: 'category', alias: '类型', encoding: 'column' },
       ],
       measures: [
-        { id: 'profit', alias: 'Profit', parentId: 'profit-group' },
-        { id: 'sales', alias: 'Sales', parentId: 'sales-group' },
+        { id: 'profit', alias: '利润', parentId: 'profit-group' },
+        { id: 'sales', alias: '销售额', parentId: 'sales-group' },
       ],
     }
 

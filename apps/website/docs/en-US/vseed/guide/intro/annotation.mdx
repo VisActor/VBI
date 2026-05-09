@@ -2,11 +2,11 @@
 pageType: doc
 ---
 
-# Data Annotations
+# Data annotation
 
-## Data Point Annotation
+## Data point annotation
 
-Configure data point annotations via the `annotationPoint` property. Supports a `selector` filter condition and a display `text`.
+Configure data point labeling through the `annotationPoint` attribute, and support configuring the filter condition `selector` and the display text `text`.
 
 ```tsx direction=vertical playground
 import { useRef, useEffect } from 'react'
@@ -48,7 +48,7 @@ const Demo = () => {
         // selector: { date:"2019" },
         // selector: [{ date:"2019" },{ date:"2020", profit: 30 }],
 
-        text: 'Data point annotation',
+        text: '数据点标注',
       },
     }
 
@@ -66,9 +66,9 @@ const Demo = () => {
 export default Demo
 ```
 
-## Horizontal Line Annotation
+## Data horizontal line labeling
 
-Configure horizontal line annotations via the `annotationHorizontalLine` property. Requires a `yValue` number.
+To configure the horizontal line label through the `annotationHorizontalLine` attribute, you need to specify the `yValue` value.
 
 ```tsx direction=vertical {23-26}
 import { useRef, useEffect } from 'react'
@@ -96,7 +96,7 @@ const Demo = () => {
       ],
       annotationHorizontalLine: {
         yValue: 170,
-        text: 'Profit 70',
+        text: '利润 70',
       },
     }
 
@@ -114,9 +114,9 @@ const Demo = () => {
 export default Demo
 ```
 
-## Vertical Line Annotation
+## Data vertical line annotation
 
-Configure vertical line annotations via the `annotationVerticalLine` property. Supports specifying a dimension value via `selector`.
+Configure the vertical line label through the `annotationVerticalLine` attribute, and support specifying the dimension value through `selector`.
 
 ```tsx direction=vertical {25-28}
 import { useRef, useEffect } from 'react'
@@ -144,7 +144,7 @@ const Demo = () => {
       ],
       annotationVerticalLine: {
         selector: '2023',
-        text: 'Year 2023',
+        text: '23年',
       },
     }
 
@@ -162,9 +162,9 @@ const Demo = () => {
 export default Demo
 ```
 
-## Area Annotation
+## Data area annotation
 
-Configure area annotations via the `annotationArea` property. You can configure `selector` conditions for the start and end of the annotated region.
+By configuring the zone annotation with the `annotationArea` attribute, you can configure the `selector` of the start and end conditions.
 
 ```tsx direction=vertical {25-38}
 import { useRef, useEffect } from 'react'
@@ -193,13 +193,13 @@ const Demo = () => {
       annotationArea: [
         {
           selector: [{ date: '2021' }],
-          text: '2021~2022',
+          text: '22~23年',
           textPosition: 'top',
           textAlign: 'center',
         },
         {
           selector: [{ date: '2022' }],
-          text: '2022~2023',
+          text: '22~23年',
           textPosition: 'top',
           textAlign: 'center',
         },

@@ -1,10 +1,10 @@
 # HavingFilterNodeBuilder
 
-Having filter node builder for configuring a single Having filter condition.
+Having filter node builder for configuring a single Having filter condition
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
@@ -16,13 +16,13 @@ constructor(yMap: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | `Y.Map<any>` | - |
 
 ### getId
 
-Gets the node ID.
+Get node ID
 
 **Definition**:
 
@@ -30,11 +30,11 @@ Gets the node ID.
 getId(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### getField
 
-Gets the field name.
+Get field name
 
 **Definition**:
 
@@ -42,11 +42,11 @@ Gets the field name.
 getField(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### getOperator
 
-Gets the filter operator.
+Get filter operator
 
 **Definition**:
 
@@ -54,11 +54,11 @@ Gets the filter operator.
 getOperator(): string | undefined
 ```
 
-**Returns**: `string \| undefined`
+**Return**: `() => void`
 
 ### getAggregate
 
-Gets the aggregate configuration.
+Get aggregate configuration
 
 **Definition**:
 
@@ -66,11 +66,11 @@ Gets the aggregate configuration.
 getAggregate(): VBIHavingAggregate | undefined
 ```
 
-**Returns**: `VBIHavingAggregate \| undefined`
+**Return**: `() => void`
 
 ### setValue
 
-Sets the value for the filter condition.
+Set the value of the filter condition
 
 **Definition**:
 
@@ -78,17 +78,17 @@ Sets the value for the filter condition.
 setValue(value: unknown): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `value` | unknown | - Filter value |
+| `value` | unknown | - filter value |
 
 ### setOperator
 
-Sets the filter operator.
+Set filter operator
 
 **Definition**:
 
@@ -96,17 +96,17 @@ Sets the filter operator.
 setOperator(operator: string): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `operator` | string | - Operator |
+| `operator` | string | - operator |
 
 ### setAggregate
 
-Sets the aggregate configuration.
+Set aggregation configuration
 
 **Definition**:
 
@@ -114,17 +114,17 @@ Sets the aggregate configuration.
 setAggregate(aggregate: VBIHavingAggregate): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `aggregate` | VBIHavingAggregate | - Aggregate configuration |
+| `aggregate` | `VBIHavingAggregate` | - Aggregation Configuration |
 
 ### toJSON
 
-Exports to JSON.
+Export as JSON
 
 **Definition**:
 
@@ -132,4 +132,4 @@ Exports to JSON.
 toJSON(): VBIHavingFilter
 ```
 
-**Returns**: `VBIHavingFilter`
+**Return**: `() => void`

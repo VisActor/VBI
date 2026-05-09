@@ -14,9 +14,9 @@ FieldPanel(props: FieldPanelProps)
 
 ## Description
 
-Provides a dimension/measure field panel with basic edit interactions.
+Provides dimension/measure field panels for basic editing interaction.
 
-## Minimal Example
+## Minimal example
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'

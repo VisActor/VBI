@@ -16,8 +16,8 @@ constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, page: Y.Map<any>)
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `parent` | VBIReportBuilder<TQueryDSL, TSeedDSL> | - |
-| `page` | Y.Map<any> | - |
+| `parent` | `VBIReportBuilder<TQueryDSL, TSeedDSL>` | - |
+| `page` | `Y.Map<any>` | - |
 
 ### getId
 

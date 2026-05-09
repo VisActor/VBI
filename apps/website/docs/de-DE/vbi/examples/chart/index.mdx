@@ -1,0 +1,111 @@
+# chart
+
+Diese Seite zeigt ein Beispiel für den Chart Builder.
+
+## ChartType
+
+| Beispiel | Beschreibung | Tags |
+| --- | --- | --- |
+| [area-by-order-date](./chartType#area-by-order-date) | Flächendiagramm - Umsatztrends nach Datum | - |
+| [bar-by-product-type](./chartType#bar-by-product-type) | Balkendiagramm - Verkäufe nach Produkttyp | - |
+| [chart-type-switching](./chartType#chart-type-switching) | Switch between line and bar chart types | - |
+| [column-by-area](./chartType#column-by-area) | Säulendiagramm - Umsatz nach Region | - |
+| [donut-by-customer-type](./chartType#donut-by-customer-type) | Ringdiagramm - Umsatzprozentsatz nach Kundentyp | - |
+| [line-by-province](./chartType#line-by-province) | Liniendiagramm - Umsatztrends nach Provinz | - |
+| [line-chart](./chartType#line-chart) | Liniendiagramm - Umsatztrends nach Provinz | - |
+| [pie-by-area](./chartType#pie-by-area) | Tortendiagramm - Umsatzanteil nach Region | - |
+| [pie-chart-measure-encoding](./chartType#pie-chart-measure-encoding) | Kreisdiagramm-Metrikcodierung - Testmaß-codierung.ts Kreisdiagrammtyp | - |
+| [rose-by-city](./chartType#rose-by-city) | Rosendiagramm - Umsatz nach Stadt | - |
+| [scatter-chart-measure-encoding](./chartType#scatter-chart-measure-encoding) | Scatter Chart Metric Encoding - Test measure-encoding.ts Scatter Chart Type | - |
+| [scatter-sales-profit](./chartType#scatter-sales-profit) | Streudiagramm - Umsatz-Gewinn-Verhältnis | - |
+
+## Dimensions
+
+| Beispiel | Beschreibung | Tags |
+| --- | --- | --- |
+| [add-date-dimension-year](./dimensions#add-date-dimension-year) | Datumsdimension hinzufügen, aggregiert nach Jahr | - |
+| [add-dimension](./dimensions#add-dimension) | Dimension hinzufügen | - |
+| [add-multiple-dimensions](./dimensions#add-multiple-dimensions) | Mehrere Dimensionen hinzufügen (Chain Call) | - |
+| [mixed-date-and-normal-dimensions](./dimensions#mixed-date-and-normal-dimensions) | Gemischte Gruppierung normaler Dimensionen mit vierteljährlichen aggregierten Datumsdimensionen | - |
+| [remove-dimension](./dimensions#remove-dimension) | Dimension entfernen | - |
+| [update-date-dimension-month](./dimensions#update-date-dimension-month) | Bestehende Datumsdimension auf monatliche Aggregation aktualisieren | - |
+| [update-dimension](./dimensions#update-dimension) | Dimension aktualisieren | - |
+
+## HavingFilter
+
+| Beispiel | Beschreibung | Tags |
+| --- | --- | --- |
+| [add-having-filter](./havingFilter#add-having-filter) | Leistungsstarke Regionen mit einem Umsatz von mehr als einer Million nach Gruppierung nach Regionen | - |
+| [add-multiple-having-filter](./havingFilter#add-multiple-having-filter) | Kette fügen Sie mehrere Haben-Kriterien hinzu, um hohe Umsätze und hohe Gewinnbereiche zu filtern | - |
+| [clear-having-filter](./havingFilter#clear-having-filter) | Alle Having-Filter löschen, um vollständige Paketaggregationsergebnisse anzuzeigen | - |
+| [having-array-value-with-in-operator](./havingFilter#having-array-value-with-in-operator) | Having filter with array value that triggers 'in' operator conversion | - |
+| [having-array-value-with-not-in-operator](./havingFilter#having-array-value-with-not-in-operator) | Having filter with array value that triggers 'not in' operator conversion | - |
+| [having-clear-and-rebuild](./havingFilter#having-clear-and-rebuild) | Erstellen Sie den neuen Gruppierungsfilter neu, nachdem Sie die vorhandene HATING-Bedingung gelöscht haben, simulieren Sie den Benutzer, um das Filterpanel zurückzusetzen und neu zu konfigurieren | - |
+| [having-deeply-nested-groups](./havingFilter#having-deeply-nested-groups) | Dreischichtige verschachtelte Gruppierung: Oder (und (Umsatz über 500.000, Gewinn übersteigt 50.000), AND(Menge überschreitet 100, Der durchschnittliche Rabatt beträgt weniger als 0,3)), was ein komplexes Geschäftsscreening simuliert | - |
+| [having-empty-dsl-compose-target](./havingFilter#having-empty-dsl-compose-target) | Ausgehend von einem leeren DSL, bei dem/having/measures/dimensions vom Builder zusammengestellt werden, enthält eine Kombination aus having-Bedingungen für Summen- und countDistinct-Aggregation | - |
+| [having-field-not-in-measures-and-dimensions](./havingFilter#having-field-not-in-measures-and-dimensions) | Initialisieren Sie ein leeres DSL, fügen Sie den Dimensionsbereich und den Metrikumsatz nur über den Builder hinzu und verwenden Sie das Gewinnfeld, das nicht in den Maßen/Dimensionen in erscheint (Summe (Gewinn) > 100000) | - |
+| [having-find-and-update](./havingFilter#having-find-and-update) | Simulieren Sie die Benutzerinteraktion, indem Sie zuerst Kriterien hinzufügen und dann Schwellenwerte und Operatoren über Find finden und dynamisch aktualisieren, um Filterkriterien anzupassen | - |
+| [having-group-add-to-existing](./havingFilter#having-group-add-to-existing) | Fügen Sie der bestehenden Gruppe neue Bedingungen hinzu, simulieren Sie den Benutzer, um die Filterregeln Schritt für Schritt zu verfeinern | - |
+| [having-group-remove-condition](./havingFilter#having-group-remove-condition) | Entferne eine bestimmte Bedingung aus einer bestehenden Having-Gruppe, imitiere einen Benutzer und entferne einen Filter | - |
+| [having-mix-filters-and-groups](./havingFilter#having-mix-filters-and-groups) | Gemischte Verwendung unabhängiger Filterbedingungen und ODER-Gruppierung: Umsatz über 500.000 und (Gewinn über 100.000 oder Menge mindestens 30) | - |
+| [having-multi-dimension-aggregate](./havingFilter#having-multi-dimension-aggregate) | Analysieren Sie hochwertige, rabattarme Unternehmen nach Kategorie und regionaler zweidimensionaler Gruppierung, filtern Sie Kombinationen mit einem durchschnittlichen Rabatt von weniger als 20% und einem Gesamtumsatz von mehr als 100.000 | - |
+| [having-nested-groups](./havingFilter#having-nested-groups) | Verschachtelte Gruppierung: und (Umsatz über 1 Mio., OR(Gewinn übersteigt 200.000, Menge mindestens 50)) | - |
+| [having-or-group](./havingFilter#having-or-group) | Verwenden Sie die OP-Gruppierung, um Bereiche mit hohen Umsätzen oder hohen Gewinnen zu filtern | - |
+| [having-scatter-profit-analysis](./havingFilter#having-scatter-profit-analysis) | Scatter-Chart-Analyse: Filtere Kategorien mit hohen Gewinnmargen und mehr als 20 Transaktionen nach Kategoriengruppierung, um hochwertige Unternehmen zu positionieren | - |
+| [having-update-group-operator](./havingFilter#having-update-group-operator) | Logischer Operator zum Aktualisieren einer vorhandenen Having-Gruppierung geändert von und zu oder | - |
+| [having-with-where-combined](./havingFilter#having-with-where-combined) | whereGemeinsames Screening mit having: Filtern Sie zuerst die Bürobedarfskategorien nach wo und filtern Sie dann die Provinzen mit einem Umsatz von mehr als 50.000 oder einem Gewinn von mehr als 10.000, indem Sie | - |
+| [remove-having-filter](./havingFilter#remove-having-filter) | Überschüssigen Having-Filter entfernen und nur den Gewinnfilter beibehalten | - |
+
+## Locale
+
+| Beispiel | Beschreibung | Tags |
+| --- | --- | --- |
+| [en-US-locale](./locale#en-US-locale) | Englischsprachentest | - |
+| [zh-CN-locale](./locale#zh-CN-locale) | Chinesischer Gebietsschematest | - |
+
+## Measures
+
+| Beispiel | Beschreibung | Tags |
+| --- | --- | --- |
+| [add-measure](./measures#add-measure) | Kennzahl hinzufügen | - |
+| [add-measure-encoding](./measures#add-measure-encoding) | Metriken hinzufügen und Kodierung festlegen | - |
+| [measure-with-custom-and-auto-format](./measures#measure-with-custom-and-auto-format) | Messformatierung: Der Umsatz wird in einem benutzerdefinierten Format von 10.000 Yuan formatiert (¥Präfix, 2 Nachkommastellen behalten), die Gewinnspanne wird automatisch formatiert, der Rabatt wird als Prozentsatz formatiert | - |
+| [remove-measure](./measures#remove-measure) | Kennzahl entfernen | - |
+| [update-measure](./measures#update-measure) | Kennzahl aktualisieren | - |
+
+## Theme
+
+| Beispiel | Beschreibung | Tags |
+| --- | --- | --- |
+| [dark-theme](./theme#dark-theme) | Dunkles Schema-Diagramm | - |
+| [light-theme](./theme#light-theme) | Licht-Themen-Diagramm | - |
+
+## UndoManager
+
+| Beispiel | Beschreibung | Tags |
+| --- | --- | --- |
+| [undo-redo](./undoManager#undo-redo) | Test der Rückgängig/Wiederholen-Funktion | - |
+
+## WhereFilter
+
+| Beispiel | Beschreibung | Tags |
+| --- | --- | --- |
+| [between-sales-range-analysis](./whereFilter#between-sales-range-analysis) | VERKAUFSBEREICHSANALYSE: Verwendung zwischen zum Filtern einzelner St~10000 Aufträge in Yuan, die Gewinne nach Kategorien zusammenfassen | - |
+| [clear-and-rebuild-filters](./whereFilter#clear-and-rebuild-filters) | Filter leeren und neu aufbauen: alte einfache Filter löschen und als komplexe Bedingungen mit Gruppen neu aufbauen | - |
+| [date-filter-period-and-range-combo](./whereFilter#date-filter-period-and-range-combo) | Datumsintervall-Kombinationsfilterung: Verwenden Sie den Zeitraum, um die Q1 2024-Daten zu filtern, während Sie den Bereich verwenden, um das Gewinnintervall, die Kreuzanalyse nach Kategorie und Liefermethode zu begrenzen | - |
+| [date-filter-relative-with-nested-conditions](./whereFilter#date-filter-relative-with-nested-conditions) | Kombination aus Datumsfilterung und verschachtelten Kriterien: Filterung von Großaufträgen von Verbrauchern oder Firmenkunden in den letzten 30 Tagen, Umsatz und Gewinn nach Provinz | - |
+| [deeply-nested-or-and-groups](./whereFilter#deeply-nested-or-and-groups) | Mehrschichtige Verschachtelungsgruppierung: hochwertige Bestellungen, die von Verbrauchern am selben Tag geliefert werden, oder First-Level-Lieferung durch Firmenkunden, Dreischicht- und/oder Verschachtelung | - |
+| [high-discount-tech-profit-analysis](./whereFilter#high-discount-tech-profit-analysis) | Technische Produktgewinnanalyse mit hohem Rabatt: Filtern Sie Bestellungen technischer Kategorien mit Rabatten von mehr als 0,5 nach Region vs. Gewinn | - |
+| [in-operator-multi-area-delivery](./whereFilter#in-operator-multi-area-delivery) | Vergleich der multiregionalen Verteilungseffizienz: Verwenden Sie in, um die drei Hauptregionen Ostchina, Nordchina sowie Zentral- und Südchina zu filtern, um die Anzahl der Bestellungen nach Liefermethode zu zählen | - |
+| [nested-group-region-product-filter](./whereFilter#nested-group-region-product-filter) | Bürobedarf oder Möbelverkauf in Ostchina: Verwenden Sie verschachtelte Gruppierungen und verbinden Sie regionale Bedingungen mit ODER-Kategoriebedingungen | - |
+| [not-between-sales-range](./whereFilter#not-between-sales-range) | Not between filter: exclude sales between 1000~10000 | - |
+| [not-between-with-explicit-operators](./whereFilter#not-between-with-explicit-operators) | Not between filter with explicit leftOp/rightOp to test invert functions | - |
+| [office-supplies-sales-by-province](./whereFilter#office-supplies-sales-by-province) | Ranking der Verkäufe von Bürobedarf nach Provinzen: Filtern Sie die Kategorien von Bürobedarf und fassen Sie die Verkäufe nach Provinzen zusammen | - |
+| [or-group-product-category-comparison](./whereFilter#or-group-product-category-comparison) | Vergleich von Büromaterial und technischen Kategorien: Verwenden Sie die ODER-Gruppierung, um zwei Kategorien zu filtern und den Umsatz nach Regionen zu vergleichen | - |
+| [remove-condition-from-group](./whereFilter#remove-condition-from-group) | Bedingung aus Gruppierung entfernen: Voreinstellung oder Gruppierung enthält drei Kategorien, von denen eine von updateGroup entfernt wird | - |
+| [remove-filter-by-index](./whereFilter#remove-filter-by-index) | Filterkriterien nach Index entfernen: Entfernen Sie den ersten Kategoriefilter, behalten Sie nur regionale Kriterien bei | - |
+| [update-filter-switch-province](./whereFilter#update-filter-switch-province) | Dynamische Änderung der Filterbedingungen: Aktualisierung des Provinzfilters von Zhejiang nach Guangdong und Beobachtung der Umsatzveränderung | - |
+| [update-group-or-to-and](./whereFilter#update-group-or-to-and) | Ändern der Gruppierungslogik: Schalten Sie die voreingestellte ODER-Kategoriegruppierung auf und, um den Filterbereich einzuschränken | - |
+| [where-filter-array-value-converts-to-in](./whereFilter#where-filter-array-value-converts-to-in) | Where filter with array value using '=' operator should convert to 'in' | - |
+| [where-filter-array-value-converts-to-not-in](./whereFilter#where-filter-array-value-converts-to-not-in) | Where filter with array value using '!=' operator should convert to 'not in' | - |
+

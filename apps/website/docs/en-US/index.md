@@ -8,10 +8,10 @@ hero:
   actions:
     - theme: brand
       text: Quick Start
-      link: /en-US/vseed/guide/quickStart
+      link: /vseed/guide/quickStart
     - theme: alt
-      text: Github
+      text: GitHub
       link: https://github.com/visactor/vbi
   image: 
     src: /logo.svg
-    alt: VBI Logo
+    alt: GitHub

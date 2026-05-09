@@ -2,13 +2,13 @@
 pageType: doc
 ---
 
-# Data Reshaping
+# Data reshaping
 
 :::info
-Data and chart types are completely decoupled. Regardless of the number of Dimensions or Measures, VSeed can always reshape them. The cost may be poor chart semantics, but it is worth it.
+Data and chart types are completely decoupled, and VSeed can always reshape them no matter how many dimensions or metrics there are. The price may be poor semantics for the chart, but it's worth it.
 :::
 
-The example below demonstrates the free combination of datasets with different structures and various `chartType`s. You can click the buttons below to switch datasets and chart types, and observe how VSeed automatically adapts.
+The following example demonstrates the free combination between different structures of `dataset` and different `chartType`. You can click the button below to switch the data set and chart type and observe how VSeed automatically adapts.
 
 ```tsx direction=vertical playground
 import { useRef, useEffect, useState } from 'react'
@@ -21,9 +21,9 @@ registerAll()
 const Demo = () => {
   const ref = useRef<HTMLDivElement>(null)
   const datasetList = [
-    // Single Measure, Zero Dimensions
+    // 单指标零维度
     [{ profit: 10 }],
-    // Single Measure, Single Dimension
+    // 单指标单维度
     [
       { date: '2019', profit: 10 },
       { date: '2020', profit: 30 },
@@ -31,7 +31,7 @@ const Demo = () => {
       { date: '2022', profit: 50 },
       { date: '2023', profit: 40 },
     ],
-    // Single Measure, Two Dimensions
+    // 单指标两维度
     [
       { date: '2019', region: 'A', profit: 1 },
       { date: '2019', region: 'B', profit: 2 },
@@ -51,7 +51,7 @@ const Demo = () => {
       { date: '2021', region: 'D', profit: 14 },
       { date: '2021', region: 'E', profit: 15 },
     ],
-    // Single Measure, Multiple Dimensions
+    // 单指标多维度
     [
       { date: '2019', region: 'east', city: 'A', profit: 10 },
       { date: '2019', region: 'east', city: 'B', profit: 30 },
@@ -68,9 +68,9 @@ const Demo = () => {
       { date: '2021', region: 'west', city: 'A', profit: 40 },
       { date: '2021', region: 'west', city: 'B', profit: 60 },
     ],
-    // Multiple Measures, Zero Dimensions
+    // 多指标零维度
     [{ profit: 1, sales: 2, discount: 0.1 }],
-    // Multiple Measures, Single Dimension
+    // 多指标单维度
     [
       { date: '2019', profit: 10, sales: 20, discount: 0.1 },
       { date: '2020', profit: 30, sales: 60, discount: 0.1 },
@@ -78,7 +78,7 @@ const Demo = () => {
       { date: '2022', profit: 50, sales: 100, discount: 0.1 },
       { date: '2023', profit: 40, sales: 80, discount: 0.1 },
     ],
-    // Multiple Measures, Multiple Dimensions
+    // 多指标多维度
     [
       { date: '2019', region: 'east', city: 'A', profit: 10, sales: 100 },
       { date: '2019', region: 'east', city: 'B', profit: 30, sales: 200 },

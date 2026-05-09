@@ -1,0 +1,484 @@
+# Dataset
+
+## Mesure unique dimension unique
+
+Mesure unique dimension unique
+
+```tsx preview 
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "columnParallel",
+  "dataset": [
+    {
+      "date": "2019",
+      "profit": 10
+    },
+    {
+      "date": "2020",
+      "profit": 30
+    },
+    {
+      "date": "2021",
+      "profit": 30
+    },
+    {
+      "date": "2022",
+      "profit": 50
+    },
+    {
+      "date": "2023",
+      "profit": 40
+    }
+  ]
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## Mesure unique multidimensionnel
+
+Mesure unique multidimensionnel
+
+```tsx preview 
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "columnParallel",
+  "dataset": [
+    {
+      "date": "2019",
+      "region": "east",
+      "city": "A",
+      "profit": 10
+    },
+    {
+      "date": "2019",
+      "region": "east",
+      "city": "B",
+      "profit": 30
+    },
+    {
+      "date": "2019",
+      "region": "east",
+      "city": "C",
+      "profit": 30
+    },
+    {
+      "date": "2019",
+      "region": "east",
+      "city": "D",
+      "profit": 50
+    },
+    {
+      "date": "2019",
+      "region": "east",
+      "city": "E",
+      "profit": 40
+    },
+    {
+      "date": "2020",
+      "region": "north of east",
+      "city": "A",
+      "profit": 10
+    },
+    {
+      "date": "2020",
+      "region": "north of east",
+      "city": "B",
+      "profit": 30
+    },
+    {
+      "date": "2020",
+      "region": "north of east",
+      "city": "C",
+      "profit": 30
+    },
+    {
+      "date": "2020",
+      "region": "north of east",
+      "city": "D",
+      "profit": 50
+    },
+    {
+      "date": "2020",
+      "region": "north of east",
+      "city": "E",
+      "profit": 40
+    }
+  ]
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## Dimension zéro à mesure unique
+
+Dimension zéro à mesure unique
+
+```tsx preview 
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "columnParallel",
+  "dataset": [
+    {
+      "profit": 10
+    }
+  ]
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## Mesures multiples à dimension unique
+
+Mesures multiples à dimension unique
+
+```tsx preview 
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "columnParallel",
+  "dataset": [
+    {
+      "date": "2019",
+      "profit": 10,
+      "sales": 20,
+      "discount": 0.1
+    },
+    {
+      "date": "2020",
+      "profit": 30,
+      "sales": 60,
+      "discount": 0.1
+    },
+    {
+      "date": "2021",
+      "profit": 30,
+      "sales": 60,
+      "discount": 0.1
+    },
+    {
+      "date": "2022",
+      "profit": 50,
+      "sales": 100,
+      "discount": 0.1
+    },
+    {
+      "date": "2023",
+      "profit": 40,
+      "sales": 80,
+      "discount": 0.1
+    }
+  ]
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## Plusieurs mesures et plusieurs dimensions
+
+Plusieurs mesures et plusieurs dimensions
+
+```tsx preview 
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "columnParallel",
+  "dataset": [
+    {
+      "date": "2019",
+      "region": "east",
+      "city": "A",
+      "profit": 10,
+      "sales": 20,
+      "discount": 0.1
+    },
+    {
+      "date": "2019",
+      "region": "east",
+      "city": "B",
+      "profit": 30,
+      "sales": 60,
+      "discount": 0.1
+    },
+    {
+      "date": "2019",
+      "region": "east",
+      "city": "C",
+      "profit": 30,
+      "sales": 60,
+      "discount": 0.1
+    },
+    {
+      "date": "2019",
+      "region": "east",
+      "city": "D",
+      "profit": 50,
+      "sales": 100,
+      "discount": 0.1
+    },
+    {
+      "date": "2019",
+      "region": "east",
+      "city": "E",
+      "profit": 40,
+      "sales": 80,
+      "discount": 0.1
+    },
+    {
+      "date": "2020",
+      "region": "north of east",
+      "city": "A",
+      "profit": 10,
+      "sales": 20,
+      "discount": 0.1
+    },
+    {
+      "date": "2020",
+      "region": "north of east",
+      "city": "B",
+      "profit": 30,
+      "sales": 60,
+      "discount": 0.1
+    },
+    {
+      "date": "2020",
+      "region": "north of east",
+      "city": "C",
+      "profit": 30,
+      "sales": 60,
+      "discount": 0.1
+    },
+    {
+      "date": "2020",
+      "region": "north of east",
+      "city": "D",
+      "profit": 50,
+      "sales": 100,
+      "discount": 0.1
+    },
+    {
+      "date": "2020",
+      "region": "north of east",
+      "city": "E",
+      "profit": 40,
+      "sales": 80,
+      "discount": 0.1
+    }
+  ]
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## Mesures multiples dimension zéro
+
+Mesures multiples dimension zéro
+
+```tsx preview 
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "columnParallel",
+  "dataset": [
+    {
+      "profit": 1,
+      "sales": 2,
+      "discount": 0.1
+    }
+  ]
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## Dimensions des données et configuration des mesures
+
+Dimensions des données et configuration des mesures
+
+```tsx preview 
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "columnParallel",
+  "dataset": [
+    {
+      "date": "2019",
+      "region": "east",
+      "profit": 10,
+      "sales": 20
+    },
+    {
+      "date": "2020",
+      "region": "east",
+      "profit": 30,
+      "sales": 60
+    },
+    {
+      "date": "2021",
+      "region": "east",
+      "profit": 30,
+      "sales": 60
+    },
+    {
+      "date": "2022",
+      "region": "east",
+      "profit": 50,
+      "sales": 100
+    },
+    {
+      "date": "2023",
+      "region": "east",
+      "profit": 40,
+      "sales": 80
+    },
+    {
+      "date": "2019",
+      "region": "north of east",
+      "profit": 10,
+      "sales": 20
+    },
+    {
+      "date": "2020",
+      "region": "north of east",
+      "profit": 30,
+      "sales": 60
+    },
+    {
+      "date": "2021",
+      "region": "north of east",
+      "profit": 30,
+      "sales": 60
+    },
+    {
+      "date": "2022",
+      "region": "north of east",
+      "profit": 50,
+      "sales": 100
+    },
+    {
+      "date": "2023",
+      "region": "north of east",
+      "profit": 40,
+      "sales": 80
+    }
+  ],
+  "measures": [
+    {
+      "id": "profit",
+      "alias": "利润"
+    },
+    {
+      "id": "sales",
+      "alias": "销售量"
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "date",
+      "alias": "日期"
+    },
+    {
+      "id": "region",
+      "alias": "区域"
+    }
+  ]
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## sélection automatique
+
+sélection automatique
+
+```tsx preview 
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "columnParallel",
+  "dataset": [
+    {
+      "date": "2019",
+      "region": "east",
+      "profit": 10,
+      "sales": 20
+    },
+    {
+      "date": "2020",
+      "region": "east",
+      "profit": 30,
+      "sales": 60
+    },
+    {
+      "date": "2021",
+      "region": "east",
+      "profit": 30,
+      "sales": 60
+    },
+    {
+      "date": "2022",
+      "region": "east",
+      "profit": 50,
+      "sales": 100
+    },
+    {
+      "date": "2023",
+      "region": "east",
+      "profit": 40,
+      "sales": 80
+    },
+    {
+      "date": "2019",
+      "region": "north of east",
+      "profit": 10,
+      "sales": 20
+    },
+    {
+      "date": "2020",
+      "region": "north of east",
+      "profit": 30,
+      "sales": 60
+    },
+    {
+      "date": "2021",
+      "region": "north of east",
+      "profit": 30,
+      "sales": 60
+    },
+    {
+      "date": "2022",
+      "region": "north of east",
+      "profit": 50,
+      "sales": 100
+    },
+    {
+      "date": "2023",
+      "region": "north of east",
+      "profit": 40,
+      "sales": 80
+    }
+  ]
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+

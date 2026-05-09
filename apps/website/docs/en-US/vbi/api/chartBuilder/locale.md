@@ -1,10 +1,10 @@
 # LocaleBuilder
 
-Locale builder for setting and getting the current locale.
+Language builder for setting and getting the current language
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
@@ -18,14 +18,14 @@ constructor(_doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `_doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `_doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### observe
 
-Listens for locale changes, returns an unsubscribe function.
+Monitor language changes and return a function to cancel monitoring
 
 **Definition**:
 
@@ -33,17 +33,17 @@ Listens for locale changes, returns an unsubscribe function.
 observe(callback: ObserveCallback): () => void
 ```
 
-**Returns**: `() => void`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `callback` | ObserveCallback | - Callback function |
+| `callback` | ObserveCallback | - callback function |
 
 ### setLocale
 
-Sets the locale.
+Set language
 
 **Definition**:
 
@@ -53,13 +53,13 @@ setLocale(locale: string)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `locale` | string | - Locale name |
+| `locale` | string | - language name |
 
 ### getLocale
 
-Gets the current locale.
+Get current language
 
 **Definition**:
 
@@ -67,11 +67,11 @@ Gets the current locale.
 getLocale(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### toJSON
 
-Exports to JSON.
+Export as JSON
 
 **Definition**:
 
@@ -79,4 +79,4 @@ Exports to JSON.
 toJSON(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`

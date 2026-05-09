@@ -1,10 +1,10 @@
 # DimensionNodeBuilder
 
-Dimension node builder for configuring a single dimension.
+Dimension node builder for configuring individual dimensions
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
@@ -16,13 +16,13 @@ constructor(yMap: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | `Y.Map<any>` | - |
 
 ### getId
 
-Gets the node ID.
+Get node ID
 
 **Definition**:
 
@@ -30,11 +30,11 @@ Gets the node ID.
 getId(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### getField
 
-Gets the field name.
+Get field name
 
 **Definition**:
 
@@ -42,11 +42,11 @@ Gets the field name.
 getField(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### getEncoding
 
-Gets the chart encoding position.
+Get the chart encoding position
 
 **Definition**:
 
@@ -54,11 +54,11 @@ Gets the chart encoding position.
 getEncoding(): VBIDimension['encoding'] | undefined
 ```
 
-**Returns**: `VBIDimension['encoding'] \| undefined`
+**Return**: `() => void`
 
 ### getSort
 
-Gets the sort configuration.
+Get sorting configuration
 
 **Definition**:
 
@@ -66,11 +66,11 @@ Gets the sort configuration.
 getSort(): VBISort | undefined
 ```
 
-**Returns**: `VBISort \| undefined`
+**Return**: `() => void`
 
 ### setAlias
 
-Sets the display name.
+Set display name
 
 **Definition**:
 
@@ -78,17 +78,17 @@ Sets the display name.
 setAlias(alias: string): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `alias` | string | - Display name |
+| `alias` | string | - display name |
 
 ### setEncoding
 
-Sets the chart encoding position.
+Set chart encoding position
 
 **Definition**:
 
@@ -96,17 +96,17 @@ Sets the chart encoding position.
 setEncoding(encoding: NonNullable<VBIDimension['encoding']>): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `encoding` | NonNullable<VBIDimension['encoding']> | - Dimension encoding position |
+| `encoding` | `NonNullable<VBIDimension['encoding']>` | - Dimension encoding position |
 
 ### setSort
 
-Sets the sort configuration.
+Set sorting configuration
 
 **Definition**:
 
@@ -114,17 +114,17 @@ Sets the sort configuration.
 setSort(sort: VBISort): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `sort` | VBISort | - Sort configuration |
+| `sort` | `VBISort` | - Sort Configuration |
 
 ### setAggregate
 
-Sets the date aggregation function.
+Set date aggregation function
 
 **Definition**:
 
@@ -132,17 +132,17 @@ Sets the date aggregation function.
 setAggregate(aggregate: NonNullable<VBIDimension['aggregate']>): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `aggregate` | NonNullable<VBIDimension['aggregate']> | - Date aggregation configuration |
+| `aggregate` | `NonNullable<VBIDimension['aggregate']>` | - Date aggregation configuration |
 
 ### clearAggregate
 
-Clears the date aggregation function.
+Clear date aggregate function
 
 **Definition**:
 
@@ -150,11 +150,11 @@ Clears the date aggregation function.
 clearAggregate(): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 ### clearSort
 
-Clears the sort configuration.
+Clear sort configuration
 
 **Definition**:
 
@@ -162,11 +162,11 @@ Clears the sort configuration.
 clearSort(): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 ### toJSON
 
-Exports to JSON.
+Export as JSON
 
 **Definition**:
 
@@ -174,4 +174,4 @@ Exports to JSON.
 toJSON(): VBIDimension
 ```
 
-**Returns**: `VBIDimension`
+**Return**: `() => void`

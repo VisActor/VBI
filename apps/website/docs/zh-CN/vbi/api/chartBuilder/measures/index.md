@@ -18,8 +18,8 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### add
 
@@ -151,7 +151,7 @@ static isMeasureNode(node: VBIMeasureTree[0]): node is VBIMeasure
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `node` | VBIMeasureTree[0] | - |
+| `node` | `VBIMeasureTree[0]` | - |
 
 ### static isMeasureGroup
 
@@ -167,4 +167,4 @@ static isMeasureGroup(node: VBIMeasureTree[0]): node is VBIMeasureGroup
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `node` | VBIMeasureTree[0] | - |
+| `node` | `VBIMeasureTree[0]` | - |

@@ -14,9 +14,9 @@ useVBI(builder: VBIChartBuilder): UseVBIReturn
 
 ## Description
 
-Subscribes to DSL snapshot changes on the builder, returning the latest `dsl` and the original `builder`.
+Subscribe to the builder's DSL snapshot changes, returning the latest `dsl` and the original `builder`.
 
-## Minimal Example
+## Minimal example
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'

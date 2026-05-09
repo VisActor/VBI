@@ -2,7 +2,7 @@
 
 ## Properties
 
-| Property | Type | Description |
+| Properties | Type | Description |
 | --- | --- | --- |
 | **doc** | `Y.Doc` | - |
 | **dsl** | `Y.Map<any>` | - |
@@ -18,7 +18,7 @@
 | **undoManager** | `UndoManager` | - |
 
 
-## Methods
+## Method
 
 ### constructor
 
@@ -30,11 +30,11 @@ constructor(doc: Y.Doc, options: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>, ds
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `options` | VBIChartBuilderOptions<TQueryDSL, TSeedDSL> | - |
-| `dsl` | Y.Map<any> | - |
+| `doc` | `Y.Doc` | - |
+| `options` | `VBIChartBuilderOptions<TQueryDSL, TSeedDSL>` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### applyUpdate
 
@@ -44,13 +44,13 @@ constructor(doc: Y.Doc, options: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>, ds
 applyUpdate(update: Uint8Array, transactionOrigin: any): void
 ```
 
-**Returns**: `void`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `update` | Uint8Array | - |
+| `update` | `Uint8Array` | - |
 | `transactionOrigin` | any | - |
 
 ### encodeStateAsUpdate
@@ -61,13 +61,23 @@ applyUpdate(update: Uint8Array, transactionOrigin: any): void
 encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBufferLike>
 ```
 
-**Returns**: `Uint8Array<ArrayBufferLike>`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `targetStateVector` | Uint8Array | - |
+| `targetStateVector` | `Uint8Array` | - |
+
+### getUUID
+
+**Definition**:
+
+```typescript
+getUUID(): string
+```
+
+**Return**: `() => void`
 
 ### buildVSeed
 
@@ -77,11 +87,11 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBufferLike>
 buildVSeed(options: BuildVSeedOptions): Promise<TSeedDSL>
 ```
 
-**Returns**: `Promise<TSeedDSL>`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `options` = {} | BuildVSeedOptions | - |
 
@@ -93,7 +103,7 @@ buildVSeed(options: BuildVSeedOptions): Promise<TSeedDSL>
 buildVQuery(): TQueryDSL
 ```
 
-**Returns**: `TQueryDSL`
+**Return**: `() => void`
 
 ### build
 
@@ -103,7 +113,7 @@ buildVQuery(): TQueryDSL
 build(): VBIChartDSL
 ```
 
-**Returns**: `VBIChartDSL`
+**Return**: `() => void`
 
 ### isEmpty
 
@@ -113,7 +123,7 @@ build(): VBIChartDSL
 isEmpty(): boolean
 ```
 
-**Returns**: `boolean`
+**Return**: `() => void`
 
 ### getSchema
 
@@ -123,4 +133,4 @@ isEmpty(): boolean
 getSchema(): Promise<any>
 ```
 
-**Returns**: `Promise<any>`
+**Return**: `() => void`

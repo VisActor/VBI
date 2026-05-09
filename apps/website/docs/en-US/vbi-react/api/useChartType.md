@@ -14,9 +14,9 @@ useChartType(builder: VBIChartBuilder): UseChartTypeReturn
 
 ## Description
 
-Reads and updates the current chart type, while exposing the list of available chart types.
+Reads and updates the current chart type, while exposing a list of optional chart types.
 
-## Minimal Example
+## Minimal example
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'

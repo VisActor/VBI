@@ -1,10 +1,10 @@
 # MeasuresBuilder
 
-Measure builder for adding, modifying, and removing measure configuration. Measures are the numeric fields in data, such as: sales, profit, quantity.
+Metric builder for adding, modifying, and deleting metric configurations. Measures are numeric fields of data, such as: sales, profit, quantity
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
@@ -16,14 +16,14 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### add
 
-Adds a measure.
+Add a metric
 
 **Definition**:
 
@@ -31,18 +31,18 @@ Adds a measure.
 add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
 ```
 
-**Returns**: `MeasuresBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `field` | string | - Field name |
-| `callback` | (node: MeasureNodeBuilder) => void | - Callback function |
+| `field` | string | - field name |
+| `callback` | (node: MeasureNodeBuilder) => void | - callback function |
 
 ### remove
 
-Removes the measure with the specified ID.
+Delete the metric with the specified ID
 
 **Definition**:
 
@@ -50,17 +50,17 @@ Removes the measure with the specified ID.
 remove(id: string): MeasuresBuilder
 ```
 
-**Returns**: `MeasuresBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `id` | string | - Measure ID |
+| `id` | string | - metric ID |
 
 ### update
 
-Updates the measure configuration.
+Update measurement configuration
 
 **Definition**:
 
@@ -68,18 +68,18 @@ Updates the measure configuration.
 update(id: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
 ```
 
-**Returns**: `MeasuresBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `id` | string | - Measure ID |
-| `callback` | (node: MeasureNodeBuilder) => void | - Callback function |
+| `id` | string | - metric ID |
+| `callback` | (node: MeasureNodeBuilder) => void | - callback function |
 
 ### find
 
-Finds the first measure matching the callback condition, behaves like `Array.find`.
+Finds the first metric by callback criteria, behaves the same as Array.find
 
 **Definition**:
 
@@ -87,17 +87,17 @@ Finds the first measure matching the callback condition, behaves like `Array.fin
 find(predicate: (node: MeasureNodeBuilder, index: number) => boolean): MeasureNodeBuilder | undefined
 ```
 
-**Returns**: `MeasureNodeBuilder \| undefined`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `predicate` | (node: MeasureNodeBuilder, index: number) => boolean | - Search condition |
+| `predicate` | (node: MeasureNodeBuilder, index: number) => boolean | - Search conditions |
 
 ### findAll
 
-Gets all measures.
+Get all metrics
 
 **Definition**:
 
@@ -105,11 +105,11 @@ Gets all measures.
 findAll(): MeasureNodeBuilder[]
 ```
 
-**Returns**: `MeasureNodeBuilder[]`
+**Return**: `() => void`
 
 ### toJSON
 
-Exports all measures as a JSON array.
+Export all metrics as JSON array
 
 **Definition**:
 
@@ -117,11 +117,11 @@ Exports all measures as a JSON array.
 toJSON(): VBIMeasure[]
 ```
 
-**Returns**: `VBIMeasure[]`
+**Return**: `() => void`
 
 ### observe
 
-Listens for measure changes.
+Listen for metric changes
 
 **Definition**:
 
@@ -129,13 +129,13 @@ Listens for measure changes.
 observe(callback: ObserveDeepCallback): () => void
 ```
 
-**Returns**: `() => void`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `callback` | ObserveDeepCallback | - Callback function |
+| `callback` | ObserveDeepCallback | - callback function |
 
 ### static isMeasureNode
 
@@ -145,13 +145,13 @@ observe(callback: ObserveDeepCallback): () => void
 static isMeasureNode(node: VBIMeasureTree[0]): node is VBIMeasure
 ```
 
-**Returns**: `node is VBIMeasure`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `node` | VBIMeasureTree[0] | - |
+| `node` | `VBIMeasureTree[0]` | - |
 
 ### static isMeasureGroup
 
@@ -161,10 +161,10 @@ static isMeasureNode(node: VBIMeasureTree[0]): node is VBIMeasure
 static isMeasureGroup(node: VBIMeasureTree[0]): node is VBIMeasureGroup
 ```
 
-**Returns**: `node is VBIMeasureGroup`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `node` | VBIMeasureTree[0] | - |
+| `node` | `VBIMeasureTree[0]` | - |

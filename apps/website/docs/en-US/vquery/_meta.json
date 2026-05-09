@@ -1,6 +1,16 @@
 [
   "index",
-  { "type": "dir", "name": "examples", "label": "Examples", "collapsed": true },
-  { "type": "dir", "name": "development", "label": "Contributing", "collapsed": true },
+  {
+    "type": "dir",
+    "name": "examples",
+    "label": "Example",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "development",
+    "label": "Contribution Guide",
+    "collapsed": true
+  },
   "playground"
 ]

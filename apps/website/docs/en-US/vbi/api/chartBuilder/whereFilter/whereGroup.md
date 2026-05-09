@@ -1,10 +1,10 @@
 # WhereGroupBuilder
 
-Where group builder for configuring the logical relationship (AND/OR) of a condition group.
+Where group builder, used to configure the logical relationship (AND/OR) of a set of conditions
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
@@ -16,9 +16,9 @@ constructor(yMap: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | `Y.Map<any>` | - |
 
 ### getConditions
 
@@ -28,11 +28,11 @@ constructor(yMap: Y.Map<any>)
 getConditions(): Y.Array<any>
 ```
 
-**Returns**: `Y.Array<any>`
+**Return**: `() => void`
 
 ### getId
 
-Gets the group ID.
+Get group ID
 
 **Definition**:
 
@@ -40,11 +40,11 @@ Gets the group ID.
 getId(): string
 ```
 
-**Returns**: `string`
+**Return**: `() => void`
 
 ### getOperator
 
-Gets the logical operator.
+Get logical operator
 
 **Definition**:
 
@@ -52,11 +52,11 @@ Gets the logical operator.
 getOperator(): 'and' | 'or'
 ```
 
-**Returns**: `'and' \| 'or'`
+**Return**: `() => void`
 
 ### setOperator
 
-Sets the logical operator.
+Set logical operators
 
 **Definition**:
 
@@ -64,17 +64,17 @@ Sets the logical operator.
 setOperator(op: 'and' | 'or'): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `op` | 'and' \| 'or' | - Logical operator |
 
 ### add
 
-Adds a Where filter condition to the group.
+Add a Where filter to the group
 
 **Definition**:
 
@@ -82,18 +82,18 @@ Adds a Where filter condition to the group.
 add(field: string, callback: (node: WhereFilterNodeBuilder) => void): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `field` | string | - Field name |
-| `callback` | (node: WhereFilterNodeBuilder) => void | - Callback function |
+| `field` | string | - field name |
+| `callback` | (node: WhereFilterNodeBuilder) => void | - callback function |
 
 ### addGroup
 
-Adds a nested group to the current group.
+Add a nested group to the current group
 
 **Definition**:
 
@@ -101,18 +101,18 @@ Adds a nested group to the current group.
 addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `op` | 'and' \| 'or' | - Logical operator |
-| `callback` | (group: WhereGroupBuilder) => void | - Callback function |
+| `callback` | (group: WhereGroupBuilder) => void | - callback function |
 
 ### remove
 
-Removes the condition with the specified ID or the item at the specified index.
+Delete the condition of the specified ID or the item of the specified index
 
 **Definition**:
 
@@ -120,17 +120,17 @@ Removes the condition with the specified ID or the item at the specified index.
 remove(idOrIndex: string | number): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `idOrIndex` | string \| number | - ID or index |
 
 ### clear
 
-Clears all conditions in the group.
+Clear all conditions in the group
 
 **Definition**:
 
@@ -138,11 +138,11 @@ Clears all conditions in the group.
 clear(): this
 ```
 
-**Returns**: `this`
+**Return**: `() => void`
 
 ### toJSON
 
-Exports to JSON.
+Export as JSON
 
 **Definition**:
 
@@ -150,4 +150,4 @@ Exports to JSON.
 toJSON(): VBIWhereGroup
 ```
 
-**Returns**: `VBIWhereGroup`
+**Return**: `() => void`

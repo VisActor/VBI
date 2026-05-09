@@ -1,0 +1,6 @@
+[
+  "index",
+  { "type": "dir", "name": "examples", "label": "예제", "collapsed": true },
+  { "type": "dir", "name": "development", "label": "기여 가이드", "collapsed": true },
+  "playground"
+]

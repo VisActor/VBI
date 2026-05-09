@@ -1,32 +1,32 @@
-# Common Scripts
+# Commonly used scripts
 
-To maintain Monorepo consistency, **all scripts must be run from the project root directory**.
+To maintain the consistency of Monorepo, **all scripts must be executed in the project root directory**.
 
 ## Core Script (g)
 
 ```bash
 pnpm run g
 ```
-**Description**: VQuery's `g` script handles:
+**Function Description**: The `g` script of VQuery is responsible for:
 1. `build:test`: Compile test resources.
-2. `build:docs`: Generate API documentation.
+2. `build:docs`: Generate API document.
 
-## Development & Build
+## Develop and build
 
 ### Build
 ```bash
 pnpm --filter=@visactor/vquery run build
 ```
 
-## Testing
+## Test
 
-### Run Tests
-VQuery uses Rstest for testing.
+### Run the test
+VQuery Use Rstest for testing.
 ```bash
 pnpm --filter=@visactor/vquery run test
 ```
 
-### Update Snapshots
+### Update snapshot
 ```bash
 pnpm --filter=@visactor/vquery run test:update
 ```

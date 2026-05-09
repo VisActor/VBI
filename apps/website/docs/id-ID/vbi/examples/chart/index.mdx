@@ -1,0 +1,111 @@
+# chart
+
+Halaman ini menunjukkan contoh pembuat bagan.
+
+## ChartType
+
+| Contoh | Deskripsi | Tag |
+| --- | --- | --- |
+| [area-berdasarkan-pesanan-date](./chartType#area-by-order-date) | Grafik Area - Tren Penjualan Berdasarkan Tanggal | - |
+| [bar-demi-produk-type](./chartType#bar-by-product-type) | Bagan Batang - Penjualan Berdasarkan Jenis Produk | - |
+| [chart-type-switching](./chartType#chart-type-switching) | Switch between line and bar chart types | - |
+| [column-menurut area](./chartType#column-by-area) | Bagan Kolom - Penjualan Berdasarkan Area | - |
+| [donat-oleh-pelanggan-type](./chartType#donut-by-customer-type) | Bagan donat - Proporsi penjualan berdasarkan jenis pelanggan | - |
+| [baris demi provinsi](./chartType#line-by-province) | Bagan garis - tren penjualan menurut provinsi | - |
+| [diagram garis](./chartType#line-chart) | Bagan garis - tren penjualan menurut provinsi | - |
+| [kue per area](./chartType#pie-by-area) | Diagram lingkaran - Proporsi penjualan berdasarkan wilayah | - |
+| [diagram lingkaran-measure-encoding](./chartType#pie-chart-measure-encoding) | Pengkodean metrik diagram lingkaran - pengujian measure-encoding.ts Pie jenis diagram | - |
+| [mawar per kota](./chartType#rose-by-city) | Rose Chart - Penjualan berdasarkan Kota | - |
+| [diagram sebar-measure-encoding](./chartType#scatter-chart-measure-encoding) | Pengkodean Metrik Bagan Sebar - Uji measure-encoding.ts Scatter jenis bagan | - |
+| [keuntungan-penjualan-sebar](./chartType#scatter-sales-profit) | Grafik sebar - Hubungan antara penjualan dan keuntungan | - |
+
+## Dimensions
+
+| Contoh | Deskripsi | Tag |
+| --- | --- | --- |
+| [tambah-date-dimension-tahun](./dimensions#add-date-dimension-year) | Tambahkan dimensi tanggal yang dikumpulkan berdasarkan tahun | - |
+| [tambahkan-dimension](./dimensions#add-dimension) | Tambahkan dimensi | - |
+| [tambahkan-beberapa-dimensions](./dimensions#add-multiple-dimensions) | Tambahkan beberapa dimensi (panggilan berantai) | - |
+| [campuran-date-dan-normal-dimensions](./dimensions#mixed-date-and-normal-dimensions) | Pengelompokan campuran dimensi normal dan dimensi tanggal dikumpulkan berdasarkan kuartal | - |
+| [hapus-dimension](./dimensions#remove-dimension) | Hapus dimensi | - |
+| [update-date-dimension-bulan](./dimensions#update-date-dimension-month) | Perbarui dimensi tanggal yang ada menjadi agregat berdasarkan bulan | - |
+| [perbarui-dimension](./dimensions#update-dimension) | Perbarui dimensi | - |
+
+## HavingFilter
+
+| Contoh | Deskripsi | Tag |
+| --- | --- | --- |
+| [tambahkan-./havingFilter#add-having-filter-filter](./havingFilter#add-having-filter) | Kelompokkan berdasarkan wilayah dan filter wilayah berkinerja tinggi dengan penjualan melebihi satu juta | - |
+| [tambahkan-beberapa-./havingFilter#add-multiple-having-filter-filter](./havingFilter#add-multiple-having-filter) | Tambahkan beberapa kondisi Having dalam rantai untuk memfilter area dengan penjualan dan keuntungan tinggi | - |
+| [bersihkan-./havingFilter#clear-having-filter-filter](./havingFilter#clear-having-filter) | Hapus semua kondisi filter Having dan tampilkan hasil agregasi pengelompokan selengkapnya | - |
+| [having-array-value-with-in-operator](./havingFilter#having-array-value-with-in-operator) | Having filter with array value that triggers 'in' operator conversion | - |
+| [having-array-value-with-not-in-operator](./havingFilter#having-array-value-with-not-in-operator) | Having filter with array value that triggers 'not in' operator conversion | - |
+| [./havingFilter#having-clear-and-rebuild-bersihkan-dan-bangun kembali](./havingFilter#having-clear-and-rebuild) | Buat kembali filter grup baru setelah menghapus kondisi having yang ada, simulasikan pengguna untuk menyetel ulang panel filter, lalu konfigurasikan ulang | - |
+| [./havingFilter#having-deeply-nested-groups-grup yang sangat bersarang](./havingFilter#having-deeply-nested-groups) | Pengelompokan bertingkat tiga: OR(AND (penjualan melebihi 500.000, laba melebihi 50.000), AND (kuantitas melebihi 100, rata-rata diskon kurang dari 0,3)), menyimulasikan penyaringan bisnis yang kompleks | - |
+| [DSL-target-penulisan-dsl-kosong](./havingFilter#having-empty-dsl-compose-target) | Mulai dari where/having/measures/dimensions kosong, rakit ./havingFilter#having-empty-dsl-compose-target melalui pembuat, termasuk kombinasi kondisi having dari jumlah dan agregasi countDistinct | - |
+| [measures-field-tidak-dalam-measures-dan-dimensions](./havingFilter#having-field-not-in-measures-and-dimensions) | Inisialisasi dimensions yang kosong, hanya tambahkan area dimensi dan metrik penjualan melalui pembuatnya, dan gunakan field keuntungan yang tidak muncul di field di ./havingFilter#having-field-not-in-measures-and-dimensions (SUM(profit) > 100000) | - |
+| [./havingFilter#having-find-and-update-temukan-dan-perbarui](./havingFilter#having-find-and-update) | Pertama tambahkan kondisi having, lalu temukan dan perbarui ambang batas dan operator secara dinamis melalui find untuk menyimulasikan penyesuaian interaktif pengguna terhadap kondisi pemfilteran | - |
+| [./havingFilter#having-group-add-to-existing-grup-tambahkan-ke-yang sudah ada](./havingFilter#having-group-add-to-existing) | Tambahkan ketentuan baru ke grup having yang ada, simulasikan pengguna untuk menyempurnakan aturan pemfilteran secara bertahap | - |
+| [./havingFilter#having-group-remove-condition-grup-hapus-kondisi](./havingFilter#having-group-remove-condition) | Hapus kondisi tertentu dari grup having yang ada dan simulasikan pengguna membatalkan item filter | - |
+| [./havingFilter#having-mix-filters-and-groups-campuran-filter-dan-grup](./havingFilter#having-mix-filters-and-groups) | Campurkan kondisi filter independen dan pengelompokan OR: penjualan melebihi 500.000 AND (keuntungan melebihi 100.000 OR, kuantitas tidak kurang dari 30) | - |
+| [dimension-multi-dimension-agregat](./havingFilter#having-multi-dimension-aggregate) | Kelompokkan berdasarkan kategori dan wilayah, saring kombinasi dengan diskon rata-rata di bawah 20% dan total penjualan melebihi 100.000, dan analisis bisnis bernilai tinggi dan diskon rendah | - |
+| [./havingFilter#having-nested-groups-grup bersarang](./havingFilter#having-nested-groups) | Grup bertingkat: AND (penjualan melebihi 1 juta, OR (keuntungan melebihi 200.000, kuantitas tidak kurang dari 50)) | - |
+| [./havingFilter#having-or-group-atau-grup](./havingFilter#having-or-group) | Gunakan pengelompokan OR untuk memfilter area penjualan tinggi atau keuntungan tinggi | - |
+| [./havingFilter#having-scatter-profit-analysis-analisis-keuntungan-sebar](./havingFilter#having-scatter-profit-analysis) | Analisis grafik sebar: menyaring kategori dengan margin keuntungan tinggi dan lebih dari 20 transaksi berdasarkan pengelompokan kategori untuk menemukan bisnis berkualitas tinggi | - |
+| [./havingFilter#having-update-group-operator-update-group-operator](./havingFilter#having-update-group-operator) | Perbarui operator logika grup Having yang ada dari AND menjadi OR | - |
+| [where-dengan-./havingFilter#having-with-where-combined-gabungan](./havingFilter#having-with-where-combined) | Penyaringan gabungan antara where dan having: Pertama-tama filter kategori perlengkapan kantor berdasarkan where, lalu tekan having untuk memfilter provinsi dengan penjualan melebihi 50.000 yuan atau keuntungan melebihi 10.000 yuan | - |
+| [hapus-./havingFilter#remove-having-filter-filter](./havingFilter#remove-having-filter) | Hapus kondisi filter Having yang berlebihan dan hanya pertahankan filter keuntungan | - |
+
+## Locale
+
+| Contoh | Deskripsi | Tag |
+| --- | --- | --- |
+| [locale-./locale#en-US-locale](./locale#en-US-locale) | Tes Bahasa Inggris locale | - |
+| [locale-./locale#zh-CN-locale](./locale#zh-CN-locale) | Tes locale Bahasa Mandarin | - |
+
+## Measures
+
+| Contoh | Deskripsi | Tag |
+| --- | --- | --- |
+| [tambahkan-measure](./measures#add-measure) | Tambahkan ukuran | - |
+| [tambahkan-measure-encoding](./measures#add-measure-encoding) | Tambahkan metrik dan setel pengkodean | - |
+| [measure-dengan-format-khusus-dan-otomatis](./measures#measure-with-custom-and-auto-format) | Format pengukuran: Gunakan format khusus 10.000 yuan untuk penjualan (awalan ¥, pertahankan 2 tempat desimal), gunakan format otomatis untuk margin keuntungan, dan gunakan format persentase untuk diskon | - |
+| [hapus-measure](./measures#remove-measure) | Hapus metrik | - |
+| [perbarui-measure](./measures#update-measure) | Perbarui metrik | - |
+
+## Theme
+
+| Contoh | Deskripsi | Tag |
+| --- | --- | --- |
+| [dark-theme](./theme#dark-theme) | Bagan tema gelap | - |
+| [light-theme](./theme#light-theme) | Bagan tema ringan | - |
+
+## UndoManager
+
+| Contoh | Deskripsi | Tag |
+| --- | --- | --- |
+| [batalkan-ulangi](./undoManager#undo-redo) | Membatalkan pengulangan uji fungsional | - |
+
+## WhereFilter
+
+| Contoh | Deskripsi | Tag |
+| --- | --- | --- |
+| [analisis-jarak-penjualan](./whereFilter#between-sales-range-analysis) | Analisis rentang penjualan: gunakan antara untuk memfilter pesanan tunggal sebesar 1.000~10.000 yuan, dan merangkum keuntungan berdasarkan kategori | - |
+| [bersihkan dan bangun kembali filter](./whereFilter#clear-and-rebuild-filters) | Hapus dan bangun kembali kondisi filter: hapus filter sederhana yang lama dan bangun kembali menjadi kondisi yang kompleks termasuk pengelompokan | - |
+| [date-filter-periode-dan-rentang-kombo](./whereFilter#date-filter-period-and-range-combo) | Pemfilteran kombinasi rentang tanggal: Gunakan periode untuk memfilter data Q1 pada tahun 2024, dan gunakan rentang untuk membatasi rentang keuntungan, dan analisis silang berdasarkan kategori dan metode pengiriman | - |
+| [date-filter-relatif-dengan-kondisi-bersarang](./whereFilter#date-filter-relative-with-nested-conditions) | Pemfilteran tanggal dan kombinasi kondisi bertingkat: menyaring pesanan bernilai tinggi dari konsumen atau pelanggan korporat dalam 30 hari terakhir, dan menghitung penjualan dan keuntungan berdasarkan provinsi | - |
+| [grup-atau-dan-bersarang dalam](./whereFilter#deeply-nested-or-and-groups) | Pengelompokan bertingkat bertingkat: pesanan bernilai tinggi untuk pengiriman di hari yang sama bagi konsumen atau pengiriman tingkat pertama untuk pelanggan korporat, tiga tingkat AND/OR bersarang | - |
+| [analisis-keuntungan-teknologi-diskon tinggi](./whereFilter#high-discount-tech-profit-analysis) | Analisis keuntungan produk teknologi diskon tinggi: menyaring pesanan dalam kategori teknologi dengan diskon lebih besar dari 0,5, dan membandingkan keuntungan berdasarkan wilayah | - |
+| [pengiriman-dalam-operator-multi-area](./whereFilter#in-operator-multi-area-delivery) | Perbandingan efisiensi pengiriman multi-regional: Gunakan untuk menyaring tiga wilayah utama Tiongkok Timur, Tiongkok Utara, dan Tiongkok Tengah dan Selatan, dan menghitung volume pesanan berdasarkan metode pengiriman | - |
+| [filter-produk-wilayah-grup-bersarang](./whereFilter#nested-group-region-product-filter) | Penjualan perlengkapan kantor atau furnitur di Tiongkok Timur: Gunakan pengelompokan bertingkat, AND untuk menghubungkan kondisi regional dan OR kondisi kategori | - |
+| [not-between-sales-range](./whereFilter#not-between-sales-range) | Not between filter: exclude sales between 1000~10000 | - |
+| [not-between-with-explicit-operators](./whereFilter#not-between-with-explicit-operators) | Not between filter with explicit leftOp/rightOp to test invert functions | - |
+| [penjualan-perlengkapan-kantor-menurut-provinsi](./whereFilter#office-supplies-sales-by-province) | Pemeringkatan penjualan perlengkapan kantor menurut provinsi: menyaring kategori perlengkapan kantor dan merangkum penjualan menurut provinsi | - |
+| [atau-perbandingan-kategori-produk-grup](./whereFilter#or-group-product-category-comparison) | Perbandingan kategori perlengkapan kantor dan teknologi: Gunakan OR untuk mengelompokkan dan memfilter dua kategori serta membandingkan penjualan berdasarkan wilayah | - |
+| [hapus-kondisi-dari-grup](./whereFilter#remove-condition-from-group) | Hapus ketentuan dari grup: Grup OR default berisi tiga kategori, dan hapus false satunya melalui updateGroup | - |
+| [hapus-filter-menurut-indeks](./whereFilter#remove-filter-by-index) | Hapus kondisi filter berdasarkan indeks: hapus filter kategori pertama dan pertahankan hanya kondisi regional | - |
+| [perbarui-filter-pindah-provinsi](./whereFilter#update-filter-switch-province) | Ubah kondisi filter secara dinamis: perbarui filter provinsi dari Zhejiang ke Guangdong dan amati perubahan penjualan | - |
+| [perbarui-grup-atau-ke-dan](./whereFilter#update-group-or-to-and) | Ubah logika pengelompokan: alihkan pengelompokan kategori OR default ke AND dan persempit cakupan pemfilteran | - |
+| [where-filter-array-value-converts-to-in](./whereFilter#where-filter-array-value-converts-to-in) | Where filter with array value using '=' operator should convert to 'in' | - |
+| [where-filter-array-value-converts-to-not-in](./whereFilter#where-filter-array-value-converts-to-not-in) | Where filter with array value using '!=' operator should convert to 'not in' | - |
+

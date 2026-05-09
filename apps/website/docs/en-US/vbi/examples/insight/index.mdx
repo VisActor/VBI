@@ -1,14 +1,16 @@
 # insight
 
-import { registerDemoConnector } from '@components/demoConnector'
+import { registerDemoConnector } from '@components'
 
 {registerDemoConnector()}
 
 ## basic-content
 
-Set text content with the insight builder.
+Set text content through insight builder
 
-> Label: `basic`
+
+> Tag: `basic`
+
 
 ```tsx preview
 import { VBI, VBIInsightBuilder } from '@visactor/vbi'
@@ -22,12 +24,12 @@ export default () => {
   useEffect(() => {
     try {
       const builder = VBI.insight.create({
-        content: '',
-        version: 0,
-      })
+          "content": "",
+          "version": 0
+        })
       const applyBuilder = (builder: VBIInsightBuilder) => {
-        builder.setContent('Sales in East China continued to grow this week. Keep following up with key customers.')
-      }
+  builder.setContent('本周华东区域销售额持续增长，建议继续跟进重点客户。')
+}
       applyBuilder(builder)
       setResult(builder.build())
     } catch (err) {
@@ -41,3 +43,4 @@ export default () => {
   return <JsonRender value={result} />
 }
 ```
+

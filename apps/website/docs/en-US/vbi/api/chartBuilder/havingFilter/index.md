@@ -1,10 +1,10 @@
 # HavingFilterBuilder
 
-Having filter builder for adding, modifying, and removing post-aggregation filter conditions. Having filters take effect after data aggregation and are used to filter grouped results.
+Having a filter builder for adding, modifying, and deleting post-group filter conditions. Having filtering takes effect after data aggregation and is used to filter grouped results.
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
@@ -16,10 +16,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### getConditions
 
@@ -29,11 +29,11 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 getConditions(): Y.Array<any>
 ```
 
-**Returns**: `Y.Array<any>`
+**Return**: `() => void`
 
 ### add
 
-Adds a Having filter condition.
+Add a Having filter
 
 **Definition**:
 
@@ -41,18 +41,18 @@ Adds a Having filter condition.
 add(field: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFilterBuilder
 ```
 
-**Returns**: `HavingFilterBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `field` | string | - Field name |
-| `callback` | (node: HavingFilterNodeBuilder) => void | - Callback function |
+| `field` | string | - field name |
+| `callback` | (node: HavingFilterNodeBuilder) => void | - callback function |
 
 ### addGroup
 
-Adds a Having group.
+Add a Having group
 
 **Definition**:
 
@@ -60,18 +60,18 @@ Adds a Having group.
 addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): HavingFilterBuilder
 ```
 
-**Returns**: `HavingFilterBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `op` | 'and' \| 'or' | - Logical operator |
-| `callback` | (group: HavingGroupBuilder) => void | - Callback function |
+| `callback` | (group: HavingGroupBuilder) => void | - callback function |
 
 ### update
 
-Updates the filter condition with the specified ID.
+Update filter for specified ID
 
 **Definition**:
 
@@ -79,18 +79,18 @@ Updates the filter condition with the specified ID.
 update(id: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFilterBuilder
 ```
 
-**Returns**: `HavingFilterBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `id` | string | - Filter condition ID |
-| `callback` | (node: HavingFilterNodeBuilder) => void | - Callback function |
+| `id` | string | - filter ID |
+| `callback` | (node: HavingFilterNodeBuilder) => void | - callback function |
 
 ### updateGroup
 
-Updates the group with the specified ID.
+Update the group with the specified ID
 
 **Definition**:
 
@@ -98,18 +98,18 @@ Updates the group with the specified ID.
 updateGroup(id: string, callback: (group: HavingGroupBuilder) => void): HavingFilterBuilder
 ```
 
-**Returns**: `HavingFilterBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `id` | string | - Group ID |
-| `callback` | (group: HavingGroupBuilder) => void | - Callback function |
+| `id` | string | - group ID |
+| `callback` | (group: HavingGroupBuilder) => void | - callback function |
 
 ### remove
 
-Removes the condition with the specified ID or the item at the specified index.
+Delete the condition of the specified ID or the item of the specified index
 
 **Definition**:
 
@@ -117,17 +117,17 @@ Removes the condition with the specified ID or the item at the specified index.
 remove(idOrIndex: string | number): HavingFilterBuilder
 ```
 
-**Returns**: `HavingFilterBuilder`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `idOrIndex` | string \| number | - ID or index |
 
 ### find
 
-Finds the first condition (filter or group) matching the callback condition, behaves like `Array.find`.
+Find the first condition (filtering or grouping) by callback condition, behaves the same as Array.find
 
 **Definition**:
 
@@ -135,17 +135,17 @@ Finds the first condition (filter or group) matching the callback condition, beh
 find(predicate: (entry: HavingFilterNodeBuilder | HavingGroupBuilder, index: number) => boolean): HavingFilterNodeBuilder | HavingGroupBuilder | undefined
 ```
 
-**Returns**: `HavingFilterNodeBuilder \| HavingGroupBuilder \| undefined`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `predicate` | (entry: HavingFilterNodeBuilder \| HavingGroupBuilder, index: number) => boolean | - Search condition |
+| `predicate` | (entry: HavingFilterNodeBuilder \| HavingGroupBuilder, index: number) => boolean | - Search conditions |
 
 ### clear
 
-Clears all Having filter conditions.
+Clear all Having filters
 
 **Definition**:
 
@@ -155,7 +155,7 @@ clear()
 
 ### toJSON
 
-Exports the complete Having filter configuration.
+Export the complete Having filter configuration
 
 **Definition**:
 
@@ -163,11 +163,11 @@ Exports the complete Having filter configuration.
 toJSON(): VBIHavingGroup
 ```
 
-**Returns**: `VBIHavingGroup`
+**Return**: `() => void`
 
 ### observe
 
-Listens for filter condition changes, returns an unsubscribe function.
+Monitor changes in filter conditions and return a function to cancel monitoring.
 
 **Definition**:
 
@@ -175,17 +175,17 @@ Listens for filter condition changes, returns an unsubscribe function.
 observe(callback: ObserveDeepCallback): () => void
 ```
 
-**Returns**: `() => void`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `callback` | ObserveDeepCallback | - Callback function |
+| `callback` | ObserveDeepCallback | - callback function |
 
 ### static isGroup
 
-Determines whether the node is a group node.
+Determine whether it is a group node
 
 **Definition**:
 
@@ -193,17 +193,17 @@ Determines whether the node is a group node.
 static isGroup(yMap: Y.Map<any>): boolean
 ```
 
-**Returns**: `boolean`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | `Y.Map<any>` | - |
 
 ### static isNode
 
-Determines whether the node is a leaf node.
+Determine whether it is a leaf node
 
 **Definition**:
 
@@ -211,10 +211,10 @@ Determines whether the node is a leaf node.
 static isNode(yMap: Y.Map<any>): boolean
 ```
 
-**Returns**: `boolean`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | `Y.Map<any>` | - |

@@ -1,14 +1,16 @@
 # report
 
-import { registerDemoConnector } from '@components/demoConnector'
+import { registerDemoConnector } from '@components'
 
 {registerDemoConnector()}
 
 ## basic-page
 
-Link chart and insight resources with the report builder to generate a single-page report.
+Use report builder to associate chart and insight resources to generate a single-page report
 
-> Label: `basic`
+
+> Tag: `basic`
+
 
 ```tsx preview
 import { createVBI, VBIChartBuilder, VBIInsightBuilder, VBIReportBuilder } from '@visactor/vbi'
@@ -25,56 +27,56 @@ export default () => {
       const resources = {
         charts: {
           salesChart: LocalVBI.chart.create({
-            connectorId: 'demoSupermarket',
-            chartType: 'bar',
-            dimensions: [
-              {
-                field: 'province',
-                alias: 'Province',
+              "connectorId": "demoSupermarket",
+              "chartType": "bar",
+              "dimensions": [
+                {
+                  "field": "province",
+                  "alias": "省份"
+                }
+              ],
+              "measures": [
+                {
+                  "field": "sales",
+                  "alias": "销售额",
+                  "encoding": "xAxis",
+                  "aggregate": {
+                    "func": "sum"
+                  }
+                }
+              ],
+              "whereFilter": {
+                "id": "root",
+                "op": "and",
+                "conditions": []
               },
-            ],
-            measures: [
-              {
-                field: 'sales',
-                alias: 'Sales',
-                encoding: 'xAxis',
-                aggregate: {
-                  func: 'sum',
-                },
+              "havingFilter": {
+                "id": "root",
+                "op": "and",
+                "conditions": []
               },
-            ],
-            whereFilter: {
-              id: 'root',
-              op: 'and',
-              conditions: [],
-            },
-            havingFilter: {
-              id: 'root',
-              op: 'and',
-              conditions: [],
-            },
-            theme: 'light',
-            locale: 'en-US',
-            version: 1,
-          }),
+              "theme": "light",
+              "locale": "zh-CN",
+              "version": 1
+            }),
         },
         insights: {
           salesInsight: LocalVBI.insight.create({
-            content: 'Sales are concentrated in East China, with Shanghai and Zhejiang contributing the most.',
-            version: 0,
-          }),
+              "content": "销售额集中在华东区域，上海与浙江贡献最高。",
+              "version": 0
+            }),
         },
       }
       const builder = LocalVBI.report.create({
-        pages: [],
-        version: 0,
-      })
-      const applyBuilder = (builder: VBIReportBuilder, resources: any) => {
-        builder.page.add('Sales Overview', (page) => {
-          page.setChartId(resources.charts.salesChart)
-          page.setInsightId(resources.insights.salesInsight)
+          "pages": [],
+          "version": 0
         })
-      }
+      const applyBuilder = (builder: VBIReportBuilder, resources: any) => {
+  builder.page.add('销售概览', page => {
+    page.setChartId(resources.charts.salesChart)
+    page.setInsightId(resources.insights.salesInsight)
+  })
+}
       applyBuilder(builder, resources)
       setResult(builder.snapshot())
     } catch (err) {
@@ -88,3 +90,4 @@ export default () => {
   return <JsonRender value={result} />
 }
 ```
+

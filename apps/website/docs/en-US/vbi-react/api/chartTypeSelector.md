@@ -14,9 +14,9 @@ ChartTypeSelector(props: ChartTypeSelectorProps)
 
 ## Description
 
-Provides a chart type dropdown selector.
+Provides a chart type drop-down selector.
 
-## Minimal Example
+## Minimal example
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'

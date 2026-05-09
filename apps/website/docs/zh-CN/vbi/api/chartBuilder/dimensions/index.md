@@ -18,8 +18,8 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### add
 
@@ -151,7 +151,7 @@ static isDimensionNode(node: VBIDimensionTree[0]): node is VBIDimension
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `node` | VBIDimensionTree[0] | - |
+| `node` | `VBIDimensionTree[0]` | - |
 
 ### static isDimensionGroup
 
@@ -167,4 +167,4 @@ static isDimensionGroup(node: VBIDimensionTree[0]): node is VBIDimensionGroup
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `node` | VBIDimensionTree[0] | - |
+| `node` | `VBIDimensionTree[0]` | - |

@@ -14,9 +14,9 @@ useHavingFilter(builder: VBIChartBuilder): UseHavingFilterReturn
 
 ## Description
 
-Manages the Having filter tree and provides mutation entry points.
+Manage Having filter tree and provide mutation entry.
 
-## Minimal Example
+## Minimal example
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'

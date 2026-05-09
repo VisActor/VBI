@@ -1,0 +1,16 @@
+[
+  "quickStart",
+  {
+    "type": "dir",
+    "name": "devProgress",
+    "label": "Quy trình phát triển",
+    "collapsed": false
+  },
+  "architecture",
+  {
+    "type": "dir",
+    "name": "designPhilosophy",
+    "label": "Triết lý thiết kế",
+    "collapsed": true
+  }
+]

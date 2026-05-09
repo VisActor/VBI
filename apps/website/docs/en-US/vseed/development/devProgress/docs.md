@@ -1,12 +1,12 @@
 # Documentation
 
 :::info
-Writing `TypeScript` types is indirectly writing the configuration options' documentation.
+Writing the `TypeScript` type means writing the configuration item document indirectly.
 :::
 
-The documentation for all VSeed chart types is located in the [`packages/vseed/src/types/chartType`](https://github.com/VisActor/VSeed/tree/main/packages/vseed/src/types/chartType) directory.
+Documents for all chart types of VSeed are in the [`packages/vseed/src/types/chartType`](https://github.com/VisActor/VSeed/tree/main/packages/vseed/src/types/chartType) directory
 
-## Automatically Building Documentation
+## Automatically build documentation
 
 ```bash title="source: scripts/build-docs.js"
 pnpm run build:docs
@@ -14,8 +14,8 @@ pnpm run build:docs
 
 
 :::warning
-Please do not directly modify the documentation content, as it will be overwritten at any time.
+Please do not modify the document contents directly, as they may be overwritten at any time.
 
-`build:docs` completes in just a few seconds, so incremental updates are not implemented. Each documentation build will delete all old documentation and generate brand new documentation.
+`build:docs` is completed in a few seconds, so no incremental updates are done, each build of the document deletes all old documents and generates new documents.
 
 :::

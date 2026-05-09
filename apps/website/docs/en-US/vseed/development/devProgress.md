@@ -1,60 +1,63 @@
-# Development Workflow
+# Development process
 
-## Start the Project
+## Start project
 
-```bash title="Start Project"
+```bash title="Start the Project"
 pnpm install && pnpm dev
 ``` 
 
-## Understand Requirements and Write Code
+## Understand the requirements and write the code
 
-This is a complex process, but generally involves three things:
-1. Define the input: `vseed`
-2. Define the output: `vseed` → `advancedVSeed`, or `advancedVSeed` → `spec`
-3. Write code to ensure new inputs produce the expected outputs
-
-:::tip
-The `playground` (`apps/website/docs/zh-CN/playground/index.mdx`) can be used for debugging and development.
-:::
-
-## Create New Test Cases
-
-If necessary, consider creating new test cases.
+It's a complicated process, but generally, it's three things:
+1. Enter explicitly, `vseed`
+2. Clear output, `vseed` is converted to `advancedVSeed`, or `advancedVSeed` is converted to `spec`
+3. Write code to ensure that new inputs have expected outputs
 
 :::tip
-When test coverage decreases, new test cases are required.
+`playground(apps/website/docs/zh-CN/playground/index.mdx)`, can be debugged and developed.
+
 :::
 
-In the `packages/vseed/tests/*` directory, create a new `testName.json` file and write a VSeed DSL.
+## Create new test case
 
-Then run:
+If necessary, you can consider creating a new test case
 
-```bash title="Create Test Case"
+:::tip
+When coverage decreases, new test cases need to be created
+
+:::
+
+In the `packages/vseed/tests/*` directory, create a new `testName.json` and write vseed DSL.
+
+execute
+
+```bash title="Create Test Cases"
 pnpm build:canvasTest
 ```
 
-## Run Unit Tests and Update Coverage
+## Execute unit tests and update coverage
 
 ```bash title="Run Unit Tests and Update Coverage"
 pnpm test:coverage
 ```
 
-Ensure three things:
-1. All tests pass
-2. Snapshot changes are as expected
-3. Coverage has not decreased
+Make sure 3 things
+1. All tests passed
+2. Snapshot changes are in line with expectations
+3. No decrease in coverage
 
 > Coverage changes will be automatically updated to README.md
 
-## Update Options Documentation
+## Update configuration item document
 
-If you modify TypeScript definitions for chart types, please update the options documentation.
+If the TypeScript definition of the chart type is modified, please update the configuration item document.
 
 :::tip
-All type definitions under `packages/vseed/src/types/chartType` correspond to the options documentation for each chart. If changes are made, please update accordingly.
+All type definitions under `packages/vseed/src/types/chartType` correspond to the configuration item document of each chart. If there are any changes, please be sure to update them.
+
 :::
 
-```bash title="Update Options Documentation"
+```bash title="Update Option Documentation"
 pnpm build:docs
 ```
 
@@ -64,20 +67,21 @@ pnpm build:docs
 pnpm changeset
 ```
 
-After running `pnpm changeset`, follow the prompts to:
-1. Select the packages to change — in most cases, only vseed
-2. Follow semantic versioning: press Enter twice to skip `major` and `minor`, then select `patch`
-3. Enter a change description, e.g.: `fix: chart render error caused by only one measure`
+After executing the `pnpm changeset` command, choose to perform the following operations according to the prompts
+1. Select the package that needs to be changed. Generally, only vseed
+2. Follow the semantic version and select the change type. In most cases, press the Enter key twice in succession. After skipping `major` and `minor`, select `patch`.
+2. Enter the change description, for example: `fix: chart render error caused by only one measure`
 
-:::tip Recommendation
-One feature or bugfix → one `changeset` → one `commit`
+:::tip suggestions
+A function or bugfix corresponds to a `changeset`, which corresponds to a `commit`
 
-One `Pull Request` → one `issue`
+One `Pull Request`, corresponding to one `issue`
 
-One `Pull Request` can contain multiple features or bugfixes → multiple `changeset`s → multiple `commit`s
+One `Pull Request` corresponds to multiple functions or multiple Bugfixes, corresponds to multiple `changeset`, corresponds to multiple `commit`
+
 :::
 
-## Commit
+## Submit
 
 ```bash title="Commit Everything"
 git add .

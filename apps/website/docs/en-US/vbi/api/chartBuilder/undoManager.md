@@ -1,10 +1,10 @@
 # UndoManager
 
-Undo/redo manager providing YJS-based undo and redo functionality, with support for stack management and history clearing.
+Undo/redo manager, provides undo and redo functions based on YJS, supports stack management and history clearing operations
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
@@ -18,13 +18,13 @@ constructor(scope: any)
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `scope` | any | - YJS document or type scope, used to define the tracking range for undo/redo |
+| `scope` | any | - YJS document or type scope, used to define the scope of undo/redo tracking |
 
 ### undo
 
-Undoes the last modification.
+Undo last modification
 
 **Definition**:
 
@@ -32,11 +32,11 @@ Undoes the last modification.
 undo(): boolean
 ```
 
-**Returns**: `boolean`
+**Return**: `() => void`
 
 ### redo
 
-Redoes an undone modification.
+Redo undone changes
 
 **Definition**:
 
@@ -44,11 +44,11 @@ Redoes an undone modification.
 redo(): boolean
 ```
 
-**Returns**: `boolean`
+**Return**: `() => void`
 
 ### canUndo
 
-Checks whether there are operations that can be undone.
+Check if there are any undoable operations
 
 **Definition**:
 
@@ -56,11 +56,11 @@ Checks whether there are operations that can be undone.
 canUndo(): boolean
 ```
 
-**Returns**: `boolean`
+**Return**: `() => void`
 
 ### canRedo
 
-Checks whether there are operations that can be redone.
+Check if there are redoable operations
 
 **Definition**:
 
@@ -68,11 +68,11 @@ Checks whether there are operations that can be redone.
 canRedo(): boolean
 ```
 
-**Returns**: `boolean`
+**Return**: `() => void`
 
 ### clear
 
-Clears the history.
+clear history
 
 **Definition**:
 
@@ -80,11 +80,11 @@ Clears the history.
 clear(clearUndoStack: boolean, clearRedoStack: boolean): void
 ```
 
-**Returns**: `void`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `clearUndoStack` | boolean | - Whether to clear the undo stack, defaults to true |
-| `clearRedoStack` | boolean | - Whether to clear the redo stack, defaults to true |
+| `clearUndoStack` | boolean | - Whether to clear the undo stack, default true |
+| `clearRedoStack` | boolean | - Whether to clear the redo stack, default true |

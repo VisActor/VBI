@@ -1,0 +1,6 @@
+[
+  { "type": "file", "name": "standard", "label": "標準" },
+  { "type": "file", "name": "minimalist", "label": "最小構成" },
+  { "type": "file", "name": "streamlined", "label": "簡潔版" },
+  { "type": "file", "name": "professional", "label": "プロフェッショナル" }
+]

@@ -3,13 +3,13 @@
   {
     "type": "dir",
     "name": "practices",
-    "label": "Practices",
+    "label": "practice",
     "collapsed": true
   },
   {
     "type": "dir",
     "name": "examples",
-    "label": "Examples",
+    "label": "Example",
     "collapsed": true
   },
   {

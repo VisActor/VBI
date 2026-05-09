@@ -1,0 +1,6 @@
+[
+  "index",
+  { "type": "dir", "name": "examples", "label": "Beispiel", "collapsed": true },
+  { "type": "dir", "name": "development", "label": "Beitragsleitfaden", "collapsed": true },
+  "playground"
+]

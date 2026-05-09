@@ -1,0 +1,32 @@
+[
+  {
+    "type": "dir",
+    "name": "guide",
+    "label": "Giới thiệu",
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "examples",
+    "label": "Ví dụ",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "option",
+    "label": "Tùy chọn cấu hình",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "api",
+    "label": "API",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "development",
+    "label": "Hướng dẫn đóng góp",
+    "collapsed": true
+  }
+]

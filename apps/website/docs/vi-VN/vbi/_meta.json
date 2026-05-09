@@ -1,0 +1,22 @@
+[
+  "index",
+  {
+    "type": "dir",
+    "name": "practices",
+    "label": "Thực hành",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "examples",
+    "label": "Ví dụ",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "api",
+    "label": "API",
+    "collapsed": true
+  },
+  "playground"
+]

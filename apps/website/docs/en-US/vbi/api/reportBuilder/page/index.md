@@ -2,24 +2,23 @@
 
 ## Properties
 
-## Methods
+## Method
 
 ### constructor
 
 **Definition**:
 
 ```typescript
-constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, doc: Y.Doc, dsl: Y.Map<any>, options: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>)
+constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, doc: Y.Doc, dsl: Y.Map<any>)
 ```
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
-| `parent` | VBIReportBuilder<TQueryDSL, TSeedDSL> | - |
-| `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
-| `options` | VBIReportBuilderOptions<TQueryDSL, TSeedDSL> | - |
+| `parent` | `VBIReportBuilder<TQueryDSL, TSeedDSL>` | - |
+| `doc` | `Y.Doc` | - |
+| `dsl` | `Y.Map<any>` | - |
 
 ### add
 
@@ -29,14 +28,14 @@ constructor(parent: VBIReportBuilder<TQueryDSL, TSeedDSL>, doc: Y.Doc, dsl: Y.Ma
 add(title: string, callback: (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void): VBIReportBuilder<TQueryDSL, TSeedDSL>
 ```
 
-**Returns**: `VBIReportBuilder<TQueryDSL, TSeedDSL>`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `title` | string | - |
-| `callback` | (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void | - |
+| `callback` | `(page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void` | - |
 
 ### remove
 
@@ -46,11 +45,11 @@ add(title: string, callback: (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => v
 remove(pageId: string): VBIReportBuilder<TQueryDSL, TSeedDSL>
 ```
 
-**Returns**: `VBIReportBuilder<TQueryDSL, TSeedDSL>`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `pageId` | string | - |
 
@@ -62,14 +61,14 @@ remove(pageId: string): VBIReportBuilder<TQueryDSL, TSeedDSL>
 update(pageId: string, callback: (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void): VBIReportBuilder<TQueryDSL, TSeedDSL>
 ```
 
-**Returns**: `VBIReportBuilder<TQueryDSL, TSeedDSL>`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `pageId` | string | - |
-| `callback` | (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void | - |
+| `callback` | `(page: ReportPageBuilder<TQueryDSL, TSeedDSL>) => void` | - |
 
 ### get
 
@@ -79,10 +78,10 @@ update(pageId: string, callback: (page: ReportPageBuilder<TQueryDSL, TSeedDSL>) 
 get(pageId: string): ReportPageBuilder<TQueryDSL, TSeedDSL> | undefined
 ```
 
-**Returns**: `ReportPageBuilder<TQueryDSL, TSeedDSL> \| undefined`
+**Return**: `() => void`
 
 **Parameters**:
 
-| Parameter | Type | Description |
+| Parameters | Type | Description |
 | --- | --- | --- |
 | `pageId` | string | - |

@@ -8,7 +8,7 @@
 prepare(): Promise<void>
 ```
 
-Asynchronously executes dynamic filter code. Call before `build()` to execute code defined in `dynamicFilter`. This is an idempotent method — multiple calls will not re-execute.
+Execute dynamic filter code asynchronously. Called before build() to execute the code in dynamicFilter. Idempotent method, multiple calls will not be repeated
 
 ### build
 
@@ -16,7 +16,7 @@ Asynchronously executes dynamic filter code. Call before `build()` to execute co
 build<T = S>(): T
 ```
 
-Generates the final chart configuration (Spec). This is the most commonly used core method. If the configuration includes a `dynamicFilter` code, call `prepare()` first.
+Generate the final chart configuration (Spec). This is the most commonly used core method. If the configuration contains dynamicFilter code, prepare() needs to be called first
 
 ### buildSpec
 
@@ -24,7 +24,7 @@ Generates the final chart configuration (Spec). This is the most commonly used c
 buildSpec<T = S>(advanced: AdvancedVSeed): T
 ```
 
-Converts the intermediate-layer configuration (AdvancedVSeed) to the final Spec. Use only when you need deep customization of the intermediate-layer configuration.
+Convert mid-tier configuration (AdvancedVSeed) to final Spec. Use only when you need to deeply customize the middle-tier configuration
 
 ### buildAdvanced
 
@@ -32,7 +32,7 @@ Converts the intermediate-layer configuration (AdvancedVSeed) to the final Spec.
 buildAdvanced(): AdvancedVSeed | null
 ```
 
-Generates the intermediate-layer configuration (AdvancedVSeed), i.e., the chart template. More detailed than the raw VSeed, exposing more chart internals.
+Generate the middle layer configuration (AdvancedVSeed), which is the chart template. More detailed than original VSeed, exposing more chart details
 
 ### getColorItems
 
@@ -40,7 +40,7 @@ Generates the intermediate-layer configuration (AdvancedVSeed), i.e., the chart 
 getColorItems(): __type[]
 ```
 
-Gets field information related to colors in the data. Commonly used to generate chart legends or color filter UIs.
+Get the field information involving color in the data. Legend or color filter UI commonly used to generate charts
 
 ### getColorIdMap
 
@@ -48,7 +48,15 @@ Gets field information related to colors in the data. Commonly used to generate 
 getColorIdMap(): Record
 ```
 
-Gets a detailed mapping table for color fields. Key is the color ID, Value is the detailed information.
+Get a detailed mapping table for color fields. Key is the color ID, Value is the detailed information
+
+### getColorValueMap
+
+```ts
+getColorValueMap(): undefined | Record
+```
+
+Get the mapping of colorId to final color values in a discrete colormap
 
 ## Static Methods
 
@@ -58,7 +66,7 @@ Gets a detailed mapping table for color fields. Key is the color ID, Value is th
 static getAdvancedPipeline(chartType: ChartType): Pipe[]
 ```
 
-[Internal] Gets the template build pipeline for the specified chart type, used for debugging the VSeed → AdvancedVSeed conversion process.
+[Internal method] Get the template construction pipeline of the specified chart type, used to debug the conversion process from VSeed to AdvancedVSeed
 
 ### getSpecPipeline
 
@@ -66,7 +74,7 @@ static getAdvancedPipeline(chartType: ChartType): Pipe[]
 static getSpecPipeline(chartType: ChartType): SpecPipe[]
 ```
 
-[Internal] Gets the Spec build pipeline for the specified chart type, used for debugging the AdvancedVSeed → Spec conversion process.
+[Internal method] Get the Spec build pipeline of the specified chart type, used to debug the conversion process from AdvancedVSeed to Spec
 
 ### getTheme
 
@@ -74,7 +82,7 @@ static getSpecPipeline(chartType: ChartType): SpecPipe[]
 static getTheme(themeKey?: string): CustomThemeConfig
 ```
 
-Gets the configuration of the specified theme. If `themeKey` is not provided, returns the `'light'` theme by default.
+Get the configuration of the specified topic. If themeKey is not passed, the 'light' theme will be returned by default.
 
 ### getThemeMap
 
@@ -82,7 +90,7 @@ Gets the configuration of the specified theme. If `themeKey` is not provided, re
 static getThemeMap(): Record<string, CustomThemeConfig>
 ```
 
-Gets all registered theme configurations.
+Get all registered theme configurations
 
 ### from
 
@@ -90,7 +98,7 @@ Gets all registered theme configurations.
 static from<T extends Spec = Spec>(vseed: VSeed): Builder<T>
 ```
 
-Static factory method for conveniently creating a `Builder` instance.
+Static factory method for conveniently creating Builder instances
 
 ### registerAdvancedPipeline
 
@@ -98,7 +106,7 @@ Static factory method for conveniently creating a `Builder` instance.
 static registerAdvancedPipeline(chartType: ChartType, pipeline: AdvancedPipeline): void
 ```
 
-[Extension] Registers a template build pipeline for a new chart type.
+[Extension method] Register the template construction pipeline of the new chart type
 
 ### registerSpecPipeline
 
@@ -106,7 +114,7 @@ static registerAdvancedPipeline(chartType: ChartType, pipeline: AdvancedPipeline
 static registerSpecPipeline(chartType: ChartType, pipeline: SpecPipeline): void
 ```
 
-[Extension] Registers a Spec build pipeline for a new chart type.
+[Extension method] Register Spec build pipeline for new chart type
 
 ### updateAdvanced
 
@@ -114,7 +122,7 @@ static registerSpecPipeline(chartType: ChartType, pipeline: SpecPipeline): void
 static updateAdvanced(chartType: ChartType, pipe: AdvancedPipe): void
 ```
 
-[Extension] Modifies the template build logic for an existing chart, inserting a custom Pipe to influence the generated AdvancedVSeed.
+[Extension method] Modify the template construction logic of the existing chart and insert a custom Pipe to affect the generated AdvancedVSeed
 
 ### updateSpec
 
@@ -122,7 +130,7 @@ static updateAdvanced(chartType: ChartType, pipe: AdvancedPipe): void
 static updateSpec(chartType: ChartType, pipe: SpecPipe): void
 ```
 
-[Extension] Modifies the Spec build logic for an existing chart, inserting a custom Pipe to influence the final generated Spec.
+[Extension method] Modify the Spec construction logic of the existing chart and insert a custom Pipe to affect the final Spec generated.
 
 ### registerTheme
 
@@ -130,7 +138,7 @@ static updateSpec(chartType: ChartType, pipe: SpecPipe): void
 static registerTheme(key: string, theme: CustomThemeConfig): void
 ```
 
-[Extension] Registers a custom theme.
+[Extension method] Register a custom theme
 
 ## Properties
 
@@ -140,7 +148,7 @@ static registerTheme(key: string, theme: CustomThemeConfig): void
 get locale()
 ```
 
-Gets the locale currently used by the Builder.
+Get the locale currently used by Builder
 
 ### get vseed
 
@@ -148,7 +156,7 @@ Gets the locale currently used by the Builder.
 get vseed()
 ```
 
-Gets the current VSeed input data.
+Get the current VSeed input data
 
 ### set vseed
 
@@ -156,7 +164,7 @@ Gets the current VSeed input data.
 set vseed(value)
 ```
 
-Updates the VSeed input data. After updating, the cached state from `prepare()` will be cleared.
+Update VSeed input data. The cache status of prepare() will be cleared after updating.
 
 ### get isPrepared
 
@@ -164,7 +172,7 @@ Updates the VSeed input data. After updating, the cached state from `prepare()` 
 get isPrepared()
 ```
 
-Gets the `prepare()` state.
+Get prepare() status
 
 ### set isPrepared
 
@@ -172,7 +180,7 @@ Gets the `prepare()` state.
 set isPrepared(value: boolean)
 ```
 
-Sets the `prepare()` state.
+Set prepare() state
 
 ### get advancedVSeed
 
@@ -180,7 +188,7 @@ Sets the `prepare()` state.
 get advancedVSeed()
 ```
 
-Gets the current AdvancedVSeed intermediate configuration object.
+Get the current AdvancedVSeed intermediate configuration object
 
 ### set advancedVSeed
 
@@ -188,7 +196,7 @@ Gets the current AdvancedVSeed intermediate configuration object.
 set advancedVSeed(value)
 ```
 
-Sets the AdvancedVSeed intermediate configuration object. Typically used for caching or reusing an existing intermediate configuration.
+Sets the AdvancedVSeed intermediate configuration object. Usually used to cache or reuse existing intermediate configurations
 
 ### get spec
 
@@ -196,7 +204,7 @@ Sets the AdvancedVSeed intermediate configuration object. Typically used for cac
 get spec()
 ```
 
-Gets the currently generated final Spec object.
+Get the currently generated final Spec object
 
 ### set spec
 
@@ -204,7 +212,7 @@ Gets the currently generated final Spec object.
 set spec(value)
 ```
 
-Sets the Spec object. Typically used for caching.
+Sets the Spec object. Usually used for caching
 
 ### get performance
 
@@ -212,7 +220,7 @@ Sets the Spec object. Typically used for caching.
 get performance()
 ```
 
-Gets performance statistics from the build process, including the duration of each phase (in ms).
+Get performance statistics during the build process. Including the time spent in each stage (unit: ms)
 
 ### set performance
 
@@ -220,5 +228,5 @@ Gets performance statistics from the build process, including the duration of ea
 set performance(value)
 ```
 
-Sets the performance statistics.
+Set performance statistics
 

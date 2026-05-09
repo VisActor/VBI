@@ -1,0 +1,22 @@
+[
+  "index",
+  {
+    "type": "dir",
+    "name": "practices",
+    "label": "실습",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "examples",
+    "label": "예제",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "api",
+    "label": "API",
+    "collapsed": true
+  },
+  "playground"
+]

@@ -5,6 +5,28 @@ import * as path from 'node:path'
 
 import i18nJson from './i18n.json'
 
+export const supportedLocales = [
+  'zh-CN',
+  'en-US',
+  'ja-JP',
+  'de-DE',
+  'id-ID',
+  'fr-FR',
+  'ko-KR',
+  'vi-VN',
+] as const
+
+const localeLabels: Record<(typeof supportedLocales)[number], string> = {
+  'zh-CN': '简体中文',
+  'en-US': 'English',
+  'ja-JP': '日本語',
+  'de-DE': 'Deutsch',
+  'id-ID': 'Bahasa Indonesia',
+  'fr-FR': 'Français',
+  'ko-KR': '한국어',
+  'vi-VN': 'Tiếng Việt',
+}
+
 export default defineConfig({
   root: './docs',
   base: '/VBI/',
@@ -26,20 +48,12 @@ export default defineConfig({
     }),
   ],
   lang: 'zh-CN',
-  locales: [
-    {
-      lang: 'zh-CN',
-      label: '简体中文',
-      title: 'VisActor VBI',
-      description: 'VisActor VBI',
-    },
-    {
-      lang: 'en-US',
-      label: 'English',
-      title: 'VisActor VBI',
-      description: 'VisActor VBI',
-    },
-  ],
+  locales: supportedLocales.map((lang) => ({
+    lang,
+    label: localeLabels[lang],
+    title: 'VisActor VBI',
+    description: 'VisActor VBI',
+  })),
   themeConfig: {
     socialLinks: [
       {
@@ -48,16 +62,10 @@ export default defineConfig({
         content: 'https://github.com/visactor/vbi',
       },
     ],
-    locales: [
-      {
-        lang: 'zh-CN',
-        label: '简体中文',
-      },
-      {
-        lang: 'en-US',
-        label: 'English',
-      },
-    ],
+    locales: supportedLocales.map((lang) => ({
+      lang,
+      label: localeLabels[lang],
+    })),
   },
   markdown: {
     showLineNumbers: true,

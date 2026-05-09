@@ -4,40 +4,40 @@ pageType: doc
 
 import { PackageManagerTabs, Steps } from '@rspress/core/theme'
 
-# Quick Start
+# Quick start
 
-**VSeed** is a standardized DSL (Domain Specific Language) for the analytics domain. It makes data visualization simple through elegant data orchestration.
+**VSeed** is the standardized DSL (domain-specific language) for the analytics domain. Make data visualization simple through elegant data orchestration.
 
 <Steps>
-  ### Install
+  ### Installation
 
-Install the core library `vseed` along with the underlying rendering engines `vchart` and `vtable`.
+Install the core library `vseed` and the underlying rendering engines `vchart` and `vtable`.
 
 <PackageManagerTabs command="install @visactor/vseed @visactor/vchart @visactor/vtable" />
 
 ### Register
 
-Register chart capabilities and themes at the application entry point (only needs to run once).
+Register chart capabilities and themes at the application entrance (you only need to do this once).
 
 ```tsx pure title="App.tsx"
 import { registerAll } from '@visactor/vseed'
 
-// Register all built-in chart types and themes
+// 注册所有内置图表类型与主题
 registerAll()
 ```
 
 ### Build
 
-Use `Builder` to convert a VSeed DSL into a renderable Spec configuration.
+Convert VSeed DSL to a renderable Spec configuration via `Builder`.
 
 ```tsx pure title="logic.ts"
 import { VSeed, Builder } from '@visactor/vseed'
 
-// 1. Define the analysis intent (DSL)
+// 1. 定义分析意图 (DSL)
 const vseed: VSeed = {
-  chartType: 'line', // chart type
+  chartType: 'line', // 图表类型
   dataset: [
-    // data source
+    // 数据源
     { date: '2019', profit: 10, sales: 100 },
     { date: '2020', profit: 30, sales: 200 },
     { date: '2021', profit: 30, sales: 300 },
@@ -45,11 +45,11 @@ const vseed: VSeed = {
   ],
 }
 
-// 2. Generate render config (Spec)
+// 2. 生成渲染配置 (Spec)
 const spec = Builder.from(vseed).build()
 ```
 
-### Render
+### Rendering
 
 Pass the generated Spec to the VChart component for rendering.
 
@@ -92,13 +92,13 @@ export default Demo
 
 </Steps>
 
-## Core Concepts
+## Core concepts
 
-VSeed's design philosophy is to separate **"what you want to analyze"** (DSL) from **"how to draw the chart"** (Spec).
+VSeed is designed to separate **"what you want to analyze"** (DSL) from **"how to draw a chart"** (Spec).
 
 ### 1. VSeed DSL
 
-The core configuration object, focused on **data** and **business semantics**. You don't need to worry about visual details like axis or legend layout — VSeed provides out-of-the-box visual specifications based on chart type.
+The core configuration object focuses on **data** and **business semantics**. You don’t need to worry about visual details such as coordinate axes and legend layout. VSeed sets out-of-the-box visual specifications based on the chart type.
 
 ```typescript
 const vseed: VSeed = {
@@ -107,16 +107,16 @@ const vseed: VSeed = {
     { date: '2019', profit: 10, sales: 100 },
     { date: '2020', profit: 30, sales: 200 },
   ],
-  dimensions: [{ id: 'date', alias: 'Date' }],
+  dimensions: [{ id: 'date', alias: '日期' }],
 }
 ```
 
 ### 2. Builder
 
-The transformation engine responsible for translating the concise DSL into a detailed VChart/VTable Spec. It contains extensive built-in data processing and visual specifications.
+The conversion engine is responsible for translating the concise DSL into the detailed VChart/VTable Spec. It has a lot of built-in data processing and visual specifications.
 
 ```typescript
-// Builder pattern supports method chaining; more intermediate processing will be supported in the future
+// Builder 模式允许链式调用，未来支持更多中间处理
 const spec = Builder.from(vseed).build()
 ```
 
@@ -124,7 +124,7 @@ const spec = Builder.from(vseed).build()
 
 ## Advanced: Pivot Analysis
 
-The power of VSeed lies in **multi-dimensional analysis**. Simply add Dimensions and Measures definitions to generate complex pivot charts or combination charts.
+The power of VSeed lies in **multidimensional analysis**. Simply add the definitions of dimensions and measures to generate complex pivot charts or combination charts.
 
 ```tsx
 import { useRef, useEffect } from 'react'
@@ -150,18 +150,18 @@ const Demo = () => {
         { date: '2022', profit: 50, sales: 400 },
         { date: '2023', profit: 40, sales: 500 },
       ],
-      // Define dimensions and measures
-      dimensions: [{ id: 'date', alias: 'Date' }],
+      // 定义维度与指标
+      dimensions: [{ id: 'date', alias: '日期' }],
       measures: [
-        { id: 'profit', alias: 'Profit', parentId: 'profit-group' },
-        { id: 'sales', alias: 'Sales', parentId: 'sales-group' },
+        { id: 'profit', alias: '利润', parentId: 'profit-group' },
+        { id: 'sales', alias: '销售额', parentId: 'sales-group' },
       ],
     }
 
     const spec = Builder.from(vseed).build()
     const tableInstance = new PivotChart(containerRef.current, spec)
 
-    // Example: interactive filtering
+    // 示例：交互联动
     tableInstance.on('legend_item_click', (args) => {
       tableInstance.updateFilterRules([
         {

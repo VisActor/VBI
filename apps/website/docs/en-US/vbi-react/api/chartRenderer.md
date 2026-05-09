@@ -14,9 +14,9 @@ ChartRenderer(props: ChartRendererProps)
 
 ## Description
 
-Renders the chart based on builder output, and handles loading and error states.
+Render charts based on builder output and handle loading and error states.
 
-## Minimal Example
+## Minimal example
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'

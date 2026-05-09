@@ -12,12 +12,7 @@
   {
     "type": "file",
     "name": "layoutWithComponents",
-    "label": "Layout with Components"
-  },
-  {
-    "type": "file",
-    "name": "vbi-react-starter",
-    "label": "Starter Demo"
+    "label": "Componentized Layout"
   },
   {
     "type": "file",

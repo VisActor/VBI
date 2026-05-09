@@ -1,0 +1,35 @@
+[
+  {
+    "text": "VSeed",
+    "link": "/vseed/guide/quickStart",
+    "activeMatch": "/vseed/"
+  },
+  {
+    "text": "VQuery",
+    "link": "/vquery",
+    "activeMatch": "/vquery/"
+  },
+  {
+    "text": "VBI",
+    "link": "/vbi/",
+    "activeMatch": "^/vbi(?:/|$)"
+  },
+  {
+    "text": "VBI React",
+    "link": "/vbi-react/",
+    "activeMatch": "^/vbi-react(?:/|$)"
+  },
+  {
+    "text": "Playground",
+    "link": "/playground/vseed",
+    "activeMatch": "/playground/"
+  },
+  {
+    "text": "Comprendre VChart",
+    "link": "https://visactor.com/vchart"
+  },
+  {
+    "text": "Comprendre VTable",
+    "link": "https://visactor.com/vtable"
+  }
+]

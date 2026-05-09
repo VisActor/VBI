@@ -1,0 +1,15 @@
+[
+  "index",
+  {
+    "type": "dir",
+    "name": "examples",
+    "label": "Ví dụ",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "api",
+    "label": "API",
+    "collapsed": true
+  }
+]

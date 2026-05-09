@@ -1,22 +1,24 @@
 # TidyData
 
-:::info Significance
-TidyData, through its core principle of "variables as columns, observations as rows," dramatically reduces the complexity of data cleaning — letting us focus on business problems rather than data format conversion.
+:::info meaning
+TidyData greatly reduces the complexity of data cleaning through the core principle of "variables as columns and observations as rows", allowing us to focus more on business issues rather than data format conversion.
 :::
 
 ## Paper
 
-Author: `Hadley Wickham`. The paper discusses a small module in data processing — data tidying — because tidy datasets are easier to manipulate, model, and visualize, and have a specific structure.
+The author of the paper, `Hadley Wickham`, discusses a small module in data processing, data sorting, because tidy data sets are easy to operate, model and visualize, and have a specific structure.
 
-This paper is highly recommended. See: [Tidy Data](https://www.jstatsoft.org/article/view/v059i10)
+This paper is highly recommended to be read, please check: [Tidy Data](https://www.jstatsoft.org/article/view/v059i10)
 
-## TidyData in VSeed
 
-The `dataset` configuration in VSeed DSL uses the `TidyData` format.
+## Application of TidyData in VSeed
 
-Core characteristics:
-1. **Each variable has a column**: Variable values are stored in separate columns, e.g., "age", "gender".
-2. **Each observation has a row**: All variable values for one observation form a row, e.g., a person's age and gender.
-3. **Each unit of observation has a table**: Different types of observation units (e.g., person, time, location) should be stored separately.
+The `dataset` configuration in VSeed DSL is a data set in the `TidyData` format.
 
-Therefore, the result of an `SQL` query can be passed directly into VSeed's `dataset` configuration — no additional data processing needed for quick analysis and visualization.
+The core features are as follows:
+1. One column per variable: Variable values are stored in separate columns, such as "age" and "gender".
+2. One row for each observation: All variable values of each observation object form one row, such as a person's age and gender information.
+3. One table for each observation unit: Different types of observation units (such as person, time, location) should be stored separately.
+
+
+Therefore, the results of the `SQL` query can be directly passed into the `dataset` configuration of `VSeed`, and no additional data processing is required for rapid analysis and visualization.

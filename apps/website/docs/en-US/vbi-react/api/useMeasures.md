@@ -14,9 +14,9 @@ useMeasures(builder: VBIChartBuilder): UseMeasuresReturn
 
 ## Description
 
-Reads and updates measure configuration, providing the ability to add, remove, and modify measures.
+Read and update measurement configurations, providing the ability to add, delete, and modify measurements.
 
-## Minimal Example
+## Minimal example
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'

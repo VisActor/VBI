@@ -18,7 +18,7 @@ constructor(yMap: Y.Map<any>)
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | `Y.Map<any>` | - |
 
 ### getId
 
@@ -126,7 +126,7 @@ setDate(predicate: VBIWhereDatePredicate): this
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `predicate` | VBIWhereDatePredicate | - 日期谓词 |
+| `predicate` | `VBIWhereDatePredicate` | - 日期谓词 |
 
 ### getDate
 

@@ -1,0 +1,9 @@
+[
+  "quickStart",
+  {
+    "type": "dir",
+    "name": "intro",
+    "label": "Funktionsüberblick",
+    "collapsed": false
+  }
+]

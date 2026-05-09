@@ -1,0 +1,23 @@
+[
+  {
+    "type": "dir",
+    "name": "chart",
+    "label": "chart",
+    "collapsible": true,
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "insight",
+    "label": "insight",
+    "collapsible": true,
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "report",
+    "label": "report",
+    "collapsible": true,
+    "collapsed": false
+  }
+]

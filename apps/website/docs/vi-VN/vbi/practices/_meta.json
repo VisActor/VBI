@@ -1,0 +1,22 @@
+[
+  {
+    "type": "file",
+    "name": "standard",
+    "label": "Tiêu chuẩn"
+  },
+  {
+    "type": "file",
+    "name": "minimalist",
+    "label": "Tối giản"
+  },
+  {
+    "type": "file",
+    "name": "streamlined",
+    "label": "Tinh gọn"
+  },
+  {
+    "type": "file",
+    "name": "professional",
+    "label": "Chuyên nghiệp"
+  }
+]

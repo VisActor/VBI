@@ -2,12 +2,12 @@
 pageType: doc
 ---
 
-# Number Format
+# Numeric format
 
-VSeed supports configuring formatting rules for numerical values within `measures`.
+VSeed supports configuring numerical formatting rules in `measures`.
 
-- `autoFormat`: Whether to automatically format values.
-- `format`: Detailed formatting configuration, including type, ratio, thousand separator, fraction digits, prefix/suffix, etc.
+- `autoFormat`: Whether to automatically format.
+- `format`: Detailed formatting configuration, including type, magnification, thousandths, decimal places, unit suffixes, etc.
 
 ```tsx direction=vertical playground
 import { useDark } from '@rspress/core/runtime'
@@ -26,25 +26,25 @@ const Demo = () => {
     measures: [
       {
         id: 'profit',
-        alias: 'Profit',
+        alias: '利润',
         autoFormat: false,
         format: {
           type: 'number',
           ratio: 1000,
           thousandSeparator: true,
           fractionDigits: 0,
-          symbol: 'k',
-          prefix: 'Profit',
+          symbol: '千',
+          prefix: '利润',
           suffix: '$',
         },
       },
       {
         id: 'sales',
-        alias: 'Sales',
+        alias: '销售额',
         autoFormat: true,
       },
     ],
-    dimensions: [{ id: 'date', alias: 'Date' }],
+    dimensions: [{ id: 'date', alias: '日期' }],
     dataset: [
       { date: '2019', profit: 10000, sales: 200000, discount: 0.5, rateOfReturn: 0.001 },
       { date: '2020', profit: 20000, sales: 400000, discount: 0.2, rateOfReturn: 0.002 },
