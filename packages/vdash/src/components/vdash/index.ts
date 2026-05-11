@@ -1,1 +1,0 @@
-export { VdashApp } from './vdash'
