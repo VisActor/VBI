@@ -36,7 +36,17 @@ export const zVBIDashboardInsightWidget = zVBIDashboardWidgetBase.extend({
   insightId: z.string(),
 })
 
+<<<<<<< Updated upstream
 export const zVBIDashboardWidget = z.union([zVBIDashboardChartWidget, zVBIDashboardInsightWidget])
+=======
+export const zVBIDashboardCustomWidget = zVBIDashboardWidgetBase.passthrough()
+
+export const zVBIDashboardWidget = z.union([
+  zVBIDashboardChartWidget,
+  zVBIDashboardInsightWidget,
+  zVBIDashboardCustomWidget,
+])
+>>>>>>> Stashed changes
 
 export const zVBIDashboardLayoutMap = z.object({
   xxl: z.array(zVBIDashboardGridItemLayout).optional(),
@@ -54,9 +64,9 @@ export const zVBIDashboardLayout = z.object({
 })
 
 export const zVBIDashboardDSL = z.object({
-  uuid: z.string().optional().default(''),
-  type: z.literal('dashboard').optional().default('dashboard'),
   version: z.number().int().min(1).optional().default(1),
+  type: z.literal('dashboard').optional().default('dashboard'),
+  uuid: z.string().optional().default(''),
   meta: zVBIDashboardMeta,
   widgets: z.array(zVBIDashboardWidget).optional().default([]),
   layout: zVBIDashboardLayout,

@@ -3,17 +3,20 @@ import { connectorMap, getConnector, registerConnector } from 'src/chart-builder
 import type {
   VBIChartBuilderOptions,
   VBIChartDSLInput,
+  VBIDashboardDSLInput,
   VBIInsightDSLInput,
   VBIReportBuilderOptions,
   VBIReportDSLInput,
 } from 'src/types'
 import {
   createChartBuilderFromVBIChartDSLInput,
+  createDashboardBuilderFromVBIDashboardDSLInput,
   createInsightBuilderFromVBIInsightDSLInput,
   createReportBuilderFromVBIReportDSLInput,
 } from './from'
 import { createVBIResourceRegistry } from './resources'
 import { createEmptyChart } from './create-empty-chart'
+import { createEmptyDashboard } from './create-empty-dashboard'
 import { createEmptyInsight } from './create-empty-insight'
 import { createEmptyReport } from './create-empty-report'
 import { createEmptyReportPage } from './create-empty-report-page'
@@ -35,14 +38,20 @@ export function createVBI<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBIS
     resourceRegistry.charts.registerBuilder(builder.getUUID(), builder)
     return builder
   }
+
   const createInsight = (insight: VBIInsightDSLInput) => {
     const builder = createInsightBuilderFromVBIInsightDSLInput(insight)
     resourceRegistry.insights.registerBuilder(builder.getUUID(), builder)
     return builder
   }
+
   const createReport = (report: VBIReportDSLInput, builderOptions?: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>) => {
     const options = mergeReportBuilderOptions(defaultBuilderOptions, builderOptions)
     return createReportBuilderFromVBIReportDSLInput(report, options, resourceRegistry)
+  }
+
+  const createDashboard = (dashboard: VBIDashboardDSLInput) => {
+    return createDashboardBuilderFromVBIDashboardDSLInput(dashboard)
   }
 
   return {
@@ -61,6 +70,10 @@ export function createVBI<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBIS
       create: createReport,
       createEmpty: createEmptyReport,
       createEmptyPage: createEmptyReportPage,
+    },
+    dashboard: {
+      create: createDashboard,
+      createEmpty: createEmptyDashboard,
     },
   } satisfies VBIInstance<TQueryDSL, TSeedDSL>
 }
