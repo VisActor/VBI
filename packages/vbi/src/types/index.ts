@@ -1,5 +1,6 @@
 export * from './chartDSL'
 export * from './insightDSL'
 export * from './reportDSL'
+export * from './dashboardDSL'
 export * from './builder'
 export * from './connector'
