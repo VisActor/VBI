@@ -44,6 +44,7 @@
 - [TreeMap](/VBI/vseed/examples/chartType/treeMap.md)
 - [Sunburst](/VBI/vseed/examples/chartType/sunburst.md)
 - [CirclePacking](/VBI/vseed/examples/chartType/circlePacking.md)
+- [HierarchySankey](/VBI/vseed/examples/chartType/hierarchySankey.md)
 - [Heatmap](/VBI/vseed/examples/chartType/heatmap.md)
 - [Funnel](/VBI/vseed/examples/chartType/funnel.md)
 - [Boxplot](/VBI/vseed/examples/chartType/boxplot.md)
