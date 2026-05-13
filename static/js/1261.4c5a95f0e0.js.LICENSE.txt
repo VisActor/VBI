@@ -1,0 +1,24 @@
+/* NProgress, (c) 2013, 2014 Rico Sta. Cruz - http://ricostacruz.com/nprogress
+ * @license MIT */
+
+/*! medium-zoom 1.1.0 | MIT License | https://github.com/francoischalifour/medium-zoom */
+
+/**
+ * @license QR Code generator library (TypeScript)
+ * Copyright (c) Project Nayuki.
+ * SPDX-License-Identifier: MIT
+ */
+
+/**
+ * @license qrcode.react
+ * Copyright (c) Paul O'Shannessy
+ * SPDX-License-Identifier: ISC
+ */
+
+/**!
+ * FlexSearch.js v0.8.212 (Bundle/Module)
+ * Author and Copyright: Thomas Wilkerling
+ * Licence: Apache-2.0
+ * Hosted by Nextapps GmbH
+ * https://github.com/nextapps-de/flexsearch
+ */
