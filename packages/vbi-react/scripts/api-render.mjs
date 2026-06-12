@@ -130,14 +130,16 @@ export function buildApiOverview(hooks, components) {
   const componentNames = components.map((item) => `\`${item.name}\``).join('、')
   return `# API 总览
 
-\`@visactor/vbi-react\` 当前导出分为两部分：
+\`@visactor/vbi-react\` 当前导出分为三部分：
 
 | 模块 | 导入路径 | 内容 |
 | --- | --- | --- |
 | Hooks | \`@visactor/vbi-react\` | ${hookNames} |
 | Components | \`@visactor/vbi-react/components\` | ${componentNames} |
+| Styles | \`@visactor/vbi-react/components.css\` | 默认组件样式、稳定 class names、可覆盖 CSS variables |
 
 所有 hooks/components 都围绕 \`VBIChartBuilder\` 工作，不额外维护业务状态源。
+业务页面可以通过 wrapper 覆盖 CSS variables；完整页面结构建议放在应用或 starter 层，而不是塞进 package 组件内部。
 
 ## 建议阅读顺序
 

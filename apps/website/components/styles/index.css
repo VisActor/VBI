@@ -5,18 +5,50 @@
   height: calc(100vh - 72px) !important;
 }
 
-.starter-page .vbi-react-builder-layout__body > aside > div {
-  grid-template-rows: minmax(0, 0.8fr) minmax(0, 1.2fr) !important;
+.rp-doc-layout__container:has(.starter-page) .rp-doc-layout__doc {
+  flex: 1 1 auto;
+  width: auto;
+  max-width: min(100%, 1480px);
 }
 
-.starter-page .vbi-react-builder-layout__body > aside > div > :last-child,
-.starter-page .vbi-react-filter-panel,
-.starter-page .vbi-react-filter-panel__sections {
-  min-height: 0 !important;
+.rp-doc-layout__container:has(.starter-page) .rp-doc-layout__doc-container {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-right: 48px;
+  padding-left: 48px;
 }
 
-.starter-page .vbi-react-filter-panel,
-.starter-page .vbi-react-filter-panel__sections {
-  overflow-y: auto !important;
-  overscroll-behavior: contain;
+.rp-doc-layout__container:has(.starter-page) .rp-doc-layout__outline {
+  display: none !important;
+}
+
+.rp-doc-layout__container:has(.starter-page) .rspress-doc {
+  width: 100%;
+  max-width: none;
+}
+
+.vbi-react-starter-doc {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 1180px) {
+  .rp-doc-layout__container:has(.starter-page) .rp-doc-layout__doc {
+    max-width: 100%;
+  }
+
+  .rp-doc-layout__container:has(.starter-page) .rp-doc-layout__doc-container {
+    padding-right: 32px;
+    padding-left: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .rp-doc-layout__container:has(.starter-page) .rp-doc-layout__doc-container {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
 }

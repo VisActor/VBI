@@ -27,8 +27,8 @@ export function StarterTopBar(props: StarterTopBarProps) {
       <div className='starter-top-intro'>
         <strong className='starter-top-title'>vbi-react Starter</strong>
         <div className='starter-top-subtitle'>
-          `FieldPanel`、`FilterPanel`、`ThemeSelector`、`ChartTypeSelector`、`ChartRenderer` 和 `BuilderLayout`
-          直接拼出一个可用的低门槛搭建器；需要深度自定义时，再下钻到 hooks。
+          `FieldPanel`、`FilterPanel`、`ThemeSelector`、`ChartTypeSelector` 和 `ChartRenderer`
+          组成一个低门槛工作台；页面框架由 starter 自己控制，方便业务侧替换组合。
         </div>
       </div>
 

@@ -4,7 +4,9 @@
     "outDir": "dist",
     "rootDir": "./src",
     "paths": {
-      "src/*": ["./src/*"]
+      "src/*": ["./src/*"],
+      "@visactor/vbi-react": ["../../packages/vbi-react/src/index.ts"],
+      "@visactor/vbi-react/components": ["../../packages/vbi-react/src/components/index.ts"]
     }
   },
   "references": [

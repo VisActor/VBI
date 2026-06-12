@@ -17,14 +17,14 @@
   "type": "module",
   "exports": {
     ".": {
-      "source": "./src/index.ts",
       "types": "./dist/index.d.ts",
+      "source": "./src/index.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
     "./components": {
-      "source": "./src/components/index.ts",
       "types": "./dist/components/index.d.ts",
+      "source": "./src/components/index.ts",
       "import": "./dist/components.js",
       "require": "./dist/components.cjs"
     },

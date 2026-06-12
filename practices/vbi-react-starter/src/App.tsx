@@ -1,20 +1,18 @@
 import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
 import { VBI } from '@visactor/vbi'
 import { useVBI } from '@visactor/vbi-react'
-import { BuilderLayout, FilterPanel } from '@visactor/vbi-react/components'
+import { FieldPanel, FilterPanel } from '@visactor/vbi-react/components'
 import type { DatasetColumn } from '@visactor/vquery'
 
 import './App.css'
-import { CompactFieldPanel } from './components/CompactFieldPanel'
 import { StarterFooter, type StarterFooterProps } from './components/StarterFooter'
 import { StarterMainPanel } from './components/StarterMainPanel'
 import { StarterTopBar } from './components/StarterTopBar'
-import { fieldPanelStyle, filterPanelStyle, layoutStyle, sidebarStackStyle } from './styles/styleObjects'
 import './styles/tokens.css'
 import { createLocalConnector, setLocalDataWithSchema, type LocalRow } from './utils/localConnector'
 import { clearBuilderSelections, inferSchema, rowsToDataset } from './utils/dataset'
 import { readDebugState } from './utils/debugState'
-import { getLeftPanelWidth, isCompactViewport } from './utils/layout'
+import { isCompactViewport } from './utils/layout'
 import { parseCsv } from './utils/parseCsv'
 import { supermarketSchema } from './utils/supermarketSchema'
 
@@ -75,6 +73,7 @@ function extractDatasetFromUploadedCsv(csvText: string) {
 export function APP() {
   const debugState = typeof window === 'undefined' ? 'none' : readDebugState(window.location.search)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const pageRef = useRef<HTMLDivElement>(null)
   const [builder] = useState(() => {
     ensureConnectorInitialized()
     return VBI.chart.create(VBI.chart.createEmpty(CONNECTOR_ID))
@@ -89,10 +88,10 @@ export function APP() {
   const [isCompactLayout, setIsCompactLayout] = useState(() =>
     typeof window === 'undefined' ? false : isCompactViewport(window.innerWidth),
   )
-  const [isFieldPanelVisible, setIsFieldPanelVisible] = useState(true)
-  const [leftPanelWidth, setLeftPanelWidth] = useState(() =>
-    typeof window === 'undefined' ? 360 : getLeftPanelWidth(window.innerWidth),
+  const [isFieldPanelVisible, setIsFieldPanelVisible] = useState(() =>
+    typeof window === 'undefined' ? true : !isCompactViewport(window.innerWidth),
   )
+  const wasCompactLayoutRef = useRef(isCompactLayout)
 
   const dimensionOptions = useMemo(
     () => availableDimensions.map((field) => ({ label: field, value: field })),
@@ -186,103 +185,143 @@ export function APP() {
 
   useEffect(() => {
     const syncPanelWidth = () => {
-      const nextWidth = window.innerWidth
+      const nextWidth = pageRef.current?.clientWidth || window.innerWidth
       const nextCompact = isCompactViewport(nextWidth)
 
-      setLeftPanelWidth(getLeftPanelWidth(nextWidth))
       setIsCompactLayout(nextCompact)
 
+      if (nextCompact && !wasCompactLayoutRef.current) {
+        setIsFieldPanelVisible(false)
+      }
       if (!nextCompact) {
         setIsFieldPanelVisible(true)
       }
+      wasCompactLayoutRef.current = nextCompact
     }
 
     syncPanelWidth()
+
+    const pageElement = pageRef.current
+    const resizeObserver =
+      typeof ResizeObserver === 'undefined' || !pageElement ? null : new ResizeObserver(syncPanelWidth)
+
+    if (pageElement) {
+      resizeObserver?.observe(pageElement)
+    }
     window.addEventListener('resize', syncPanelWidth)
 
     return () => {
+      resizeObserver?.disconnect()
       window.removeEventListener('resize', syncPanelWidth)
     }
   }, [])
 
+  const fieldPanel = (
+    <FieldPanel
+      builder={builder}
+      className='starter-field-panel'
+      dimensionOptions={dimensionOptions}
+      measureOptions={measureOptions}
+      title='Starter Fields'
+    />
+  )
+  const filterPanel = (
+    <FilterPanel
+      aggregateOptions={[
+        { label: 'Sum', value: 'sum' },
+        { label: 'Average', value: 'avg' },
+        { label: 'Count', value: 'count' },
+        { label: 'Max', value: 'max' },
+        { label: 'Min', value: 'min' },
+      ]}
+      builder={builder}
+      className='starter-filter-panel'
+      fieldOptions={filterFieldOptions}
+      havingFieldOptions={measureOptions}
+      havingTitle='Having'
+      title='Starter Filters'
+      whereTitle='Where'
+    />
+  )
+
   return (
-    <div className='starter-page starter-theme'>
-      <BuilderLayout
-        footer={
-          <div className='starter-footer-slot'>
-            <StarterFooter
-              availableDimensionsCount={availableDimensions.length}
-              availableMeasuresCount={availableMeasures.length}
-              dataSourceLabel={dataSourceLabel}
-              dsl={dsl}
-              rowCount={rowCount}
-              statusMessage={statusMessage}
-              statusTone={statusTone}
+    <div
+      className={[
+        'starter-page',
+        'starter-theme',
+        isCompactLayout ? 'starter-page--compact' : '',
+        isCompactLayout && isFieldPanelVisible ? 'starter-page--panel-open' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+      ref={pageRef}
+    >
+      <StarterTopBar
+        builder={builder}
+        isFieldPanelVisible={!isCompactLayout || isFieldPanelVisible}
+        isToggleVisible={isCompactLayout}
+        onLoadDemoData={() => {
+          void handleLoadDemoData()
+        }}
+        onToggleFieldPanel={() => {
+          setIsFieldPanelVisible((visible) => !visible)
+        }}
+        onUploadClick={handleUploadClick}
+      />
+
+      <section className='starter-workbench' aria-label='VBI starter workbench'>
+        {(!isCompactLayout || isFieldPanelVisible) && (
+          <aside className='starter-workbench__panel starter-workbench__panel--fields' aria-label='Fields panel'>
+            {fieldPanel}
+          </aside>
+        )}
+
+        <main className='starter-chart-stage' aria-label='Chart workspace'>
+          <div className='starter-chart-stage__header'>
+            <div>
+              <span className='starter-chart-stage__eyebrow'>Chart Workspace</span>
+              <strong className='starter-chart-stage__title'>
+                {hasConfiguredFields ? 'Rendered VSeed output' : 'Configure fields to render'}
+              </strong>
+            </div>
+            <span className='starter-chart-stage__meta'>{rowCount > 0 ? `${rowCount} rows` : 'No data'}</span>
+          </div>
+          <div className='starter-chart-stage__body'>
+            <StarterMainPanel
+              builder={builder}
+              debugState={debugState}
+              hasAvailableFields={hasAvailableFields}
+              hasConfiguredFields={hasConfiguredFields}
+              isCompactLayout={isCompactLayout}
+              isFieldPanelVisible={isFieldPanelVisible}
+              onLoadDemoData={() => {
+                void handleLoadDemoData()
+              }}
+              onShowFieldPanel={() => {
+                setIsFieldPanelVisible(true)
+              }}
             />
           </div>
-        }
-        leftPanel={
-          !isCompactLayout || isFieldPanelVisible ? (
-            <div style={sidebarStackStyle}>
-              <CompactFieldPanel
-                builder={builder}
-                dimensionOptions={dimensionOptions}
-                measureOptions={measureOptions}
-                style={fieldPanelStyle}
-                title='Starter Fields'
-              />
-              <FilterPanel
-                aggregateOptions={[
-                  { label: 'Sum', value: 'sum' },
-                  { label: 'Average', value: 'avg' },
-                  { label: 'Count', value: 'count' },
-                  { label: 'Max', value: 'max' },
-                  { label: 'Min', value: 'min' },
-                ]}
-                builder={builder}
-                fieldOptions={filterFieldOptions}
-                havingFieldOptions={measureOptions}
-                havingTitle='Having'
-                style={filterPanelStyle}
-                title='Starter Filters'
-                whereTitle='Where'
-              />
-            </div>
-          ) : undefined
-        }
-        leftPanelWidth={leftPanelWidth}
-        main={
-          <StarterMainPanel
-            builder={builder}
-            debugState={debugState}
-            hasAvailableFields={hasAvailableFields}
-            hasConfiguredFields={hasConfiguredFields}
-            isCompactLayout={isCompactLayout}
-            isFieldPanelVisible={isFieldPanelVisible}
-            onLoadDemoData={() => {
-              void handleLoadDemoData()
-            }}
-            onShowFieldPanel={() => {
-              setIsFieldPanelVisible(true)
-            }}
-          />
-        }
-        style={layoutStyle}
-        topBar={
-          <StarterTopBar
-            builder={builder}
-            isFieldPanelVisible={!isCompactLayout || isFieldPanelVisible}
-            isToggleVisible={isCompactLayout}
-            onLoadDemoData={() => {
-              void handleLoadDemoData()
-            }}
-            onToggleFieldPanel={() => {
-              setIsFieldPanelVisible((visible) => !visible)
-            }}
-            onUploadClick={handleUploadClick}
-          />
-        }
-      />
+        </main>
+
+        {(!isCompactLayout || isFieldPanelVisible) && (
+          <aside className='starter-workbench__panel starter-workbench__panel--filters' aria-label='Filters panel'>
+            {filterPanel}
+          </aside>
+        )}
+      </section>
+
+      <section className='starter-insights-slot' aria-label='Starter diagnostics'>
+        <StarterFooter
+          availableDimensionsCount={availableDimensions.length}
+          availableMeasuresCount={availableMeasures.length}
+          dataSourceLabel={dataSourceLabel}
+          dsl={dsl}
+          rowCount={rowCount}
+          statusMessage={statusMessage}
+          statusTone={statusTone}
+        />
+      </section>
 
       <input accept='.csv,text/csv' hidden onChange={handleFileChange} ref={fileInputRef} type='file' />
     </div>

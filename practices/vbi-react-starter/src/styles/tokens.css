@@ -1,33 +1,139 @@
 .starter-theme {
-  --starter-surface: #ffffff;
-  --starter-surface-muted: #f7f9fc;
-  --starter-panel: #f2f6fd;
-  --starter-canvas: #ffffff;
-  --starter-border: #d6e0ee;
-  --starter-border-strong: #b5c7df;
+  --starter-doc-bg: var(--rp-c-bg, #ffffff);
+  --starter-shell-glow: rgba(39, 95, 115, 0.12);
+  --starter-shell-edge-glow: rgba(180, 129, 72, 0.1);
+  --starter-shell-wash-start: rgba(233, 239, 236, 0.92);
+  --starter-shell-wash-end: rgba(247, 244, 237, 0.68);
+  --starter-surface: rgba(255, 255, 255, 0.88);
+  --starter-surface-muted: #edf3f0;
+  --starter-panel: #eff5f2;
+  --starter-canvas: #fbfcf8;
+  --starter-border: rgba(35, 49, 54, 0.14);
+  --starter-border-strong: rgba(35, 49, 54, 0.26);
 
-  --starter-text-primary: #13263f;
-  --starter-text-secondary: #4a5f7a;
-  --starter-text-muted: #6f829c;
+  --starter-text-primary: #172126;
+  --starter-text-secondary: rgba(23, 33, 38, 0.72);
+  --starter-text-muted: rgba(23, 33, 38, 0.5);
 
-  --starter-accent: #1868d8;
-  --starter-accent-hover: #1359ba;
+  --starter-accent: #275f73;
+  --starter-accent-hover: #1f4e60;
   --starter-accent-contrast: #ffffff;
 
-  --starter-success: #1f8f56;
-  --starter-success-soft: #e8f7ee;
-  --starter-danger: #c94a4a;
-  --starter-danger-strong: #a53a3a;
-  --starter-danger-soft: #fdeaea;
-  --starter-idle-soft: #eef3fa;
-  --starter-skeleton: #dfe8f6;
+  --starter-dimension: #557c1c;
+  --starter-dimension-soft: rgba(85, 124, 28, 0.12);
+  --starter-measure: #95561f;
+  --starter-measure-soft: rgba(149, 86, 31, 0.13);
+  --starter-filter: #7a4f9f;
+  --starter-filter-soft: rgba(122, 79, 159, 0.12);
 
-  --starter-radius-sm: 8px;
-  --starter-radius-md: 12px;
-  --starter-radius-lg: 16px;
+  --starter-success: #1f7a4b;
+  --starter-success-soft: rgba(31, 122, 75, 0.11);
+  --starter-danger: #b42342;
+  --starter-danger-strong: #8f1d36;
+  --starter-danger-soft: rgba(180, 35, 66, 0.1);
+  --starter-idle-soft: rgba(39, 95, 115, 0.1);
+  --starter-skeleton: #dce7e2;
+  --starter-skeleton-shimmer: rgba(255, 255, 255, 0.55);
+  --starter-code-bg: rgba(23, 33, 38, 0.045);
+  --starter-chart-border: rgba(35, 49, 54, 0.16);
+  --starter-chart-wash-start: rgba(255, 255, 255, 0.72);
+  --starter-chart-wash-end: rgba(255, 255, 255, 0.34);
+  --starter-chart-glow: rgba(39, 95, 115, 0.12);
+  --starter-chart-shadow: 0 20px 58px rgba(24, 39, 45, 0.13);
+  --starter-raised-overlay: rgba(255, 255, 255, 0.56);
+  --starter-diagnostics-border: rgba(35, 49, 54, 0.11);
+  --starter-diagnostics-bg: rgba(255, 255, 255, 0.38);
+  --starter-disclosure-border: rgba(35, 49, 54, 0.12);
+  --starter-disclosure-bg: rgba(255, 255, 255, 0.48);
+  --starter-main-wash-start: rgba(255, 255, 255, 0.66);
+  --starter-main-wash-end: rgba(255, 255, 255, 0.28);
 
-  --starter-shadow-card: 0 8px 24px rgba(18, 54, 94, 0.08);
+  --starter-radius-sm: 9px;
+  --starter-radius-md: 13px;
+  --starter-radius-lg: 20px;
+
+  --starter-shadow-card: 0 16px 42px rgba(24, 39, 45, 0.1);
 
   --starter-font-sans: 'IBM Plex Sans', 'Noto Sans SC', 'Segoe UI', sans-serif;
-  --starter-font-mono: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', ui-monospace, monospace;
+  --starter-font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  --vbi-react-surface: var(--starter-panel);
+  --vbi-react-surface-muted: var(--starter-surface-muted);
+  --vbi-react-surface-raised: var(--starter-surface);
+  --vbi-react-canvas: var(--starter-canvas);
+  --vbi-react-border: var(--starter-border);
+  --vbi-react-border-strong: var(--starter-border-strong);
+  --vbi-react-text: var(--starter-text-primary);
+  --vbi-react-text-soft: var(--starter-text-secondary);
+  --vbi-react-text-muted: var(--starter-text-muted);
+  --vbi-react-accent: var(--starter-accent);
+  --vbi-react-accent-hover: var(--starter-accent-hover);
+  --vbi-react-accent-contrast: var(--starter-accent-contrast);
+  --vbi-react-dimension: var(--starter-dimension);
+  --vbi-react-dimension-soft: var(--starter-dimension-soft);
+  --vbi-react-measure: var(--starter-measure);
+  --vbi-react-measure-soft: var(--starter-measure-soft);
+  --vbi-react-filter: var(--starter-filter);
+  --vbi-react-filter-soft: var(--starter-filter-soft);
+  --vbi-react-radius-sm: var(--starter-radius-sm);
+  --vbi-react-radius-md: var(--starter-radius-md);
+  --vbi-react-radius-lg: var(--starter-radius-lg);
+  --vbi-react-shadow: var(--starter-shadow-card);
+  --vbi-react-font-sans: var(--starter-font-sans);
+  --vbi-react-font-mono: var(--starter-font-mono);
+  --vbi-react-control-height: 30px;
+}
+
+.rp-dark .starter-theme,
+.dark .starter-theme {
+  --starter-doc-bg: var(--rp-c-bg, #121212);
+  --starter-shell-glow: rgba(56, 139, 163, 0.2);
+  --starter-shell-edge-glow: rgba(122, 162, 105, 0.08);
+  --starter-shell-wash-start: rgba(17, 27, 31, 0.9);
+  --starter-shell-wash-end: rgba(24, 25, 21, 0.62);
+  --starter-surface: rgba(30, 34, 35, 0.9);
+  --starter-surface-muted: #20282a;
+  --starter-panel: #171f21;
+  --starter-canvas: #121719;
+  --starter-border: rgba(218, 232, 226, 0.13);
+  --starter-border-strong: rgba(218, 232, 226, 0.24);
+
+  --starter-text-primary: #eff7f4;
+  --starter-text-secondary: rgba(239, 247, 244, 0.74);
+  --starter-text-muted: rgba(239, 247, 244, 0.52);
+
+  --starter-accent: #7cc7d7;
+  --starter-accent-hover: #9edbe6;
+  --starter-accent-contrast: #092126;
+
+  --starter-dimension: #a8cf72;
+  --starter-dimension-soft: rgba(168, 207, 114, 0.15);
+  --starter-measure: #e0a15f;
+  --starter-measure-soft: rgba(224, 161, 95, 0.15);
+  --starter-filter: #c7a2e8;
+  --starter-filter-soft: rgba(199, 162, 232, 0.16);
+
+  --starter-success: #73d39f;
+  --starter-success-soft: rgba(115, 211, 159, 0.13);
+  --starter-danger: #ff8da1;
+  --starter-danger-strong: #ffc2cc;
+  --starter-danger-soft: rgba(255, 141, 161, 0.13);
+  --starter-idle-soft: rgba(124, 199, 215, 0.13);
+  --starter-skeleton: #253134;
+  --starter-skeleton-shimmer: rgba(255, 255, 255, 0.1);
+  --starter-code-bg: rgba(3, 8, 10, 0.36);
+  --starter-chart-border: rgba(218, 232, 226, 0.14);
+  --starter-chart-wash-start: rgba(255, 255, 255, 0.06);
+  --starter-chart-wash-end: rgba(255, 255, 255, 0.025);
+  --starter-chart-glow: rgba(124, 199, 215, 0.14);
+  --starter-chart-shadow: 0 22px 64px rgba(0, 0, 0, 0.38);
+  --starter-raised-overlay: rgba(255, 255, 255, 0.07);
+  --starter-diagnostics-border: rgba(218, 232, 226, 0.1);
+  --starter-diagnostics-bg: rgba(255, 255, 255, 0.045);
+  --starter-disclosure-border: rgba(218, 232, 226, 0.12);
+  --starter-disclosure-bg: rgba(255, 255, 255, 0.055);
+  --starter-main-wash-start: rgba(255, 255, 255, 0.055);
+  --starter-main-wash-end: rgba(255, 255, 255, 0.02);
+
+  --starter-shadow-card: 0 18px 46px rgba(0, 0, 0, 0.32);
 }

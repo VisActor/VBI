@@ -4,12 +4,12 @@ import { APP } from 'vbi-react-starter'
 
 这是一张完整拼装页，用来验证：
 
-- `BuilderLayout` 如何组织顶部栏、侧栏和主渲染区
+- starter 如何把字段面板、图表工作区和筛选面板组合成一个完整页面
 - `ChartTypeSelector`、`ThemeSelector`、`FieldPanel`、`FilterPanel` 如何围绕同一个 builder 协作
-- `ChartRenderer` 如何消费 builder 输出并反馈加载、错误与结果
+- `ChartRenderer` 如何消费 builder 输出，并把 summary 与 DSL snapshot 放在独立诊断区
 
 如果你只想理解单个组件，请先看 [API 总览](../api/index)；如果你想看完整组合方式，再看这个页面。
 
-<div style={{ width: '100%', height: 'min(78vh, 920px)', minHeight: '640px' }}>
+<div className='vbi-react-starter-doc'>
   <APP />
 </div>

@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 
 import type { BaseComponentProps } from './types'
 import { joinClassNames } from './utils'
@@ -39,19 +39,21 @@ export function BuilderLayout(props: BuilderLayoutProps) {
     .join(' ')
 
   const rows = [topBar ? 'auto' : undefined, 'minmax(0, 1fr)', footer ? 'auto' : undefined].filter(Boolean).join(' ')
+  const layoutStyle = {
+    '--vbi-react-layout-rows': rows,
+    '--vbi-react-layout-columns': columns,
+    ...style,
+  } as CSSProperties
 
   return (
-    <section
-      className={joinClassNames('vbi-react-builder-layout', className)}
-      style={{ display: 'grid', gap: 12, gridTemplateRows: rows, minHeight: 0, minWidth: 0, ...style }}
-    >
-      {topBar ? <header>{topBar}</header> : null}
-      <div style={{ display: 'grid', gap: 12, gridTemplateColumns: columns, minHeight: 0, minWidth: 0 }}>
-        {leftPanel ? <aside style={{ minHeight: 0, minWidth: 0 }}>{leftPanel}</aside> : null}
-        <main style={{ minHeight: 0, minWidth: 0 }}>{main}</main>
-        {rightPanel ? <aside style={{ minHeight: 0, minWidth: 0 }}>{rightPanel}</aside> : null}
+    <section className={joinClassNames('vbi-react-builder-layout', className)} style={layoutStyle}>
+      {topBar ? <header className='vbi-react-builder-layout__header'>{topBar}</header> : null}
+      <div className='vbi-react-builder-layout__body'>
+        {leftPanel ? <aside className='vbi-react-builder-layout__left'>{leftPanel}</aside> : null}
+        <main className='vbi-react-builder-layout__main'>{main}</main>
+        {rightPanel ? <aside className='vbi-react-builder-layout__right'>{rightPanel}</aside> : null}
       </div>
-      {footer ? <footer style={{ minHeight: 0, minWidth: 0 }}>{footer}</footer> : null}
+      {footer ? <footer className='vbi-react-builder-layout__footer'>{footer}</footer> : null}
     </section>
   )
 }

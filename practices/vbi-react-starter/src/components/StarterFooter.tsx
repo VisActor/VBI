@@ -50,12 +50,10 @@ export function StarterFooter(props: StarterFooterProps) {
         <div className='starter-note'>Demo schema 固定使用手工声明的字段类型，不再依赖首行自动猜测。</div>
       </section>
 
-      <section className={cn('starter-card', 'starter-dsl-card')}>
-        <details className='starter-dsl-details'>
-          <summary className='starter-dsl-summary'>Current DSL Snapshot</summary>
-          <pre className='starter-dsl-pre'>{JSON.stringify(dsl, null, 2)}</pre>
-        </details>
-      </section>
+      <details className='starter-dsl-details'>
+        <summary className='starter-dsl-summary'>Current DSL Snapshot</summary>
+        <pre className='starter-dsl-pre'>{JSON.stringify(dsl, null, 2)}</pre>
+      </details>
     </div>
   )
 }

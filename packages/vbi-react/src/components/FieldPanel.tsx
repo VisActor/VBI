@@ -99,24 +99,13 @@ function toText(option: SelectOption<string>): string {
   return typeof option.label === 'string' ? option.label : option.value
 }
 
-function RowTags(props: { aggregate?: string; encoding?: string }) {
-  const { aggregate, encoding } = props
+function FieldTags(props: { aggregate?: string; encoding?: string; role: 'dimension' | 'measure' }) {
+  const { aggregate, encoding, role } = props
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-      {encoding ? (
-        <span
-          style={{ border: '1px solid #d9d9d9', borderRadius: 999, color: '#5f6673', fontSize: 11, padding: '1px 6px' }}
-        >
-          Enc: {encoding}
-        </span>
-      ) : null}
-      {aggregate ? (
-        <span
-          style={{ border: '1px solid #d9d9d9', borderRadius: 999, color: '#5f6673', fontSize: 11, padding: '1px 6px' }}
-        >
-          Agg: {aggregate}
-        </span>
-      ) : null}
+    <div className='vbi-react-tags'>
+      <span className={`vbi-react-chip vbi-react-chip--${role}`}>{role}</span>
+      {encoding ? <span className='vbi-react-chip'>Enc: {encoding}</span> : null}
+      {aggregate ? <span className='vbi-react-chip'>Agg: {aggregate}</span> : null}
     </div>
   )
 }
@@ -137,9 +126,6 @@ export function FieldPanel(props: FieldPanelProps) {
     style,
     title = 'Fields',
   } = props
-  const controlHeight = 24
-  const panelGap = 8
-  const itemPadding = 6
 
   const { addDimension, dimensions, removeDimension, updateDimension } = useDimensions(builder)
   const { addMeasure, measures, removeMeasure, updateMeasure } = useMeasures(builder)
@@ -174,41 +160,25 @@ export function FieldPanel(props: FieldPanelProps) {
     <section
       className={joinClassNames(
         'vbi-react-field-panel',
+        'vbi-react-panel',
         'vbi-react-field-panel--compact',
         className,
         slotClassNames?.root,
       )}
-      style={{
-        display: 'grid',
-        fontSize: 12,
-        gap: panelGap,
-        gridTemplateRows: 'auto minmax(0, 1fr)',
-        minHeight: 0,
-        ...style,
-      }}
+      style={style}
     >
-      <header>
-        <strong>{title}</strong>
+      <header className='vbi-react-panel__header'>
+        <strong className='vbi-react-panel__title'>{title}</strong>
       </header>
-      <div style={{ display: 'grid', gap: panelGap, gridTemplateRows: 'minmax(0, 1fr) minmax(0, 1fr)', minHeight: 0 }}>
-        <section
-          className={slotClassNames?.dimensionsSection}
-          style={{ display: 'grid', gap: 6, gridTemplateRows: 'auto minmax(0, 1fr)', minHeight: 0 }}
-        >
-          <div style={{ display: 'grid', gap: 6 }}>
-            <strong>{dimensionsTitle}</strong>
-            <div style={{ display: 'flex', gap: 6 }}>
+      <div className='vbi-react-field-panel__sections'>
+        <section className={joinClassNames('vbi-react-section', slotClassNames?.dimensionsSection)}>
+          <div className='vbi-react-toolbar'>
+            <strong className='vbi-react-section__title'>{dimensionsTitle}</strong>
+            <div className='vbi-react-control-row vbi-react-control-row--inline'>
               <select
                 aria-label='Available dimensions'
+                className='vbi-react-control'
                 onChange={(event) => setSelectedDimension(event.target.value)}
-                style={{
-                  border: '1px solid #c7cad1',
-                  borderRadius: 6,
-                  flex: 1,
-                  height: controlHeight,
-                  minWidth: 0,
-                  padding: '0 8px',
-                }}
                 value={selectedDimension}
               >
                 {availableDimensions.length === 0 ? (
@@ -223,15 +193,9 @@ export function FieldPanel(props: FieldPanelProps) {
               </select>
               <button
                 aria-label='Add dimension'
+                className='vbi-react-button vbi-react-button--primary'
                 disabled={!selectedDimension}
                 onClick={() => addDimension(selectedDimension)}
-                style={{
-                  border: '1px solid #c7cad1',
-                  borderRadius: 6,
-                  cursor: 'pointer',
-                  height: controlHeight,
-                  padding: '0 8px',
-                }}
                 type='button'
               >
                 Add dimension
@@ -240,82 +204,34 @@ export function FieldPanel(props: FieldPanelProps) {
           </div>
           <ul
             aria-label='Selected dimensions'
-            className={slotClassNames?.dimensionsList}
-            style={{
-              border: '1px solid #d9d9d9',
-              borderRadius: 8,
-              display: 'grid',
-              gap: 6,
-              listStyle: 'none',
-              margin: 0,
-              minHeight: 0,
-              overflowY: 'auto',
-              padding: 6,
-            }}
+            className={joinClassNames('vbi-react-list', slotClassNames?.dimensionsList)}
           >
-            {dimensions.length === 0 ? <li style={{ color: '#5f6673' }}>No dimensions selected</li> : null}
+            {dimensions.length === 0 ? <li className='vbi-react-empty'>No dimensions selected</li> : null}
             {dimensions.map((dimension) => (
-              <li
-                key={dimension.id}
-                style={{ background: '#fff', border: '1px solid #d9d9d9', borderRadius: 8, padding: itemPadding }}
-              >
-                <div
-                  style={{
-                    alignItems: 'center',
-                    display: 'grid',
-                    gap: 6,
-                    gridTemplateColumns: 'minmax(0, 1fr) auto auto',
-                  }}
-                >
-                  <div style={{ minWidth: 0 }}>
-                    <strong
-                      style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-                    >
-                      {dimension.alias || dimension.field}
-                    </strong>
-                    <span
-                      style={{
-                        color: '#5f6673',
-                        display: 'block',
-                        fontSize: 11,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {dimension.field}
-                    </span>
+              <li className='vbi-react-card' key={dimension.id}>
+                <div className='vbi-react-item__row'>
+                  <div className='vbi-react-item__main'>
+                    <strong className='vbi-react-item__title'>{dimension.alias || dimension.field}</strong>
+                    <span className='vbi-react-item__meta'>{dimension.field}</span>
                   </div>
-                  <RowTags aggregate={dimension.aggregate?.func} encoding={dimension.encoding} />
-                  <div style={{ display: 'flex', gap: 4 }}>
+                  <FieldTags aggregate={dimension.aggregate?.func} encoding={dimension.encoding} role='dimension' />
+                  <div className='vbi-react-actions'>
                     <button
                       aria-label={
                         editingDimensionId === dimension.id
                           ? `Finish editing dimension ${dimension.field}`
                           : `Edit dimension ${dimension.field}`
                       }
+                      className='vbi-react-button'
                       onClick={() => setEditingDimensionId((id) => (id === dimension.id ? null : dimension.id))}
-                      style={{
-                        border: '1px solid #c7cad1',
-                        borderRadius: 6,
-                        cursor: 'pointer',
-                        height: controlHeight,
-                        padding: '0 8px',
-                      }}
                       type='button'
                     >
                       {editingDimensionId === dimension.id ? 'Done' : 'Edit'}
                     </button>
                     <button
                       aria-label={`Remove dimension ${dimension.field}`}
+                      className='vbi-react-button vbi-react-button--danger'
                       onClick={() => removeDimension(dimension.id)}
-                      style={{
-                        border: '1px solid #c7cad1',
-                        borderRadius: 6,
-                        cursor: 'pointer',
-                        height: controlHeight,
-                        padding: '0 8px',
-                      }}
                       type='button'
                     >
                       Remove
@@ -323,34 +239,20 @@ export function FieldPanel(props: FieldPanelProps) {
                   </div>
                 </div>
                 {editingDimensionId === dimension.id ? (
-                  <div
-                    style={{ display: 'grid', gap: 6, gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', marginTop: 6 }}
-                  >
+                  <div className='vbi-react-editor vbi-react-field-panel__editor'>
                     <input
                       aria-label={`Alias for dimension ${dimension.field}`}
+                      className='vbi-react-input'
                       onChange={(event) => updateDimension(dimension.id, { alias: event.target.value })}
                       placeholder='Alias'
-                      style={{
-                        border: '1px solid #c7cad1',
-                        borderRadius: 6,
-                        height: controlHeight,
-                        minWidth: 0,
-                        padding: '0 8px',
-                      }}
                       value={dimension.alias ?? ''}
                     />
                     <select
                       aria-label={`Encoding for dimension ${dimension.field}`}
+                      className='vbi-react-control'
                       onChange={(event) =>
                         updateDimension(dimension.id, { encoding: event.target.value as DimensionEncoding })
                       }
-                      style={{
-                        border: '1px solid #c7cad1',
-                        borderRadius: 6,
-                        height: controlHeight,
-                        minWidth: 0,
-                        padding: '0 8px',
-                      }}
                       value={dimension.encoding ?? 'xAxis'}
                     >
                       {dimensionEncodingOptions.map((option) => (
@@ -361,16 +263,10 @@ export function FieldPanel(props: FieldPanelProps) {
                     </select>
                     <select
                       aria-label={`Aggregate for dimension ${dimension.field}`}
+                      className='vbi-react-control'
                       onChange={(event) => {
                         const nextFunc = event.target.value as DimensionAggregateFunction | ''
                         updateDimension(dimension.id, { aggregate: nextFunc ? { func: nextFunc } : null })
-                      }}
-                      style={{
-                        border: '1px solid #c7cad1',
-                        borderRadius: 6,
-                        height: controlHeight,
-                        minWidth: 0,
-                        padding: '0 8px',
                       }}
                       value={dimension.aggregate?.func ?? ''}
                     >
@@ -387,24 +283,14 @@ export function FieldPanel(props: FieldPanelProps) {
             ))}
           </ul>
         </section>
-        <section
-          className={slotClassNames?.measuresSection}
-          style={{ display: 'grid', gap: 6, gridTemplateRows: 'auto minmax(0, 1fr)', minHeight: 0 }}
-        >
-          <div style={{ display: 'grid', gap: 6 }}>
-            <strong>{measuresTitle}</strong>
-            <div style={{ display: 'flex', gap: 6 }}>
+        <section className={joinClassNames('vbi-react-section', slotClassNames?.measuresSection)}>
+          <div className='vbi-react-toolbar'>
+            <strong className='vbi-react-section__title'>{measuresTitle}</strong>
+            <div className='vbi-react-control-row vbi-react-control-row--inline'>
               <select
                 aria-label='Available measures'
+                className='vbi-react-control'
                 onChange={(event) => setSelectedMeasure(event.target.value)}
-                style={{
-                  border: '1px solid #c7cad1',
-                  borderRadius: 6,
-                  flex: 1,
-                  height: controlHeight,
-                  minWidth: 0,
-                  padding: '0 8px',
-                }}
                 value={selectedMeasure}
               >
                 {availableMeasures.length === 0 ? (
@@ -419,99 +305,42 @@ export function FieldPanel(props: FieldPanelProps) {
               </select>
               <button
                 aria-label='Add measure'
+                className='vbi-react-button vbi-react-button--primary'
                 disabled={!selectedMeasure}
                 onClick={() => addMeasure(selectedMeasure)}
-                style={{
-                  border: '1px solid #c7cad1',
-                  borderRadius: 6,
-                  cursor: 'pointer',
-                  height: controlHeight,
-                  padding: '0 8px',
-                }}
                 type='button'
               >
                 Add measure
               </button>
             </div>
           </div>
-          <ul
-            aria-label='Selected measures'
-            className={slotClassNames?.measuresList}
-            style={{
-              border: '1px solid #d9d9d9',
-              borderRadius: 8,
-              display: 'grid',
-              gap: 6,
-              listStyle: 'none',
-              margin: 0,
-              minHeight: 0,
-              overflowY: 'auto',
-              padding: 6,
-            }}
-          >
-            {measures.length === 0 ? <li style={{ color: '#5f6673' }}>No measures selected</li> : null}
+          <ul aria-label='Selected measures' className={joinClassNames('vbi-react-list', slotClassNames?.measuresList)}>
+            {measures.length === 0 ? <li className='vbi-react-empty'>No measures selected</li> : null}
             {measures.map((measure) => (
-              <li
-                key={measure.id}
-                style={{ background: '#fff', border: '1px solid #d9d9d9', borderRadius: 8, padding: itemPadding }}
-              >
-                <div
-                  style={{
-                    alignItems: 'center',
-                    display: 'grid',
-                    gap: 6,
-                    gridTemplateColumns: 'minmax(0, 1fr) auto auto',
-                  }}
-                >
-                  <div style={{ minWidth: 0 }}>
-                    <strong
-                      style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
-                    >
-                      {measure.alias || measure.field}
-                    </strong>
-                    <span
-                      style={{
-                        color: '#5f6673',
-                        display: 'block',
-                        fontSize: 11,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {measure.field}
-                    </span>
+              <li className='vbi-react-card' key={measure.id}>
+                <div className='vbi-react-item__row'>
+                  <div className='vbi-react-item__main'>
+                    <strong className='vbi-react-item__title'>{measure.alias || measure.field}</strong>
+                    <span className='vbi-react-item__meta'>{measure.field}</span>
                   </div>
-                  <RowTags aggregate={measure.aggregate?.func} encoding={measure.encoding} />
-                  <div style={{ display: 'flex', gap: 4 }}>
+                  <FieldTags aggregate={measure.aggregate?.func} encoding={measure.encoding} role='measure' />
+                  <div className='vbi-react-actions'>
                     <button
                       aria-label={
                         editingMeasureId === measure.id
                           ? `Finish editing measure ${measure.field}`
                           : `Edit measure ${measure.field}`
                       }
+                      className='vbi-react-button'
                       onClick={() => setEditingMeasureId((id) => (id === measure.id ? null : measure.id))}
-                      style={{
-                        border: '1px solid #c7cad1',
-                        borderRadius: 6,
-                        cursor: 'pointer',
-                        height: controlHeight,
-                        padding: '0 8px',
-                      }}
                       type='button'
                     >
                       {editingMeasureId === measure.id ? 'Done' : 'Edit'}
                     </button>
                     <button
                       aria-label={`Remove measure ${measure.field}`}
+                      className='vbi-react-button vbi-react-button--danger'
                       onClick={() => removeMeasure(measure.id)}
-                      style={{
-                        border: '1px solid #c7cad1',
-                        borderRadius: 6,
-                        cursor: 'pointer',
-                        height: controlHeight,
-                        padding: '0 8px',
-                      }}
                       type='button'
                     >
                       Remove
@@ -519,34 +348,20 @@ export function FieldPanel(props: FieldPanelProps) {
                   </div>
                 </div>
                 {editingMeasureId === measure.id ? (
-                  <div
-                    style={{ display: 'grid', gap: 6, gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', marginTop: 6 }}
-                  >
+                  <div className='vbi-react-editor vbi-react-field-panel__editor'>
                     <input
                       aria-label={`Alias for measure ${measure.field}`}
+                      className='vbi-react-input'
                       onChange={(event) => updateMeasure(measure.id, { alias: event.target.value })}
                       placeholder='Alias'
-                      style={{
-                        border: '1px solid #c7cad1',
-                        borderRadius: 6,
-                        height: controlHeight,
-                        minWidth: 0,
-                        padding: '0 8px',
-                      }}
                       value={measure.alias ?? ''}
                     />
                     <select
                       aria-label={`Encoding for measure ${measure.field}`}
+                      className='vbi-react-control'
                       onChange={(event) =>
                         updateMeasure(measure.id, { encoding: event.target.value as MeasureEncoding })
                       }
-                      style={{
-                        border: '1px solid #c7cad1',
-                        borderRadius: 6,
-                        height: controlHeight,
-                        minWidth: 0,
-                        padding: '0 8px',
-                      }}
                       value={measure.encoding ?? 'yAxis'}
                     >
                       {measureEncodingOptions.map((option) => (
@@ -557,6 +372,7 @@ export function FieldPanel(props: FieldPanelProps) {
                     </select>
                     <select
                       aria-label={`Aggregate for measure ${measure.field}`}
+                      className='vbi-react-control'
                       onChange={(event) => {
                         const func = event.target.value as MeasureAggregateFunction
                         if (func === 'quantile') {
@@ -564,13 +380,6 @@ export function FieldPanel(props: FieldPanelProps) {
                           return
                         }
                         updateMeasure(measure.id, { aggregate: { func } })
-                      }}
-                      style={{
-                        border: '1px solid #c7cad1',
-                        borderRadius: 6,
-                        height: controlHeight,
-                        minWidth: 0,
-                        padding: '0 8px',
                       }}
                       value={measure.aggregate?.func ?? 'sum'}
                     >
@@ -583,6 +392,7 @@ export function FieldPanel(props: FieldPanelProps) {
                     {measure.aggregate?.func === 'quantile' ? (
                       <input
                         aria-label={`Quantile for measure ${measure.field}`}
+                        className='vbi-react-input'
                         max={1}
                         min={0}
                         onChange={(event) => {
@@ -593,13 +403,6 @@ export function FieldPanel(props: FieldPanelProps) {
                           updateMeasure(measure.id, { aggregate: { func: 'quantile', quantile } })
                         }}
                         step={0.05}
-                        style={{
-                          border: '1px solid #c7cad1',
-                          borderRadius: 6,
-                          height: controlHeight,
-                          minWidth: 0,
-                          padding: '0 8px',
-                        }}
                         type='number'
                         value={measure.aggregate?.func === 'quantile' ? (measure.aggregate.quantile ?? 0.5) : 0.5}
                       />

@@ -1,3 +1,39 @@
+.vbi-react-theme,
+:root {
+  --vbi-react-surface: #f6f8f7;
+  --vbi-react-surface-muted: #eef3f1;
+  --vbi-react-surface-raised: #ffffff;
+  --vbi-react-canvas: #fbfcfb;
+  --vbi-react-border: rgba(35, 49, 54, 0.13);
+  --vbi-react-border-strong: rgba(35, 49, 54, 0.24);
+  --vbi-react-text: #172126;
+  --vbi-react-text-soft: rgba(23, 33, 38, 0.68);
+  --vbi-react-text-muted: rgba(23, 33, 38, 0.46);
+  --vbi-react-accent: #275f73;
+  --vbi-react-accent-hover: #1f4e60;
+  --vbi-react-accent-contrast: #ffffff;
+  --vbi-react-dimension: #557c1c;
+  --vbi-react-dimension-soft: rgba(85, 124, 28, 0.12);
+  --vbi-react-measure: #95561f;
+  --vbi-react-measure-soft: rgba(149, 86, 31, 0.13);
+  --vbi-react-filter: #7a4f9f;
+  --vbi-react-filter-soft: rgba(122, 79, 159, 0.12);
+  --vbi-react-danger: #b42342;
+  --vbi-react-danger-soft: rgba(180, 35, 66, 0.1);
+  --vbi-react-radius-sm: 8px;
+  --vbi-react-radius-md: 12px;
+  --vbi-react-radius-lg: 18px;
+  --vbi-react-shadow: 0 14px 34px rgba(24, 39, 45, 0.08);
+  --vbi-react-font-sans: 'IBM Plex Sans', 'Noto Sans SC', 'Segoe UI', sans-serif;
+  --vbi-react-font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  --vbi-react-space-2xs: 4px;
+  --vbi-react-space-xs: 6px;
+  --vbi-react-space-sm: 8px;
+  --vbi-react-space-md: 12px;
+  --vbi-react-space-lg: 16px;
+  --vbi-react-control-height: 30px;
+}
+
 .vbi-react-builder-layout,
 .vbi-react-chart-renderer,
 .vbi-react-chart-type-selector,
@@ -5,6 +41,8 @@
 .vbi-react-filter-panel,
 .vbi-react-theme-selector {
   box-sizing: border-box;
+  color: var(--vbi-react-text);
+  font-family: var(--vbi-react-font-sans);
 }
 
 .vbi-react-builder-layout *,
@@ -26,4 +64,382 @@
 .vbi-react-theme-selector *::before,
 .vbi-react-theme-selector *::after {
   box-sizing: inherit;
+}
+
+.vbi-react-control,
+.vbi-react-input,
+.vbi-react-button {
+  min-width: 0;
+  height: var(--vbi-react-control-height);
+  border: 1px solid var(--vbi-react-border-strong);
+  border-radius: var(--vbi-react-radius-sm);
+  background: var(--vbi-react-surface-raised);
+  color: var(--vbi-react-text);
+  font: inherit;
+  font-size: 12px;
+}
+
+.vbi-react-control,
+.vbi-react-input {
+  width: 100%;
+  padding: 0 10px;
+}
+
+.vbi-react-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--vbi-react-space-2xs);
+  padding: 0 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease,
+    transform 0.16s ease;
+}
+
+.vbi-react-button:hover:not(:disabled) {
+  border-color: var(--vbi-react-accent);
+  background: var(--vbi-react-surface-muted);
+}
+
+.vbi-react-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.vbi-react-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+}
+
+.vbi-react-button--primary {
+  border-color: var(--vbi-react-accent);
+  background: var(--vbi-react-accent);
+  color: var(--vbi-react-accent-contrast);
+}
+
+.vbi-react-button--primary:hover:not(:disabled) {
+  border-color: var(--vbi-react-accent-hover);
+  background: var(--vbi-react-accent-hover);
+}
+
+.vbi-react-button--quiet {
+  background: transparent;
+}
+
+.vbi-react-button--danger {
+  border-color: transparent;
+  background: var(--vbi-react-danger-soft);
+  color: var(--vbi-react-danger);
+}
+
+.vbi-react-control:focus-visible,
+.vbi-react-input:focus-visible,
+.vbi-react-button:focus-visible {
+  border-color: var(--vbi-react-accent);
+  outline: 2px solid color-mix(in srgb, var(--vbi-react-accent) 24%, transparent);
+  outline-offset: 1px;
+}
+
+.vbi-react-builder-layout {
+  display: grid;
+  gap: var(--vbi-react-space-md);
+  grid-template-rows: var(--vbi-react-layout-rows, minmax(0, 1fr));
+  min-width: 0;
+  min-height: 0;
+}
+
+.vbi-react-builder-layout__header,
+.vbi-react-builder-layout__footer,
+.vbi-react-builder-layout__body,
+.vbi-react-builder-layout__left,
+.vbi-react-builder-layout__main,
+.vbi-react-builder-layout__right {
+  min-width: 0;
+  min-height: 0;
+}
+
+.vbi-react-builder-layout__body {
+  display: grid;
+  gap: var(--vbi-react-space-md);
+  grid-template-columns: var(--vbi-react-layout-columns, minmax(0, 1fr));
+}
+
+.vbi-react-builder-layout__left,
+.vbi-react-builder-layout__right,
+.vbi-react-builder-layout__main {
+  overflow: hidden;
+}
+
+.vbi-react-panel {
+  display: grid;
+  gap: var(--vbi-react-space-md);
+  min-height: 0;
+  border: 1px solid var(--vbi-react-border);
+  border-radius: var(--vbi-react-radius-md);
+  background: var(--vbi-react-surface-raised);
+  box-shadow: var(--vbi-react-shadow);
+}
+
+.vbi-react-panel__header {
+  display: grid;
+  gap: var(--vbi-react-space-2xs);
+  min-width: 0;
+}
+
+.vbi-react-panel__title {
+  overflow: hidden;
+  color: var(--vbi-react-text);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vbi-react-panel__subtitle,
+.vbi-react-empty,
+.vbi-react-item__meta {
+  color: var(--vbi-react-text-muted);
+  font-size: 12px;
+}
+
+.vbi-react-section {
+  display: grid;
+  gap: var(--vbi-react-space-sm);
+  min-height: 0;
+}
+
+.vbi-react-section__title {
+  color: var(--vbi-react-text-soft);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.vbi-react-toolbar,
+.vbi-react-control-row,
+.vbi-react-editor {
+  display: grid;
+  gap: var(--vbi-react-space-sm);
+  min-width: 0;
+}
+
+.vbi-react-control-row--inline {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.vbi-react-control-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: var(--vbi-react-space-sm);
+  align-items: center;
+}
+
+.vbi-react-list {
+  display: grid;
+  align-content: start;
+  gap: var(--vbi-react-space-sm);
+  min-height: 0;
+  margin: 0;
+  padding: var(--vbi-react-space-sm);
+  overflow: auto;
+  border: 1px solid var(--vbi-react-border);
+  border-radius: var(--vbi-react-radius-sm);
+  background: var(--vbi-react-surface-muted);
+  list-style: none;
+  scrollbar-gutter: stable;
+}
+
+.vbi-react-card {
+  display: grid;
+  gap: var(--vbi-react-space-sm);
+  min-width: 0;
+  padding: var(--vbi-react-space-sm);
+  border: 1px solid var(--vbi-react-border);
+  border-radius: var(--vbi-react-radius-sm);
+  background: var(--vbi-react-surface-raised);
+}
+
+.vbi-react-item__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: var(--vbi-react-space-sm);
+  align-items: center;
+  min-width: 0;
+}
+
+.vbi-react-filter-panel .vbi-react-item__row {
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+}
+
+.vbi-react-item__main {
+  min-width: 0;
+}
+
+.vbi-react-item__title,
+.vbi-react-item__meta,
+.vbi-react-chip {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vbi-react-item__title {
+  display: block;
+  color: var(--vbi-react-text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.vbi-react-item__meta {
+  display: block;
+  margin-top: 1px;
+}
+
+.vbi-react-actions,
+.vbi-react-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--vbi-react-space-2xs);
+  min-width: 0;
+}
+
+.vbi-react-chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: 20px;
+  padding: 2px 8px;
+  border: 1px solid var(--vbi-react-border);
+  border-radius: 999px;
+  background: var(--vbi-react-surface);
+  color: var(--vbi-react-text-soft);
+  font-size: 11px;
+}
+
+.vbi-react-chip--dimension {
+  border-color: color-mix(in srgb, var(--vbi-react-dimension) 30%, transparent);
+  background: var(--vbi-react-dimension-soft);
+  color: var(--vbi-react-dimension);
+}
+
+.vbi-react-chip--measure {
+  border-color: color-mix(in srgb, var(--vbi-react-measure) 30%, transparent);
+  background: var(--vbi-react-measure-soft);
+  color: var(--vbi-react-measure);
+}
+
+.vbi-react-chip--filter {
+  border-color: color-mix(in srgb, var(--vbi-react-filter) 30%, transparent);
+  background: var(--vbi-react-filter-soft);
+  color: var(--vbi-react-filter);
+}
+
+.vbi-react-field-panel,
+.vbi-react-filter-panel {
+  grid-template-rows: auto minmax(0, 1fr);
+  padding: var(--vbi-react-space-md);
+}
+
+.vbi-react-field-panel__sections,
+.vbi-react-filter-panel__sections {
+  display: grid;
+  gap: var(--vbi-react-space-md);
+  min-height: 0;
+}
+
+.vbi-react-field-panel__sections {
+  grid-template-rows: repeat(2, minmax(150px, 1fr));
+  overflow: auto;
+}
+
+.vbi-react-filter-panel__sections {
+  align-content: start;
+  overflow: auto;
+}
+
+.vbi-react-field-panel__editor {
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  margin-top: var(--vbi-react-space-xs);
+}
+
+.vbi-react-filter-panel__editor {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  margin-top: var(--vbi-react-space-xs);
+}
+
+.vbi-react-filter-panel__summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--vbi-react-space-2xs);
+  min-width: 0;
+  color: var(--vbi-react-text-soft);
+  font-size: 12px;
+}
+
+.vbi-react-chart-renderer {
+  display: grid;
+  gap: var(--vbi-react-space-sm);
+  min-width: 0;
+  min-height: 0;
+}
+
+.vbi-react-chart-renderer__status {
+  color: var(--vbi-react-text-muted);
+  font-size: 12px;
+}
+
+.vbi-react-chart-renderer__error {
+  display: grid;
+  gap: var(--vbi-react-space-sm);
+  padding: var(--vbi-react-space-md);
+  border: 1px solid color-mix(in srgb, var(--vbi-react-danger) 28%, transparent);
+  border-radius: var(--vbi-react-radius-md);
+  background: var(--vbi-react-danger-soft);
+  color: var(--vbi-react-danger);
+}
+
+.vbi-react-chart-renderer__pre {
+  margin: 0;
+  overflow: auto;
+  color: var(--vbi-react-text-soft);
+  font-family: var(--vbi-react-font-mono);
+  white-space: pre-wrap;
+}
+
+.vbi-react-chart-type-selector,
+.vbi-react-theme-selector {
+  display: grid;
+  gap: var(--vbi-react-space-xs);
+}
+
+.vbi-react-selector__label {
+  color: var(--vbi-react-text-soft);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .vbi-react-builder-layout__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .vbi-react-builder-layout__left,
+  .vbi-react-builder-layout__right {
+    overflow: visible;
+  }
+
+  .vbi-react-item__row,
+  .vbi-react-filter-panel .vbi-react-item__row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .vbi-react-actions {
+    justify-content: flex-start;
+  }
 }

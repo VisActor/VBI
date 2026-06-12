@@ -34,9 +34,10 @@ export function ChartRenderer(props: ChartRendererProps) {
 
   if (error) {
     content = renderError?.(error, refetch) ?? (
-      <div role='alert' style={{ display: 'grid', gap: 8 }}>
+      <div className='vbi-react-chart-renderer__error' role='alert'>
         <span>{error.message}</span>
         <button
+          className='vbi-react-button vbi-react-button--primary'
           onClick={() => {
             void refetch()
           }}
@@ -50,16 +51,17 @@ export function ChartRenderer(props: ChartRendererProps) {
     content = loadingFallback
   } else if (vseed) {
     content = renderVSeed?.(vseed) ?? (
-      <pre style={{ margin: 0, overflow: 'auto', whiteSpace: 'pre-wrap' }}>{JSON.stringify(vseed, null, 2)}</pre>
+      <pre className='vbi-react-chart-renderer__pre'>{JSON.stringify(vseed, null, 2)}</pre>
     )
   }
 
   return (
-    <section
-      className={joinClassNames('vbi-react-chart-renderer', className)}
-      style={{ display: 'grid', gap: 8, ...style }}
-    >
-      {loading && vseed ? <div aria-live='polite'>Updating chart…</div> : null}
+    <section className={joinClassNames('vbi-react-chart-renderer', className)} style={style}>
+      {loading && vseed ? (
+        <div aria-live='polite' className='vbi-react-chart-renderer__status'>
+          Updating chart…
+        </div>
+      ) : null}
       {content}
     </section>
   )

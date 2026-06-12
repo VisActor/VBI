@@ -50,9 +50,3 @@ export const chartCanvasStyle: CSSProperties = {
   minHeight: 0,
   overflow: 'hidden',
 }
-
-export const layoutStyle: CSSProperties = {
-  gridTemplateRows: 'auto minmax(320px, 1fr) auto',
-  height: '100%',
-  minHeight: '100%',
-}

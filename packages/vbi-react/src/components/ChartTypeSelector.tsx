@@ -16,13 +16,11 @@ export function ChartTypeSelector(props: ChartTypeSelectorProps) {
   const { availableChartTypes, chartType, setChartType } = useChartType(builder)
 
   return (
-    <label
-      className={joinClassNames('vbi-react-chart-type-selector', className)}
-      style={{ display: 'grid', gap: 8, ...style }}
-    >
-      <span>{label}</span>
+    <label className={joinClassNames('vbi-react-chart-type-selector', className)} style={style}>
+      <span className='vbi-react-selector__label'>{label}</span>
       <select
         aria-label={typeof label === 'string' ? label : 'Chart type'}
+        className='vbi-react-control'
         onChange={(event) => {
           setChartType(event.target.value)
         }}

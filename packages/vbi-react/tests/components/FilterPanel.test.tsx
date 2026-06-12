@@ -55,7 +55,7 @@ describe('FilterPanel', () => {
 
     expect(builder.whereFilter.toJSON().conditions[0]).toMatchObject({
       field: 'region',
-      op: 'eq',
+      op: '=',
       value: 'West',
     })
 

@@ -25,13 +25,11 @@ export function ThemeSelector(props: ThemeSelectorProps) {
   const { setTheme, theme } = useTheme(builder)
 
   return (
-    <label
-      className={joinClassNames('vbi-react-theme-selector', className)}
-      style={{ display: 'grid', gap: 8, ...style }}
-    >
-      <span>{label}</span>
+    <label className={joinClassNames('vbi-react-theme-selector', className)} style={style}>
+      <span className='vbi-react-selector__label'>{label}</span>
       <select
         aria-label={typeof label === 'string' ? label : 'Theme'}
+        className='vbi-react-control'
         onChange={(event) => {
           setTheme(event.target.value)
         }}

@@ -63,6 +63,10 @@ const devLocaleSet = new Set(devLocales.map((locale) => locale.lang))
 const devLocaleExcludes = allLocales
   .filter((locale) => !devLocaleSet.has(locale.lang))
   .map((locale) => `${locale.lang}/**`)
+const vbiReactEntry = path.join(__dirname, '../../packages/vbi-react/src/index.ts')
+const vbiReactComponentsEntry = path.join(__dirname, '../../packages/vbi-react/src/components/index.ts')
+const vbiReactComponentsCssEntry = path.join(__dirname, '../../packages/vbi-react/src/components/entry.css')
+const vbiReactStarterEntry = path.join(__dirname, '../../practices/vbi-react-starter/src/index.tsx')
 
 export default defineConfig({
   root: './docs',
@@ -113,6 +117,10 @@ export default defineConfig({
       rspack: (config, { isServer }) => {
         config.resolve.alias = {
           ...config.resolve.alias,
+          '@visactor/vbi-react$': vbiReactEntry,
+          '@visactor/vbi-react/components$': vbiReactComponentsEntry,
+          '@visactor/vbi-react/components.css$': vbiReactComponentsCssEntry,
+          'vbi-react-starter$': vbiReactStarterEntry,
         }
 
         if (isServer) {
@@ -122,8 +130,6 @@ export default defineConfig({
           )
           config.externals = [...(Array.isArray(config.externals) ? config.externals : []), 'yjs']
         }
-
-        config.resolve.conditionNames = ['source', '...']
       },
     },
     server: {

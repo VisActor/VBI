@@ -6,12 +6,14 @@
 
 - 根导出 `@visactor/vbi-react`：`useVBI`、`useVSeed`、`useChartType`、`useDimensions`、`useMeasures`、`useWhereFilter`、`useHavingFilter`
 - 子路径导出 `@visactor/vbi-react/components`：`BuilderLayout`、`ChartRenderer`、`ChartTypeSelector`、`FieldPanel`、`FilterPanel`、`ThemeSelector`
+- 组件样式入口 `@visactor/vbi-react/components.css`：提供默认视觉样式、稳定 class contract 和可覆盖的 CSS variables
 
 ## 定位
 
 - 面向 React 18+ 的状态订阅与渲染封装
 - 以 `VBIChartBuilder` 为单一状态源（SSOT），不额外维护业务副本
 - 适合构建 BI 配置面板、图表预览区与 DSL 调试面板
+- components 层保持轻量、可组合；完整工作台布局建议参考 [vbi-react Starter](./examples/vbi-react-starter)
 
 ## 安装
 
