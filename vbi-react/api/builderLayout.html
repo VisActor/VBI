@@ -4,14 +4,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BuilderLayout - VisActor&#x2F;VBI</title>
 <script>{;const saved = localStorage.getItem('rspress-theme-appearance');const preferDark = window.matchMedia('(prefers-color-scheme: dark)').matches;const isDark = !saved || saved === 'auto' ? preferDark : saved === 'dark';document.documentElement.classList.toggle('dark', isDark);document.documentElement.classList.toggle('rp-dark', isDark);document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';}</script>
-<link href="https://visactor.github.io/VBI/static/css/styles.7e525e9f15.css" rel="stylesheet">
+<link href="https://visactor.github.io/VBI/static/css/styles.076c7307bb.css" rel="stylesheet">
 <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/loader.js" as="script">
 <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0/min/vs/editor/editor.main.js" as="script">
 <script defer src="https://visactor.github.io/VBI/static/js/styles.3e4b4df3b9.js"></script>
 <script defer src="https://visactor.github.io/VBI/static/js/lib-router.713a75dc65.js"></script>
 <script defer src="https://visactor.github.io/VBI/static/js/lib-react.c4203d90f3.js"></script>
 <script defer src="https://visactor.github.io/VBI/static/js/1261.2c4390b478.js"></script>
-<script defer src="https://visactor.github.io/VBI/static/js/index.33c7498554.js"></script>
+<script defer src="https://visactor.github.io/VBI/static/js/index.155156018a.js"></script>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Rspress v2.0.11">
 <link rel="icon" href="https://visactor.github.io/VBI/logo.svg" type="image/svg+xml">
@@ -34,7 +34,7 @@
 <li><a href="/VBI/vbi-react/examples/vbi-react-starter.html" class="rp-link">vbi-react Starter</a></li>
 </ul>
 <h2 class="rp-toc-include" id="live-demo"><a href="#live-demo" class="rp-header-anchor rp-link" aria-hidden="true">#</a>Live Demo</h2>
-<div class="starter-theme starter-page" style="display:grid;gap:12px;color:var(--starter-text-primary);font-family:var(--starter-font-sans)"><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button">Hide left panel</button><button type="button">Hide footer</button></div><div style="border:1px solid var(--starter-border);border-radius:var(--starter-radius-md);min-height:0;overflow:hidden;height:360px"><section class="vbi-react-builder-layout" style="display:grid;gap:12px;grid-template-rows:auto minmax(0, 1fr) auto;min-height:0;min-width:0;height:100%"><header><div style="padding:12px">Top Bar Slot</div></header><div style="display:grid;gap:12px;grid-template-columns:260px minmax(0, 1fr);min-height:0;min-width:0"><aside style="min-height:0;min-width:0"><div style="padding:12px">Left Panel Slot</div></aside><main style="min-height:0;min-width:0"><div style="padding:16px">Main Slot</div></main></div><footer style="min-height:0;min-width:0"><div style="padding:12px">Footer Slot</div></footer></section></div></div>
+<div class="starter-theme starter-page" style="display:grid;gap:12px;color:var(--starter-text-primary);font-family:var(--starter-font-sans)"><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button">Hide left panel</button><button type="button">Hide footer</button></div><div style="border:1px solid var(--starter-border);border-radius:var(--starter-radius-md);min-height:0;overflow:hidden;height:360px"><section class="vbi-react-builder-layout" style="--vbi-react-layout-rows:auto minmax(0, 1fr) auto;--vbi-react-layout-columns:260px minmax(0, 1fr);height:100%"><header class="vbi-react-builder-layout__header"><div style="padding:12px">Top Bar Slot</div></header><div class="vbi-react-builder-layout__body"><aside class="vbi-react-builder-layout__left"><div style="padding:12px">Left Panel Slot</div></aside><main class="vbi-react-builder-layout__main"><div style="padding:16px">Main Slot</div></main></div><footer class="vbi-react-builder-layout__footer"><div style="padding:12px">Footer Slot</div></footer></section></div></div>
 <h2 class="rp-toc-include" id="最小示例"><a href="#最小示例" class="rp-header-anchor rp-link" aria-hidden="true">#</a>最小示例</h2>
 <div class="rp-codeblock language-tsx"><div class="rp-codeblock__content rp-codeblock__content--line-numbers"><div class="rp-codeblock__content__scroll-container rp-scrollbar rp-scrollbar--always"><pre class="shiki css-variables" style="background-color:var(--shiki-background);color:var(--shiki-foreground)" tabindex="0" data-lang="tsx"><code><span class="line"><span style="color:var(--shiki-token-keyword)">import</span><span style="color:var(--shiki-foreground)"> { BuilderLayout } </span><span style="color:var(--shiki-token-keyword)">from</span><span style="color:var(--shiki-token-string-expression)"> &#x27;@visactor/vbi-react/components&#x27;</span></span>
 <span class="line"></span>
