@@ -15,74 +15,50 @@
     "url": "https://www.visactor.io/"
   },
   "type": "module",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.js",
-  "types": "dist/types/index.d.ts",
-  "collection": "dist/collection/collection-manifest.json",
-  "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/vbi-component/vbi-component.esm.js",
   "exports": {
     ".": {
-      "import": "./dist/vbi-component/vbi-component.esm.js",
-      "require": "./dist/vbi-component/vbi-component.cjs.js"
-    },
-    "./loader": {
-      "types": "./loader/index.d.ts",
-      "import": "./loader/index.js",
-      "require": "./loader/index.cjs"
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./*": {
-      "types": "./dist/components/*.d.ts",
-      "import": "./dist/components/*.js"
+      "source": "./src/*/index.ts",
+      "types": "./dist/*/index.d.ts",
+      "import": "./dist/*/index.js"
     }
   },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
   "files": [
-    "dist/",
-    "loader/"
+    "dist"
   ],
   "scripts": {
-    "start": "stencil build --dev --watch --serve",
-    "build": "stencil build",
+    "build": "rslib build",
+    "dev": "rslib build --watch --no-clean",
     "format": "oxfmt .",
-    "lint": "oxlint --fix .",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json",
-    "test": "stencil-test --prod --project=unit --project=spec",
-    "test:browser": "stencil-test --prod --project=browser",
-    "test:full": "stencil-test --prod",
-    "test:watch": "stencil-test --prod --watch",
-    "generate": "stencil generate",
-    "storybook": "storybook dev -p 6006 --no-open",
-    "build-storybook": "storybook build"
+    "lint": "oxlint .",
+    "test": "rstest",
+    "test:update": "rstest --update",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json"
   },
   "devDependencies": {
-    "@ant-design/icons-svg": "4.4.2",
-    "@stencil/core": "4.43.5",
-    "@stencil/store": "2.2.2",
-    "@stencil/storybook-plugin": "0.7.0",
-    "@stencil/vitest": "1.13.2",
-    "@storybook/addon-docs": "10.4.6",
-    "@storybook/addon-links": "10.4.6",
-    "@types/node": "25.9.3",
-    "@types/sortablejs": "1.15.9",
-    "@visactor/vbi": "workspace:*",
+    "@open-wc/testing": "4.0.0",
+    "@rslib/core": "0.20.3",
+    "@rstest/core": "0.8.3",
+    "@types/node": "24.10.1",
     "@visactor/vchart": "2.0.23-alpha.6",
-    "@visactor/vquery": "workspace:*",
     "@visactor/vseed": "workspace:*",
     "@visactor/vtable": "1.23.1",
-    "@vitest/browser-playwright": "4.1.9",
-    "playwright": "1.61.0",
-    "storybook": "10.4.6",
-    "vitest": "4.1.9"
+    "jsdom": "29.1.1",
+    "typescript": "6.0.2"
   },
   "peerDependencies": {
-    "@visactor/vbi": "workspace:*",
     "@visactor/vchart": "2.0.23-alpha.6",
-    "@visactor/vquery": "workspace:*",
     "@visactor/vseed": "workspace:*",
     "@visactor/vtable": "1.23.1"
   },
   "dependencies": {
-    "@floating-ui/dom": "1.7.6",
-    "sortablejs": "1.15.7"
+    "lit": "3.3.3"
   }
 }

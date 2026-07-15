@@ -1,12 +1,12 @@
 {
   "extends": ["./tsconfig.json", "../../tsconfig.test.json"],
-  "include": ["src", "tests/**/*", "tests/**/*.json"],
   "compilerOptions": {
-    "composite": false,
     "rootDir": ".",
-    "types": ["node", "@stencil/vitest/globals"],
+    "types": ["node", "@rstest/core/globals"],
     "paths": {
+      "@visactor/vbi-component": ["./src/index.ts"],
       "src/*": ["./src/*"]
     }
-  }
+  },
+  "include": ["src", "tests", "rstest.config.ts", "package.json"]
 }
