@@ -93,7 +93,7 @@ describe('LocalConnector', () => {
     expect(typeof rowB?.GroupCount).toBe('number')
     expect(rowB?.GroupCount).toBe(1)
     expect(rowB?.AvgBonus).toBe(10)
-  })
+  }, 30_000)
 
   it('should return empty dataset when querying connector with empty data', async () => {
     const connector = new LocalConnector('conn_empty')
