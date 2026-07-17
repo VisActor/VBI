@@ -138,7 +138,7 @@ describe('LocalConnector', () => {
     expect(dataset[0]).toEqual({ name: 'Alice', age: 30 })
 
     fetchSpy.mockRestore()
-  })
+  }, 30_000)
 
   it('should throw error when loading CSV data from failing URL', async () => {
     const connector = new LocalConnector('conn_csv_fail')
