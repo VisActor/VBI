@@ -39509,7 +39509,7 @@ var init_vbi_config_provider = __esmMin((() => {
 		async handleBuilderChange(e) {
 			if (this.chartStore && e === this.chartStore.chartBuilder.builder) return;
 			this.destroyCallback?.(), this.disposeChartProvider?.(), this.unsubscribeBuilderChange?.();
-			const t = e ?? await async function() {
+			const t = !e, a = e ?? await async function() {
 				const e = new A();
 				try {
 					const { supermarketSchema: t } = await __vitePreload(async () => {
@@ -39522,14 +39522,14 @@ var init_vbi_config_provider = __esmMin((() => {
 				}
 				return e.register(), e.createBuilder();
 			}();
-			this.chartStore = x(t), this.destroyCallback = this.chartStore.initialize(t), this.disposeChartProvider = t$11(this.el, this.chartStore), this.unsubscribeBuilderChange = this.chartStore.chartBuilder.onChange("builderChangeTrigger", (() => {
+			this.chartStore = x(a), this.destroyCallback = this.chartStore.initialize(a), this.disposeChartProvider = t$11(this.el, this.chartStore), this.unsubscribeBuilderChange = this.chartStore.chartBuilder.onChange("builderChangeTrigger", (() => {
 				this.chartStore && this.vbiBuilderChange.emit(this.chartStore.chartBuilder.builder);
-			}));
+			})), t && this.vbiBuilderChange.emit(a);
 		}
 		render() {
 			const e = this.chartStore?.chartConfig.state.theme;
 			return h$5(Host, {
-				key: "c10c63b328863d49e1b50d9710a1c1cdf2c0d1c5",
+				key: "4fb560f2ca2eeb3dc7126500a912300e69b6aa63",
 				style: ((e, t) => {
 					const a = t ?? "light", r = {
 						...("light" === a ? H : G).tokens,
@@ -39568,7 +39568,7 @@ var init_vbi_config_provider = __esmMin((() => {
 						"--noise": r.noise?.toString()
 					};
 				})(this.theme, e)
-			}, h$5("slot", { key: "98ecf45b8f37d322b378330f612e04f259a5d776" }));
+			}, h$5("slot", { key: "cd8eb5fc103ca5dc8b3505d2ce9b915a66cfac33" }));
 		}
 		static get watchers() {
 			return { builder: [{ handleBuilderChange: 0 }] };
@@ -43905,7 +43905,12 @@ var init_preview = __esmMin((() => {
 	preview = {
 		parameters: {
 			interactions: { disable: true },
-			actions: { disable: true }
+			actions: { disable: true },
+			darkMode: {
+				darkClass: "dark",
+				lightClass: "light",
+				classTarget: "html"
+			}
 		},
 		tags: ["autodocs"],
 		decorators: [(story, { globals }) => {

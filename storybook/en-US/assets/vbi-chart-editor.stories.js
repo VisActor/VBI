@@ -10,9 +10,13 @@ __esmMin((() => {
 		argTypes: {}
 	};
 	Default = { render: (args) => {
+		const locale = "en-US";
 		const provider = document.createElement("vbi-config-provider");
 		const editor = document.createElement("vbi-chart-editor");
 		Object.assign(editor, args);
+		provider.addEventListener("vbiBuilderChange", ((e) => {
+			e.detail.locale.setLocale(locale);
+		}));
 		provider.appendChild(editor);
 		return provider;
 	} };
@@ -21,7 +25,7 @@ __esmMin((() => {
 		docs: {
 			...Default.parameters?.docs,
 			source: {
-				originalSource: "{\n  render: args => {\n    const provider = document.createElement('vbi-config-provider');\n    const editor = document.createElement('vbi-chart-editor');\n    Object.assign(editor, args);\n    provider.appendChild(editor);\n    return provider;\n  }\n}",
+				originalSource: "{\n  render: args => {\n    const locale = import.meta.env.STORYBOOK_LOCALE ?? 'en-US';\n    const provider = document.createElement('vbi-config-provider');\n    const editor = document.createElement('vbi-chart-editor');\n    Object.assign(editor, args);\n    provider.addEventListener('vbiBuilderChange', ((e: CustomEvent) => {\n      e.detail.locale.setLocale(locale);\n    }) as EventListener);\n    provider.appendChild(editor);\n    return provider;\n  }\n}",
 				...Default.parameters?.docs?.source
 			}
 		}

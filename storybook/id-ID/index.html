@@ -49,7 +49,16 @@
     <link href="./sb-addons/storybook-core-server-presets-0/common-manager-bundle.js" rel="modulepreload" />
     
     <link href="./sb-addons/docs-1/manager-bundle.js" rel="modulepreload" />
-       
+    
+    <link href="./sb-addons/storybook-dark-mode-esm-preset-2/manager-bundle.js" rel="modulepreload" />
+      <style>
+  /* Disable the theme toggle button in storybook-dark-mode*/
+  button[aria-label='Change theme to light mode'],
+  button[aria-label='Change theme to dark mode'] {
+    display: none !important;
+  }
+</style>
+ 
 
     <style>
       #storybook-root[hidden] {
@@ -140,6 +149,8 @@
         import './sb-addons/storybook-core-server-presets-0/common-manager-bundle.js';
       
         import './sb-addons/docs-1/manager-bundle.js';
+      
+        import './sb-addons/storybook-dark-mode-esm-preset-2/manager-bundle.js';
       
 
       import './sb-manager/runtime.js';
