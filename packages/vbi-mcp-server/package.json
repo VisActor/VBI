@@ -1,0 +1,45 @@
+{
+  "name": "@visactor/vbi-mcp-server",
+  "private": true,
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "vbi-mcp-server": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "format": "oxfmt .",
+    "lint": "oxlint .",
+    "test": "rstest",
+    "test:update": "rstest --update",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json",
+    "inspect": "npx @modelcontextprotocol/inspector node ./dist/cli.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.29.0",
+    "@visactor/vbi": "workspace:*",
+    "@visactor/vbi-agent": "workspace:*"
+  },
+  "devDependencies": {
+    "@rstest/core": "0.8.3",
+    "@rslib/core": "0.20.3",
+    "@types/node": "24.10.1",
+    "typebox": "1.1.38",
+    "typescript": "6.0.2",
+    "zod": "4.1.8"
+  }
+}

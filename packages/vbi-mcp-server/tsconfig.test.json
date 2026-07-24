@@ -1,0 +1,12 @@
+{
+  "extends": ["./tsconfig.json", "../../tsconfig.test.json"],
+  "compilerOptions": {
+    "rootDir": ".",
+    "types": ["node", "@rstest/core/globals"],
+    "paths": {
+      "@visactor/vbi-mcp-server": ["./src/index.ts"],
+      "src/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "tests", "rstest.config.ts"]
+}

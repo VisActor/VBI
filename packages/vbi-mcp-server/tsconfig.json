@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "./src",
+    "paths": {
+      "src/*": ["./src/*"]
+    },
+    "types": ["node"]
+  },
+  "references": [
+    {
+      "path": "../vbi-agent"
+    }
+  ],
+  "include": ["src"],
+  "extends": "../../tsconfig.base.json"
+}
