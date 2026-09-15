@@ -170,12 +170,10 @@ export const createMarkContent = (
   const dims = pipe(
     dimensions.filter((item) => tooltip.includes(item.id)),
     uniqueBy((item: Dimension) => item.id),
-    uniqueBy((item: Dimension) => item.alias),
   )
   const meas = pipe(
     measures.filter((item) => tooltip.includes(item.id)),
     uniqueBy((item: Measure) => item.id),
-    uniqueBy((item: Measure) => item.alias),
   )
 
   const dimContent = dims.map((item: Dimension) => ({
@@ -197,7 +195,7 @@ export const createMarkContent = (
   }))
 
   const meaContent = meas.map((item: Measure) => ({
-    visible: true,
+    visible: (datum?: Datum) => datum?.[foldInfo.measureId] !== item.id,
     hasShape: true,
     shapeType: 'rectRound',
     key: item.alias || item.id,

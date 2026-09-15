@@ -133,6 +133,7 @@ export const buildLabel = (
     },
     formatMethod: (_: unknown, datum: Datum) => {
       const result = []
+      const displayedMeasureIds = new Set<string>()
 
       const dimLabels = labelDims.map((item: Dimension) => {
         const id = item.id
@@ -140,12 +141,9 @@ export const buildLabel = (
         return formatter(datum[id] as number | string)
       })
 
-      const meaLabels = labelMeas.map((item: Measure) =>
-        generateMeasureValue(datum[item.id] as number | string, item, autoFormat, numFormat),
-      )
       result.push(...dimLabels)
 
-      foldInfoList.forEach((foldInfo) => {
+      uniqueBy(foldInfoList, (info) => datum[info.measureId]).forEach((foldInfo) => {
         const { measureId, measureValue, statistics } = foldInfo
         const measure = findMeasureById(advancedVSeedMeasures, datum[measureId] as string)
         if (measure) {
@@ -158,6 +156,7 @@ export const buildLabel = (
 
           if (showValue) {
             result.push(measureValueLabel)
+            displayedMeasureIds.add(measure.id)
           }
           if (showValuePercent) {
             if (isNumber(datum['__VCHART_ARC_RATIO'])) {
@@ -171,6 +170,10 @@ export const buildLabel = (
           }
         }
       })
+
+      const meaLabels = labelMeas
+        .filter((item) => !displayedMeasureIds.has(item.id))
+        .map((item: Measure) => generateMeasureValue(datum[item.id] as number | string, item, autoFormat, numFormat))
 
       result.push(...meaLabels)
 

@@ -105,6 +105,7 @@ export const buildLabel = (
     },
     formatMethod: (_: unknown, datum: Datum) => {
       const result = []
+      const displayedMeasureIds = new Set<string>()
 
       const dimLabels = labelDims.flatMap((item: Dimension) => {
         const id = item.id
@@ -116,18 +117,9 @@ export const buildLabel = (
         return [formatter(rawValue as number | string)]
       })
 
-      const meaLabels = labelMeas.flatMap((item: Measure) => {
-        const rawValue = datum[item.id]
-        if (rawValue === undefined || rawValue === null || rawValue === '') {
-          return []
-        }
-
-        return [generateMeasureValue(rawValue as number | string, item, autoFormat, numFormat)]
-      })
-
       result.push(...dimLabels)
 
-      foldInfoList.forEach((foldInfo) => {
+      uniqueBy(foldInfoList, (info) => datum[info.measureId]).forEach((foldInfo) => {
         const { measureId, measureValue, statistics } = foldInfo
         const measure = findMeasureById(advancedVSeedMeasures, datum[measureId] as string)
         if (measure) {
@@ -140,6 +132,7 @@ export const buildLabel = (
 
           if (showValue) {
             result.push(measureValueLabel)
+            displayedMeasureIds.add(measure.id)
           }
           if (showValuePercent) {
             if (isNumber(datum['__VCHART_ARC_RATIO'])) {
@@ -153,6 +146,17 @@ export const buildLabel = (
           }
         }
       })
+
+      const meaLabels = labelMeas
+        .filter((item) => !displayedMeasureIds.has(item.id))
+        .flatMap((item: Measure) => {
+          const rawValue = datum[item.id]
+          if (rawValue === undefined || rawValue === null || rawValue === '') {
+            return []
+          }
+
+          return [generateMeasureValue(rawValue as number | string, item, autoFormat, numFormat)]
+        })
 
       result.push(...meaLabels)
 

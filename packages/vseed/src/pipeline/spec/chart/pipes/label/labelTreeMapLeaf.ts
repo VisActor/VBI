@@ -81,6 +81,7 @@ export const labelTreeMapLeaf: VChartSpecPipe = (spec, context) => {
       }
 
       const resultText: string[] = []
+      const displayedMeasureIds = new Set<string>()
 
       // 1. Dimension Labels
       const dimLabels = labelDims
@@ -94,18 +95,7 @@ export const labelTreeMapLeaf: VChartSpecPipe = (spec, context) => {
 
       resultText.push(...(dimLabels as string[]))
 
-      // 2. Measure Labels (from label encoding)
-      const meaLabels = labelMeas.map((item: Measure) =>
-        generateMeasureValue(
-          (realDatum[item.id] ?? realDatum.__OriginalData__?.[item.id]) as number | string,
-          item,
-          autoFormat,
-          numFormat,
-        ),
-      )
-      resultText.push(...meaLabels)
-
-      // 3. Value and Percent (default/implicit)
+      // Value and Percent (default/implicit)
       foldInfoList.forEach((foldInfo) => {
         const { measureId, measureValue, statistics } = foldInfo
         // The measure ID might be in __MeaId__ or we look it up from the datum
@@ -119,6 +109,7 @@ export const labelTreeMapLeaf: VChartSpecPipe = (spec, context) => {
 
           if (showValue) {
             resultText.push(measureValueLabel)
+            displayedMeasureIds.add(measure.id)
           }
           if (showValuePercent) {
             // For TreeMap, percentage usually implies % of parent or total.
@@ -129,6 +120,19 @@ export const labelTreeMapLeaf: VChartSpecPipe = (spec, context) => {
           }
         }
       })
+
+      // Append explicit fields not already displayed by the default value.
+      const meaLabels = labelMeas
+        .filter((item) => !displayedMeasureIds.has(item.id))
+        .map((item: Measure) =>
+          generateMeasureValue(
+            (realDatum[item.id] ?? realDatum.__OriginalData__?.[item.id]) as number | string,
+            item,
+            autoFormat,
+            numFormat,
+          ),
+        )
+      resultText.push(...meaLabels)
 
       if (wrap) {
         return resultText

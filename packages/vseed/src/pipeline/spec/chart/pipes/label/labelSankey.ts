@@ -1,5 +1,5 @@
 import type { ILineChartSpec } from '@visactor/vchart'
-import { isNumber, merge } from 'remeda'
+import { isNumber, merge, uniqueBy } from 'remeda'
 import { selector, selectorWithDynamicFilter } from 'src/dataSelector'
 import { DATUM_HIDE_KEY, createFormatter, findMeasureById } from 'src/pipeline/utils'
 import type { Datum, FoldInfo, SankeyMeasure, Label, NumFormat, VChartSpecPipe } from 'src/types'
@@ -53,10 +53,10 @@ const buildLabel = (
     numFormat = {},
   } = label
 
-  const hasMeasureLabelEncoding = vseedMeasures.some((item) => labelEncodingIds.includes(item.id))
-  const labelMeasures = hasMeasureLabelEncoding
-    ? vseedMeasures.filter((item) => labelEncodingIds.includes(item.id))
-    : []
+  const labelMeasures = uniqueBy(
+    vseedMeasures.filter((item) => labelEncodingIds.includes(item.id)),
+    (item) => item.id,
+  )
 
   const percentFormat: NumFormat = merge(numFormat, {
     type: 'percent',
@@ -78,6 +78,7 @@ const buildLabel = (
     },
     formatMethod: (_: unknown, datum: Datum) => {
       const parts: string[] = []
+      const displayedMeasureIds = new Set<string>()
 
       if (showDimension && datum?.nodeName) {
         parts.push(String(datum.nodeName))
@@ -88,6 +89,7 @@ const buildLabel = (
         const measure = findMeasureById(advancedVSeedMeasures, datum[measureId] as string)
         if (measure && datum[measureValue] !== undefined && datum[measureValue] !== null) {
           parts.push(generateMeasureValue(datum[measureValue] as number | string, measure, autoFormat, numFormat))
+          displayedMeasureIds.add(measure.id)
         } else if (datum.value !== undefined && datum.value !== null) {
           const fallbackMeasure =
             findMeasureById(advancedVSeedMeasures, foldInfo.measureId) ||
@@ -95,6 +97,7 @@ const buildLabel = (
             advancedVSeedMeasures[0]
           if (fallbackMeasure) {
             parts.push(generateMeasureValue(datum.value as number | string, fallbackMeasure, autoFormat, numFormat))
+            displayedMeasureIds.add(fallbackMeasure.id)
           } else {
             parts.push(String(datum.value))
           }
@@ -121,13 +124,15 @@ const buildLabel = (
         }
       }
 
-      labelMeasures.forEach((measure) => {
-        const rawValue = datum[measure.id]
-        if (rawValue === undefined || rawValue === null || rawValue === '') {
-          return
-        }
-        parts.push(generateMeasureValue(rawValue as number | string, measure, autoFormat, numFormat))
-      })
+      labelMeasures
+        .filter((measure) => !displayedMeasureIds.has(measure.id))
+        .forEach((measure) => {
+          const rawValue = datum[measure.id]
+          if (rawValue === undefined || rawValue === null || rawValue === '') {
+            return
+          }
+          parts.push(generateMeasureValue(rawValue as number | string, measure, autoFormat, numFormat))
+        })
 
       return wrap ? parts : parts.join(' ')
     },

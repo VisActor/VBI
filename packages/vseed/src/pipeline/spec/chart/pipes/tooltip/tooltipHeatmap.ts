@@ -70,7 +70,7 @@ export const createMarkContent = (
   }))
 
   const meaContent = meas.map((item) => ({
-    visible: true,
+    visible: (datum?: Datum) => datum?.[foldInfo.measureId] !== item.id,
     hasShape: true,
     shapeType: 'rectRound',
     key: item.alias || item.id,
