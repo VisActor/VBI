@@ -26,9 +26,6 @@ export const tooltipScatter: VChartSpecPipe = (spec, context) => {
         visible: false,
       },
       content: createMarkContent(encoding.tooltip || [], dimensions, vseed.measures as Measures, locale, foldInfoList),
-      updateContent: (prev: Datum[] = []) => {
-        return uniqueBy(prev, (entry) => `${String(entry.key)}::${String(entry.value)}`)
-      },
     },
     dimension: {
       visible: false,
@@ -73,7 +70,7 @@ export const createMarkContent = (
   }))
 
   const meaContent = meas.map((item) => ({
-    visible: true,
+    visible: (datum?: Datum) => !foldInfoList.some((info) => datum?.[info.measureId] === item.id),
     hasShape: true,
     shapeType: 'rectRound',
     key: item.alias || item.id,
@@ -94,9 +91,10 @@ export const createMarkContent = (
     },
   }))
 
-  const foldMeaContent = foldInfoList.map((foldInfo) => {
+  const foldMeaContent = foldInfoList.map((foldInfo, index) => {
     return {
-      visible: true,
+      visible: (datum?: Datum) =>
+        !foldInfoList.slice(0, index).some((info) => datum?.[info.measureId] === datum?.[foldInfo.measureId]),
       hasShape: true,
       shapeType: 'rectRound',
       key: (v: unknown) => {

@@ -55,18 +55,15 @@ const createMarkContent = (
   const dims = pipe(
     dimensions.filter((item) => tooltip.includes(item.id)),
     uniqueBy((item: HierarchyDimension) => item.id),
-    uniqueBy((item: HierarchyDimension) => item.alias),
-    uniqueBy((item: HierarchyDimension) => item.alias),
   )
   const meas = pipe(
     measures.filter((item) => tooltip.includes(item.id)),
     uniqueBy((item: HierarchyMeasure) => item.id),
-    uniqueBy((item: HierarchyMeasure) => item.alias),
   )
 
   const dimContent = dims.map((item: HierarchyDimension) => ({
-    visible: (datum: Datum) => {
-      return !!datum[item.id]
+    visible: (datum?: Datum) => {
+      return !!datum?.[item.id]
     },
     hasShape: true,
     shapeType: 'rectRound',
@@ -115,7 +112,7 @@ const createMarkContent = (
   }
 
   const meaContent = meas.map((item: HierarchyMeasure) => ({
-    visible: true,
+    visible: (datum?: Datum) => datum?.[foldInfo.measureId] !== item.id,
     hasShape: true,
     shapeType: 'rectRound',
     key: item.alias || item.id,
