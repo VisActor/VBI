@@ -327,7 +327,7 @@ describe('unit/coverage edges', () => {
     )
     chartCollection.add((chart) => {
       expect(chart.getBuilder()).toBe(chartHarness.chartBuilder)
-      chart.setChartId('chart-resource').setLayouts({ lg: { x: 0, y: 0, w: 1, h: 1 } })
+      chart.setChart('chart-resource').setLayouts({ lg: { x: 0, y: 0, w: 1, h: 1 } })
     })
     const chart = chartCollection.find('chart-resource')
     expect(chart?.getBuilder()).toBe(chartHarness.chartBuilder)

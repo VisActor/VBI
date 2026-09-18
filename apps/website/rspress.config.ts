@@ -85,6 +85,7 @@ export default defineConfig({
         '@rspress/core/runtime',
         'yjs',
         '@components',
+        'dashboard',
       ],
     }),
   ],

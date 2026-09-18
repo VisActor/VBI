@@ -3,67 +3,6 @@
   "name": "merchandising-dashboard-widget-lifecycle",
   "description": "商品运营仪表盘中新增、更新、移除并清空 chart/insight widget，随后重建最终布局以验证布局合并",
   "tags": ["dashboard", "workflow", "layout", "mutation"],
-  "resources": {
-    "charts": [
-      {
-        "name": "categorySalesChart",
-        "dsl": {
-          "chartType": "bar",
-          "dimensions": [
-            {
-              "field": "category",
-              "alias": "商品品类"
-            }
-          ],
-          "measures": [
-            {
-              "field": "sales",
-              "alias": "销售额",
-              "encoding": "xAxis",
-              "aggregate": {
-                "func": "sum"
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "discountProfitChart",
-        "dsl": {
-          "chartType": "scatter",
-          "dimensions": [
-            {
-              "field": "discount",
-              "alias": "折扣"
-            }
-          ],
-          "measures": [
-            {
-              "field": "profit",
-              "alias": "利润",
-              "encoding": "yAxis",
-              "aggregate": {
-                "func": "sum"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "insights": [
-      {
-        "name": "promotionInsight",
-        "dsl": {
-          "content": "高折扣品类带来的销售增长未完全转化为利润，需要收紧促销门槛。"
-        }
-      }
-    ]
-  },
-  "dsl": {
-    "meta": {
-      "title": "商品运营看板",
-      "theme": "dark"
-    }
-  },
-  "code": "const applyBuilder = (builder: VBIDashboardBuilder, resources: any) => {\n  expect(builder.isEmpty()).toBe(true)\n\n  builder.chart.add(chart => {\n    chart\n      .setChartId(resources.charts.categorySalesChart)\n      .setTitle('品类销售')\n      .setDescription('初版品类销售布局')\n      .setLayouts({ lg: { x: 0, y: 0, w: 6, h: 4 }, md: { x: 0, y: 0, w: 6, h: 4 } })\n  })\n  builder.chart.add(chart => {\n    chart\n      .setChartId(resources.charts.discountProfitChart)\n      .setTitle('折扣利润散点')\n      .setLayouts({ lg: { x: 6, y: 0, w: 6, h: 4 }, md: { x: 0, y: 4, w: 6, h: 4 } })\n  })\n  builder.insight.add(insight => {\n    insight\n      .setInsightId(resources.insights.promotionInsight)\n      .setTitle('促销洞察')\n      .setLayouts({ lg: { x: 0, y: 4, w: 12, h: 3 }, md: { x: 0, y: 8, w: 6, h: 3 } })\n  })\n\n  const [categoryWidget, discountWidget] = builder.chart.toJSON() as any[]\n  const [promotionWidget] = builder.insight.toJSON() as any[]\n  expect(builder.chart.find(categoryWidget.chartId)?.getId()).toBe(categoryWidget.id)\n  expect(builder.insight.find(promotionWidget.insightId)?.getId()).toBe(promotionWidget.id)\n\n  builder.chart.update(categoryWidget.id, chart => {\n    chart\n      .setTitle('重点品类销售')\n      .setDescription('更新后保留 md 布局，并合并新的 lg 布局')\n      .setLayouts({ lg: { x: 0, y: 0, w: 7, h: 5 } })\n  })\n  builder.insight.update(promotionWidget.id, insight => {\n    insight\n      .setDescription('更新后的促销策略说明')\n      .setLayouts({ lg: { x: 7, y: 0, w: 5, h: 5 } })\n  })\n  builder.chart.remove(discountWidget.id)\n  expect(builder.chart.get(discountWidget.id)).toBeUndefined()\n\n  for (const widget of builder.chart.toJSON()) {\n    builder.chart.remove(widget.id)\n  }\n  for (const widget of builder.insight.toJSON()) {\n    builder.insight.remove(widget.id)\n  }\n  expect(builder.isEmpty()).toBe(true)\n\n  builder.chart.add(chart => {\n    chart\n      .setChartId(resources.charts.categorySalesChart)\n      .setTitle('最终品类销售')\n      .setDescription('清空草稿后重建的主图')\n      .setLayouts({ lg: { x: 0, y: 0, w: 7, h: 5 }, md: { x: 0, y: 0, w: 6, h: 4 } })\n  })\n  builder.insight.add(insight => {\n    insight\n      .setInsightId(resources.insights.promotionInsight)\n      .setTitle('最终促销洞察')\n      .setDescription('清空草稿后重建的洞察')\n      .setLayouts({ lg: { x: 7, y: 0, w: 5, h: 5 }, md: { x: 0, y: 4, w: 6, h: 3 } })\n  })\n  expect(builder.isEmpty()).toBe(false)\n}"
+  "code": "const applyBuilder = (builder: VBIDashboardBuilder) => {\n  if (!builder.isEmpty()) throw new Error('dashboard should be empty')\n\n  builder.chart.add(chart => {\n    chart\n      .setChart(resources.charts.categorySalesChart)\n      .setTitle('品类销售')\n      .setDescription('初版品类销售布局')\n      .setLayouts({ lg: { x: 0, y: 0, w: 6, h: 4 }, md: { x: 0, y: 0, w: 6, h: 4 } })\n  })\n  builder.chart.add(chart => {\n    chart\n      .setChart(resources.charts.discountProfitChart)\n      .setTitle('折扣利润散点')\n      .setLayouts({ lg: { x: 6, y: 0, w: 6, h: 4 }, md: { x: 0, y: 4, w: 6, h: 4 } })\n  })\n  builder.insight.add(insight => {\n    insight\n      .setInsightId(resources.insights.promotionInsight)\n      .setTitle('促销洞察')\n      .setLayouts({ lg: { x: 0, y: 4, w: 12, h: 3 }, md: { x: 0, y: 8, w: 6, h: 3 } })\n  })\n\n  const [categoryWidget, discountWidget] = builder.chart.toJSON()\n  const [promotionWidget] = builder.insight.toJSON()\n  if (builder.chart.find(resources.charts.categorySalesChart.getUUID())?.getId() !== categoryWidget.id) throw new Error('chart reference should resolve')\n  if (builder.insight.find(resources.insights.promotionInsight.getUUID())?.getId() !== promotionWidget.id) throw new Error('insight reference should resolve')\n\n  builder.chart.update(categoryWidget.id, chart => {\n    chart\n      .setTitle('重点品类销售')\n      .setDescription('更新后保留 md 布局，并合并新的 lg 布局')\n      .setLayouts({ lg: { x: 0, y: 0, w: 7, h: 5 } })\n  })\n  builder.insight.update(promotionWidget.id, insight => {\n    insight\n      .setDescription('更新后的促销策略说明')\n      .setLayouts({ lg: { x: 7, y: 0, w: 5, h: 5 } })\n  })\n  builder.chart.remove(discountWidget.id)\n  if (builder.chart.get(discountWidget.id)) throw new Error('removed chart should be absent')\n\n  for (const widget of builder.chart.toJSON()) {\n    builder.chart.remove(widget.id)\n  }\n  for (const widget of builder.insight.toJSON()) {\n    builder.insight.remove(widget.id)\n  }\n  if (!builder.isEmpty()) throw new Error('dashboard should be empty')\n\n  builder.chart.add(chart => {\n    chart\n      .setChart(resources.charts.categorySalesChart)\n      .setTitle('最终品类销售')\n      .setDescription('清空草稿后重建的主图')\n      .setLayouts({ lg: { x: 0, y: 0, w: 7, h: 5 }, md: { x: 0, y: 0, w: 6, h: 4 } })\n  })\n  builder.insight.add(insight => {\n    insight\n      .setInsightId(resources.insights.promotionInsight)\n      .setTitle('最终促销洞察')\n      .setDescription('清空草稿后重建的洞察')\n      .setLayouts({ lg: { x: 7, y: 0, w: 5, h: 5 }, md: { x: 0, y: 4, w: 6, h: 3 } })\n  })\n  if (builder.isEmpty()) throw new Error('dashboard should contain widgets')\n}",
+  "setup": "const categorySalesChart = LocalVBI.chart.create(LocalVBI.chart.createEmpty('demoSupermarket'))\ncategorySalesChart.chartType.changeChartType('bar')\ncategorySalesChart.dimensions.add('product_type', dimension => dimension.setAlias('商品品类'))\ncategorySalesChart.measures.add('sales', measure => measure.setAlias('销售额').setEncoding('xAxis').setAggregate({ func: 'sum' }))\ncategorySalesChart.limit.setLimit(8)\n\nconst discountProfitChart = LocalVBI.chart.create(LocalVBI.chart.createEmpty('demoSupermarket'))\ndiscountProfitChart.chartType.changeChartType('scatter')\ndiscountProfitChart.dimensions.add('discount', dimension => dimension.setAlias('折扣'))\ndiscountProfitChart.measures.add('profit', measure => measure.setAlias('利润').setEncoding('yAxis').setAggregate({ func: 'sum' }))\n\nconst promotionInsight = LocalVBI.insight.create(LocalVBI.insight.createEmpty())\npromotionInsight.setContent(\"高折扣品类带来的销售增长未完全转化为利润，需要收紧促销门槛。\")\n\nconst resources = {\n  charts: { categorySalesChart, discountProfitChart },\n  insights: { promotionInsight },\n}\n\nconst builder = LocalVBI.dashboard.create({\n  ...LocalVBI.dashboard.createEmpty(),\n  meta: { title: '商品运营看板', theme: 'dark' },\n})"
 }

@@ -17,108 +17,63 @@ describe('dashboard / ResourceWorkflow', () => {
 
   it('register-and-reference-quarterly-resources', async () => {
     const LocalVBI = createVBI()
+    const quarterlyRevenueChart = LocalVBI.chart.create(LocalVBI.chart.createEmpty('demoSupermarket'))
+    quarterlyRevenueChart.chartType.changeChartType('line')
+    quarterlyRevenueChart.dimensions.add('order_date', (dimension) =>
+      dimension.setAlias('订单季度').setAggregate({ func: 'toQuarter' }),
+    )
+    quarterlyRevenueChart.measures.add('sales', (measure) =>
+      measure.setAlias('季度销售额').setEncoding('yAxis').setAggregate({ func: 'sum' }),
+    )
+    quarterlyRevenueChart.limit.setLimit(8)
+
+    const quarterlyInsight = LocalVBI.insight.create(LocalVBI.insight.createEmpty())
+    quarterlyInsight.setContent('Q4 销售额继续增长，但利润贡献需要结合品类折扣进一步拆解。')
+
+    const temporaryInsight = LocalVBI.insight.create(LocalVBI.insight.createEmpty())
+    temporaryInsight.setContent('临时备注用于验证资源移除，不进入最终仪表盘。')
+
     const resources = {
-      charts: {
-        quarterlyRevenueChart: LocalVBI.chart.create({
-          connectorId: 'demoSupermarket',
-          chartType: 'line',
-          dimensions: [
-            {
-              field: 'order_date',
-              alias: '订单季度',
-              aggregate: {
-                func: 'toQuarter',
-              },
-            },
-          ],
-          measures: [
-            {
-              field: 'sales',
-              alias: '季度销售额',
-              encoding: 'yAxis',
-              aggregate: {
-                func: 'sum',
-              },
-            },
-          ],
-          whereFilter: {
-            id: 'root',
-            op: 'and',
-            conditions: [],
-          },
-          havingFilter: {
-            id: 'root',
-            op: 'and',
-            conditions: [],
-          },
-          theme: 'light',
-          locale: 'zh-CN',
-          version: 1,
-        }),
-      },
-      insights: {
-        quarterlyInsight: LocalVBI.insight.create({
-          content: 'Q4 销售额继续增长，但利润贡献需要结合品类折扣进一步拆解。',
-          version: 0,
-        }),
-        temporaryInsight: LocalVBI.insight.create({
-          content: '临时备注用于验证资源移除，不进入最终仪表盘。',
-          version: 0,
-        }),
-      },
+      charts: { quarterlyRevenueChart },
+      insights: { quarterlyInsight, temporaryInsight },
     }
+
     const builder = LocalVBI.dashboard.create({
-      widgets: [],
-      breakpoints: {
-        xxl: 1600,
-        xl: 1200,
-        lg: 996,
-        md: 768,
-        sm: 480,
-        xs: 0,
-      },
-      layout: {
-        xxl: [],
-        xl: [],
-        lg: [],
-        md: [],
-        sm: [],
-        xs: [],
-      },
-      meta: {
-        title: '季度经营复盘',
-        theme: 'light',
-      },
-      version: 0,
+      ...LocalVBI.dashboard.createEmpty(),
+      meta: { title: '季度经营复盘', theme: 'light' },
     })
 
-    const applyBuilder = (builder: VBIDashboardBuilder, resources: any) => {
+    const applyBuilder = (builder: VBIDashboardBuilder) => {
       const chartId = resources.charts.quarterlyRevenueChart.getUUID()
       const insightId = resources.insights.quarterlyInsight.getUUID()
       const temporaryInsightId = resources.insights.temporaryInsight.getUUID()
 
-      expect(LocalVBI.resources.chart.has(chartId)).toBe(true)
-      expect(LocalVBI.resources.chart.get(chartId)?.chartType).toBe('line')
-      expect(LocalVBI.resources.chart.list().map((chart) => chart.uuid)).toContain(chartId)
-      expect(LocalVBI.resources.snapshot().insights[insightId]?.content).toContain('Q4 销售额')
+      if (!LocalVBI.resources.chart.has(chartId)) throw new Error('chart should be registered')
+      if (LocalVBI.resources.chart.get(chartId)?.chartType !== 'line')
+        throw new Error('registered chart should be a line chart')
+      if (!LocalVBI.resources.chart.list().some((chart) => chart.uuid === chartId))
+        throw new Error('chart should be listed')
+      if (!LocalVBI.resources.snapshot().insights[insightId]?.content.includes('Q4 销售额'))
+        throw new Error('snapshot should include insight content')
 
-      expect(LocalVBI.resources.insight.unregister(temporaryInsightId)).toBe(true)
-      expect(LocalVBI.resources.insight.get(temporaryInsightId)).toBeUndefined()
+      if (!LocalVBI.resources.insight.unregister(temporaryInsightId))
+        throw new Error('temporary insight should be removed')
+      if (LocalVBI.resources.insight.get(temporaryInsightId)) throw new Error('removed insight should be absent')
       const restoredTemporaryInsight = LocalVBI.resources.insight.register(resources.insights.temporaryInsight.build())
-      expect(restoredTemporaryInsight.uuid).toBe(temporaryInsightId)
+      if (restoredTemporaryInsight.uuid !== temporaryInsightId) throw new Error('restored insight should retain its id')
 
       const registered = LocalVBI.resources.register({
         charts: [resources.charts.quarterlyRevenueChart.build()],
         insights: [resources.insights.quarterlyInsight.build()],
       })
-      expect(registered.charts[0].uuid).toBe(chartId)
-      expect(registered.insights[0].uuid).toBe(insightId)
+      if (registered.charts[0].uuid !== chartId) throw new Error('registered chart id should match')
+      if (registered.insights[0].uuid !== insightId) throw new Error('registered insight id should match')
 
       builder.chart.add((chart) => {
         chart
-          .setChartId(chartId)
+          .setChart(chartId)
           .setTitle('季度销售走势')
-          .setDescription('复盘会共享资源中的季度销售图')
+          .setDescription('共享资源中的季度销售图，展示前 8 个季度')
           .setLayouts({ lg: { x: 0, y: 0, w: 8, h: 5 } })
       })
 
@@ -130,15 +85,15 @@ describe('dashboard / ResourceWorkflow', () => {
           .setLayouts({ lg: { x: 8, y: 0, w: 4, h: 5 } })
       })
     }
-    await applyBuilder(builder, resources)
+    await applyBuilder(builder)
 
     const dashboardDSL = builder.build()
     expect(dashboardDSL).toMatchInlineSnapshot(`
       {
         "breakpoints": {
-          "lg": 996,
+          "lg": 992,
           "md": 768,
-          "sm": 480,
+          "sm": 576,
           "xl": 1200,
           "xs": 0,
           "xxl": 1600,
@@ -177,7 +132,7 @@ describe('dashboard / ResourceWorkflow', () => {
         "widgets": [
           {
             "chartId": "uuid-1",
-            "description": "复盘会共享资源中的季度销售图",
+            "description": "共享资源中的季度销售图，展示前 8 个季度",
             "id": "id-3",
             "title": "季度销售走势",
             "type": "chart",

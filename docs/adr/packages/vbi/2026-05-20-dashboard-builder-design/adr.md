@@ -56,7 +56,7 @@ Dashboard supports two widget types:
 Widget builders accept either a resource id string or a resource builder object
 with `getUUID()`. The stored DSL remains id-based, while caller ergonomics allow:
 
-- `chart.setChartId(chartBuilder)`
+- `chart.setChart(chartBuilder)`
 - `insight.setInsightId(insightBuilder)`
 
 This keeps the dashboard snapshot compact and prevents dashboard from becoming a
@@ -119,7 +119,7 @@ const insight = vbi.insight.create(vbi.insight.createEmpty())
 const dashboard = vbi.dashboard.create(vbi.dashboard.createEmpty())
 
 dashboard.chart.add((widget) => {
-  widget.setChartId(chart).setLayouts({ lg: { x: 0, y: 0, w: 8, h: 6 } })
+  widget.setChart(chart).setLayouts({ lg: { x: 0, y: 0, w: 8, h: 6 } })
 })
 
 dashboard.insight.add((widget) => {

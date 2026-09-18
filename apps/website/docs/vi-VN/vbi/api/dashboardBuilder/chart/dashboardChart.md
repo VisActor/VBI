@@ -69,12 +69,12 @@ setDescription(description: string): this
 | --- | --- | --- |
 | `description` | string | - |
 
-### setChartId
+### setChart
 
 **Định nghĩa**:
 
 ```typescript
-setChartId(chart: ResourceReference): this
+setChart(chart: ResourceReference): this
 ```
 
 **Trả về**: `this`

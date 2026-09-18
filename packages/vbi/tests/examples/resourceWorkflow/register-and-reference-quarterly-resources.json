@@ -3,54 +3,6 @@
   "name": "register-and-reference-quarterly-resources",
   "description": "经营复盘场景中通过 VBI resources namespace 注册、查询、列出、移除和快照化可复用 chart/insight 资源，再在 dashboard 中引用",
   "tags": ["resources", "workflow", "dashboard"],
-  "resources": {
-    "charts": [
-      {
-        "name": "quarterlyRevenueChart",
-        "dsl": {
-          "chartType": "line",
-          "dimensions": [
-            {
-              "field": "order_date",
-              "alias": "订单季度",
-              "aggregate": {
-                "func": "toQuarter"
-              }
-            }
-          ],
-          "measures": [
-            {
-              "field": "sales",
-              "alias": "季度销售额",
-              "encoding": "yAxis",
-              "aggregate": {
-                "func": "sum"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "insights": [
-      {
-        "name": "quarterlyInsight",
-        "dsl": {
-          "content": "Q4 销售额继续增长，但利润贡献需要结合品类折扣进一步拆解。"
-        }
-      },
-      {
-        "name": "temporaryInsight",
-        "dsl": {
-          "content": "临时备注用于验证资源移除，不进入最终仪表盘。"
-        }
-      }
-    ]
-  },
-  "dsl": {
-    "meta": {
-      "title": "季度经营复盘",
-      "theme": "light"
-    }
-  },
-  "code": "const applyBuilder = (builder: VBIDashboardBuilder, resources: any) => {\n  const chartId = resources.charts.quarterlyRevenueChart.getUUID()\n  const insightId = resources.insights.quarterlyInsight.getUUID()\n  const temporaryInsightId = resources.insights.temporaryInsight.getUUID()\n\n  expect(LocalVBI.resources.chart.has(chartId)).toBe(true)\n  expect(LocalVBI.resources.chart.get(chartId)?.chartType).toBe('line')\n  expect(LocalVBI.resources.chart.list().map(chart => chart.uuid)).toContain(chartId)\n  expect(LocalVBI.resources.snapshot().insights[insightId]?.content).toContain('Q4 销售额')\n\n  expect(LocalVBI.resources.insight.unregister(temporaryInsightId)).toBe(true)\n  expect(LocalVBI.resources.insight.get(temporaryInsightId)).toBeUndefined()\n  const restoredTemporaryInsight = LocalVBI.resources.insight.register(resources.insights.temporaryInsight.build())\n  expect(restoredTemporaryInsight.uuid).toBe(temporaryInsightId)\n\n  const registered = LocalVBI.resources.register({\n    charts: [resources.charts.quarterlyRevenueChart.build()],\n    insights: [resources.insights.quarterlyInsight.build()]\n  })\n  expect(registered.charts[0].uuid).toBe(chartId)\n  expect(registered.insights[0].uuid).toBe(insightId)\n\n  builder.chart.add(chart => {\n    chart\n      .setChartId(chartId)\n      .setTitle('季度销售走势')\n      .setDescription('复盘会共享资源中的季度销售图')\n      .setLayouts({ lg: { x: 0, y: 0, w: 8, h: 5 } })\n  })\n\n  builder.insight.add(insight => {\n    insight\n      .setInsightId(resources.insights.quarterlyInsight)\n      .setTitle('季度经营解读')\n      .setDescription('引用已注册 insight builder')\n      .setLayouts({ lg: { x: 8, y: 0, w: 4, h: 5 } })\n  })\n}"
+  "code": "const applyBuilder = (builder: VBIDashboardBuilder) => {\n  const chartId = resources.charts.quarterlyRevenueChart.getUUID()\n  const insightId = resources.insights.quarterlyInsight.getUUID()\n  const temporaryInsightId = resources.insights.temporaryInsight.getUUID()\n\n  if (!LocalVBI.resources.chart.has(chartId)) throw new Error('chart should be registered')\n  if (LocalVBI.resources.chart.get(chartId)?.chartType !== 'line') throw new Error('registered chart should be a line chart')\n  if (!LocalVBI.resources.chart.list().some(chart => chart.uuid === chartId)) throw new Error('chart should be listed')\n  if (!LocalVBI.resources.snapshot().insights[insightId]?.content.includes('Q4 销售额')) throw new Error('snapshot should include insight content')\n\n  if (!LocalVBI.resources.insight.unregister(temporaryInsightId)) throw new Error('temporary insight should be removed')\n  if (LocalVBI.resources.insight.get(temporaryInsightId)) throw new Error('removed insight should be absent')\n  const restoredTemporaryInsight = LocalVBI.resources.insight.register(resources.insights.temporaryInsight.build())\n  if (restoredTemporaryInsight.uuid !== temporaryInsightId) throw new Error('restored insight should retain its id')\n\n  const registered = LocalVBI.resources.register({\n    charts: [resources.charts.quarterlyRevenueChart.build()],\n    insights: [resources.insights.quarterlyInsight.build()]\n  })\n  if (registered.charts[0].uuid !== chartId) throw new Error('registered chart id should match')\n  if (registered.insights[0].uuid !== insightId) throw new Error('registered insight id should match')\n\n  builder.chart.add(chart => {\n    chart\n      .setChart(chartId)\n      .setTitle('季度销售走势')\n      .setDescription('共享资源中的季度销售图，展示前 8 个季度')\n      .setLayouts({ lg: { x: 0, y: 0, w: 8, h: 5 } })\n  })\n\n  builder.insight.add(insight => {\n    insight\n      .setInsightId(resources.insights.quarterlyInsight)\n      .setTitle('季度经营解读')\n      .setDescription('引用已注册 insight builder')\n      .setLayouts({ lg: { x: 8, y: 0, w: 4, h: 5 } })\n  })\n}",
+  "setup": "const quarterlyRevenueChart = LocalVBI.chart.create(LocalVBI.chart.createEmpty('demoSupermarket'))\nquarterlyRevenueChart.chartType.changeChartType('line')\nquarterlyRevenueChart.dimensions.add('order_date', dimension => dimension.setAlias('订单季度').setAggregate({ func: 'toQuarter' }))\nquarterlyRevenueChart.measures.add('sales', measure => measure.setAlias('季度销售额').setEncoding('yAxis').setAggregate({ func: 'sum' }))\nquarterlyRevenueChart.limit.setLimit(8)\n\nconst quarterlyInsight = LocalVBI.insight.create(LocalVBI.insight.createEmpty())\nquarterlyInsight.setContent(\"Q4 销售额继续增长，但利润贡献需要结合品类折扣进一步拆解。\")\n\nconst temporaryInsight = LocalVBI.insight.create(LocalVBI.insight.createEmpty())\ntemporaryInsight.setContent(\"临时备注用于验证资源移除，不进入最终仪表盘。\")\n\nconst resources = {\n  charts: { quarterlyRevenueChart },\n  insights: { quarterlyInsight, temporaryInsight },\n}\n\nconst builder = LocalVBI.dashboard.create({\n  ...LocalVBI.dashboard.createEmpty(),\n  meta: { title: '季度经营复盘', theme: 'light' },\n})"
 }

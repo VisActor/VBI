@@ -17,75 +17,28 @@ describe('dashboard / DashboardWorkflow', () => {
 
   it('executive-dashboard-widget-lifecycle', async () => {
     const LocalVBI = createVBI()
+    const salesChart = LocalVBI.chart.create(LocalVBI.chart.createEmpty('demoSupermarket'))
+    salesChart.chartType.changeChartType('bar')
+    salesChart.dimensions.add('province', (dimension) => dimension.setAlias('省份'))
+    salesChart.measures.add('sales', (measure) =>
+      measure.setAlias('销售额').setEncoding('xAxis').setAggregate({ func: 'sum' }),
+    )
+    salesChart.limit.setLimit(8)
+
+    const salesInsight = LocalVBI.insight.create(LocalVBI.insight.createEmpty())
+    salesInsight.setContent('华东区域销售额领先，管理层需要关注复购与利润结构。')
+
     const resources = {
-      charts: {
-        salesChart: LocalVBI.chart.create({
-          connectorId: 'demoSupermarket',
-          chartType: 'bar',
-          dimensions: [
-            {
-              field: 'province',
-              alias: '省份',
-            },
-          ],
-          measures: [
-            {
-              field: 'sales',
-              alias: '销售额',
-              encoding: 'xAxis',
-              aggregate: {
-                func: 'sum',
-              },
-            },
-          ],
-          whereFilter: {
-            id: 'root',
-            op: 'and',
-            conditions: [],
-          },
-          havingFilter: {
-            id: 'root',
-            op: 'and',
-            conditions: [],
-          },
-          theme: 'light',
-          locale: 'zh-CN',
-          version: 1,
-        }),
-      },
-      insights: {
-        salesInsight: LocalVBI.insight.create({
-          content: '华东区域销售额领先，管理层需要关注复购与利润结构。',
-          version: 0,
-        }),
-      },
+      charts: { salesChart },
+      insights: { salesInsight },
     }
+
     const builder = LocalVBI.dashboard.create({
-      widgets: [],
-      breakpoints: {
-        xxl: 1600,
-        xl: 1200,
-        lg: 996,
-        md: 768,
-        sm: 480,
-        xs: 0,
-      },
-      layout: {
-        xxl: [],
-        xl: [],
-        lg: [],
-        md: [],
-        sm: [],
-        xs: [],
-      },
-      meta: {
-        title: '经营驾驶舱',
-        theme: 'dark',
-      },
-      version: 0,
+      ...LocalVBI.dashboard.createEmpty(),
+      meta: { title: '经营驾驶舱', theme: 'dark' },
     })
 
-    const applyBuilder = (builder: VBIDashboardBuilder, resources: any) => {
+    const applyBuilder = (builder: VBIDashboardBuilder) => {
       if (!builder.isEmpty()) {
         throw new Error('new dashboard should start without widgets')
       }
@@ -93,7 +46,7 @@ describe('dashboard / DashboardWorkflow', () => {
       let missingLayoutRejected = false
       try {
         builder.chart.add((chart) => {
-          chart.setTitle('缺少布局的草稿图表').setChartId(resources.charts.salesChart)
+          chart.setTitle('缺少布局的草稿图表').setChart(resources.charts.salesChart)
         })
       } catch {
         missingLayoutRejected = true
@@ -105,9 +58,9 @@ describe('dashboard / DashboardWorkflow', () => {
       builder.chart
         .add((chart) => {
           chart
-            .setChartId(resources.charts.salesChart)
+            .setChart(resources.charts.salesChart)
             .setTitle('省份销售额')
-            .setDescription('按省份汇总销售额')
+            .setDescription('按省份汇总销售额，展示前 8 项')
             .setLayouts({
               lg: { x: 0, y: 0, w: 8, h: 6 },
               md: { x: 0, y: 0, w: 6, h: 5 },
@@ -177,15 +130,15 @@ describe('dashboard / DashboardWorkflow', () => {
       replica.applyUpdate(builder.encodeStateAsUpdate(), 'dashboard-sync')
       replica.build()
     }
-    await applyBuilder(builder, resources)
+    await applyBuilder(builder)
 
     const dashboardDSL = builder.build()
     expect(dashboardDSL).toMatchInlineSnapshot(`
       {
         "breakpoints": {
-          "lg": 996,
+          "lg": 992,
           "md": 768,
-          "sm": 480,
+          "sm": 576,
           "xl": 1200,
           "xs": 0,
           "xxl": 1600,
@@ -225,7 +178,7 @@ describe('dashboard / DashboardWorkflow', () => {
         "widgets": [
           {
             "chartId": "uuid-1",
-            "description": "按省份汇总销售额",
+            "description": "按省份汇总销售额，展示前 8 项",
             "id": "id-5",
             "title": "重点省份销售额",
             "type": "chart",
@@ -237,120 +190,47 @@ describe('dashboard / DashboardWorkflow', () => {
 
   it('merchandising-dashboard-widget-lifecycle', async () => {
     const LocalVBI = createVBI()
+    const categorySalesChart = LocalVBI.chart.create(LocalVBI.chart.createEmpty('demoSupermarket'))
+    categorySalesChart.chartType.changeChartType('bar')
+    categorySalesChart.dimensions.add('product_type', (dimension) => dimension.setAlias('商品品类'))
+    categorySalesChart.measures.add('sales', (measure) =>
+      measure.setAlias('销售额').setEncoding('xAxis').setAggregate({ func: 'sum' }),
+    )
+    categorySalesChart.limit.setLimit(8)
+
+    const discountProfitChart = LocalVBI.chart.create(LocalVBI.chart.createEmpty('demoSupermarket'))
+    discountProfitChart.chartType.changeChartType('scatter')
+    discountProfitChart.dimensions.add('discount', (dimension) => dimension.setAlias('折扣'))
+    discountProfitChart.measures.add('profit', (measure) =>
+      measure.setAlias('利润').setEncoding('yAxis').setAggregate({ func: 'sum' }),
+    )
+
+    const promotionInsight = LocalVBI.insight.create(LocalVBI.insight.createEmpty())
+    promotionInsight.setContent('高折扣品类带来的销售增长未完全转化为利润，需要收紧促销门槛。')
+
     const resources = {
-      charts: {
-        categorySalesChart: LocalVBI.chart.create({
-          connectorId: 'demoSupermarket',
-          chartType: 'bar',
-          dimensions: [
-            {
-              field: 'category',
-              alias: '商品品类',
-            },
-          ],
-          measures: [
-            {
-              field: 'sales',
-              alias: '销售额',
-              encoding: 'xAxis',
-              aggregate: {
-                func: 'sum',
-              },
-            },
-          ],
-          whereFilter: {
-            id: 'root',
-            op: 'and',
-            conditions: [],
-          },
-          havingFilter: {
-            id: 'root',
-            op: 'and',
-            conditions: [],
-          },
-          theme: 'light',
-          locale: 'zh-CN',
-          version: 1,
-        }),
-        discountProfitChart: LocalVBI.chart.create({
-          connectorId: 'demoSupermarket',
-          chartType: 'scatter',
-          dimensions: [
-            {
-              field: 'discount',
-              alias: '折扣',
-            },
-          ],
-          measures: [
-            {
-              field: 'profit',
-              alias: '利润',
-              encoding: 'yAxis',
-              aggregate: {
-                func: 'sum',
-              },
-            },
-          ],
-          whereFilter: {
-            id: 'root',
-            op: 'and',
-            conditions: [],
-          },
-          havingFilter: {
-            id: 'root',
-            op: 'and',
-            conditions: [],
-          },
-          theme: 'light',
-          locale: 'zh-CN',
-          version: 1,
-        }),
-      },
-      insights: {
-        promotionInsight: LocalVBI.insight.create({
-          content: '高折扣品类带来的销售增长未完全转化为利润，需要收紧促销门槛。',
-          version: 0,
-        }),
-      },
+      charts: { categorySalesChart, discountProfitChart },
+      insights: { promotionInsight },
     }
+
     const builder = LocalVBI.dashboard.create({
-      widgets: [],
-      breakpoints: {
-        xxl: 1600,
-        xl: 1200,
-        lg: 996,
-        md: 768,
-        sm: 480,
-        xs: 0,
-      },
-      layout: {
-        xxl: [],
-        xl: [],
-        lg: [],
-        md: [],
-        sm: [],
-        xs: [],
-      },
-      meta: {
-        title: '商品运营看板',
-        theme: 'dark',
-      },
-      version: 0,
+      ...LocalVBI.dashboard.createEmpty(),
+      meta: { title: '商品运营看板', theme: 'dark' },
     })
 
-    const applyBuilder = (builder: VBIDashboardBuilder, resources: any) => {
-      expect(builder.isEmpty()).toBe(true)
+    const applyBuilder = (builder: VBIDashboardBuilder) => {
+      if (!builder.isEmpty()) throw new Error('dashboard should be empty')
 
       builder.chart.add((chart) => {
         chart
-          .setChartId(resources.charts.categorySalesChart)
+          .setChart(resources.charts.categorySalesChart)
           .setTitle('品类销售')
           .setDescription('初版品类销售布局')
           .setLayouts({ lg: { x: 0, y: 0, w: 6, h: 4 }, md: { x: 0, y: 0, w: 6, h: 4 } })
       })
       builder.chart.add((chart) => {
         chart
-          .setChartId(resources.charts.discountProfitChart)
+          .setChart(resources.charts.discountProfitChart)
           .setTitle('折扣利润散点')
           .setLayouts({ lg: { x: 6, y: 0, w: 6, h: 4 }, md: { x: 0, y: 4, w: 6, h: 4 } })
       })
@@ -361,10 +241,12 @@ describe('dashboard / DashboardWorkflow', () => {
           .setLayouts({ lg: { x: 0, y: 4, w: 12, h: 3 }, md: { x: 0, y: 8, w: 6, h: 3 } })
       })
 
-      const [categoryWidget, discountWidget] = builder.chart.toJSON() as any[]
-      const [promotionWidget] = builder.insight.toJSON() as any[]
-      expect(builder.chart.find(categoryWidget.chartId)?.getId()).toBe(categoryWidget.id)
-      expect(builder.insight.find(promotionWidget.insightId)?.getId()).toBe(promotionWidget.id)
+      const [categoryWidget, discountWidget] = builder.chart.toJSON()
+      const [promotionWidget] = builder.insight.toJSON()
+      if (builder.chart.find(resources.charts.categorySalesChart.getUUID())?.getId() !== categoryWidget.id)
+        throw new Error('chart reference should resolve')
+      if (builder.insight.find(resources.insights.promotionInsight.getUUID())?.getId() !== promotionWidget.id)
+        throw new Error('insight reference should resolve')
 
       builder.chart.update(categoryWidget.id, (chart) => {
         chart
@@ -376,7 +258,7 @@ describe('dashboard / DashboardWorkflow', () => {
         insight.setDescription('更新后的促销策略说明').setLayouts({ lg: { x: 7, y: 0, w: 5, h: 5 } })
       })
       builder.chart.remove(discountWidget.id)
-      expect(builder.chart.get(discountWidget.id)).toBeUndefined()
+      if (builder.chart.get(discountWidget.id)) throw new Error('removed chart should be absent')
 
       for (const widget of builder.chart.toJSON()) {
         builder.chart.remove(widget.id)
@@ -384,11 +266,11 @@ describe('dashboard / DashboardWorkflow', () => {
       for (const widget of builder.insight.toJSON()) {
         builder.insight.remove(widget.id)
       }
-      expect(builder.isEmpty()).toBe(true)
+      if (!builder.isEmpty()) throw new Error('dashboard should be empty')
 
       builder.chart.add((chart) => {
         chart
-          .setChartId(resources.charts.categorySalesChart)
+          .setChart(resources.charts.categorySalesChart)
           .setTitle('最终品类销售')
           .setDescription('清空草稿后重建的主图')
           .setLayouts({ lg: { x: 0, y: 0, w: 7, h: 5 }, md: { x: 0, y: 0, w: 6, h: 4 } })
@@ -400,17 +282,17 @@ describe('dashboard / DashboardWorkflow', () => {
           .setDescription('清空草稿后重建的洞察')
           .setLayouts({ lg: { x: 7, y: 0, w: 5, h: 5 }, md: { x: 0, y: 4, w: 6, h: 3 } })
       })
-      expect(builder.isEmpty()).toBe(false)
+      if (builder.isEmpty()) throw new Error('dashboard should contain widgets')
     }
-    await applyBuilder(builder, resources)
+    await applyBuilder(builder)
 
     const dashboardDSL = builder.build()
     expect(dashboardDSL).toMatchInlineSnapshot(`
       {
         "breakpoints": {
-          "lg": 996,
+          "lg": 992,
           "md": 768,
-          "sm": 480,
+          "sm": 576,
           "xl": 1200,
           "xs": 0,
           "xxl": 1600,

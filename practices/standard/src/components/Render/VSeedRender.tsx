@@ -117,5 +117,5 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
     }
   }, [vseed])
 
-  return <div ref={ref} style={{ height: '100%', width: '100%', minHeight: 300 }} />
+  return <div ref={ref} style={{ height: '100%', width: '100%', minHeight: 0 }} />
 }

@@ -43,7 +43,7 @@ export class DashboardChartBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = De
     return this
   }
 
-  setChartId(chart: ResourceReference): this {
+  setChart(chart: ResourceReference): this {
     this.widget.set('chartId', resolveResourceReference(chart))
     return this
   }

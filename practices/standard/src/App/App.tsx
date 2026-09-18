@@ -25,6 +25,8 @@ type AppMode = 'view' | 'edit'
 
 interface APPProps {
   builder?: VBIChartBuilder
+  /** Show the chart frame in view mode. Defaults to true. */
+  border?: boolean
   hideLocale?: boolean
   hideTheme?: boolean
   locale?: DemoLocale
@@ -122,10 +124,12 @@ const AppContent = ({
   initialized,
   mode,
   themeMode,
+  border,
 }: {
   initialized: boolean
   mode: AppMode
   themeMode: DemoTheme
+  border: boolean
 }) => {
   const { locale, t } = useTranslation()
   const antdLocale = DEMO_ANTD_LOCALES[locale]
@@ -187,14 +191,14 @@ const AppContent = ({
         ) : mode === 'edit' ? (
           <DemoWorkbench themeMode={themeMode} isFullscreen={isFullscreen} onToggleFullscreen={toggleFullscreen} />
         ) : (
-          <ViewPanel />
+          <ViewPanel border={border} />
         )}
       </div>
     </ConfigProvider>
   )
 }
 
-const AppShell = ({ builder, mode }: { builder?: VBIChartBuilder; mode: AppMode }) => {
+const AppShell = ({ builder, mode, border }: { builder?: VBIChartBuilder; mode: AppMode; border: boolean }) => {
   const { initialize, initialized, storeBuilder } = useVBIStore(
     useShallow((state) => ({
       initialize: state.initialize,
@@ -222,11 +226,12 @@ const AppShell = ({ builder, mode }: { builder?: VBIChartBuilder; mode: AppMode 
     }
   }, [builder, initialize])
 
-  return <AppContent initialized={initialized} mode={mode} themeMode={theme} />
+  return <AppContent initialized={initialized} mode={mode} themeMode={theme} border={border} />
 }
 
 export const APP = ({
   builder,
+  border = true,
   hideLocale = false,
   hideTheme = false,
   locale = DEMO_DEFAULT_LOCALE,
@@ -235,7 +240,7 @@ export const APP = ({
 }: APPProps) => {
   return (
     <VBIStoreProvider builder={builder} hideLocale={hideLocale} hideTheme={hideTheme} locale={locale} theme={theme}>
-      <AppShell builder={builder} mode={mode} />
+      <AppShell builder={builder} mode={mode} border={border} />
     </VBIStoreProvider>
   )
 }

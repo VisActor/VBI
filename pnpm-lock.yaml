@@ -431,6 +431,9 @@ importers:
       '@visactor/vtable':
         specifier: 1.23.1
         version: 1.23.1
+      dashboard:
+        specifier: workspace:*
+        version: link:../../practices/dashboard
       minimalist:
         specifier: workspace:*
         version: link:../../practices/minimalist
@@ -729,6 +732,55 @@ importers:
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.10.1)(happy-dom@20.4.0)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(sass-embedded@1.91.0)(sass@1.91.0)(terser@5.43.1)(yaml@2.9.0)
+
+  practices/dashboard:
+    dependencies:
+      '@visactor/vbi':
+        specifier: workspace:*
+        version: link:../../packages/vbi
+      '@visactor/vseed':
+        specifier: workspace:*
+        version: link:../../packages/vseed
+      antd:
+        specifier: 6.1.3
+        version: 6.1.3(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      standard:
+        specifier: workspace:*
+        version: link:../standard
+    devDependencies:
+      '@rsbuild/plugin-react':
+        specifier: 1.4.2
+        version: 1.4.2(@rsbuild/core@2.0.6(core-js@3.47.0))
+      '@rslib/core':
+        specifier: 0.20.3
+        version: 0.20.3(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(core-js@3.47.0)(typescript@6.0.2)
+      '@rstest/core':
+        specifier: 0.8.3
+        version: 0.8.3(happy-dom@20.4.0)(jsdom@26.1.0)
+      '@testing-library/jest-dom':
+        specifier: 6.9.1
+        version: 6.9.1
+      '@testing-library/react':
+        specifier: 16.3.1
+        version: 16.3.1(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@types/react':
+        specifier: 19.2.14
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.14)
+      jsdom:
+        specifier: 26.1.0
+        version: 26.1.0
+      react:
+        specifier: 19.2.5
+        version: 19.2.5
+      react-dom:
+        specifier: 19.2.5
+        version: 19.2.5(react@19.2.5)
+      typescript:
+        specifier: 6.0.2
+        version: 6.0.2
 
   practices/minimalist:
     dependencies:
