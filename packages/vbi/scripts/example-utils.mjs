@@ -180,6 +180,17 @@ function renderResources(json, indent = 4) {
   ].join('\n')
 }
 
+function indentCode(code, indent) {
+  return code
+    .split('\n')
+    .map((line) => (line ? `${' '.repeat(indent)}${line}` : ''))
+    .join('\n')
+}
+
+function renderDashboardSetup(json, indent = 4) {
+  return indentCode(json.setup || '', indent)
+}
+
 function renderTestBody(json) {
   const kind = getBuilderKind(json)
   const dslCode = toCode(buildDSL(kind, json.dsl || {}), 6)
@@ -216,11 +227,10 @@ ${renderResources(json)}
 
   if (kind === 'dashboard') {
     return `    const LocalVBI = createVBI()
-${renderResources(json)}
-    const builder = LocalVBI.dashboard.create(${dslCode})
+${renderDashboardSetup(json)}
 
-    ${applyBuilderCode}
-    await applyBuilder(builder, resources)
+    ${indentCode(applyBuilderCode, 4).trimStart()}
+    await applyBuilder(builder)
 
     const dashboardDSL = builder.build()
     expect(dashboardDSL).toMatchInlineSnapshot()`
@@ -333,35 +343,49 @@ ${renderResources(json, 6)}
   }
 
   if (kind === 'dashboard') {
+    const dashboardPreview = json.fullscreen
+      ? `<div ref={previewRef} style={{ overflow: 'auto', background: dashboard.build().meta.theme === 'dark' ? '#000' : '#fff', color: dashboard.build().meta.theme === 'dark' ? '#eee' : '#222' }}>
+    <div style={{ display: 'flex', justifyContent: 'flex-end', padding: 12 }}>
+      <button type='button' style={{ color: 'inherit', background: 'transparent', border: '1px solid currentColor', borderRadius: 6, padding: '6px 12px', cursor: 'pointer' }} onClick={async () => {
+        if (document.fullscreenElement === previewRef.current) await document.exitFullscreen()
+        else await previewRef.current?.requestFullscreen()
+      }}>{locale === 'zh-CN' ? '⛶ 切换全屏' : '⛶ Toggle fullscreen'}</button>
+    </div>
+    <DashboardRenderer builder={dashboard} locale={locale} />
+  </div>`
+      : '<DashboardRenderer builder={dashboard} locale={locale} />'
     return `
-import { createVBI, VBIChartBuilder, VBIInsightBuilder, VBIDashboardBuilder } from '@visactor/vbi'
-import { JsonRender } from '@components'
-import { useEffect, useState } from 'react'
+import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
+import { DashboardRenderer, type DashboardRendererProps } from 'dashboard'
+import { useLang } from '@rspress/core/runtime'
+import { useEffect, useState${json.fullscreen ? ', useRef' : ''} } from 'react'
 
 export default () => {
-  const [result, setResult] = useState<any>(null)
+${json.fullscreen ? '  const previewRef = useRef<HTMLDivElement>(null)\n' : ''}  const [dashboard, setDashboard] = useState<VBIDashboardBuilder | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const locale = useLang() as DashboardRendererProps['locale']
 
   useEffect(() => {
+    let cancelled = false
     const run = async () => {
       try {
         const LocalVBI = createVBI()
-${renderResources(json, 6)}
-        const builder = LocalVBI.dashboard.create(${toCode(dsl, 8)})
-        ${code}
-        await applyBuilder(builder, resources)
-        setResult(builder.build())
+${renderDashboardSetup(json, 8)}
+        ${indentCode(code, 8).trimStart()}
+        await applyBuilder(builder)
+        if (!cancelled) setDashboard(builder)
       } catch (err) {
-        setError(err instanceof Error ? err.message : String(err))
+        if (!cancelled) setError(err instanceof Error ? err.message : String(err))
       }
     }
-    run()
+    void run()
+    return () => { cancelled = true }
   }, [])
 
-  if (error) return <JsonRender value={{ error }} />
-  if (!result) return <div>Loading...</div>
+  if (error) return <div role='alert'>{error}</div>
+  if (!dashboard) return <div role='status'>Loading...</div>
 
-  return <JsonRender value={result} />
+  return ${dashboardPreview}
 }`.trim()
   }
 

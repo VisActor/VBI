@@ -69,12 +69,12 @@ setDescription(description: string): this
 | --- | --- | --- |
 | `description` | string | - |
 
-### setChartId
+### setChart
 
 **Definisi**:
 
 ```typescript
-setChartId(chart: ResourceReference): this
+setChart(chart: ResourceReference): this
 ```
 
 **Mengembalikan**: `this`

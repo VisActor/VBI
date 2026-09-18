@@ -69,12 +69,12 @@ setDescription(description: string): this
 | --- | --- | --- |
 | `description` | string | - |
 
-### setChartId
+### setChart
 
 **定義**:
 
 ```typescript
-setChartId(chart: ResourceReference): this
+setChart(chart: ResourceReference): this
 ```
 
 **戻り値**: `this`

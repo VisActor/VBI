@@ -3,38 +3,6 @@
   "name": "executive-dashboard-widget-lifecycle",
   "description": "经营看板先校验组件布局，再组合销售图表与经营洞察，并在调整布局后同步到协作副本",
   "tags": ["workflow", "dashboard", "collaboration"],
-  "resources": {
-    "charts": [
-      {
-        "name": "salesChart",
-        "dsl": {
-          "chartType": "bar",
-          "dimensions": [{ "field": "province", "alias": "省份" }],
-          "measures": [
-            {
-              "field": "sales",
-              "alias": "销售额",
-              "encoding": "xAxis",
-              "aggregate": { "func": "sum" }
-            }
-          ]
-        }
-      }
-    ],
-    "insights": [
-      {
-        "name": "salesInsight",
-        "dsl": {
-          "content": "华东区域销售额领先，管理层需要关注复购与利润结构。"
-        }
-      }
-    ]
-  },
-  "dsl": {
-    "meta": {
-      "title": "经营驾驶舱",
-      "theme": "dark"
-    }
-  },
-  "code": "const applyBuilder = (builder: VBIDashboardBuilder, resources: any) => {\n  if (!builder.isEmpty()) {\n    throw new Error('new dashboard should start without widgets')\n  }\n\n  let missingLayoutRejected = false\n  try {\n    builder.chart.add(chart => {\n      chart.setTitle('缺少布局的草稿图表').setChartId(resources.charts.salesChart)\n    })\n  } catch {\n    missingLayoutRejected = true\n  }\n  if (!missingLayoutRejected || !builder.isEmpty()) {\n    throw new Error('dashboard should reject chart widgets without lg layout')\n  }\n\n  builder\n    .chart.add(chart => {\n      chart\n        .setChartId(resources.charts.salesChart)\n        .setTitle('省份销售额')\n        .setDescription('按省份汇总销售额')\n        .setLayouts({\n          lg: { x: 0, y: 0, w: 8, h: 6 },\n          md: { x: 0, y: 0, w: 6, h: 5 }\n        })\n    })\n    .insight.add(insight => {\n      insight\n        .setInsightId(resources.insights.salesInsight)\n        .setTitle('经营洞察')\n        .setDescription('解释销售额集中区域')\n        .setLayouts({\n          lg: { x: 8, y: 0, w: 4, h: 6 },\n          md: { x: 0, y: 5, w: 6, h: 3 }\n        })\n    })\n\n  const chartWidget = builder.chart.findAll()[0]\n  const insightWidget = builder.insight.findAll()[0]\n  if (!chartWidget || !insightWidget) {\n    throw new Error('dashboard should contain chart and insight widgets')\n  }\n  if (!chartWidget.getBuilder() || !insightWidget.getBuilder()) {\n    throw new Error('dashboard widgets should resolve registered resources')\n  }\n  if (builder.chart.get(chartWidget.getId())?.toJSON().title !== '省份销售额') {\n    throw new Error('chart widget should be findable by widget id')\n  }\n  if (!builder.chart.find(resources.charts.salesChart.getUUID())) {\n    throw new Error('chart widget should be findable by chart resource id')\n  }\n  if (!builder.insight.find(resources.insights.salesInsight.getUUID())) {\n    throw new Error('insight widget should be findable by insight resource id')\n  }\n\n  builder.chart.update(chartWidget.getId(), chart => {\n    chart\n      .setTitle('重点省份销售额')\n      .setLayouts({ lg: { x: 0, y: 0, w: 7, h: 6 } })\n  })\n  builder.insight.update(insightWidget.getId(), insight => {\n    insight.setDescription('更新为管理层复盘口径')\n  })\n\n  if (builder.chart.toJSON()[0].title !== '重点省份销售额') {\n    throw new Error('chart widget title should update')\n  }\n  if (builder.insight.toJSON()[0].description !== '更新为管理层复盘口径') {\n    throw new Error('insight widget description should update')\n  }\n\n  let missingInsightRejected = false\n  try {\n    builder.insight.update('missing-widget', insight => insight.setTitle('missing'))\n  } catch {\n    missingInsightRejected = true\n  }\n  if (!missingInsightRejected) {\n    throw new Error('updating missing insight widget should fail')\n  }\n\n  builder.insight.remove(insightWidget.getId())\n  builder.chart.remove('missing-widget')\n  if (builder.insight.findAll().length !== 0 || builder.chart.findAll().length !== 1) {\n    throw new Error('only the chart widget should remain')\n  }\n\n  const ReplicaVBI = createVBI()\n  const replica = ReplicaVBI.dashboard.create(ReplicaVBI.dashboard.createEmpty('dashboard-replica'))\n  replica.applyUpdate(builder.encodeStateAsUpdate(), 'dashboard-sync')\n  replica.build()\n}"
+  "code": "const applyBuilder = (builder: VBIDashboardBuilder) => {\n  if (!builder.isEmpty()) {\n    throw new Error('new dashboard should start without widgets')\n  }\n\n  let missingLayoutRejected = false\n  try {\n    builder.chart.add(chart => {\n      chart.setTitle('缺少布局的草稿图表').setChart(resources.charts.salesChart)\n    })\n  } catch {\n    missingLayoutRejected = true\n  }\n  if (!missingLayoutRejected || !builder.isEmpty()) {\n    throw new Error('dashboard should reject chart widgets without lg layout')\n  }\n\n  builder\n    .chart.add(chart => {\n      chart\n        .setChart(resources.charts.salesChart)\n        .setTitle('省份销售额')\n        .setDescription('按省份汇总销售额，展示前 8 项')\n        .setLayouts({\n          lg: { x: 0, y: 0, w: 8, h: 6 },\n          md: { x: 0, y: 0, w: 6, h: 5 }\n        })\n    })\n    .insight.add(insight => {\n      insight\n        .setInsightId(resources.insights.salesInsight)\n        .setTitle('经营洞察')\n        .setDescription('解释销售额集中区域')\n        .setLayouts({\n          lg: { x: 8, y: 0, w: 4, h: 6 },\n          md: { x: 0, y: 5, w: 6, h: 3 }\n        })\n    })\n\n  const chartWidget = builder.chart.findAll()[0]\n  const insightWidget = builder.insight.findAll()[0]\n  if (!chartWidget || !insightWidget) {\n    throw new Error('dashboard should contain chart and insight widgets')\n  }\n  if (!chartWidget.getBuilder() || !insightWidget.getBuilder()) {\n    throw new Error('dashboard widgets should resolve registered resources')\n  }\n  if (builder.chart.get(chartWidget.getId())?.toJSON().title !== '省份销售额') {\n    throw new Error('chart widget should be findable by widget id')\n  }\n  if (!builder.chart.find(resources.charts.salesChart.getUUID())) {\n    throw new Error('chart widget should be findable by chart resource id')\n  }\n  if (!builder.insight.find(resources.insights.salesInsight.getUUID())) {\n    throw new Error('insight widget should be findable by insight resource id')\n  }\n\n  builder.chart.update(chartWidget.getId(), chart => {\n    chart\n      .setTitle('重点省份销售额')\n      .setLayouts({ lg: { x: 0, y: 0, w: 7, h: 6 } })\n  })\n  builder.insight.update(insightWidget.getId(), insight => {\n    insight.setDescription('更新为管理层复盘口径')\n  })\n\n  if (builder.chart.toJSON()[0].title !== '重点省份销售额') {\n    throw new Error('chart widget title should update')\n  }\n  if (builder.insight.toJSON()[0].description !== '更新为管理层复盘口径') {\n    throw new Error('insight widget description should update')\n  }\n\n  let missingInsightRejected = false\n  try {\n    builder.insight.update('missing-widget', insight => insight.setTitle('missing'))\n  } catch {\n    missingInsightRejected = true\n  }\n  if (!missingInsightRejected) {\n    throw new Error('updating missing insight widget should fail')\n  }\n\n  builder.insight.remove(insightWidget.getId())\n  builder.chart.remove('missing-widget')\n  if (builder.insight.findAll().length !== 0 || builder.chart.findAll().length !== 1) {\n    throw new Error('only the chart widget should remain')\n  }\n\n  const ReplicaVBI = createVBI()\n  const replica = ReplicaVBI.dashboard.create(ReplicaVBI.dashboard.createEmpty('dashboard-replica'))\n  replica.applyUpdate(builder.encodeStateAsUpdate(), 'dashboard-sync')\n  replica.build()\n}",
+  "setup": "const salesChart = LocalVBI.chart.create(LocalVBI.chart.createEmpty('demoSupermarket'))\nsalesChart.chartType.changeChartType('bar')\nsalesChart.dimensions.add('province', dimension => dimension.setAlias('省份'))\nsalesChart.measures.add('sales', measure => measure.setAlias('销售额').setEncoding('xAxis').setAggregate({ func: 'sum' }))\nsalesChart.limit.setLimit(8)\n\nconst salesInsight = LocalVBI.insight.create(LocalVBI.insight.createEmpty())\nsalesInsight.setContent(\"华东区域销售额领先，管理层需要关注复购与利润结构。\")\n\nconst resources = {\n  charts: { salesChart },\n  insights: { salesInsight },\n}\n\nconst builder = LocalVBI.dashboard.create({\n  ...LocalVBI.dashboard.createEmpty(),\n  meta: { title: '经营驾驶舱', theme: 'dark' },\n})"
 }

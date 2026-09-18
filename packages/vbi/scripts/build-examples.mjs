@@ -46,7 +46,8 @@ const groupDirsByBuilder = (dirs) =>
     dirs: dirs.filter((dir) => getDirBuilderKind(dir) === kind),
   })).filter((group) => group.dirs.length > 0)
 
-const shouldRenderBuilderIndexOnly = (group) => group.dirs.length === 1 && group.dirs[0] === group.kind
+const shouldRenderBuilderIndexOnly = (group) =>
+  group.kind === 'dashboard' || (group.dirs.length === 1 && group.dirs[0] === group.kind)
 
 function generateTagsHtml(tags) {
   if (!tags.length) {
@@ -56,7 +57,7 @@ function generateTagsHtml(tags) {
   return `\n\n> 标签: ${badges}\n`
 }
 
-function generateDirDocs(dirName, locale = DEFAULT_LOCALE, title = dirName) {
+function generateDirDocs(dirName, locale = DEFAULT_LOCALE, title = dirName, includeHeader = true) {
   const dirPath = path.join(EXAMPLES_DIR, dirName)
   const jsonFiles = findJsonFilesInDir(dirPath)
 
@@ -64,9 +65,9 @@ function generateDirDocs(dirName, locale = DEFAULT_LOCALE, title = dirName) {
     return ''
   }
 
-  let md = `# ${title}\n\n`
-  md += `import { registerDemoConnector } from '@components/demoConnector'\n\n`
-  md += `{registerDemoConnector()}\n\n`
+  let md = includeHeader
+    ? `# ${title}\n\nimport { registerDemoConnector } from '@components/demoConnector'\n\n{registerDemoConnector()}\n\n`
+    : ''
 
   for (const file of jsonFiles) {
     const json = readJsonFile(file)
@@ -127,7 +128,9 @@ function writeBuilderDocs(group) {
   if (shouldRenderBuilderIndexOnly(group)) {
     fs.writeFileSync(
       path.join(OUTPUT_DIR, `${group.kind}.mdx`),
-      generateDirDocs(group.dirs[0], DEFAULT_LOCALE, formatBuilderLabel(group.kind)),
+      group.dirs
+        .map((dir, index) => generateDirDocs(dir, DEFAULT_LOCALE, formatBuilderLabel(group.kind), index === 0))
+        .join('\n'),
     )
     console.log(`Generated: ${group.kind}.mdx`)
     return
@@ -156,23 +159,32 @@ function writeBuilderDocs(group) {
 function generateDocs() {
   console.log('Building docs from JSON files...')
 
-  removeDir(OUTPUT_DIR)
+  const requestedBuilder = process.argv.find((arg) => arg.startsWith('--builder='))?.split('=')[1]
+  if (requestedBuilder && !BUILDER_ORDER.includes(requestedBuilder)) {
+    throw new Error(`Unknown builder: ${requestedBuilder}`)
+  }
+  if (requestedBuilder) {
+    removeDir(path.join(OUTPUT_DIR, requestedBuilder))
+    fs.rmSync(path.join(OUTPUT_DIR, `${requestedBuilder}.mdx`), { force: true })
+  } else {
+    removeDir(OUTPUT_DIR)
+  }
   ensureDir(OUTPUT_DIR)
 
-  const groups = groupDirsByBuilder(getActiveDirs())
-
-  fs.writeFileSync(
-    path.join(OUTPUT_DIR, '_meta.json'),
-    JSON.stringify(
-      groups.map((group) =>
-        shouldRenderBuilderIndexOnly(group)
-          ? toMetaFile(group.kind, formatBuilderLabel(group.kind))
-          : toMetaDir(group.kind, formatBuilderLabel(group.kind)),
-      ),
-      null,
-      2,
-    ),
+  const groups = groupDirsByBuilder(getActiveDirs()).filter(
+    (group) => !requestedBuilder || group.kind === requestedBuilder,
   )
+  const metaPath = path.join(OUTPUT_DIR, '_meta.json')
+  const nextMeta = groups.map((group) =>
+    shouldRenderBuilderIndexOnly(group)
+      ? toMetaFile(group.kind, formatBuilderLabel(group.kind))
+      : toMetaDir(group.kind, formatBuilderLabel(group.kind)),
+  )
+  const previousMeta = requestedBuilder && fs.existsSync(metaPath) ? readJsonFile(metaPath) : []
+  const mergedMeta = previousMeta.map((entry) => nextMeta.find((next) => next.name === entry.name) ?? entry)
+  mergedMeta.push(...nextMeta.filter((next) => !previousMeta.some((entry) => entry.name === next.name)))
+
+  fs.writeFileSync(metaPath, JSON.stringify(mergedMeta, null, 2))
   let totalExamples = 0
   for (const group of groups) {
     writeBuilderDocs(group)

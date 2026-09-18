@@ -4,7 +4,7 @@ import { useConfiguredVSeed } from '../../hooks'
 import { useTranslation } from '../../i18n'
 import { useVBIStore } from '../../model'
 
-export const ViewPanel = () => {
+export const ViewPanel = ({ border }: { border: boolean }) => {
   const vseed = useVBIStore((state) => state.vseed)
   const configuredVSeed = useConfiguredVSeed(vseed)
   const loading = useVBIStore((state) => state.loading)
@@ -19,8 +19,8 @@ export const ViewPanel = () => {
         <div
           className='demo-app-view-frame'
           style={{
-            borderRadius: token.borderRadiusOuter,
-            border: `1px solid ${token.colorBorderSecondary}`,
+            borderRadius: border ? token.borderRadiusOuter : 0,
+            border: border ? `1px solid ${token.colorBorderSecondary}` : 0,
           }}
         >
           {isEmptyDsl ? (

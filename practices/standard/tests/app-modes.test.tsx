@@ -27,13 +27,18 @@ test('APP keeps edit workbench as the default mode', async () => {
 })
 
 test('APP hides editor controls in view mode', async () => {
-  render(<APP builder={createDefaultBuilder()} mode='view' />)
+  const builder = createDefaultBuilder()
+  const { container, rerender } = render(<APP builder={builder} mode='view' />)
 
   expect((await screen.findAllByText('暂时为空')).length).toBeGreaterThan(0)
 
   await waitFor(() => {
     expect(screen.queryByPlaceholderText('搜索')).not.toBeInTheDocument()
   })
+
+  expect(container.querySelector('.demo-app-view-frame')).toHaveStyle({ borderWidth: '1px' })
+  rerender(<APP builder={builder} mode='view' border={false} />)
+  expect(container.querySelector('.demo-app-view-frame')).toHaveStyle({ borderWidth: '0px', borderRadius: '0' })
 })
 
 test('APP can hide internal locale and theme controls', async () => {

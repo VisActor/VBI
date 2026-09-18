@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import {
+  BUILDER_ORDER,
   EXAMPLES_DIR,
   MOCK_SYSTEM_TIME,
   findJsonFilesInDir,
@@ -60,7 +61,15 @@ function buildTests() {
   console.log('Building tests from JSON files...')
 
   const testsDir = path.resolve(EXAMPLES_DIR, '..')
-  const subDirs = findSubDirs(EXAMPLES_DIR).filter((dir) => findJsonFilesInDir(path.join(EXAMPLES_DIR, dir)).length > 0)
+  const requestedBuilder = process.argv.find((arg) => arg.startsWith('--builder='))?.split('=')[1]
+  if (requestedBuilder && !BUILDER_ORDER.includes(requestedBuilder)) {
+    throw new Error(`Unknown builder: ${requestedBuilder}`)
+  }
+  const subDirs = findSubDirs(EXAMPLES_DIR).filter(
+    (dir) =>
+      findJsonFilesInDir(path.join(EXAMPLES_DIR, dir)).length > 0 &&
+      (!requestedBuilder || getDirBuilderKind(dir) === requestedBuilder),
+  )
   let totalTests = 0
 
   for (const dir of subDirs) {
