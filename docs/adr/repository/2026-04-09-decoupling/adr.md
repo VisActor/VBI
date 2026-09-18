@@ -6,9 +6,9 @@ VBI's next-stage goal is no longer only to provide atomic capabilities under `pa
 
 To reach this goal, the system must move from "page-driven resources" to "Provider-driven resources hosted by `@visactor/vbi-provider`":
 
-- `chart`, `insight`, and `report` are three independent resources.
+- `chart` and `insight` are two independent resources.
 - `@visactor/vbi-provider` is the platform-level application SDK.
-- `ChartProvider`, `InsightProvider`, and `ReportProvider` are the three first-class SDK entry points.
+- `ChartProvider` and `InsightProvider` are the two first-class SDK entry points.
 - Pages, CLI, and any JS runtime obtain resource capabilities through Provider.
 - Provider can directly return the corresponding Builder.
 - The editable body of a resource is built on collaborative documents, not REST detail DTOs.
@@ -27,7 +27,7 @@ The current system already has this foundation:
 - `@visactor/vbi` owns configuration DSL and Builder.
 - `@visactor/vquery` owns query DSL and SQL execution.
 - `@visactor/vseed` owns rendering DSL and Spec generation.
-- `apps/vbi_be` has basic backend capabilities for the three resource types: `chart / insight / report`.
+- `apps/vbi_be` has basic backend capabilities for the two resource types: `chart / insight`.
 - `apps/vbi_fe` has basic management pages and collaborative editing pages.
 
 But the current model still has these problems:
@@ -73,17 +73,15 @@ Provider is the runtime entry point for resources and directly owns:
 
 ### 2. Only Three First-Class Providers Exist
 
-The platform defines only these three first-class Providers:
+The platform defines only these two first-class Providers:
 
 - `ChartProvider`
 - `InsightProvider`
-- `ReportProvider`
 
-Do not expose an overly generic `ResourceProvider<T>` as the main public model. Internal reuse is allowed, but public semantics must clearly distinguish the three resource types.
+Do not expose an overly generic `ResourceProvider<T>` as the main public model. Internal reuse is allowed, but public semantics must clearly distinguish the two resource types.
 
 Reasons:
 
-- `report` is a structural orchestration resource.
 - `chart` is a configuration, query, and rendering resource.
 - `insight` is a semantic content resource.
 
@@ -95,7 +93,6 @@ Provider must support directly returning the corresponding Builder:
 
 - `ChartProvider -> VBIChartBuilder`
 - `InsightProvider -> VBIInsightBuilder`
-- `ReportProvider -> VBIReportBuilder`
 
 This means:
 
@@ -177,7 +174,6 @@ const client = await createVBIProviderClient(config)
 
 const chartProvider = client.chart(chartId)
 const insightProvider = client.insight(insightId)
-const reportProvider = client.report(reportId)
 ```
 
 The three-layer relationship is fixed:
@@ -219,29 +215,6 @@ Additional responsibilities:
 
 - Return `VBIInsightBuilder`.
 - Handle insight content projection.
-
-#### ReportProvider
-
-Additional responsibilities:
-
-- Return `VBIReportBuilder`.
-- Manage page structure.
-- Manage `chartId / insightId` reference bindings.
-- Provide report snapshot / export capabilities.
-
-### C. `report` Boundary
-
-Even under the Provider First model, the following must hold:
-
-- `report` is a structural resource.
-- `chart` and `insight` are content resources.
-
-Therefore:
-
-- `ReportProvider` manages structure and references.
-- `ChartProvider` manages chart content.
-- `InsightProvider` manages insight content.
-- `ReportProvider` does not absorb the responsibilities of the other two Providers.
 
 ### D. Relationship Between Pages, CLI, And Scripts
 
@@ -306,7 +279,7 @@ The backend must more clearly distinguish the management plane and data plane, a
 
 #### 3. Provider Design Must Stay Restrained
 
-Provider is a first-class entry point, but it must not become a new "god object." The responsibility boundaries of the three Providers must remain clear.
+Provider is a first-class entry point, but it must not become a new "god object." The responsibility boundaries of the two Providers must remain clear.
 
 ## Alternatives Considered
 
@@ -328,11 +301,11 @@ Rejected because:
 
 Approach:
 
-- Unify all three resource types into one abstract provider.
+- Unify both resource types into one abstract provider.
 
 Rejected because:
 
-- The capabilities of `report / chart / insight` differ significantly.
+- The capabilities of `chart / insight` differ significantly.
 - Over-abstraction reduces readability and platform semantic clarity.
 
 ### Option 3: Make REST Primary And Collaboration Only A Page Enhancement
@@ -372,7 +345,7 @@ This ADR includes:
 
 - Positioning of `@visactor/vbi-provider`.
 - Provider First platform direction.
-- Boundaries of the three first-class Providers.
+- Boundaries of the two first-class Providers.
 - Platform client object model.
 - Management-plane / data-plane layering principles.
 - Builder ownership and acquisition model.
@@ -392,7 +365,7 @@ Based on this ADR, the following should be produced next:
 1. `plan.md`
    - Clarify the execution order for Provider First.
 2. `@visactor/vbi-provider` interface design draft
-   - Clarify `VBIProviderClient` and the refined interfaces for the three Providers.
+   - Clarify `VBIProviderClient` and the refined interfaces for the two Providers.
 3. `vbi_tui` target command set
    - Clarify how CLI maps to Provider.
 4. Frontend/backend migration plan
@@ -403,7 +376,7 @@ Based on this ADR, the following should be produced next:
 The core direction for the next evolution of the VBI platform is:
 
 - Use `@visactor/vbi-provider`, not page services, as the first-class platform capability entry point.
-- Use three Providers, not a vague generic abstraction, to carry resource semantics.
+- Use two Providers, not a vague generic abstraction, to carry resource semantics.
 - Use collaborative documents, not REST detail, as the editable resource body.
 - Use Builder as the resource operation surface.
 - Use pages, CLI, and scripts as different consumers of Provider.

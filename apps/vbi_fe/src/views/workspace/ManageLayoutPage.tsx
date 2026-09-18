@@ -6,7 +6,6 @@ import { applicationShallowEqual, goApplicationPath, useApplication, useApplicat
 import {
   ArrowLeftRight,
   BarChart3,
-  FileText,
   FolderKanban,
   Lightbulb,
   PanelLeftClose,
@@ -75,11 +74,6 @@ const ManageLayoutContent = ({ children }: { children: ReactNode }) => {
   const { t } = useTranslation()
   const resourceNavItems = [
     {
-      href: '/manage/report',
-      icon: <FileText className='h-4 w-4' />,
-      label: t('nav.reports'),
-    },
-    {
       href: '/manage/chart',
       icon: <BarChart3 className='h-4 w-4' />,
       label: t('nav.charts'),
@@ -99,7 +93,7 @@ const ManageLayoutContent = ({ children }: { children: ReactNode }) => {
   const resourceDetailBackHref = (() => {
     const [root, resource, id, ...rest] = pathname.split('/').filter(Boolean)
     if (root !== 'manage' || !id || rest.length) return ''
-    if (!['chart', 'insight', 'report'].includes(resource ?? '')) return ''
+    if (!['chart', 'insight'].includes(resource ?? '')) return ''
     return `/manage/${resource}`
   })()
   const headerTitle = routeChrome.title ?? currentPageLabel

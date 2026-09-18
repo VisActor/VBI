@@ -5,11 +5,6 @@ export interface ProviderResource {
   updatedAt: string
 }
 
-export interface ReportReference {
-  reportId: string
-  pageId: string
-}
-
 export interface ResourceCreateInput {
   name?: string
 }

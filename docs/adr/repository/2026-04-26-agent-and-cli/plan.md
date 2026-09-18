@@ -29,7 +29,7 @@ Does not include: permission system, multi-tenancy, resource version history, pr
 
 ### Builder First
 
-`packages/vbi-agent` only receives caller-injected `VBIAgentWorkspace` and only works around VBIChartDSL, VBIReportDSL, VQueryDSL, and VSeedDSL held by Builder.
+`packages/vbi-agent` only receives caller-injected `VBIAgentWorkspace` and only works around VBIChartDSL, VQueryDSL, and VSeedDSL held by Builder.
 
 Forbidden: creating platform clients, reading environment variables, knowing about `resourceId` / HTTP / Hocuspocus / authorization / resource lists, or defining ResourceToolset inside `VBIAgentWorkspace` in the Agent package.
 
@@ -66,7 +66,7 @@ Blockers: none
 
 ### Step 2: Migrate BuilderToolset
 
-Definition of done: `createBuilderTools(workspace)` does not depend on CLI, provider, environment variables, or resource ID; chart builder and report builder read, modify, generate, and check tools are moved into the package; tests use local fixtures or mock workspace; the application directory does not keep duplicate builder tools.
+Definition of done: `createBuilderTools(workspace)` does not depend on CLI, provider, environment variables, or resource ID; chart and insight builder read, modify, generate, and check tools are moved into the package; tests use local fixtures or mock workspace; the application directory does not keep duplicate builder tools.
 
 Blockers: depends on Step 1
 

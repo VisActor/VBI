@@ -3,7 +3,7 @@
 Use for `apps/vbi_fe`, `docker/vbi_fe/*`, and frontend service configuration in
 `docker/docker-compose.dev.yml`. `apps/vbi_fe` owns the Rsbuild React shell,
 the typed application API, stores, services, collaboration wiring, preferences,
-and chart/insight/report/agent views.
+and chart/insight/agent views.
 
 The frontend is not only a human-operated UI. Every durable Web capability must
 be reachable through the composable `src/application` API, selected in React with
@@ -31,7 +31,7 @@ handler is not a feature unless the corresponding application capability exists.
   but durable behavior must be callable through `application` and selectable
   through `useApplication`.
 - Implement capabilities as composable domain modules such as `agent`,
-  `chart`, `insight`, `report`, `reportDetail`, `i18n`, and `theme`. Add a new
+  `chart`, `insight`, `i18n`, and `theme`. Add a new
   module or submodule when a workflow has a stable domain name; do not hide it
   inside a page, modal, drawer, hook, or store as a one-off action.
 - The public shape is semantic and command-oriented: expose grouped state
@@ -46,9 +46,8 @@ handler is not a feature unless the corresponding application capability exists.
   `window.VBIApplication`, reading current capabilities with `getState()`. Keep
   this external surface functional for browser automation, agents, scripted QA,
   and future non-human Web operators.
-- The root `application` store only aggregates public domain stores. The eight
-  public capabilities `agent`, `chart`, `i18n`, `insight`, `layout`, `report`,
-  `reportDetail`, and `theme` each have a dedicated application zustand store
+- The root `application` store only aggregates public domain stores. The six
+  public capabilities `agent`, `chart`, `i18n`, `insight`, `layout`, and `theme` each have a dedicated application zustand store
   under `src/application/<domain>/store.ts`. Shared implementation is allowed,
   but public capability ownership should stay split by domain.
 - Navigation is a capability, not a component detail. Application commands route
@@ -165,13 +164,13 @@ a partial subset as passed validation.
 - Keep Tailwind classes static, use `cn()`, use lucide through local exports,
   and keep controls accessible.
 - Operational UI stays compact, scannable, stable, and restrained; avoid nested
-  card layouts for app chrome or report bodies.
+  card layouts for app chrome.
 
-## Resource and Report Architecture
+## Resource Architecture
 
-- Chart, insight, and report management pages are adapters over one typed
+- Chart and insight management pages are adapters over one typed
   resource application workflow.
-- `application.chart`, `application.insight`, and `application.report` expose
+- `application.chart` and `application.insight` expose
   the shared resource contract: list/detail activation, create, delete, rename,
   open, record search/selection, and editor connect/release.
 - Shared search, selection, create, delete, rename, drawer, list reload, empty,
@@ -181,11 +180,6 @@ a partial subset as passed validation.
 - React presentation components receive application projections and commands;
   they do not rebuild DSL payloads, duplicate lifecycle logic, or call resource
   stores as private escape hatches.
-- Report detail runtime owns session graph updates, child retain/release, active
-  page resolution, page mutation, and editor state.
-- `application.reportDetail` exposes report page commands and state projections
-  for both the visible report workspace and external automation.
-- Child resource diff/retain/release stays near `resource-session.store.ts`.
 - Public exports from `src/i18n`, `src/theme`, `src/models`, and `src/types`
   should be intentional.
 
@@ -205,14 +199,8 @@ a partial subset as passed validation.
 - Prompting, cancellation, conversation open/rename/delete/refresh, and model
   changes must be callable without clicking the visible chat UI.
 
-## Report Detail and Embedded Standard App
+## Embedded Standard App
 
-- Report detail mutates pages through Builder APIs exposed by
-  `application.reportDetail` and backed by `src/stores/report-detail.store.ts`.
-- Pages size to content; avoid viewport-height constraints that create overlap or
-  large gaps.
-- Regression path: enter from `/manage/reports` and repeatedly enter/leave.
-- Maintain one active page source of truth.
 - `src/components/StandardChartApp.tsx` owns embedded `standard` runtime
   integration.
 - Chart view/edit are intents over the same embedded runtime.

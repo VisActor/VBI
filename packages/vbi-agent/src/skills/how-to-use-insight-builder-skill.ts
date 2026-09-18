@@ -1,7 +1,7 @@
 export const insightBuilderSkill = `
 # How to Use Insight Builder Skill
 
-Use this skill when the user asks to create, inspect, rename, remove, find references for, or edit textual business insight content.
+Use this skill when the user asks to create, inspect, rename, remove, or edit textual business insight content.
 
 The public insight Builder is intentionally small. Open the resource, call <code>setContent(markdownOrText)</code>, and verify with <code>build()</code> or <code>isEmpty()</code>. Do not mutate <code>b.dsl</code> directly when <code>setContent</code> is available.
 
@@ -13,7 +13,6 @@ Accepted fields are <code>action</code>, <code>id</code>, <code>name</code>, <co
 - <code>action: "get"</code>: reads provider metadata for one insight. Requires <code>id</code>. The tool output strips any <code>dsl</code> field; use <code>run</code> to inspect content through Builder DSL.
 - <code>action: "rename"</code>: renames one insight. Requires <code>id</code> and <code>name</code>.
 - <code>action: "remove"</code>: removes one insight. Requires <code>id</code>.
-- <code>action: "references"</code>: asks the provider where the insight is referenced. Requires <code>id</code>.
 - <code>action: "run"</code>: opens an insight Builder and runs JavaScript. Requires <code>code</code>; optional <code>id</code>.
 
 Example: create an insight with initial content.

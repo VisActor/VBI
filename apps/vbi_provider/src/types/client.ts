@@ -1,6 +1,5 @@
 import type { ChartProvider, ChartSummary } from './chart'
 import type { InsightProvider, InsightSummary } from './insight'
-import type { ReportProvider, ReportSummary } from './report'
 
 export interface RemoteRequestInit {
   body?: string
@@ -22,10 +21,8 @@ export type RemoteHeadersFactory = () => Promise<RemoteHeaders> | RemoteHeaders
 export interface VBIProviderClient {
   chart(id?: string): ChartProvider
   insight(id?: string): InsightProvider
-  report(id?: string): ReportProvider
   listCharts(): Promise<ChartSummary[]>
   listInsights(): Promise<InsightSummary[]>
-  listReports(): Promise<ReportSummary[]>
 }
 
 export interface VBIProviderClientOptions {

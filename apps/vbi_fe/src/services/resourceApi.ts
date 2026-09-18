@@ -6,7 +6,6 @@ import type { ResourceItem, ResourceKind } from '../types'
 const resourcePaths = {
   chart: '/charts',
   insight: '/insights',
-  report: '/reports',
 } satisfies Record<ResourceKind, string>
 
 const requestResource = <T>(kind: ResourceKind, path = '', init?: { body?: unknown; method?: string }) =>

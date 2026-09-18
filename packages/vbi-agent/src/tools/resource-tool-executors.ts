@@ -3,13 +3,10 @@ import { listVBIAgentSkills, readVBIAgentSkill, type VBIAgentSkillName } from '.
 import { stringifyJson } from '../text-format'
 import type {
   VBIAgentWorkspace,
-  VBIReferenceWorkspaceSlot,
-  VBIReportPageInput,
-  VBIReportWorkspaceSlot,
+  VBIWorkspaceSlot,
   VBIResourceCreateInput,
   VBIResourceKind,
   VBIResourceSummary,
-  VBIWorkspaceSlot,
 } from '../types/index'
 import type { VBIResourceToolExecutors } from './resource-tool-types'
 import { clipOutput, createWorkspaceScriptToolResult, runScopedWorkspaceScript } from './workspace-script'
@@ -60,8 +57,8 @@ const readLimit = (input: VBIResourceToolInput) => {
 
 const readLookupResource = (input: VBIResourceToolInput): VBIResourceLookupKind => {
   const resource = input.resource ?? 'all'
-  if (resource === 'all' || resource === 'chart' || resource === 'insight' || resource === 'report') return resource
-  throw new Error('vbi_resource_lookup.resource must be all, chart, insight, or report')
+  if (resource === 'all' || resource === 'chart' || resource === 'insight') return resource
+  throw new Error('vbi_resource_lookup.resource must be all, chart, or insight')
 }
 
 const createInput = (resource: VBIResourceKind, input: VBIResourceToolInput): VBIResourceCreateInput => {
@@ -69,20 +66,6 @@ const createInput = (resource: VBIResourceKind, input: VBIResourceToolInput): VB
   const base = name ? { name } : {}
   return resource === 'insight' ? { ...base, content: readString(input, 'content') } : base
 }
-
-const readPageInput = (input: VBIResourceToolInput): VBIReportPageInput => ({
-  chartId: readString(input, 'chartId'),
-  insightId: readString(input, 'insightId'),
-  title: readString(input, 'title'),
-})
-
-const readPageIds = (toolName: string, input: VBIResourceToolInput) => {
-  if (Array.isArray(input.pageIds) && input.pageIds.every((pageId) => typeof pageId === 'string')) {
-    return input.pageIds
-  }
-  throw new Error(`${toolName}.pageIds must be a string array`)
-}
-
 const filterSummaries = (items: VBIResourceSummary[], query: string | undefined, limit: number) => {
   const normalizedQuery = query?.toLowerCase()
   const filtered = normalizedQuery
@@ -143,48 +126,6 @@ const runBuilderScript = async <TBuilder>({
   })
   return createWorkspaceScriptToolResult(`${toolName} run succeeded`, scriptResult.logs, scriptResult.result)
 }
-
-const executeReportPageAction = async (report: VBIReportWorkspaceSlot, params: VBIResourceToolInput) => {
-  const pageAction = requireString('vbi_report', params, 'pageAction')
-  const id = requireString('vbi_report', params, 'id')
-  if (pageAction === 'create') {
-    const createPage = requireMethod<(id: string, input?: { title?: string }) => Promise<unknown> | unknown>(
-      'vbi_report',
-      report,
-      'createPage',
-    )
-    return createPage.call(report, id, { title: readString(params, 'title') })
-  }
-  if (pageAction === 'remove') {
-    const removePage = requireMethod<(id: string, pageId: string) => Promise<unknown> | unknown>(
-      'vbi_report',
-      report,
-      'removePage',
-    )
-    return removePage.call(report, id, requireString('vbi_report', params, 'pageId'))
-  }
-  if (pageAction === 'reorder') {
-    const reorderPages = requireMethod<(id: string, pageIds: string[]) => Promise<unknown> | unknown>(
-      'vbi_report',
-      report,
-      'reorderPages',
-    )
-    return reorderPages.call(report, id, readPageIds('vbi_report', params))
-  }
-  if (pageAction === 'update') {
-    const updatePage = requireMethod<
-      (id: string, pageId: string, input: VBIReportPageInput) => Promise<unknown> | unknown
-    >('vbi_report', report, 'updatePage')
-    return updatePage.call(
-      report,
-      requireString('vbi_report', params, 'id'),
-      requireString('vbi_report', params, 'pageId'),
-      readPageInput(params),
-    )
-  }
-  throw new Error('vbi_report.pageAction must be create, remove, reorder, or update')
-}
-
 export const createVBIResourceToolExecutors = (workspace: VBIAgentWorkspace): VBIResourceToolExecutors => ({
   read_skill: async (_toolCallId, input) => {
     const params = asObject('read_skill', input)
@@ -219,14 +160,14 @@ export const createVBIResourceToolExecutors = (workspace: VBIAgentWorkspace): VB
       })
     }
 
-    const [charts, insights, reports] = await Promise.all([read('chart'), read('insight'), read('report')])
-    return createResult('vbi_resource_lookup all completed', { charts, insights, reports })
+    const [charts, insights] = await Promise.all([read('chart'), read('insight')])
+    return createResult('vbi_resource_lookup all completed', { charts, insights })
   },
 
   vbi_chart: async (_toolCallId, input) => {
     const params = asObject('vbi_chart', input)
     const action = requireString('vbi_chart', params, 'action')
-    const chart = requireSlot<VBIReferenceWorkspaceSlot>(workspace, 'chart', 'vbi_chart')
+    const chart = requireSlot<VBIWorkspaceSlot>(workspace, 'chart', 'vbi_chart')
     if (action === 'run') {
       return runBuilderScript({
         code: requireString('vbi_chart', params, 'code'),
@@ -266,17 +207,13 @@ export const createVBIResourceToolExecutors = (workspace: VBIAgentWorkspace): VB
       const remove = requireMethod<(id: string) => Promise<unknown> | unknown>('vbi_chart', chart, 'remove')
       return createResult('vbi_chart remove completed', stripDsl(await remove.call(chart, id)))
     }
-    if (action === 'references') {
-      const references = requireMethod<(id: string) => Promise<unknown> | unknown>('vbi_chart', chart, 'references')
-      return createResult('vbi_chart references completed', stripDsl(await references.call(chart, id)))
-    }
-    throw new Error('vbi_chart.action must be create, get, rename, remove, references, or run')
+    throw new Error('vbi_chart.action must be create, get, rename, remove, or run')
   },
 
   vbi_insight: async (_toolCallId, input) => {
     const params = asObject('vbi_insight', input)
     const action = requireString('vbi_insight', params, 'action')
-    const insight = requireSlot<VBIReferenceWorkspaceSlot>(workspace, 'insight', 'vbi_insight')
+    const insight = requireSlot<VBIWorkspaceSlot>(workspace, 'insight', 'vbi_insight')
     if (action === 'run') {
       return runBuilderScript({
         code: requireString('vbi_insight', params, 'code'),
@@ -316,66 +253,6 @@ export const createVBIResourceToolExecutors = (workspace: VBIAgentWorkspace): VB
       const remove = requireMethod<(id: string) => Promise<unknown> | unknown>('vbi_insight', insight, 'remove')
       return createResult('vbi_insight remove completed', stripDsl(await remove.call(insight, id)))
     }
-    if (action === 'references') {
-      const references = requireMethod<(id: string) => Promise<unknown> | unknown>('vbi_insight', insight, 'references')
-      return createResult('vbi_insight references completed', stripDsl(await references.call(insight, id)))
-    }
-    throw new Error('vbi_insight.action must be create, get, rename, remove, references, or run')
-  },
-
-  vbi_report: async (_toolCallId, input) => {
-    const params = asObject('vbi_report', input)
-    const action = requireString('vbi_report', params, 'action')
-    const report = requireSlot<VBIReportWorkspaceSlot>(workspace, 'report', 'vbi_report')
-    if (action === 'run') {
-      return runBuilderScript({
-        code: requireString('vbi_report', params, 'code'),
-        id: readString(params, 'id'),
-        slot: report,
-        slotGlobal: 'report',
-        toolName: 'vbi_report',
-        workspace,
-      })
-    }
-    if (action === 'create') {
-      const create = requireMethod<(input?: VBIResourceCreateInput) => Promise<unknown> | unknown>(
-        'vbi_report',
-        report,
-        'create',
-      )
-      return createResult(
-        'vbi_report create completed',
-        stripDsl(await create.call(report, createInput('report', params))),
-      )
-    }
-
-    const id = requireString('vbi_report', params, 'id')
-    if (action === 'get') return createResult('vbi_report get completed', stripDsl(await report.describe?.(id)))
-    if (action === 'rename') {
-      const rename = requireMethod<(id: string, name: string) => Promise<unknown> | unknown>(
-        'vbi_report',
-        report,
-        'rename',
-      )
-      return createResult(
-        'vbi_report rename completed',
-        stripDsl(await rename.call(report, id, requireString('vbi_report', params, 'name'))),
-      )
-    }
-    if (action === 'remove') {
-      const remove = requireMethod<(id: string) => Promise<unknown> | unknown>('vbi_report', report, 'remove')
-      return createResult('vbi_report remove completed', stripDsl(await remove.call(report, id)))
-    }
-    if (action === 'exportSnapshot') {
-      const exportSnapshot = requireMethod<(id: string) => Promise<unknown> | unknown>(
-        'vbi_report',
-        report,
-        'exportSnapshot',
-      )
-      return createResult('vbi_report exportSnapshot completed', stripDsl(await exportSnapshot.call(report, id)))
-    }
-    if (action === 'page')
-      return createResult('vbi_report page completed', stripDsl(await executeReportPageAction(report, params)))
-    throw new Error('vbi_report.action must be create, get, rename, remove, exportSnapshot, page, or run')
+    throw new Error('vbi_insight.action must be create, get, rename, remove, or run')
   },
 })

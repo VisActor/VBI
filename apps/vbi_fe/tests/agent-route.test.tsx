@@ -15,11 +15,6 @@ rs.mock('../src/views/workspace/ManageLayoutPage', () => ({
 rs.mock('../src/views/agent/AgentPage', () => ({
   AgentPage: () => <div data-testid='agent-page' />,
 }))
-
-rs.mock('../src/views/resources/report/ReportsPage', () => ({
-  ReportsPage: () => <div data-testid='reports-page' />,
-}))
-
 rs.mock('../src/views/resources/chart/ManageChartsPage', () => ({
   ManageChartsPage: () => <div data-testid='charts-page' />,
 }))
@@ -35,11 +30,6 @@ rs.mock('../src/views/resources/chart/ChartEditorPage', () => ({
 rs.mock('../src/views/resources/insight/InsightEditorPage', () => ({
   InsightEditorPage: ({ id }: { id: string }) => <div data-testid='insight-editor'>{id}</div>,
 }))
-
-rs.mock('../src/views/report-detail/ReportDetailPage', () => ({
-  ReportDetailPage: ({ id }: { id: string }) => <div data-testid='report-detail'>{id}</div>,
-}))
-
 const { App } = await import('../src/App')
 const { useAppPreferencesStore } = await import('./application-test-stores')
 const { useNavigationStore } = await import('./application-test-stores')
@@ -51,6 +41,15 @@ describe('rsbuild app routes', () => {
     useNavigationStore.setState({ navigate: null, pathname: '' })
   })
 
+  test.each(['/', '/manage', '/manage/report', '/manage/reports/retired', '/manage/report/retired', '/unknown'])(
+    'shows charts for the default or unmatched route %s',
+    async (pathname) => {
+      window.history.replaceState(null, '', pathname)
+      render(<App />)
+      expect(await screen.findByTestId('charts-page')).toBeInTheDocument()
+    },
+  )
+
   test('keeps workspace chrome mounted and hides resource pages for agent routes', async () => {
     window.history.replaceState(null, '', '/agent/conversation-1')
 
@@ -61,7 +60,7 @@ describe('rsbuild app routes', () => {
     expect(screen.getByTestId('agent-sider')).toBeInTheDocument()
     expect(screen.getByTestId('workspace-main')).toBeEmptyDOMElement()
     expect(screen.queryByTestId('agent-page')).not.toBeInTheDocument()
-    expect(screen.queryByTestId('reports-page')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('charts-page')).not.toBeInTheDocument()
   })
 
   test('maps browser paths to resource pages', async () => {
@@ -75,10 +74,10 @@ describe('rsbuild app routes', () => {
     rerender(<App />)
     expect(await screen.findByTestId('insights-page')).toBeInTheDocument()
 
-    window.history.pushState(null, '', '/manage/report/report-1')
+    window.history.pushState(null, '', '/manage/chart/chart-1')
     window.dispatchEvent(new PopStateEvent('popstate'))
     rerender(<App />)
-    await waitFor(() => expect(screen.getByTestId('report-detail')).toHaveTextContent('report-1'))
+    await waitFor(() => expect(screen.getByTestId('chart-editor')).toHaveTextContent('chart-1'))
   })
 
   test('canonicalizes legacy plural manage resource routes to singular paths', async () => {
@@ -89,18 +88,18 @@ describe('rsbuild app routes', () => {
     await waitFor(() => expect(window.location.pathname).toBe('/manage/insight/insight-1'))
   })
 
-  test('keeps workspace chrome mounted when opening a report detail route', async () => {
-    window.history.replaceState(null, '', '/manage/report')
+  test('keeps workspace chrome mounted when opening a chart detail route', async () => {
+    window.history.replaceState(null, '', '/manage/chart')
     render(<App />)
 
-    expect(await screen.findByTestId('reports-page')).toBeInTheDocument()
+    expect(await screen.findByTestId('charts-page')).toBeInTheDocument()
     const workspaceLayout = screen.getByTestId('workspace-layout')
     const agentSider = screen.getByTestId('agent-sider')
 
-    window.history.pushState(null, '', '/manage/report/report-1')
+    window.history.pushState(null, '', '/manage/chart/chart-1')
     window.dispatchEvent(new PopStateEvent('popstate'))
 
-    await waitFor(() => expect(screen.getByTestId('report-detail')).toHaveTextContent('report-1'))
+    await waitFor(() => expect(screen.getByTestId('chart-editor')).toHaveTextContent('chart-1'))
     expect(screen.getByTestId('workspace-layout')).toBe(workspaceLayout)
     expect(screen.getByTestId('agent-sider')).toBe(agentSider)
   })

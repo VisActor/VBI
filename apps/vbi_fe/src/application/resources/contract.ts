@@ -1,4 +1,4 @@
-import type { VBIChartBuilder, VBIInsightBuilder, VBIReportBuilder } from '@visactor/vbi'
+import type { VBIChartBuilder, VBIInsightBuilder } from '@visactor/vbi'
 import type { InsightRecord, ResourceItem } from '../../types'
 import type { ApplicationCleanup } from '../core/store'
 
@@ -52,5 +52,3 @@ export type ResourceApplication<TItem extends ResourceItem = ResourceItem, TBuil
 export type ChartApplication = ResourceApplication<ResourceItem, VBIChartBuilder>
 
 export type InsightApplication = ResourceApplication<InsightRecord, VBIInsightBuilder>
-
-export type ReportApplication = ResourceApplication<ResourceItem, VBIReportBuilder>

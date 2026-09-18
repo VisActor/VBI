@@ -4,11 +4,11 @@
 
 `@visactor/vbi` currently exposes only single-chart capability, but its public naming is still generic: `VBI.from(...)`, `VBI.create(...)`, `VBIBuilder`, `VBIDSL`, `zVBIDSL`, and `createEmptyChart`.
 
-That can work while VBI only has charts, but it becomes confusing as soon as `VBI.report.create(...)` is introduced:
+That can work while VBI only has charts, but it becomes confusing as soon as `VBI.dashboard.create(...)` is introduced:
 
 1. `from` exposes the implementation detail that a builder is created from DSL; it does not express the intent to create a chart.
 2. `VBIBuilder` / `VBIDSL` look like top-level VBI concepts, but they actually describe a single chart.
-3. When `chartBuilder` and `reportBuilder` both exist, generic names will mix API, type, zod schema, and directory responsibilities.
+3. When `chartBuilder` and `dashboardBuilder` both exist, generic names will mix API, type, zod schema, and directory responsibilities.
 
 This ADR only addresses naming and layering. It does not change the chart DSL JSON structure or the `buildVQuery()` / `buildVSeed()` lowering behavior.
 
@@ -69,17 +69,17 @@ The compatibility layer only gives downstream users a migration window. Old name
 The current chart implementation under generic `builder` / `types/builder` / `vbi/from` paths should be reorganized around chart semantics. Principles:
 
 1. Chart-specific implementation belongs in the chart builder namespace and should not occupy generic top-level names.
-2. `VBI` remains the product-level entry container that organizes `chart.create` and future `report.create`.
-3. Only capabilities truly shared across chart and report should keep generic naming.
+2. `VBI` remains the product-level entry container that organizes `chart.create` and future `dashboard.create`.
+3. Only capabilities truly shared across chart and dashboard should keep generic naming.
 
-This lets report become a peer capability of chart instead of being squeezed into the old `VBIBuilder` / `VBIDSL` semantics.
+This lets dashboard become a peer capability of chart instead of being squeezed into the old `VBIBuilder` / `VBIDSL` semantics.
 
 ### 6. Non-goals
 
 1. Do not change the runtime field structure of `VBIChartDSL`.
 2. Do not redesign the `buildVQuery()` / `buildVSeed()` pipeline.
 3. Do not force all leaf types such as `VBIDimension` / `VBIMeasure` to be renamed in the first phase.
-4. Do not expand this naming pass into report DSL design.
+4. Do not expand this naming pass into dashboard DSL design.
 
 ## Reference
 
@@ -93,7 +93,6 @@ This lets report become a peer capability of chart instead of being squeezed int
 - `packages/vbi/src/types/builder/adapter.ts`
 - `packages/vbi/src/types/dsl/vbi/vbi.ts`
 - `packages/vbi/src/index.ts`
-- `docs/adr/packages/vbi/2026-03-24-create-report/goal.md`
 
 ## Rejected Designs
 

@@ -1,13 +1,10 @@
 export type {
   VBIAgentWorkspace,
-  VBIReferenceWorkspaceSlot,
-  VBIReportPageInput,
-  VBIReportWorkspaceSlot,
+  VBIWorkspaceSlot,
   VBIResourceCreateInput,
   VBIResourceKind,
   VBIResourceSummary,
   VBIWorkspaceConnector,
   VBIWorkspaceConnectorRegistration,
   VBIWorkspaceConnectors,
-  VBIWorkspaceSlot,
 } from './workspace'

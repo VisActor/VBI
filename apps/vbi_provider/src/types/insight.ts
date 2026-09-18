@@ -1,6 +1,6 @@
 import type { HocuspocusProvider } from '@hocuspocus/provider'
 import type { VBIInsightBuilder, VBIInsightDSL } from '@visactor/vbi'
-import type { ProviderResource, ReportReference, ResourceCreateInput, ResourceSnapshot } from './resource'
+import type { ProviderResource, ResourceCreateInput, ResourceSnapshot } from './resource'
 
 export type InsightSummary = ProviderResource
 
@@ -28,5 +28,4 @@ export interface InsightProvider {
   getSummary(): Promise<InsightSummary>
   getDetail(): Promise<InsightDetail>
   snapshot(): Promise<ResourceSnapshot<VBIInsightDSL>>
-  getReferences(): Promise<ReportReference[]>
 }

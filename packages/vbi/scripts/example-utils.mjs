@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename)
 export const EXAMPLES_DIR = path.resolve(__dirname, '../tests/examples')
 export const MOCK_SYSTEM_TIME = '2026-03-23T00:00:00.000Z'
 export const DEFAULT_LOCALE = 'zh-CN'
-export const BUILDER_ORDER = ['chart', 'insight', 'dashboard', 'report']
+export const BUILDER_ORDER = ['chart', 'insight', 'dashboard']
 
 const DEFAULT_DSL = {
   chart: {
@@ -50,17 +50,12 @@ const DEFAULT_DSL = {
     },
     version: 0,
   },
-  report: {
-    pages: [],
-    version: 0,
-  },
 }
 
 const BUILDER_TYPES = {
   chart: 'VBIChartBuilder',
   insight: 'VBIInsightBuilder',
   dashboard: 'VBIDashboardBuilder',
-  report: 'VBIReportBuilder',
 }
 
 export function readJsonFile(filePath) {
@@ -122,10 +117,8 @@ function normalizeExampleCode(code = '', kind = 'chart') {
     .replace(/\bVBIBuilder\b/g, BUILDER_TYPES[kind] || BUILDER_TYPES.chart)
     .replace(/\bVBI\.createChart\(/g, 'VBI.chart.create(')
     .replace(/\bVBI\.createInsight\(/g, 'VBI.insight.create(')
-    .replace(/\bVBI\.createReport\(/g, 'VBI.report.create(')
     .replace(/\bLocalVBI\.createChart\(/g, 'LocalVBI.chart.create(')
     .replace(/\bLocalVBI\.createInsight\(/g, 'LocalVBI.insight.create(')
-    .replace(/\bLocalVBI\.createReport\(/g, 'LocalVBI.report.create(')
 }
 
 function buildDSL(kind, dsl = {}) {
@@ -139,45 +132,6 @@ function toCode(value, indent = 0) {
     .split('\n')
     .map((line, index) => (index === 0 ? line : `${prefix}${line}`))
     .join('\n')
-}
-
-function getResourceDefinitions(json) {
-  return {
-    charts: json.resources?.charts || [],
-    insights: json.resources?.insights || [],
-  }
-}
-
-function shouldBuildReportSnapshot(json) {
-  if (typeof json.snapshot === 'boolean') {
-    return json.snapshot
-  }
-  const resources = getResourceDefinitions(json)
-  return resources.charts.length > 0 || resources.insights.length > 0
-}
-
-function renderResources(json, indent = 4) {
-  const prefix = ' '.repeat(indent)
-  const resources = getResourceDefinitions(json)
-  const chartLines = resources.charts.map((item, index) => {
-    const name = item.name || `chart${index + 1}`
-    return `${prefix}    ${name}: LocalVBI.chart.create(${toCode(buildDSL('chart', item.dsl || {}), indent + 6)}),`
-  })
-  const insightLines = resources.insights.map((item, index) => {
-    const name = item.name || `insight${index + 1}`
-    return `${prefix}    ${name}: LocalVBI.insight.create(${toCode(buildDSL('insight', item.dsl || {}), indent + 6)}),`
-  })
-
-  return [
-    `${prefix}const resources = {`,
-    `${prefix}  charts: {`,
-    ...chartLines,
-    `${prefix}  },`,
-    `${prefix}  insights: {`,
-    ...insightLines,
-    `${prefix}  },`,
-    `${prefix}}`,
-  ].join('\n')
 }
 
 function indentCode(code, indent) {
@@ -206,25 +160,6 @@ function renderTestBody(json) {
     const insightDSL = builder.build()
     expect(insightDSL).toMatchInlineSnapshot()`
   }
-
-  if (kind === 'report') {
-    const snapshotAssertion = shouldBuildReportSnapshot(json)
-      ? `
-
-    const snapshotDSL = builder.snapshot()
-    expect(snapshotDSL).toMatchInlineSnapshot()`
-      : ''
-    return `    const LocalVBI = createVBI()
-${renderResources(json)}
-    const builder = LocalVBI.report.create(${dslCode})
-
-    ${applyBuilderCode}
-    await applyBuilder(builder, resources)
-
-    const reportDSL = builder.build()
-    expect(reportDSL).toMatchInlineSnapshot()${snapshotAssertion}`
-  }
-
   if (kind === 'dashboard') {
     return `    const LocalVBI = createVBI()
 ${renderDashboardSetup(json)}
@@ -254,9 +189,6 @@ ${renderDashboardSetup(json)}
 export function getTestImports(kind) {
   if (kind === 'insight') {
     return "import { VBI, type VBIInsightBuilder } from '@visactor/vbi'"
-  }
-  if (kind === 'report') {
-    return "import { createVBI, type VBIReportBuilder } from '@visactor/vbi'"
   }
   if (kind === 'dashboard') {
     return "import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'"
@@ -307,41 +239,6 @@ export default () => {
   return <JsonRender value={result} />
 }`.trim()
   }
-
-  if (kind === 'report') {
-    const resultExpr = shouldBuildReportSnapshot(json) ? 'builder.snapshot()' : 'builder.build()'
-    return `
-import { createVBI, VBIChartBuilder, VBIInsightBuilder, VBIReportBuilder } from '@visactor/vbi'
-import { JsonRender } from '@components'
-import { useEffect, useState } from 'react'
-
-export default () => {
-  const [result, setResult] = useState<any>(null)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    const run = async () => {
-      try {
-        const LocalVBI = createVBI()
-${renderResources(json, 6)}
-        const builder = LocalVBI.report.create(${toCode(dsl, 8)})
-        ${code}
-        await applyBuilder(builder, resources)
-        setResult(${resultExpr})
-      } catch (err) {
-        setError(err instanceof Error ? err.message : String(err))
-      }
-    }
-    run()
-  }, [])
-
-  if (error) return <JsonRender value={{ error }} />
-  if (!result) return <div>Loading...</div>
-
-  return <JsonRender value={result} />
-}`.trim()
-  }
-
   if (kind === 'dashboard') {
     const dashboardPreview = json.fullscreen
       ? `<div ref={previewRef} style={{ overflow: 'auto', background: dashboard.build().meta.theme === 'dark' ? '#000' : '#fff', color: dashboard.build().meta.theme === 'dark' ? '#eee' : '#222' }}>

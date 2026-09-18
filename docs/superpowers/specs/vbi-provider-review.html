@@ -310,7 +310,7 @@
         <h1>VBI Provider Review</h1>
         <p>
           面向 <code>apps/vbi_provider</code> 的静态调研报告：覆盖 Provider SDK 暴露接口、REST
-          与协作通道契约、Chart/Insight/Report 数据流、Agent Workspace、测试覆盖和 review 风险点。
+          与协作通道契约、Chart/Insight 数据流、Agent Workspace、测试覆盖和 review 风险点。
         </p>
         <div class="meta">
           <span class="pill">日期：2026-05-24</span>
@@ -328,14 +328,14 @@
           <div class="card">
             <h3>定位</h3>
             <p>
-              VBI Provider 是一个库型 SDK，不是独立 HTTP 服务。它把平台资源抽象成三类一等 Provider：
-              <code>ChartProvider</code>、<code>InsightProvider</code>、<code>ReportProvider</code>。
+              VBI Provider 是一个库型 SDK，不是独立 HTTP 服务。它把平台资源抽象成两类一等 Provider：
+              <code>ChartProvider</code>、<code>InsightProvider</code>。
             </p>
           </div>
           <div class="card">
             <h3>核心关系</h3>
             <p>
-              固定调用关系是 <code>client -> provider -> builder</code>。列表和元信息走 REST，编辑能力通过 REST 取
+              固定调用关系是 <code>client -&gt; provider -&gt; builder</code>。列表和元信息走 REST，编辑能力通过 REST 取
               session 后进入 Hocuspocus/Yjs 协作文档。
             </p>
           </div>
@@ -362,12 +362,12 @@
           <tbody>
             <tr>
               <td><code>client</code></td>
-              <td>创建三类 provider，并提供资源列表入口。</td>
+              <td>创建两类 provider，并提供资源列表入口。</td>
               <td><code>apps/vbi_provider/src/client.ts</code></td>
             </tr>
             <tr>
               <td><code>types</code></td>
-              <td>定义 SDK public surface：client options、resource、chart、insight、report、remote session。</td>
+              <td>定义 SDK public surface：client options、resource、chart、insight、remote session。</td>
               <td><code>apps/vbi_provider/src/types/*.ts</code></td>
             </tr>
             <tr>
@@ -380,9 +380,9 @@
               </td>
             </tr>
             <tr>
-              <td><code>chart / insight / report</code></td>
+              <td><code>chart / insight</code></td>
               <td>把通用资源 API 映射成领域 provider，并处理 DSL 与后端 response 之间的转换。</td>
-              <td><code>src/chart/*</code>、<code>src/insight/*</code>、<code>src/report/*</code></td>
+              <td><code>src/chart/*</code>、<code>src/insight/*</code></td>
             </tr>
             <tr>
               <td><code>agent</code></td>
@@ -415,10 +415,10 @@
             </tr>
             <tr>
               <td><code>createVBIProviderAgentKit(options)</code></td>
-              <td>创建 <code>{ client, workspace }</code>，给 agent/CLI 直接打开 chart/report 使用。</td>
+              <td>创建 <code>{ client, workspace }</code>，给 agent/CLI 直接打开 chart/insight 使用。</td>
             </tr>
             <tr>
-              <td><code>createVBIProviderWorkspace({ client, chartId, reportId })</code></td>
+              <td><code>createVBIProviderWorkspace({ client, chartId, insightId })</code></td>
               <td>把 provider 包成可缓存的 workspace slot。</td>
             </tr>
             <tr>
@@ -486,15 +486,11 @@
               <td><code>InsightProvider</code></td>
               <td>同上，面向 insight。</td>
             </tr>
+
             <tr>
-              <td><code>report(id?)</code></td>
-              <td><code>ReportProvider</code></td>
-              <td>同上，面向 report。</td>
-            </tr>
-            <tr>
-              <td><code>listCharts()</code> / <code>listInsights()</code> / <code>listReports()</code></td>
+              <td><code>listCharts()</code> / <code>listInsights()</code></td>
               <td><code>Promise&lt;Summary[]&gt;</code></td>
-              <td>分别请求 <code>GET /charts</code>、<code>GET /insights</code>、<code>GET /reports</code>。</td>
+              <td>分别请求 <code>GET /charts</code>、<code>GET /insights</code>。</td>
             </tr>
           </tbody>
         </table>
@@ -508,7 +504,6 @@
               <th>能力</th>
               <th>ChartProvider</th>
               <th>InsightProvider</th>
-              <th>ReportProvider</th>
             </tr>
           </thead>
           <tbody>
@@ -516,17 +511,14 @@
               <td>资源 id</td>
               <td><code>getResourceId()</code></td>
               <td><code>getResourceId()</code></td>
-              <td><code>getResourceId()</code></td>
             </tr>
             <tr>
               <td>CRUD</td>
               <td><code>create</code>、<code>remove</code>、<code>rename</code></td>
               <td><code>create</code>、<code>remove</code>、<code>rename</code>、<code>update</code></td>
-              <td><code>create</code>、<code>remove</code>、<code>rename</code></td>
             </tr>
             <tr>
               <td>打开协作 builder</td>
-              <td><code>open()</code> / <code>getBuilder()</code></td>
               <td><code>open()</code> / <code>getBuilder()</code></td>
               <td><code>open()</code> / <code>getBuilder()</code></td>
             </tr>
@@ -534,21 +526,6 @@
               <td>详情和快照</td>
               <td><code>getDetail()</code>、<code>snapshot()</code></td>
               <td><code>getDetail()</code>、<code>snapshot()</code></td>
-              <td><code>getDetail()</code>、<code>snapshot()</code>、<code>exportSnapshot()</code></td>
-            </tr>
-            <tr>
-              <td>引用关系</td>
-              <td><code>getReferences()</code> 返回 report/page 引用</td>
-              <td><code>getReferences()</code> 返回 report/page 引用</td>
-              <td>无反向引用接口</td>
-            </tr>
-            <tr>
-              <td>Report pages</td>
-              <td>无</td>
-              <td>无</td>
-              <td>
-                <code>createPage</code>、<code>updatePage</code>、<code>removePage</code>、<code>reorderPages</code>
-              </td>
             </tr>
           </tbody>
         </table>
@@ -582,37 +559,14 @@
               <td><code>ChartService.create/update/remove</code></td>
               <td>创建后 SDK 会写入 <code>state.resourceId</code> 并再取一次详情来归一化 summary。</td>
             </tr>
-            <tr>
-              <td><code>chart.getReferences</code></td>
-              <td><code>GET /charts/:id/references</code></td>
-              <td><code>findReportUsages</code></td>
-              <td>返回 <code>{ reportId, pageId }</code> 数组。被引用的 chart 删除会 409。</td>
-            </tr>
+
             <tr>
               <td><code>insight.getDetail</code> / <code>insight.update</code></td>
               <td><code>GET /insights/:id</code>、<code>PATCH /insights/:id</code></td>
               <td><code>InsightService</code></td>
               <td>后端返回 <code>content</code>，SDK 映射为 <code>VBIInsightDSL</code>。</td>
             </tr>
-            <tr>
-              <td><code>report.getDetail</code> / <code>report.exportSnapshot</code></td>
-              <td><code>GET /reports/:id</code>、<code>GET /reports/:id/snapshot</code></td>
-              <td><code>ReportService.findOne/snapshot</code></td>
-              <td>详情返回 pages，SDK 映射成 report DSL；exportSnapshot 会嵌入引用 chart/insight DSL。</td>
-            </tr>
-            <tr>
-              <td>
-                <code>report.createPage</code> / <code>updatePage</code> / <code>removePage</code> /
-                <code>reorderPages</code>
-              </td>
-              <td>
-                <code>POST /reports/:id/pages</code>、<code>PATCH /reports/:id/pages/:pageId</code>、<code
-                  >DELETE /reports/:id/pages/:pageId</code
-                >、<code>PATCH /reports/:id/pages/reorder</code>
-              </td>
-              <td><code>ReportService</code></td>
-              <td>直接改持久化 report doc；createPage 会同时创建新的 chart 和 insight。</td>
-            </tr>
+
             <tr>
               <td><code>provider.open()</code></td>
               <td><code>GET /{resource}/:id/collaboration</code> + WebSocket</td>
@@ -638,7 +592,7 @@
           <div class="node">
             <strong>Nest REST</strong><span><code>/api/v1</code> controller + service</span>
           </div>
-          <div class="node"><strong>Prisma</strong><span>读写 chart/insight/report 二进制 Yjs snapshot</span></div>
+          <div class="node"><strong>Prisma</strong><span>读写 chart/insight 二进制 Yjs snapshot</span></div>
         </div>
 
         <h3>2. 打开 Builder 协作编辑</h3>
@@ -662,23 +616,13 @@
         <div class="panel">
           <ul>
             <li>
-              <code>HocuspocusServer.onLoadDocument</code> 根据 room 前缀
-              <code>chart:</code>、<code>insight:</code>、<code>report:</code> 找到资源，加载主 snapshot，再按 id 顺序
-              apply collaboration updates。
+              <code>HocuspocusServer.onLoadDocument</code> 根据 room 前缀 <code>chart:</code>、<code>insight:</code>
+              找到资源，加载主 snapshot，再按 id 顺序 apply collaboration updates。
             </li>
             <li><code>onChange</code> 把每次 Yjs update 追加到对应的 collaboration update 表。</li>
             <li><code>onStoreDocument</code> 把完整 Yjs state 编码后写回主资源表。</li>
-            <li>REST 侧部分变更会直接重建 Yjs doc 并清空 update 表，例如 insight content update、report page 变更。</li>
+            <li>REST 侧部分变更会直接重建 Yjs doc 并清空 update 表，例如 insight content update。</li>
           </ul>
-        </div>
-
-        <h3>4. Report snapshot</h3>
-        <div class="panel">
-          <p>
-            <code>report.exportSnapshot()</code> 调用 <code>GET /reports/:id/snapshot</code>。后端先从 report pages 读取
-            <code>chartId</code> 和 <code>insightId</code>，逐个加载引用资源的 Yjs snapshot，转换成 chart/insight
-            DSL，再组装成 <code>{ report, charts, insights }</code>。
-          </p>
         </div>
       </section>
 
@@ -703,11 +647,7 @@
                 已注册。
               </td>
             </tr>
-            <tr>
-              <td><code>workspace.report</code></td>
-              <td>同 chart slot</td>
-              <td>只处理 report builder 生命周期，不处理 connector。</td>
-            </tr>
+
             <tr>
               <td><code>workspace.connectors</code></td>
               <td>
@@ -727,14 +667,13 @@
           <strong><span class="tag danger">P1</span> REST 直接变更与已打开协作文档可能产生 stale builder</strong>
           <p>
             <code>InsightProvider.update()</code> 通过 REST 改后端 doc；如果 builder 已经 open，随后
-            <code>getDetail()</code> 会走本地 builder，而不是远端新数据。Report 的
-            <code>createPage/updatePage/removePage/reorderPages</code> 也直接改持久化 doc，但已打开的 report builder
+            <code>getDetail()</code> 会走本地 builder，而不是远端新数据。已打开的 insight builder
             不会被显式刷新。结果是“接口返回的新 detail”和“provider 后续 snapshot/getDetail 的本地 builder
             状态”可能分叉。
           </p>
           <p class="small">
-            相关文件：<code>src/insight/remote-provider.ts</code>、<code>src/report/remote-provider.ts</code>、<code>apps/vbi_be/src/insight/insight.service.ts</code>、<code
-              >apps/vbi_be/src/report/report.service.ts</code
+            相关文件：<code>src/insight/remote-provider.ts</code>、<code
+              >apps/vbi_be/src/insight/insight.service.ts</code
             >
           </p>
         </div>
@@ -755,24 +694,14 @@
 
         <div class="finding">
           <strong
-            ><span class="tag warn">P2</span> <code>InsightProvider.snapshot()</code> 冷启动语义和 Chart/Report
-            不一致</strong
+            ><span class="tag warn">P2</span> <code>InsightProvider.snapshot()</code> 冷启动语义和 Chart 不一致</strong
           >
           <p>
-            Chart/Report 在未打开 builder 时可通过 REST detail 构造 snapshot；Insight 的 <code>snapshot</code> 直接使用
+            Chart 在未打开 builder 时可通过 REST detail 构造 snapshot；Insight 的 <code>snapshot</code> 直接使用
             <code>core.getLocalSnapshot</code>，会强制打开协作连接。如果只是想读 insight 当前 DSL，WebSocket
             不可用会导致读操作失败。
           </p>
           <p class="small">相关文件：<code>src/insight/remote-provider.ts</code></p>
-        </div>
-
-        <div class="finding">
-          <strong><span class="tag warn">P2</span> Page 变更 API 与 Builder ownership 边界需要再明确</strong>
-          <p>
-            开发规则里 Builder owns DSL mutation。Provider 现在提供 REST page 变更方法，同时也提供 report
-            builder。如果两条路径都作为一等写路径，需要定义同步策略；否则建议把 page 写入收敛到 builder 协作流，REST
-            只做资源生命周期和 export。
-          </p>
         </div>
 
         <div class="finding">
@@ -800,7 +729,7 @@
             <h3>已有覆盖</h3>
             <ul>
               <li>Client 创建 provider、列表接口、agent kit 默认 id。</li>
-              <li>Chart CRUD 路由、references、Report snapshot export、page reorder。</li>
+              <li>Chart CRUD 路由。</li>
               <li>协作 open 流程：attach、等待 sync、in-flight open 复用、socket url path。</li>
               <li>Demo connector 注册和 supermarket CSV 查询。</li>
             </ul>
@@ -811,9 +740,7 @@
               当前 <code>coverage-summary.json</code> 显示 total：lines 57.89%，statements 57.51%，functions
               39.28%，branches 47.45%。
             </p>
-            <p>
-              低覆盖集中在 Insight provider/API、Report provider/API、HTTP error 分支和 provider 本地/远程分支切换。
-            </p>
+            <p>低覆盖集中在 Insight provider/API、HTTP error 分支和 provider 本地/远程分支切换。</p>
           </div>
         </div>
 
@@ -822,7 +749,7 @@
           <li>
             打开 builder 后调用 <code>insight.update</code>，断言后续 <code>getDetail/snapshot</code> 是否符合预期。
           </li>
-          <li>打开 report builder 后调用 page REST mutation，断言本地 builder 与 REST 返回是否一致。</li>
+
           <li><code>InsightProvider.snapshot()</code> 未 open 且 WebSocket 不可用时的行为。</li>
           <li><code>headers</code> 工厂、错误 envelope、空 response、fetch 缺失。</li>
           <li>WebSocket 鉴权参数、query token 或子协议透传策略。</li>
@@ -835,12 +762,10 @@
           <li>先定 provider 写入模型：REST 写 DSL 还是 builder/Yjs 写 DSL，避免双写路径长期并存。</li>
           <li>再定协作通道鉴权：REST headers、cookie、query token、Hocuspocus authenticate 需要一条完整链路。</li>
           <li>
-            统一三类 provider 的冷读语义：未 open 时 <code>getDetail/snapshot</code> 都应可走
+            统一两类 provider 的冷读语义：未 open 时 <code>getDetail/snapshot</code> 都应可走
             REST，除非明确要求协作连接。
           </li>
-          <li>
-            把 endpoint contract 写进 provider tests：尤其是 envelope、error、page mutation、references、snapshot。
-          </li>
+          <li>把 endpoint contract 写进 provider tests：尤其是 envelope、error、snapshot。</li>
           <li>清理小型元数据问题：repository directory、README 中 REST envelope/WS 约束说明。</li>
         </ol>
       </section>
@@ -860,12 +785,12 @@
           <p><code>apps/vbi_provider/src/remote/socket-url.ts</code></p>
           <p><code>apps/vbi_provider/src/chart/*</code></p>
           <p><code>apps/vbi_provider/src/insight/*</code></p>
-          <p><code>apps/vbi_provider/src/report/*</code></p>
+
           <p><code>apps/vbi_provider/src/agent/*</code></p>
           <p><code>apps/vbi_provider/tests/*.test.ts</code></p>
           <p><code>apps/vbi_be/src/chart/*</code></p>
           <p><code>apps/vbi_be/src/insight/*</code></p>
-          <p><code>apps/vbi_be/src/report/*</code></p>
+
           <p><code>apps/vbi_be/src/app/hocuspocus-server.ts</code></p>
           <p><code>apps/vbi_be/src/common/vbi-doc.ts</code></p>
         </div>

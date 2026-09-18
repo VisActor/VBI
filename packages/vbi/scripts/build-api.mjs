@@ -17,7 +17,6 @@ const __dirname = path.dirname(__filename)
 
 const SOURCE_ROOTS = {
   chart: path.resolve(__dirname, '../src/chart-builder'),
-  report: path.resolve(__dirname, '../src/report-builder'),
   insight: path.resolve(__dirname, '../src/insight-builder'),
   dashboard: path.resolve(__dirname, '../src/dashboard-builder'),
   vbi: path.resolve(__dirname, '../src/vbi'),
@@ -74,15 +73,6 @@ const API_SECTIONS = [
         file: 'types/dashboard.ts',
         symbolName: 'VBIDashboardNamespace',
         displayName: 'VBI.dashboard',
-      },
-      {
-        type: 'file',
-        name: 'report',
-        label: 'VBI.report',
-        kind: 'interface',
-        file: 'types/report.ts',
-        symbolName: 'VBIReportNamespace',
-        displayName: 'VBI.report',
       },
       {
         type: 'file',
@@ -260,32 +250,6 @@ const API_SECTIONS = [
         label: 'chartBuilder.undoManager',
         file: 'features/undo-manager/undo-manager.ts',
         displayName: 'UndoManager',
-      },
-    ],
-  },
-  {
-    name: 'reportBuilder',
-    label: 'reportBuilder',
-    root: 'report',
-    index: {
-      file: 'builder.ts',
-      displayName: 'VBIReportBuilder',
-    },
-    items: [
-      {
-        type: 'dir',
-        name: 'page',
-        label: 'reportBuilder.page',
-        file: 'features/page/page-collection-builder.ts',
-        displayName: 'ReportPageCollectionBuilder',
-        children: [
-          {
-            name: 'reportPage',
-            label: 'reportPage',
-            file: 'features/page/page-builder.ts',
-            displayName: 'ReportPageBuilder',
-          },
-        ],
       },
     ],
   },

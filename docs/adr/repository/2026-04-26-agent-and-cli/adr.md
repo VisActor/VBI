@@ -4,7 +4,7 @@ Status: Accepted; Date: 2026-04-26
 
 ## Context
 
-- `packages/vbi` owns VBIChartDSL, VBIReportDSL, Builder, and DSL transformation; `packages/vquery` owns QueryDSL to SQL; `packages/vseed` owns VSeedDSL to VChart/VTable Spec.
+- `packages/vbi` owns VBIChartDSL, Builder, and DSL transformation; `packages/vquery` owns QueryDSL to SQL; `packages/vseed` owns VSeedDSL to VChart/VTable Spec.
 - `apps/vbi_provider`, `apps/vbi_fe`, and `apps/vbi_be` own platform resources, remote collaboration, authorization, and concrete business flows.
 - `apps/vbi_agent` currently contains agent runtime, model provider, TUI, platform provider integration, resource CRUD, and builder operation tools at the same time.
 
@@ -21,7 +21,7 @@ Add `packages/vbi-agent`. The Agent package provides general runtime/tool abstra
 `apps/vbi_tui`:
 
 - Integrates with `apps/vbi_provider`, `@visactor/vbi-provider`, or other platform providers.
-- Opens remote resources and obtains `VBIChartBuilder`, `VBIReportBuilder`, or other Builder instances.
+- Opens remote resources and obtains `VBIChartBuilder` or other Builder instances.
 - Adapts Builder into the workspace required by `packages/vbi-agent`.
 - Creates a controlled ResourceToolset and injects it into LLM runtime together with BuilderToolset.
 - Integrates with model providers and hosts resource CRUD, authorization, TUI, command parsing, and app business flows.
@@ -54,7 +54,6 @@ export type VBITool = {
 
 export interface VBIAgentWorkspace {
   getActiveChartBuilder(): Promise<VBIChartBuilder>
-  getActiveReportBuilder?(): Promise<VBIReportBuilder>
   close?(): Promise<void>
 }
 

@@ -1,9 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { randomUUID } from 'crypto'
 import { PrismaService } from '../app/prisma.service'
 import { buildInsightDSL, createInsightDoc, encodeDoc, toPrismaBytes } from '../common/vbi-doc'
 import { getCollaborationWebSocketUrl } from '../common/collaboration'
-import { findReportUsages } from '../report/report-reference'
 import { buildInsightRoomName, clearInsightUpdates } from './insight-collaboration'
 import { CreateInsightDto } from './dto/create-insight.dto'
 import { UpdateInsightDto } from './dto/update-insight.dto'
@@ -73,11 +72,6 @@ export class InsightService {
     return this.findOne(id)
   }
 
-  async findReferences(id: string) {
-    await this.requireSummary(id)
-    return findReportUsages(this.prisma, { insightId: id })
-  }
-
   async getCollaborationSession(id: string) {
     return {
       resourceId: id,
@@ -90,10 +84,6 @@ export class InsightService {
 
   async remove(id: string) {
     await this.requireSummary(id)
-    const usages = await findReportUsages(this.prisma, { insightId: id })
-    if (usages.length > 0) {
-      throw new ConflictException(`Insight ${id} is still referenced by report pages`)
-    }
     await clearInsightUpdates(this.prisma, id)
     return this.prisma.insight.delete({ where: { id }, select: summarySelect })
   }

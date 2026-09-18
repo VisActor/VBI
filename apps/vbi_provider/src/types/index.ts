@@ -8,5 +8,4 @@ export type {
   VBIProviderClientOptions,
 } from './client'
 export type { RemoteBuilderState, RemoteSessionConnection } from './remote'
-export type { ReportDetail, ReportPageInput, ReportProvider, ReportResponse, ReportSummary } from './report'
-export type { ProviderResource, ReportReference, ResourceCreateInput, ResourceSnapshot } from './resource'
+export type { ProviderResource, ResourceCreateInput, ResourceSnapshot } from './resource'

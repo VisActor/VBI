@@ -1,6 +1,6 @@
 # VBI.resources
 
-The resource namespace on a VBI instance, used to register shared resources that can be referenced by dashboard/report.
+The resource namespace on a VBI instance, used to register shared resources that can be referenced by dashboard.
 
 ## Properties
 

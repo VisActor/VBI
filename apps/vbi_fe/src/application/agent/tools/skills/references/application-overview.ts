@@ -10,7 +10,7 @@ The browser agent has two tools:
 The script receives application, VBI, snapshot, waitFor, json, assert, and console. The application argument is a Zustand StoreApi; read current capabilities through application.getState().
 
 Rules:
-- Use only application.getState().chart, application.getState().insight, application.getState().report, application.getState().reportDetail, application.getState().layout, application.getState().theme, application.getState().i18n, and application.getState().agent.
+- Use only application.getState().chart, application.getState().insight, application.getState().layout, application.getState().theme, application.getState().i18n, and application.getState().agent.
 - Do not access zustand stores, router internals, DOM nodes, window private fields, localStorage, or provider clients directly.
 - Return json(serializableValue) from every script.
 - Use snapshot() for a compact serializable state projection.

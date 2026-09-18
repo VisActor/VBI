@@ -37,6 +37,7 @@ export const registerDemoConnector = () => {
   VBI.connectors.register(DEMO_CONNECTOR_ID, async () => {
     const { VQuery } = await import('@visactor/vquery')
     const vquery = new VQuery()
+    let datasetReady: Promise<void> | undefined
 
     return {
       discoverSchema: async () => {
@@ -48,10 +49,15 @@ export const registerDemoConnector = () => {
           type: 'csv',
           rawDataset: url,
         }
-        const hasDataset = await vquery.hasDataset(DEMO_CONNECTOR_ID)
-        if (!hasDataset) {
-          await vquery.createDataset(DEMO_CONNECTOR_ID, SUPERMARKET_SCHEMA as DatasetColumn[], datasetSource)
-        }
+        datasetReady ??= (async () => {
+          if (!(await vquery.hasDataset(DEMO_CONNECTOR_ID))) {
+            await vquery.createDataset(DEMO_CONNECTOR_ID, SUPERMARKET_SCHEMA as DatasetColumn[], datasetSource)
+          }
+        })().catch((error) => {
+          datasetReady = undefined
+          throw error
+        })
+        await datasetReady
         const dataset = await vquery.connectDataset(
           DEMO_CONNECTOR_ID,
           SUPERMARKET_SCHEMA as DatasetColumn[],

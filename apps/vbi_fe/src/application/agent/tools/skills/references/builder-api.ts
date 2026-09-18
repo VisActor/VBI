@@ -8,16 +8,12 @@ Useful VBI exports include:
 - VBI.createVBI()
 - VBI.createEmptyChart()
 - VBI.createEmptyInsight()
-- VBI.createEmptyReport()
 - VBI.VBIChartBuilder
 - VBI.VBIInsightBuilder
-- VBI.VBIReportBuilder
 
 Builder access in the application:
 - application.getState().chart.editor.builders[id]?.builder is a VBIChartBuilder when the chart editor session is connected.
 - application.getState().insight.editor.builders[id]?.builder is a VBIInsightBuilder when connected.
-- application.getState().report.editor.builders[id]?.builder is a VBIReportBuilder when connected.
-- application.getState().reportDetail.reportBuilder is the active report detail builder when connected.
 
 Prefer public Builder methods:
 - chartBuilder.build()
@@ -28,10 +24,6 @@ Prefer public Builder methods:
 - chartBuilder.where and chartBuilder.having builders for filters
 - insightBuilder.setContent(text)
 - insightBuilder.build()
-- reportBuilder.page.add(input)
-- reportBuilder.page.update(pageId, callback)
-- reportBuilder.page.remove(pageId)
-- reportBuilder.build()
 
 Do not mutate raw DSL maps when a public Builder method exists.
 

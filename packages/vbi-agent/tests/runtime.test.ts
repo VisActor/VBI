@@ -105,7 +105,6 @@ describe('VBIAgent', () => {
       'vbi_resource_lookup',
       'vbi_chart',
       'vbi_insight',
-      'vbi_report',
     ])
     expect(events.map((event) => event.type)).toContain('tool_execution_end')
     expect(agent.state.messages.map((message) => message.role)).toEqual([

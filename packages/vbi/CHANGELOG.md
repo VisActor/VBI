@@ -89,14 +89,12 @@
 
 ### Patch Changes
 
-- d2f4f33: Refactor the VBI runtime API around explicit `chart` / `insight` / `report` namespaces and align report resource handling with dedicated resource stores.
+- d2f4f33: Refactor the VBI runtime API around explicit namespaces and dedicated resource stores.
 
   Breaking changes:
   - Rename empty DSL helpers on the namespace API:
     - `chart.generateEmptyDSL(...)` -> `chart.createEmpty(...)`
     - `insight.generateEmptyDSL(...)` -> `insight.createEmpty(...)`
-    - `report.generateEmptyDSL(...)` -> `report.createEmpty(...)`
-    - `report.generateEmptyPageDSL(...)` -> `report.createEmptyPage(...)`
   - Remove the old `generate-empty-*` source files and helper names from `@visactor/vbi`.
   - Split the internal resource registry into explicit chart and insight stores and move the implementation under `src/vbi/resources/`.
 
@@ -107,11 +105,10 @@
 
 ### Patch Changes
 
-- f5a9ad0: Refactor the VBI runtime API around `chart`/`insight`/`report` namespaces and align report APIs with the resource model.
+- f5a9ad0: Refactor the VBI runtime API around namespaces and align APIs with the resource model.
 
   Breaking changes:
-  - `createVBI()` no longer returns flat helpers such as `createChart`, `createInsight`, or `createReport`, and the old empty helper names were removed. Use `chart.create`, `insight.create`, `report.create`, `chart.createEmpty`, `insight.createEmpty`, `report.createEmpty`, and `report.createEmptyPage` instead.
-  - Legacy report text DSL exports were removed. `VBIReportTextDSL`, `VBIReportTextDSLInput`, `zVBIReportTextDSL`, and the old `ReportTextBuilder` are no longer available.
+  - `createVBI()` no longer returns flat helpers such as `createChart` or `createInsight`, and the old empty helper names were removed. Use `chart.create`, `insight.create`, `chart.createEmpty`, `insight.createEmpty` instead.
   - @visactor/vseed@0.4.23
 
 ## 0.4.22

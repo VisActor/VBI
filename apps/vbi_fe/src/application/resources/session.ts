@@ -1,7 +1,6 @@
 import { setCollaborativeUser } from '../../utils/collaboration'
 import { chartApplicationStore } from '../chart/store'
 import { insightApplicationStore } from '../insight/store'
-import { reportApplicationStore } from '../report/store'
 import type { ResourceKind } from '../../types'
 import type { BuilderByKind, BuilderStoreState } from './resource-builder.types'
 
@@ -14,7 +13,6 @@ const modelByKind: {
 } = {
   chart: chartApplicationStore,
   insight: insightApplicationStore,
-  report: reportApplicationStore,
 }
 
 const getBuilderModel = <TKind extends ResourceKind>(kind: TKind) =>

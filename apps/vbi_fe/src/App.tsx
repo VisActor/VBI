@@ -23,13 +23,6 @@ const ManageChartsPage = lazyComponent<object>(() =>
 const ManageInsightsPage = lazyComponent<object>(() =>
   import('./views/resources/insight/ManageInsightsPage').then((module) => ({ default: module.ManageInsightsPage })),
 )
-const ReportDetailPage = lazyComponent<{ id: string }>(() =>
-  import('./views/report-detail/ReportDetailPage').then((module) => ({ default: module.ReportDetailPage })),
-)
-const ReportsPage = lazyComponent<object>(() =>
-  import('./views/resources/report/ReportsPage').then((module) => ({ default: module.ReportsPage })),
-)
-
 const resolveInitialLocale = (): AppLocale => {
   const storedLocale = resolvePersistedLocalePreference()
   if (isAppLocale(storedLocale)) return storedLocale
@@ -56,10 +49,6 @@ const RoutedWorkspace = () => {
         return <InsightEditorPage id={route.id} />
       case 'insight':
         return <ManageInsightsPage />
-      case 'reportDetail':
-        return <ReportDetailPage id={route.id} />
-      case 'report':
-        return <ReportsPage />
     }
   })()
 

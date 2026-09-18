@@ -292,7 +292,7 @@ const renderEmptyState = (width: number) => {
       width,
     ),
     '',
-    pad(`${gray('›')} ${dim('Try: list charts, inspect Chart1, or update a report page')}`, width),
+    pad(`${gray('›')} ${dim('Try: list charts, inspect Chart1, or update an insight')}`, width),
   ]
 }
 

@@ -127,7 +127,7 @@ describe('agent message adapter', () => {
           role: 'assistant',
           content: [
             { type: 'toolCall', name: 'vbi_resource', arguments: { action: 'list', resource: 'chart' } },
-            { type: 'toolCall', name: 'vbi_resource', arguments: { action: 'list', resource: 'report' } },
+            { type: 'toolCall', name: 'vbi_resource', arguments: { action: 'list', resource: 'insight' } },
           ],
         },
         {
@@ -138,14 +138,14 @@ describe('agent message adapter', () => {
         {
           role: 'toolResult',
           toolName: 'vbi_resource',
-          content: [{ type: 'text', text: 'report-result' }],
+          content: [{ type: 'text', text: 'insight-result' }],
         },
       ] as never,
     })
     const content = converted.content as Array<{ result?: { content?: Array<{ text?: string }> } }>
 
     expect(content[0]?.result?.content?.[0]?.text).toBe('chart-result')
-    expect(content[1]?.result?.content?.[0]?.text).toBe('report-result')
+    expect(content[1]?.result?.content?.[0]?.text).toBe('insight-result')
   })
 
   test('projects VBI messages into assistant-ui messages through a single pure entrypoint', () => {

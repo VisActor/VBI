@@ -6,7 +6,7 @@ mutates or consumes VBI resources.
 ## Role and Boundaries
 
 `packages/vbi` is the headless logic layer. It owns `VBIChartDSL`,
-`VBIReportDSL`, `VBIInsightDSL`, Yjs-backed documents, Builder APIs, defaults,
+`VBIDashboardDSL`, `VBIInsightDSL`, Yjs-backed documents, Builder APIs, defaults,
 normalization, snapshots, and lowering to `VQueryDSL` and `VSeedDSL`.
 
 It does not own DOM, React state, page layout, VChart/VTable instances,
@@ -18,13 +18,13 @@ transport setup, product workflow code, or generated docs.
   change.
 - Design DSL-first: types, zod schemas, defaults, normalization, and lowering
   come before consumer affordances.
-- Builder is the mutation boundary. Use `VBIChartBuilder`, `VBIReportBuilder`,
+- Builder is the mutation boundary. Use `VBIChartBuilder`, `VBIDashboardBuilder`,
   `VBIInsightBuilder`, and cohesive sub-builders instead of hand-writing DSL
   mutations in UI, CLI, agent, Provider, or app code.
 - Prefer focused sub-builders, pipeline stages, adapters, or stores over god
   Builders.
 - Chart owns chart config, query, and seed lowering; insight owns semantic
-  content; report owns page structure and references.
+  content; dashboard owns widget composition, responsive layout, and references.
 
 ## Change Shape
 

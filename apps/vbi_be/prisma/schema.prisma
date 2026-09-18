@@ -36,6 +36,9 @@ model Report {
   updatedAt DateTime @updatedAt
 
   @@index([updatedAt])
+
+  // Archived data only; no runtime Prisma Client API.
+  @@ignore
 }
 
 model Chart {
@@ -68,6 +71,9 @@ model ReportCollaborationUpdate {
 
   @@index([reportId, id])
   @@index([reportId, merged])
+
+  // Archived data only; no runtime Prisma Client API.
+  @@ignore
 }
 
 model ChartCollaborationUpdate {

@@ -9,7 +9,6 @@ export type {
   VBIInsightResourceNamespace,
   VBIInsightNamespace,
   VBIInstance,
-  VBIReportNamespace,
   VBIResourceNamespace,
   VBIResourceRegisterInput,
   VBIResourceRegisterResult,

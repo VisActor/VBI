@@ -26,12 +26,8 @@ const insightApi = await import('../src/services/insightApi')
 const resourceApi = await import('../src/services/resourceApi')
 const { useManageChartsStore } = await import('./application-test-stores')
 const { useManageInsightsStore } = await import('./application-test-stores')
-const { useReportsStore } = await import('./application-test-stores')
-
 const initialChartsState = useManageChartsStore.getState()
 const initialInsightsState = useManageInsightsStore.getState()
-const initialReportsState = useReportsStore.getState()
-
 const createResourceItem = (id: string, name: string) => ({
   id,
   name,
@@ -48,21 +44,7 @@ describe('manage resource edit stores', () => {
     ;(resourceApi.listResources as unknown as { mockResolvedValue(value: unknown): void }).mockResolvedValue([])
     useManageChartsStore.setState(initialChartsState, true)
     useManageInsightsStore.setState(initialInsightsState, true)
-    useReportsStore.setState(initialReportsState, true)
   })
-
-  test('renames reports from the manage reports page', async () => {
-    useReportsStore.setState({
-      items: [createResourceItem('report-1', 'Q1 Report')],
-      editorName: ' Q1 Report Updated ',
-      selectedId: 'report-1',
-    })
-
-    await useReportsStore.getState().renameSelected()
-
-    expect(resourceApi.renameResource).toHaveBeenCalledWith('report', 'report-1', 'Q1 Report Updated')
-  })
-
   test('renames chart resources from route editor state', async () => {
     useManageChartsStore.setState({
       items: [createResourceItem('chart-1', 'Old Chart'), createResourceItem('chart-2', 'Revenue Chart')],

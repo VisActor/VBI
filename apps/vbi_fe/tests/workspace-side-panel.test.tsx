@@ -13,7 +13,7 @@ const { WorkspaceSidePanel } = await import('../src/views/workspace/WorkspaceSid
 
 const renderSidePanel = (contentKind: 'agent' | 'resource' = 'agent') =>
   render(
-    <WorkspaceSidePanel contentKind={contentKind} title={contentKind === 'agent' ? 'VBI Agent' : 'Reports'}>
+    <WorkspaceSidePanel contentKind={contentKind} title={contentKind === 'agent' ? 'VBI Agent' : 'Charts'}>
       <div data-testid={`${contentKind}-content`} />
     </WorkspaceSidePanel>,
   )
@@ -34,11 +34,11 @@ describe('WorkspaceSidePanel', () => {
   test('renders fixed by default and persists floating mode for any content', () => {
     renderSidePanel('resource')
 
-    const panel = screen.getByLabelText('Reports')
+    const panel = screen.getByLabelText('Charts')
     expect(panel).toHaveAttribute('data-workspace-side-panel-mode', 'fixed')
     expect(panel).toHaveAttribute('data-workspace-content', 'resource')
     expect(panel).toHaveStyle({ width: `${defaultWorkspaceSidePanelWidth}px` })
-    expect(screen.getByRole('heading', { name: 'Reports' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Charts' })).toBeInTheDocument()
     expect(screen.getByTestId('resource-content')).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: 'Float Panel' }))
@@ -104,7 +104,7 @@ describe('WorkspaceSidePanel', () => {
     })
     renderSidePanel('resource')
 
-    const panel = screen.getByLabelText('Reports')
+    const panel = screen.getByLabelText('Charts')
     const separator = screen.getByRole('separator', { name: 'Resize Panel' })
     expect(panel).toHaveStyle({ left: '400px', width: `${defaultWorkspaceSidePanelWidth}px` })
 

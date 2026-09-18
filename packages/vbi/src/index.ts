@@ -20,7 +20,6 @@ export {
   VBIDashboardBuilder,
 } from './dashboard-builder'
 export { VBIInsightBuilder } from './insight-builder'
-export { ReportPageBuilder, ReportPageCollectionBuilder, VBIReportBuilder } from './report-builder'
 export * from './types'
 export {
   findTreeNodesBy,
@@ -32,14 +31,7 @@ export {
   preorderTraverse,
 } from './utils'
 export { VBI } from './vbi'
-export {
-  createEmptyChart,
-  createEmptyDashboard,
-  createEmptyInsight,
-  createEmptyReport,
-  createEmptyReportPage,
-  createVBI,
-} from './vbi/index'
+export { createEmptyChart, createEmptyDashboard, createEmptyInsight, createVBI } from './vbi/index'
 export type {
   VBIChartNamespace,
   VBIChartResourceNamespace,
@@ -50,7 +42,6 @@ export type {
   VBIInsightResourceNamespace,
   VBIInsightNamespace,
   VBIInstance,
-  VBIReportNamespace,
   VBIResourceNamespace,
   VBIResourceRegisterInput,
   VBIResourceRegisterResult,

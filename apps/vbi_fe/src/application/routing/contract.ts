@@ -1,11 +1,4 @@
-export type ApplicationRouteName =
-  | 'agent'
-  | 'chart'
-  | 'chartDetail'
-  | 'insight'
-  | 'insightDetail'
-  | 'report'
-  | 'reportDetail'
+export type ApplicationRouteName = 'agent' | 'chart' | 'chartDetail' | 'insight' | 'insightDetail'
 
 export type ApplicationRouteTarget =
   | { name: 'agent'; conversationId?: string }
@@ -13,8 +6,6 @@ export type ApplicationRouteTarget =
   | { name: 'chartDetail'; id: string }
   | { name: 'insight' }
   | { name: 'insightDetail'; id: string }
-  | { name: 'report' }
-  | { name: 'reportDetail'; id: string }
   | string
 
 export type ApplicationRouteMatch =
@@ -23,5 +14,3 @@ export type ApplicationRouteMatch =
   | { name: 'chartDetail'; id: string }
   | { name: 'insight' }
   | { name: 'insightDetail'; id: string }
-  | { name: 'report' }
-  | { name: 'reportDetail'; id: string }

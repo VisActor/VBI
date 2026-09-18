@@ -24,8 +24,7 @@ Core rules:
 
 References:
 - application_overview: Tool usage rules, snapshot/waitFor/json patterns, and cross-domain safety checks.
-- resources: application.getState().chart, application.getState().insight, and application.getState().report resource workflows.
-- report_detail: application.getState().reportDetail report page and embedded chart/insight operations.
+- resources: application.getState().chart and application.getState().insight resource workflows.
 - layout_preferences: application.getState().layout, application.getState().theme, and application.getState().i18n preferences.
 - agent: application.getState().agent conversation, model, thinking, and panel operations.
 - builder_api: VBI namespace and Builder API operations from vbi_application.

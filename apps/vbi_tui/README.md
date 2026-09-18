@@ -47,7 +47,6 @@ TUI commands:
 Tools:
 
 - `read_skill`: lists and reads the built-in VBI teaching skills
-- `vbi_resource_lookup`: searches chart, insight, and report ids
+- `vbi_resource_lookup`: searches chart and insight ids
 - `vbi_chart`: chart resource CRUD, references, and `run` scripts against the chart Builder workspace
 - `vbi_insight`: insight resource CRUD, references, and `run` scripts against the insight Builder workspace
-- `vbi_report`: report CRUD, page operations, snapshot export, and `run` scripts against the report Builder workspace

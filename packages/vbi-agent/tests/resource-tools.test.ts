@@ -22,23 +22,17 @@ describe('createVBIResourceTools', () => {
         ]),
         open: rs.fn(),
       },
-      report: {
-        list: rs.fn(async () => [
-          { id: 'report-1', name: 'Monthly report', createdAt: '2026-04-09', updatedAt: '2026-04-09' },
-        ]),
-        open: rs.fn(),
-      },
     }
     const tools = createVBIResourceTools({ workspace })
-    expect(tools.map((tool) => tool.name)).toEqual([
-      'read_skill',
-      'vbi_resource_lookup',
-      'vbi_chart',
-      'vbi_insight',
-      'vbi_report',
-    ])
+    expect(tools.map((tool) => tool.name)).toEqual(['read_skill', 'vbi_resource_lookup', 'vbi_chart', 'vbi_insight'])
     const readSkill = tools.find((tool) => tool.name === 'read_skill')
     const lookup = tools.find((tool) => tool.name === 'vbi_resource_lookup')
+
+    const allResult = await lookup?.execute('call-all', { resource: 'all' })
+    expect(Object.keys(JSON.parse(readText(allResult as ResourceToolResult))).sort()).toEqual(['charts', 'insights'])
+    await expect(lookup?.execute('call-retired', { resource: 'report' })).rejects.toThrow(
+      'vbi_resource_lookup.resource must be all, chart, or insight',
+    )
 
     const skillResult = await readSkill?.execute('call-skill', { action: 'read', skill: 'chart' })
     const skillPayload = JSON.parse(readText(skillResult as ResourceToolResult)) as { content: string; skill: string }
@@ -63,7 +57,6 @@ describe('createVBIResourceTools', () => {
         describe: rs.fn(async () => ({ dsl: { chartType: 'line' }, id: 'chart-1', name: 'Chart' })),
         list: rs.fn(),
         open: rs.fn(async () => chartBuilder as never),
-        references: rs.fn(async () => []),
         remove: rs.fn(async () => ({ id: 'chart-1', name: 'Chart' })),
         rename,
       },
@@ -88,37 +81,5 @@ describe('createVBIResourceTools', () => {
     })
     expect(JSON.parse(readText(renameResult as ResourceToolResult))).toEqual({ id: 'chart-1', name: 'Updated Chart' })
     expect(rename).toHaveBeenCalledWith('chart-1', 'Updated Chart')
-  })
-
-  test('updates report pages through workspace report actions', async () => {
-    const updatePage = rs.fn(async () => ({
-      dsl: { pages: [{ id: 'page-1', title: 'Updated' }] },
-      id: 'report-1',
-      name: 'Report',
-    }))
-    const workspace: VBIAgentWorkspace = {
-      report: {
-        describe: rs.fn(),
-        list: rs.fn(),
-        open: rs.fn(),
-        updatePage,
-      },
-    }
-    const reportTool = createVBIResourceTools({ workspace }).find((tool) => tool.name === 'vbi_report')
-
-    const result = await reportTool?.execute('call-1', {
-      action: 'page',
-      id: 'report-1',
-      pageAction: 'update',
-      pageId: 'page-1',
-      title: 'Updated',
-    })
-
-    expect(JSON.parse(readText(result as ResourceToolResult))).toEqual({ id: 'report-1', name: 'Report' })
-    expect(updatePage).toHaveBeenCalledWith('report-1', 'page-1', {
-      chartId: undefined,
-      insightId: undefined,
-      title: 'Updated',
-    })
   })
 })

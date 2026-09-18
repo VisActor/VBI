@@ -1,7 +1,5 @@
 import { application } from '../../core/store'
 
-type ApplicationState = ReturnType<typeof application.getState>
-type ReportDetailState = ApplicationState['reportDetail']
 type ProjectableResource = {
   editor: {
     builders: Record<string, { builder: unknown; version: number }>
@@ -36,25 +34,6 @@ const projectResource = (resource: ProjectableResource) => ({
     visibleItems: resource.records.visibleItems,
   },
 })
-
-const projectReportDetail = (reportDetail: ReportDetailState) => ({
-  activePageId: reportDetail.activePageId,
-  connectedChartId: reportDetail.connectedChartId,
-  connectedChartIds: reportDetail.connectedChartIds,
-  connectedInsightId: reportDetail.connectedInsightId,
-  connectedInsightIds: reportDetail.connectedInsightIds,
-  hasProvider: Boolean(reportDetail.provider),
-  hasReportBuilder: Boolean(reportDetail.reportBuilder),
-  pageActionBusy: reportDetail.pageActionBusy,
-  pageSections: reportDetail.pageSections.map(({ chartBuilder, insightBuilder, ...section }) => ({
-    ...section,
-    hasChartBuilder: Boolean(chartBuilder),
-    hasInsightBuilder: Boolean(insightBuilder),
-  })),
-  pages: reportDetail.pages,
-  reportId: reportDetail.reportId,
-})
-
 export const createApplicationSnapshot = () => {
   const state = application.getState()
   const agentSnapshot = state.agent.chat.snapshot
@@ -110,8 +89,6 @@ export const createApplicationSnapshot = () => {
         value: state.layout.workspacePlacement.value,
       },
     },
-    report: projectResource(state.report),
-    reportDetail: projectReportDetail(state.reportDetail),
     theme: {
       mode: state.theme.mode,
     },

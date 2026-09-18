@@ -12,14 +12,14 @@ describe('builder workspace helpers', () => {
 
   test('creates a workspace from direct builder instances and explicit slots', async () => {
     const chartBuilder = { build: () => ({ chartType: 'bar' }) }
-    const reportSlot = { open: async () => ({ build: () => ({ pages: [] }) }) }
+    const insightSlot = { open: async () => ({ build: () => ({ content: '' }) }) }
 
     const workspace = createBuilderWorkspace({
       chart: chartBuilder as never,
-      report: reportSlot as never,
+      insight: insightSlot as never,
     })
 
     await expect(workspace.chart?.snapshot?.()).resolves.toEqual({ dsl: { chartType: 'bar' } })
-    await expect(workspace.report?.open()).resolves.toMatchObject({ build: expect.any(Function) })
+    await expect(workspace.insight?.open()).resolves.toMatchObject({ build: expect.any(Function) })
   })
 })

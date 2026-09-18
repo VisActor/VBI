@@ -6,7 +6,6 @@ import type { VBIProviderAgentAdapter } from './adapter'
 export interface VBIProviderAgentKitOptions extends VBIProviderClientOptions {
   chartId?: string
   insightId?: string
-  reportId?: string
 }
 
 export interface VBIProviderAgentKit extends VBIProviderAgentAdapter {
@@ -16,9 +15,8 @@ export interface VBIProviderAgentKit extends VBIProviderAgentAdapter {
 export const createVBIProviderAgentKit = ({
   chartId,
   insightId,
-  reportId,
   ...clientOptions
 }: VBIProviderAgentKitOptions): VBIProviderAgentKit => {
   const client = createVBIProviderClient(clientOptions)
-  return { client, ...createVBIProviderAgentAdapter({ chartId, client, insightId, reportId }) }
+  return { client, ...createVBIProviderAgentAdapter({ chartId, client, insightId }) }
 }

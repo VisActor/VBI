@@ -31,17 +31,12 @@ import * as DashboardInsightAPI from 'src/dashboard-builder/features/insight/ind
 import * as DashboardModulesAPI from 'src/dashboard-builder/modules/index'
 import * as InsightAPI from 'src/insight-builder/index'
 import * as InsightModulesAPI from 'src/insight-builder/modules/index'
-import * as ReportAPI from 'src/report-builder/index'
-import * as ReportFeaturesAPI from 'src/report-builder/features/index'
-import * as ReportPageAPI from 'src/report-builder/features/page/index'
-import * as ReportModulesAPI from 'src/report-builder/modules/index'
 import * as TypesAPI from 'src/types/index'
 import * as BuilderTypesAPI from 'src/types/builder/index'
 import * as ChartDSLTypesAPI from 'src/types/chartDSL/index'
 import * as ConnectorTypesAPI from 'src/types/connector/index'
 import * as DashboardTypesAPI from 'src/types/dashboardDSL/index'
 import * as InsightTypesAPI from 'src/types/insightDSL/index'
-import * as ReportTypesAPI from 'src/types/reportDSL/index'
 import * as UtilsAPI from 'src/utils/index'
 import * as TreeAPI from 'src/utils/tree/index'
 import * as VBIAPI from 'src/vbi/index'
@@ -53,14 +48,11 @@ import { getConnector, registerConnector } from 'src/chart-builder/connector'
 import { VBIChartBuilder } from 'src/chart-builder/builder'
 import { VBIDashboardBuilder } from 'src/dashboard-builder/builder'
 import { VBIInsightBuilder } from 'src/insight-builder/builder'
-import { VBIReportBuilder } from 'src/report-builder/builder'
 import { createDashboardWidgetYMap, removeDashboardWidgetLayouts } from 'src/vbi/from/dashboard-widget-y-map'
-import { createReportPageYMap, ensureReportPages, locateReportPageIndexById } from 'src/vbi/from/report-page-y-map'
 import { toYMap } from 'src/vbi/normalize/to-y-map'
 import { ensureYArray } from 'src/vbi/normalize/ensure-y-array'
 import { getResourceUUID } from 'src/vbi/resource-uuid'
 import { createResourceStore } from 'src/vbi/resources/resource-store'
-import { buildVBIReportSnapshotDSL } from 'src/report-builder/modules/build-snapshot'
 import { buildWhere } from 'src/chart-builder/pipeline/vqueryDSL/buildWhere'
 import { resolveDatePredicate } from 'src/chart-builder/pipeline/vqueryDSL/resolveDatePredicate'
 
@@ -89,17 +81,12 @@ describe('unit/internal utilities', () => {
       DashboardModulesAPI,
       InsightAPI,
       InsightModulesAPI,
-      ReportAPI,
-      ReportFeaturesAPI,
-      ReportPageAPI,
-      ReportModulesAPI,
       TypesAPI,
       BuilderTypesAPI,
       ChartDSLTypesAPI,
       ConnectorTypesAPI,
       DashboardTypesAPI,
       InsightTypesAPI,
-      ReportTypesAPI,
       UtilsAPI,
       TreeAPI,
       VBIAPI,
@@ -114,7 +101,6 @@ describe('unit/internal utilities', () => {
     expect(ChartBuilderAPI.VBIChartBuilder).toBe(VBIChartBuilder)
     expect(DashboardAPI.VBIDashboardBuilder).toBe(VBIDashboardBuilder)
     expect(InsightAPI.VBIInsightBuilder).toBe(VBIInsightBuilder)
-    expect(ReportAPI.VBIReportBuilder).toBe(VBIReportBuilder)
   })
 
   it('checks filter guards and tree helpers through exported utilities', () => {
@@ -226,34 +212,6 @@ describe('unit/internal utilities', () => {
     removeDashboardWidgetLayouts(dsl, 'remove-map')
     expect(items.length).toBe(1)
   })
-
-  it('covers report page helpers and missing snapshot resources', () => {
-    const doc = new Y.Doc()
-    const root = doc.getMap('root')
-    const page = createReportPageYMap({ id: '', title: 'Page', chartId: undefined, insightId: undefined })
-    root.set('page', page)
-    expect(page.get('id')).toBeTruthy()
-    expect(page.get('chartId')).toBe('')
-    const pages = ensureReportPages([{ id: 'p1', title: 'One', chartId: 'c1', insightId: 'i1' }])
-    root.set('pages', pages)
-    expect(locateReportPageIndexById(pages, 'p1')).toBe(0)
-    expect(locateReportPageIndexById(pages, 'missing')).toBe(-1)
-
-    expect(() =>
-      buildVBIReportSnapshotDSL(
-        {
-          uuid: 'report',
-          version: 0,
-          pages: [{ id: 'p1', title: 'One', chartId: 'missing-chart', insightId: 'missing-insight' }],
-        },
-        {
-          charts: createResourceStore<any, any, any>(() => ({ build: () => undefined })),
-          insights: createResourceStore<any, any, any>(() => ({ build: () => undefined })),
-        },
-      ),
-    ).toThrow('Missing chart resource')
-  })
-
   it('covers resource store DSL-to-builder resolution and delete branches', () => {
     const store = createResourceStore<{ build: () => { value: number } }, { value: number }, { bump?: number }>(
       (dsl, options) => ({
@@ -282,12 +240,6 @@ describe('unit/internal utilities', () => {
     expect(dashboardBuilder.getChartBuilder('missing')).toBeUndefined()
     expect(dashboardBuilder.getInsightBuilder('')).toBeUndefined()
     expect(dashboardBuilder.getInsightBuilder('missing')).toBeUndefined()
-
-    const reportBuilder = new VBIReportBuilder(new Y.Doc())
-    expect(reportBuilder.getChartBuilder('')).toBeUndefined()
-    expect(reportBuilder.getInsightBuilder('')).toBeUndefined()
-    expect(() => reportBuilder.snapshot()).toThrow('Report snapshot requires a resource registry')
-
     const insightBuilder = new VBIInsightBuilder(new Y.Doc())
     const peer = new VBIInsightBuilder(new Y.Doc())
     peer.applyUpdate(insightBuilder.encodeStateAsUpdate())

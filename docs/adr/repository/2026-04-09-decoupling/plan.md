@@ -5,12 +5,12 @@
 
 ## Goal
 
-Build a unified platform access layer around `@visactor/vbi-provider`, so pages, CLI, and any JS runtime all operate `chart / insight / report` resources through the same Provider model.
+Build a unified platform access layer around `@visactor/vbi-provider`, so pages, CLI, and any JS runtime all operate `chart / insight` resources through the same Provider model.
 
 After completion, the system should have:
 
 - `apps/packages/vbi-provider` as the platform-level application SDK.
-- Three first-class entry points: `ChartProvider / InsightProvider / ReportProvider`.
+- Three first-class entry points: `ChartProvider / InsightProvider`.
 - Provider can directly return the corresponding Builder.
 - The backend is clearly split into management plane and data plane.
 - `vbi_fe` accesses resources through SDK rather than page-private logic.
@@ -93,7 +93,7 @@ Includes:
 
 - Package directory structure, build config, and lint / typecheck aligned with the monorepo.
 - `VBIProviderClient`.
-- `ChartProvider / InsightProvider / ReportProvider`.
+- `ChartProvider / InsightProvider`.
 - Shared resource semantics: `create / remove / rename / open / close / getBuilder / getSummary / getDetail / snapshot`.
 - Type contract for Provider returning Builder.
 
@@ -119,10 +119,9 @@ Includes:
 - Management plane:
   - resource creation / deletion / rename
   - resource summary / detail queries
-  - report structural orchestration commands
   - reference checks and snapshot export
 - Data plane:
-  - opening `chart / insight / report` collaborative documents
+  - opening `chart / insight` collaborative documents
   - snapshot restoration
   - incremental sync
 
@@ -130,8 +129,7 @@ Definition of done:
 
 - REST exposes only business JSON.
 - Hocuspocus / Yjs protocol only handles the collaboration data plane.
-- All three resource types, `chart / insight / report`, can independently connect to collaborative documents.
-- `report` still only owns orchestration and does not absorb content resources.
+- All two resource types, `chart / insight`, can independently connect to collaborative documents.
 
 Blockers:
 
@@ -158,7 +156,6 @@ Definition of done:
 
 - `ChartProvider.open()` can return an operable `VBIChartBuilder`.
 - `InsightProvider.open()` can return an operable `VBIInsightBuilder`.
-- `ReportProvider.open()` can return an operable `VBIReportBuilder`.
 - SDK can run in both browser and Node.js environments.
 
 Blockers:
@@ -176,7 +173,6 @@ Includes:
 - Converge existing resource services into SDK calls.
 - Converge existing collaboration hooks into Provider consumption.
 - Management pages perform resource CRUD through Provider.
-- Report pages obtain report builder through `ReportProvider`, then open chart / insight provider through references.
 
 Definition of done:
 
@@ -200,9 +196,6 @@ Includes:
 - Design the first command set:
   - `chart create/get/update/remove`
   - `insight create/get/update/remove`
-  - `report create/get/remove`
-  - `report page add/remove/reorder`
-  - `report snapshot`
 - CLI internally calls Provider through `@visactor/vbi-provider`.
 
 Definition of done:
@@ -225,14 +218,10 @@ Required scenarios:
 
 1. Pages can independently manage chart through SDK.
 2. Pages can independently manage insight through SDK.
-3. Pages can independently manage report through SDK.
-4. Pages can open report through `ReportProvider` and open chart / insight through references.
-5. CLI can create and operate all three resource types.
-6. CLI can orchestrate report page.
-7. Node.js scripts can directly open Builder through SDK.
-8. Builder edit results correctly synchronize through the collaboration path.
-9. REST no longer leaks raw `Bytes`.
-10. The boundary between `report` structural orchestration and `chart / insight` content editing is clear.
+3. CLI can create and operate both resource types.
+4. Node.js scripts can directly open Builder through SDK.
+5. Builder edit results correctly synchronize through the collaboration path.
+6. REST no longer leaks raw `Bytes`.
 
 Definition of done:
 
@@ -278,7 +267,7 @@ pnpm run typecheck
 This topic is complete only when all of the following are true:
 
 1. `@visactor/vbi-provider` has become a stable first-class platform entry point.
-2. The three Provider boundaries are clear and can directly return Builder.
+2. The two Provider boundaries are clear and can directly return Builder.
 3. The backend has completed management-plane / data-plane layering.
 4. `vbi_fe` uses SDK as the main path.
 5. `vbi_tui` can operate resources through SDK.

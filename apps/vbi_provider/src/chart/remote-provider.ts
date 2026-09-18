@@ -28,6 +28,5 @@ export const createRemoteChartProvider = (config: VBIProviderClientOptions, reso
     getSummary: core.api.getSummary,
     getDetail: () => (core.state.builder ? core.getLocalDetail() : core.api.getDetail()),
     snapshot: () => (core.state.builder ? core.getLocalSnapshot() : core.api.getSnapshot()),
-    getReferences: core.api.getReferences,
   }
 }

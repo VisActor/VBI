@@ -75,7 +75,7 @@ The stream adapter must:
 
 Keep VBI resource ownership in the frontend provider kit:
 
-- The `vbi_resource` tool calls Provider REST APIs for list/create/get/rename/remove and report page operations.
+- The `vbi_resource` tool calls Provider REST APIs for list/create/get/rename/remove.
 - Builder tools from `@visactor/vbi-agent` operate on collaboration-backed VBI builders.
 - Collaboration connection creation, sync wait, cleanup, and connector registration stay behind workspace slots.
 

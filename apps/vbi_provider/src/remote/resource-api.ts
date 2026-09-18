@@ -4,7 +4,6 @@ import type {
   ProviderResource,
   RemoteBuilderState,
   RemoteSessionConnection,
-  ReportReference,
   ResourceCreateInput,
   VBIProviderClientOptions,
 } from '../types'
@@ -50,7 +49,6 @@ export const createRemoteResourceApi = <
       state.resourceId = created.id
       return toSummary(await getResponse())
     },
-    getReferences: () => requestRemote<ReportReference[]>(config, `${resourcePath()}/references`),
     getResponse,
     getSession: () => requestRemote<RemoteSessionConnection>(config, `${resourcePath()}/collaboration`),
     getSummary: async () => toSummary(await getResponse()),

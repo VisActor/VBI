@@ -5,7 +5,7 @@
 
 ## Scope
 
-This plan only covers `packages/vbi`: the `createChart` root entry point, unified `VBIChartBuilder` / `VBIChartDSL` naming, deprecated aliases, tests, and generated artifact updates. It does not implement `createReport`, change the runtime field structure of chart DSL, or rename feature builders such as `MeasuresBuilder` / `DimensionsBuilder`.
+This plan only covers `packages/vbi`: the `createChart` root entry point, unified `VBIChartBuilder` / `VBIChartDSL` naming, deprecated aliases, tests, and generated artifact updates. It does not implement `createDashboard`, change the runtime field structure of chart DSL, or rename feature builders such as `MeasuresBuilder` / `DimensionsBuilder`.
 
 ## Phase 1: Lock Public API Behavior First
 
@@ -101,7 +101,7 @@ Changes:
 3. Update `VBIBuilder` snippets in examples to `VBIChartBuilder`.
 4. Check for missed direct references to `VBIDSL` / `VBI.from` / `createEmptyChart`.
 
-Note: the first phase does not physically move the `builder/`, `types/builder/`, or `vbi/from/` directories. Complete symbol alignment and compatibility layers first, then reassess directory restructuring when `reportBuilder` lands to avoid meaningless churn.
+Note: the first phase does not physically move the `builder/`, `types/builder/`, or `vbi/from/` directories. Complete symbol alignment and compatibility layers first, then reassess directory restructuring when `dashboardBuilder` lands to avoid meaningless churn.
 
 ## Phase 6: Generated Artifacts and Verification
 

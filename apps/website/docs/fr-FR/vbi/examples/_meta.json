@@ -15,10 +15,5 @@
     "type": "file",
     "name": "dashboard",
     "label": "dashboard"
-  },
-  {
-    "type": "file",
-    "name": "report",
-    "label": "report"
   }
 ]
