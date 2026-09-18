@@ -1,6 +1,6 @@
 # VBI.resources
 
-Namespace resource pada instans VBI, digunakan untuk mendaftarkan resource bersama yang dapat direferensikan oleh dashboard/report.
+Namespace resource pada instans VBI, digunakan untuk mendaftarkan resource bersama yang dapat direferensikan oleh dashboard.
 
 ## Properti
 

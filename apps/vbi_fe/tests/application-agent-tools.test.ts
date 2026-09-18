@@ -8,15 +8,10 @@ const { useAppPreferencesStore } = await import('./application-test-stores')
 const { defaultManageSidebarWidth, defaultWorkspacePlacement, useManageSidebarStore } =
   await import('./application-test-stores')
 const { useNavigationStore } = await import('./application-test-stores')
-const { useReportDetailStore } = await import('./application-test-stores')
 const { defaultWorkspaceSidePanelWidth, useWorkspaceSidePanelStore } = await import('./application-test-stores')
-const { useReportBuilderModel } = await import('./application-test-stores')
-
 const initialPreferencesState = useAppPreferencesStore.getState()
 const initialManageSidebarState = useManageSidebarStore.getState()
 const initialNavigationState = useNavigationStore.getState()
-const initialReportBuilderModelState = useReportBuilderModel.getState()
-const initialReportDetailState = useReportDetailStore.getState()
 const initialWorkspaceSidePanelState = useWorkspaceSidePanelStore.getState()
 
 const readText = (result: { content: Array<{ text: string; type: string }> }) =>
@@ -29,29 +24,6 @@ const getTool = (name: string) => {
   expect(tool).toBeDefined()
   return tool
 }
-
-const createReportSession = () =>
-  ({
-    builder: {
-      build: () => ({
-        pages: [
-          { chartId: 'chart-1', id: 'page-1', title: 'First page' },
-          { id: 'page-2', insightId: 'insight-1', title: 'Second page' },
-        ],
-      }),
-    },
-    handle: {
-      close: rs.fn(async () => undefined),
-      getCollaborationProvider: rs.fn(async () => null),
-      open: rs.fn(async () => null),
-    },
-    opening: null,
-    provider: null,
-    refs: 1,
-    stopSync: null,
-    version: 2,
-  }) as never
-
 describe('VBI application agent tools', () => {
   beforeEach(() => {
     rs.clearAllMocks()
@@ -64,8 +36,6 @@ describe('VBI application agent tools', () => {
       workspacePlacement: defaultWorkspacePlacement,
     })
     useNavigationStore.setState(initialNavigationState, true)
-    useReportBuilderModel.setState(initialReportBuilderModelState, true)
-    useReportDetailStore.setState(initialReportDetailState, true)
     useWorkspaceSidePanelStore.setState(initialWorkspaceSidePanelState, true)
     useWorkspaceSidePanelStore.setState({
       collapsed: false,
@@ -73,7 +43,7 @@ describe('VBI application agent tools', () => {
       mode: 'fixed',
       width: defaultWorkspaceSidePanelWidth,
     })
-    setApplicationPathname('/manage/report')
+    setApplicationPathname('/manage/chart')
   })
 
   test('lists and lazy-loads application skills without legacy resource tool contracts', async () => {
@@ -84,10 +54,7 @@ describe('VBI application agent tools', () => {
     expect(skillIndex).toContain('# VBI Application Skill')
     expect(skillIndex).toContain('References:')
     expect(skillIndex).toContain('application_overview: Tool usage rules')
-    expect(skillIndex).toContain(
-      'resources: application.getState().chart, application.getState().insight, and application.getState().report',
-    )
-    expect(skillIndex).toContain('report_detail: application.getState().reportDetail')
+    expect(skillIndex).toContain('resources: application.getState().chart and application.getState().insight')
     expect(skillIndex).toContain(
       'layout_preferences: application.getState().layout, application.getState().theme, and application.getState().i18n',
     )
@@ -129,18 +96,7 @@ describe('VBI application agent tools', () => {
     const resources = readText(resourcesResult as never)
     expect(resources).toContain('Call list() before open(id)')
     expect(resources).toContain('Do not invent ids')
-
-    const reportDetailResult = await readSkill?.execute('call-read-report-detail', {
-      action: 'read',
-      skill: 'report_detail',
-    })
-    const reportDetail = readText(reportDetailResult as never)
-    expect(reportDetail).toContain('application.getState().reportDetail.pages')
-    expect(reportDetail).toContain('Do not invent page ids')
-
-    const allApplicationSkillContent = [skillIndex, applicationOverview, layout, agent, resources, reportDetail].join(
-      '\n',
-    )
+    const allApplicationSkillContent = [skillIndex, applicationOverview, layout, agent, resources].join('\n')
     expect(allApplicationSkillContent).not.toContain('changeTheme')
     expect(allApplicationSkillContent).not.toContain('listTheme')
     expect(allApplicationSkillContent).not.toContain('setLocale')
@@ -193,42 +149,19 @@ return json({
     expect(readText(result as never)).toContain('"width": 520')
   })
 
-  test('runs resource navigation and report detail commands through the semantic application API', async () => {
+  test('runs resource navigation and snapshots through the semantic application API', async () => {
     const navigate = rs.fn()
     bindApplicationNavigation(navigate)
-    useReportBuilderModel.setState({
-      sessions: {
-        'report-1': createReportSession(),
-      },
-    })
-    useReportDetailStore.setState({ activePageId: 'page-1', reportId: 'report-1' })
     const applicationTool = getTool('vbi_application')
-
     const result = await applicationTool?.execute('call-application', {
       code: `
 await application.getState().chart.open("chart 1");
-await application.getState().report.open("report-1");
-application.getState().reportDetail.setScrolledPage("page-2");
-await waitFor(() => snapshot().reportDetail.activePageId === "page-2");
-return json({ reportDetail: snapshot().reportDetail });
+await application.getState().insight.open("insight-1");
+return json(Object.keys(snapshot()));
 `,
     })
-    const payload = readJson<{
-      result: {
-        reportDetail: {
-          activePageId: string
-          connectedInsightId: string
-          reportId: string
-        }
-      }
-    }>(result as never)
-
     expect(navigate).toHaveBeenNthCalledWith(1, '/manage/chart/chart%201')
-    expect(navigate).toHaveBeenNthCalledWith(2, '/manage/report/report-1')
-    expect(payload.result.reportDetail).toMatchObject({
-      activePageId: 'page-2',
-      connectedInsightId: 'insight-1',
-      reportId: 'report-1',
-    })
+    expect(navigate).toHaveBeenNthCalledWith(2, '/manage/insight/insight-1')
+    expect(readJson<{ result: string[] }>(result as never).result).not.toContain('reportDetail')
   })
 })

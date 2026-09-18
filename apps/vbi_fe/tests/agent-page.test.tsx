@@ -384,7 +384,7 @@ describe('AgentPage', () => {
     fireEvent.pointerDown(screen.getByRole('button', { name: /pro.*high/i }))
     fireEvent.click(await screen.findByRole('menuitem', { name: /max/i }))
     fireEvent.change(screen.getByRole('textbox', { name: /agent/i }), {
-      target: { value: 'Build a sales report' },
+      target: { value: 'Build a sales chart' },
     })
     fireEvent.click(screen.getByRole('button', { name: /^send$/i }))
 
@@ -403,7 +403,7 @@ describe('AgentPage', () => {
       pendingRuntimes.get('conversation-new')?.resolve(runtime)
     })
 
-    await waitFor(() => expect(runtime.send).toHaveBeenCalledWith('Build a sales report'))
+    await waitFor(() => expect(runtime.send).toHaveBeenCalledWith('Build a sales chart'))
     expect(navigatedTo).toEqual([])
   })
 
@@ -591,12 +591,12 @@ describe('AgentPage', () => {
             name: 'vbi_resource',
             arguments: { action: 'list', resource: 'insight' },
           },
-          { type: 'reasoning', reasoning: '最后查询报告资源。' },
+          { type: 'reasoning', reasoning: '最后查看图表详情。' },
           {
             type: 'toolCall',
-            id: 'tool-report',
+            id: 'tool-chart-detail',
             name: 'vbi_resource',
-            arguments: { action: 'list', resource: 'report' },
+            arguments: { action: 'get', resource: 'chart', id: 'chart-1' },
           },
         ],
         timestamp: 10_000,
@@ -625,12 +625,12 @@ describe('AgentPage', () => {
       },
       {
         role: 'toolResult',
-        toolCallId: 'tool-report',
+        toolCallId: 'tool-chart-detail',
         toolName: 'vbi_resource',
         content: [{ type: 'text', text: '{"items":[]}' }],
         details: {
           display: '{"items":[]}',
-          summary: 'vbi_resource report.list completed',
+          summary: 'vbi_resource chart.get completed',
         },
         timestamp: 100_000,
       },
@@ -639,7 +639,7 @@ describe('AgentPage', () => {
         content: [
           {
             type: 'text',
-            text: '当前共有 **2 个数据资源**：\n\n类型\t名称\t创建时间\n图表\t我的折线图\t2026-05-26\n洞察\t关于公式\t2026-05-26\n\n没有报告资源。',
+            text: '当前共有 **2 个数据资源**：\n\n类型\t名称\t创建时间\n图表\t我的折线图\t2026-05-26\n洞察\t关于公式\t2026-05-26',
           },
         ],
         timestamp: 120_000,
@@ -671,16 +671,16 @@ describe('AgentPage', () => {
     expect(await screen.findByText('推理过程')).toBeInTheDocument()
     expect(screen.getByText('先查询图表资源。')).toBeInTheDocument()
     expect(screen.getByText('继续查询洞察资源。')).toBeInTheDocument()
-    expect(screen.getByText('最后查询报告资源。')).toBeInTheDocument()
+    expect(screen.getByText('最后查看图表详情。')).toBeInTheDocument()
     expect(screen.getByText('6 步')).toBeInTheDocument()
 
     expect(screen.getByText('chart.list')).toBeInTheDocument()
     expect(screen.getByText('insight.list')).toBeInTheDocument()
-    expect(screen.getByText('report.list')).toBeInTheDocument()
+    expect(screen.getByText('chart.get')).toBeInTheDocument()
     expect(progressGroup?.querySelectorAll('.vbi-agent-tool-order')).toHaveLength(6)
     expect(screen.queryByText('vbi_resource chart.list completed')).not.toBeInTheDocument()
     expect(screen.queryByText('vbi_resource insight.list completed')).not.toBeInTheDocument()
-    expect(screen.queryByText('vbi_resource report.list completed')).not.toBeInTheDocument()
+    expect(screen.queryByText('vbi_resource chart.get completed')).not.toBeInTheDocument()
     expect(screen.getByRole('table')).toBeInTheDocument()
     expect(screen.getByRole('columnheader', { name: '类型' })).toBeInTheDocument()
     expect(screen.getAllByRole('button', { name: /复制回复/ })).toHaveLength(1)

@@ -1,6 +1,6 @@
 # VBI.resources
 
-L'espace de noms des ressources sur une instance VBI, utilisé pour enregistrer des ressources partagées pouvant être référencées par dashboard/report.
+L'espace de noms des ressources sur une instance VBI, utilisé pour enregistrer des ressources partagées pouvant être référencées par dashboard.
 
 ## Propriétés
 

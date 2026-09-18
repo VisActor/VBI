@@ -11,11 +11,6 @@
   },
   {
     "type": "file",
-    "name": "report",
-    "label": "VBI.report"
-  },
-  {
-    "type": "file",
     "name": "insight",
     "label": "VBI.insight"
   },

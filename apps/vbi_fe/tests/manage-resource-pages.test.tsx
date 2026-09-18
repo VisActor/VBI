@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, rs, test } from '@rstest/core'
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import type { ComponentType } from 'react'
 
-type ResourceKind = 'chart' | 'insight' | 'report'
+type ResourceKind = 'chart' | 'insight'
 
 type ResourceItem = {
   createdAt: string
@@ -49,19 +49,13 @@ const { useAppPreferencesStore } = await import('./application-test-stores')
 const { useManageChartsStore } = await import('./application-test-stores')
 const { useManageInsightsStore } = await import('./application-test-stores')
 const { useNavigationStore } = await import('./application-test-stores')
-const { useReportsStore } = await import('./application-test-stores')
 const { ManageChartsPage } = await import('../src/views/resources/chart/ManageChartsPage')
 const { ManageInsightsPage } = await import('../src/views/resources/insight/ManageInsightsPage')
-const { ReportsPage } = await import('../src/views/resources/report/ReportsPage')
-
 const initialChartsState = useManageChartsStore.getState()
 const initialInsightsState = useManageInsightsStore.getState()
-const initialReportsState = useReportsStore.getState()
-
 const resourcesByKind: Record<ResourceKind, ResourceItem[]> = {
   chart: [],
   insight: [],
-  report: [],
 }
 
 const createResourceItem = (kind: ResourceKind, index: number): ResourceItem => ({
@@ -145,14 +139,6 @@ const scenarios: ResourceScenario[] = [
     renderPage: ManageInsightsPage,
     route: '/manage/insight/insight-1',
   },
-  {
-    createButton: 'New Report',
-    defaultName: 'Untitled Report',
-    kind: 'report',
-    pageTitle: 'Reports',
-    renderPage: ReportsPage,
-    route: '/manage/report/report-1',
-  },
 ]
 
 describe('resource management pages', () => {
@@ -162,10 +148,8 @@ describe('resource management pages', () => {
     useManageChartsStore.setState(initialChartsState, true)
     useManageInsightsStore.setState(initialInsightsState, true)
     useNavigationStore.setState({ navigate, pathname: '' })
-    useReportsStore.setState(initialReportsState, true)
     resourcesByKind.chart = []
     resourcesByKind.insight = []
-    resourcesByKind.report = []
     setupResourceMocks()
   })
 

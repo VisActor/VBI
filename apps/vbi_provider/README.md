@@ -2,11 +2,10 @@
 
 `@visactor/headless-bi-provider` 是 VBI 平台级应用 SDK。
 
-它只暴露三种一等 Provider：
+它只暴露两种一等 Provider：
 
 - `ChartProvider`
 - `InsightProvider`
-- `ReportProvider`
 
 统一入口是 `createVBIProviderClient`，固定关系是：
 
@@ -29,18 +28,10 @@ const createOnlyProvider = client.chart()
 - `open / close / getBuilder`
 - `getSummary / getDetail / snapshot`
 
-资源特定能力：
-
-- `ChartProvider.getReferences()`
-- `InsightProvider.getReferences()`
-- `ReportProvider.exportSnapshot()`
-- `ReportProvider.createPage()` / `updatePage()` / `removePage()` / `reorderPages()`
-
 列表入口：
 
 - `client.listCharts()`
 - `client.listInsights()`
-- `client.listReports()`
 
 ## Browser Example
 
@@ -69,13 +60,13 @@ const client = createVBIProviderClient({
   webSocketPolyfill: WebSocket,
 })
 
-const report = client.report('report-1')
-const builder = await report.open()
+const insight = client.insight('insight-1')
+const builder = await insight.open()
 
 console.log(builder.build())
-console.log(await report.exportSnapshot())
+console.log(await insight.snapshot())
 
-await report.close()
+await insight.close()
 ```
 
 ## Design Constraints

@@ -59,6 +59,5 @@ export const createRemoteInsightProvider = (config: VBIProviderClientOptions, re
     getSummary: core.api.getSummary,
     getDetail,
     snapshot: () => (core.state.builder ? core.getLocalSnapshot() : getRemoteSnapshot()),
-    getReferences: core.api.getReferences,
   }
 }

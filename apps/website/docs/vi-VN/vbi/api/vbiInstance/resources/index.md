@@ -1,6 +1,6 @@
 # VBI.resources
 
-Không gian tên resource trên một phiên bản VBI, dùng để đăng ký các resource dùng chung có thể được dashboard/report tham chiếu.
+Không gian tên resource trên một phiên bản VBI, dùng để đăng ký các resource dùng chung có thể được dashboard tham chiếu.
 
 ## Thuộc tính
 

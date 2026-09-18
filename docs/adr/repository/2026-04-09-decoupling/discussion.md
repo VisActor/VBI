@@ -2,15 +2,15 @@
 
 ## Restating The Goal
 
-The goal of this decoupling is not only to extract `chart / insight / report` from page logic, and not only to make REST interfaces cleaner.
+The goal of this decoupling is not only to extract `chart / insight` from page logic, and not only to make REST interfaces cleaner.
 
 The real goal should be:
 
-1. All `Report / Insight / Chart` operations are essentially built on collaborative documents.
+1. All `Insight / Chart` operations are essentially built on collaborative documents.
 2. All resource operations can be called by pages, CLI, and any JS runtime.
 3. Call entry points should not directly depend on pages or concrete backend interface details; they should depend on a unified Provider abstraction.
-4. Provider is not merely a "connector." It is the resource capability entry point and can directly return `ReportBuilder`, `ChartBuilder`, and `InsightBuilder`.
-5. The whole platform has only three first-class Providers: `ReportProvider`, `ChartProvider`, and `InsightProvider`.
+4. Provider is not merely a "connector." It is the resource capability entry point and can directly return `ChartBuilder` and `InsightBuilder`.
+5. The whole platform has only two first-class Providers: `ChartProvider` and `InsightProvider`.
 
 The core change is:
 
@@ -24,7 +24,6 @@ Pages, CLI, Node scripts, browser sandboxes, and server-rendering environments a
 The previous discussion emphasized:
 
 - Independent resources.
-- `report` only owns orchestration.
 - Separation between storage layer and business layer.
 
 All of that is correct, but still not enough, because it did not converge on a unified access point.
@@ -110,18 +109,16 @@ Real resource editing and continuous state synchronization should happen through
 
 ## Three First-Class Providers
 
-This discussion recommends explicitly having only three first-class Providers:
+This discussion recommends explicitly having only two first-class Providers:
 
 - `ChartProvider`
 - `InsightProvider`
-- `ReportProvider`
 
 Do not keep abstracting them into an overly generic `ResourceProvider<T>` as the main public model. Internal reuse is fine, but public semantics should remain clear.
 
 The reason is simple:
 
-- `chart`, `insight`, and `report` do not share the same operation set.
-- `report` has structural orchestration responsibilities.
+- `chart` and `insight` do not share the same operation set.
 - `chart` has query and rendering-related capabilities.
 - `insight` is a text or semantic content resource.
 
@@ -162,29 +159,6 @@ const insightBuilder = await insightProvider.open()
 insightBuilder.setContent('Monthly overview')
 ```
 
-### 3. ReportProvider
-
-Responsibilities:
-
-- Create / delete / rename report.
-- Connect the report collaborative document.
-- Return `VBIReportBuilder`.
-- Provide page structural orchestration.
-- Provide binding capabilities for child resource references.
-- Provide snapshot / export capabilities.
-
-Example:
-
-```ts
-const reportProvider = await platform.getReportProvider(reportId)
-const reportBuilder = await reportProvider.open()
-await reportProvider.addPage({
-  title: 'Q1',
-  chartId,
-  insightId,
-})
-```
-
 ## What Provider Provides
 
 Provider should at least provide two kinds of capabilities.
@@ -208,12 +182,6 @@ This layer answers "how to connect to a resource."
 - `getDetail()`
 
 And resource-specific operations:
-
-- `ReportProvider.addPage()`
-- `ReportProvider.removePage()`
-- `ReportProvider.reorderPages()`
-- `ReportProvider.bindChart()`
-- `ReportProvider.bindInsight()`
 
 This layer answers "what can be done after connecting."
 
@@ -309,7 +277,7 @@ Provider is the client abstraction that consumes both planes.
 
 ## Unified Semantics For Resource Operations
 
-To make the three Providers truly reusable, define a unified minimum semantic set:
+To make the two Providers truly reusable, define a unified minimum semantic set:
 
 - `create`
 - `remove`
@@ -329,22 +297,6 @@ The value of doing this:
 - CLI commands map naturally.
 - Documentation and SDK remain stable.
 
-## Special Treatment For `report`
-
-Even when adopting Provider First, one boundary must remain:
-
-- `report` is a structural orchestration resource.
-- `chart` and `insight` are content resources.
-
-So although `ReportProvider` can manage pages and references, it should not absorb the responsibilities of `ChartProvider` and `InsightProvider`.
-
-A better pattern:
-
-- `ReportProvider` manages structure.
-- `ChartProvider` manages chart content.
-- `InsightProvider` manages insight content.
-- `ReportProvider` organizes them through `chartId / insightId`.
-
 ## Recommended Platform Object Model
 
 Consider adding a higher-level `VBIProviderClient`:
@@ -352,7 +304,6 @@ Consider adding a higher-level `VBIProviderClient`:
 ```ts
 const client = await createVBIProviderClient(config)
 
-const reportProvider = client.report(reportId)
 const chartProvider = client.chart(chartId)
 const insightProvider = client.insight(insightId)
 ```
@@ -375,7 +326,7 @@ Instead of:
 
 ### Phase 1: Establish The Provider Concept First
 
-- Clarify `ChartProvider / InsightProvider / ReportProvider`.
+- Clarify `ChartProvider / InsightProvider`.
 - Define the unified interface and minimum method set.
 - Clarify that Builder is obtained from Provider.
 
@@ -400,8 +351,8 @@ This decoupling should go one step further, from "resource service decoupling" t
 
 The final stable model should be:
 
-- `chart / insight / report` are three independent resources.
-- `ChartProvider / InsightProvider / ReportProvider` are three first-class entry points.
+- `chart / insight` are two independent resources.
+- `ChartProvider / InsightProvider` are two first-class entry points.
 - Provider can connect to the backend and operate resources in any JS runtime.
 - Provider can directly return the corresponding Builder.
 - Pages, CLI, and scripts are only different consumers of Provider.

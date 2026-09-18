@@ -7,7 +7,6 @@ import { ChartEntity } from './entities/chart.entity'
 import { ChartService } from './chart.service'
 import { CreateChartDto } from './dto/create-chart.dto'
 import { UpdateChartDto } from './dto/update-chart.dto'
-import { ReportReferenceEntity } from '../report/entities/report-reference.entity'
 
 @ApiTags('charts')
 @Controller('charts')
@@ -60,24 +59,6 @@ export class ChartController {
     return this.chartService.findOne(id)
   }
 
-  @Get(':id/references')
-  @ApiOperation({ summary: 'Get chart report references' })
-  @ApiParam({ name: 'id', description: 'Chart ID' })
-  @ApiDataResponse({
-    description: 'Chart references returned',
-    isArray: true,
-    status: 200,
-    type: ReportReferenceEntity,
-  })
-  @ApiErrorResponse({
-    description: 'Chart not found',
-    message: 'Chart not found',
-    status: 404,
-  })
-  findReferences(@Param('id') id: string) {
-    return this.chartService.findReferences(id)
-  }
-
   @Get(':id/collaboration')
   @ApiOperation({ summary: 'Get chart collaboration session metadata' })
   @ApiParam({ name: 'id', description: 'Chart ID' })
@@ -125,11 +106,6 @@ export class ChartController {
     description: 'Chart not found',
     message: 'Chart not found',
     status: 404,
-  })
-  @ApiErrorResponse({
-    description: 'Chart is still referenced by a report page',
-    message: 'Chart is still referenced by report pages',
-    status: 409,
   })
   remove(@Param('id') id: string) {
     return this.chartService.remove(id)

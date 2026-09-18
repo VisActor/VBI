@@ -14,7 +14,7 @@ referenced resource.
 
 ## Context
 
-VBI already has chart, insight, and report builders. Dashboard needs to support a
+VBI already has chart and insight builders. Dashboard needs to support a
 different use case: assembling multiple reusable resources into a responsive
 workspace. This creates several design pressures:
 
@@ -65,18 +65,17 @@ second owner of chart or insight DSL.
 ### 3. Resolve Cross-Resource Builders Through A Shared Registry
 
 `createVBI()` now creates one resource registry and passes it into chart,
-insight, dashboard, report, and resource namespaces.
+insight, dashboard, and resource namespaces.
 
 The registry stores chart and insight resources as either builders or normalized
-DSL. Dashboard and Report both resolve referenced resources through the same
+DSL. Dashboard resolves referenced resources through the same
 registry path:
 
 - existing builder: return it directly.
 - stored DSL: create and cache a builder from that DSL.
 - missing resource or empty id: return `undefined`.
 
-This makes resource resolution consistent between dashboard widgets and report
-pages while preserving chart builder options through namespace-level option
+This makes resource resolution consistent across dashboard widgets while preserving chart builder options through namespace-level option
 merging.
 
 ### 4. Keep Layout Separate From Widget Content
@@ -105,7 +104,6 @@ The staged change moves `createVBI()` toward explicit namespaces:
 - `chart`
 - `insight`
 - `dashboard`
-- `report`
 
 Legacy connector fields remain as deprecated compatibility exports, but new
 composition flows use the namespace APIs. This reduces the pressure to keep
@@ -135,8 +133,6 @@ dashboard.insight.add((widget) => {
   feature hidden in UI code.
 - Chart and Insight ownership stays explicit; Dashboard references them instead
   of duplicating their internal DSL.
-- Report and Dashboard share resource resolution behavior, reducing cross-resource
-  drift.
 - Responsive layout is easy to inspect and update because it is stored at the
   dashboard root.
 - Yjs updates, undo management, and builder APIs stay aligned with the rest of
@@ -177,4 +173,4 @@ The staged test coverage records these intended behaviors:
 - Consider layout validation for overlap, bounds, and breakpoint completeness
   once host UI requirements are stable.
 - Decide whether Dashboard needs a snapshot format that embeds referenced chart
-  and insight DSL, similar to Report snapshots.
+  and insight DSL.

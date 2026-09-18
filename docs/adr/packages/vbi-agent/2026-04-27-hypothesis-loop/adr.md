@@ -41,7 +41,7 @@ The input is an array of experiments. Each experiment contains at least:
 Execution behavior:
 
 - Execute each experiment script sequentially.
-- Inject `workspace`, `chart`, `report`, and `experiment` into each experiment.
+- Inject `workspace`, `chart`, and `experiment` into each experiment.
 - Capture logs, results, and errors.
 - Do not stop the whole batch when a single experiment fails.
 

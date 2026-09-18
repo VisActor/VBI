@@ -7,7 +7,6 @@ const skillLoaders = {
   builder_api: () => import('./skills/references/builder-api').then((module) => module.builderApiSkill),
   layout_preferences: () =>
     import('./skills/references/layout-preferences').then((module) => module.layoutPreferencesSkill),
-  report_detail: () => import('./skills/references/report-detail').then((module) => module.reportDetailSkill),
   resources: () => import('./skills/references/resources').then((module) => module.resourcesSkill),
 } as const
 

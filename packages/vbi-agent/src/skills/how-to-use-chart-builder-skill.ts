@@ -3,7 +3,7 @@ export const chartBuilderSkill = `
 
 ## Chart Resource Tool
 
-Use this skill when the user asks to create, inspect, rename, remove, find references for, or run JavaScript against a VBI chart resource.
+Use this skill when the user asks to create, inspect, rename, remove, or run JavaScript against a VBI chart resource.
 
 This is the entry skill for <code>vbi_chart</code>. This single skill includes the chart resource tool contract plus the chart Builder APIs for core state, dimensions, measures, where filters, and having filters.
 
@@ -15,7 +15,6 @@ Accepted fields are <code>action</code>, <code>id</code>, <code>name</code>, and
 - <code>action: "get"</code>: reads provider metadata for one chart. Requires <code>id</code>. The tool output strips any <code>dsl</code> field; use <code>run</code> to inspect DSL.
 - <code>action: "rename"</code>: renames one chart. Requires <code>id</code> and <code>name</code>.
 - <code>action: "remove"</code>: removes one chart. Requires <code>id</code>.
-- <code>action: "references"</code>: asks the provider where the chart is referenced. Requires <code>id</code>.
 - <code>action: "run"</code>: opens a chart Builder and runs JavaScript. Requires <code>code</code>; optional <code>id</code>.
 
 Example: create a chart resource before editing it.
@@ -46,16 +45,7 @@ Example: rename a chart.
 }
 ~~~
 
-Example: find references before removing a chart.
-
-~~~json
-{
-  "action": "references",
-  "id": "chart-id-from-vbi_resource_lookup"
-}
-~~~
-
-Example: remove a chart after references have been checked.
+Example: remove a chart.
 
 ~~~json
 {
@@ -249,7 +239,7 @@ return json({
 
 ## undoManager
 
-Undo methods are available on chart, insight, and report builders:
+Undo methods are available on chart and insight builders:
 
 - <code>b.undoManager.undo(): boolean</code>
 - <code>b.undoManager.redo(): boolean</code>

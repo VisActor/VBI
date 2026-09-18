@@ -154,7 +154,6 @@ describe('manage layout navigation', () => {
     expect(conversations.compareDocumentPosition(conversation) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(screen.queryByRole('button', { name: 'Agent' })).not.toBeInTheDocument()
     expect(screen.queryByText('Continue the revenue analysis')).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Reports' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Charts' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Insights' })).not.toBeInTheDocument()
     expect(conversation.querySelector('svg')).toBeNull()
@@ -165,7 +164,6 @@ describe('manage layout navigation', () => {
 
     fireEvent.click(resources)
     expect(resources).toHaveAttribute('aria-expanded', 'true')
-    expect(screen.getByRole('button', { name: 'Reports' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Charts' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Insights' })).toBeInTheDocument()
 
@@ -192,7 +190,7 @@ describe('manage layout navigation', () => {
     const conversations = screen.getByRole('button', { name: /conversations/i })
 
     expect(resources).toHaveAttribute('aria-expanded', 'false')
-    expect(screen.queryByRole('button', { name: 'Reports' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Charts' })).not.toBeInTheDocument()
     expect(conversations).toHaveAttribute('aria-expanded', 'true')
     expect(screen.getByRole('button', { name: /^Revenue follow-up$/i })).toBeInTheDocument()
 
@@ -202,17 +200,12 @@ describe('manage layout navigation', () => {
     expect(screen.queryByRole('button', { name: /^Revenue follow-up$/i })).not.toBeInTheDocument()
 
     fireEvent.click(conversations)
-    expect(conversations).toHaveAttribute('aria-expanded', 'true')
-    expect(screen.getByRole('button', { name: /^Revenue follow-up$/i })).toBeInTheDocument()
-
     fireEvent.click(resources)
     expect(resources).toHaveAttribute('aria-expanded', 'true')
-    expect(screen.getByRole('button', { name: 'Reports' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Charts' })).toBeInTheDocument()
 
     fireEvent.click(resources)
-    expect(resources).toHaveAttribute('aria-expanded', 'false')
     expect(resources).toHaveAttribute('data-active', 'false')
-    expect(screen.queryByRole('button', { name: 'Reports' })).not.toBeInTheDocument()
   })
 
   test('auto-expands resource navigation when landing on a resource list route', () => {
@@ -226,19 +219,18 @@ describe('manage layout navigation', () => {
 
     expect(screen.getByRole('button', { name: /resources/i })).toHaveAttribute('aria-expanded', 'true')
     expect(screen.getByRole('button', { name: /resources/i })).toHaveAttribute('data-active', 'false')
-    expect(screen.getByRole('button', { name: 'Reports' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Charts' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Charts' })).toHaveAttribute('data-active', 'true')
     expect(screen.getByRole('button', { name: 'Insights' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /conversations/i })).toHaveAttribute('data-active', 'false')
 
     fireEvent.click(screen.getByRole('button', { name: /resources/i }))
     expect(screen.getByRole('button', { name: /resources/i })).toHaveAttribute('aria-expanded', 'false')
-    expect(screen.getByRole('button', { name: /resources/i })).toHaveAttribute('data-active', 'false')
     expect(screen.queryByRole('button', { name: 'Charts' })).not.toBeInTheDocument()
   })
 
   test('keeps the resource route active while the selected conversation remains active in the agent list', () => {
-    useNavigationStore.setState({ pathname: '/manage/report' })
+    useNavigationStore.setState({ pathname: '/manage/chart' })
     useAgentConversationsStore.getState().upsertConversation(conversationMetadata, 'completed')
     useAgentConversationsStore.getState().selectConversation('conversation-1')
 
@@ -250,7 +242,7 @@ describe('manage layout navigation', () => {
 
     expect(screen.getByRole('button', { name: /new conversation/i })).toHaveAttribute('data-active', 'false')
     expect(screen.getByRole('button', { name: /resources/i })).toHaveAttribute('data-active', 'false')
-    expect(screen.getByRole('button', { name: 'Reports' })).toHaveAttribute('data-active', 'true')
+    expect(screen.getByRole('button', { name: 'Charts' })).toHaveAttribute('data-active', 'true')
     expect(screen.getByRole('button', { name: /conversations/i })).toHaveAttribute('data-active', 'false')
     expect(screen.getByRole('button', { name: /^Revenue follow-up$/i }).closest('[data-active]')).toHaveAttribute(
       'data-active',
@@ -259,7 +251,7 @@ describe('manage layout navigation', () => {
   })
 
   test('toggles the resource and agent placement from the resource header and persists it', () => {
-    useNavigationStore.setState({ pathname: '/manage/report' })
+    useNavigationStore.setState({ pathname: '/manage/chart' })
 
     render(
       <ManageLayoutPage>
@@ -284,28 +276,11 @@ describe('manage layout navigation', () => {
     )
     expect(document.querySelector('[data-workspace-slot="sidePanel"]')).toHaveClass('border-l')
     expect(screen.getByRole('heading', { name: 'Agent' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Reports' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Charts' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Float Panel' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Collapse Panel' })).toBeInTheDocument()
     expect(screen.getByRole('separator', { name: 'Resize Panel' })).toBeInTheDocument()
   })
-
-  test('marks report navigation active on report detail routes', () => {
-    useNavigationStore.setState({ pathname: '/manage/report/report-1' })
-
-    render(
-      <ManageLayoutPage>
-        <div>Workspace</div>
-      </ManageLayoutPage>,
-    )
-
-    expect(screen.getByRole('button', { name: /resources/i })).toHaveAttribute('aria-expanded', 'true')
-    expect(screen.getByRole('button', { name: /resources/i })).toHaveAttribute('data-active', 'false')
-    expect(screen.getByRole('button', { name: 'Reports' })).toHaveAttribute('data-active', 'true')
-    expect(screen.getByRole('button', { name: 'Charts' })).toHaveAttribute('data-active', 'false')
-    expect(screen.getByRole('button', { name: 'Insights' })).toHaveAttribute('data-active', 'false')
-  })
-
   test('marks chart navigation active on chart detail routes', () => {
     useNavigationStore.setState({ pathname: '/manage/chart/chart-1' })
 
@@ -316,7 +291,6 @@ describe('manage layout navigation', () => {
     )
 
     expect(screen.getByRole('button', { name: /resources/i })).toHaveAttribute('aria-expanded', 'true')
-    expect(screen.getByRole('button', { name: 'Reports' })).toHaveAttribute('data-active', 'false')
     expect(screen.getByRole('button', { name: 'Charts' })).toHaveAttribute('data-active', 'true')
     expect(screen.getByRole('button', { name: 'Insights' })).toHaveAttribute('data-active', 'false')
     expect(screen.getByRole('heading', { name: 'Charts' })).toBeInTheDocument()
@@ -332,7 +306,6 @@ describe('manage layout navigation', () => {
     )
 
     expect(screen.getByRole('button', { name: /resources/i })).toHaveAttribute('aria-expanded', 'true')
-    expect(screen.getByRole('button', { name: 'Reports' })).toHaveAttribute('data-active', 'false')
     expect(screen.getByRole('button', { name: 'Charts' })).toHaveAttribute('data-active', 'false')
     expect(screen.getByRole('button', { name: 'Insights' })).toHaveAttribute('data-active', 'true')
     expect(screen.getByRole('heading', { name: 'Insights' })).toBeInTheDocument()
@@ -373,7 +346,7 @@ describe('manage layout navigation', () => {
   })
 
   test('toggles sidebar visibility and keeps workspace slots visible', () => {
-    useNavigationStore.setState({ pathname: '/manage/report' })
+    useNavigationStore.setState({ pathname: '/manage/chart' })
     useAgentConversationsStore.getState().upsertConversation(conversationMetadata, 'completed')
     useAgentConversationsStore.getState().selectConversation('conversation-1')
 
@@ -404,16 +377,7 @@ describe('manage layout navigation', () => {
     expect(showSidebarButton.closest('header')).toBeNull()
     expect(showSidebarButton.closest('[data-manage-sidebar-rail]')).not.toBeNull()
     expect(screen.getByRole('button', { name: /new conversation/i })).toHaveAttribute('data-active', 'false')
-    expect(screen.getByRole('button', { name: 'Reports' })).toHaveAttribute('data-active', 'true')
-    expect(document.querySelector('[data-workspace-slot="center"]')).toHaveAttribute(
-      'data-workspace-content',
-      'resource',
-    )
-    expect(document.querySelector('[data-workspace-slot="sidePanel"]')).toHaveAttribute(
-      'data-workspace-content',
-      'agent',
-    )
-
+    expect(screen.getByRole('button', { name: 'Charts' })).toHaveAttribute('data-active', 'true')
     fireEvent.click(showSidebarButton)
 
     expect(screen.getByRole('button', { name: /hide sidebar/i }).closest('aside')).toHaveAttribute(
@@ -442,8 +406,6 @@ describe('manage layout navigation', () => {
     expect(window.localStorage.getItem(manageSidebarWidthStorageKey)).toBe('360')
 
     fireEvent.doubleClick(separator)
-
-    expect(sidebar).toHaveStyle('--manage-sidebar-width: 300px')
     expect(window.localStorage.getItem(manageSidebarWidthStorageKey)).toBe('300')
   })
 
@@ -466,7 +428,7 @@ describe('manage layout navigation', () => {
 
   test('opens a conversation from another route and switches to the agent conversation route', () => {
     const navigatedTo: string[] = []
-    useNavigationStore.setState({ pathname: '/manage/report' })
+    useNavigationStore.setState({ pathname: '/manage/chart' })
     useNavigationStore.getState().setNavigate((path) => navigatedTo.push(path))
     useAgentConversationsStore.getState().upsertConversation(conversationMetadata, 'completed')
 

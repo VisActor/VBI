@@ -1,12 +1,4 @@
-import {
-  VBI,
-  VBIChartBuilder,
-  VBIInsightBuilder,
-  VBIReportBuilder,
-  type VBIChartDSL,
-  type VBIInsightDSL,
-  type VBIReportDSL,
-} from '@visactor/vbi'
+import { VBI, VBIChartBuilder, VBIInsightBuilder, type VBIChartDSL, type VBIInsightDSL } from '@visactor/vbi'
 import * as Y from 'yjs'
 
 const createDoc = (snapshot?: Uint8Array, updates: Uint8Array[] = []) => {
@@ -31,15 +23,8 @@ export const createInsightDoc = (id: string, content = '') => {
   builder.setContent(content)
   return builder.doc
 }
-
-export const createReportDoc = (id: string, pages: VBIReportDSL['pages'] = []) =>
-  VBI.report.create({ uuid: id, pages, version: 0 }).doc
-
 export const buildChartDSL = (snapshot?: Uint8Array, updates: Uint8Array[] = []): VBIChartDSL =>
   new VBIChartBuilder(createDoc(snapshot, updates)).build()
 
 export const buildInsightDSL = (snapshot?: Uint8Array, updates: Uint8Array[] = []): VBIInsightDSL =>
   new VBIInsightBuilder(createDoc(snapshot, updates)).build()
-
-export const buildReportDSL = (snapshot?: Uint8Array, updates: Uint8Array[] = []): VBIReportDSL =>
-  new VBIReportBuilder(createDoc(snapshot, updates)).build()

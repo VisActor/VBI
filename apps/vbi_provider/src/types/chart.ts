@@ -1,6 +1,6 @@
 import type { HocuspocusProvider } from '@hocuspocus/provider'
 import type { VBIChartBuilder, VBIChartDSL } from '@visactor/vbi'
-import type { ProviderResource, ReportReference, ResourceCreateInput, ResourceSnapshot } from './resource'
+import type { ProviderResource, ResourceCreateInput, ResourceSnapshot } from './resource'
 
 export type ChartSummary = ProviderResource
 
@@ -20,5 +20,4 @@ export interface ChartProvider {
   getSummary(): Promise<ChartSummary>
   getDetail(): Promise<ChartDetail>
   snapshot(): Promise<ResourceSnapshot<VBIChartDSL>>
-  getReferences(): Promise<ReportReference[]>
 }

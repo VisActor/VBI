@@ -230,36 +230,6 @@ describe('unit/builder edge behavior', () => {
     insightStore.registerDSL('unit-insight', { uuid: 'unit-insight', content: 'insight', version: 0 })
     expect(insightStore.resolveBuilder('unit-insight')?.build().content).toBe('insight')
   })
-
-  it('reorders report pages with validation', () => {
-    const report = VBI.report.create({ pages: [], version: 0 })
-    const pageIds: string[] = []
-
-    report.page.add('First', (page) => {
-      page.setChartId('chart-1').setInsightId('insight-1')
-      pageIds.push(page.getId())
-    })
-    report.page.add('Second', (page) => {
-      page.setChartId('chart-2').setInsightId('insight-2')
-      pageIds.push(page.getId())
-    })
-    report.page.add('Third', (page) => {
-      page.setChartId('chart-3').setInsightId('insight-3')
-      pageIds.push(page.getId())
-    })
-
-    report.page.reorder([pageIds[2], pageIds[0], pageIds[1]])
-
-    expect(report.build().pages).toMatchObject([
-      { id: pageIds[2], title: 'Third', chartId: 'chart-3', insightId: 'insight-3' },
-      { id: pageIds[0], title: 'First', chartId: 'chart-1', insightId: 'insight-1' },
-      { id: pageIds[1], title: 'Second', chartId: 'chart-2', insightId: 'insight-2' },
-    ])
-    expect(() => report.page.reorder([pageIds[0], pageIds[1]])).toThrow('page count')
-    expect(() => report.page.reorder([pageIds[0], pageIds[0], pageIds[1]])).toThrow('duplicate')
-    expect(() => report.page.reorder([pageIds[0], pageIds[1], 'missing-page'])).toThrow('not found')
-  })
-
   it('covers dashboard insight missing-layout rollback', () => {
     const dashboard = VBI.dashboard.create(VBI.dashboard.createEmpty('unit-dashboard'))
     expect(() => {

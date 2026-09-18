@@ -1,4 +1,4 @@
-import type { VBIChartBuilder, VBIInsightBuilder, VBIReportBuilder } from '@visactor/vbi'
+import type { VBIChartBuilder, VBIInsightBuilder } from '@visactor/vbi'
 import type { VBIAgentWorkspace, VBIWorkspaceConnectors, VBIWorkspaceSlot } from './types/index'
 
 type Buildable = {
@@ -11,7 +11,6 @@ export interface VBIBuilderWorkspaceInput {
   chart?: VBIWorkspaceSlotInput<VBIChartBuilder>
   connectors?: VBIWorkspaceConnectors
   insight?: VBIWorkspaceSlotInput<VBIInsightBuilder>
-  report?: VBIWorkspaceSlotInput<VBIReportBuilder>
 }
 
 const hasBuild = (value: unknown): value is Buildable =>
@@ -32,10 +31,8 @@ export const createBuilderWorkspace = ({
   chart,
   connectors,
   insight,
-  report,
 }: VBIBuilderWorkspaceInput): VBIAgentWorkspace => ({
   ...(chart ? { chart: toWorkspaceSlot(chart) } : {}),
   ...(connectors ? { connectors } : {}),
   ...(insight ? { insight: toWorkspaceSlot(insight) } : {}),
-  ...(report ? { report: toWorkspaceSlot(report) } : {}),
 })

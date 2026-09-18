@@ -1,6 +1,6 @@
-import type { VBIChartBuilder, VBIInsightBuilder, VBIReportBuilder } from '@visactor/vbi'
+import type { VBIChartBuilder, VBIInsightBuilder } from '@visactor/vbi'
 
-export type VBIResourceKind = 'chart' | 'insight' | 'report'
+export type VBIResourceKind = 'chart' | 'insight'
 
 export type VBIResourceSummary = {
   id: string
@@ -12,12 +12,6 @@ export type VBIResourceCreateInput = {
   name?: string
 }
 
-export type VBIReportPageInput = {
-  chartId?: string
-  insightId?: string
-  title?: string
-}
-
 export interface VBIWorkspaceSlot<TBuilder = unknown> {
   close?(id?: string): Promise<void>
   create?(input?: VBIResourceCreateInput): Promise<unknown> | unknown
@@ -27,18 +21,6 @@ export interface VBIWorkspaceSlot<TBuilder = unknown> {
   remove?(id: string): Promise<unknown> | unknown
   rename?(id: string, name: string): Promise<unknown> | unknown
   snapshot?(id?: string): Promise<unknown> | unknown
-}
-
-export interface VBIReferenceWorkspaceSlot<TBuilder = unknown> extends VBIWorkspaceSlot<TBuilder> {
-  references?(id: string): Promise<unknown> | unknown
-}
-
-export interface VBIReportWorkspaceSlot<TBuilder = unknown> extends VBIWorkspaceSlot<TBuilder> {
-  createPage?(id: string, input?: { title?: string }): Promise<unknown> | unknown
-  exportSnapshot?(id: string): Promise<unknown> | unknown
-  removePage?(id: string, pageId: string): Promise<unknown> | unknown
-  reorderPages?(id: string, pageIds: string[]): Promise<unknown> | unknown
-  updatePage?(id: string, pageId: string, input: VBIReportPageInput): Promise<unknown> | unknown
 }
 
 export interface VBIWorkspaceConnector {
@@ -55,8 +37,7 @@ export interface VBIWorkspaceConnectors {
 }
 
 export interface VBIAgentWorkspace {
-  chart?: VBIReferenceWorkspaceSlot<VBIChartBuilder>
+  chart?: VBIWorkspaceSlot<VBIChartBuilder>
   connectors?: VBIWorkspaceConnectors
-  insight?: VBIReferenceWorkspaceSlot<VBIInsightBuilder>
-  report?: VBIReportWorkspaceSlot<VBIReportBuilder>
+  insight?: VBIWorkspaceSlot<VBIInsightBuilder>
 }

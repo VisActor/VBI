@@ -51,7 +51,6 @@ export type { AppLocaleList, I18nApplication } from './i18n/contract'
 export type { AppThemeList, AppThemeMode, ThemeApplication } from './theme/contract'
 export type { ChartApplication } from './chart/contract'
 export type { InsightApplication } from './insight/contract'
-export type { ReportApplication } from './report/contract'
 export type {
   ResourceApplication,
   ResourceBuilderProjection,
@@ -61,4 +60,3 @@ export type {
   ResourceRecordsApplication,
   ResourceRenameInput,
 } from './resources/contract'
-export type { ReportDetailApplication, ReportDetailPageSection } from './report-detail/contract'

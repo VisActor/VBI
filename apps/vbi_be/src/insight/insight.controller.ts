@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 import { ApiDataResponse, ApiErrorResponse } from '../common/swagger/api-response.decorator'
-import { ReportReferenceEntity } from '../report/entities/report-reference.entity'
 import { CreateInsightDto } from './dto/create-insight.dto'
 import { UpdateInsightDto } from './dto/update-insight.dto'
 import { InsightCollaborationSessionEntity } from './entities/insight-collaboration-session.entity'
@@ -59,24 +58,6 @@ export class InsightController {
     return this.insightService.findOne(id)
   }
 
-  @Get(':id/references')
-  @ApiOperation({ summary: 'Get insight report references' })
-  @ApiParam({ name: 'id', description: 'Insight ID' })
-  @ApiDataResponse({
-    description: 'Insight references returned',
-    isArray: true,
-    status: 200,
-    type: ReportReferenceEntity,
-  })
-  @ApiErrorResponse({
-    description: 'Insight not found',
-    message: 'Insight not found',
-    status: 404,
-  })
-  findReferences(@Param('id') id: string) {
-    return this.insightService.findReferences(id)
-  }
-
   @Get(':id/collaboration')
   @ApiOperation({ summary: 'Get insight collaboration session metadata' })
   @ApiParam({ name: 'id', description: 'Insight ID' })
@@ -124,11 +105,6 @@ export class InsightController {
     description: 'Insight not found',
     message: 'Insight not found',
     status: 404,
-  })
-  @ApiErrorResponse({
-    description: 'Insight is still referenced by a report page',
-    message: 'Insight is still referenced by report pages',
-    status: 409,
   })
   remove(@Param('id') id: string) {
     return this.insightService.remove(id)

@@ -13,14 +13,6 @@ import {
   parseInsightRoomName,
   storeInsightSnapshot,
 } from '../insight/insight-collaboration'
-import {
-  appendReportUpdate,
-  findReportRecord,
-  listReportUpdates,
-  parseReportRoomName,
-  storeReportSnapshot,
-} from '../report/report-collaboration'
-
 type CollaborationHandler = {
   label: string
   appendUpdate(prisma: PrismaService, id: string, update: Uint8Array): Promise<unknown>
@@ -46,14 +38,6 @@ const handlers: CollaborationHandler[] = [
     listUpdates: listInsightUpdates,
     parseRoomName: parseInsightRoomName,
     storeSnapshot: storeInsightSnapshot,
-  },
-  {
-    label: 'Report',
-    appendUpdate: appendReportUpdate,
-    findRecord: findReportRecord,
-    listUpdates: listReportUpdates,
-    parseRoomName: parseReportRoomName,
-    storeSnapshot: storeReportSnapshot,
   },
 ]
 

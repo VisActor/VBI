@@ -1,9 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { randomUUID } from 'crypto'
 import { PrismaService } from '../app/prisma.service'
 import { buildChartDSL, createChartDoc, encodeDoc, toPrismaBytes } from '../common/vbi-doc'
 import { getCollaborationWebSocketUrl } from '../common/collaboration'
-import { findReportUsages } from '../report/report-reference'
 import { buildChartRoomName, clearChartUpdates } from './chart-collaboration'
 import { CreateChartDto } from './dto/create-chart.dto'
 import { UpdateChartDto } from './dto/update-chart.dto'
@@ -68,11 +67,6 @@ export class ChartService {
     })
   }
 
-  async findReferences(id: string) {
-    await this.requireSummary(id)
-    return findReportUsages(this.prisma, { chartId: id })
-  }
-
   async getCollaborationSession(id: string) {
     return {
       resourceId: id,
@@ -85,10 +79,6 @@ export class ChartService {
 
   async remove(id: string) {
     await this.requireSummary(id)
-    const usages = await findReportUsages(this.prisma, { chartId: id })
-    if (usages.length > 0) {
-      throw new ConflictException(`Chart ${id} is still referenced by report pages`)
-    }
     await clearChartUpdates(this.prisma, id)
     return this.prisma.chart.delete({ where: { id }, select: summarySelect })
   }

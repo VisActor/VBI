@@ -1,11 +1,10 @@
 import type { HocuspocusProvider } from '@hocuspocus/provider'
 import type { StoreApi, UseBoundStore } from 'zustand'
-import type { VBIChartBuilder, VBIInsightBuilder, VBIReportBuilder } from '@visactor/vbi'
+import type { VBIChartBuilder, VBIInsightBuilder } from '@visactor/vbi'
 
 export type BuilderByKind = {
   chart: VBIChartBuilder
   insight: VBIInsightBuilder
-  report: VBIReportBuilder
 }
 
 export type BuilderSession<TBuilder> = {

@@ -35,9 +35,6 @@ import { DashboardChartBuilder } from 'src/dashboard-builder/features/chart/char
 import { DashboardChartCollectionBuilder } from 'src/dashboard-builder/features/chart/chart-collection-builder'
 import { DashboardInsightBuilder } from 'src/dashboard-builder/features/insight/insight-builder'
 import { DashboardInsightCollectionBuilder } from 'src/dashboard-builder/features/insight/insight-collection-builder'
-import { VBIReportBuilder } from 'src/report-builder/builder'
-import { ReportPageBuilder } from 'src/report-builder/features/page/page-builder'
-import { buildVBIReportSnapshotDSL } from 'src/report-builder/modules/build-snapshot'
 import { zVBIDimensionGroupSchema } from 'src/types/chartDSL/dimensions/dimensions'
 import { zVBIHavingClause } from 'src/types/chartDSL/havingFilter/having'
 import { zVBIMeasureGroup } from 'src/types/chartDSL/measures/measures'
@@ -48,10 +45,8 @@ import {
   removeDashboardWidgetLayouts,
 } from 'src/vbi/from/dashboard-widget-y-map'
 import { createDashboardBuilderFromVBIDashboardDSLInput } from 'src/vbi/from/from-vbi-dashboard-dsl-input'
-import { ensureReportPages } from 'src/vbi/from/report-page-y-map'
 import { setBaseDSLFields } from 'src/vbi/from/set-base-dsl-fields'
 import { createVBIDashboardNamespace } from 'src/vbi/namespaces/dashboard'
-import { createVBIReportNamespace } from 'src/vbi/namespaces/report'
 import { createVBIResourceNamespace } from 'src/vbi/namespaces/resources'
 import { ensureHavingGroup } from 'src/vbi/normalize/ensure-having-group'
 import { ensureWhereGroup } from 'src/vbi/normalize/ensure-where-group'
@@ -357,7 +352,7 @@ describe('unit/coverage edges', () => {
     insightCollection.remove('missing')
   })
 
-  it('covers dashboard and report input helpers and namespaces with absent options', () => {
+  it('covers dashboard input helpers and namespaces with absent options', () => {
     const dashboardBuilder = createDashboardBuilderFromVBIDashboardDSLInput({
       uuid: 'dashboard',
       widgets: [{ id: 'w1', type: 'chart', title: 'Chart', description: '', chartId: 'chart-1' }],
@@ -375,20 +370,11 @@ describe('unit/coverage edges', () => {
     expect(
       createVBIDashboardNamespace(undefined, registry).create(VBI.dashboard.createEmpty('dash')).build().uuid,
     ).toBe('dash')
-    expect(createVBIReportNamespace(undefined, registry).create(VBI.report.createEmpty('report')).build().uuid).toBe(
-      'report',
-    )
     expect(
       createVBIDashboardNamespace(undefined, registry)
         .create(VBI.dashboard.createEmpty('dash-options'), { chart: { adapters: {} } } as any)
         .build().uuid,
     ).toBe('dash-options')
-    expect(
-      createVBIReportNamespace(undefined, registry)
-        .create(VBI.report.createEmpty('report-options'), { chart: { adapters: {} } } as any)
-        .build().uuid,
-    ).toBe('report-options')
-
     const doc = new Y.Doc()
     const dsl = doc.getMap('dsl')
     setBaseDSLFields(dsl, { uuid: 'chart', limit: 10 } as any)
@@ -396,55 +382,13 @@ describe('unit/coverage edges', () => {
     const normalizedDoc = new Y.Doc()
     const whereGroup = ensureWhereGroup(undefined)
     const havingGroup = ensureHavingGroup(undefined)
-    const emptyPages = ensureReportPages()
     normalizedDoc.getMap('root').set('where', whereGroup)
     normalizedDoc.getMap('root').set('having', havingGroup)
-    normalizedDoc.getMap('root').set('pages', emptyPages)
     expect(whereGroup.toJSON()).toMatchObject({ id: 'root' })
     expect(havingGroup.toJSON()).toMatchObject({ id: 'root' })
-    expect(emptyPages.length).toBe(0)
   })
 
-  it('covers report page getters, snapshot errors, and resource store empty entries', () => {
-    const report = new VBIReportBuilder(new Y.Doc())
-    expect(report.getUUID()).toBe('uuid-1')
-    report.page.add('Page')
-    const pageId = report.build().pages[0].id
-    const page = report.page.get(pageId)!
-    expect(page.getId()).toBe(pageId)
-    expect(page.chart).toBeUndefined()
-    expect(page.insight).toBeUndefined()
-
-    const pageMap = attach(new Y.Map<any>())
-    pageMap.set('id', 'empty-resource-page')
-    const pageLookups: string[] = []
-    const directPage = new ReportPageBuilder(
-      {
-        getChartBuilder: (chartId: string) => {
-          pageLookups.push(chartId)
-          return undefined
-        },
-        getInsightBuilder: (insightId: string) => {
-          pageLookups.push(insightId)
-          return undefined
-        },
-      } as any,
-      pageMap,
-    )
-    expect(directPage.chart).toBeUndefined()
-    expect(directPage.insight).toBeUndefined()
-    expect(pageLookups).toEqual(['', ''])
-
-    const chartStore = createResourceStore<any, any, any>(() => ({ build: () => ({ uuid: 'chart' }) }))
-    chartStore.registerDSL('chart', { uuid: 'chart' })
-    const insightStore = createResourceStore<any, any, any>(() => ({ build: () => undefined }))
-    expect(() =>
-      buildVBIReportSnapshotDSL(
-        { uuid: 'report', version: 0, pages: [{ id: 'p1', title: 'Page', chartId: 'chart', insightId: 'missing' }] },
-        { charts: chartStore, insights: insightStore },
-      ),
-    ).toThrow('Missing insight resource')
-
+  it('covers resource store empty entries', () => {
     const store = createResourceStore<{ build: () => undefined }, undefined, void>(() => ({ build: () => undefined }))
     store.registerBuilder('empty', { build: () => undefined })
     expect(store.entries()).toEqual([])

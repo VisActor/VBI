@@ -15,8 +15,6 @@ import {
 import { themeApplicationStore, setThemeApplicationMode } from '../src/application/theme/store'
 import { chartApplicationStore } from '../src/application/chart/store'
 import { insightApplicationStore } from '../src/application/insight/store'
-import { reportApplicationStore } from '../src/application/report/store'
-import { reportDetailApplicationStore } from '../src/application/report-detail/store'
 import type { BuilderByKind, BuilderStoreState } from '../src/application/resources/resource-builder.types'
 import type { ResourceKind } from '../src/types'
 import {
@@ -83,7 +81,6 @@ export const useNavigationStore: any = {
     go: goApplicationPath,
     openChart: (id: string) => goApplicationPath(`/manage/chart/${id}`),
     openInsight: (id: string) => goApplicationPath(`/manage/insight/${id}`),
-    openReport: (id: string) => goApplicationPath(`/manage/report/${id}`),
     setNavigate: (navigate: (path: string) => void) => {
       testNavigate = navigate
     },
@@ -164,13 +161,9 @@ export const useWorkspaceSidePanelStore: any = {
 
 export const useManageChartsStore: any = chartApplicationStore
 export const useManageInsightsStore: any = insightApplicationStore
-export const useReportsStore: any = reportApplicationStore
-export const useReportDetailStore: any = reportDetailApplicationStore
-
 const storeByKind = {
   chart: chartApplicationStore,
   insight: insightApplicationStore,
-  report: reportApplicationStore,
 }
 
 const createBuilderModel = <TKind extends ResourceKind>(kind: TKind) => {
@@ -196,4 +189,3 @@ const createBuilderModel = <TKind extends ResourceKind>(kind: TKind) => {
 
 export const useChartBuilderModel: any = createBuilderModel('chart')
 export const useInsightBuilderModel: any = createBuilderModel('insight')
-export const useReportBuilderModel: any = createBuilderModel('report')

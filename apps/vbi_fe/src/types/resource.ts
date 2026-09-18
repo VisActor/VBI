@@ -1,4 +1,4 @@
-export type ResourceKind = 'chart' | 'insight' | 'report'
+export type ResourceKind = 'chart' | 'insight'
 
 export type ResourceItem = {
   id: string

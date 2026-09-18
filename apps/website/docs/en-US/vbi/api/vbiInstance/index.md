@@ -2,7 +2,7 @@
 
 Creates an independent VBI instance.
 
-Each instance has its own resource registry, suitable for isolating different reports, dashboards, or test contexts within the same application.
+Each instance has its own resource registry, suitable for isolating different dashboards or test contexts within the same application.
 
 ## Function Signature
 
@@ -15,7 +15,7 @@ function createVBI<TQueryDSL, TSeedDSL>(defaultBuilderOptions: VBIChartBuilderOp
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `defaultBuilderOptions` | VBIChartBuilderOptions<TQueryDSL, TSeedDSL> | Default chart Builder configuration, passed to chart Builders created in chart, report, and dashboard. |
+| `defaultBuilderOptions` | VBIChartBuilderOptions<TQueryDSL, TSeedDSL> | Default chart Builder configuration, passed to chart Builders created in chart and dashboard. |
 
 ---
 
@@ -35,15 +35,14 @@ const VBI: VBIInstance = createVBI()
 
 # VBIInstance
 
-The VBI instance returned by createVBI, serving as the unified entry point for chart, insight, dashboard, report, and other capabilities.
+The VBI instance returned by createVBI, serving as the unified entry point for chart, insight, dashboard, and other capabilities.
 
 ## Properties
 
 | Property | Type | Description |
 | --- | --- | --- |
 | **connectors** | `VBIConnectorNamespace` | Connector registration, retrieval, and release APIs. |
-| **resources** | `VBIResourceNamespace` | Chart and insight resource registration APIs, used by dashboard/report to reference shared resources. |
+| **resources** | `VBIResourceNamespace` | Chart and insight resource registration APIs, used by dashboard to reference shared resources. |
 | **chart** | `VBIChartNamespace<TQueryDSL, TSeedDSL>` | Chart Builder creation API. |
 | **insight** | `VBIInsightNamespace` | Insight Builder creation API. |
 | **dashboard** | `VBIDashboardNamespace<TQueryDSL, TSeedDSL>` | Dashboard Builder creation API. |
-| **report** | `VBIReportNamespace<TQueryDSL, TSeedDSL>` | Report Builder creation API. |

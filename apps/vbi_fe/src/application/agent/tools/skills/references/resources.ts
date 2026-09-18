@@ -1,7 +1,7 @@
 export const resourcesSkill = `
 # Resource Application API
 
-Use application.getState().chart, application.getState().insight, and application.getState().report for resource workflows.
+Use application.getState().chart and application.getState().insight for resource workflows.
 
 Shared resource commands:
 - await application.getState().chart.list()
@@ -16,9 +16,8 @@ Shared resource commands:
 - application.getState().chart.editor.connect(id, userName)
 - await application.getState().chart.editor.release(id)
 
-Use the same shape for insight and report:
+Use the same shape for insight:
 - application.getState().insight.*
-- application.getState().report.*
 
 Resource state:
 - application.getState().chart.records.loading

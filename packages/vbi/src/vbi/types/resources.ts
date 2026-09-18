@@ -52,7 +52,7 @@ export interface VBIInsightResourceNamespace {
   unregister(uuid: string): boolean
 }
 
-/** @description VBI 实例上的资源命名空间，用于注册可被 dashboard/report 引用的共享资源。 */
+/** @description VBI 实例上的资源命名空间，用于注册可被 dashboard 引用的共享资源。 */
 export interface VBIResourceNamespace {
   /** @description 图表资源管理 API。 */
   chart: VBIChartResourceNamespace

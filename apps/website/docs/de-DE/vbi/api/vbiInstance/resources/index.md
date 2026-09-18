@@ -1,6 +1,6 @@
 # VBI.resources
 
-Der Ressourcen-Namespace auf einer VBI-Instanz, zum Registrieren gemeinsamer Ressourcen, die von dashboard/report referenziert werden können.
+Der Ressourcen-Namespace auf einer VBI-Instanz, zum Registrieren gemeinsamer Ressourcen, die von dashboard referenziert werden können.
 
 ## Eigenschaften
 

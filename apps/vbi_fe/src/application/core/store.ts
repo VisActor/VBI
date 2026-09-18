@@ -8,10 +8,6 @@ import { insightApplicationStore } from '../insight/store'
 import type { InsightApplication } from '../insight/contract'
 import type { LayoutApplication } from '../layout/contract'
 import { layoutApplicationStore } from '../layout/store'
-import { reportApplicationStore } from '../report/store'
-import type { ReportApplication } from '../report/contract'
-import type { ReportDetailApplication } from '../report-detail/contract'
-import { reportDetailApplicationStore } from '../report-detail/store'
 import { themeApplicationStore } from '../theme/store'
 import type { ThemeApplication } from '../theme/contract'
 import { applicationObjectIs } from './equality'
@@ -32,8 +28,6 @@ export type ApplicationState = {
   i18n: I18nApplication
   insight: InsightApplication
   layout: LayoutApplication
-  report: ReportApplication
-  reportDetail: ReportDetailApplication
   theme: ThemeApplication
 }
 
@@ -70,40 +64,6 @@ const createApplicationState = (): ApplicationState => ({
     rename: insightApplicationStore.getState().rename,
   },
   layout: layoutApplicationStore.getState(),
-  report: {
-    activate: reportApplicationStore.getState().activate,
-    create: reportApplicationStore.getState().create,
-    delete: reportApplicationStore.getState().delete,
-    editor: reportApplicationStore.getState().editor,
-    list: reportApplicationStore.getState().list,
-    open: reportApplicationStore.getState().open,
-    records: reportApplicationStore.getState().records,
-    rename: reportApplicationStore.getState().rename,
-  },
-  reportDetail: {
-    activePageId: reportDetailApplicationStore.getState().activePageId,
-    activate: reportDetailApplicationStore.getState().activate,
-    addChart: reportDetailApplicationStore.getState().addChart,
-    addInsight: reportDetailApplicationStore.getState().addInsight,
-    addPage: reportDetailApplicationStore.getState().addPage,
-    connectedChartId: reportDetailApplicationStore.getState().connectedChartId,
-    connectedChartIds: reportDetailApplicationStore.getState().connectedChartIds,
-    connectedInsightId: reportDetailApplicationStore.getState().connectedInsightId,
-    connectedInsightIds: reportDetailApplicationStore.getState().connectedInsightIds,
-    connect: reportDetailApplicationStore.getState().connect,
-    pageActionBusy: reportDetailApplicationStore.getState().pageActionBusy,
-    pageSections: reportDetailApplicationStore.getState().pageSections,
-    pages: reportDetailApplicationStore.getState().pages,
-    provider: reportDetailApplicationStore.getState().provider,
-    removeChart: reportDetailApplicationStore.getState().removeChart,
-    removeInsight: reportDetailApplicationStore.getState().removeInsight,
-    removePage: reportDetailApplicationStore.getState().removePage,
-    reportBuilder: reportDetailApplicationStore.getState().reportBuilder,
-    reportId: reportDetailApplicationStore.getState().reportId,
-    selectPage: reportDetailApplicationStore.getState().selectPage,
-    setScrolledPage: reportDetailApplicationStore.getState().setScrolledPage,
-    syncActivePage: reportDetailApplicationStore.getState().syncActivePage,
-  },
   theme: themeApplicationStore.getState(),
 })
 
@@ -117,8 +77,6 @@ const bindApplicationSources = () => {
   i18nApplicationStore.subscribe(emitApplicationChange)
   insightApplicationStore.subscribe(emitApplicationChange)
   layoutApplicationStore.subscribe(emitApplicationChange)
-  reportApplicationStore.subscribe(emitApplicationChange)
-  reportDetailApplicationStore.subscribe(emitApplicationChange)
   themeApplicationStore.subscribe(emitApplicationChange)
 }
 

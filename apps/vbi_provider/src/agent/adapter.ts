@@ -6,7 +6,6 @@ export interface VBIProviderAgentAdapterOptions {
   chartId?: string
   client: VBIProviderClient
   insightId?: string
-  reportId?: string
 }
 
 export interface VBIProviderAgentAdapter {
@@ -18,9 +17,8 @@ export const createVBIProviderAgentAdapter = ({
   chartId,
   client,
   insightId,
-  reportId,
 }: VBIProviderAgentAdapterOptions): VBIProviderAgentAdapter => {
-  const workspace = createVBIProviderWorkspace({ chartId, client, insightId, reportId })
+  const workspace = createVBIProviderWorkspace({ chartId, client, insightId })
   return {
     tools: createVBIResourceTools({ workspace }),
     workspace,

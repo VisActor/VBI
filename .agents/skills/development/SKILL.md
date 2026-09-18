@@ -38,7 +38,7 @@ package, practice, or entropy risk in front of you.
 
 ## Ownership Map
 
-- `packages/vbi`: VBIChartDSL, Builder, dashboard/report/insight state, and
+- `packages/vbi`: VBIChartDSL, Builder, dashboard/insight state, and
   collaborative editing.
 - `packages/vquery`: QueryDSL-to-SQL and query execution.
 - `packages/vseed`: VSeed examples, lowering, and rendering specs.

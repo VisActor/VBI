@@ -18,9 +18,7 @@ export type { VBIResourceToolsOptions } from './tools/resource-tools'
 export type { VBIBuilderWorkspaceInput, VBIWorkspaceSlotInput } from './workspace'
 export type {
   VBIAgentWorkspace,
-  VBIReferenceWorkspaceSlot,
-  VBIReportPageInput,
-  VBIReportWorkspaceSlot,
+  VBIWorkspaceSlot,
   VBIResourceCreateInput,
   VBIResourceKind,
   VBIResourceSummary,

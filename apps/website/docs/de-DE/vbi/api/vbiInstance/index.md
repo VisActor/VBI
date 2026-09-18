@@ -2,7 +2,7 @@
 
 Erstellt eine unabhängige VBI-Instanz.
 
-Jede Instanz besitzt ihre eigene Ressourcenregistrierung und eignet sich dazu, unterschiedliche Reports, Dashboards oder Testkontexte innerhalb derselben Anwendung zu isolieren.
+Jede Instanz besitzt ihre eigene Ressourcenregistrierung und eignet sich dazu, unterschiedliche Dashboards oder Testkontexte innerhalb derselben Anwendung zu isolieren.
 
 ## Funktionssignatur
 
@@ -15,7 +15,7 @@ function createVBI<TQueryDSL, TSeedDSL>(defaultBuilderOptions: VBIChartBuilderOp
 
 | Parameter | Typ | Beschreibung |
 | --- | --- | --- |
-| `defaultBuilderOptions` | VBIChartBuilderOptions<TQueryDSL, TSeedDSL> | Standardkonfiguration für den Chart Builder, die an Chart Builder übergeben wird, die in chart, report und dashboard erstellt werden. |
+| `defaultBuilderOptions` | VBIChartBuilderOptions<TQueryDSL, TSeedDSL> | Standardkonfiguration für den Chart Builder, die an Chart Builder übergeben wird, die in chart und dashboard erstellt werden. |
 
 ---
 
@@ -35,15 +35,14 @@ const VBI: VBIInstance = createVBI()
 
 # VBIInstance
 
-Die von createVBI zurückgegebene VBI-Instanz ist der einheitliche Einstiegspunkt für chart, insight, dashboard, report und weitere Funktionen.
+Die von createVBI zurückgegebene VBI-Instanz ist der einheitliche Einstiegspunkt für chart, insight, dashboard, weitere Funktionen.
 
 ## Eigenschaften
 
 | Eigenschaft | Typ | Beschreibung |
 | --- | --- | --- |
 | **connectors** | `VBIConnectorNamespace` | APIs zum Registrieren, Abrufen und Freigeben von Connectors. |
-| **resources** | `VBIResourceNamespace` | APIs zum Registrieren von Chart- und Insight-Ressourcen, damit dashboard/report gemeinsame Ressourcen referenzieren können. |
+| **resources** | `VBIResourceNamespace` | APIs zum Registrieren von Chart- und Insight-Ressourcen, damit dashboard gemeinsame Ressourcen referenzieren können. |
 | **chart** | `VBIChartNamespace<TQueryDSL, TSeedDSL>` | API zum Erstellen von Chart Buildern. |
 | **insight** | `VBIInsightNamespace` | API zum Erstellen von Insight Buildern. |
 | **dashboard** | `VBIDashboardNamespace<TQueryDSL, TSeedDSL>` | API zum Erstellen von Dashboard Buildern. |
-| **report** | `VBIReportNamespace<TQueryDSL, TSeedDSL>` | API zum Erstellen von Report Buildern. |

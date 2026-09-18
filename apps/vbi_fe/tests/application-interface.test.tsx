@@ -31,8 +31,6 @@ const { chartApplicationStore } = await import('../src/application/chart/store')
 const { i18nApplicationStore } = await import('../src/application/i18n/store')
 const { insightApplicationStore } = await import('../src/application/insight/store')
 const { layoutApplicationStore } = await import('../src/application/layout/store')
-const { reportApplicationStore } = await import('../src/application/report/store')
-const { reportDetailApplicationStore } = await import('../src/application/report-detail/store')
 const { themeApplicationStore } = await import('../src/application/theme/store')
 const { VbiAppProviders } = await import('../src/app/providers')
 const { appLocales } = await import('../src/i18n')
@@ -57,9 +55,6 @@ const {
 const { useManageChartsStore } = await import('./application-test-stores')
 const { useManageInsightsStore } = await import('./application-test-stores')
 const { useNavigationStore } = await import('./application-test-stores')
-const { useReportsStore } = await import('./application-test-stores')
-const { useReportDetailStore } = await import('./application-test-stores')
-
 const initialPreferencesState = useAppPreferencesStore.getState()
 const initialAgentConversationsState = useAgentConversationsStore.getState()
 const initialManageSidebarState = useManageSidebarStore.getState()
@@ -67,8 +62,6 @@ const initialWorkspaceSidePanelState = useWorkspaceSidePanelStore.getState()
 const initialChartsState = useManageChartsStore.getState()
 const initialInsightsState = useManageInsightsStore.getState()
 const initialNavigationState = useNavigationStore.getState()
-const initialReportDetailState = useReportDetailStore.getState()
-const initialReportsState = useReportsStore.getState()
 const navigate = rs.fn()
 
 const createResourceItem = (id: string, name: string) => ({
@@ -90,7 +83,7 @@ describe('application interface', () => {
     window.localStorage.removeItem(workspaceSidePanelFloatingPositionStorageKey)
     window.localStorage.removeItem(workspaceSidePanelModeStorageKey)
     window.localStorage.removeItem(workspaceSidePanelWidthStorageKey)
-    window.history.replaceState(null, '', '/manage/report')
+    window.history.replaceState(null, '', '/manage/chart')
     useAppPreferencesStore.setState(initialPreferencesState, true)
     useAgentConversationsStore.setState(initialAgentConversationsState, true)
     useWorkspaceSidePanelStore.setState(initialWorkspaceSidePanelState, true)
@@ -109,10 +102,8 @@ describe('application interface', () => {
     useManageChartsStore.setState(initialChartsState, true)
     useManageInsightsStore.setState(initialInsightsState, true)
     useNavigationStore.setState(initialNavigationState, true)
-    useReportDetailStore.setState(initialReportDetailState, true)
-    useReportsStore.setState(initialReportsState, true)
     bindApplicationNavigation(navigate)
-    setApplicationPathname('/manage/report')
+    setApplicationPathname('/manage/chart')
   })
 
   test('reads fresh imperative state before any React subscription is mounted', () => {
@@ -142,6 +133,7 @@ describe('application interface', () => {
 
   test('composes public application state from dedicated domain stores', () => {
     const state = application.getState()
+    expect(Object.keys(state).sort()).toEqual(['agent', 'chart', 'i18n', 'insight', 'layout', 'theme'])
     expect(state.agent).toBe(agentApplicationStore.getState())
     expect(state.chart.records).toBe(chartApplicationStore.getState().records)
     expect('sessions' in (state.chart as unknown as Record<string, unknown>)).toBe(false)
@@ -149,10 +141,6 @@ describe('application interface', () => {
     expect(state.insight.records).toBe(insightApplicationStore.getState().records)
     expect('sessions' in (state.insight as unknown as Record<string, unknown>)).toBe(false)
     expect(state.layout).toBe(layoutApplicationStore.getState())
-    expect(state.report.records).toBe(reportApplicationStore.getState().records)
-    expect('sessions' in (state.report as unknown as Record<string, unknown>)).toBe(false)
-    expect(state.reportDetail.pages).toBe(reportDetailApplicationStore.getState().pages)
-    expect('dispose' in (state.reportDetail as unknown as Record<string, unknown>)).toBe(false)
     expect(state.theme).toBe(themeApplicationStore.getState())
   })
 
@@ -324,16 +312,14 @@ describe('application interface', () => {
     ;(resourceApi.listResources as unknown as { mockResolvedValue(value: unknown): void }).mockResolvedValue([])
     await application.getState().chart.open('chart 1')
     await application.getState().insight.open('insight-1')
-    await application.getState().report.open('report-1')
     setApplicationPathname('/agent')
-    const cleanup = application.getState().report.activate()
-    await waitFor(() => expect(navigate).toHaveBeenCalledWith('/manage/report'))
+    const cleanup = application.getState().chart.activate()
+    await waitFor(() => expect(navigate).toHaveBeenCalledWith('/manage/chart'))
     cleanup()
 
     expect(navigate).toHaveBeenNthCalledWith(1, '/manage/chart/chart%201')
     expect(navigate).toHaveBeenNthCalledWith(2, '/manage/insight/insight-1')
-    expect(navigate).toHaveBeenNthCalledWith(3, '/manage/report/report-1')
-    expect(navigate).toHaveBeenNthCalledWith(4, '/manage/report')
+    expect(navigate).toHaveBeenNthCalledWith(3, '/manage/chart')
     expect('navigation' in (application as unknown as Record<string, unknown>)).toBe(false)
   })
 
@@ -540,13 +526,13 @@ describe('application interface', () => {
     expect(resourceApi.removeResource).toHaveBeenCalledWith('chart', 'chart-2')
   })
 
-  test('exposes insight and report resource-specific create behavior', async () => {
+  test('exposes chart and insight resource-specific create behavior', async () => {
     ;(insightApi.createInsight as unknown as { mockResolvedValue(value: unknown): void }).mockResolvedValue(
       createResourceItem('insight-1', 'Finding'),
     )
     ;(insightApi.fetchInsights as unknown as { mockResolvedValue(value: unknown): void }).mockResolvedValue([])
     ;(resourceApi.createResource as unknown as { mockResolvedValue(value: unknown): void }).mockResolvedValue(
-      createResourceItem('report-1', 'Report'),
+      createResourceItem('chart-1', 'Chart'),
     )
     ;(resourceApi.listResources as unknown as { mockResolvedValue(value: unknown): void }).mockResolvedValue([])
 
@@ -559,84 +545,10 @@ describe('application interface', () => {
       content: '',
       name: '未命名洞察',
     })
-
-    await application.getState().report.create()
-    expect(resourceApi.createResource).toHaveBeenCalledWith('report', '未命名报告')
-
     await application.getState().insight.create({ content: 'Insight body', name: 'Finding' })
     expect(insightApi.createInsight).toHaveBeenCalledWith({
       content: 'Insight body',
       name: 'Finding',
     })
-
-    await application.getState().report.create({ name: 'Report' })
-    expect(resourceApi.createResource).toHaveBeenCalledWith('report', 'Report')
-  })
-
-  test('exposes report detail commands through application.getState().reportDetail', async () => {
-    const addChart = rs.fn(async () => undefined)
-    const addInsight = rs.fn(async () => undefined)
-    const addPage = rs.fn(async () => undefined)
-    const bootstrap = rs.fn(async () => undefined)
-    const dispose = rs.fn(async () => undefined)
-    const removeChart = rs.fn(async () => undefined)
-    const removeInsight = rs.fn(async () => undefined)
-    const removePage = rs.fn(async () => undefined)
-    const selectPage = rs.fn(async () => undefined)
-    const setScrolledPage = rs.fn()
-    const syncActivePage = rs.fn(async () => undefined)
-
-    useReportDetailStore.setState({
-      activePageId: 'page-1',
-      connectedChartId: 'chart-1',
-      connectedChartIds: ['chart-1'],
-      connectedInsightId: 'insight-1',
-      connectedInsightIds: ['insight-1'],
-      pageActionBusy: false,
-      reportId: 'report-1',
-      addChart,
-      addInsight,
-      addPage,
-      bootstrap,
-      dispose,
-      removeChart,
-      removeInsight,
-      removePage,
-      selectPage,
-      setScrolledPage,
-      syncActivePage,
-    })
-
-    await application.getState().reportDetail.syncActivePage()
-    expect(application.getState().reportDetail).toMatchObject({
-      activePageId: 'page-1',
-      connectedChartId: 'chart-1',
-      connectedInsightId: 'insight-1',
-      reportId: 'report-1',
-    })
-    const cleanup = application.getState().reportDetail.activate('report-1', 'user-1')
-    await waitFor(() => expect(bootstrap).toHaveBeenCalledWith('report-1', 'user-1'))
-    await application.getState().reportDetail.addPage()
-    await application.getState().reportDetail.addChart('page-1')
-    await application.getState().reportDetail.addInsight('page-1')
-    await application.getState().reportDetail.removeChart('page-1')
-    await application.getState().reportDetail.removeInsight('page-1')
-    await application.getState().reportDetail.removePage('page-1')
-    await application.getState().reportDetail.selectPage('page-2')
-    application.getState().reportDetail.setScrolledPage('page-2')
-    cleanup()
-
-    expect(addPage).toHaveBeenCalled()
-    expect(addChart).toHaveBeenCalledWith('page-1')
-    expect(addInsight).toHaveBeenCalledWith('page-1')
-    expect(removeChart).toHaveBeenCalledWith('page-1')
-    expect(removeInsight).toHaveBeenCalledWith('page-1')
-    expect(removePage).toHaveBeenCalledWith('page-1')
-    expect(selectPage).toHaveBeenCalledWith('page-2')
-    await waitFor(() => expect(setScrolledPage).toHaveBeenCalledWith('page-2'))
-    expect(syncActivePage).toHaveBeenCalled()
-    await waitFor(() => expect(dispose).toHaveBeenCalled())
-    expect('bootstrap' in (application.getState().reportDetail as unknown as Record<string, unknown>)).toBe(false)
-    expect('dispose' in (application.getState().reportDetail as unknown as Record<string, unknown>)).toBe(false)
   })
 })

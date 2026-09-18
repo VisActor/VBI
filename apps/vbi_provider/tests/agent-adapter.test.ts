@@ -18,7 +18,6 @@ describe('createVBIProviderAgentAdapter', () => {
         open: rs.fn(async () => insightBuilder),
         snapshot: rs.fn(async () => ({ dsl: { content: 'summary' }, resource: { id: 'insight-1' } })),
       })),
-      report: rs.fn(),
     }
 
     const adapter = createVBIProviderAgentAdapter({
@@ -32,7 +31,6 @@ describe('createVBIProviderAgentAdapter', () => {
       'vbi_resource_lookup',
       'vbi_chart',
       'vbi_insight',
-      'vbi_report',
     ])
     await expect(adapter.workspace.chart.open()).resolves.toBe(chartBuilder)
     await expect(adapter.workspace.insight.open()).resolves.toBe(insightBuilder)
@@ -47,16 +45,12 @@ describe('createVBIProviderAgentTools', () => {
     const client = {
       chart: rs.fn(),
       insight: rs.fn(),
-      report: rs.fn(),
       listCharts: rs.fn(async () => [
         { id: 'chart-1', name: 'Regional margin review', createdAt: '2026-04-09', updatedAt: '2026-04-09' },
         { id: 'chart-2', name: 'Customer discount scatter', createdAt: '2026-04-09', updatedAt: '2026-04-09' },
       ]),
       listInsights: rs.fn(async () => [
         { id: 'insight-1', name: 'Retention risk summary', createdAt: '2026-04-09', updatedAt: '2026-04-09' },
-      ]),
-      listReports: rs.fn(async () => [
-        { id: 'report-1', name: 'Monthly report', createdAt: '2026-04-09', updatedAt: '2026-04-09' },
       ]),
     }
     const adapter = createVBIProviderAgentAdapter({ client: client as never })
@@ -82,16 +76,13 @@ describe('createVBIProviderAgentTools', () => {
     const client = {
       chart: rs.fn(() => ({
         create: rs.fn(async () => ({ id: 'chart-1', name: 'Chart' })),
-        getReferences: rs.fn(async () => []),
         getSummary: rs.fn(async () => ({ id: 'chart-1', name: 'Chart' })),
         remove: rs.fn(async () => ({ id: 'chart-1', name: 'Chart' })),
         rename,
       })),
       insight: rs.fn(),
-      report: rs.fn(),
       listCharts: rs.fn(),
       listInsights: rs.fn(),
-      listReports: rs.fn(),
     }
     const adapter = createVBIProviderAgentAdapter({
       chartId: 'chart-1',

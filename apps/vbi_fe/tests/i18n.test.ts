@@ -172,7 +172,6 @@ const dynamicTranslationKeys = [
   'app.theme.zinc',
   'resource.chart',
   'resource.insight',
-  'resource.report',
 ]
 
 describe('i18n messages', () => {

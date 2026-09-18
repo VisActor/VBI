@@ -10,10 +10,6 @@ const manageResourceRoutes = {
     legacyListPath: '/manage/insights',
     listPath: '/manage/insight',
   },
-  report: {
-    legacyListPath: '/manage/reports',
-    listPath: '/manage/report',
-  },
 } as const
 
 const readRouteId = (pathname: string, prefix: string) => {
@@ -39,15 +35,11 @@ export const resolveApplicationRoute = (target: ApplicationRouteTarget) => {
       return `${manageResourceRoutes.insight.listPath}/${encodeURIComponent(target.id)}`
     case 'insight':
       return manageResourceRoutes.insight.listPath
-    case 'reportDetail':
-      return `${manageResourceRoutes.report.listPath}/${encodeURIComponent(target.id)}`
-    case 'report':
-      return manageResourceRoutes.report.listPath
   }
 }
 
 export const matchApplicationRoute = (pathname: string): ApplicationRouteMatch => {
-  if (pathname === '/' || pathname === '/manage') return { name: 'report' }
+  if (pathname === '/' || pathname === '/manage') return { name: 'chart' }
   if (isAgentRoute(pathname)) {
     return {
       name: 'agent',
@@ -72,16 +64,7 @@ export const matchApplicationRoute = (pathname: string): ApplicationRouteMatch =
   if (pathname.startsWith(`${manageResourceRoutes.insight.legacyListPath}/`)) {
     return { name: 'insightDetail', id: readRouteId(pathname, `${manageResourceRoutes.insight.legacyListPath}/`) }
   }
-  if (pathname === manageResourceRoutes.report.listPath || pathname === manageResourceRoutes.report.legacyListPath) {
-    return { name: 'report' }
-  }
-  if (pathname.startsWith(`${manageResourceRoutes.report.listPath}/`)) {
-    return { name: 'reportDetail', id: readRouteId(pathname, `${manageResourceRoutes.report.listPath}/`) }
-  }
-  if (pathname.startsWith(`${manageResourceRoutes.report.legacyListPath}/`)) {
-    return { name: 'reportDetail', id: readRouteId(pathname, `${manageResourceRoutes.report.legacyListPath}/`) }
-  }
-  return { name: 'report' }
+  return { name: 'chart' }
 }
 
 export const canonicalizeApplicationPathname = (pathname: string) => {
