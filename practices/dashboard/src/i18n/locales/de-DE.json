@@ -1,0 +1,13 @@
+{
+  "empty": "Noch keine Dashboard-Inhalte",
+  "noData": "Keine Daten",
+  "missing": "Referenzierte Ressource nicht gefunden",
+  "toolbar": "Dashboard-Werkzeugleiste",
+  "enableEditing": "Bearbeitung aktivieren",
+  "enterFullscreen": "Vollbild öffnen",
+  "exitFullscreen": "Vollbild verlassen",
+  "fullscreenError": "Vollbild konnte nicht umgeschaltet werden. Bitte erneut versuchen.",
+  "editChart": "Diagramm bearbeiten: {{title}}",
+  "untitledChart": "Unbenanntes Diagramm",
+  "backToDashboard": "Zurück zum Dashboard"
+}

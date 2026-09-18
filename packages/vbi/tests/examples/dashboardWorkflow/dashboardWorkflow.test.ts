@@ -35,7 +35,7 @@ describe('dashboard / DashboardWorkflow', () => {
 
     const builder = LocalVBI.dashboard.create({
       ...LocalVBI.dashboard.createEmpty(),
-      meta: { title: '经营驾驶舱', theme: 'dark' },
+      meta: { title: '经营驾驶舱' },
     })
 
     const applyBuilder = (builder: VBIDashboardBuilder) => {
@@ -170,7 +170,7 @@ describe('dashboard / DashboardWorkflow', () => {
           "xxl": [],
         },
         "meta": {
-          "theme": "dark",
+          "theme": "light",
           "title": "经营驾驶舱",
         },
         "uuid": "uuid-3",
@@ -215,7 +215,7 @@ describe('dashboard / DashboardWorkflow', () => {
 
     const builder = LocalVBI.dashboard.create({
       ...LocalVBI.dashboard.createEmpty(),
-      meta: { title: '商品运营看板', theme: 'dark' },
+      meta: { title: '商品运营看板' },
     })
 
     const applyBuilder = (builder: VBIDashboardBuilder) => {
@@ -340,7 +340,7 @@ describe('dashboard / DashboardWorkflow', () => {
           "xxl": [],
         },
         "meta": {
-          "theme": "dark",
+          "theme": "light",
           "title": "商品运营看板",
         },
         "uuid": "uuid-4",

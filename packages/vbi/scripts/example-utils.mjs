@@ -240,27 +240,17 @@ export default () => {
 }`.trim()
   }
   if (kind === 'dashboard') {
-    const dashboardPreview = json.fullscreen
-      ? `<div ref={previewRef} style={{ overflow: 'auto', background: dashboard.build().meta.theme === 'dark' ? '#000' : '#fff', color: dashboard.build().meta.theme === 'dark' ? '#eee' : '#222' }}>
-    <div style={{ display: 'flex', justifyContent: 'flex-end', padding: 12 }}>
-      <button type='button' style={{ color: 'inherit', background: 'transparent', border: '1px solid currentColor', borderRadius: 6, padding: '6px 12px', cursor: 'pointer' }} onClick={async () => {
-        if (document.fullscreenElement === previewRef.current) await document.exitFullscreen()
-        else await previewRef.current?.requestFullscreen()
-      }}>{locale === 'zh-CN' ? '⛶ 切换全屏' : '⛶ Toggle fullscreen'}</button>
-    </div>
-    <DashboardRenderer builder={dashboard} locale={locale} />
-  </div>`
-      : '<DashboardRenderer builder={dashboard} locale={locale} />'
     return `
 import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
 import { DashboardRenderer, type DashboardRendererProps } from 'dashboard'
-import { useLang } from '@rspress/core/runtime'
-import { useEffect, useState${json.fullscreen ? ', useRef' : ''} } from 'react'
+import { useDark, useLang } from '@rspress/core/runtime'
+import { useEffect, useState } from 'react'
 
 export default () => {
-${json.fullscreen ? '  const previewRef = useRef<HTMLDivElement>(null)\n' : ''}  const [dashboard, setDashboard] = useState<VBIDashboardBuilder | null>(null)
+  const [dashboard, setDashboard] = useState<VBIDashboardBuilder | null>(null)
   const [error, setError] = useState<string | null>(null)
   const locale = useLang() as DashboardRendererProps['locale']
+  const theme = useDark() ? 'dark' : 'light'
 
   useEffect(() => {
     let cancelled = false
@@ -282,7 +272,7 @@ ${renderDashboardSetup(json, 8)}
   if (error) return <div role='alert'>{error}</div>
   if (!dashboard) return <div role='status'>Loading...</div>
 
-  return ${dashboardPreview}
+  return <DashboardRenderer builder={dashboard} mode='edit' locale={locale} theme={theme} />
 }`.trim()
   }
 

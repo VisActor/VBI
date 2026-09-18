@@ -1,0 +1,13 @@
+{
+  "empty": "대시보드 콘텐츠가 없습니다",
+  "noData": "데이터가 없습니다",
+  "missing": "참조한 리소스를 찾을 수 없습니다",
+  "toolbar": "대시보드 도구 모음",
+  "enableEditing": "편집 활성화",
+  "enterFullscreen": "전체 화면 시작",
+  "exitFullscreen": "전체 화면 종료",
+  "fullscreenError": "전체 화면을 전환할 수 없습니다. 다시 시도하세요.",
+  "editChart": "차트 편집: {{title}}",
+  "untitledChart": "제목 없는 차트",
+  "backToDashboard": "대시보드로 돌아가기"
+}

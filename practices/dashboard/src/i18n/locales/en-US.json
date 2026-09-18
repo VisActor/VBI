@@ -1,0 +1,13 @@
+{
+  "empty": "No dashboard content yet",
+  "noData": "No data",
+  "missing": "Referenced resource not found",
+  "toolbar": "Dashboard toolbar",
+  "enableEditing": "Enable editing",
+  "enterFullscreen": "Enter fullscreen",
+  "exitFullscreen": "Exit fullscreen",
+  "fullscreenError": "Unable to change fullscreen. Please try again.",
+  "editChart": "Edit chart: {{title}}",
+  "untitledChart": "Untitled chart",
+  "backToDashboard": "Back to dashboard"
+}

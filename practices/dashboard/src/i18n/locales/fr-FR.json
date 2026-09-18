@@ -1,0 +1,13 @@
+{
+  "empty": "Aucun contenu dans le tableau de bord",
+  "noData": "Aucune donnée",
+  "missing": "Ressource référencée introuvable",
+  "toolbar": "Barre d’outils du tableau de bord",
+  "enableEditing": "Activer la modification",
+  "enterFullscreen": "Passer en plein écran",
+  "exitFullscreen": "Quitter le plein écran",
+  "fullscreenError": "Impossible de changer le mode plein écran. Veuillez réessayer.",
+  "editChart": "Modifier le graphique : {{title}}",
+  "untitledChart": "Graphique sans titre",
+  "backToDashboard": "Retour au tableau de bord"
+}

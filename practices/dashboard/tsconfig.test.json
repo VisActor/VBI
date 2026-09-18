@@ -4,5 +4,5 @@
     "rootDir": ".",
     "types": ["@rstest/core/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src", "tests"]
+  "include": ["src", "src/**/*.json", "tests"]
 }

@@ -735,6 +735,9 @@ importers:
 
   practices/dashboard:
     dependencies:
+      '@ant-design/icons':
+        specifier: 6.1.0
+        version: 6.1.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@visactor/vbi':
         specifier: workspace:*
         version: link:../../packages/vbi
@@ -8048,6 +8051,7 @@ packages:
 
   geojson-linestring-dissolve@0.0.1:
     resolution: {integrity: sha512-Y8I2/Ea28R/Xeki7msBcpMvJL2TaPfaPKP8xqueJfQ9/jEhps+iOJxOR2XCBGgVb12Z6XnDb1CMbaPfLepsLaw==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
