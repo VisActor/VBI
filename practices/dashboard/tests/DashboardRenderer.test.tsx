@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { createVBI } from '@visactor/vbi'
 import { expect, rs, test } from '@rstest/core'
 import type { VBIChartBuilder } from '@visactor/vbi'
@@ -7,11 +7,21 @@ import { observerCount, resize } from './resize'
 
 const standardProps = rs.hoisted(() => rs.fn())
 rs.mock('standard', () => ({
-  APP: (props: { builder: VBIChartBuilder; mode: string; locale: string; theme: string }) => {
+  APP: (props: {
+    builder: VBIChartBuilder
+    mode: string
+    locale: string
+    theme: string
+    hideLocale?: boolean
+    hideTheme?: boolean
+  }) => {
     standardProps(props)
     return (
       <div data-testid='standard' data-theme={props.theme} data-locale={props.locale} data-mode={props.mode}>
         {props.builder.getUUID()}
+        {props.mode === 'edit' ? (
+          <button onClick={() => props.builder.chartType.changeChartType('line')}>Change chart type</button>
+        ) : null}
       </div>
     )
   },
@@ -144,7 +154,7 @@ test('follows widget add, layout update and removal, with a visible missing-reso
   expect(screen.getByText('暂无仪表盘内容')).toBeInTheDocument()
 })
 
-test('keeps two dashboards isolated and uses DSL theme by default', () => {
+test('keeps two dashboards isolated with external theme and locale', () => {
   const first = createChartDashboard()
   const secondVBI = createVBI()
   const second = secondVBI.dashboard.create({
@@ -154,7 +164,7 @@ test('keeps two dashboards isolated and uses DSL theme by default', () => {
   const view = render(
     <>
       <DashboardRenderer builder={first.builder} locale='en-US' />
-      <DashboardRenderer builder={second} locale='ja-JP' />
+      <DashboardRenderer builder={second} locale='ja-JP' theme='dark' />
     </>,
   )
   expect(screen.getByTestId('standard')).toBeInTheDocument()
@@ -187,4 +197,167 @@ test('resolves the chart builder and passes it to Standard in view mode', () => 
   expect(standardProps).toHaveBeenLastCalledWith(expect.objectContaining({ builder: second.chart }))
   view.unmount()
   expect(observerCount()).toBe(count)
+})
+
+test('keeps preview read-only and opens the referenced chart in a fullscreen editor only when editing is enabled', async () => {
+  const { builder, chart } = createChartDashboard()
+  const original = builder.build()
+  const view = render(<DashboardRenderer builder={builder} />)
+  expect(screen.queryByRole('switch')).not.toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: '编辑图表：销售图表' })).not.toBeInTheDocument()
+  expect(screen.getByRole('button', { name: '进入全屏' })).toBeInTheDocument()
+
+  view.rerender(<DashboardRenderer builder={builder} mode='edit' />)
+  expect(screen.getByRole('switch', { name: '启用编辑' })).toBeChecked()
+  fireEvent.click(screen.getByRole('button', { name: '编辑图表：销售图表' }))
+  const editor = await screen.findByRole('dialog', { name: '编辑图表：销售图表' })
+  expect(editor).toHaveClass('vbi-dashboard-chart-editor')
+  expect(within(editor).getByTestId('standard')).toHaveAttribute('data-mode', 'edit')
+  expect(standardProps).toHaveBeenCalledWith(
+    expect.objectContaining({ builder: chart, hideLocale: true, hideTheme: true }),
+  )
+  fireEvent.click(within(editor).getByRole('button', { name: 'Change chart type' }))
+  expect(chart.build().chartType).toBe('line')
+  fireEvent.click(within(editor).getByRole('button', { name: '返回仪表盘' }))
+  await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
+  fireEvent.click(screen.getByRole('switch', { name: '启用编辑' }))
+  expect(screen.queryByRole('button', { name: '编辑图表：销售图表' })).not.toBeInTheDocument()
+  expect(screen.getByTestId('standard')).toHaveAttribute('data-mode', 'view')
+  expect(builder.build()).toEqual(original)
+})
+
+test('applies external locale and theme to the toolbar, previews and open editor without changing DSL', async () => {
+  const { builder, chart } = createChartDashboard()
+  const before = { chart: chart.build(), dashboard: builder.build() }
+  const view = render(<DashboardRenderer builder={builder} mode='edit' />)
+  fireEvent.click(screen.getByRole('button', { name: '编辑图表：销售图表' }))
+  await screen.findByRole('dialog')
+  view.rerender(<DashboardRenderer builder={builder} mode='edit' locale='en-US' theme='dark' />)
+  expect(screen.getByRole('dialog', { name: 'Edit chart: 销售图表' })).toBeInTheDocument()
+  for (const standard of screen.getAllByTestId('standard')) {
+    expect(standard).toHaveAttribute('data-theme', 'dark')
+    expect(standard).toHaveAttribute('data-locale', 'en-US')
+  }
+  expect(screen.getByRole('button', { name: 'Back to dashboard' })).toBeInTheDocument()
+  expect(chart.build()).toEqual(before.chart)
+  expect(builder.build()).toEqual(before.dashboard)
+})
+
+test('closes the editor when its widget is removed, the builder is replaced or mode becomes view', async () => {
+  const first = createChartDashboard()
+  const second = createChartDashboard()
+  const view = render(<DashboardRenderer builder={first.builder} mode='edit' />)
+  const open = async () => {
+    fireEvent.click(screen.getByRole('button', { name: '编辑图表：销售图表' }))
+    await screen.findByRole('dialog')
+  }
+  await open()
+  act(() => first.builder.chart.remove(first.builder.chart.toJSON()[0].id))
+  await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
+  view.rerender(<DashboardRenderer builder={second.builder} mode='edit' />)
+  await open()
+  view.rerender(<DashboardRenderer builder={first.builder} mode='edit' />)
+  await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
+  view.rerender(<DashboardRenderer builder={second.builder} mode='edit' />)
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  await open()
+  view.rerender(<DashboardRenderer builder={second.builder} mode='view' />)
+  await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
+})
+
+test('isolates edit switches and does not offer editing for unresolved resources', () => {
+  const first = createChartDashboard()
+  const second = createChartDashboard()
+  second.builder.chart.add((widget) =>
+    widget
+      .setChart('missing')
+      .setTitle('Missing')
+      .setLayouts({ lg: { x: 0, y: 6, w: 6, h: 4 } }),
+  )
+  render(
+    <>
+      <DashboardRenderer builder={first.builder} mode='edit' />
+      <DashboardRenderer builder={second.builder} mode='edit' />
+    </>,
+  )
+  fireEvent.click(screen.getAllByRole('switch')[0])
+  expect(screen.getAllByRole('button', { name: '编辑图表：销售图表' })).toHaveLength(1)
+  expect(screen.queryByRole('button', { name: '编辑图表：Missing' })).not.toBeInTheDocument()
+})
+
+test('uses only the external theme, even when dashboard metadata specifies a different theme', () => {
+  const vbi = createVBI()
+  const builder = vbi.dashboard.create({ ...vbi.dashboard.createEmpty(), meta: { title: 'Theme', theme: 'dark' } })
+  const view = render(<DashboardRenderer builder={builder} />)
+  expect(view.container.querySelector('section')).toHaveAttribute('data-theme', 'light')
+  expect(builder.build().meta.theme).toBe('dark')
+})
+
+test('handles fullscreen failure, retry, browser exit and unmount without affecting another dashboard', async () => {
+  const first = createChartDashboard()
+  const second = createChartDashboard()
+  const setFullscreen = (element: Element | null) => {
+    Object.defineProperty(document, 'fullscreenElement', { configurable: true, value: element })
+    document.dispatchEvent(new Event('fullscreenchange'))
+  }
+  const view = render(
+    <>
+      <DashboardRenderer builder={first.builder} />
+      <DashboardRenderer builder={second.builder} />
+    </>,
+  )
+  const [root, other] = view.container.querySelectorAll('section')
+  root.requestFullscreen = rs
+    .fn()
+    .mockRejectedValueOnce(new Error('denied'))
+    .mockImplementation(async () => setFullscreen(root))
+  other.requestFullscreen = rs.fn().mockImplementation(async () => setFullscreen(other))
+  const exit = rs.fn().mockImplementation(async () => setFullscreen(null))
+  document.exitFullscreen = exit
+  try {
+    await act(async () => fireEvent.click(within(root).getByRole('button', { name: '进入全屏' })))
+    expect(await screen.findByRole('alert')).toHaveTextContent('无法切换全屏，请重试')
+    await act(async () => fireEvent.click(within(root).getByRole('button', { name: '进入全屏' })))
+    await within(root).findByRole('button', { name: '退出全屏' })
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+    expect(within(other).getByRole('button', { name: '进入全屏' })).toBeInTheDocument()
+    act(() => setFullscreen(null))
+    expect(within(root).getByRole('button', { name: '进入全屏' })).toBeInTheDocument()
+    await act(async () => fireEvent.click(within(other).getByRole('button', { name: '进入全屏' })))
+    await within(other).findByRole('button', { name: '退出全屏' })
+    await act(async () => fireEvent.click(within(other).getByRole('button', { name: '退出全屏' })))
+    await waitFor(() => expect(exit).toHaveBeenCalledTimes(1))
+    await act(async () => fireEvent.click(within(root).getByRole('button', { name: '进入全屏' })))
+    await within(root).findByRole('button', { name: '退出全屏' })
+    view.unmount()
+    expect(exit).toHaveBeenCalledTimes(2)
+  } finally {
+    view.unmount()
+    Reflect.deleteProperty(document, 'fullscreenElement')
+    delete (document as Partial<Document>).exitFullscreen
+  }
+})
+
+test('releases a fullscreen request that finishes after the dashboard unmounts', async () => {
+  const { builder } = createChartDashboard()
+  const view = render(<DashboardRenderer builder={builder} />)
+  const root = view.container.querySelector('section')!
+  let complete: () => void = () => {}
+  root.requestFullscreen = () =>
+    new Promise<void>((resolve) => {
+      complete = resolve
+    })
+  const exit = rs.fn().mockResolvedValue(undefined)
+  document.exitFullscreen = exit
+  try {
+    fireEvent.click(screen.getByRole('button', { name: '进入全屏' }))
+    view.unmount()
+    Object.defineProperty(document, 'fullscreenElement', { configurable: true, value: root })
+    await act(async () => complete())
+    expect(exit).toHaveBeenCalledTimes(1)
+  } finally {
+    view.unmount()
+    Reflect.deleteProperty(document, 'fullscreenElement')
+    delete (document as Partial<Document>).exitFullscreen
+  }
 })

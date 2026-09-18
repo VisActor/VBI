@@ -40,7 +40,7 @@ describe('dashboard / ResourceWorkflow', () => {
 
     const builder = LocalVBI.dashboard.create({
       ...LocalVBI.dashboard.createEmpty(),
-      meta: { title: '季度经营复盘', theme: 'light' },
+      meta: { title: '季度经营复盘' },
     })
 
     const applyBuilder = (builder: VBIDashboardBuilder) => {

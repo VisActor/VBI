@@ -1,0 +1,13 @@
+{
+  "empty": "暂无仪表盘内容",
+  "noData": "暂无数据",
+  "missing": "未找到引用的资源",
+  "toolbar": "仪表盘工具栏",
+  "enableEditing": "启用编辑",
+  "enterFullscreen": "进入全屏",
+  "exitFullscreen": "退出全屏",
+  "fullscreenError": "无法切换全屏，请重试",
+  "editChart": "编辑图表：{{title}}",
+  "untitledChart": "未命名图表",
+  "backToDashboard": "返回仪表盘"
+}

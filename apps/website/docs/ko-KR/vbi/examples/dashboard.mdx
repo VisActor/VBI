@@ -9,20 +9,20 @@ import { registerDemoConnector } from '@components/demoConnector'
 운영 모니터링 대시보드를 참고하여 쿼리 기반 경영 요약, 카테고리 및 고객군별 매출 비중, 매출과 이익 추이, 지역 순위, 배송 분포, 고객 상세 정보, 실행 제안 등 10개의 카드를 구성합니다. 넓은 화면의 첫 행에는 카드 4개, 문서 영역에는 2열, 모바일에는 1열로 표시합니다.
 
 
-> 태그: `dashboard` `multi-column` `responsive` `dark` `operations`
+> 태그: `dashboard` `multi-column` `responsive` `operations`
 
 
 ```tsx preview
 import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
 import { DashboardRenderer, type DashboardRendererProps } from 'dashboard'
-import { useLang } from '@rspress/core/runtime'
-import { useEffect, useState, useRef } from 'react'
+import { useDark, useLang } from '@rspress/core/runtime'
+import { useEffect, useState } from 'react'
 
 export default () => {
-  const previewRef = useRef<HTMLDivElement>(null)
   const [dashboard, setDashboard] = useState<VBIDashboardBuilder | null>(null)
   const [error, setError] = useState<string | null>(null)
   const locale = useLang() as DashboardRendererProps['locale']
+  const theme = useDark() ? 'dark' : 'light'
 
   useEffect(() => {
     let cancelled = false
@@ -88,7 +88,6 @@ export default () => {
           meta: {
             title: '零售运营全景',
             description: 'RETAIL OPERATIONS / 演示数据全量汇总 · 趋势展示最早 12 个月',
-            theme: 'dark',
           },
         })
         const applyBuilder = async (builder: VBIDashboardBuilder) => {
@@ -106,9 +105,9 @@ export default () => {
             `利润率  ${sales ? (profit / sales * 100).toFixed(1) : '0.0'}%`,
           ].join('\n\n'))
           customerSummary.setContent([
-            `订单  ${readTotal('order_id').toLocaleString('zh-CN')} 单`,
-            `客户  ${readTotal('customer_id').toLocaleString('zh-CN')} 位`,
-            `销量  ${readTotal('amount').toLocaleString('zh-CN')} 件`,
+            `订单  ${readTotal('order_id').toFixed(0)} 单`,
+            `客户  ${readTotal('customer_id').toFixed(0)} 位`,
+            `销量  ${readTotal('amount').toFixed(0)} 件`,
           ].join('\n\n'))
 
           builder.insight.add(widget => {
@@ -241,15 +240,7 @@ export default () => {
   if (error) return <div role='alert'>{error}</div>
   if (!dashboard) return <div role='status'>Loading...</div>
 
-  return <div ref={previewRef} style={{ overflow: 'auto', background: dashboard.build().meta.theme === 'dark' ? '#000' : '#fff', color: dashboard.build().meta.theme === 'dark' ? '#eee' : '#222' }}>
-    <div style={{ display: 'flex', justifyContent: 'flex-end', padding: 12 }}>
-      <button type='button' style={{ color: 'inherit', background: 'transparent', border: '1px solid currentColor', borderRadius: 6, padding: '6px 12px', cursor: 'pointer' }} onClick={async () => {
-        if (document.fullscreenElement === previewRef.current) await document.exitFullscreen()
-        else await previewRef.current?.requestFullscreen()
-      }}>{locale === 'zh-CN' ? '⛶ 切换全屏' : '⛶ Toggle fullscreen'}</button>
-    </div>
-    <DashboardRenderer builder={dashboard} locale={locale} />
-  </div>
+  return <DashboardRenderer builder={dashboard} mode='edit' locale={locale} theme={theme} />
 }
 ```
 
@@ -264,13 +255,14 @@ dashboard builder로 chart와 insight 리소스를 조합해 기본 대시보드
 ```tsx preview
 import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
 import { DashboardRenderer, type DashboardRendererProps } from 'dashboard'
-import { useLang } from '@rspress/core/runtime'
+import { useDark, useLang } from '@rspress/core/runtime'
 import { useEffect, useState } from 'react'
 
 export default () => {
   const [dashboard, setDashboard] = useState<VBIDashboardBuilder | null>(null)
   const [error, setError] = useState<string | null>(null)
   const locale = useLang() as DashboardRendererProps['locale']
+  const theme = useDark() ? 'dark' : 'light'
 
   useEffect(() => {
     let cancelled = false
@@ -293,7 +285,7 @@ export default () => {
 
         const builder = LocalVBI.dashboard.create({
           ...LocalVBI.dashboard.createEmpty(),
-          meta: { title: '销售仪表盘', theme: 'light' },
+          meta: { title: '销售仪表盘' },
         })
         const applyBuilder = (builder: VBIDashboardBuilder) => {
           builder.chart.add(chart => {
@@ -330,7 +322,7 @@ export default () => {
   if (error) return <div role='alert'>{error}</div>
   if (!dashboard) return <div role='status'>Loading...</div>
 
-  return <DashboardRenderer builder={dashboard} locale={locale} />
+  return <DashboardRenderer builder={dashboard} mode='edit' locale={locale} theme={theme} />
 }
 ```
 
@@ -345,13 +337,14 @@ export default () => {
 ```tsx preview
 import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
 import { DashboardRenderer, type DashboardRendererProps } from 'dashboard'
-import { useLang } from '@rspress/core/runtime'
+import { useDark, useLang } from '@rspress/core/runtime'
 import { useEffect, useState } from 'react'
 
 export default () => {
   const [dashboard, setDashboard] = useState<VBIDashboardBuilder | null>(null)
   const [error, setError] = useState<string | null>(null)
   const locale = useLang() as DashboardRendererProps['locale']
+  const theme = useDark() ? 'dark' : 'light'
 
   useEffect(() => {
     let cancelled = false
@@ -380,7 +373,7 @@ export default () => {
 
         const builder = LocalVBI.dashboard.create({
           ...LocalVBI.dashboard.createEmpty(),
-          meta: { title: '经营看板', theme: 'dark' },
+          meta: { title: '经营看板' },
         })
         const applyBuilder = (builder: VBIDashboardBuilder) => {
           builder.chart.add(chart => {
@@ -432,7 +425,7 @@ export default () => {
   if (error) return <div role='alert'>{error}</div>
   if (!dashboard) return <div role='status'>Loading...</div>
 
-  return <DashboardRenderer builder={dashboard} locale={locale} />
+  return <DashboardRenderer builder={dashboard} mode='edit' locale={locale} theme={theme} />
 }
 ```
 
@@ -447,13 +440,14 @@ export default () => {
 ```tsx preview
 import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
 import { DashboardRenderer, type DashboardRendererProps } from 'dashboard'
-import { useLang } from '@rspress/core/runtime'
+import { useDark, useLang } from '@rspress/core/runtime'
 import { useEffect, useState } from 'react'
 
 export default () => {
   const [dashboard, setDashboard] = useState<VBIDashboardBuilder | null>(null)
   const [error, setError] = useState<string | null>(null)
   const locale = useLang() as DashboardRendererProps['locale']
+  const theme = useDark() ? 'dark' : 'light'
 
   useEffect(() => {
     let cancelled = false
@@ -470,7 +464,7 @@ export default () => {
 
         const builder = LocalVBI.dashboard.create({
           ...LocalVBI.dashboard.createEmpty(),
-          meta: { title: '组件更新与移除', theme: 'light' },
+          meta: { title: '组件更新与移除' },
         })
         const applyBuilder = (builder: VBIDashboardBuilder) => {
           builder.chart.add(chart => {
@@ -506,7 +500,7 @@ export default () => {
   if (error) return <div role='alert'>{error}</div>
   if (!dashboard) return <div role='status'>Loading...</div>
 
-  return <DashboardRenderer builder={dashboard} locale={locale} />
+  return <DashboardRenderer builder={dashboard} mode='edit' locale={locale} theme={theme} />
 }
 ```
 
@@ -522,13 +516,14 @@ export default () => {
 ```tsx preview
 import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
 import { DashboardRenderer, type DashboardRendererProps } from 'dashboard'
-import { useLang } from '@rspress/core/runtime'
+import { useDark, useLang } from '@rspress/core/runtime'
 import { useEffect, useState } from 'react'
 
 export default () => {
   const [dashboard, setDashboard] = useState<VBIDashboardBuilder | null>(null)
   const [error, setError] = useState<string | null>(null)
   const locale = useLang() as DashboardRendererProps['locale']
+  const theme = useDark() ? 'dark' : 'light'
 
   useEffect(() => {
     let cancelled = false
@@ -551,7 +546,7 @@ export default () => {
 
         const builder = LocalVBI.dashboard.create({
           ...LocalVBI.dashboard.createEmpty(),
-          meta: { title: '经营驾驶舱', theme: 'dark' },
+          meta: { title: '经营驾驶舱' },
         })
         const applyBuilder = (builder: VBIDashboardBuilder) => {
           if (!builder.isEmpty()) {
@@ -660,7 +655,7 @@ export default () => {
   if (error) return <div role='alert'>{error}</div>
   if (!dashboard) return <div role='status'>Loading...</div>
 
-  return <DashboardRenderer builder={dashboard} locale={locale} />
+  return <DashboardRenderer builder={dashboard} mode='edit' locale={locale} theme={theme} />
 }
 ```
 
@@ -675,13 +670,14 @@ export default () => {
 ```tsx preview
 import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
 import { DashboardRenderer, type DashboardRendererProps } from 'dashboard'
-import { useLang } from '@rspress/core/runtime'
+import { useDark, useLang } from '@rspress/core/runtime'
 import { useEffect, useState } from 'react'
 
 export default () => {
   const [dashboard, setDashboard] = useState<VBIDashboardBuilder | null>(null)
   const [error, setError] = useState<string | null>(null)
   const locale = useLang() as DashboardRendererProps['locale']
+  const theme = useDark() ? 'dark' : 'light'
 
   useEffect(() => {
     let cancelled = false
@@ -709,7 +705,7 @@ export default () => {
 
         const builder = LocalVBI.dashboard.create({
           ...LocalVBI.dashboard.createEmpty(),
-          meta: { title: '商品运营看板', theme: 'dark' },
+          meta: { title: '商品运营看板' },
         })
         const applyBuilder = (builder: VBIDashboardBuilder) => {
           if (!builder.isEmpty()) throw new Error('dashboard should be empty')
@@ -790,7 +786,7 @@ export default () => {
   if (error) return <div role='alert'>{error}</div>
   if (!dashboard) return <div role='status'>Loading...</div>
 
-  return <DashboardRenderer builder={dashboard} locale={locale} />
+  return <DashboardRenderer builder={dashboard} mode='edit' locale={locale} theme={theme} />
 }
 ```
 
@@ -806,13 +802,14 @@ VBI resources 네임스페이스로 재사용 가능한 chart/insight 리소스�
 ```tsx preview
 import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
 import { DashboardRenderer, type DashboardRendererProps } from 'dashboard'
-import { useLang } from '@rspress/core/runtime'
+import { useDark, useLang } from '@rspress/core/runtime'
 import { useEffect, useState } from 'react'
 
 export default () => {
   const [dashboard, setDashboard] = useState<VBIDashboardBuilder | null>(null)
   const [error, setError] = useState<string | null>(null)
   const locale = useLang() as DashboardRendererProps['locale']
+  const theme = useDark() ? 'dark' : 'light'
 
   useEffect(() => {
     let cancelled = false
@@ -838,7 +835,7 @@ export default () => {
 
         const builder = LocalVBI.dashboard.create({
           ...LocalVBI.dashboard.createEmpty(),
-          meta: { title: '季度经营复盘', theme: 'light' },
+          meta: { title: '季度经营复盘' },
         })
         const applyBuilder = (builder: VBIDashboardBuilder) => {
           const chartId = resources.charts.quarterlyRevenueChart.getUUID()
@@ -891,6 +888,6 @@ export default () => {
   if (error) return <div role='alert'>{error}</div>
   if (!dashboard) return <div role='status'>Loading...</div>
 
-  return <DashboardRenderer builder={dashboard} locale={locale} />
+  return <DashboardRenderer builder={dashboard} mode='edit' locale={locale} theme={theme} />
 }
 ```

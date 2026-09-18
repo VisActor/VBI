@@ -1,0 +1,13 @@
+{
+  "empty": "Belum ada konten dasbor",
+  "noData": "Tidak ada data",
+  "missing": "Sumber daya yang dirujuk tidak ditemukan",
+  "toolbar": "Bilah alat dasbor",
+  "enableEditing": "Aktifkan pengeditan",
+  "enterFullscreen": "Masuk layar penuh",
+  "exitFullscreen": "Keluar layar penuh",
+  "fullscreenError": "Tidak dapat beralih layar penuh. Silakan coba lagi.",
+  "editChart": "Edit grafik: {{title}}",
+  "untitledChart": "Grafik tanpa judul",
+  "backToDashboard": "Kembali ke dasbor"
+}

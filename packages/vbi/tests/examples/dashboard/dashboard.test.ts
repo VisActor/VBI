@@ -90,7 +90,6 @@ describe('Dashboard', () => {
       meta: {
         title: '零售运营全景',
         description: 'RETAIL OPERATIONS / 演示数据全量汇总 · 趋势展示最早 12 个月',
-        theme: 'dark',
       },
     })
 
@@ -112,9 +111,9 @@ describe('Dashboard', () => {
       )
       customerSummary.setContent(
         [
-          `订单  ${readTotal('order_id').toLocaleString('zh-CN')} 单`,
-          `客户  ${readTotal('customer_id').toLocaleString('zh-CN')} 位`,
-          `销量  ${readTotal('amount').toLocaleString('zh-CN')} 件`,
+          `订单  ${readTotal('order_id').toFixed(0)} 单`,
+          `客户  ${readTotal('customer_id').toFixed(0)} 位`,
+          `销量  ${readTotal('amount').toFixed(0)} 件`,
         ].join('\n\n'),
       )
 
@@ -591,7 +590,7 @@ describe('Dashboard', () => {
         },
         "meta": {
           "description": "RETAIL OPERATIONS / 演示数据全量汇总 · 趋势展示最早 12 个月",
-          "theme": "dark",
+          "theme": "light",
           "title": "零售运营全景",
         },
         "uuid": "uuid-12",
@@ -692,7 +691,7 @@ describe('Dashboard', () => {
 
     const builder = LocalVBI.dashboard.create({
       ...LocalVBI.dashboard.createEmpty(),
-      meta: { title: '销售仪表盘', theme: 'light' },
+      meta: { title: '销售仪表盘' },
     })
 
     const applyBuilder = (builder: VBIDashboardBuilder) => {
@@ -828,7 +827,7 @@ describe('Dashboard', () => {
 
     const builder = LocalVBI.dashboard.create({
       ...LocalVBI.dashboard.createEmpty(),
-      meta: { title: '经营看板', theme: 'dark' },
+      meta: { title: '经营看板' },
     })
 
     const applyBuilder = (builder: VBIDashboardBuilder) => {
@@ -965,7 +964,7 @@ describe('Dashboard', () => {
           "xxl": [],
         },
         "meta": {
-          "theme": "dark",
+          "theme": "light",
           "title": "经营看板",
         },
         "uuid": "uuid-4",
@@ -1009,7 +1008,7 @@ describe('Dashboard', () => {
 
     const builder = LocalVBI.dashboard.create({
       ...LocalVBI.dashboard.createEmpty(),
-      meta: { title: '组件更新与移除', theme: 'light' },
+      meta: { title: '组件更新与移除' },
     })
 
     const applyBuilder = (builder: VBIDashboardBuilder) => {

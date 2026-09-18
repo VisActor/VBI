@@ -23,6 +23,7 @@
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json"
   },
   "dependencies": {
+    "@ant-design/icons": "6.1.0",
     "@visactor/vbi": "workspace:*",
     "@visactor/vseed": "workspace:*",
     "antd": "6.1.3",
