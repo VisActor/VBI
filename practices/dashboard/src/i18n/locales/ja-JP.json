@@ -1,0 +1,13 @@
+{
+  "empty": "ダッシュボードにコンテンツがありません",
+  "noData": "データがありません",
+  "missing": "参照先のリソースが見つかりません",
+  "toolbar": "ダッシュボードツールバー",
+  "enableEditing": "編集を有効にする",
+  "enterFullscreen": "全画面表示",
+  "exitFullscreen": "全画面表示を終了",
+  "fullscreenError": "全画面表示を切り替えられません。再試行してください。",
+  "editChart": "グラフを編集：{{title}}",
+  "untitledChart": "無題のグラフ",
+  "backToDashboard": "ダッシュボードに戻る"
+}

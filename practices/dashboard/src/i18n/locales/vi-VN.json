@@ -1,0 +1,13 @@
+{
+  "empty": "Chưa có nội dung bảng điều khiển",
+  "noData": "Không có dữ liệu",
+  "missing": "Không tìm thấy tài nguyên được tham chiếu",
+  "toolbar": "Thanh công cụ bảng điều khiển",
+  "enableEditing": "Bật chỉnh sửa",
+  "enterFullscreen": "Vào toàn màn hình",
+  "exitFullscreen": "Thoát toàn màn hình",
+  "fullscreenError": "Không thể chuyển chế độ toàn màn hình. Vui lòng thử lại.",
+  "editChart": "Chỉnh sửa biểu đồ: {{title}}",
+  "untitledChart": "Biểu đồ chưa có tiêu đề",
+  "backToDashboard": "Quay lại bảng điều khiển"
+}
