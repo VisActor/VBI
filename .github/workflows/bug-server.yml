@@ -24,9 +24,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Setup environment file
-        run: cp .env.example .env
-
       - name: Setup pnpm
         uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # v4.2.0
         with:

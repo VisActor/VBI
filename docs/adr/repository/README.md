@@ -1,6 +1,5 @@
 # docs/adr/repository
 
-This directory stores repository-level historical context.
-
-- `decisions/`: Numbered repository-level decisions
-- `application-design/`: Cross-package and cross-app topic designs and execution materials
+This directory stores repository-level architecture decisions and cross-package
+designs. VBI focuses on reusable packages, agent skills, integration examples, and
+the documentation website.

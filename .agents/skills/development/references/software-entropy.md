@@ -39,7 +39,6 @@ exports, types, tests, docs, comments, generated references, and old names.
 
 - VBIChartDSL, VQueryDSL, and VSeedDSL are core sources of truth.
 - Builder owns DSL mutation; consumers should use Builder or public package APIs.
-- Provider owns platform resource access and Builder creation.
 - Practices stay independent; move reuse into packages or local utilities.
 
 ## Validation

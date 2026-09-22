@@ -1,0 +1,385 @@
+# chartWorkflow
+
+import { registerDemoConnector } from '@components/demoConnector'
+
+{registerDemoConnector()}
+
+## analyst-workbench-sync-and-schema
+
+分析工作台在配置图表时读取数据集 schema、切换候选图表类型、设置展示偏好，并把协作状态同步给另一端
+
+
+> 标签: `workflow` `collaboration` `schema`
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [],
+          "measures": [],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 20
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = async (builder: VBIChartBuilder) => {
+  if (!builder.isEmpty()) {
+    throw new Error('new analyst chart should start without fields')
+  }
+
+  const schema = await builder.getSchema()
+  if (!schema.some(column => column.name === 'sales')) {
+    throw new Error('demo schema should expose sales')
+  }
+
+  let themeEvents = 0
+  let localeEvents = 0
+  let limitEvents = 0
+  const stopTheme = builder.theme.observe(() => themeEvents += 1)
+  const stopLocale = builder.locale.observe(() => localeEvents += 1)
+  const stopLimit = builder.limit.observe(() => limitEvents += 1)
+
+  builder.theme.setTheme('light')
+  builder.theme.setTheme('dark')
+  builder.locale.setLocale('zh-CN')
+  builder.locale.setLocale('en-US')
+  builder.limit.setLimit(100)
+
+  stopTheme()
+  stopLocale()
+  stopLimit()
+
+  if (builder.theme.getTheme() !== 'dark' || builder.theme.toJSON() !== 'dark') {
+    throw new Error('theme should switch to dark')
+  }
+  if (builder.locale.getLocale() !== 'en-US' || builder.locale.toJSON() !== 'en-US') {
+    throw new Error('locale should switch to en-US')
+  }
+  if (builder.limit.getLimit() !== 100 || builder.limit.toJSON() !== 100) {
+    throw new Error('limit should be persisted')
+  }
+  if (themeEvents !== 1 || localeEvents !== 1 || limitEvents !== 1) {
+    throw new Error('preference observers should fire only for effective changes')
+  }
+
+  builder.dimensions
+    .add('order_date', node => {
+      node
+        .setAlias('下单月份')
+        .setAggregate({ func: 'toMonth' })
+        .setSort({ order: 'asc' })
+    })
+    .add('product_type', node => {
+      node.setAlias('品类').setEncoding('row').setSort({ order: 'asc' })
+    })
+
+  builder.measures
+    .add('sales', node => {
+      node
+        .setAlias('销售额')
+        .setAggregate({ func: 'sum' })
+        .setSort({ order: 'desc' })
+        .setFormat({ type: 'number', prefix: '¥', fractionDigits: 0 })
+    })
+    .add('profit', node => {
+      node
+        .setAlias('利润')
+        .setAggregate({ func: 'avg' })
+        .setFormat({ autoFormat: true })
+    })
+
+  const month = builder.dimensions.find(node => node.getField() === 'order_date')
+  if (!month || month.getSort()?.order !== 'asc') {
+    throw new Error('month dimension should be sortable')
+  }
+  month.clearAggregate().clearSort().setSort({ order: 'asc' })
+
+  const sales = builder.measures.find(node => node.getField() === 'sales')
+  if (!sales || (sales.getFormat() as any)?.type !== 'number') {
+    throw new Error('sales measure should expose its format')
+  }
+  sales.clearFormat().clearSort()
+
+  if (builder.dimensions.findAll().length !== 2 || builder.measures.findAll().length !== 2) {
+    throw new Error('analyst chart should contain two dimensions and two measures')
+  }
+  if (builder.dimensions.find(() => false) !== undefined || builder.measures.find(() => false) !== undefined) {
+    throw new Error('missing fields should not resolve')
+  }
+
+  let missingDimensionRejected = false
+  try {
+    builder.dimensions.update('missing-dimension', node => node.setAlias('missing'))
+  } catch {
+    missingDimensionRejected = true
+  }
+  let missingMeasureRejected = false
+  try {
+    builder.measures.update('missing-measure', node => node.setAlias('missing'))
+  } catch {
+    missingMeasureRejected = true
+  }
+  if (!missingDimensionRejected || !missingMeasureRejected) {
+    throw new Error('updating unknown fields should fail fast')
+  }
+
+  const availableTypes = builder.chartType.getAvailableChartTypes()
+  for (const chartType of availableTypes) {
+    builder.chartType.changeChartType(chartType)
+    builder.chartType.getSupportedDimensionEncodings()
+    builder.chartType.getRecommendedDimensionEncodings(3)
+    builder.chartType.getRecommendedDimensionEncodings(0)
+    builder.chartType.getSupportedMeasureEncodings()
+    builder.chartType.getRecommendedMeasureEncodings(3)
+    builder.chartType.getRecommendedMeasureEncodings(0)
+  }
+  builder.chartType.changeChartType('table')
+  if (builder.chartType.getChartType() !== 'table' || builder.chartType.toJSON() !== 'table') {
+    throw new Error('chart type should return to table for tabular export')
+  }
+
+  const peer = VBI.chart.create({
+    connectorId: 'demoSupermarket',
+    chartType: 'table',
+    dimensions: [],
+    measures: [],
+    whereFilter: { id: 'root', op: 'and', conditions: [] },
+    havingFilter: { id: 'root', op: 'and', conditions: [] },
+    theme: 'light',
+    locale: 'zh-CN',
+    version: 1
+  })
+  peer.applyUpdate(builder.encodeStateAsUpdate(), 'sync-example')
+  peer.build()
+}
+      await applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## filter-review-audit-trail
+
+分析师复核筛选条件时，覆盖日期窗口、嵌套 where 分组、聚合后 having 门槛以及错误更新保护
+
+
+> 标签: `workflow` `filters` `audit`
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [
+            {
+              "field": "product_type",
+              "alias": "品类",
+              "encoding": "column"
+            },
+            {
+              "field": "province",
+              "alias": "省份",
+              "encoding": "column"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "encoding": "column",
+              "aggregate": {
+                "func": "sum"
+              }
+            },
+            {
+              "field": "profit",
+              "alias": "利润",
+              "encoding": "column",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 30
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  let whereEvents = 0
+  let havingEvents = 0
+  const stopWhere = builder.whereFilter.observe(() => whereEvents += 1)
+  const stopHaving = builder.havingFilter.observe(() => havingEvents += 1)
+
+  builder.whereFilter
+    .add('order_date', node => node.setDate({ type: 'range', start: '2024-01-01', end: '2024-04-01', bounds: '[]' }))
+    .add('delivery_date', node => node.setDate({ type: 'period', unit: 'year', year: 2024 }))
+    .add('delivery_date', node => node.setDate({ type: 'period', unit: 'month', year: 2024, month: 2 }))
+    .add('delivery_date', node => node.setDate({ type: 'period', unit: 'week', year: 2024, week: 8 }))
+    .add('delivery_date', node => node.setDate({ type: 'period', unit: 'day', date: '2024-02-29' }))
+    .add('order_date', node => node.setDate({ type: 'relative', mode: 'last', amount: 2, unit: 'year' }))
+    .add('order_date', node => node.setDate({ type: 'relative', mode: 'next', amount: 1, unit: 'quarter' }))
+    .add('order_date', node => node.setDate({ type: 'relative', mode: 'last', amount: 3, unit: 'month' }))
+    .add('order_date', node => node.setDate({ type: 'relative', mode: 'next', amount: 4, unit: 'week' }))
+    .add('order_date', node => node.setDate({ type: 'relative', mode: 'last', amount: 5, unit: 'day' }))
+    .add('order_date', node => node.setDate({ type: 'current', unit: 'year', offset: -1 }))
+    .add('order_date', node => node.setDate({ type: 'current', unit: 'quarter', offset: 1 }))
+    .add('order_date', node => node.setDate({ type: 'current', unit: 'month' }))
+    .add('order_date', node => node.setDate({ type: 'current', unit: 'week' }))
+    .add('order_date', node => node.setDate({ type: 'current', unit: 'day' }))
+    .add('area', node => node.setOperator('in').setValue(['华东', '华南']))
+    .addGroup('or', group => {
+      group.add('province', node => node.setOperator('=').setValue('上海'))
+      group.addGroup('and', nested => {
+        nested.add('customer_type', node => node.setOperator('=').setValue('公司'))
+        nested.add('discount', node => node.setOperator('<').setValue(0.2))
+      })
+    })
+
+  const areaFilter: any = builder.whereFilter.find((entry: any) => entry.getField?.() === 'area')
+  if (!areaFilter || areaFilter.getOperator() !== 'in' || areaFilter.getDate() !== undefined) {
+    throw new Error('area filter should remain a non-date in filter')
+  }
+  areaFilter.setField('country_or_region').setField('area')
+
+  const firstDate: any = builder.whereFilter.find((entry: any) => entry.getField?.() === 'order_date')
+  if (!firstDate?.getDate()) {
+    throw new Error('date filter should expose date predicate')
+  }
+
+  const nestedProvince: any = builder.whereFilter.find((entry: any) => entry.getField?.() === 'province')
+  if (!nestedProvince) {
+    throw new Error('nested province filter should be searchable')
+  }
+  builder.whereFilter.update(nestedProvince.getId(), node => node.setValue('浙江'))
+
+  const outerGroup: any = builder.whereFilter.find((entry: any) => entry.getOperator?.() === 'or')
+  if (!outerGroup || outerGroup.getConditions().length !== 2) {
+    throw new Error('outer where group should contain nested filters')
+  }
+  builder.whereFilter.updateGroup(outerGroup.getId(), group => group.setOperator('and'))
+
+  let nodeAsGroupRejected = false
+  try {
+    builder.whereFilter.updateGroup(areaFilter.getId(), group => group.setOperator('or'))
+  } catch {
+    nodeAsGroupRejected = true
+  }
+  let groupAsNodeRejected = false
+  try {
+    builder.whereFilter.update(outerGroup.getId(), node => node.setOperator('='))
+  } catch {
+    groupAsNodeRejected = true
+  }
+  if (!nodeAsGroupRejected || !groupAsNodeRejected) {
+    throw new Error('where filter should reject wrong update target kind')
+  }
+  builder.whereFilter.remove(-1).remove(999).remove('missing-filter')
+
+  builder.havingFilter
+    .add('sales', node => node.setOperator('>').setValue(10000).setAggregate({ func: 'sum' }))
+    .add('profit', node => node.setOperator('between').setValue([0, 5000]).setAggregate({ func: 'avg' }))
+    .addGroup('or', group => {
+      group.add('sales', node => node.setOperator('>').setValue(50000).setAggregate({ func: 'max' }))
+      group.addGroup('and', nested => {
+        nested.add('profit', node => node.setOperator('>').setValue(1000).setAggregate({ func: 'sum' }))
+      })
+    })
+
+  const salesHaving: any = builder.havingFilter.find((entry: any) => entry.getField?.() === 'sales')
+  if (!salesHaving || salesHaving.getOperator() !== '>' || salesHaving.getAggregate()?.func !== 'sum') {
+    throw new Error('sales having filter should expose operator and aggregate')
+  }
+  builder.havingFilter.update(salesHaving.getId(), node => node.setValue(12000))
+
+  const havingGroup: any = builder.havingFilter.find((entry: any) => entry.getOperator?.() === 'or')
+  if (!havingGroup || havingGroup.getConditions().length !== 2) {
+    throw new Error('having group should contain nested aggregate filters')
+  }
+  builder.havingFilter.updateGroup(havingGroup.getId(), group => group.setOperator('and'))
+
+  let havingNodeAsGroupRejected = false
+  try {
+    builder.havingFilter.updateGroup(salesHaving.getId(), group => group.setOperator('or'))
+  } catch {
+    havingNodeAsGroupRejected = true
+  }
+  let havingGroupAsNodeRejected = false
+  try {
+    builder.havingFilter.update(havingGroup.getId(), node => node.setOperator('='))
+  } catch {
+    havingGroupAsNodeRejected = true
+  }
+  if (!havingNodeAsGroupRejected || !havingGroupAsNodeRejected) {
+    throw new Error('having filter should reject wrong update target kind')
+  }
+  builder.havingFilter.remove(-1).remove(999).remove('missing-having-filter')
+
+  stopWhere()
+  stopHaving()
+  if (whereEvents === 0 || havingEvents === 0) {
+    throw new Error('filter observers should record changes')
+  }
+}
+      await applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```

@@ -1,6 +1,5 @@
 packages:
-  - apps/*
-  - apps/vscode-extension/webview-ui
+  - apps/website
   - packages/*
   - tools/*
   - practices/*

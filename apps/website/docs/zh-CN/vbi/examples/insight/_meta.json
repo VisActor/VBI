@@ -1,0 +1,12 @@
+[
+  {
+    "type": "file",
+    "name": "insight",
+    "label": "Insight"
+  },
+  {
+    "type": "file",
+    "name": "insightWorkflow",
+    "label": "InsightWorkflow"
+  }
+]

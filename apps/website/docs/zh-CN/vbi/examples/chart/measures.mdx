@@ -53,7 +53,7 @@ export default () => {
     })
   }
 }
-      applyBuilder(builder)
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()
@@ -110,7 +110,7 @@ export default () => {
     builder.measures.update(measureId, n => n.setEncoding('yAxis').setAggregate({ func: 'sum' }))
   }
 }
-      applyBuilder(builder)
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()
@@ -195,7 +195,7 @@ export default () => {
         });
     });
 }
-      applyBuilder(builder)
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()
@@ -269,7 +269,7 @@ export default () => {
     builder.measures.remove(measureId)
   }
 }
-      applyBuilder(builder)
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()
@@ -338,7 +338,7 @@ export default () => {
     builder.measures.update(measureId, n => n.setAlias('新销售额').setAggregate({ func: 'avg' }))
   }
 }
-      applyBuilder(builder)
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()

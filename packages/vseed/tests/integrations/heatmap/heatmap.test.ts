@@ -7,8 +7,9 @@ import config_3 from './color/measure.json'
 import config_4 from './dataset/onlyDimensions.json'
 import config_5 from './dataset/onlyMeasures.json'
 import config_6 from './feedback/heatmapEmpty.json'
-import config_7 from './pivotGrid/pivotBasic.json'
-import config_8 from './tooltip/heatmap.json'
+import config_7 from './feedback/labelRepeat.json'
+import config_8 from './pivotGrid/pivotBasic.json'
+import config_9 from './tooltip/heatmap.json'
 
 const cases = [
   { name: 'chartType/simple', vseed: config_0 },
@@ -18,8 +19,9 @@ const cases = [
   { name: 'dataset/onlyDimensions', vseed: config_4 },
   { name: 'dataset/onlyMeasures', vseed: config_5 },
   { name: 'feedback/heatmapEmpty', vseed: config_6 },
-  { name: 'pivotGrid/pivotBasic', vseed: config_7 },
-  { name: 'tooltip/heatmap', vseed: config_8 }
+  { name: 'feedback/labelRepeat', vseed: config_7 },
+  { name: 'pivotGrid/pivotBasic', vseed: config_8 },
+  { name: 'tooltip/heatmap', vseed: config_9 }
 ]
 
 describe('heatmap', () => {

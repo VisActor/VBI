@@ -5254,6 +5254,15 @@ same as operator
 
 :::
 
+### textFontWeight
+
+**Type:** `string | number | undefined`
+
+:::note{title=描述}
+文本字体粗细。
+
+:::
+
 ### textColor
 
 **Type:** `string | undefined`

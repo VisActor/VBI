@@ -40,14 +40,5 @@
     "typescript/consistent-type-imports": "error",
     "typescript/no-explicit-any": "off",
     "typescript/triple-slash-reference": "off"
-  },
-  "overrides": [
-    {
-      "files": ["apps/vbi_be/**/*.{ts,tsx}"],
-      "rules": {
-        "typescript/consistent-type-exports": "off",
-        "typescript/consistent-type-imports": "off"
-      }
-    }
-  ]
+  }
 }

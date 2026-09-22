@@ -1,9 +1,0 @@
-**/node_modules
-**/dist
-**/build
-**/coverage
-**/.cache
-**/.turbo
-**/.DS_Store
-.git
-apps/website/docs
