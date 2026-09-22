@@ -1,5 +1,5 @@
 import { a as __toESM, n as __esmMin, r as __exportAll } from "./rolldown-runtime.js";
-import { A as init_yjs, An as Host, At as T$4, B as date, Bn as entry_preview_docs_exports, D as YMap, E as YArray, En as isUndefined, Et as i$10, F as _enum, Fn as init_client, G as number, Gn as setCustomElementsManifest, Gt as esm_default, Hn as entry_preview_argtypes_exports, I as any, In as proxyCustomElement, It as init_es$2, J as string, Jn as __vitePreload, K as object, Kn as entry_preview_exports, Kt as init_esm$1, L as array$1, Ln as transformTag, Lt as PivotChart, Mn as forceUpdate, Mt as i$7, N as v4, Nn as getRenderingRef, O as applyUpdate, On as isNil, P as init_zod, Pn as h$5, Pt as C$6, Q as d$6, Qt as bin, R as boolean, Rn as init_preview$1, S as Kysely, Sn as merge, St as D$4, T as UndoManager$1, Tt as r$11, U as lazy, Un as init_entry_preview_argtypes, Ut as chartModule, V as discriminatedUnion, Vn as init_entry_preview_docs, Vt as ListTableAll, W as literal, X as require_tinycolor, Xn as init_runtime, Xt as boxplot, Y as union, Yn as init_preload_helper, Yt as init_es$1, Z as init_dist$1, Zn as setup, _n as array, _t as t$13, at as o$9, bn as pickWithout, cn as regressionPolynomial, en as init_es, f as init_dist$3, fn as regressionLogistic, g as PostgresQueryCompiler, hn as clamper, ht as t$14, j as init_dist$2, jn as createEvent, k as encodeStateAsUpdate, kn as H$4, kt as m$8, lt as o$10, m as PostgresAdapter, mn as regressionLinear, nt as i$9, on as kde, p as init_esm$2, pt as n$10, q as record, qn as init_entry_preview, qt as StreamLight, rn as ecdf, st as n$11, tn as Color, tt as k$7, un as regressionLowess, ut as e$8, v as DummyDriver, vt as i$8, w as Doc, wn as isArray, x as sql, xt as y$10, z as custom, zn as preview_exports$1, zt as PivotTableAll } from "./vendor.js";
+import { $ as d$6, $t as bin, A as init_yjs, An as H$4, At as m$8, B as date, Bn as preview_exports$1, Bt as PivotTableAll, Cn as merge, Ct as D$4, D as YMap, Dn as isUndefined, Dt as i$10, E as YArray, Et as r$11, F as _enum, Fn as h$5, Ft as C$6, G as number, Hn as init_entry_preview_docs, Ht as ListTableAll, I as any, In as init_client, J as string, Jn as init_entry_preview, Jt as StreamLight, K as object, Kn as setCustomElementsManifest, Kt as esm_default, L as array$1, Ln as proxyCustomElement, Lt as init_es$2, Mn as createEvent, N as v4, Nn as forceUpdate, Nt as i$7, O as applyUpdate, P as init_zod, Pn as getRenderingRef, Q as init_dist$1, Qn as setup, R as boolean, Rn as transformTag, Rt as PivotChart, S as Kysely, St as y$10, T as UndoManager$1, Tn as isArray, U as lazy, Un as entry_preview_argtypes_exports, V as discriminatedUnion, Vn as entry_preview_docs_exports, W as literal, Wn as init_entry_preview_argtypes, Wt as chartModule, X as union, Xn as init_preload_helper, Xt as init_es$1, Y as tuple, Yn as __vitePreload, Z as require_tinycolor, Zn as init_runtime, Zt as boxplot, ct as n$11, dn as regressionLowess, dt as e$8, f as init_dist$3, g as PostgresQueryCompiler, gn as clamper, gt as t$14, hn as regressionLinear, in as ecdf, j as init_dist$2, jn as Host, jt as T$4, k as encodeStateAsUpdate, kn as isNil, ln as regressionPolynomial, m as PostgresAdapter, mt as n$10, nn as Color, nt as k$7, ot as o$9, p as init_esm$2, pn as regressionLogistic, q as record, qn as entry_preview_exports, qt as init_esm$1, rt as i$9, sn as kde, tn as init_es, ut as o$10, v as DummyDriver, vn as array, vt as t$13, w as Doc, x as sql, xn as pickWithout, yt as i$8, z as custom, zn as init_preview$1 } from "./vendor.js";
 //#region iframe.html?html-proxy&inline-css&index=0.css
 var init_iframe_html_html_proxy_inline_css_index_0 = __esmMin((() => {}));
 //#endregion
@@ -9643,8 +9643,8 @@ var init_tooltip$4 = __esmMin((() => {
 		}];
 	};
 	createMarkContent$8 = (tooltip, dimensions = [], measures = [], foldInfo, unfoldInfo, locale) => {
-		const dims = C$6(dimensions.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id), T$4((item) => item.alias));
-		const meas = C$6(measures.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id), T$4((item) => item.alias));
+		const dims = C$6(dimensions.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id));
+		const meas = C$6(measures.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id));
 		const dimContent = dims.map((item) => ({
 			visible: true,
 			hasShape: true,
@@ -9661,7 +9661,7 @@ var init_tooltip$4 = __esmMin((() => {
 			}
 		}));
 		const meaContent = meas.map((item) => ({
-			visible: true,
+			visible: (datum) => datum?.[foldInfo.measureId] !== item.id,
 			hasShape: true,
 			shapeType: "rectRound",
 			key: item.alias || item.id,
@@ -9774,8 +9774,7 @@ var init_tooltipScatter = __esmMin((() => {
 			visible: enable,
 			mark: {
 				title: { visible: false },
-				content: createMarkContent$7(encoding.tooltip || [], dimensions, vseed.measures, locale, foldInfoList),
-				updateContent: (prev = []) => T$4(prev, (entry) => `${String(entry.key)}::${String(entry.value)}`)
+				content: createMarkContent$7(encoding.tooltip || [], dimensions, vseed.measures, locale, foldInfoList)
 			},
 			dimension: { visible: false },
 			updateElement: updateTooltipElement
@@ -9801,7 +9800,7 @@ var init_tooltipScatter = __esmMin((() => {
 			}
 		}));
 		const meaContent = meas.map((item) => ({
-			visible: true,
+			visible: (datum) => !foldInfoList.some((info) => datum?.[info.measureId] === item.id),
 			hasShape: true,
 			shapeType: "rectRound",
 			key: item.alias || item.id,
@@ -9814,8 +9813,8 @@ var init_tooltipScatter = __esmMin((() => {
 				return createFormatterByMeasure(findMeasureById(measures, id))(value);
 			}
 		}));
-		const foldMeaContent = foldInfoList.map((foldInfo) => ({
-			visible: true,
+		const foldMeaContent = foldInfoList.map((foldInfo, index) => ({
+			visible: (datum) => !foldInfoList.slice(0, index).some((info) => datum?.[info.measureId] === datum?.[foldInfo.measureId]),
 			hasShape: true,
 			shapeType: "rectRound",
 			key: (v) => {
@@ -9888,7 +9887,7 @@ var init_tooltipHeatmap = __esmMin((() => {
 			}
 		}));
 		const meaContent = meas.map((item) => ({
-			visible: true,
+			visible: (datum) => datum?.[foldInfo.measureId] !== item.id,
 			hasShape: true,
 			shapeType: "rectRound",
 			key: item.alias || item.id,
@@ -10164,10 +10163,10 @@ var init_tooltipHierarchy = __esmMin((() => {
 		return result;
 	};
 	createMarkContent$3 = (tooltip, dimensions = [], measures = [], foldInfo, unfoldInfo, locale) => {
-		const dims = C$6(dimensions.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id), T$4((item) => item.alias), T$4((item) => item.alias));
-		const meas = C$6(measures.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id), T$4((item) => item.alias));
+		const dims = C$6(dimensions.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id));
+		const meas = C$6(measures.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id));
 		const dimContent = dims.map((item) => ({
-			visible: (datum) => !!datum[item.id],
+			visible: (datum) => !!datum?.[item.id],
 			hasShape: true,
 			shapeType: "rectRound",
 			key: (v) => {
@@ -10203,7 +10202,7 @@ var init_tooltipHierarchy = __esmMin((() => {
 			}
 		};
 		const meaContent = meas.map((item) => ({
-			visible: true,
+			visible: (datum) => datum?.[foldInfo.measureId] !== item.id,
 			hasShape: true,
 			shapeType: "rectRound",
 			key: item.alias || item.id,
@@ -10291,8 +10290,8 @@ var init_tooltipHierarchySankey = __esmMin((() => {
 	};
 	createMarkContent$2 = (tooltip, dimensions = [], measures = [], dataset = [], foldInfo, _unfoldInfo, locale) => {
 		const nodeMetaMap = createNodeMetaMap(dataset);
-		const dims = C$6(dimensions.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id), T$4((item) => item.alias));
-		const meas = C$6(measures.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id), T$4((item) => item.alias));
+		const dims = C$6(dimensions.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id));
+		const meas = C$6(measures.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id));
 		const dimContent = dims.map((item) => ({
 			visible: (value) => {
 				if (isLinkDatum$1(value)) return false;
@@ -10677,24 +10676,28 @@ var init_label$3 = __esmMin((() => {
 			}),
 			formatMethod: (_, datum) => {
 				const result = [];
+				const displayedMeasureIds = /* @__PURE__ */ new Set();
 				const dimLabels = labelDims.map((item) => {
 					const id = item.id;
 					return createFormatterByDimension(item, locale)(datum[id]);
 				});
-				const meaLabels = labelMeas.map((item) => generateMeasureValue(datum[item.id], item, autoFormat, numFormat));
 				result.push(...dimLabels);
-				foldInfoList.forEach((foldInfo) => {
+				T$4(foldInfoList, (info) => datum[info.measureId]).forEach((foldInfo) => {
 					const { measureId, measureValue, statistics } = foldInfo;
 					const measure = findMeasureById(advancedVSeedMeasures, datum[measureId]);
 					if (measure) {
 						const measureValueLabel = generateMeasureValue(datum[measureValue], measure, autoFormat, numFormat);
-						if (showValue) result.push(measureValueLabel);
+						if (showValue) {
+							result.push(measureValueLabel);
+							displayedMeasureIds.add(measure.id);
+						}
 						if (showValuePercent) {
 							if (e$8(datum["__VCHART_ARC_RATIO"])) result.push(generateMeasurePercent(datum["__VCHART_ARC_RATIO"], 1, percentFormatter));
 							else if (statistics && e$8(statistics.sum)) result.push(generateMeasurePercent(datum[measureValue], statistics.sum, percentFormatter));
 						}
 					}
 				});
+				const meaLabels = labelMeas.filter((item) => !displayedMeasureIds.has(item.id)).map((item) => generateMeasureValue(datum[item.id], item, autoFormat, numFormat));
 				result.push(...meaLabels);
 				if (wrap) return result;
 				return result.join(" ");
@@ -10904,14 +10907,13 @@ var init_labelTreeMapLeaf = __esmMin((() => {
 			const realDatum = findDataNode(dataArray, nodeName);
 			if (!realDatum) return "";
 			const resultText = [];
+			const displayedMeasureIds = /* @__PURE__ */ new Set();
 			const dimLabels = labelDims.map((item) => {
 				const id = item.id;
 				const rawValue = realDatum[id] ?? realDatum.__OriginalData__?.[id];
 				return createFormatterByDimension(item, advancedVSeed.locale)(rawValue);
 			}).filter((v) => null != v && "" !== v);
 			resultText.push(...dimLabels);
-			const meaLabels = labelMeas.map((item) => generateMeasureValue(realDatum[item.id] ?? realDatum.__OriginalData__?.[item.id], item, autoFormat, numFormat));
-			resultText.push(...meaLabels);
 			foldInfoList.forEach((foldInfo) => {
 				const { measureId, measureValue, statistics } = foldInfo;
 				const currentMeasureId = realDatum[measureId] ?? realDatum.__MeaId__;
@@ -10919,12 +10921,17 @@ var init_labelTreeMapLeaf = __esmMin((() => {
 				if (measure) {
 					const val = realDatum[measureValue] ?? realDatum.__MeaValue__ ?? realDatum.value;
 					const measureValueLabel = generateMeasureValue(val, measure, autoFormat, numFormat);
-					if (showValue) resultText.push(measureValueLabel);
+					if (showValue) {
+						resultText.push(measureValueLabel);
+						displayedMeasureIds.add(measure.id);
+					}
 					if (showValuePercent) {
 						if (statistics && e$8(statistics.sum)) resultText.push(generateMeasurePercent(val, statistics.sum, percentFormatter));
 					}
 				}
 			});
+			const meaLabels = labelMeas.filter((item) => !displayedMeasureIds.has(item.id)).map((item) => generateMeasureValue(realDatum[item.id] ?? realDatum.__OriginalData__?.[item.id], item, autoFormat, numFormat));
+			resultText.push(...meaLabels);
 			if (wrap) return resultText;
 			return resultText.join(" ");
 		};
@@ -10998,28 +11005,32 @@ var init_labelHierarchySankey = __esmMin((() => {
 			}),
 			formatMethod: (_, datum) => {
 				const result = [];
+				const displayedMeasureIds = /* @__PURE__ */ new Set();
 				const dimLabels = labelDims.flatMap((item) => {
 					const rawValue = datum[item.id];
 					if (null == rawValue || "" === rawValue) return [];
 					return [createFormatterByDimension(item, locale)(rawValue)];
 				});
-				const meaLabels = labelMeas.flatMap((item) => {
-					const rawValue = datum[item.id];
-					if (null == rawValue || "" === rawValue) return [];
-					return [generateMeasureValue(rawValue, item, autoFormat, numFormat)];
-				});
 				result.push(...dimLabels);
-				foldInfoList.forEach((foldInfo) => {
+				T$4(foldInfoList, (info) => datum[info.measureId]).forEach((foldInfo) => {
 					const { measureId, measureValue, statistics } = foldInfo;
 					const measure = findMeasureById(advancedVSeedMeasures, datum[measureId]);
 					if (measure) {
 						const measureValueLabel = generateMeasureValue(datum[measureValue], measure, autoFormat, numFormat);
-						if (showValue) result.push(measureValueLabel);
+						if (showValue) {
+							result.push(measureValueLabel);
+							displayedMeasureIds.add(measure.id);
+						}
 						if (showValuePercent) {
 							if (e$8(datum["__VCHART_ARC_RATIO"])) result.push(generateMeasurePercent(datum["__VCHART_ARC_RATIO"], 1, percentFormatter));
 							else if (statistics && e$8(statistics.sum)) result.push(generateMeasurePercent(datum[measureValue], statistics.sum, percentFormatter));
 						}
 					}
+				});
+				const meaLabels = labelMeas.filter((item) => !displayedMeasureIds.has(item.id)).flatMap((item) => {
+					const rawValue = datum[item.id];
+					if (null == rawValue || "" === rawValue) return [];
+					return [generateMeasureValue(rawValue, item, autoFormat, numFormat)];
 				});
 				result.push(...meaLabels);
 				if (wrap) return result;
@@ -11065,7 +11076,7 @@ var init_labelSankey = __esmMin((() => {
 	};
 	buildLabel = (label, vseedMeasures, advancedVSeedMeasures, labelEncodingIds, foldInfo) => {
 		const { enable, wrap, showValue, showValuePercent, showDimension, labelOverlap, labelColorSmartInvert, labelStroke, labelColor, labelFontSize, labelFontWeight, labelBackgroundColor, labelPosition, autoFormat, numFormat = {} } = label;
-		const labelMeasures = vseedMeasures.some((item) => labelEncodingIds.includes(item.id)) ? vseedMeasures.filter((item) => labelEncodingIds.includes(item.id)) : [];
+		const labelMeasures = T$4(vseedMeasures.filter((item) => labelEncodingIds.includes(item.id)), (item) => item.id);
 		const percentFormatter = createFormatter(t$13(numFormat, { type: "percent" }));
 		const result = {
 			visible: enable,
@@ -11075,15 +11086,20 @@ var init_labelSankey = __esmMin((() => {
 			}),
 			formatMethod: (_, datum) => {
 				const parts = [];
+				const displayedMeasureIds = /* @__PURE__ */ new Set();
 				if (showDimension && datum?.nodeName) parts.push(String(datum.nodeName));
 				if (showValue) {
 					const { measureId, measureValue } = foldInfo;
 					const measure = findMeasureById(advancedVSeedMeasures, datum[measureId]);
-					if (measure && void 0 !== datum[measureValue] && null !== datum[measureValue]) parts.push(generateMeasureValue(datum[measureValue], measure, autoFormat, numFormat));
-					else if (void 0 !== datum.value && null !== datum.value) {
+					if (measure && void 0 !== datum[measureValue] && null !== datum[measureValue]) {
+						parts.push(generateMeasureValue(datum[measureValue], measure, autoFormat, numFormat));
+						displayedMeasureIds.add(measure.id);
+					} else if (void 0 !== datum.value && null !== datum.value) {
 						const fallbackMeasure = findMeasureById(advancedVSeedMeasures, foldInfo.measureId) || findMeasureById(vseedMeasures, foldInfo.measureId) || advancedVSeedMeasures[0];
-						if (fallbackMeasure) parts.push(generateMeasureValue(datum.value, fallbackMeasure, autoFormat, numFormat));
-						else parts.push(String(datum.value));
+						if (fallbackMeasure) {
+							parts.push(generateMeasureValue(datum.value, fallbackMeasure, autoFormat, numFormat));
+							displayedMeasureIds.add(fallbackMeasure.id);
+						} else parts.push(String(datum.value));
 					}
 				}
 				if (showValuePercent) {
@@ -11091,7 +11107,7 @@ var init_labelSankey = __esmMin((() => {
 					if (e$8(ratioValue)) parts.push(generateMeasurePercent(ratioValue, 1, percentFormatter));
 					else if (foldInfo.statistics && e$8(foldInfo.statistics.sum) && void 0 !== datum[foldInfo.measureValue] && null !== datum[foldInfo.measureValue]) parts.push(generateMeasurePercent(datum[foldInfo.measureValue], foldInfo.statistics.sum, percentFormatter));
 				}
-				labelMeasures.forEach((measure) => {
+				labelMeasures.filter((measure) => !displayedMeasureIds.has(measure.id)).forEach((measure) => {
 					const rawValue = datum[measure.id];
 					if (null == rawValue || "" === rawValue) return;
 					parts.push(generateMeasureValue(rawValue, measure, autoFormat, numFormat));
@@ -16477,9 +16493,9 @@ var init_barMotion = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/utils/barColor.js
-var import_tinycolor$1, isGradient, splitLinearColor, transformColor2Gradient, transform2VChartColor, fillColorToStrokeColor, atmosphereColorToFill, atmosphereColorToStroke;
+var import_tinycolor$2, isGradient, splitLinearColor, transformColor2Gradient, transform2VChartColor, fillColorToStrokeColor, atmosphereColorToFill, atmosphereColorToStroke;
 var init_barColor = __esmMin((() => {
-	import_tinycolor$1 = /* @__PURE__ */ __toESM(require_tinycolor(), 1);
+	import_tinycolor$2 = /* @__PURE__ */ __toESM(require_tinycolor(), 1);
 	isGradient = (color) => color.includes("deg");
 	splitLinearColor = (str) => str.split(", ");
 	transformColor2Gradient = (colorStr) => {
@@ -16506,13 +16522,13 @@ var init_barColor = __esmMin((() => {
 		if (!colorStr) return colorStr;
 		return isGradient(colorStr) ? transformColor2Gradient(colorStr) : colorStr;
 	};
-	fillColorToStrokeColor = (color) => (0, import_tinycolor$1.default)(color).lighten(10).toRgbString();
+	fillColorToStrokeColor = (color) => (0, import_tinycolor$2.default)(color).lighten(10).toRgbString();
 	atmosphereColorToFill = (color, isGradientChart, isHorizontal) => {
 		if (isGradient(color)) return transformColor2Gradient(color);
 		if (!isGradientChart) return color;
 		const deg = isHorizontal ? 90 : 0;
-		const start = (0, import_tinycolor$1.default)(color).setAlpha(.2).toRgbString();
-		const end = (0, import_tinycolor$1.default)(color).setAlpha(1).toRgbString();
+		const start = (0, import_tinycolor$2.default)(color).setAlpha(.2).toRgbString();
+		const end = (0, import_tinycolor$2.default)(color).setAlpha(1).toRgbString();
 		return transformColor2Gradient(`${deg}deg, ${start}, ${end}`);
 	};
 	atmosphereColorToStroke = (color, isGradientChart, isHorizontal) => {
@@ -16520,8 +16536,8 @@ var init_barColor = __esmMin((() => {
 		if (!isGradientChart) return color;
 		const deg = isHorizontal ? 90 : 0;
 		const base = fillColorToStrokeColor(color);
-		const start = (0, import_tinycolor$1.default)(base).setAlpha(.2).toRgbString();
-		const end = (0, import_tinycolor$1.default)(base).setAlpha(1).toRgbString();
+		const start = (0, import_tinycolor$2.default)(base).setAlpha(.2).toRgbString();
+		const end = (0, import_tinycolor$2.default)(base).setAlpha(1).toRgbString();
 		return transformColor2Gradient(`${deg}deg, ${start}, ${end}`);
 	};
 }));
@@ -23224,8 +23240,8 @@ var init_tooltipTreeMap = __esmMin((() => {
 		return result;
 	};
 	createMarkContent = (tooltip, dimensions = [], measures = [], foldInfo, unfoldInfo, locale) => {
-		const dims = C$6(dimensions.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id), T$4((item) => item.alias), T$4((item) => item.alias));
-		const meas = C$6(measures.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id), T$4((item) => item.alias));
+		const dims = C$6(dimensions.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id));
+		const meas = C$6(measures.filter((item) => tooltip.includes(item.id)), T$4((item) => item.id));
 		const dimContent = dims.map((item) => ({
 			visible: (v) => {
 				const { depth } = v;
@@ -23270,7 +23286,7 @@ var init_tooltipTreeMap = __esmMin((() => {
 			}
 		};
 		const meaContent = meas.map((item) => ({
-			visible: true,
+			visible: (datum) => datum?.datum?.[datum.depth]?.[foldInfo.measureId] !== item.id,
 			hasShape: true,
 			shapeType: "rectRound",
 			key: item.alias || item.id,
@@ -24272,10 +24288,10 @@ var init_corner = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/table/pipes/cellStyle/common.js
-var import_tinycolor, tableStyleMap, interpolateColor, pickBodyCellStyle, getColumnMinMax, applyColorScale, getCellOriginalDataByDatum;
+var import_tinycolor$1, tableStyleMap, interpolateColor, pickBodyCellStyle, getColumnMinMax, applyColorScale, getCellOriginalDataByDatum;
 var init_common$1 = __esmMin((() => {
 	init_dist$1();
-	import_tinycolor = /* @__PURE__ */ __toESM(require_tinycolor(), 1);
+	import_tinycolor$1 = /* @__PURE__ */ __toESM(require_tinycolor(), 1);
 	init_dataReshape();
 	tableStyleMap = {
 		backgroundColor: "bgColor",
@@ -24287,8 +24303,8 @@ var init_common$1 = __esmMin((() => {
 		barNegativeColor: "barNegativeColor"
 	};
 	interpolateColor = (value, minValue, maxValue, minColor, maxColor) => {
-		const startColor = (0, import_tinycolor.default)(minColor).toRgb();
-		const endColor = (0, import_tinycolor.default)(maxColor).toRgb();
+		const startColor = (0, import_tinycolor$1.default)(minColor).toRgb();
+		const endColor = (0, import_tinycolor$1.default)(maxColor).toRgb();
 		const normalized = (value - minValue) / (maxValue - minValue);
 		const t = Math.max(0, Math.min(1, normalized));
 		return `rgb(${Math.round(startColor.r + (endColor.r - startColor.r) * t)}, ${Math.round(startColor.g + (endColor.g - startColor.g) * t)}, ${Math.round(startColor.b + (endColor.b - startColor.b) * t)})`;
@@ -28463,12 +28479,335 @@ var init_all = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region ../vseed/dist/esm/theme/tokenTheme.js
+var import_tinycolor, raceChartTypes, hasEnsuredRegisterAll, isRecord, mergeThemeNode, withAlpha, ensureRegisterAll, getAccentColor, getAxisPatch, getPivotGridPatch, getPlayerPatch, getTablePatch, getChartPatch, getAnnotationLinePatch, getAnnotationTextPatch, getAnnotationPatch, getRegressionLinePatch, withAxesAndExtras, createTokenThemeConfig, registerTokenTheme;
+var init_tokenTheme = __esmMin((() => {
+	import_tinycolor = /* @__PURE__ */ __toESM(require_tinycolor(), 1);
+	init_all();
+	init_custom();
+	init_dark$1();
+	init_light$1();
+	raceChartTypes = [
+		"raceBar",
+		"raceColumn",
+		"raceScatter",
+		"raceLine",
+		"racePie",
+		"raceDonut"
+	];
+	hasEnsuredRegisterAll = false;
+	isRecord = (value) => "object" == typeof value && null !== value && !Array.isArray(value);
+	mergeThemeNode = (base, patch) => {
+		if (!isRecord(base) || !isRecord(patch)) return patch;
+		const result = { ...base };
+		for (const [key, patchValue] of Object.entries(patch)) {
+			if (void 0 === patchValue) continue;
+			const currentValue = result[key];
+			if (Array.isArray(patchValue)) {
+				result[key] = [...patchValue];
+				continue;
+			}
+			if (isRecord(currentValue) && isRecord(patchValue)) {
+				result[key] = mergeThemeNode(currentValue, patchValue);
+				continue;
+			}
+			result[key] = patchValue;
+		}
+		return result;
+	};
+	withAlpha = (color, alpha) => (0, import_tinycolor.default)(color).setAlpha(alpha).toRgbString();
+	ensureRegisterAll = (options) => {
+		if (options?.ensureRegisterAll === false || hasEnsuredRegisterAll) return;
+		registerAll();
+		hasEnsuredRegisterAll = true;
+	};
+	getAccentColor = (tokens) => tokens.accentColor || tokens.colorScheme[0];
+	getAxisPatch = (tokens) => ({
+		label: {
+			labelColor: tokens.axisLabelColor || tokens.textSecondary,
+			labelFontSize: tokens.axisLabelFontSize ?? tokens.axisFontSize,
+			labelFontWeight: tokens.axisLabelFontWeight
+		},
+		title: {
+			titleColor: tokens.axisTitleColor || tokens.textSecondary,
+			titleFontSize: tokens.axisTitleFontSize ?? tokens.axisFontSize,
+			titleFontWeight: tokens.axisTitleFontWeight
+		},
+		grid: { gridColor: tokens.axisGridColor || tokens.borderColor },
+		tick: { tickColor: tokens.axisLineColor || tokens.borderColor },
+		line: { lineColor: tokens.axisLineColor || tokens.borderColor }
+	});
+	getPivotGridPatch = (tokens) => ({
+		borderColor: tokens.tableBorderColor || tokens.borderColor,
+		bodyFontSize: tokens.tableBodyFontSize,
+		bodyFontColor: tokens.tableBodyFontColor || tokens.textPrimary,
+		headerFontSize: tokens.tableHeaderFontSize,
+		headerFontColor: tokens.tableHeaderFontColor || tokens.textPrimary,
+		headerBackgroundColor: tokens.tableHeaderBackgroundColor || tokens.surfaceColor || "transparent",
+		hoverHeaderBackgroundColor: tokens.tableHoverHeaderBackgroundColor || withAlpha(getAccentColor(tokens), .18),
+		hoverHeaderInlineBackgroundColor: tokens.tableHoverHeaderInlineBackgroundColor || withAlpha(getAccentColor(tokens), .08),
+		titleFontColor: tokens.textPrimary,
+		titleFontSize: tokens.tableHeaderFontSize,
+		chartGridColor: tokens.axisGridColor || tokens.borderColor,
+		axisLabelColor: tokens.axisLabelColor || tokens.textSecondary,
+		axisLabelFontSize: tokens.axisLabelFontSize ?? tokens.axisFontSize,
+		axisLabelFontWeight: tokens.axisLabelFontWeight
+	});
+	getPlayerPatch = (tokens) => {
+		const accentColor = getAccentColor(tokens);
+		return {
+			fontFamily: tokens.fontFamily,
+			fontSize: tokens.playerFontSize,
+			railColor: tokens.playerRailColor || tokens.borderColor,
+			trackColor: accentColor,
+			sliderHandleColor: tokens.playerSliderHandleColor || tokens.surfaceColor || "#ffffff",
+			sliderHandleBorderColor: tokens.playerSliderHandleBorderColor || accentColor,
+			startButtonColor: accentColor,
+			pauseButtonColor: accentColor,
+			backwardButtonColor: accentColor,
+			forwardButtonColor: accentColor
+		};
+	};
+	getTablePatch = (tokens) => {
+		const accentColor = getAccentColor(tokens);
+		return {
+			borderColor: tokens.tableBorderColor || tokens.borderColor,
+			bodyFontSize: tokens.tableBodyFontSize,
+			bodyFontFamily: tokens.fontFamily,
+			bodyFontColor: tokens.tableBodyFontColor || tokens.textPrimary,
+			headerFontSize: tokens.tableHeaderFontSize,
+			headerFontFamily: tokens.fontFamily,
+			headerFontColor: tokens.tableHeaderFontColor || tokens.textPrimary,
+			headerBackgroundColor: tokens.tableHeaderBackgroundColor || tokens.surfaceColor || "transparent",
+			hoverBodyBackgroundColor: tokens.tableHoverBodyBackgroundColor || withAlpha(accentColor, .18),
+			hoverBodyInlineBackgroundColor: tokens.tableHoverBodyInlineBackgroundColor || withAlpha(accentColor, .08),
+			hoverHeaderBackgroundColor: tokens.tableHoverHeaderBackgroundColor || withAlpha(accentColor, .18),
+			hoverHeaderInlineBackgroundColor: tokens.tableHoverHeaderInlineBackgroundColor || withAlpha(accentColor, .08),
+			selectedBorderColor: tokens.tableSelectedBorderColor || accentColor,
+			selectedBackgroundColor: tokens.tableSelectedBackgroundColor || withAlpha(accentColor, .12),
+			backgroundColor: tokens.surfaceBackgroundColor || "transparent",
+			barAxisColor: tokens.axisLineColor || tokens.borderColor,
+			backgroundColorScale: {
+				minColor: tokens.linearColorScheme[0],
+				maxColor: tokens.linearColorScheme[1]
+			}
+		};
+	};
+	getChartPatch = (tokens) => ({
+		backgroundColor: "transparent",
+		fontFamily: tokens.fontFamily,
+		color: {
+			colorScheme: [...tokens.colorScheme],
+			linearColorScheme: [...tokens.linearColorScheme],
+			positiveColor: tokens.positiveColor,
+			negativeColor: tokens.negativeColor
+		},
+		label: {
+			labelFontSize: tokens.dataLabelFontSize ?? tokens.labelFontSize,
+			labelFontWeight: tokens.dataLabelFontWeight,
+			labelColor: tokens.labelColor || tokens.textPrimary,
+			labelStroke: tokens.labelStroke
+		},
+		legend: {
+			labelColor: tokens.legendLabelColor || tokens.textSecondary,
+			labelFontSize: tokens.legendLabelFontSize ?? tokens.legendFontSize,
+			labelFontWeight: tokens.legendLabelFontWeight,
+			pagerIconColor: tokens.legendPagerIconColor || tokens.textSecondary,
+			pagerIconDisableColor: tokens.legendPagerIconDisableColor || tokens.borderColor
+		},
+		tooltip: {
+			backgroundColor: tokens.tooltipBackgroundColor,
+			borderColor: tokens.tooltipBorderColor || tokens.borderColor,
+			fontSize: tokens.tooltipFontSize,
+			keyColor: tokens.textSecondary,
+			valueColor: tokens.textPrimary,
+			valueFontWeight: tokens.tooltipValueFontWeight,
+			titleColor: tokens.textPrimary
+		}
+	});
+	getAnnotationLinePatch = (tokens) => ({
+		lineColor: tokens.annotationLineColor,
+		lineStyle: tokens.annotationLineStyle,
+		lineDash: tokens.annotationLineDash,
+		textColor: tokens.annotationTextColor,
+		textBackgroundColor: tokens.annotationTextBackgroundColor,
+		textBackgroundBorderColor: tokens.annotationTextBackgroundBorderColor ?? tokens.annotationTextBackgroundColor,
+		textBackgroundBorderRadius: tokens.annotationTextBackgroundBorderRadius,
+		textBackgroundBorderWidth: tokens.annotationTextBackgroundBorderWidth,
+		textBackgroundPadding: tokens.annotationTextBackgroundPadding,
+		textBackgroundOpacity: tokens.annotationTextBackgroundOpacity
+	});
+	getAnnotationTextPatch = (tokens) => ({
+		textColor: tokens.annotationTextColor,
+		textBackgroundColor: tokens.annotationTextBackgroundColor,
+		textBackgroundBorderColor: tokens.annotationTextBackgroundBorderColor ?? tokens.annotationTextBackgroundColor,
+		textBackgroundBorderRadius: tokens.annotationTextBackgroundBorderRadius,
+		textBackgroundBorderWidth: tokens.annotationTextBackgroundBorderWidth,
+		textBackgroundPadding: tokens.annotationTextBackgroundPadding,
+		textBackgroundOpacity: tokens.annotationTextBackgroundOpacity
+	});
+	getAnnotationPatch = (tokens) => {
+		const annotationLinePatch = getAnnotationLinePatch(tokens);
+		const annotationTextPatch = getAnnotationTextPatch(tokens);
+		return {
+			annotationPoint: {
+				textFontSize: tokens.annotationLabelFontSize ?? tokens.labelFontSize,
+				textFontWeight: tokens.annotationLabelFontWeight,
+				...annotationTextPatch
+			},
+			annotationHorizontalLine: {
+				textFontSize: tokens.annotationLabelFontSize ?? tokens.labelFontSize,
+				textFontWeight: tokens.annotationLabelFontWeight,
+				...annotationLinePatch
+			},
+			annotationVerticalLine: {
+				textFontSize: tokens.annotationLabelFontSize ?? tokens.labelFontSize,
+				textFontWeight: tokens.annotationLabelFontWeight,
+				...annotationLinePatch
+			},
+			annotationDifferenceLine: {
+				textFontSize: tokens.annotationLabelFontSize ?? tokens.labelFontSize,
+				textFontWeight: tokens.annotationLabelFontWeight,
+				lineColor: tokens.annotationLineColor,
+				lineStyle: tokens.annotationLineStyle,
+				lineDash: tokens.annotationLineDash,
+				...annotationTextPatch
+			},
+			annotationArea: {
+				textFontSize: tokens.annotationLabelFontSize ?? tokens.labelFontSize,
+				textFontWeight: tokens.annotationLabelFontWeight,
+				areaColor: tokens.annotationAreaColor,
+				areaColorOpacity: tokens.annotationAreaColorOpacity,
+				...annotationTextPatch
+			}
+		};
+	};
+	getRegressionLinePatch = (tokens) => ({
+		kdeRegressionLine: { textFontSize: tokens.labelFontSize },
+		ecdfRegressionLine: { textFontSize: tokens.labelFontSize },
+		linearRegressionLine: { textFontSize: tokens.labelFontSize },
+		lowessRegressionLine: { textFontSize: tokens.labelFontSize },
+		polynomialRegressionLine: { textFontSize: tokens.labelFontSize },
+		logisticRegressionLine: { textFontSize: tokens.labelFontSize }
+	});
+	withAxesAndExtras = (chartType, chartConfig, tokens) => {
+		let nextChartConfig = mergeThemeNode(chartConfig, getChartPatch(tokens));
+		const chartRecord = nextChartConfig;
+		if (Object.prototype.hasOwnProperty.call(chartRecord, "xAxis")) nextChartConfig = mergeThemeNode(nextChartConfig, { xAxis: getAxisPatch(tokens) });
+		if (Object.prototype.hasOwnProperty.call(chartRecord, "yAxis")) nextChartConfig = mergeThemeNode(nextChartConfig, { yAxis: getAxisPatch(tokens) });
+		if (Object.prototype.hasOwnProperty.call(chartRecord, "primaryYAxis")) nextChartConfig = mergeThemeNode(nextChartConfig, { primaryYAxis: getAxisPatch(tokens) });
+		if (Object.prototype.hasOwnProperty.call(chartRecord, "secondaryYAxis")) nextChartConfig = mergeThemeNode(nextChartConfig, { secondaryYAxis: getAxisPatch(tokens) });
+		if (Object.prototype.hasOwnProperty.call(chartRecord, "pivotGrid")) nextChartConfig = mergeThemeNode(nextChartConfig, { pivotGrid: getPivotGridPatch(tokens) });
+		if (Object.prototype.hasOwnProperty.call(chartRecord, "annotation")) nextChartConfig = mergeThemeNode(nextChartConfig, { annotation: getAnnotationPatch(tokens) });
+		if (Object.prototype.hasOwnProperty.call(chartRecord, "regressionLine")) nextChartConfig = mergeThemeNode(nextChartConfig, { regressionLine: getRegressionLinePatch(tokens) });
+		if (raceChartTypes.includes(chartType) && Object.prototype.hasOwnProperty.call(chartRecord, "player")) nextChartConfig = mergeThemeNode(nextChartConfig, { player: getPlayerPatch(tokens) });
+		return nextChartConfig;
+	};
+	createTokenThemeConfig = (tokens) => {
+		const baseConfig = ("dark" === tokens.baseTheme ? darkTheme() : lightTheme()).config || {};
+		const nextConfig = {};
+		for (const chartType of Object.keys(baseConfig)) {
+			const chartConfig = baseConfig[chartType];
+			if (chartConfig) {
+				if ("table" === chartType || "pivotTable" === chartType) {
+					nextConfig[chartType] = mergeThemeNode(chartConfig, getTablePatch(tokens));
+					continue;
+				}
+				nextConfig[chartType] = withAxesAndExtras(chartType, chartConfig, tokens);
+			}
+		}
+		return { config: nextConfig };
+	};
+	registerTokenTheme = (themeName, tokens, options) => {
+		ensureRegisterAll(options);
+		registerCustomTheme(themeName, createTokenThemeConfig(tokens));
+	};
+}));
+//#endregion
+//#region ../vseed/dist/esm/theme/tokenThemeSchema.js
+var zTokenThemeDefinition;
+var init_tokenThemeSchema = __esmMin((() => {
+	init_zod();
+	zTokenThemeDefinition = object({
+		baseTheme: _enum(["light", "dark"]),
+		fontFamily: string().optional(),
+		tableHeaderFontSize: number().optional(),
+		tableBodyFontSize: number().optional(),
+		labelFontSize: number().optional(),
+		tooltipFontSize: number().optional(),
+		axisFontSize: number().optional(),
+		legendFontSize: number().optional(),
+		playerFontSize: number().optional(),
+		axisLabelFontSize: number().optional(),
+		axisLabelFontWeight: number().optional(),
+		axisTitleFontSize: number().optional(),
+		axisTitleFontWeight: number().optional(),
+		legendLabelFontSize: number().optional(),
+		legendLabelFontWeight: number().optional(),
+		tooltipValueFontWeight: number().optional(),
+		dataLabelFontSize: number().optional(),
+		dataLabelFontWeight: number().optional(),
+		annotationLabelFontSize: number().optional(),
+		annotationLabelFontWeight: number().optional(),
+		colorScheme: tuple([string().min(1), string().min(1)]).rest(string().min(1)),
+		linearColorScheme: tuple([string().min(1), string().min(1)]),
+		textPrimary: string(),
+		textSecondary: string(),
+		borderColor: string(),
+		surfaceColor: string().optional(),
+		surfaceBackgroundColor: string().optional(),
+		accentColor: string().optional(),
+		positiveColor: string().optional(),
+		negativeColor: string().optional(),
+		tooltipBackgroundColor: string(),
+		tooltipBorderColor: string().optional(),
+		axisLabelColor: string().optional(),
+		axisTitleColor: string().optional(),
+		axisGridColor: string().optional(),
+		axisLineColor: string().optional(),
+		labelColor: string().optional(),
+		labelStroke: string().optional(),
+		legendLabelColor: string().optional(),
+		legendPagerIconColor: string().optional(),
+		legendPagerIconDisableColor: string().optional(),
+		playerRailColor: string().optional(),
+		playerSliderHandleColor: string().optional(),
+		playerSliderHandleBorderColor: string().optional(),
+		tableBorderColor: string().optional(),
+		tableBodyFontColor: string().optional(),
+		tableHeaderFontColor: string().optional(),
+		tableHeaderBackgroundColor: string().optional(),
+		tableHoverBodyBackgroundColor: string().optional(),
+		tableHoverBodyInlineBackgroundColor: string().optional(),
+		tableHoverHeaderBackgroundColor: string().optional(),
+		tableHoverHeaderInlineBackgroundColor: string().optional(),
+		tableSelectedBorderColor: string().optional(),
+		tableSelectedBackgroundColor: string().optional(),
+		annotationLineColor: string().optional(),
+		annotationLineStyle: _enum([
+			"solid",
+			"dashed",
+			"dotted"
+		]).optional(),
+		annotationLineDash: array$1(number()).optional(),
+		annotationTextColor: string().optional(),
+		annotationTextBackgroundColor: string().optional(),
+		annotationTextBackgroundBorderRadius: number().optional(),
+		annotationTextBackgroundBorderColor: string().optional(),
+		annotationTextBackgroundBorderWidth: number().optional(),
+		annotationTextBackgroundPadding: number().optional(),
+		annotationTextBackgroundOpacity: number().optional(),
+		annotationAreaColor: string().optional(),
+		annotationAreaColorOpacity: number().optional()
+	});
+}));
+//#endregion
 //#region ../vseed/dist/esm/theme/index.js
 var init_theme = __esmMin((() => {
 	init_dark$1();
 	init_light$1();
-	init_all();
-	init_custom();
+	init_tokenTheme();
+	init_tokenThemeSchema();
 }));
 //#endregion
 //#region ../vseed/dist/esm/builder/register/index.js
@@ -31453,18 +31792,33 @@ function normalizeOperator(op, value) {
 	}
 	return mappedOp;
 }
+function ensureBuiltinTheme(name) {
+	if (!Builder.getTheme(name)) Builder.registerTheme(name, builtinThemes[name]());
+	return Builder.getTheme(name);
+}
+function registerVSeedTheme(tokens) {
+	const key = JSON.stringify(tokens);
+	const existing = registeredThemes.get(key);
+	if (existing) return existing;
+	let name;
+	do
+		name = `vbi-dashboard-${++nextThemeId}`;
+	while (Builder.getTheme(name));
+	registerTokenTheme(name, tokens, { ensureRegisterAll: false });
+	registeredThemes.set(key, name);
+	return name;
+}
 function createVBI(defaultBuilderOptions) {
 	const resourceRegistry = createVBIResourceRegistry();
 	return {
 		connectors: createVBIConnectorNamespace(),
 		resources: createVBIResourceNamespace(resourceRegistry),
 		dashboard: createVBIDashboardNamespace(defaultBuilderOptions, resourceRegistry),
-		report: createVBIReportNamespace(defaultBuilderOptions, resourceRegistry),
 		chart: createVBIChartNamespace(defaultBuilderOptions, resourceRegistry),
 		insight: createVBIInsightNamespace(resourceRegistry)
 	};
 }
-var MeasureNodeBuilder, id_id, getOrCreateMeasures, normalizeMeasureNodeIds, locateMeasureIndexById, MEASURE_ENCODING_SUPPORT, repeatEncoding, STRATEGY_BY_CHART_TYPE, DEFAULT_STRATEGY, getSupportedMeasureEncodingsForChartType, getRecommendedMeasureEncodingsForChartType, MeasuresBuilder, DimensionNodeBuilder, getOrCreateDimensions, normalizeDimensionNodeIds, locateDimensionIndexById, DIMENSION_ENCODING_SUPPORT, dimension_encoding_repeatEncoding, alternateEncoding, dimension_encoding_STRATEGY_BY_CHART_TYPE, dimension_encoding_DEFAULT_STRATEGY, getSupportedDimensionEncodingsForChartType, getRecommendedDimensionEncodingsForChartType, DimensionsBuilder, reapplyDimensionEncodings, reapplyMeasureEncodings, ChartTypeBuilder, WhereFilterNodeBuilder, WhereGroupBuilder, WhereFilterBuilder, HavingFilterNodeBuilder, HavingGroupBuilder, HavingFilterBuilder, ThemeBuilder, LocaleBuilder, LimitBuilder, UndoManager, VBI_TO_VQUERY_MEASURE_AGGR_FUNC_MAP, VBI_TO_VQUERY_DIMENSION_AGGR_FUNC_MAP, mapAggregateForVQuery, mapDimensionAggregateForVQuery, buildSelect, buildGroupBy, buildWhere, buildHaving, toOrderItem, buildOrderBy, buildLimit, buildVQuery, buildVQueryDSL, connectorMap, registerConnector, getConnector, buildVSeedDSL, defaultVBIChartBuilderAdapters, resolveVBIChartBuilderAdapters, applyUpdateToDoc, encodeDocStateAsUpdate, buildVBIChartDSL, getCollectionLength, isEmptyVBIChartDSL, getBuilderSchema, UUID_KEY, ensureResourceUUID, getResourceUUID, VBIChartBuilder, zVBIDashboardBreakpoint, zVBIDashboardBreakpoints, VBIDashboardDefaultBreakpoints, createEmptyDashboardLayout, createEmptyDashboard, createDashboardWidgetYMap, getOrCreateDashboardWidgets, locateDashboardWidgetIndexById, removeDashboardWidgetLayouts, resolveResourceReference, DashboardChartBuilder, mergeWidgetLayoutsIntoDSL, DashboardChartCollectionBuilder, insight_builder_resolveResourceReference, DashboardInsightBuilder, DashboardInsightCollectionBuilder, zVBIDashboardItemLayout, zVBIDashboardLayout, zVBIDashboardMeta, zVBIDashboardBaseWidget, zVBIDashboardChartWidget, zVBIDashboardInsightWidget, zVBIDashboardWidget, zVBIDashboardDSL, buildVBIDashboardDSL, is_empty_getCollectionLength, isEmptyVBIDashboardDSL, VBIDashboardBuilder, zVBIInsightDSL, buildVBIInsightDSL, isEmptyVBIInsightDSL, VBIInsightBuilder, createEmptyReportPage, createReportPageYMap, ensureReportPages, getOrCreateReportPages, locateReportPageIndexById, page_builder_resolveResourceReference, ReportPageBuilder, ReportPageCollectionBuilder, zVBIReportPageDSL, zVBIReportDSL, buildVBIReportDSL, buildVBIReportSnapshotDSL, isEmptyVBIReportDSL, VBIReportBuilder, createEmptyChart, createEmptyInsight, createEmptyReport, shouldEnsureIdForObject, toYMap, ensureYArray, ensureHavingGroup, ensureWhereGroup, setBaseDSLFields, createChartBuilderFromVBIChartDSLInput, mergeChartBuilderOptions, createVBIChartNamespace, createVBIConnectorNamespace, createDashboardBuilderFromVBIDashboardDSLInput, mergeDashboardBuilderOptions, createVBIDashboardNamespace, createInsightBuilderFromVBIInsightDSLInput, createVBIInsightNamespace, createReportBuilderFromVBIReportDSLInput, mergeReportBuilderOptions, createVBIReportNamespace, zDimensionAggregate, zVBISortOrder, zVBISort, zVBIDimensionSchema, zVBIDimensionGroupSchema, zVBIDimensionTree, zSimpleAggregate, zQuantileAggregate, zAggregate, zHavingLogicalOperator, zVBIHavingFilter, zVBIHavingGroup, zVBIHavingClause, zVBIDSLLocale, zNumFormatObject, zVBIMeasureFormat, zVBIMeasure, zVBIMeasureGroup, zVBIMeasureTree, zVBIDSLTheme, zVBIWhereDateInput, zVBIWhereDatePeriod, zVBIWhereDatePredicate, zWhereLogicalOperator, zVBIWhereDateFilter, zVBIWhereScalarFilter, zVBIWhereFilter, zVBIWhereGroup, zVBIWhereClause, zVBIChartDSL, createVBIResourceNamespace, createResourceStore, createChartStore, createInsightStore, createVBIResourceRegistry, VBI;
+var MeasureNodeBuilder, id_id, getOrCreateMeasures, normalizeMeasureNodeIds, locateMeasureIndexById, MEASURE_ENCODING_SUPPORT, repeatEncoding, STRATEGY_BY_CHART_TYPE, DEFAULT_STRATEGY, getSupportedMeasureEncodingsForChartType, getRecommendedMeasureEncodingsForChartType, MeasuresBuilder, DimensionNodeBuilder, getOrCreateDimensions, normalizeDimensionNodeIds, locateDimensionIndexById, DIMENSION_ENCODING_SUPPORT, dimension_encoding_repeatEncoding, alternateEncoding, dimension_encoding_STRATEGY_BY_CHART_TYPE, dimension_encoding_DEFAULT_STRATEGY, getSupportedDimensionEncodingsForChartType, getRecommendedDimensionEncodingsForChartType, DimensionsBuilder, reapplyDimensionEncodings, reapplyMeasureEncodings, ChartTypeBuilder, WhereFilterNodeBuilder, WhereGroupBuilder, WhereFilterBuilder, HavingFilterNodeBuilder, HavingGroupBuilder, HavingFilterBuilder, ThemeBuilder, LocaleBuilder, LimitBuilder, UndoManager, VBI_TO_VQUERY_MEASURE_AGGR_FUNC_MAP, VBI_TO_VQUERY_DIMENSION_AGGR_FUNC_MAP, mapAggregateForVQuery, mapDimensionAggregateForVQuery, buildSelect, buildGroupBy, buildWhere, buildHaving, toOrderItem, buildOrderBy, buildLimit, buildVQuery, buildVQueryDSL, connectorMap, registerConnector, getConnector, buildVSeedDSL, defaultVBIChartBuilderAdapters, resolveVBIChartBuilderAdapters, applyUpdateToDoc, encodeDocStateAsUpdate, buildVBIChartDSL, getCollectionLength, isEmptyVBIChartDSL, getBuilderSchema, UUID_KEY, ensureResourceUUID, getResourceUUID, VBIChartBuilder, zVBIDashboardBreakpoint, zVBIDashboardBreakpoints, VBIDashboardDefaultBreakpoints, createEmptyDashboardLayout, createEmptyDashboard, createDashboardWidgetYMap, getOrCreateDashboardWidgets, locateDashboardWidgetIndexById, removeDashboardWidgetLayouts, resolveResourceReference, DashboardChartBuilder, mergeWidgetLayoutsIntoDSL, DashboardChartCollectionBuilder, insight_builder_resolveResourceReference, DashboardInsightBuilder, DashboardInsightCollectionBuilder, zVBIDashboardThemeDefinition, zVBIDashboardTheme, zVBIDashboardMeta, presetDashboardThemes, builtinThemes, registeredThemes, nextThemeId, DashboardThemeBuilder, zVBIDashboardItemLayout, zVBIDashboardLayout, zVBIDashboardBaseWidget, zVBIDashboardChartWidget, zVBIDashboardInsightWidget, zVBIDashboardWidget, zVBIDashboardDSL, buildVBIDashboardDSL, is_empty_getCollectionLength, isEmptyVBIDashboardDSL, VBIDashboardBuilder, zVBIInsightDSL, buildVBIInsightDSL, isEmptyVBIInsightDSL, VBIInsightBuilder, createEmptyChart, createEmptyInsight, shouldEnsureIdForObject, toYMap, ensureYArray, ensureHavingGroup, ensureWhereGroup, setBaseDSLFields, createChartBuilderFromVBIChartDSLInput, mergeChartBuilderOptions, createVBIChartNamespace, createVBIConnectorNamespace, createDashboardBuilderFromVBIDashboardDSLInput, mergeDashboardBuilderOptions, createVBIDashboardNamespace, createInsightBuilderFromVBIInsightDSLInput, createVBIInsightNamespace, zDimensionAggregate, zVBISortOrder, zVBISort, zVBIDimensionSchema, zVBIDimensionGroupSchema, zVBIDimensionTree, zSimpleAggregate, zQuantileAggregate, zAggregate, zHavingLogicalOperator, zVBIHavingFilter, zVBIHavingGroup, zVBIHavingClause, zVBIDSLLocale, zNumFormatObject, zVBIMeasureFormat, zVBIMeasure, zVBIMeasureGroup, zVBIMeasureTree, zVBIDSLTheme, zVBIWhereDateInput, zVBIWhereDatePeriod, zVBIWhereDatePredicate, zWhereLogicalOperator, zVBIWhereDateFilter, zVBIWhereScalarFilter, zVBIWhereFilter, zVBIWhereGroup, zVBIWhereClause, zVBIChartDSL, createVBIResourceNamespace, createResourceStore, createChartStore, createInsightStore, createVBIResourceRegistry, VBI;
 var init_dist = __esmMin((() => {
 	init_dist$1();
 	init_esm();
@@ -33477,7 +33831,7 @@ var init_dist = __esmMin((() => {
 			this.widget.set("description", description);
 			return this;
 		}
-		setChartId(chart) {
+		setChart(chart) {
 			this.widget.set("chartId", resolveResourceReference(chart));
 			return this;
 		}
@@ -33706,6 +34060,321 @@ var init_dist = __esmMin((() => {
 			return this.findAll().map((builder) => builder.toJSON());
 		}
 	};
+	zVBIDashboardThemeDefinition = object({
+		label: string().optional(),
+		tokens: zTokenThemeDefinition,
+		dashboard: object({
+			backgroundColor: string().optional(),
+			widgetBackgroundColor: string().optional(),
+			widgetBorderColor: string().optional(),
+			widgetBorderRadius: number().nonnegative().optional(),
+			toolbarBackground: string().optional(),
+			padding: number().nonnegative().optional(),
+			gap: number().nonnegative().optional()
+		}).optional()
+	});
+	zVBIDashboardTheme = string().trim().min(1);
+	zVBIDashboardMeta = object({
+		title: string(),
+		description: string().optional(),
+		theme: zVBIDashboardTheme.default("light"),
+		themes: record(zVBIDashboardTheme, zVBIDashboardThemeDefinition).optional()
+	});
+	presetDashboardThemes = {
+		volcanoBlue: { tokens: {
+			baseTheme: "dark",
+			colorScheme: [
+				"#006EFF",
+				"#00E5E5",
+				"#2E55EA",
+				"#B8E7FE",
+				"#00D689",
+				"#B7F9F5",
+				"#FBCC71",
+				"#F46E50"
+			],
+			linearColorScheme: ["#151238", "#006EFF"],
+			textPrimary: "#ffffff",
+			textSecondary: "#b9b6d3",
+			borderColor: "#38345b",
+			surfaceColor: "#151238",
+			surfaceBackgroundColor: "#0c0929",
+			tooltipBackgroundColor: "#211d46"
+		} },
+		clean: { tokens: {
+			baseTheme: "light",
+			colorScheme: [
+				"#fd7f6f",
+				"#7eb0d5",
+				"#b2e061",
+				"#bd7ebe",
+				"#ffb55a",
+				"#ffee65",
+				"#beb9db",
+				"#fdcce5",
+				"#8bd3c7"
+			],
+			linearColorScheme: ["#fff1e8", "#fd7f6f"],
+			textPrimary: "#382f26",
+			textSecondary: "#7d7061",
+			borderColor: "#e6ded1",
+			surfaceColor: "#fffdf8",
+			surfaceBackgroundColor: "#f8f5ef",
+			tooltipBackgroundColor: "#fffdf8"
+		} },
+		outskirts: { tokens: {
+			baseTheme: "dark",
+			colorScheme: [
+				"#cfcfcf",
+				"#ffbc79",
+				"#a2c8ec",
+				"#898989",
+				"#c85200",
+				"#5f9ed1",
+				"#595959",
+				"#ababab",
+				"#ff800e",
+				"#006ba4"
+			],
+			linearColorScheme: ["#151238", "#cfcfcf"],
+			textPrimary: "#ffffff",
+			textSecondary: "#b9b6d3",
+			borderColor: "#38345b",
+			surfaceColor: "#151238",
+			surfaceBackgroundColor: "#0c0929",
+			tooltipBackgroundColor: "#211d46"
+		} },
+		blueOrange: { tokens: {
+			baseTheme: "dark",
+			colorScheme: [
+				"#4ABEFF",
+				"#E97A4B",
+				"#A0D8FF",
+				"#FFB99C",
+				"#91A9B1",
+				"#E9A94B",
+				"#4BE99D",
+				"#6F86FF"
+			],
+			linearColorScheme: ["#151238", "#4ABEFF"],
+			textPrimary: "#ffffff",
+			textSecondary: "#b9b6d3",
+			borderColor: "#38345b",
+			surfaceColor: "#151238",
+			surfaceBackgroundColor: "#0c0929",
+			tooltipBackgroundColor: "#211d46"
+		} },
+		financeYellow: { tokens: {
+			baseTheme: "dark",
+			colorScheme: [
+				"#FFCF67",
+				"#FF9254",
+				"#D7D7D7",
+				"#E1C396",
+				"#FFB99C",
+				"#C5BEB4",
+				"#96B9A8",
+				"#C59C7F"
+			],
+			linearColorScheme: ["#151238", "#FFCF67"],
+			textPrimary: "#ffffff",
+			textSecondary: "#b9b6d3",
+			borderColor: "#38345b",
+			surfaceColor: "#151238",
+			surfaceBackgroundColor: "#0c0929",
+			tooltipBackgroundColor: "#211d46"
+		} },
+		wenLvCyan: { tokens: {
+			baseTheme: "dark",
+			colorScheme: [
+				"#32E2CD",
+				"#FFCE70",
+				"#B03C3C",
+				"#BEEAE4",
+				"#D66E41",
+				"#E1E1E1",
+				"#3BC080",
+				"#435BD8"
+			],
+			linearColorScheme: ["#0d2c28", "#32e2cd"],
+			textPrimary: "#ebf7f2",
+			textSecondary: "#9cbbb2",
+			borderColor: "#2b4942",
+			surfaceColor: "#0d2c28",
+			surfaceBackgroundColor: "#071e1c",
+			tooltipBackgroundColor: "#163b34"
+		} },
+		electricGreen: { tokens: {
+			baseTheme: "dark",
+			colorScheme: [
+				"#08FEF3",
+				"#FF7925",
+				"#FBCC71",
+				"#2EC8EA",
+				"#B8FEF1",
+				"#F9CFB7",
+				"#D43A30",
+				"#5FCEA6"
+			],
+			linearColorScheme: ["#151238", "#08FEF3"],
+			textPrimary: "#ffffff",
+			textSecondary: "#b9b6d3",
+			borderColor: "#38345b",
+			surfaceColor: "#151238",
+			surfaceBackgroundColor: "#0c0929",
+			tooltipBackgroundColor: "#211d46"
+		} },
+		eCommercePurple: { tokens: {
+			baseTheme: "dark",
+			colorScheme: [
+				"#734AFF",
+				"#FF6960",
+				"#5484FF",
+				"#CDC4EC",
+				"#EAC4C2",
+				"#34CECC",
+				"#FFB054",
+				"#C13C5C"
+			],
+			linearColorScheme: ["#151238", "#734AFF"],
+			textPrimary: "#ffffff",
+			textSecondary: "#b9b6d3",
+			borderColor: "#38345b",
+			surfaceColor: "#151238",
+			surfaceBackgroundColor: "#0c0929",
+			tooltipBackgroundColor: "#211d46"
+		} },
+		redBlue: { tokens: {
+			baseTheme: "dark",
+			colorScheme: [
+				"#006EFF",
+				"#CC3B3B",
+				"#B8E5FE",
+				"#214FFF",
+				"#FFCFCF",
+				"#00E5E5",
+				"#B7F9F5",
+				"#FBCC71"
+			],
+			linearColorScheme: ["#151238", "#006EFF"],
+			textPrimary: "#ffffff",
+			textSecondary: "#b9b6d3",
+			borderColor: "#38345b",
+			surfaceColor: "#151238",
+			surfaceBackgroundColor: "#0c0929",
+			tooltipBackgroundColor: "#211d46"
+		} },
+		partyRed: { tokens: {
+			baseTheme: "dark",
+			colorScheme: [
+				"#E82F2F",
+				"#FF9635",
+				"#D7D7D7",
+				"#E19B96",
+				"#FFB99C",
+				"#C5BEB4",
+				"#B99696",
+				"#C59C7F"
+			],
+			linearColorScheme: ["#151238", "#E82F2F"],
+			textPrimary: "#ffffff",
+			textSecondary: "#b9b6d3",
+			borderColor: "#38345b",
+			surfaceColor: "#151238",
+			surfaceBackgroundColor: "#0c0929",
+			tooltipBackgroundColor: "#211d46"
+		} }
+	};
+	builtinThemes = {
+		light: lightTheme,
+		dark: darkTheme
+	};
+	registeredThemes = /* @__PURE__ */ new Map();
+	nextThemeId = 0;
+	DashboardThemeBuilder = class {
+		dsl;
+		constructor(dsl) {
+			this.dsl = dsl;
+		}
+		observe(callback) {
+			const listener = (event, transaction) => {
+				const change = event.changes.keys.get("meta");
+				const meta = this.dsl.get("meta");
+				if (change && ((change.oldValue?.theme ?? "light") !== this.getTheme() || JSON.stringify(change.oldValue?.themes) !== JSON.stringify(meta?.themes))) callback(event, transaction);
+			};
+			this.dsl.observe(listener);
+			return () => this.dsl.unobserve(listener);
+		}
+		setTheme(theme, definition) {
+			const name = zVBIDashboardTheme.parse(theme);
+			const meta = this.dsl.get("meta");
+			this.updateMeta({
+				...meta,
+				theme: name,
+				...void 0 !== definition ? { themes: {
+					...meta.themes,
+					[name]: zVBIDashboardThemeDefinition.parse(definition)
+				} } : {}
+			});
+		}
+		registerTheme(theme, definition) {
+			const name = zVBIDashboardTheme.parse(theme);
+			const meta = this.dsl.get("meta");
+			this.updateMeta({
+				...meta,
+				themes: {
+					...meta.themes,
+					[name]: zVBIDashboardThemeDefinition.parse(definition)
+				}
+			});
+		}
+		getThemeConfig(theme = this.getTheme()) {
+			const definitions = this.dsl.get("meta")?.themes;
+			const definition = definitions && Object.hasOwn(definitions, theme) ? definitions[theme] : Object.hasOwn(presetDashboardThemes, theme) ? presetDashboardThemes[theme] : void 0;
+			return definition ? structuredClone(definition) : void 0;
+		}
+		getThemeDefinitions() {
+			return structuredClone(this.dsl.get("meta")?.themes ?? {});
+		}
+		getThemeOptions() {
+			return [.../* @__PURE__ */ new Set([
+				"light",
+				"dark",
+				...Object.keys(presetDashboardThemes),
+				...Object.keys(this.dsl.get("meta")?.themes ?? {})
+			])].map((name) => {
+				const definition = this.getThemeConfig(name);
+				const baseTheme = definition?.tokens.baseTheme ?? ("dark" === name ? "dark" : "light");
+				return {
+					name,
+					baseTheme,
+					label: definition?.label,
+					colors: [...definition?.tokens.colorScheme ?? ensureBuiltinTheme(baseTheme).config?.column?.color?.colorScheme ?? []]
+				};
+			});
+		}
+		resolveTheme(theme = this.getTheme()) {
+			const definition = this.getThemeConfig(theme);
+			if (!definition && "light" !== theme && "dark" !== theme) return this.resolveTheme("light");
+			const baseTheme = definition?.tokens.baseTheme ?? ("dark" === theme ? "dark" : "light");
+			if (!definition) ensureBuiltinTheme(baseTheme);
+			return {
+				name: theme,
+				baseTheme,
+				definition,
+				chartTheme: definition ? registerVSeedTheme(definition.tokens) : theme
+			};
+		}
+		getTheme() {
+			return this.dsl.get("meta")?.theme ?? "light";
+		}
+		toJSON() {
+			return this.getTheme();
+		}
+		updateMeta(meta) {
+			if (JSON.stringify(meta) !== JSON.stringify(this.dsl.get("meta"))) this.dsl.set("meta", meta);
+		}
+	};
 	zVBIDashboardItemLayout = object({
 		id: string(),
 		widgetId: string(),
@@ -33716,11 +34385,6 @@ var init_dist = __esmMin((() => {
 		static: boolean().optional()
 	});
 	zVBIDashboardLayout = record(zVBIDashboardBreakpoint, array$1(zVBIDashboardItemLayout).optional());
-	zVBIDashboardMeta = object({
-		title: string(),
-		description: string().optional(),
-		theme: _enum(["dark", "light"]).default("light")
-	});
 	zVBIDashboardBaseWidget = object({
 		id: string(),
 		title: string().optional(),
@@ -33756,6 +34420,7 @@ var init_dist = __esmMin((() => {
 		doc;
 		dsl;
 		undoManager;
+		theme;
 		chart;
 		insight;
 		builderOptions;
@@ -33777,6 +34442,7 @@ var init_dist = __esmMin((() => {
 				if (void 0 === this.dsl.get("version")) this.dsl.set("version", 0);
 			});
 			this.undoManager = new UndoManager(this.dsl);
+			this.theme = new DashboardThemeBuilder(this.dsl);
 			this.chart = new DashboardChartCollectionBuilder(doc, this.dsl, this);
 			this.insight = new DashboardInsightCollectionBuilder(doc, this.dsl, this);
 		}
@@ -33825,200 +34491,6 @@ var init_dist = __esmMin((() => {
 		build = () => buildVBIInsightDSL(this.dsl);
 		isEmpty = () => isEmptyVBIInsightDSL(this.dsl);
 	};
-	createEmptyReportPage = (pageId = id_id.uuid()) => ({
-		id: pageId,
-		title: "",
-		chartId: "",
-		insightId: ""
-	});
-	createReportPageYMap = (page) => {
-		const yMap = new YMap();
-		yMap.set("id", page.id || id_id.uuid());
-		yMap.set("title", page.title);
-		yMap.set("chartId", page.chartId ?? "");
-		yMap.set("insightId", page.insightId ?? "");
-		return yMap;
-	};
-	ensureReportPages = (pages) => {
-		const yArray = new YArray();
-		for (const page of pages ?? []) yArray.push([createReportPageYMap(page)]);
-		return yArray;
-	};
-	getOrCreateReportPages = (dsl) => {
-		const pages = dsl.get("pages");
-		if (pages instanceof YArray) return pages;
-		const nextPages = new YArray();
-		dsl.set("pages", nextPages);
-		return nextPages;
-	};
-	locateReportPageIndexById = (pages, pageId) => pages.toArray().findIndex((page) => page.get("id") === pageId);
-	page_builder_resolveResourceReference = (value) => "string" == typeof value ? value : value.getUUID();
-	ReportPageBuilder = class {
-		parent;
-		page;
-		constructor(parent, page) {
-			this.parent = parent;
-			this.page = page;
-		}
-		getId() {
-			return this.page.get("id");
-		}
-		get chart() {
-			return this.parent.getChartBuilder(this.page.get("chartId") ?? "");
-		}
-		get insight() {
-			return this.parent.getInsightBuilder(this.page.get("insightId") ?? "");
-		}
-		setTitle(title) {
-			this.page.set("title", title);
-			return this;
-		}
-		setChartId(chart) {
-			this.page.set("chartId", page_builder_resolveResourceReference(chart));
-			return this;
-		}
-		setInsightId(insight) {
-			this.page.set("insightId", page_builder_resolveResourceReference(insight));
-			return this;
-		}
-		toJSON() {
-			return this.page.toJSON();
-		}
-	};
-	ReportPageCollectionBuilder = class {
-		parent;
-		doc;
-		dsl;
-		constructor(parent, doc, dsl) {
-			this.parent = parent;
-			this.doc = doc;
-			this.dsl = dsl;
-			doc.transact(() => {
-				getOrCreateReportPages(this.dsl);
-			});
-		}
-		add(title, callback) {
-			const pageMap = createReportPageYMap({
-				...createEmptyReportPage(),
-				title
-			});
-			this.doc.transact(() => {
-				getOrCreateReportPages(this.dsl).push([pageMap]);
-			});
-			if (callback) callback(this.createPageBuilder(pageMap));
-			return this.parent;
-		}
-		remove(pageId) {
-			this.doc.transact(() => {
-				const pages = getOrCreateReportPages(this.dsl);
-				const index = locateReportPageIndexById(pages, pageId);
-				if (-1 !== index) pages.delete(index, 1);
-			});
-			return this.parent;
-		}
-		reorder(pageIds) {
-			const pages = getOrCreateReportPages(this.dsl);
-			const currentPages = pages.toArray();
-			const pageById = new Map(currentPages.map((page) => [page.get("id"), page]));
-			const uniquePageIds = new Set(pageIds);
-			if (pageIds.length !== currentPages.length) throw new Error("Report page order does not match current page count");
-			if (uniquePageIds.size !== pageIds.length) throw new Error("Report page order contains duplicate page ids");
-			for (const pageId of pageIds) if (!pageById.has(pageId)) throw new Error(`Report page with id "${pageId}" not found`);
-			this.doc.transact(() => {
-				const reorderedPages = pageIds.map((pageId) => createReportPageYMap(pageById.get(pageId).toJSON()));
-				if (pages.length > 0) pages.delete(0, pages.length);
-				if (reorderedPages.length > 0) pages.push(reorderedPages);
-			});
-			return this.parent;
-		}
-		update(pageId, callback) {
-			this.doc.transact(() => {
-				const page = this.get(pageId);
-				if (!page) throw new Error(`Report page with id "${pageId}" not found`);
-				callback(page);
-			});
-			return this.parent;
-		}
-		get(pageId) {
-			const pages = getOrCreateReportPages(this.dsl);
-			const index = locateReportPageIndexById(pages, pageId);
-			return -1 === index ? void 0 : this.createPageBuilder(pages.get(index));
-		}
-		createPageBuilder(page) {
-			return new ReportPageBuilder(this.parent, page);
-		}
-	};
-	zVBIReportPageDSL = object({
-		id: string(),
-		title: string(),
-		chartId: string().optional().default(""),
-		insightId: string().optional().default("")
-	});
-	zVBIReportDSL = object({
-		uuid: string().optional().default(""),
-		pages: array$1(zVBIReportPageDSL).optional().default([]),
-		version: number().int().min(0).optional().default(0)
-	});
-	buildVBIReportDSL = (dsl) => zVBIReportDSL.parse(dsl.toJSON());
-	buildVBIReportSnapshotDSL = (report, resourceRegistry) => {
-		const charts = {};
-		const insights = {};
-		for (const page of report.pages) {
-			const chart = resourceRegistry.charts.build(page.chartId);
-			if (!chart) throw new Error(`Missing chart resource "${page.chartId}"`);
-			const insight = resourceRegistry.insights.build(page.insightId);
-			if (!insight) throw new Error(`Missing insight resource "${page.insightId}"`);
-			charts[page.chartId] = chart;
-			insights[page.insightId] = insight;
-		}
-		return {
-			report,
-			charts,
-			insights
-		};
-	};
-	isEmptyVBIReportDSL = (dsl) => {
-		const pages = dsl.get("pages");
-		return !(pages instanceof YArray) || 0 === pages.length;
-	};
-	VBIReportBuilder = class {
-		doc;
-		dsl;
-		undoManager;
-		page;
-		builderOptions;
-		resourceRegistry;
-		constructor(doc, dependencies = {}) {
-			this.doc = doc;
-			this.dsl = doc.getMap("dsl");
-			this.builderOptions = dependencies.builderOptions;
-			this.resourceRegistry = dependencies.resourceRegistry;
-			doc.transact(() => {
-				ensureResourceUUID(this.dsl);
-				getOrCreateReportPages(this.dsl);
-				if (void 0 === this.dsl.get("version")) this.dsl.set("version", 0);
-			});
-			this.undoManager = new UndoManager(this.dsl);
-			this.page = new ReportPageCollectionBuilder(this, doc, this.dsl);
-		}
-		applyUpdate = (update, transactionOrigin) => applyUpdateToDoc(this.doc, update, transactionOrigin);
-		encodeStateAsUpdate = (targetStateVector) => encodeDocStateAsUpdate(this.doc, targetStateVector);
-		getUUID = () => getResourceUUID(this.dsl);
-		getChartBuilder = (chartId) => {
-			if (!this.resourceRegistry || !chartId) return;
-			return this.resourceRegistry.charts.resolveBuilder(chartId, this.builderOptions?.chart);
-		};
-		getInsightBuilder = (insightId) => {
-			if (!this.resourceRegistry || !insightId) return;
-			return this.resourceRegistry.insights.resolveBuilder(insightId);
-		};
-		build = () => buildVBIReportDSL(this.dsl);
-		snapshot = () => {
-			if (!this.resourceRegistry) throw new Error("Report snapshot requires a resource registry");
-			return buildVBIReportSnapshotDSL(this.build(), this.resourceRegistry);
-		};
-		isEmpty = () => isEmptyVBIReportDSL(this.dsl);
-	};
 	createEmptyChart = (connectorId, uuid = id_id.resourceUUID()) => ({
 		uuid,
 		connectorId,
@@ -34042,11 +34514,6 @@ var init_dist = __esmMin((() => {
 	createEmptyInsight = (uuid = id_id.resourceUUID()) => ({
 		uuid,
 		content: "",
-		version: 0
-	});
-	createEmptyReport = (uuid = id_id.resourceUUID()) => ({
-		uuid,
-		pages: [],
 		version: 0
 	});
 	shouldEnsureIdForObject = (obj, ensureId) => {
@@ -34193,32 +34660,6 @@ var init_dist = __esmMin((() => {
 			return builder;
 		},
 		createEmpty: createEmptyInsight
-	});
-	createReportBuilderFromVBIReportDSLInput = (report, options, resourceRegistry) => {
-		const doc = new Doc();
-		const dsl = doc.getMap("dsl");
-		const normalized = zVBIReportDSL.parse(report);
-		doc.transact(() => {
-			dsl.set("uuid", normalized.uuid);
-			dsl.set("version", normalized.version);
-			dsl.set("pages", ensureReportPages(normalized.pages));
-		});
-		return new VBIReportBuilder(doc, {
-			builderOptions: options,
-			resourceRegistry
-		});
-	};
-	mergeReportBuilderOptions = (base, overrides) => {
-		const chart = mergeChartBuilderOptions(base, overrides?.chart);
-		return chart ? { chart } : void 0;
-	};
-	createVBIReportNamespace = (defaultBuilderOptions, resourceRegistry) => ({
-		create: (report, builderOptions) => {
-			const options = mergeReportBuilderOptions(defaultBuilderOptions, builderOptions);
-			return createReportBuilderFromVBIReportDSLInput(report, options, resourceRegistry);
-		},
-		createEmpty: createEmptyReport,
-		createEmptyPage: createEmptyReportPage
 	});
 	zDimensionAggregate = object({ func: _enum([
 		"toYear",
