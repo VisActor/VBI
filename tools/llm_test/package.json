@@ -7,13 +7,14 @@
     "openai": "5.12.2",
     "puppeteer": "^24.16.1",
     "ts-morph": "26.0.0",
-    "ts-node": "10.9.2",
-    "typescript": "6.0.2",
+    "typescript": "7.0.2",
     "zod": "4.1.8",
     "@visactor/vseed": "workspace:*",
-    "json-schema-to-typescript": "15.0.4"
+    "json-schema-to-typescript": "15.0.4",
+    "tsx": "4.23.15"
   },
   "scripts": {
-    "generate": "rm -rf ./new-type/* && rm -rf ./top-key/* && ts-node ./generate-top-key.ts && ts-node ./generate-doc.ts"
+    "generate": "rm -rf ./new-type/* && rm -rf ./top-key/* && tsx ./generate-top-key.ts && tsx ./generate-doc.ts",
+    "typecheck": "tsc --noEmit"
   }
 }

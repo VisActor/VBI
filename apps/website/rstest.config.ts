@@ -1,16 +1,13 @@
 import { defineConfig } from '@rstest/core'
 
 export default defineConfig({
-  globals: true,
-  testEnvironment: 'node',
-  pool: 'forks',
   include: ['tests/**/*.test.ts'],
-  exclude: ['node_modules/**', 'dist/**', '**/*.d.ts'],
-  includeSource: ['src/**/*.{js,ts}'],
+  resolve: {
+    conditionNames: ['require', 'node', 'default'],
+  },
   coverage: {
-    enabled: false,
     provider: 'istanbul',
-    include: ['src/**'],
+    include: ['components/demoConnector/**/*.ts'],
     reporters: ['text', 'html', 'json', 'json-summary'],
   },
 })

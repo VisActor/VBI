@@ -29,7 +29,8 @@
     "lint": "oxlint .",
     "test": "rstest",
     "test:update": "rstest --update",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json"
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json",
+    "test:coverage": "rstest run --coverage"
   },
   "dependencies": {
     "@earendil-works/pi-agent-core": "0.75.5",
@@ -37,9 +38,10 @@
     "typebox": "1.1.38"
   },
   "devDependencies": {
-    "@rstest/core": "0.8.3",
-    "@rslib/core": "0.20.3",
+    "@rstest/core": "0.12.0",
+    "@rslib/core": "1.0.1",
     "@types/node": "24.10.1",
-    "typescript": "6.0.2"
+    "typescript": "7.0.2",
+    "@rstest/coverage-istanbul": "0.12.0"
   }
 }

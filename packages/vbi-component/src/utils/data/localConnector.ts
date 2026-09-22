@@ -1,4 +1,4 @@
-import { VBI, type VBIChartBuilder } from '@visactor/vbi'
+import { VBI, type VBIChartBuilder, type VBIConnector } from '@visactor/vbi'
 import { VQuery, type DatasetColumn, type RawDatasetSource, type VQueryDSL } from '@visactor/vquery'
 import { randomShortId } from '../random'
 import {
@@ -52,30 +52,33 @@ export class LocalConnector {
   }
 
   public register(): string {
-    VBI.connectors.register(this.id, async () => ({
-      discoverSchema: async () => {
-        if (this.localSchema) return this.localSchema
-        return this.localData.length === 0 ? [] : inferSchemaFromRows(this.localData)
-      },
-      query: async ({ queryDSL, schema }) => {
-        if ((await this.vquery.hasDataset(this.id)) && this.datasetNeedsRefresh) {
-          await this.vquery.dropDataset(this.id)
-        }
-        if (!(await this.vquery.hasDataset(this.id))) {
-          if (this.localData.length === 0) return { dataset: [] }
-          await this.vquery.createDataset(
-            this.id,
-            schema as DatasetColumn[],
-            { rawDataset: this.localData, type: 'json' } as RawDatasetSource,
-          )
-          this.datasetNeedsRefresh = false
-        }
-        const dataset = await this.vquery.connectDataset(this.id)
-        const dsl = queryDSL as VQueryDSL<Record<string, QueryValue>>
-        const result = await dataset.query(dsl)
-        return { dataset: normalizeDataset(dsl, result.dataset as LocalRow[]) }
-      },
-    }))
+    VBI.connectors.register(
+      this.id,
+      async (): Promise<VBIConnector> => ({
+        discoverSchema: async () => {
+          if (this.localSchema) return this.localSchema
+          return this.localData.length === 0 ? [] : inferSchemaFromRows(this.localData)
+        },
+        query: async ({ queryDSL, schema }) => {
+          if ((await this.vquery.hasDataset(this.id)) && this.datasetNeedsRefresh) {
+            await this.vquery.dropDataset(this.id)
+          }
+          if (!(await this.vquery.hasDataset(this.id))) {
+            if (this.localData.length === 0) return { dataset: [] }
+            await this.vquery.createDataset(
+              this.id,
+              schema as DatasetColumn[],
+              { rawDataset: this.localData, type: 'json' } as RawDatasetSource,
+            )
+            this.datasetNeedsRefresh = false
+          }
+          const dataset = await this.vquery.connectDataset(this.id)
+          const dsl = queryDSL as VQueryDSL<Record<string, QueryValue>>
+          const result = await dataset.query(dsl)
+          return { dataset: normalizeDataset(dsl, result.dataset as LocalRow[]) }
+        },
+      }),
+    )
     return this.id
   }
 

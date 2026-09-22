@@ -4,8 +4,9 @@ playgroundDirection: vertical
 ---
 
 ```tsx playground
+import { VQuery } from '@visactor/vquery'
+
 const run = async (setVSeed) => {
-  const { VQuery } = await import('@visactor/vquery')
   const vquery = new VQuery()
 
   const connectorId = 'vbi-demo'
@@ -73,7 +74,7 @@ const run = async (setVSeed) => {
         node.setAlias('Quantile(sales, 0.5)').setAggregate({ func: 'quantile', quantile: 0.5 })
       })
 
-    builder.dimensions.addDimension('area', (node) => {
+    builder.dimensions.add('area', (node) => {
       node.setAlias('Region')
     })
   })

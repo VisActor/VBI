@@ -10458,10 +10458,10 @@ var init_selector$1 = __esmMin((() => {
 		const datum = y$10(vchartDatum, Object.keys(vchartDatum).filter((k) => k.toLocaleLowerCase().startsWith("__vchart")));
 		return (Array.isArray(selector) ? selector : [selector])["And" === selectorMode ? "every" : "some"]((selector) => {
 			if (isValueSelector(selector)) return selectByValue(selector, datum);
-			if (isFieldSelector(selector)) return selectByField(selector, datum);
-			if (isMeasureSelector(selector)) return selectByMeasure(selector, datum);
-			if (isDimensionSelector(selector)) return selectByDmension(selector, datum);
-			if (isPartialDatumSelector(selector)) return selectByPartial(selector, datum);
+			else if (isFieldSelector(selector)) return selectByField(selector, datum);
+			else if (isMeasureSelector(selector)) return selectByMeasure(selector, datum);
+			else if (isDimensionSelector(selector)) return selectByDmension(selector, datum);
+			else if (isPartialDatumSelector(selector)) return selectByPartial(selector, datum);
 			return false;
 		});
 	};
@@ -14930,7 +14930,7 @@ var init_kdeRegressionLine = __esmMin((() => {
 						const lineData = res.evaluateGrid(N);
 						const scaleR = (k) => {
 							if ("percentage" === binValueType) return scaleY.scale(k * res.bandwidth);
-							return scaleY.scale(k * simpleData.length * res.bandwidth);
+							else return scaleY.scale(k * simpleData.length * res.bandwidth);
 						};
 						return {
 							linePoints: lineData.map((ld) => {
@@ -24329,8 +24329,8 @@ var init_common$1 = __esmMin((() => {
 				count += 1;
 			}
 		}
-		const baseMin = min === Infinity ? 0 : min;
-		const baseMax = max === -Infinity ? 0 : max;
+		const baseMin = Infinity === min ? 0 : min;
+		const baseMax = -Infinity === max ? 0 : max;
 		if (!hasTotal) return {
 			min: baseMin,
 			max: baseMax
@@ -35180,9 +35180,8 @@ var init_browser = __esmMin((() => {
 						if ("variance" === func) return sql`var_samp(${expression})`.as(alias);
 						if ("variance_pop" === func) return sql`var_pop(${expression})`.as(alias);
 						return sql`${sql.raw(func)}(${expression})`.as(alias);
-					}
-					if ("count" === func) return sql`CAST(count(${expression}) AS INTEGER)`.as(alias);
-					if ("quantile" === func) return sql`quantile(${expression}, ${item.aggr.quantile ?? .5})`.as(alias);
+					} else if ("count" === func) return sql`CAST(count(${expression}) AS INTEGER)`.as(alias);
+					else if ("quantile" === func) return sql`quantile(${expression}, ${item.aggr.quantile ?? .5})`.as(alias);
 					else if ("count_distinct" === func) return sql`CAST(count(distinct ${expression}) AS INTEGER)`.as(alias);
 					const dateTrunc = func.replace("to_", "");
 					const format = DATE_FORMAT_MAP[dateTrunc];
@@ -35193,7 +35192,7 @@ var init_browser = __esmMin((() => {
 			}
 			return item;
 		}));
-		return qb.selectAll();
+		else return qb.selectAll();
 	};
 	convertDSLToSQL = (dsl, tableName) => {
 		let qb = new Kysely({ dialect: new PostgresDialect() }).selectFrom(tableName);

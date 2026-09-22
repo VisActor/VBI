@@ -278,5 +278,25 @@
     "fr-FR": "Réduire",
     "ko-KR": "접기",
     "vi-VN": "Thu gọn"
+  },
+  "lastUpdatedAuthorText": {
+    "zh-CN": "最后更新者：",
+    "en-US": "Last updated by:",
+    "ja-JP": "最終更新者：",
+    "de-DE": "Zuletzt aktualisiert von:",
+    "id-ID": "Terakhir diperbarui oleh:",
+    "fr-FR": "Dernière mise à jour par :",
+    "ko-KR": "마지막 업데이트 작성자:",
+    "vi-VN": "Cập nhật lần cuối bởi:"
+  },
+  "codeButtonGroupWrapButtonText": {
+    "zh-CN": "切换代码自动换行",
+    "en-US": "Toggle code wrapping",
+    "ja-JP": "コードの折り返しを切り替え",
+    "de-DE": "Zeilenumbruch umschalten",
+    "id-ID": "Alihkan pembungkusan kode",
+    "fr-FR": "Activer ou désactiver le retour à la ligne",
+    "ko-KR": "코드 줄 바꿈 전환",
+    "vi-VN": "Bật/tắt xuống dòng mã"
   }
 }

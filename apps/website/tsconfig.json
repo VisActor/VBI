@@ -40,7 +40,7 @@
       "path": "../../practices/dashboard"
     }
   ],
-  "include": ["docs", "components", "theme", "rspress.config.ts"],
+  "include": ["docs", "components", "theme", "tests", "rspress.config.ts", "rstest.config.ts"],
   "mdx": {
     "checkMdx": true
   }

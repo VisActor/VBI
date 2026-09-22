@@ -1,4 +1,4 @@
-import { VBI, type VBIChartBuilder } from '@visactor/vbi'
+import { VBI, type VBIChartBuilder, type VBIConnector } from '@visactor/vbi'
 import { VQuery, type DatasetColumn, type RawDatasetSource, type VQueryDSL } from '@visactor/vquery'
 import {
   PROFESSIONAL_DEFAULT_LIMIT,
@@ -50,25 +50,28 @@ export const createLocalConnector = (connectorId = CONNECTOR_ID) => {
   connectorRegistered = true
   const vquery = new VQuery()
 
-  VBI.connectors.register(connectorId, async () => ({
-    discoverSchema: async () => localSchema ?? (localData.length ? inferSchema(localData) : []),
-    query: async ({ queryDSL, schema }) => {
-      if ((await vquery.hasDataset(connectorId)) && datasetNeedsRefresh) await vquery.dropDataset(connectorId)
-      if (!(await vquery.hasDataset(connectorId))) {
-        if (localData.length === 0) return { dataset: [] }
-        await vquery.createDataset(
-          connectorId,
-          schema as DatasetColumn[],
-          { rawDataset: localData, type: 'json' } as RawDatasetSource,
-        )
-        datasetNeedsRefresh = false
-      }
-      const dataset = await vquery.connectDataset(connectorId)
-      const dsl = queryDSL as VQueryDSL<Record<string, QueryValue>>
-      const result = await dataset.query(dsl)
-      return { dataset: normalizeDataset(dsl, result.dataset as LocalRow[]) }
-    },
-  }))
+  VBI.connectors.register(
+    connectorId,
+    async (): Promise<VBIConnector> => ({
+      discoverSchema: async () => localSchema ?? (localData.length ? inferSchema(localData) : []),
+      query: async ({ queryDSL, schema }) => {
+        if ((await vquery.hasDataset(connectorId)) && datasetNeedsRefresh) await vquery.dropDataset(connectorId)
+        if (!(await vquery.hasDataset(connectorId))) {
+          if (localData.length === 0) return { dataset: [] }
+          await vquery.createDataset(
+            connectorId,
+            schema as DatasetColumn[],
+            { rawDataset: localData, type: 'json' } as RawDatasetSource,
+          )
+          datasetNeedsRefresh = false
+        }
+        const dataset = await vquery.connectDataset(connectorId)
+        const dsl = queryDSL as VQueryDSL<Record<string, QueryValue>>
+        const result = await dataset.query(dsl)
+        return { dataset: normalizeDataset(dsl, result.dataset as LocalRow[]) }
+      },
+    }),
+  )
   return connectorId
 }
 
