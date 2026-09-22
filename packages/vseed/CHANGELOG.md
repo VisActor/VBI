@@ -1,5 +1,7 @@
 # @visactor/vseed
 
+## 0.6.0
+
 ## 0.5.7
 
 ### Patch Changes
@@ -819,10 +821,12 @@ features:
 ### Patch Changes
 
 - breaking-change:
+
   - theme, move all base config(color, legend, label, tooltip, backgroundColor) to config
   - format, remove round, decimalPlaces
 
   feat:
+
   - num format add fractionDigits, significantDigits, roundingPriority,roundingMode
   - linear log and log base
 
