@@ -247,7 +247,23 @@ describe('dashboard / DashboardTheme', () => {
       ...LocalVBI.dashboard.createEmpty(),
       meta: { title: '翡翠绿经营看板', description: '品类表现 / 销售贡献与经营观察' },
     })
-    dashboardBuilder.theme.setTheme('retail-emerald')
+    dashboardBuilder.theme.setTheme('retail-emerald', {
+      label: '零售翡翠',
+      tokens: {
+        baseTheme: 'dark',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        colorScheme: ['#34d399', '#38bdf8', '#fbbf24', '#a78bfa'],
+        linearColorScheme: ['#123b32', '#34d399'],
+        textPrimary: '#edfdf5',
+        textSecondary: '#a4c7ba',
+        borderColor: '#315448',
+        surfaceColor: '#102b22',
+        surfaceBackgroundColor: '#091a14',
+        accentColor: '#34d399',
+        tooltipBackgroundColor: '#15382c',
+      },
+      dashboard: { widgetBorderRadius: 12, toolbarBackground: '#102b22', padding: 20, gap: 16 },
+    })
 
     dashboardBuilder.chart.add((widget) =>
       widget
@@ -318,6 +334,38 @@ describe('dashboard / DashboardTheme', () => {
         "meta": {
           "description": "品类表现 / 销售贡献与经营观察",
           "theme": "retail-emerald",
+          "themes": {
+            "retail-emerald": {
+              "dashboard": {
+                "gap": 16,
+                "padding": 20,
+                "toolbarBackground": "#102b22",
+                "widgetBorderRadius": 12,
+              },
+              "label": "零售翡翠",
+              "tokens": {
+                "accentColor": "#34d399",
+                "baseTheme": "dark",
+                "borderColor": "#315448",
+                "colorScheme": [
+                  "#34d399",
+                  "#38bdf8",
+                  "#fbbf24",
+                  "#a78bfa",
+                ],
+                "fontFamily": "-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif",
+                "linearColorScheme": [
+                  "#123b32",
+                  "#34d399",
+                ],
+                "surfaceBackgroundColor": "#091a14",
+                "surfaceColor": "#102b22",
+                "textPrimary": "#edfdf5",
+                "textSecondary": "#a4c7ba",
+                "tooltipBackgroundColor": "#15382c",
+              },
+            },
+          },
           "title": "翡翠绿经营看板",
         },
         "uuid": "uuid-3",

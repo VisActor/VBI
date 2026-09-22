@@ -1,12 +1,12 @@
 import { theme as antdTheme, type ThemeConfig } from 'antd'
-import { getDashboardTheme } from './registry'
-import type { DashboardThemeDefinition } from './types'
+import type { VBIDashboardResolvedTheme, VBIDashboardThemeDefinition } from '@visactor/vbi'
 
 export interface ResolvedDashboardTheme {
   name: string
+  chartTheme: string
   baseTheme: 'light' | 'dark'
   config: ThemeConfig
-  dashboard: NonNullable<DashboardThemeDefinition['dashboard']>
+  dashboard: NonNullable<VBIDashboardThemeDefinition['dashboard']>
 }
 
 const defaultToolbarBackground = {
@@ -14,8 +14,13 @@ const defaultToolbarBackground = {
   dark: 'linear-gradient(180deg, rgba(10, 17, 28, 0.9), rgba(15, 22, 35, 0.94))',
 }
 
-export function resolveDashboardTheme(name: string): ResolvedDashboardTheme {
-  const { name: resolvedName, baseTheme, definition } = getDashboardTheme(name)
+/** Adapt Builder output to Ant Design and Dashboard styles; no registration or state ownership. */
+export function createDashboardTheme({
+  name,
+  chartTheme,
+  baseTheme,
+  definition,
+}: VBIDashboardResolvedTheme): ResolvedDashboardTheme {
   const algorithm = baseTheme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm
   const config: ThemeConfig = {
     algorithm,
@@ -38,7 +43,8 @@ export function resolveDashboardTheme(name: string): ResolvedDashboardTheme {
     }
   }
   return {
-    name: resolvedName,
+    name,
+    chartTheme,
     baseTheme,
     config,
     dashboard: {

@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen, waitFor, within } from '@testing-librar
 import { createVBI } from '@visactor/vbi'
 import { expect, rs, test } from '@rstest/core'
 import type { VBIChartBuilder } from '@visactor/vbi'
+import { Builder as VSeedBuilder } from '@visactor/vseed'
 import {
   DashboardRenderer,
   DashboardToolbar,
@@ -9,7 +10,6 @@ import {
   DashboardThemePicker,
   DashboardFullscreenButton,
   useDashboard,
-  registerDashboardTheme,
 } from '../src'
 import { observerCount, resize } from './resize'
 import { brandTokens } from './theme-fixture'
@@ -406,7 +406,7 @@ test('selects a preset from the toolbar, persists it and supports undo without c
     background: '#006EFF',
   })
   expect(root).toHaveStyle({ background: '#0c0929' })
-  expect(screen.getByTestId('standard')).toHaveAttribute('data-chart-theme', 'volcanoBlue')
+  expect(screen.getByTestId('standard')).toHaveAttribute('data-chart-theme', builder.theme.resolveTheme().chartTheme)
   expect(chart.build()).toEqual(original)
   const currentColor = root.querySelector('.vbi-dashboard-theme-select .vbi-dashboard-theme-dot')!
   fireEvent.mouseEnter(currentColor)
@@ -422,8 +422,8 @@ test('selects a preset from the toolbar, persists it and supports undo without c
 })
 
 test('offers registered themes and delegates controlled selections to the host without changing the DSL', async () => {
-  registerDashboardTheme('test-toolbar-brand', { label: 'Custom brand', tokens: brandTokens })
   const { builder } = createChartDashboard()
+  builder.theme.registerTheme('test-toolbar-brand', { label: 'Custom brand', tokens: brandTokens })
   const original = builder.build()
   const onThemeChange = rs.fn()
   const view = render(<DashboardRenderer builder={builder} mode='edit' theme='dark' locale='en-US' />)
@@ -449,11 +449,11 @@ test('offers registered themes and delegates controlled selections to the host w
 })
 
 test('applies a brand theme to cards, previews and the open editor without changing the chart', async () => {
-  registerDashboardTheme('test-dashboard-brand', {
+  const { builder, chart } = createChartDashboard()
+  builder.theme.registerTheme('test-dashboard-brand', {
     tokens: brandTokens,
     dashboard: { widgetBorderRadius: 12, gap: 20, padding: 24, toolbarBackground: '#17372b' },
   })
-  const { builder, chart } = createChartDashboard()
   builder.theme.setTheme('test-dashboard-brand')
   const original = chart.build()
   const view = render(<DashboardRenderer builder={builder} mode='edit' />)
@@ -474,7 +474,7 @@ test('applies a brand theme to cards, previews and the open editor without chang
   fireEvent.click(screen.getByRole('button', { name: '编辑图表：销售图表' }))
   await screen.findByRole('dialog')
   for (const standard of screen.getAllByTestId('standard')) {
-    expect(standard).toHaveAttribute('data-chart-theme', 'test-dashboard-brand')
+    expect(standard).toHaveAttribute('data-chart-theme', builder.theme.resolveTheme().chartTheme)
     expect(standard).toHaveAttribute('data-theme', 'dark')
   }
   expect(standardProps).toHaveBeenCalledWith(
@@ -492,6 +492,43 @@ test('applies a brand theme to cards, previews and the open editor without chang
     expect(standard).toHaveAttribute('data-chart-theme', 'light')
   }
   expect(chart.build()).toEqual(original)
+})
+
+test('renders Builder-defined themes without registration and isolates matching names across dashboards', () => {
+  const first = createChartDashboard()
+  const second = createChartDashboard()
+  first.builder.theme.setTheme('local-brand', { label: 'Local emerald', tokens: brandTokens })
+  second.builder.theme.setTheme('local-brand', {
+    label: 'Local blue',
+    tokens: { ...brandTokens, colorScheme: ['#0088ff', '#ffffff'], surfaceBackgroundColor: '#001122' },
+  })
+  const original = first.chart.build()
+  const view = render(
+    <>
+      <DashboardRenderer builder={first.builder} mode='edit' />
+      <DashboardRenderer builder={second.builder} mode='edit' />
+    </>,
+  )
+  const [firstRoot, secondRoot] = view.container.querySelectorAll('section')
+  expect(firstRoot).toHaveStyle({ background: brandTokens.surfaceBackgroundColor })
+  expect(secondRoot).toHaveStyle({ background: '#001122' })
+  const firstChartTheme = within(firstRoot).getByTestId('standard').getAttribute('data-chart-theme')!
+  const secondChartTheme = within(secondRoot).getByTestId('standard').getAttribute('data-chart-theme')!
+  expect(firstChartTheme).not.toBe(secondChartTheme)
+  expect(VSeedBuilder.getTheme(firstChartTheme).config?.column?.color?.colorScheme).toEqual(brandTokens.colorScheme)
+  expect(VSeedBuilder.getTheme(secondChartTheme).config?.column?.color?.colorScheme).toEqual(['#0088ff', '#ffffff'])
+  fireEvent.mouseDown(within(firstRoot).getByRole('combobox'))
+  expect(within(firstRoot).getByRole('option', { name: 'Local emerald' })).toBeInTheDocument()
+  expect(within(firstRoot).queryByRole('option', { name: 'Local blue' })).not.toBeInTheDocument()
+  fireEvent.click(within(firstRoot).getByRole('option', { name: '默认深色' }))
+  fireEvent.mouseDown(within(firstRoot).getByRole('combobox'))
+  fireEvent.click(within(firstRoot).getByRole('option', { name: 'Local emerald' }))
+  expect(firstRoot).toHaveAttribute('data-theme', 'local-brand')
+  expect(firstRoot).toHaveStyle({ background: brandTokens.surfaceBackgroundColor })
+  act(() => first.builder.theme.registerTheme('local-brand', { tokens: { ...brandTokens, textPrimary: '#ffff00' } }))
+  expect(firstRoot).toHaveStyle({ color: '#ffff00' })
+  expect(secondRoot).toHaveStyle({ color: brandTokens.textPrimary })
+  expect(first.chart.build()).toEqual(original)
 })
 
 test('isolates themes for dashboards sharing a chart and falls back consistently for unknown names', () => {

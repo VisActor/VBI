@@ -233,15 +233,11 @@ export default () => {
 }`.trim()
   }
   if (kind === 'dashboard') {
-    const themes = Object.entries(json.preview?.themes || {})
-    const registrations = themes
-      .map(([name, definition]) => `registerDashboardTheme(${JSON.stringify(name)}, ${toCode(definition)})`)
-      .join('\n\n')
     return `
 import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
-import { DashboardRenderer, ${themes.length ? 'registerDashboardTheme, ' : ''}type DashboardRendererProps } from 'dashboard'
+import { DashboardRenderer, type DashboardRendererProps } from 'dashboard'
 import { useLang } from '@rspress/core/runtime'
-import { useEffect, useState } from 'react'${registrations ? `\n\n${registrations}` : ''}
+import { useEffect, useState } from 'react'
 
 export default () => {
   const [dashboardBuilder, setDashboardBuilder] = useState<VBIDashboardBuilder | null>(null)

@@ -618,7 +618,7 @@ export default () => {
 
 ## brand-dashboard-theme
 
-Registriert ein Marken-Theme mit VSeed-Tokens für einheitliche Farben, Texte, Hintergründe und Karten, ohne referenzierte Diagrammressourcen zu ändern.
+Konfiguriert ein Marken-Theme direkt über den Dashboard Builder. Farben, Text, Hintergründe und Karten verwenden dieselbe Definition, die ohne Komponentenregistrierung mit dem Dokument gespeichert und synchronisiert wird.
 
 
 > Tags: `theme`
@@ -626,40 +626,9 @@ Registriert ein Marken-Theme mit VSeed-Tokens für einheitliche Farben, Texte, H
 
 ```tsx preview
 import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
-import { DashboardRenderer, registerDashboardTheme, type DashboardRendererProps } from 'dashboard'
+import { DashboardRenderer, type DashboardRendererProps } from 'dashboard'
 import { useLang } from '@rspress/core/runtime'
 import { useEffect, useState } from 'react'
-
-registerDashboardTheme("retail-emerald", {
-  "tokens": {
-    "baseTheme": "dark",
-    "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
-    "colorScheme": [
-      "#34d399",
-      "#38bdf8",
-      "#fbbf24",
-      "#a78bfa"
-    ],
-    "linearColorScheme": [
-      "#123b32",
-      "#34d399"
-    ],
-    "textPrimary": "#edfdf5",
-    "textSecondary": "#a4c7ba",
-    "borderColor": "#315448",
-    "surfaceColor": "#102b22",
-    "surfaceBackgroundColor": "#091a14",
-    "accentColor": "#34d399",
-    "tooltipBackgroundColor": "#15382c"
-  },
-  "dashboard": {
-    "widgetBorderRadius": 12,
-    "toolbarBackground": "#102b22",
-    "padding": 20,
-    "gap": 16
-  },
-  "label": "零售翡翠"
-})
 
 export default () => {
   const [dashboardBuilder, setDashboardBuilder] = useState<VBIDashboardBuilder | null>(null)
@@ -683,7 +652,23 @@ export default () => {
           ...LocalVBI.dashboard.createEmpty(),
           meta: { title: '翡翠绿经营看板', description: '品类表现 / 销售贡献与经营观察' },
         })
-        dashboardBuilder.theme.setTheme('retail-emerald')
+        dashboardBuilder.theme.setTheme('retail-emerald', {
+          label: '零售翡翠',
+          tokens: {
+            baseTheme: 'dark',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+            colorScheme: ['#34d399', '#38bdf8', '#fbbf24', '#a78bfa'],
+            linearColorScheme: ['#123b32', '#34d399'],
+            textPrimary: '#edfdf5',
+            textSecondary: '#a4c7ba',
+            borderColor: '#315448',
+            surfaceColor: '#102b22',
+            surfaceBackgroundColor: '#091a14',
+            accentColor: '#34d399',
+            tooltipBackgroundColor: '#15382c',
+          },
+          dashboard: { widgetBorderRadius: 12, toolbarBackground: '#102b22', padding: 20, gap: 16 },
+        })
 
         dashboardBuilder.chart.add(widget => widget
           .setChart(chartBuilder)

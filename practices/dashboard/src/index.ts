@@ -4,5 +4,3 @@ export { DashboardToolbar, DashboardEditToggle, DashboardThemePicker, DashboardF
 export type { DashboardToolbarProps } from './toolbar'
 export { useDashboard } from './DashboardContext'
 export type { DashboardContextValue } from './DashboardContext'
-export { registerDashboardTheme } from './theme'
-export type { DashboardThemeDefinition } from './theme'

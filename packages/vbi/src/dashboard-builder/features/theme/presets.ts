@@ -1,4 +1,4 @@
-import type { DashboardThemeDefinition } from './types'
+import type { VBIDashboardThemeDefinition } from 'src/types'
 
 // Palettes from VisActor/vchart-theme (MIT), with Dashboard surface tokens.
 // https://github.com/VisActor/vchart-theme/blob/develop/packages/vchart-theme/src/v-screen/color-scheme-map.ts
@@ -145,4 +145,4 @@ export const presetDashboardThemes = {
       tooltipBackgroundColor: '#211d46',
     },
   },
-} satisfies Record<string, DashboardThemeDefinition>
+} satisfies Record<string, VBIDashboardThemeDefinition>

@@ -3,7 +3,6 @@ import { Select, Tooltip, theme as antdTheme, type SelectProps } from 'antd'
 import { useDashboard } from '../DashboardContext'
 import { useTranslation } from '../i18n'
 import { getThemeLabel } from '../i18n/theme'
-import { getDashboardThemeOptions } from '../theme/registry'
 import './ThemePicker.css'
 
 const selectStyles: SelectProps['styles'] = {
@@ -45,11 +44,11 @@ function ThemePreview({ label, colors, compact = false }: { label: string; color
 
 export function DashboardThemePicker() {
   const id = useId()
-  const { locale, theme, mode, editing, onThemeChange } = useDashboard()
+  const { locale, theme, themeOptions, mode, editing, onThemeChange } = useDashboard()
   const t = useTranslation(locale)
   if (mode !== 'edit') return null
   const selectedName = theme.name
-  const themes = getDashboardThemeOptions().map((theme) => ({ ...theme, label: getThemeLabel(theme, t) }))
+  const themes = themeOptions.map((theme) => ({ ...theme, label: getThemeLabel(theme, t) }))
   const selected = themes.find((theme) => theme.name === selectedName)!
   const groups = (['light', 'dark'] as const).map((mode) => ({
     label: t(mode === 'light' ? 'themeGroupLight' : 'themeGroupDark'),

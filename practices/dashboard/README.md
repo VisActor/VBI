@@ -85,7 +85,7 @@ Fullscreen state, errors and browser listeners belong to `DashboardFullscreenBut
 
 ## Themes
 
-Persist a selection with `dashboardBuilder.theme.setTheme('dark')`. Read it with `getTheme()` or subscribe with `observe(callback)`; the returned function unsubscribes. Theme names are nonempty strings and default to `light`. The theme shares the existing metadata value's collaboration granularity.
+The Builder owns theme selection and configuration. Use `dashboardBuilder.theme.setTheme('dark')` for a preset or `setTheme(name, definition)` to define and select a custom theme in one change. Names are nonempty strings and default to `light`. The selected name is saved in `meta.theme`; document definitions are saved in `meta.themes`. Both support serialization, undo, redo and Yjs synchronization, sharing the existing metadata value's collaboration granularity.
 
 In edit mode, the toolbar places the editing switch on the left and the theme picker immediately before fullscreen on the right. The picker shows a single circle using the palette's first color. Its compact menu groups themes into Light and Dark sections, pairing the same first-color circle with a continuous chart palette. Hovering a palette or the toolbar circle shows the theme name in a tooltip. Localized names also remain available to screen readers. Choosing a theme updates the Dashboard through its Builder and supports undo, redo and collaboration. Disabling editing disables the selector; view mode stays read-only. An explicit `theme` prop is controlled by the host: provide `onThemeChange` to handle selections, otherwise the selector is disabled. Controlled selections do not change the saved DSL.
 
@@ -106,12 +106,10 @@ The menu includes all twelve built-in themes below and registered brand themes, 
 | 红蓝 / Red & blue                   | `redBlue`         |
 | 党建红 / Party red                  | `partyRed`        |
 
-Register custom themes before rendering. One VSeed token definition supplies chart/table colors and fonts as well as Dashboard controls, text and surfaces:
+Configure a custom theme directly through the Builder, without registering it in a component. One VSeed token definition supplies chart/table colors and fonts as well as Dashboard controls, text and surfaces:
 
 ```tsx
-import { registerDashboardTheme } from 'dashboard'
-
-registerDashboardTheme('emerald', {
+dashboardBuilder.theme.setTheme('emerald', {
   label: 'Emerald',
   tokens: {
     baseTheme: 'dark',
@@ -127,14 +125,34 @@ registerDashboardTheme('emerald', {
   dashboard: { widgetBorderRadius: 12, padding: 20, gap: 16 },
 })
 
-dashboardBuilder.theme.setTheme('emerald')
 // Omit the theme prop to follow the saved choice.
 ;<DashboardRenderer builder={dashboardBuilder} mode='edit' />
 ```
 
-Registered themes use the optional `label` or their registered name for tooltips and accessible labels. `dashboard` optionally overrides `backgroundColor`, `widgetBackgroundColor`, `widgetBorderColor`, `widgetBorderRadius`, `toolbarBackground`, `padding` and `gap`. Layout coordinates, breakpoints, columns and row height remain layout concerns. Explicit chart styles retain VSeed's precedence over theme defaults.
+Custom themes use the optional `label` or their registered name for tooltips and accessible labels. `dashboard` optionally overrides `backgroundColor`, `widgetBackgroundColor`, `widgetBorderColor`, `widgetBorderRadius`, `toolbarBackground`, `padding` and `gap`. Layout coordinates, breakpoints, columns and row height remain layout concerns. Explicit chart styles retain VSeed's precedence over theme defaults.
 
-Names share VSeed's global registry. Re-registering the same serialized definition is a no-op, allowing repeated documentation modules; conflicting definitions and the reserved `light`/`dark` names are rejected. Definitions are copied on registration. Register each name during application initialization, before mounting dashboards. Unknown names fall back to `light` for both the page and its charts without changing the saved name. Two dashboards may share the same chart builder and display different themes.
+Use `dashboardBuilder.theme.registerTheme(name, definition)` to add or update an available theme without selecting it. `getThemeConfig(name?)` returns a copy of the definition, checking the document before built-in presets and defaulting to the selected name; `getThemeDefinitions()` returns copies of all document definitions. Configurations remain available after switching to another theme. `getTheme()` and `toJSON()` return the selected name; `dashboardBuilder.build()` exports the complete document.
+
+Subscribe through the Builder to keep consumers independent of React:
+
+```ts
+const unsubscribe = dashboardBuilder.theme.observe(() => {
+  const name = dashboardBuilder.theme.getTheme()
+  const definition = dashboardBuilder.theme.getThemeConfig()
+  // Refresh the consuming view with name and definition.
+})
+
+// Release the subscription when the consumer is disposed.
+unsubscribe()
+```
+
+`observe` notifies subscribers when the selected name or any document theme definition changes, including undo, redo and remote updates. Identical writes and unrelated metadata edits do not notify theme subscribers. `useDashboardTheme` connects this API to React with `useSyncExternalStore` and releases its subscription on unmount or Builder replacement.
+
+Document definitions take precedence over built-in presets and remain isolated across dashboards, even when names match. The Builder assigns cached VSeed runtime names by token content, so a local update cannot overwrite another dashboard's chart theme. Unknown names fall back to `light` for both the page and its charts without changing the saved name. Two dashboards may share the same chart builder and display different themes.
+
+All registration goes through `dashboardBuilder.theme.registerTheme(name, definition)` or `setTheme(name, definition)`. To reuse a definition, pass the same definition to each Builder. There is no Dashboard component registry or registration export.
+
+`dashboardBuilder.theme.resolveTheme(name?)` resolves the selected or requested theme and ensures its VSeed runtime theme is registered. It returns `{ name, chartTheme, baseTheme, definition }` without changing the saved selection. This works without React or a Dashboard component. Use `getThemeOptions()` for the complete list of built-in and document themes, labels, modes and palettes. The Dashboard subscribes through `observe()` and only adapts the returned tokens to Ant Design styles.
 
 Create the dashboard and its resources with the same `createVBI()` instance. Register a chart connector before rendering chart widgets. Missing resources are shown within the affected card. Changes through Builder APIs or Yjs updates are reflected automatically. Dashboard does not add query retry or cancellation behavior to Standard.
 
@@ -151,7 +169,7 @@ return chartBuilder ? (
     border={false}
     locale={locale}
     theme={resolvedTheme.baseTheme}
-    chartTheme={resolvedTheme.name}
+    chartTheme={resolvedTheme.chartTheme}
     themeToken={resolvedTheme.config.token}
   />
 ) : null
@@ -187,19 +205,20 @@ There are no drag or resize editing controls. Configure layouts through the Buil
 
 ## Development
 
-Theme responsibilities stay local to the Dashboard practice:
+The Builder owns theme management; the Dashboard practice owns presentation:
 
-| Owner                                                | Responsibility                                                                       |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `theme/types.ts`, `theme/presets.ts`                 | Theme definitions and preset palette data.                                           |
-| `theme/registry.ts`                                  | Registration, name conflicts, theme lookup and fallback to light.                    |
-| `theme/resolve.ts`                                   | Convert the selected definition into Ant Design tokens and Dashboard surface styles. |
-| `i18n/theme.ts`                                      | Localized theme names, custom labels and name fallback.                              |
-| `toolbar/ThemePicker.tsx`, `toolbar/ThemePicker.css` | Theme groups, palette previews, tooltips and picker styles.                          |
+| Owner                                                                | Responsibility                                                               |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `packages/vbi/src/dashboard-builder/features/theme/theme-builder.ts` | Configuration, presets, options, fallback, observation and resolution.       |
+| `packages/vbi/src/dashboard-builder/features/theme/presets.ts`       | Complete built-in palette definitions.                                       |
+| `packages/vbi/src/dashboard-builder/features/theme/vseed-theme.ts`   | VSeed registration, runtime identity and caching.                            |
+| `src/useDashboardTheme.ts`, `src/theme.ts`                           | Subscribe to Builder output and adapt it to Ant Design and Dashboard styles. |
+| `src/i18n/theme.ts`                                                  | Localized theme names and custom labels.                                     |
+| `src/toolbar/ThemePicker.tsx`                                        | Theme groups, palette previews and tooltips.                                 |
 
-`DashboardRenderer` supplies the document snapshot and presentation context, and owns controlled versus Builder-backed theme selection. `DashboardGrid` owns responsive layout and resource rendering; it receives an optional edit callback and does not depend on the toolbar. `useChartEditor` owns selection validity and cleanup when resources, permissions or the dashboard change. `toolbar/` owns control composition and individual features; adding a control does not require changing the grid or renderer.
+`useDashboardTheme` subscribes only to Builder theme state and resolves presentation and picker options. `DashboardRenderer` supplies the document snapshot and presentation context, and owns controlled versus Builder-backed theme selection. `DashboardGrid` owns responsive layout and resource rendering; it receives an optional edit callback and does not depend on the toolbar. `useChartEditor` owns selection validity and cleanup when resources, permissions or the dashboard change. `toolbar/` owns control composition and individual features; adding a control does not require changing the grid or renderer.
 
-`theme/presets.ts` is a strategy map: each theme key owns its complete token configuration, with no shared preset defaults, conditional overrides or configuration merging. Add new themes there, with their display-name keys in `i18n/theme.ts` and locale files. Adding a theme does not require editing the toolbar or selector rendering.
+The Builder's `theme/presets.ts` is a strategy map: each theme key owns its complete token configuration, with no shared preset defaults, conditional overrides or configuration merging. Add new themes there, with their display-name keys in `i18n/theme.ts` and locale files. Adding a theme does not require editing the toolbar or selector rendering.
 
 ```sh
 pnpm --filter dashboard test
@@ -208,7 +227,7 @@ pnpm --filter dashboard lint
 pnpm --filter dashboard build
 ```
 
-Dashboard examples are sourced from `packages/vbi/tests/examples`. Each example's `code` creates its resources and `dashboardBuilder` directly; the generator supplies `LocalVBI`, then uses `dashboardBuilder` for the preview and DSL snapshot. The same construction code is used in documentation and tests. Optional `preview.themes` registers rendering-only theme definitions at module scope. Regenerate with:
+Dashboard examples are sourced from `packages/vbi/tests/examples`. Each example's `code` creates its resources and `dashboardBuilder` directly; the generator supplies `LocalVBI`, then uses `dashboardBuilder` for the preview and DSL snapshot. The same construction code is used in documentation and tests. Custom themes are configured by that same Builder code and included in the DSL snapshot; previews require no separate registration. Regenerate with:
 
 ```sh
 pnpm --filter @visactor/vbi build:examples --builder=dashboard

@@ -1,10 +1,12 @@
 import { createContext, useContext, type RefObject } from 'react'
 import type { Locale } from '@visactor/vseed'
 import type { ResolvedDashboardTheme } from './theme'
+import type { VBIDashboardThemeOption } from '@visactor/vbi'
 
 export interface DashboardContextValue {
   locale: Locale
   theme: ResolvedDashboardTheme
+  themeOptions: VBIDashboardThemeOption[]
   mode: 'view' | 'edit'
   editing: boolean
   onEditingChange: (enabled: boolean) => void

@@ -1,3 +1,4 @@
+import type { TokenThemeDefinition } from './tokenThemeSchema'
 import tinycolor from 'tinycolor2'
 import type { Config, CustomThemeConfig } from 'src/types'
 import { registerAll } from '../builder/register/all'
@@ -5,76 +6,9 @@ import { registerCustomTheme } from '../builder/register/theme/custom'
 import { darkTheme } from './dark'
 import { lightTheme } from './light'
 
-export type TokenThemeBase = 'light' | 'dark'
+export type TokenThemeBase = TokenThemeDefinition['baseTheme']
 
-export type TokenThemeDefinition = {
-  baseTheme: TokenThemeBase
-  fontFamily?: string
-  tableHeaderFontSize?: number
-  tableBodyFontSize?: number
-  labelFontSize?: number
-  tooltipFontSize?: number
-  axisFontSize?: number
-  legendFontSize?: number
-  playerFontSize?: number
-  axisLabelFontSize?: number
-  axisLabelFontWeight?: number
-  axisTitleFontSize?: number
-  axisTitleFontWeight?: number
-  legendLabelFontSize?: number
-  legendLabelFontWeight?: number
-  tooltipValueFontWeight?: number
-  dataLabelFontSize?: number
-  dataLabelFontWeight?: number
-  annotationLabelFontSize?: number
-  annotationLabelFontWeight?: number
-  colorScheme: [string, string, ...string[]]
-  linearColorScheme: [string, string]
-  textPrimary: string
-  textSecondary: string
-  borderColor: string
-  surfaceColor?: string
-  surfaceBackgroundColor?: string
-  accentColor?: string
-  positiveColor?: string
-  negativeColor?: string
-  tooltipBackgroundColor: string
-  tooltipBorderColor?: string
-  axisLabelColor?: string
-  axisTitleColor?: string
-  axisGridColor?: string
-  axisLineColor?: string
-  labelColor?: string
-  labelStroke?: string
-  legendLabelColor?: string
-  legendPagerIconColor?: string
-  legendPagerIconDisableColor?: string
-  playerRailColor?: string
-  playerSliderHandleColor?: string
-  playerSliderHandleBorderColor?: string
-  tableBorderColor?: string
-  tableBodyFontColor?: string
-  tableHeaderFontColor?: string
-  tableHeaderBackgroundColor?: string
-  tableHoverBodyBackgroundColor?: string
-  tableHoverBodyInlineBackgroundColor?: string
-  tableHoverHeaderBackgroundColor?: string
-  tableHoverHeaderInlineBackgroundColor?: string
-  tableSelectedBorderColor?: string
-  tableSelectedBackgroundColor?: string
-  annotationLineColor?: string
-  annotationLineStyle?: 'solid' | 'dashed' | 'dotted'
-  annotationLineDash?: number[]
-  annotationTextColor?: string
-  annotationTextBackgroundColor?: string
-  annotationTextBackgroundBorderRadius?: number
-  annotationTextBackgroundBorderColor?: string
-  annotationTextBackgroundBorderWidth?: number
-  annotationTextBackgroundPadding?: number
-  annotationTextBackgroundOpacity?: number
-  annotationAreaColor?: string
-  annotationAreaColorOpacity?: number
-}
+export type { TokenThemeDefinition } from './tokenThemeSchema'
 
 export type TokenThemeRegistry = Record<string, TokenThemeDefinition>
 

@@ -48,7 +48,7 @@ export function ChartEditor({ builder, title, locale, theme, container, onClose 
             border={false}
             locale={locale}
             theme={theme.baseTheme}
-            chartTheme={theme.name}
+            chartTheme={theme.chartTheme}
             themeToken={theme.config.token}
             hideLocale
             hideTheme

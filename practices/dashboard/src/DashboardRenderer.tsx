@@ -1,15 +1,17 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import type { VBIDashboardBuilder, VBIDashboardDSL } from '@visactor/vbi'
 import type { Locale } from '@visactor/vseed'
 import { ConfigProvider, theme as antdTheme } from 'antd'
 import { useBuilderSnapshot } from './useBuilderSnapshot'
 import { useChartEditor } from './useChartEditor'
+import { useDashboardTheme } from './useDashboardTheme'
 import { antdLocales } from './i18n/antd'
 import { DashboardContext } from './DashboardContext'
 import { DashboardGrid } from './DashboardGrid'
 import { DashboardToolbar } from './toolbar'
 import { ChartEditor } from './ChartEditor'
-import { resolveDashboardTheme, type ResolvedDashboardTheme } from './theme'
+import type { ResolvedDashboardTheme } from './theme'
+import type { VBIDashboardThemeOption } from '@visactor/vbi'
 import './dashboard.css'
 
 export interface DashboardRendererProps {
@@ -29,12 +31,14 @@ function DashboardContent({
   dsl,
   locale,
   theme,
+  themeOptions,
   mode,
   onThemeChange,
   toolbar,
 }: Required<Pick<DashboardRendererProps, 'builder' | 'locale' | 'mode'>> & {
   dsl: VBIDashboardDSL
   theme: ResolvedDashboardTheme
+  themeOptions: VBIDashboardThemeOption[]
   onThemeChange?: (name: string) => void
   toolbar: ReactNode
 }) {
@@ -50,7 +54,16 @@ function DashboardContent({
 
   return (
     <DashboardContext.Provider
-      value={{ locale, theme, mode, editing: canEdit, onEditingChange: setEditing, onThemeChange, containerRef: root }}
+      value={{
+        locale,
+        theme,
+        themeOptions,
+        mode,
+        editing: canEdit,
+        onEditingChange: setEditing,
+        onThemeChange,
+        containerRef: root,
+      }}
     >
       <section
         ref={root}
@@ -103,8 +116,7 @@ export function DashboardRenderer({
   toolbar = <DashboardToolbar />,
 }: DashboardRendererProps) {
   const dsl = useBuilderSnapshot(builder)
-  const themeName = themeOverride ?? dsl.meta.theme
-  const theme = useMemo(() => resolveDashboardTheme(themeName), [themeName])
+  const { theme, themeOptions } = useDashboardTheme(builder, themeOverride)
   return (
     <ConfigProvider locale={antdLocales[locale]} theme={theme.config}>
       <DashboardContent
@@ -113,6 +125,7 @@ export function DashboardRenderer({
         mode={mode}
         locale={locale}
         theme={theme}
+        themeOptions={themeOptions}
         toolbar={toolbar}
         onThemeChange={
           themeOverride === undefined
