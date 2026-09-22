@@ -13,8 +13,6 @@ export default defineConfig({
     conditionNames: ['require', 'node', 'default'],
     alias: {
       '@visactor/vbi': ['./src'],
-      '@visactor/vseed': ['../vseed/src'],
-      '@visactor/vquery': ['../vquery/src/node'],
     },
   },
 })
