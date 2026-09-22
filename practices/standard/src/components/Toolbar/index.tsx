@@ -76,10 +76,7 @@ export const Toolbar: React.FC<{
         width: '100%',
         overflowX: 'auto',
         padding: '4px 6px',
-        background:
-          themeMode === 'dark'
-            ? 'linear-gradient(90deg, rgba(10, 17, 28, 0.96) 0%, rgba(15, 22, 35, 0.88) 100%)'
-            : 'linear-gradient(90deg, rgba(248, 250, 252, 0.96) 0%, rgba(255, 255, 255, 0.98) 100%)',
+        background: token.colorBgContainer,
       }}
     >
       <div

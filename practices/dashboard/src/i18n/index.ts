@@ -20,8 +20,10 @@ export const translations: Record<Locale, typeof zhCN> = {
   'vi-VN': viVN,
 }
 
+export type TranslationKey = keyof typeof zhCN
+
 export function createTranslator(locale: Locale) {
-  return (key: keyof typeof zhCN, params?: Record<string, string>) =>
+  return (key: TranslationKey, params?: Record<string, string>) =>
     translations[locale][key].replace(/\{\{(\w+)\}\}/g, (match, name: string) => params?.[name] ?? match)
 }
 

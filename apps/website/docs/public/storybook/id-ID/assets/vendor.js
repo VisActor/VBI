@@ -172239,6 +172239,10 @@ function handleIntersectionResults(result, left, right) {
 	result.value = merged.data;
 	return result;
 }
+function handleTupleResult(result, final, index) {
+	if (result.issues.length) final.issues.push(...prefixIssues(index, result.issues));
+	final.value[index] = result.value;
+}
 function handleOptionalResult(result, input) {
 	if (result.issues.length && input === void 0) return {
 		issues: [],
@@ -172286,7 +172290,7 @@ function handleRefineResult(result, payload, input, inst) {
 		payload.issues.push(issue(_iss));
 	}
 }
-var $ZodType, $ZodString, $ZodStringFormat, $ZodGUID, $ZodUUID, $ZodEmail, $ZodURL, $ZodEmoji, $ZodNanoID, $ZodCUID, $ZodCUID2, $ZodULID, $ZodXID, $ZodKSUID, $ZodISODateTime, $ZodISODate, $ZodISOTime, $ZodISODuration, $ZodIPv4, $ZodIPv6, $ZodCIDRv4, $ZodCIDRv6, $ZodBase64, $ZodBase64URL, $ZodE164, $ZodJWT, $ZodNumber, $ZodNumberFormat, $ZodBoolean, $ZodAny, $ZodUnknown, $ZodNever, $ZodDate, $ZodArray, $ZodObject, $ZodObjectJIT, $ZodUnion, $ZodDiscriminatedUnion, $ZodIntersection, $ZodRecord, $ZodEnum, $ZodLiteral, $ZodTransform, $ZodOptional, $ZodNullable, $ZodDefault, $ZodPrefault, $ZodNonOptional, $ZodCatch, $ZodPipe, $ZodReadonly, $ZodLazy, $ZodCustom;
+var $ZodType, $ZodString, $ZodStringFormat, $ZodGUID, $ZodUUID, $ZodEmail, $ZodURL, $ZodEmoji, $ZodNanoID, $ZodCUID, $ZodCUID2, $ZodULID, $ZodXID, $ZodKSUID, $ZodISODateTime, $ZodISODate, $ZodISOTime, $ZodISODuration, $ZodIPv4, $ZodIPv6, $ZodCIDRv4, $ZodCIDRv6, $ZodBase64, $ZodBase64URL, $ZodE164, $ZodJWT, $ZodNumber, $ZodNumberFormat, $ZodBoolean, $ZodAny, $ZodUnknown, $ZodNever, $ZodDate, $ZodArray, $ZodObject, $ZodObjectJIT, $ZodUnion, $ZodDiscriminatedUnion, $ZodIntersection, $ZodTuple, $ZodRecord, $ZodEnum, $ZodLiteral, $ZodTransform, $ZodOptional, $ZodNullable, $ZodDefault, $ZodPrefault, $ZodNonOptional, $ZodCatch, $ZodPipe, $ZodReadonly, $ZodLazy, $ZodCustom;
 var init_schemas$1 = __esmMin((() => {
 	init_checks$1();
 	init_core$1();
@@ -172962,6 +172966,71 @@ var init_schemas$1 = __esmMin((() => {
 				return handleIntersectionResults(payload, left, right);
 			});
 			return handleIntersectionResults(payload, left, right);
+		};
+	});
+	$ZodTuple = /*@__PURE__*/ $constructor("$ZodTuple", (inst, def) => {
+		$ZodType.init(inst, def);
+		const items = def.items;
+		const optStart = items.length - [...items].reverse().findIndex((item) => item._zod.optin !== "optional");
+		inst._zod.parse = (payload, ctx) => {
+			const input = payload.value;
+			if (!Array.isArray(input)) {
+				payload.issues.push({
+					input,
+					inst,
+					expected: "tuple",
+					code: "invalid_type"
+				});
+				return payload;
+			}
+			payload.value = [];
+			const proms = [];
+			if (!def.rest) {
+				const tooBig = input.length > items.length;
+				const tooSmall = input.length < optStart - 1;
+				if (tooBig || tooSmall) {
+					payload.issues.push({
+						...tooBig ? {
+							code: "too_big",
+							maximum: items.length
+						} : {
+							code: "too_small",
+							minimum: items.length
+						},
+						input,
+						inst,
+						origin: "array"
+					});
+					return payload;
+				}
+			}
+			let i = -1;
+			for (const item of items) {
+				i++;
+				if (i >= input.length) {
+					if (i >= optStart) continue;
+				}
+				const result = item._zod.run({
+					value: input[i],
+					issues: []
+				}, ctx);
+				if (result instanceof Promise) proms.push(result.then((result) => handleTupleResult(result, payload, i)));
+				else handleTupleResult(result, payload, i);
+			}
+			if (def.rest) {
+				const rest = input.slice(items.length);
+				for (const el of rest) {
+					i++;
+					const result = def.rest._zod.run({
+						value: el,
+						issues: []
+					}, ctx);
+					if (result instanceof Promise) proms.push(result.then((result) => handleTupleResult(result, payload, i)));
+					else handleTupleResult(result, payload, i);
+				}
+			}
+			if (proms.length) return Promise.all(proms).then(() => payload);
+			return payload;
 		};
 	});
 	$ZodRecord = /*@__PURE__*/ $constructor("$ZodRecord", (inst, def) => {
@@ -173938,6 +174007,15 @@ function intersection(left, right) {
 		right
 	});
 }
+function tuple(items, _paramsOrRest, _params) {
+	const hasRest = _paramsOrRest instanceof $ZodType;
+	return new ZodTuple({
+		type: "tuple",
+		items,
+		rest: hasRest ? _paramsOrRest : null,
+		...normalizeParams(hasRest ? _params : _paramsOrRest)
+	});
+}
 function record(keyType, valueType, params) {
 	return new ZodRecord({
 		type: "record",
@@ -174039,7 +174117,7 @@ function refine(fn, _params = {}) {
 function superRefine(fn) {
 	return _superRefine(fn);
 }
-var ZodType, _ZodString, ZodString, ZodStringFormat, ZodEmail, ZodGUID, ZodUUID, ZodURL, ZodEmoji, ZodNanoID, ZodCUID, ZodCUID2, ZodULID, ZodXID, ZodKSUID, ZodIPv4, ZodIPv6, ZodCIDRv4, ZodCIDRv6, ZodBase64, ZodBase64URL, ZodE164, ZodJWT, ZodNumber, ZodNumberFormat, ZodBoolean, ZodAny, ZodUnknown, ZodNever, ZodDate, ZodArray, ZodObject, ZodUnion, ZodDiscriminatedUnion, ZodIntersection, ZodRecord, ZodEnum, ZodLiteral, ZodTransform, ZodOptional, ZodNullable, ZodDefault, ZodPrefault, ZodNonOptional, ZodCatch, ZodPipe, ZodReadonly, ZodLazy, ZodCustom;
+var ZodType, _ZodString, ZodString, ZodStringFormat, ZodEmail, ZodGUID, ZodUUID, ZodURL, ZodEmoji, ZodNanoID, ZodCUID, ZodCUID2, ZodULID, ZodXID, ZodKSUID, ZodIPv4, ZodIPv6, ZodCIDRv4, ZodCIDRv6, ZodBase64, ZodBase64URL, ZodE164, ZodJWT, ZodNumber, ZodNumberFormat, ZodBoolean, ZodAny, ZodUnknown, ZodNever, ZodDate, ZodArray, ZodObject, ZodUnion, ZodDiscriminatedUnion, ZodIntersection, ZodTuple, ZodRecord, ZodEnum, ZodLiteral, ZodTransform, ZodOptional, ZodNullable, ZodDefault, ZodPrefault, ZodNonOptional, ZodCatch, ZodPipe, ZodReadonly, ZodLazy, ZodCustom;
 var init_schemas = __esmMin((() => {
 	init_core();
 	init_checks();
@@ -174362,6 +174440,14 @@ var init_schemas = __esmMin((() => {
 	ZodIntersection = /*@__PURE__*/ $constructor("ZodIntersection", (inst, def) => {
 		$ZodIntersection.init(inst, def);
 		ZodType.init(inst, def);
+	});
+	ZodTuple = /*@__PURE__*/ $constructor("ZodTuple", (inst, def) => {
+		$ZodTuple.init(inst, def);
+		ZodType.init(inst, def);
+		inst.rest = (rest) => inst.clone({
+			...inst._zod.def,
+			rest
+		});
 	});
 	ZodRecord = /*@__PURE__*/ $constructor("ZodRecord", (inst, def) => {
 		$ZodRecord.init(inst, def);
@@ -246684,4 +246770,4 @@ var init_mocker_runtime = __esmMin((() => {
 	globalThis.__STORYBOOK_MOCKER__ = registerModuleMocker(() => new ModuleMockerInterceptor());
 }));
 //#endregion
-export { init_chunk_BCBB46UE as $, init_bin as $t, init_yjs as A, Host as An, T$2 as At, date as B, entry_preview_docs_exports as Bn, init_PivotTable_all as Bt, init_kysely as C, init_isArray as Cn, init_chunk_PDQFB3TV as Ct, YMap as D, init_isNil as Dn, init_chunk_2T7K3PFL as Dt, YArray as E, isUndefined$1 as En, i$5 as Et, _enum as F, init_client as Fn, init_chunk_3GOCSNFN as Ft, number as G, setCustomElementsManifest as Gn, esm_default as Gt, init_schemas as H, entry_preview_argtypes_exports as Hn, init_ListTable_all as Ht, any$1 as I, proxyCustomElement as In, init_es$1 as It, string as J, __vitePreload as Jn, init_streamLight as Jt, object as K, entry_preview_exports as Kn, init_esm$1 as Kt, array as L, transformTag as Ln, PivotChart as Lt, init_v4 as M, forceUpdate as Mn, i$7 as Mt, v4 as N, getRenderingRef as Nn, init_chunk_QJLMYOTX as Nt, applyUpdate as O, isNil as On, init_chunk_NFFV4IQT as Ot, init_zod as P, h$3 as Pn, C$3 as Pt, d$2 as Q, bin as Qt, boolean as R, init_preview as Rn, init_PivotChart as Rt, Kysely as S, merge$2 as Sn, D$2 as St, UndoManager as T, init_isUndefined as Tn, r$3 as Tt, lazy$2 as U, init_entry_preview_argtypes as Un, chartModule as Ut, discriminatedUnion as V, init_entry_preview_docs as Vn, ListTableAll as Vt, literal as W, init_chunk_6OBW3LSX as Wn, init_register$1 as Wt, require_tinycolor as X, init_runtime as Xn, boxplot as Xt, union as Y, init_preload_helper as Yn, init_es$10 as Yt, init_dist$5 as Z, setup as Zn, init_boxplot as Zt, init_postgres_query_compiler as _, array$3 as _n, t$2 as _t, init_UserOutlined as a, init_kde as an, o$2 as at, init_sql as b, pickWithout as bn, init_chunk_KI5X74E2 as bt, MailOutlined as c, regressionPolynomial as cn, init_chunk_NMC53JVB as ct, init_LikeFilled as d, init_regression_logistic as dn, init_chunk_6GTAPB47 as dt, init_es$17 as en, init_chunk_HGKLN5KY as et, init_dist$2 as f, regressionLogistic as fn, init_chunk_JK3VNB42 as ft, PostgresQueryCompiler as g, init_clamper as gn, init_chunk_5S4PYKVY as gt, init_postgres_adapter as h, clamper as hn, t$1 as ht, UserOutlined as i, init_ecdf as in, init_chunk_BO3LQZNF as it, init_dist$4 as j, createEvent as jn, init_chunk_7ZI6JRPB as jt, encodeStateAsUpdate as k, H$2 as kn, m$2 as kt, init_MailOutlined as l, init_regression_lowess as ln, o$3 as lt, PostgresAdapter as m, regressionLinear as mn, init_chunk_SFZGYJFI as mt, init_mocker_runtime as n, init_Color as nn, i$3 as nt, SettingOutlined as o, kde as on, init_chunk_VCYTMP4D as ot, init_esm as p, init_regression_linear as pn, n$3 as pt, record as q, init_entry_preview as qn, StreamLight as qt, init_es as r, ecdf as rn, init_chunk_HVPVHFDT as rt, init_SettingOutlined as s, init_regression_polynomial as sn, n$2 as st, ModuleMockerInterceptor as t, Color as tn, k$2 as tt, LikeFilled as u, regressionLowess as un, e$1 as ut, DummyDriver as v, init_array$3 as vn, i$4 as vt, Doc as w, isArray$1 as wn, init_chunk_BZNENX2T as wt, sql as x, init_merge$1 as xn, y$2 as xt, init_dummy_driver as y, init_pickWithout as yn, init_chunk_3ZJAREUD as yt, custom as z, preview_exports as zn, PivotTableAll as zt };
+export { d$2 as $, bin as $t, init_yjs as A, H$2 as An, m$2 as At, date as B, preview_exports as Bn, PivotTableAll as Bt, init_kysely as C, merge$2 as Cn, D$2 as Ct, YMap as D, isUndefined$1 as Dn, i$5 as Dt, YArray as E, init_isUndefined as En, r$3 as Et, _enum as F, h$3 as Fn, C$3 as Ft, number as G, init_chunk_6OBW3LSX as Gn, init_register$1 as Gt, init_schemas as H, init_entry_preview_docs as Hn, ListTableAll as Ht, any$1 as I, init_client as In, init_chunk_3GOCSNFN as It, string as J, init_entry_preview as Jn, StreamLight as Jt, object as K, setCustomElementsManifest as Kn, esm_default as Kt, array as L, proxyCustomElement as Ln, init_es$1 as Lt, init_v4 as M, createEvent as Mn, init_chunk_7ZI6JRPB as Mt, v4 as N, forceUpdate as Nn, i$7 as Nt, applyUpdate as O, init_isNil as On, init_chunk_2T7K3PFL as Ot, init_zod as P, getRenderingRef as Pn, init_chunk_QJLMYOTX as Pt, init_dist$5 as Q, setup as Qn, init_boxplot as Qt, boolean as R, transformTag as Rn, PivotChart as Rt, Kysely as S, init_merge$1 as Sn, y$2 as St, UndoManager as T, isArray$1 as Tn, init_chunk_BZNENX2T as Tt, lazy$2 as U, entry_preview_argtypes_exports as Un, init_ListTable_all as Ut, discriminatedUnion as V, entry_preview_docs_exports as Vn, init_PivotTable_all as Vt, literal as W, init_entry_preview_argtypes as Wn, chartModule as Wt, union as X, init_preload_helper as Xn, init_es$10 as Xt, tuple as Y, __vitePreload as Yn, init_streamLight as Yt, require_tinycolor as Z, init_runtime as Zn, boxplot as Zt, init_postgres_query_compiler as _, init_clamper as _n, init_chunk_5S4PYKVY as _t, init_UserOutlined as a, init_ecdf as an, init_chunk_BO3LQZNF as at, init_sql as b, init_pickWithout as bn, init_chunk_3ZJAREUD as bt, MailOutlined as c, init_regression_polynomial as cn, n$2 as ct, init_LikeFilled as d, regressionLowess as dn, e$1 as dt, init_bin as en, init_chunk_BCBB46UE as et, init_dist$2 as f, init_regression_logistic as fn, init_chunk_6GTAPB47 as ft, PostgresQueryCompiler as g, clamper as gn, t$1 as gt, init_postgres_adapter as h, regressionLinear as hn, init_chunk_SFZGYJFI as ht, UserOutlined as i, ecdf as in, init_chunk_HVPVHFDT as it, init_dist$4 as j, Host as jn, T$2 as jt, encodeStateAsUpdate as k, isNil as kn, init_chunk_NFFV4IQT as kt, init_MailOutlined as l, regressionPolynomial as ln, init_chunk_NMC53JVB as lt, PostgresAdapter as m, init_regression_linear as mn, n$3 as mt, init_mocker_runtime as n, Color as nn, k$2 as nt, SettingOutlined as o, init_kde as on, o$2 as ot, init_esm as p, regressionLogistic as pn, init_chunk_JK3VNB42 as pt, record as q, entry_preview_exports as qn, init_esm$1 as qt, init_es as r, init_Color as rn, i$3 as rt, init_SettingOutlined as s, kde as sn, init_chunk_VCYTMP4D as st, ModuleMockerInterceptor as t, init_es$17 as tn, init_chunk_HGKLN5KY as tt, LikeFilled as u, init_regression_lowess as un, o$3 as ut, DummyDriver as v, array$3 as vn, t$2 as vt, Doc as w, init_isArray as wn, init_chunk_PDQFB3TV as wt, sql as x, pickWithout as xn, init_chunk_KI5X74E2 as xt, init_dummy_driver as y, init_array$3 as yn, i$4 as yt, custom as z, init_preview as zn, init_PivotChart as zt };

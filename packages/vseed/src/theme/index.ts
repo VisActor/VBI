@@ -1,4 +1,5 @@
 export { darkTheme } from './dark'
 export { lightTheme } from './light'
 export { createTokenThemeConfig, registerTokenTheme, registerTokenThemes } from './tokenTheme'
+export { zTokenThemeDefinition } from './tokenThemeSchema'
 export type { RegisterTokenThemeOptions, TokenThemeBase, TokenThemeDefinition, TokenThemeRegistry } from './tokenTheme'

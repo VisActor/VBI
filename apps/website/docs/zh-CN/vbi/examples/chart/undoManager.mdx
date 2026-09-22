@@ -64,7 +64,7 @@ export default () => {
     builder.undoManager.redo()
   }
 }
-      applyBuilder(builder)
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()

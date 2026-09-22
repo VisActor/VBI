@@ -1,0 +1,51 @@
+# insightWorkflow
+
+import { registerDemoConnector } from '@components/demoConnector'
+
+{registerDemoConnector()}
+
+## retention-risk-insight-lifecycle
+
+客户留存风险分析场景中通过 insight builder 检查空状态并更新业务解读内容
+
+
+> 标签: `insight` `workflow` `isEmpty`
+
+
+```tsx preview
+import { VBI, VBIInsightBuilder } from '@visactor/vbi'
+import { JsonRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      try {
+        const builder = VBI.insight.create({
+          "content": "",
+          "version": 0
+        })
+        const applyBuilder = (builder: VBIInsightBuilder) => {
+  expect(builder.isEmpty()).toBe(true)
+  builder.setContent('高价值客户在最近 30 天复购放缓，建议运营团队优先触达企业客户并复核折扣策略。')
+  expect(builder.isEmpty()).toBe(false)
+  expect(builder.build().content).toContain('高价值客户')
+}
+        await applyBuilder(builder)
+        setResult(builder.build())
+      } catch (err) {
+        setError(err instanceof Error ? err.message : String(err))
+      }
+    }
+    run()
+  }, [])
+
+  if (error) return <JsonRender value={{ error }} />
+  if (!result) return <div>Loading...</div>
+
+  return <JsonRender value={result} />
+}
+```

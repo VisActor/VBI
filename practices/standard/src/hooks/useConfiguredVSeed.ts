@@ -3,17 +3,18 @@ import { useMemo } from 'react'
 import { useVBIStoreConfig } from '../model'
 
 export const useConfiguredVSeed = (vseed: VSeed | null) => {
-  const { locale, theme } = useVBIStoreConfig()
+  const { locale, theme, chartTheme } = useVBIStoreConfig()
+  const resolvedTheme = chartTheme ?? theme
 
   return useMemo(() => {
-    if (!vseed || (!locale && !theme)) {
+    if (!vseed || (!locale && !resolvedTheme)) {
       return vseed
     }
 
     return {
       ...vseed,
       ...(locale ? { locale } : {}),
-      ...(theme ? { theme } : {}),
+      ...(resolvedTheme ? { theme: resolvedTheme } : {}),
     } as VSeed
-  }, [locale, theme, vseed])
+  }, [locale, resolvedTheme, vseed])
 }

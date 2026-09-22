@@ -9,5 +9,20 @@
   "fullscreenError": "全画面表示を切り替えられません。再試行してください。",
   "editChart": "グラフを編集：{{title}}",
   "untitledChart": "無題のグラフ",
-  "backToDashboard": "ダッシュボードに戻る"
+  "backToDashboard": "ダッシュボードに戻る",
+  "dashboardTheme": "ダッシュボードのテーマ",
+  "themeLight": "ライト",
+  "themeDark": "ダーク",
+  "themeVolcanoBlue": "火山ブルー",
+  "themeClean": "フレッシュパステル",
+  "themeOutskirts": "郊外",
+  "themeBlueOrange": "自動車ブルー＆オレンジ",
+  "themeFinanceYellow": "金融イエロー",
+  "themeWenLvCyan": "観光シアン",
+  "themeElectricGreen": "電力グリーン",
+  "themeECommercePurple": "ECパープル",
+  "themeRedBlue": "レッド＆ブルー",
+  "themePartyRed": "党建レッド",
+  "themeGroupLight": "ライト",
+  "themeGroupDark": "ダーク"
 }

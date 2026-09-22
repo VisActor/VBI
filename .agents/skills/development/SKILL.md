@@ -1,101 +1,53 @@
 ---
 name: development
 description: >
-  Use for VBI monorepo development: apps, packages, practices, website
-  documentation, repository-level workflows, generated artifacts, validation
-  commands, source-of-truth decisions, software entropy control,
-  maintainability, refactoring, dead-code deletion, and constraining messy
-  LLM-generated code.
+  Use for VBI monorepo development, refactoring, and maintenance: software
+  entropy control and task completion with generation, documentation and test
+  updates, full package tests, and fresh coverage.
 ---
 
-# VBI Development Handbook
+# VBI Development
 
-Repository-level rules for VBI work. Keep this file as the routing layer: use it
-for the non-negotiable principles, then load only the reference that matches the
-package, practice, or entropy risk in front of you.
+Read [Software Entropy Control](references/software-entropy.md) for ownership,
+source-of-truth decisions, maintainability, refactoring, and deletion rules.
+It is the only supporting reference for this skill.
 
-## Core Rules
+## Required Task Completion
 
-- Work from the owner and source of truth: DSL, Builder, Provider API, generator,
-  example JSON, or local utility.
-- Reduce maintenance cost. Prefer deletion, simplification, extraction, or moving
-  ownership over adding compatibility layers.
-- Use real needs to drive abstraction, deletion to fight entropy, and naming and
-  boundaries to make code explain itself. See
-  `references/software-entropy.md#optimization-habits`.
-- Builder owns DSL mutation. UI, CLI, agent, app, and practice code should use
-  Builder or public package APIs instead of rebuilding internals.
-- Generated artifacts are outputs, not primary fixes. Change the source and
-  regenerate when needed.
-- Do not cross ownership boundaries casually: packages must not depend on apps,
-  and practices must not import another practice's private `src/*`.
-- For `apps/vbi_be` and `apps/vbi_fe`, use the Docker-only workflows in
-  `references/apps/vbi-be.md` and `references/apps/vbi-fe.md` for runtime,
-  debugging, validation, and build commands. Do not run those app workflows
-  directly on the host unless the user explicitly overrides this rule.
-- When deleting or renaming, clean imports, calls, types, comments, tests, docs,
-  generated references, and old names in the same change.
+Before finishing every task:
 
-## Ownership Map
+1. Identify all changed packages and affected consumers. Read their
+   `package.json` scripts and test configuration to determine the actual
+   generation, full-test, and coverage commands.
+2. Update relevant documentation, examples, and test cases to match the final
+   behavior. Cover changed behavior and regressions; remove obsolete cases and
+   references. Change the owning source or generator for generated artifacts.
+3. Run the `g` script for each affected package to refresh generated docs,
+   examples, tests, and other outputs. Use `pnpm run g` from the repository root
+   when repository-wide generation is required. Inspect the generated diff,
+   including any updated snapshots, for correctness.
+4. After generation and all edits, run the complete test suite for every
+   affected package and generate fresh coverage for the final state. Focused
+   tests, cached results, and existing coverage reports do not satisfy this
+   gate. A full-suite coverage run may satisfy both requirements if it includes
+   every test suite; run any omitted suites separately.
+5. Review test failures, coverage gaps in changed behavior, and generated
+   outputs. Fix task-related issues, update relevant tests and docs, then rerun
+   generation and validation for the affected scope. Do not lower coverage
+   thresholds or exclude changed code to make validation pass.
+6. Report the packages checked, generation and full-test results, and fresh
+   coverage summaries and report locations. Explicitly report missing scripts,
+   unavailable coverage support, or blocked commands and their reasons; do not
+   silently skip them or claim incomplete validation passed.
 
-- `packages/vbi`: VBIChartDSL, Builder, dashboard/insight state, and
-  collaborative editing.
-- `packages/vquery`: QueryDSL-to-SQL and query execution.
-- `packages/vseed`: VSeed examples, lowering, and rendering specs.
-- `packages/vbi-agent`: Builder Agent runtime and tool protocol.
-- `packages/vbi-component`: shared component layer for VBI.
-- `packages/vbi-react`: React integration.
-- `apps/*`: product applications, docs website, backend, provider, and CLI.
-- `practices/*`: independent practice examples. Treat
-  `practices/vbi-react-starter` as the `@visactor/vbi-react` integration starter,
-  separate from the self-contained practice apps.
-
-Run repository-level commands from the repo root unless a package script requires
-otherwise.
-
-## References
-
-Load only the relevant reference:
-
-Keep generic guidance directly under `references/`. Put app-specific guidance
-under `references/apps/`, package-specific guidance under
-`references/packages/`, and practice-specific guidance under
-`references/practices/`.
-
-- `references/software-entropy.md`: maintainability, refactoring, cleanup,
-  deletion, generated-surface control, and optimization habits.
-- `references/apps/website.md`: `apps/website`, Rspress docs, generated
-  API/example docs, and multilingual documentation synchronization.
-- `references/apps/vbi-be.md`: `apps/vbi_be`, NestJS backend, Prisma,
-  collaboration server, and Docker-only backend development workflow.
-- `references/apps/vbi-fe.md`: `apps/vbi_fe`, Next.js frontend, UI state,
-  service clients, and Docker-only frontend development workflow.
-- `references/packages/vbi.md`: `packages/vbi`, VBI DSL,
-  Builder/sub-builder design, headless logic boundaries, and TDD expectations.
-- `references/packages/vquery.md`: `packages/vquery`, QueryDSL-to-SQL, DuckDB
-  execution, example-driven tests, and coverage expectations.
-- `references/packages/vseed.md`: `packages/vseed`, VSeed examples, and
-  generated VSeed documentation.
-- `references/practices/minimalist.md`: `practices/minimalist`.
-- `references/practices/standard.md`: `practices/standard`.
-- `references/practices/streamlined.md`: `practices/streamlined`.
-- `references/practices/professional.md`: `practices/professional`.
-
-## Validation
-
-Prefer the narrowest proving command first, then repository gates when practical:
-
-For `apps/vbi_be` and `apps/vbi_fe`, use the in-container commands from
-`references/apps/vbi-be.md` and `references/apps/vbi-fe.md` instead of the
-host-local examples below.
+Typical package commands, adjusted to the scripts actually defined:
 
 ```bash
+pnpm --filter <package-name> run g
 pnpm --filter <package-name> run test
-pnpm --filter <package-name> run lint
-pnpm --filter <package-name> run typecheck
-pnpm run lint:check
-pnpm run typecheck
+pnpm --filter <package-name> run test:coverage
 ```
 
-If generated artifacts are affected, run the generator first and inspect the
-generated diff. Report any validation that could not run and why.
+If a package has no `g` script, report generation as not applicable. If it has no
+coverage script, use the configured test runner's coverage command when
+supported; otherwise report the missing coverage setup.

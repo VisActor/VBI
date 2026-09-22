@@ -3,12 +3,13 @@ import type { Locale } from '@visactor/vseed'
 import { ConfigProvider, Modal } from 'antd'
 import { APP as Standard } from 'standard'
 import { useTranslation } from './i18n'
+import type { ResolvedDashboardTheme } from './theme'
 
 interface ChartEditorProps {
   builder: VBIChartBuilder
   title: string
   locale: Locale
-  theme: 'light' | 'dark'
+  theme: ResolvedDashboardTheme
   container: HTMLElement
   onClose: () => void
 }
@@ -41,7 +42,17 @@ export function ChartEditor({ builder, title, locale, theme, container, onClose 
         }
       >
         <div style={{ height: '100%', minWidth: 720 }}>
-          <Standard builder={builder} mode='edit' border={false} locale={locale} theme={theme} hideLocale hideTheme />
+          <Standard
+            builder={builder}
+            mode='edit'
+            border={false}
+            locale={locale}
+            theme={theme.baseTheme}
+            chartTheme={theme.chartTheme}
+            themeToken={theme.config.token}
+            hideLocale
+            hideTheme
+          />
         </div>
       </ConfigProvider>
     </Modal>

@@ -1,9 +1,0 @@
-body {
-  margin: 0;
-  padding: 0;
-  color: var(--vscode-editor-foreground);
-  background-color: var(--vscode-editor-background);
-  font-family: var(--vscode-font-family);
-  font-weight: normal;
-  font-size: var(--vscode-font-size);
-}

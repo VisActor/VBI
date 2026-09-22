@@ -17,6 +17,7 @@ export {
   DashboardChartCollectionBuilder,
   DashboardInsightBuilder,
   DashboardInsightCollectionBuilder,
+  DashboardThemeBuilder,
   VBIDashboardBuilder,
 } from './dashboard-builder'
 export { VBIInsightBuilder } from './insight-builder'

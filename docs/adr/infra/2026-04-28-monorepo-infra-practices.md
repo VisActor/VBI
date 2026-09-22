@@ -4,7 +4,7 @@ Status: Accepted; Date: 2026-04-28
 
 ## Context
 
-VBI is a monorepo managed by pnpm workspace and Turborepo. The repository contains `apps/`, `packages/`, `practices/`, `tools/`, and the documentation site. If engineering configuration is scattered, several direct problems appear:
+VBI is a monorepo managed by pnpm workspace and Turborepo. The repository contains reusable packages in `packages/`, agent skills in `.agents/skills/`, integration examples in `practices/`, development tools in `tools/`, and the documentation site in `apps/website/`. If engineering configuration is scattered, several direct problems appear:
 
 - Root scripts, Turbo tasks, and CI steps drift semantically, causing local development and CI to run different task sets.
 - The artifact semantics of `build`, `typecheck`, `test`, and `lint` become mixed together, making it hard to decide whether a cached result is trustworthy.
@@ -38,15 +38,8 @@ Current convention:
 }
 ```
 
-`dev` is not forced into Turbo. Interactive, long-running local entry points that serve only one application can use `pnpm --filter=<pkg> run dev` directly, so the Turbo task graph does not carry non-cacheable workflows.
-
-`tui` may first build dependencies through Turbo and then enter the CLI command itself. This pattern fits the case of "ensure dependency artifacts exist first, then run the app shell":
-
-```json
-{
-  "tui": "turbo build --filter=@visactor/headless-bi-tui && pnpm --filter=@visactor/headless-bi-tui run tui"
-}
-```
+`dev` starts the documentation website through `pnpm --filter=website run dev`
+directly, so the Turbo task graph does not carry this long-running workflow.
 
 ### Turbo Caches Only Real Artifacts
 

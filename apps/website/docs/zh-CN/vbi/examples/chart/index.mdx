@@ -2,6 +2,14 @@
 
 本页面展示 chart builder 的示例。
 
+## ChartBuilderWorkflow
+
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [regional-margin-dual-axis-governance](./chartBuilderWorkflow#regional-margin-dual-axis-governance) | 区域经营例会中配置销售额与利润双轴图，先试探产品类型拆分后回收为区域视角，并执行一次幂等同步更新。 | chart, workflow, dualAxis, sync |
+| [customer-discount-profit-scatter](./chartBuilderWorkflow#customer-discount-profit-scatter) | 客户运营团队用折扣、利润和销售额识别异常客户群，先尝试地区细分后保留客户类型分群。 | chart, workflow, scatter, encoding |
+| [weekly-fulfillment-pivot-table](./chartBuilderWorkflow#weekly-fulfillment-pivot-table) | 履约团队按月和配送方式复盘订单量与销售额，先设置周粒度再回到月度透视表。 | chart, workflow, pivotTable, orderBy |
+
 ## ChartType
 
 | 示例 | 描述 | 标签 |
@@ -18,6 +26,13 @@
 | [rose-by-city](./chartType#rose-by-city) | 玫瑰图 - 按城市销售额 | - |
 | [scatter-chart-measure-encoding](./chartType#scatter-chart-measure-encoding) | 散点图度量编码 - 测试 measure-encoding.ts Scatter 图表类型 | - |
 | [scatter-sales-profit](./chartType#scatter-sales-profit) | 散点图 - 销售额与利润关系 | - |
+
+## ChartWorkflow
+
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [analyst-workbench-sync-and-schema](./chartWorkflow#analyst-workbench-sync-and-schema) | 分析工作台在配置图表时读取数据集 schema、切换候选图表类型、设置展示偏好，并把协作状态同步给另一端 | workflow, collaboration, schema |
+| [filter-review-audit-trail](./chartWorkflow#filter-review-audit-trail) | 分析师复核筛选条件时，覆盖日期窗口、嵌套 where 分组、聚合后 having 门槛以及错误更新保护 | workflow, filters, audit |
 
 ## Dimensions
 

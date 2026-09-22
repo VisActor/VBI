@@ -1,5 +1,5 @@
 import { rs } from '@rstest/core'
-import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
+import { createVBI } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 const MOCK_SYSTEM_TIME = new Date('2026-03-23T00:00:00.000Z')
@@ -38,56 +38,53 @@ describe('dashboard / ResourceWorkflow', () => {
       insights: { quarterlyInsight, temporaryInsight },
     }
 
-    const builder = LocalVBI.dashboard.create({
+    const dashboardBuilder = LocalVBI.dashboard.create({
       ...LocalVBI.dashboard.createEmpty(),
       meta: { title: '季度经营复盘' },
     })
 
-    const applyBuilder = (builder: VBIDashboardBuilder) => {
-      const chartId = resources.charts.quarterlyRevenueChart.getUUID()
-      const insightId = resources.insights.quarterlyInsight.getUUID()
-      const temporaryInsightId = resources.insights.temporaryInsight.getUUID()
+    const chartId = resources.charts.quarterlyRevenueChart.getUUID()
+    const insightId = resources.insights.quarterlyInsight.getUUID()
+    const temporaryInsightId = resources.insights.temporaryInsight.getUUID()
 
-      if (!LocalVBI.resources.chart.has(chartId)) throw new Error('chart should be registered')
-      if (LocalVBI.resources.chart.get(chartId)?.chartType !== 'line')
-        throw new Error('registered chart should be a line chart')
-      if (!LocalVBI.resources.chart.list().some((chart) => chart.uuid === chartId))
-        throw new Error('chart should be listed')
-      if (!LocalVBI.resources.snapshot().insights[insightId]?.content.includes('Q4 销售额'))
-        throw new Error('snapshot should include insight content')
+    if (!LocalVBI.resources.chart.has(chartId)) throw new Error('chart should be registered')
+    if (LocalVBI.resources.chart.get(chartId)?.chartType !== 'line')
+      throw new Error('registered chart should be a line chart')
+    if (!LocalVBI.resources.chart.list().some((chart) => chart.uuid === chartId))
+      throw new Error('chart should be listed')
+    if (!LocalVBI.resources.snapshot().insights[insightId]?.content.includes('Q4 销售额'))
+      throw new Error('snapshot should include insight content')
 
-      if (!LocalVBI.resources.insight.unregister(temporaryInsightId))
-        throw new Error('temporary insight should be removed')
-      if (LocalVBI.resources.insight.get(temporaryInsightId)) throw new Error('removed insight should be absent')
-      const restoredTemporaryInsight = LocalVBI.resources.insight.register(resources.insights.temporaryInsight.build())
-      if (restoredTemporaryInsight.uuid !== temporaryInsightId) throw new Error('restored insight should retain its id')
+    if (!LocalVBI.resources.insight.unregister(temporaryInsightId))
+      throw new Error('temporary insight should be removed')
+    if (LocalVBI.resources.insight.get(temporaryInsightId)) throw new Error('removed insight should be absent')
+    const restoredTemporaryInsight = LocalVBI.resources.insight.register(resources.insights.temporaryInsight.build())
+    if (restoredTemporaryInsight.uuid !== temporaryInsightId) throw new Error('restored insight should retain its id')
 
-      const registered = LocalVBI.resources.register({
-        charts: [resources.charts.quarterlyRevenueChart.build()],
-        insights: [resources.insights.quarterlyInsight.build()],
-      })
-      if (registered.charts[0].uuid !== chartId) throw new Error('registered chart id should match')
-      if (registered.insights[0].uuid !== insightId) throw new Error('registered insight id should match')
+    const registered = LocalVBI.resources.register({
+      charts: [resources.charts.quarterlyRevenueChart.build()],
+      insights: [resources.insights.quarterlyInsight.build()],
+    })
+    if (registered.charts[0].uuid !== chartId) throw new Error('registered chart id should match')
+    if (registered.insights[0].uuid !== insightId) throw new Error('registered insight id should match')
 
-      builder.chart.add((chart) => {
-        chart
-          .setChart(chartId)
-          .setTitle('季度销售走势')
-          .setDescription('共享资源中的季度销售图，展示前 8 个季度')
-          .setLayouts({ lg: { x: 0, y: 0, w: 8, h: 5 } })
-      })
+    dashboardBuilder.chart.add((chart) => {
+      chart
+        .setChart(chartId)
+        .setTitle('季度销售走势')
+        .setDescription('共享资源中的季度销售图，展示前 8 个季度')
+        .setLayouts({ lg: { x: 0, y: 0, w: 8, h: 5 } })
+    })
 
-      builder.insight.add((insight) => {
-        insight
-          .setInsightId(resources.insights.quarterlyInsight)
-          .setTitle('季度经营解读')
-          .setDescription('引用已注册 insight builder')
-          .setLayouts({ lg: { x: 8, y: 0, w: 4, h: 5 } })
-      })
-    }
-    await applyBuilder(builder)
+    dashboardBuilder.insight.add((insight) => {
+      insight
+        .setInsightId(resources.insights.quarterlyInsight)
+        .setTitle('季度经营解读')
+        .setDescription('引用已注册 insight builder')
+        .setLayouts({ lg: { x: 8, y: 0, w: 4, h: 5 } })
+    })
 
-    const dashboardDSL = builder.build()
+    const dashboardDSL = dashboardBuilder.build()
     expect(dashboardDSL).toMatchInlineSnapshot(`
       {
         "breakpoints": {

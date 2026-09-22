@@ -9,5 +9,20 @@
   "fullscreenError": "Vollbild konnte nicht umgeschaltet werden. Bitte erneut versuchen.",
   "editChart": "Diagramm bearbeiten: {{title}}",
   "untitledChart": "Unbenanntes Diagramm",
-  "backToDashboard": "Zurück zum Dashboard"
+  "backToDashboard": "Zurück zum Dashboard",
+  "dashboardTheme": "Dashboard-Theme",
+  "themeLight": "Hell",
+  "themeDark": "Dunkel",
+  "themeVolcanoBlue": "Vulkanblau",
+  "themeClean": "Frische Pastelltöne",
+  "themeOutskirts": "Stadtrand",
+  "themeBlueOrange": "Automobilblau und Orange",
+  "themeFinanceYellow": "Finanzgelb",
+  "themeWenLvCyan": "Tourismus-Cyan",
+  "themeElectricGreen": "Elektrisches Grün",
+  "themeECommercePurple": "E-Commerce-Violett",
+  "themeRedBlue": "Rot und Blau",
+  "themePartyRed": "Parteirot",
+  "themeGroupLight": "Hell",
+  "themeGroupDark": "Dunkel"
 }

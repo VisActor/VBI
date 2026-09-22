@@ -1,0 +1,287 @@
+# chartBuilderWorkflow
+
+import { registerDemoConnector } from '@components/demoConnector'
+
+{registerDemoConnector()}
+
+## regional-margin-dual-axis-governance
+
+区域经营例会中配置销售额与利润双轴图，先试探产品类型拆分后回收为区域视角，并执行一次幂等同步更新。
+
+
+> 标签: `chart` `workflow` `dualAxis` `sync`
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [],
+          "measures": [],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = async (builder: VBIChartBuilder) => {
+  expect(builder.isEmpty()).toBe(true)
+  const schema = await builder.getSchema()
+  expect(schema.some((field) => field.name === 'profit')).toBe(true)
+
+  builder.theme.setTheme('dark')
+  builder.locale.setLocale('en-US')
+  builder.limit.setLimit(12)
+
+  builder.dimensions.add('area', (node) => node.setAlias('Region').setEncoding('xAxis').setSort({ order: 'asc' }))
+  builder.dimensions.add('product_type', (node) => node.setAlias('Trial Product Category').setEncoding('color'))
+
+  const productTypeId = builder.dimensions.find((node) => node.getField() === 'product_type')?.getId()
+  if (productTypeId) {
+    builder.dimensions.remove(productTypeId)
+  }
+
+  const areaId = builder.dimensions.find((node) => node.getField() === 'area')?.getId()
+  if (areaId) {
+    builder.dimensions.update(areaId, (node) => node.setAlias('Region').clearSort().setSort({ order: 'desc' }))
+  }
+
+  builder.measures.add('sales', (node) => node.setAlias('Sales').setEncoding('primaryYAxis').setAggregate({ func: 'sum' }))
+  builder.measures.add('profit', (node) => node.setAlias('Profit').setEncoding('secondaryYAxis').setAggregate({ func: 'sum' }))
+  builder.measures.add('amount', (node) => node.setAlias('Trial Quantity').setEncoding('tooltip').setAggregate({ func: 'sum' }))
+
+  const amountId = builder.measures.find((node) => node.getField() === 'amount')?.getId()
+  if (amountId) {
+    builder.measures.remove(amountId)
+  }
+
+  const salesId = builder.measures.find((node) => node.getField() === 'sales')?.getId()
+  if (salesId) {
+    builder.measures.update(salesId, (node) => node.setFormat({ type: 'number', fractionDigits: 0 }).clearFormat().setSort({ order: 'desc' }))
+  }
+
+  builder.chartType.changeChartType('dualAxis')
+  expect(builder.chartType.getSupportedMeasureEncodings()).toContain('secondaryYAxis')
+  expect(builder.chartType.getRecommendedMeasureEncodings(2)).toEqual(['primaryYAxis', 'secondaryYAxis'])
+  expect(builder.limit.getLimit()).toBe(12)
+  expect(builder.theme.getTheme()).toBe('dark')
+  expect(builder.locale.getLocale()).toBe('en-US')
+  expect(builder.isEmpty()).toBe(false)
+
+  const beforeSync = builder.build()
+  builder.applyUpdate(builder.encodeStateAsUpdate(), 'regional-review-sync')
+  expect(builder.build()).toEqual(beforeSync)
+}
+      await applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## customer-discount-profit-scatter
+
+客户运营团队用折扣、利润和销售额识别异常客户群，先尝试地区细分后保留客户类型分群。
+
+
+> 标签: `chart` `workflow` `scatter` `encoding`
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "customer_type",
+              "alias": "原客户类型"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "原销售额",
+              "encoding": "yAxis",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 30
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.chartType.changeChartType('scatter')
+  expect(builder.chartType.getSupportedDimensionEncodings()).toContain('color')
+  expect(builder.chartType.getSupportedMeasureEncodings()).toContain('size')
+
+  const customerTypeId = builder.dimensions.find((node) => node.getField() === 'customer_type')?.getId()
+  if (customerTypeId) {
+    builder.dimensions.update(customerTypeId, (node) => node.setAlias('Customer Segment').setEncoding('color'))
+  }
+
+  builder.dimensions.add('area', (node) => node.setAlias('Trial Area').setEncoding('detail'))
+  const areaId = builder.dimensions.find((node) => node.getField() === 'area')?.getId()
+  if (areaId) {
+    builder.dimensions.remove(areaId)
+  }
+
+  const salesId = builder.measures.find((node) => node.getField() === 'sales')?.getId()
+  if (salesId) {
+    builder.measures.update(salesId, (node) => node.setAlias('Sales Scale').setEncoding('size').setAggregate({ func: 'sum' }).setSort({ order: 'desc' }))
+  }
+
+  builder.measures.add('discount', (node) => node.setAlias('Average Discount').setEncoding('xAxis').setAggregate({ func: 'avg' }))
+  builder.measures.add('profit', (node) => node.setAlias('Profit').setEncoding('yAxis').setAggregate({ func: 'sum' }))
+
+  const discountId = builder.measures.find((node) => node.getField() === 'discount')?.getId()
+  if (discountId) {
+    builder.measures.update(discountId, (node) => node.setFormat({ type: 'percent', fractionDigits: 1 }))
+  }
+
+  builder.limit.setLimit(18)
+  expect(builder.measures.findAll().map((node) => node.getEncoding())).toContain('size')
+}
+      await applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## weekly-fulfillment-pivot-table
+
+履约团队按月和配送方式复盘订单量与销售额，先设置周粒度再回到月度透视表。
+
+
+> 标签: `chart` `workflow` `pivotTable` `orderBy`
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [],
+          "measures": [],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 25
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.chartType.changeChartType('pivotTable')
+  expect(builder.chartType.getRecommendedDimensionEncodings(2)).toEqual(['column', 'row'])
+
+  builder.dimensions.add('order_date', (node) => node.setAlias('Order Month').setEncoding('column').setAggregate({ func: 'toWeek' }).setSort({ order: 'asc' }))
+  builder.dimensions.add('delivery_method', (node) => node.setAlias('Delivery Method').setEncoding('row').setSort({ order: 'asc' }))
+
+  const orderDateId = builder.dimensions.find((node) => node.getField() === 'order_date')?.getId()
+  if (orderDateId) {
+    builder.dimensions.update(orderDateId, (node) => node.setAggregate({ func: 'toMonth' }).clearSort().setSort({ order: 'asc' }))
+  }
+
+  builder.measures.add('amount', (node) => node.setAlias('Order Quantity').setEncoding('detail').setAggregate({ func: 'sum' }))
+  builder.measures.add('sales', (node) => node.setAlias('Sales').setEncoding('detail').setAggregate({ func: 'sum' }))
+  builder.measures.add('profit', (node) => node.setAlias('Trial Profit').setEncoding('detail').setAggregate({ func: 'sum' }))
+
+  const profitId = builder.measures.find((node) => node.getField() === 'profit')?.getId()
+  if (profitId) {
+    builder.measures.remove(profitId)
+  }
+
+  const amountId = builder.measures.find((node) => node.getField() === 'amount')?.getId()
+  if (amountId) {
+    builder.measures.update(amountId, (node) => node.setSort({ order: 'desc' }).clearSort())
+  }
+
+  builder.theme.setTheme('light')
+  builder.locale.setLocale('zh-CN')
+  builder.limit.setLimit(20)
+}
+      await applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```

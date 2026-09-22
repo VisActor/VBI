@@ -9,5 +9,20 @@
   "fullscreenError": "전체 화면을 전환할 수 없습니다. 다시 시도하세요.",
   "editChart": "차트 편집: {{title}}",
   "untitledChart": "제목 없는 차트",
-  "backToDashboard": "대시보드로 돌아가기"
+  "backToDashboard": "대시보드로 돌아가기",
+  "dashboardTheme": "대시보드 테마",
+  "themeLight": "밝게",
+  "themeDark": "어둡게",
+  "themeVolcanoBlue": "화산 블루",
+  "themeClean": "산뜻한 파스텔",
+  "themeOutskirts": "교외",
+  "themeBlueOrange": "자동차 블루와 오렌지",
+  "themeFinanceYellow": "금융 옐로",
+  "themeWenLvCyan": "관광 시안",
+  "themeElectricGreen": "전력 그린",
+  "themeECommercePurple": "이커머스 퍼플",
+  "themeRedBlue": "레드와 블루",
+  "themePartyRed": "당 건설 레드",
+  "themeGroupLight": "밝은 테마",
+  "themeGroupDark": "어두운 테마"
 }

@@ -1,5 +1,5 @@
 import { rs } from '@rstest/core'
-import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
+import { createVBI } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 const MOCK_SYSTEM_TIME = new Date('2026-03-23T00:00:00.000Z')
@@ -33,106 +33,103 @@ describe('dashboard / DashboardWorkflow', () => {
       insights: { salesInsight },
     }
 
-    const builder = LocalVBI.dashboard.create({
+    const dashboardBuilder = LocalVBI.dashboard.create({
       ...LocalVBI.dashboard.createEmpty(),
       meta: { title: '经营驾驶舱' },
     })
 
-    const applyBuilder = (builder: VBIDashboardBuilder) => {
-      if (!builder.isEmpty()) {
-        throw new Error('new dashboard should start without widgets')
-      }
-
-      let missingLayoutRejected = false
-      try {
-        builder.chart.add((chart) => {
-          chart.setTitle('缺少布局的草稿图表').setChart(resources.charts.salesChart)
-        })
-      } catch {
-        missingLayoutRejected = true
-      }
-      if (!missingLayoutRejected || !builder.isEmpty()) {
-        throw new Error('dashboard should reject chart widgets without lg layout')
-      }
-
-      builder.chart
-        .add((chart) => {
-          chart
-            .setChart(resources.charts.salesChart)
-            .setTitle('省份销售额')
-            .setDescription('按省份汇总销售额，展示前 8 项')
-            .setLayouts({
-              lg: { x: 0, y: 0, w: 8, h: 6 },
-              md: { x: 0, y: 0, w: 6, h: 5 },
-            })
-        })
-        .insight.add((insight) => {
-          insight
-            .setInsightId(resources.insights.salesInsight)
-            .setTitle('经营洞察')
-            .setDescription('解释销售额集中区域')
-            .setLayouts({
-              lg: { x: 8, y: 0, w: 4, h: 6 },
-              md: { x: 0, y: 5, w: 6, h: 3 },
-            })
-        })
-
-      const chartWidget = builder.chart.findAll()[0]
-      const insightWidget = builder.insight.findAll()[0]
-      if (!chartWidget || !insightWidget) {
-        throw new Error('dashboard should contain chart and insight widgets')
-      }
-      if (!chartWidget.getBuilder() || !insightWidget.getBuilder()) {
-        throw new Error('dashboard widgets should resolve registered resources')
-      }
-      if (builder.chart.get(chartWidget.getId())?.toJSON().title !== '省份销售额') {
-        throw new Error('chart widget should be findable by widget id')
-      }
-      if (!builder.chart.find(resources.charts.salesChart.getUUID())) {
-        throw new Error('chart widget should be findable by chart resource id')
-      }
-      if (!builder.insight.find(resources.insights.salesInsight.getUUID())) {
-        throw new Error('insight widget should be findable by insight resource id')
-      }
-
-      builder.chart.update(chartWidget.getId(), (chart) => {
-        chart.setTitle('重点省份销售额').setLayouts({ lg: { x: 0, y: 0, w: 7, h: 6 } })
-      })
-      builder.insight.update(insightWidget.getId(), (insight) => {
-        insight.setDescription('更新为管理层复盘口径')
-      })
-
-      if (builder.chart.toJSON()[0].title !== '重点省份销售额') {
-        throw new Error('chart widget title should update')
-      }
-      if (builder.insight.toJSON()[0].description !== '更新为管理层复盘口径') {
-        throw new Error('insight widget description should update')
-      }
-
-      let missingInsightRejected = false
-      try {
-        builder.insight.update('missing-widget', (insight) => insight.setTitle('missing'))
-      } catch {
-        missingInsightRejected = true
-      }
-      if (!missingInsightRejected) {
-        throw new Error('updating missing insight widget should fail')
-      }
-
-      builder.insight.remove(insightWidget.getId())
-      builder.chart.remove('missing-widget')
-      if (builder.insight.findAll().length !== 0 || builder.chart.findAll().length !== 1) {
-        throw new Error('only the chart widget should remain')
-      }
-
-      const ReplicaVBI = createVBI()
-      const replica = ReplicaVBI.dashboard.create(ReplicaVBI.dashboard.createEmpty('dashboard-replica'))
-      replica.applyUpdate(builder.encodeStateAsUpdate(), 'dashboard-sync')
-      replica.build()
+    if (!dashboardBuilder.isEmpty()) {
+      throw new Error('new dashboard should start without widgets')
     }
-    await applyBuilder(builder)
 
-    const dashboardDSL = builder.build()
+    let missingLayoutRejected = false
+    try {
+      dashboardBuilder.chart.add((chart) => {
+        chart.setTitle('缺少布局的草稿图表').setChart(resources.charts.salesChart)
+      })
+    } catch {
+      missingLayoutRejected = true
+    }
+    if (!missingLayoutRejected || !dashboardBuilder.isEmpty()) {
+      throw new Error('dashboard should reject chart widgets without lg layout')
+    }
+
+    dashboardBuilder.chart
+      .add((chart) => {
+        chart
+          .setChart(resources.charts.salesChart)
+          .setTitle('省份销售额')
+          .setDescription('按省份汇总销售额，展示前 8 项')
+          .setLayouts({
+            lg: { x: 0, y: 0, w: 8, h: 6 },
+            md: { x: 0, y: 0, w: 6, h: 5 },
+          })
+      })
+      .insight.add((insight) => {
+        insight
+          .setInsightId(resources.insights.salesInsight)
+          .setTitle('经营洞察')
+          .setDescription('解释销售额集中区域')
+          .setLayouts({
+            lg: { x: 8, y: 0, w: 4, h: 6 },
+            md: { x: 0, y: 5, w: 6, h: 3 },
+          })
+      })
+
+    const chartWidget = dashboardBuilder.chart.findAll()[0]
+    const insightWidget = dashboardBuilder.insight.findAll()[0]
+    if (!chartWidget || !insightWidget) {
+      throw new Error('dashboard should contain chart and insight widgets')
+    }
+    if (!chartWidget.getBuilder() || !insightWidget.getBuilder()) {
+      throw new Error('dashboard widgets should resolve registered resources')
+    }
+    if (dashboardBuilder.chart.get(chartWidget.getId())?.toJSON().title !== '省份销售额') {
+      throw new Error('chart widget should be findable by widget id')
+    }
+    if (!dashboardBuilder.chart.find(resources.charts.salesChart.getUUID())) {
+      throw new Error('chart widget should be findable by chart resource id')
+    }
+    if (!dashboardBuilder.insight.find(resources.insights.salesInsight.getUUID())) {
+      throw new Error('insight widget should be findable by insight resource id')
+    }
+
+    dashboardBuilder.chart.update(chartWidget.getId(), (chart) => {
+      chart.setTitle('重点省份销售额').setLayouts({ lg: { x: 0, y: 0, w: 7, h: 6 } })
+    })
+    dashboardBuilder.insight.update(insightWidget.getId(), (insight) => {
+      insight.setDescription('更新为管理层复盘口径')
+    })
+
+    if (dashboardBuilder.chart.toJSON()[0].title !== '重点省份销售额') {
+      throw new Error('chart widget title should update')
+    }
+    if (dashboardBuilder.insight.toJSON()[0].description !== '更新为管理层复盘口径') {
+      throw new Error('insight widget description should update')
+    }
+
+    let missingInsightRejected = false
+    try {
+      dashboardBuilder.insight.update('missing-widget', (insight) => insight.setTitle('missing'))
+    } catch {
+      missingInsightRejected = true
+    }
+    if (!missingInsightRejected) {
+      throw new Error('updating missing insight widget should fail')
+    }
+
+    dashboardBuilder.insight.remove(insightWidget.getId())
+    dashboardBuilder.chart.remove('missing-widget')
+    if (dashboardBuilder.insight.findAll().length !== 0 || dashboardBuilder.chart.findAll().length !== 1) {
+      throw new Error('only the chart widget should remain')
+    }
+
+    const ReplicaVBI = createVBI()
+    const replica = ReplicaVBI.dashboard.create(ReplicaVBI.dashboard.createEmpty('dashboard-replica'))
+    replica.applyUpdate(dashboardBuilder.encodeStateAsUpdate(), 'dashboard-sync')
+    replica.build()
+
+    const dashboardDSL = dashboardBuilder.build()
     expect(dashboardDSL).toMatchInlineSnapshot(`
       {
         "breakpoints": {
@@ -213,80 +210,77 @@ describe('dashboard / DashboardWorkflow', () => {
       insights: { promotionInsight },
     }
 
-    const builder = LocalVBI.dashboard.create({
+    const dashboardBuilder = LocalVBI.dashboard.create({
       ...LocalVBI.dashboard.createEmpty(),
       meta: { title: '商品运营看板' },
     })
 
-    const applyBuilder = (builder: VBIDashboardBuilder) => {
-      if (!builder.isEmpty()) throw new Error('dashboard should be empty')
+    if (!dashboardBuilder.isEmpty()) throw new Error('dashboard should be empty')
 
-      builder.chart.add((chart) => {
-        chart
-          .setChart(resources.charts.categorySalesChart)
-          .setTitle('品类销售')
-          .setDescription('初版品类销售布局')
-          .setLayouts({ lg: { x: 0, y: 0, w: 6, h: 4 }, md: { x: 0, y: 0, w: 6, h: 4 } })
-      })
-      builder.chart.add((chart) => {
-        chart
-          .setChart(resources.charts.discountProfitChart)
-          .setTitle('折扣利润散点')
-          .setLayouts({ lg: { x: 6, y: 0, w: 6, h: 4 }, md: { x: 0, y: 4, w: 6, h: 4 } })
-      })
-      builder.insight.add((insight) => {
-        insight
-          .setInsightId(resources.insights.promotionInsight)
-          .setTitle('促销洞察')
-          .setLayouts({ lg: { x: 0, y: 4, w: 12, h: 3 }, md: { x: 0, y: 8, w: 6, h: 3 } })
-      })
+    dashboardBuilder.chart.add((chart) => {
+      chart
+        .setChart(resources.charts.categorySalesChart)
+        .setTitle('品类销售')
+        .setDescription('初版品类销售布局')
+        .setLayouts({ lg: { x: 0, y: 0, w: 6, h: 4 }, md: { x: 0, y: 0, w: 6, h: 4 } })
+    })
+    dashboardBuilder.chart.add((chart) => {
+      chart
+        .setChart(resources.charts.discountProfitChart)
+        .setTitle('折扣利润散点')
+        .setLayouts({ lg: { x: 6, y: 0, w: 6, h: 4 }, md: { x: 0, y: 4, w: 6, h: 4 } })
+    })
+    dashboardBuilder.insight.add((insight) => {
+      insight
+        .setInsightId(resources.insights.promotionInsight)
+        .setTitle('促销洞察')
+        .setLayouts({ lg: { x: 0, y: 4, w: 12, h: 3 }, md: { x: 0, y: 8, w: 6, h: 3 } })
+    })
 
-      const [categoryWidget, discountWidget] = builder.chart.toJSON()
-      const [promotionWidget] = builder.insight.toJSON()
-      if (builder.chart.find(resources.charts.categorySalesChart.getUUID())?.getId() !== categoryWidget.id)
-        throw new Error('chart reference should resolve')
-      if (builder.insight.find(resources.insights.promotionInsight.getUUID())?.getId() !== promotionWidget.id)
-        throw new Error('insight reference should resolve')
+    const [categoryWidget, discountWidget] = dashboardBuilder.chart.toJSON()
+    const [promotionWidget] = dashboardBuilder.insight.toJSON()
+    if (dashboardBuilder.chart.find(resources.charts.categorySalesChart.getUUID())?.getId() !== categoryWidget.id)
+      throw new Error('chart reference should resolve')
+    if (dashboardBuilder.insight.find(resources.insights.promotionInsight.getUUID())?.getId() !== promotionWidget.id)
+      throw new Error('insight reference should resolve')
 
-      builder.chart.update(categoryWidget.id, (chart) => {
-        chart
-          .setTitle('重点品类销售')
-          .setDescription('更新后保留 md 布局，并合并新的 lg 布局')
-          .setLayouts({ lg: { x: 0, y: 0, w: 7, h: 5 } })
-      })
-      builder.insight.update(promotionWidget.id, (insight) => {
-        insight.setDescription('更新后的促销策略说明').setLayouts({ lg: { x: 7, y: 0, w: 5, h: 5 } })
-      })
-      builder.chart.remove(discountWidget.id)
-      if (builder.chart.get(discountWidget.id)) throw new Error('removed chart should be absent')
+    dashboardBuilder.chart.update(categoryWidget.id, (chart) => {
+      chart
+        .setTitle('重点品类销售')
+        .setDescription('更新后保留 md 布局，并合并新的 lg 布局')
+        .setLayouts({ lg: { x: 0, y: 0, w: 7, h: 5 } })
+    })
+    dashboardBuilder.insight.update(promotionWidget.id, (insight) => {
+      insight.setDescription('更新后的促销策略说明').setLayouts({ lg: { x: 7, y: 0, w: 5, h: 5 } })
+    })
+    dashboardBuilder.chart.remove(discountWidget.id)
+    if (dashboardBuilder.chart.get(discountWidget.id)) throw new Error('removed chart should be absent')
 
-      for (const widget of builder.chart.toJSON()) {
-        builder.chart.remove(widget.id)
-      }
-      for (const widget of builder.insight.toJSON()) {
-        builder.insight.remove(widget.id)
-      }
-      if (!builder.isEmpty()) throw new Error('dashboard should be empty')
-
-      builder.chart.add((chart) => {
-        chart
-          .setChart(resources.charts.categorySalesChart)
-          .setTitle('最终品类销售')
-          .setDescription('清空草稿后重建的主图')
-          .setLayouts({ lg: { x: 0, y: 0, w: 7, h: 5 }, md: { x: 0, y: 0, w: 6, h: 4 } })
-      })
-      builder.insight.add((insight) => {
-        insight
-          .setInsightId(resources.insights.promotionInsight)
-          .setTitle('最终促销洞察')
-          .setDescription('清空草稿后重建的洞察')
-          .setLayouts({ lg: { x: 7, y: 0, w: 5, h: 5 }, md: { x: 0, y: 4, w: 6, h: 3 } })
-      })
-      if (builder.isEmpty()) throw new Error('dashboard should contain widgets')
+    for (const widget of dashboardBuilder.chart.toJSON()) {
+      dashboardBuilder.chart.remove(widget.id)
     }
-    await applyBuilder(builder)
+    for (const widget of dashboardBuilder.insight.toJSON()) {
+      dashboardBuilder.insight.remove(widget.id)
+    }
+    if (!dashboardBuilder.isEmpty()) throw new Error('dashboard should be empty')
 
-    const dashboardDSL = builder.build()
+    dashboardBuilder.chart.add((chart) => {
+      chart
+        .setChart(resources.charts.categorySalesChart)
+        .setTitle('最终品类销售')
+        .setDescription('清空草稿后重建的主图')
+        .setLayouts({ lg: { x: 0, y: 0, w: 7, h: 5 }, md: { x: 0, y: 0, w: 6, h: 4 } })
+    })
+    dashboardBuilder.insight.add((insight) => {
+      insight
+        .setInsightId(resources.insights.promotionInsight)
+        .setTitle('最终促销洞察')
+        .setDescription('清空草稿后重建的洞察')
+        .setLayouts({ lg: { x: 7, y: 0, w: 5, h: 5 }, md: { x: 0, y: 4, w: 6, h: 3 } })
+    })
+    if (dashboardBuilder.isEmpty()) throw new Error('dashboard should contain widgets')
+
+    const dashboardDSL = dashboardBuilder.build()
     expect(dashboardDSL).toMatchInlineSnapshot(`
       {
         "breakpoints": {

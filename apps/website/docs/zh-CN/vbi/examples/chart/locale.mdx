@@ -62,7 +62,7 @@ export default () => {
     builder.locale.setLocale(nextLocale)
   }
 }
-      applyBuilder(builder)
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()
@@ -132,7 +132,7 @@ export default () => {
     builder.locale.setLocale(nextLocale)
   }
 }
-      applyBuilder(builder)
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()

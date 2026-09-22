@@ -9,5 +9,20 @@
   "fullscreenError": "无法切换全屏，请重试",
   "editChart": "编辑图表：{{title}}",
   "untitledChart": "未命名图表",
-  "backToDashboard": "返回仪表盘"
+  "backToDashboard": "返回仪表盘",
+  "dashboardTheme": "仪表盘主题",
+  "themeLight": "默认浅色",
+  "themeDark": "默认深色",
+  "themeVolcanoBlue": "火山蓝",
+  "themeClean": "清新蜡笔",
+  "themeOutskirts": "郊外",
+  "themeBlueOrange": "汽车蓝橙",
+  "themeFinanceYellow": "金融黄",
+  "themeWenLvCyan": "文旅青",
+  "themeElectricGreen": "电力绿",
+  "themeECommercePurple": "电商紫",
+  "themeRedBlue": "红蓝",
+  "themePartyRed": "党建红",
+  "themeGroupLight": "浅色",
+  "themeGroupDark": "深色"
 }

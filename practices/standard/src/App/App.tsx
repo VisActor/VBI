@@ -1,5 +1,5 @@
 import type { VBIChartBuilder } from '@visactor/vbi'
-import { theme as antdTheme, ConfigProvider, Flex, Spin } from 'antd'
+import { theme as antdTheme, ConfigProvider, Flex, Spin, type ThemeConfig } from 'antd'
 import deDE from 'antd/locale/de_DE'
 import enUS from 'antd/locale/en_US'
 import frFR from 'antd/locale/fr_FR'
@@ -32,6 +32,10 @@ interface APPProps {
   locale?: DemoLocale
   mode?: AppMode
   theme?: DemoTheme
+  /** Registered VSeed theme name; defaults to the UI theme. Does not mutate the chart. */
+  chartTheme?: string
+  /** Host UI tokens applied after Standard's defaults in both view and edit mode. */
+  themeToken?: ThemeConfig['token']
 }
 
 const DEMO_ANTD_LOCALES: Record<DemoLocale, typeof zhCN> = {
@@ -45,7 +49,7 @@ const DEMO_ANTD_LOCALES: Record<DemoLocale, typeof zhCN> = {
   'vi-VN': viVN,
 }
 
-const createThemeConfig = (themeMode: DemoTheme) => {
+const createThemeConfig = (themeMode: DemoTheme, themeToken?: ThemeConfig['token']) => {
   return {
     algorithm: themeMode === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
     token: {
@@ -59,6 +63,7 @@ const createThemeConfig = (themeMode: DemoTheme) => {
       controlHeightSM: 26,
       fontSize: 12,
       fontSizeSM: 11,
+      ...themeToken,
     },
   }
 }
@@ -77,11 +82,9 @@ const DemoWorkbenchPanels = memo(() => {
 })
 
 const DemoWorkbench = ({
-  themeMode,
   isFullscreen,
   onToggleFullscreen,
 }: {
-  themeMode: DemoTheme
   isFullscreen: boolean
   onToggleFullscreen: () => void | Promise<void>
 }) => {
@@ -103,7 +106,7 @@ const DemoWorkbench = ({
             borderRadius: token.borderRadiusOuter,
             overflow: 'hidden',
             borderColor: token.colorBorderSecondary,
-            background: themeMode === 'dark' ? 'rgba(12, 19, 31, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+            background: token.colorBgContainer,
             backdropFilter: 'blur(10px)',
           }}
           styles={{
@@ -125,15 +128,17 @@ const AppContent = ({
   mode,
   themeMode,
   border,
+  themeToken,
 }: {
   initialized: boolean
   mode: AppMode
   themeMode: DemoTheme
   border: boolean
+  themeToken?: ThemeConfig['token']
 }) => {
   const { locale, t } = useTranslation()
   const antdLocale = DEMO_ANTD_LOCALES[locale]
-  const antdThemeConfig = useMemo(() => createThemeConfig(themeMode), [themeMode])
+  const antdThemeConfig = useMemo(() => createThemeConfig(themeMode, themeToken), [themeMode, themeToken])
   const appRootRef = useRef<HTMLDivElement>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
 
@@ -189,7 +194,7 @@ const AppContent = ({
             </Spin>
           </div>
         ) : mode === 'edit' ? (
-          <DemoWorkbench themeMode={themeMode} isFullscreen={isFullscreen} onToggleFullscreen={toggleFullscreen} />
+          <DemoWorkbench isFullscreen={isFullscreen} onToggleFullscreen={toggleFullscreen} />
         ) : (
           <ViewPanel border={border} />
         )}
@@ -198,7 +203,17 @@ const AppContent = ({
   )
 }
 
-const AppShell = ({ builder, mode, border }: { builder?: VBIChartBuilder; mode: AppMode; border: boolean }) => {
+const AppShell = ({
+  builder,
+  mode,
+  border,
+  themeToken,
+}: {
+  builder?: VBIChartBuilder
+  mode: AppMode
+  border: boolean
+  themeToken?: ThemeConfig['token']
+}) => {
   const { initialize, initialized, storeBuilder } = useVBIStore(
     useShallow((state) => ({
       initialize: state.initialize,
@@ -226,7 +241,7 @@ const AppShell = ({ builder, mode, border }: { builder?: VBIChartBuilder; mode: 
     }
   }, [builder, initialize])
 
-  return <AppContent initialized={initialized} mode={mode} themeMode={theme} border={border} />
+  return <AppContent initialized={initialized} mode={mode} themeMode={theme} border={border} themeToken={themeToken} />
 }
 
 export const APP = ({
@@ -237,10 +252,19 @@ export const APP = ({
   locale = DEMO_DEFAULT_LOCALE,
   mode = 'edit',
   theme = DEMO_DEFAULT_THEME,
+  chartTheme,
+  themeToken,
 }: APPProps) => {
   return (
-    <VBIStoreProvider builder={builder} hideLocale={hideLocale} hideTheme={hideTheme} locale={locale} theme={theme}>
-      <AppShell builder={builder} mode={mode} border={border} />
+    <VBIStoreProvider
+      builder={builder}
+      hideLocale={hideLocale}
+      hideTheme={hideTheme}
+      locale={locale}
+      theme={theme}
+      chartTheme={chartTheme}
+    >
+      <AppShell builder={builder} mode={mode} border={border} themeToken={themeToken} />
     </VBIStoreProvider>
   )
 }

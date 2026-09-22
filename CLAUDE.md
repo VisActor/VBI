@@ -6,11 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```
 VBI/
-├── apps/                           # Application layer: docs site, frontend, backend
-│   ├── vbi_be/                     # VBI backend application
-│   ├── vbi_tui/                    # VBI TUI application shell
-│   ├── vbi_fe/                     # VBI frontend application
-│   ├── vbi_provider/               # VBI Provider application
+├── .agents/skills/                 # Agent skills and development guidance
+├── apps/                           # Documentation site only
 │   └── website/                    # Official documentation, examples, and playground
 ├── packages/                       # Package-level implementations
 │   ├── vbi/                        # Configuration layer for VBIChartDSL, Builder, and collaborative editing
@@ -27,17 +24,23 @@ VBI/
 │   └── vbi-react-starter/          # React Starter example
 ├── docs/                           # Repository documentation and historical context
 │   ├── adr/                        # Unified entry for historical decisions, theme designs, and practice records
-│   │   ├── repository/             # Repository-level ADRs and cross-application theme designs
+│   │   ├── repository/             # Repository-level architecture and decisions
 │   │   ├── packages/               # Package-level historical documentation
 │   │   └── practices/              # Practice-level historical documentation
 │   ├── skills/                     # Agent-facing reference material
 │   └── superpowers/                # Other topic-specific documentation
 ├── tools/                          # Development helper scripts and tools
-├── docker/                         # Container configuration for local running and deployment
 ├── README.md                       # Project overview and usage instructions
 ├── AGENTS.md                       # Coding Agent collaboration instructions
 └── CLAUDE.md                       # Claude Code collaboration instructions
 ```
+
+## Project Scope
+
+VBI focuses on reusable packages and agent skills. `apps/` contains only the
+documentation website; `practices/` contains package integration examples.
+Standalone product applications and their deployment infrastructure are outside
+this repository's scope.
 
 ## Development Guidelines
 

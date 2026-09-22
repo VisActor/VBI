@@ -9,5 +9,20 @@
   "fullscreenError": "Impossible de changer le mode plein écran. Veuillez réessayer.",
   "editChart": "Modifier le graphique : {{title}}",
   "untitledChart": "Graphique sans titre",
-  "backToDashboard": "Retour au tableau de bord"
+  "backToDashboard": "Retour au tableau de bord",
+  "dashboardTheme": "Thème du tableau de bord",
+  "themeLight": "Clair",
+  "themeDark": "Sombre",
+  "themeVolcanoBlue": "Bleu volcan",
+  "themeClean": "Pastels frais",
+  "themeOutskirts": "Périphérie",
+  "themeBlueOrange": "Bleu et orange automobile",
+  "themeFinanceYellow": "Jaune finance",
+  "themeWenLvCyan": "Cyan tourisme",
+  "themeElectricGreen": "Vert électrique",
+  "themeECommercePurple": "Violet e-commerce",
+  "themeRedBlue": "Rouge et bleu",
+  "themePartyRed": "Rouge du Parti",
+  "themeGroupLight": "Clair",
+  "themeGroupDark": "Sombre"
 }

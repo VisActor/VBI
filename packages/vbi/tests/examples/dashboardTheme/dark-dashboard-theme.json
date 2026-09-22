@@ -1,0 +1,8 @@
+{
+  "builder": "dashboard",
+  "name": "dark-dashboard-theme",
+  "description": "通过 dashboardBuilder.theme.setTheme 切换深色主题，卡片、图表和编辑器保持一致。",
+  "priority": 2,
+  "tags": ["theme"],
+  "code": "const chartBuilder = LocalVBI.chart.create(LocalVBI.chart.createEmpty('demoSupermarket'))\nchartBuilder.chartType.changeChartType('column')\nchartBuilder.dimensions.add('product_type', node => node.setAlias('商品品类'))\nchartBuilder.measures.add('sales', node => node.setAlias('销售额').setAggregate({ func: 'sum' }))\n\nconst insightBuilder = LocalVBI.insight.create(LocalVBI.insight.createEmpty())\ninsightBuilder.setContent('按品类比较销售贡献，结合利润质量制定下一步经营计划。')\n\nconst dashboardBuilder = LocalVBI.dashboard.create({\n  ...LocalVBI.dashboard.createEmpty(),\n  meta: { title: '深色经营看板', description: '品类表现 / 销售贡献与经营观察' },\n})\ndashboardBuilder.theme.setTheme('dark')\n\ndashboardBuilder.chart.add(widget => widget\n  .setChart(chartBuilder)\n  .setTitle('品类销售额')\n  .setLayouts({ lg: { x: 0, y: 0, w: 8, h: 5 }, md: { x: 0, y: 0, w: 6, h: 5 } }))\ndashboardBuilder.insight.add(widget => widget\n  .setInsightId(insightBuilder)\n  .setTitle('经营观察')\n  .setLayouts({ lg: { x: 8, y: 0, w: 4, h: 5 }, md: { x: 0, y: 5, w: 6, h: 3 } }))"
+}

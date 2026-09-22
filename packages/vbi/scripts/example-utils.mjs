@@ -141,12 +141,16 @@ function indentCode(code, indent) {
     .join('\n')
 }
 
-function renderDashboardSetup(json, indent = 4) {
-  return indentCode(json.setup || '', indent)
-}
-
 function renderTestBody(json) {
   const kind = getBuilderKind(json)
+  if (kind === 'dashboard') {
+    return `    const LocalVBI = createVBI()
+${indentCode(json.code, 4)}
+
+    const dashboardDSL = dashboardBuilder.build()
+    expect(dashboardDSL).toMatchInlineSnapshot()`
+  }
+
   const dslCode = toCode(buildDSL(kind, json.dsl || {}), 6)
   const hasCode = !!json.code
   const applyBuilderCode = hasCode ? normalizeExampleCode(json.code, kind) : 'const applyBuilder = () => {}'
@@ -160,17 +164,6 @@ function renderTestBody(json) {
     const insightDSL = builder.build()
     expect(insightDSL).toMatchInlineSnapshot()`
   }
-  if (kind === 'dashboard') {
-    return `    const LocalVBI = createVBI()
-${renderDashboardSetup(json)}
-
-    ${indentCode(applyBuilderCode, 4).trimStart()}
-    await applyBuilder(builder)
-
-    const dashboardDSL = builder.build()
-    expect(dashboardDSL).toMatchInlineSnapshot()`
-  }
-
   return `    const builder = VBI.chart.create(${dslCode})
 
     ${applyBuilderCode}
@@ -191,7 +184,7 @@ export function getTestImports(kind) {
     return "import { VBI, type VBIInsightBuilder } from '@visactor/vbi'"
   }
   if (kind === 'dashboard') {
-    return "import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'"
+    return "import { createVBI } from '@visactor/vbi'"
   }
   return "import { VBI, type VBIChartBuilder } from '@visactor/vbi'"
 }
@@ -243,24 +236,21 @@ export default () => {
     return `
 import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
 import { DashboardRenderer, type DashboardRendererProps } from 'dashboard'
-import { useDark, useLang } from '@rspress/core/runtime'
+import { useLang } from '@rspress/core/runtime'
 import { useEffect, useState } from 'react'
 
 export default () => {
-  const [dashboard, setDashboard] = useState<VBIDashboardBuilder | null>(null)
+  const [dashboardBuilder, setDashboardBuilder] = useState<VBIDashboardBuilder | null>(null)
   const [error, setError] = useState<string | null>(null)
   const locale = useLang() as DashboardRendererProps['locale']
-  const theme = useDark() ? 'dark' : 'light'
 
   useEffect(() => {
     let cancelled = false
     const run = async () => {
       try {
         const LocalVBI = createVBI()
-${renderDashboardSetup(json, 8)}
-        ${indentCode(code, 8).trimStart()}
-        await applyBuilder(builder)
-        if (!cancelled) setDashboard(builder)
+${indentCode(json.code, 8)}
+        if (!cancelled) setDashboardBuilder(dashboardBuilder)
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : String(err))
       }
@@ -270,9 +260,9 @@ ${renderDashboardSetup(json, 8)}
   }, [])
 
   if (error) return <div role='alert'>{error}</div>
-  if (!dashboard) return <div role='status'>Loading...</div>
+  if (!dashboardBuilder) return <div role='status'>Loading...</div>
 
-  return <DashboardRenderer builder={dashboard} mode='edit' locale={locale} theme={theme} />
+  return <DashboardRenderer builder={dashboardBuilder} mode='edit' locale={locale} />
 }`.trim()
   }
 

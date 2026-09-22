@@ -9,9 +9,10 @@ export default defineConfig({
     enabled: false,
   },
   resolve: {
+    // Some visualization dependencies publish bundler-only ESM entry points.
+    conditionNames: ['require', 'node', 'default'],
     alias: {
       '@visactor/vbi': ['./src'],
-      '@visactor/vquery': ['../vquery/src/node'],
     },
   },
 })

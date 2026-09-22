@@ -1,8 +1,18 @@
 [
   {
     "type": "file",
+    "name": "chartBuilderWorkflow",
+    "label": "ChartBuilderWorkflow"
+  },
+  {
+    "type": "file",
     "name": "chartType",
     "label": "ChartType"
+  },
+  {
+    "type": "file",
+    "name": "chartWorkflow",
+    "label": "ChartWorkflow"
   },
   {
     "type": "file",

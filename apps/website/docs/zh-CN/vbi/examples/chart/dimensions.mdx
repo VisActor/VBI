@@ -62,7 +62,7 @@ export default () => {
     })
   }
 }
-      applyBuilder(builder)
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()
@@ -123,7 +123,7 @@ export default () => {
     })
   }
 }
-      applyBuilder(builder)
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()
@@ -173,8 +173,8 @@ export default () => {
         },
         connectorId: DEMO_CONNECTOR_ID,
       })
-      const applyBuilder = (builder: VBIChartBuilder) => { builder.dimensions.add('product_type', n => n.setAlias('产品类型')).add('province', n => n.setAlias('省份')); }
-      applyBuilder(builder)
+      const applyBuilder = (builder: VBIChartBuilder) => { builder.dimensions.add('product_type', n => n.setAlias('产品类型').setSort({ order: 'asc' })).add('province', n => n.setAlias('省份').setSort({ order: 'asc' })); }
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()
@@ -236,13 +236,13 @@ export default () => {
       const applyBuilder = (builder: VBIChartBuilder) => {
   builder.dimensions
     .add('area', node => {
-      node.setAlias('区域')
+      node.setAlias('区域').setSort({ order: 'asc' })
     })
     .add('order_date', node => {
-      node.setAlias('季度').setAggregate({ func: 'toQuarter' })
+      node.setAlias('季度').setAggregate({ func: 'toQuarter' }).setSort({ order: 'asc' })
     })
 }
-      applyBuilder(builder)
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()
@@ -310,7 +310,7 @@ export default () => {
     builder.dimensions.remove(dimensionId)
   }
 }
-      applyBuilder(builder)
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()
@@ -386,7 +386,7 @@ export default () => {
     })
   }
 }
-      applyBuilder(builder)
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()
@@ -451,7 +451,7 @@ export default () => {
     builder.dimensions.update(dimensionId, n => n.setAlias('新产品类型'))
   }
 }
-      applyBuilder(builder)
+      await applyBuilder(builder)
       setResult(await builder.buildVSeed())
     }
     run()

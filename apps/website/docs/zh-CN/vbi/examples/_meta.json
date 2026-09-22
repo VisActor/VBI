@@ -7,9 +7,11 @@
     "collapsed": false
   },
   {
-    "type": "file",
+    "type": "dir",
     "name": "insight",
-    "label": "insight"
+    "label": "insight",
+    "collapsible": true,
+    "collapsed": false
   },
   {
     "type": "file",

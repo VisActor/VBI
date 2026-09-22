@@ -9,6 +9,7 @@ export type VBIStoreConfig = {
   hideTheme: boolean
   locale?: DemoLocale
   theme?: DemoTheme
+  chartTheme?: string
 }
 
 type VBIStoreContextValue = {
@@ -24,6 +25,7 @@ type VBIStoreProviderProps = PropsWithChildren<{
   hideTheme?: boolean
   locale?: DemoLocale
   theme?: DemoTheme
+  chartTheme?: string
 }>
 
 export const VBIStoreProvider = ({
@@ -33,6 +35,7 @@ export const VBIStoreProvider = ({
   hideTheme = false,
   locale,
   theme,
+  chartTheme,
 }: VBIStoreProviderProps) => {
   const storeRef = useRef<VBIStoreApi | null>(null)
 
@@ -43,7 +46,7 @@ export const VBIStoreProvider = ({
   return (
     <VBIStoreContext.Provider
       value={{
-        config: { hideLocale, hideTheme, locale, theme },
+        config: { hideLocale, hideTheme, locale, theme, chartTheme },
         store: storeRef.current,
       }}
     >

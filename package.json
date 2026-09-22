@@ -10,11 +10,9 @@
   "description": "VSeed, an elegant data composer, transforming complexity into simplicity.",
   "scripts": {
     "dev": "pnpm --filter=website run dev",
-    "tui": "node apps/vbi_tui/scripts/build.mjs && node apps/vbi_tui/dist/cli.js",
     "build": "turbo build --filter=!website",
     "build:website": "pnpm --filter=website run build",
-    "build:graph": "pnpm run build:app:graph && pnpm run build:packages:graph",
-    "build:app:graph": "turbo build --filter=./apps/* --filter=!./apps/website --graph=.turbo/apps.mermaid",
+    "build:graph": "pnpm run build:packages:graph",
     "build:packages:graph": "turbo build --filter=./packages/* --graph=.turbo/packages.mermaid",
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",
@@ -28,18 +26,7 @@
     "test:update": "turbo test:update --filter=!website",
     "test:coverage": "pnpm -r test:coverage",
     "publish:ci": "turbo run build --filter=@visactor/vseed --filter=@visactor/vquery --filter=@visactor/vbi && pnpm changeset publish --filter=@visactor/vseed,@visactor/vquery,@visactor/vbi --access=public",
-    "vbi:dev": "docker compose -f ./docker/docker-compose.dev.yml up",
-    "vbi:dev:build": "docker compose -f ./docker/docker-compose.dev.yml up --build",
-    "vbi:dev:logs": "docker compose -f ./docker/docker-compose.dev.yml logs -f",
-    "vbi:dev:down": "docker compose -f ./docker/docker-compose.dev.yml down",
-    "vbi:dev:rebuild": "docker compose -f ./docker/docker-compose.dev.yml down && docker compose -f ./docker/docker-compose.dev.yml build --no-cache && docker compose -f ./docker/docker-compose.dev.yml up --force-recreate",
-    "vbi:prod": "docker compose -f ./docker/docker-compose.yml up",
-    "vbi:prod:build": "docker compose -f ./docker/docker-compose.yml up --build",
-    "vbi:prod:logs": "docker compose -f ./docker/docker-compose.yml logs -f",
-    "vbi:prod:down": "docker compose -f ./docker/docker-compose.yml down",
-    "vbi:prod:rebuild": "docker compose -f ./docker/docker-compose.yml down && docker compose -f ./docker/docker-compose.yml build --no-cache && docker compose -f ./docker/docker-compose.yml up --force-recreate",
-    "prepare": "husky",
-    "postinstall": "shx test -e .env || shx cp .env.example .env"
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}": [
@@ -61,7 +48,6 @@
     "node-fetch": "2.6.7",
     "oxfmt": "0.51.0",
     "oxlint": "1.66.0",
-    "shx": "0.4.0",
     "turbo": "2.9.6"
   },
   "packageManager": "pnpm@10.26.1",

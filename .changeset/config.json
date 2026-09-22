@@ -10,19 +10,14 @@
   "ignore": [
     "@visactor/vbi-agent",
     "@visactor/vbi-react",
-    "@visactor/headless-bi-be",
-    "@visactor/headless-bi-tui",
-    "@visactor/headless-bi-fe",
-    "@visactor/headless-bi-provider",
     "@internal/bugserver-trigger",
+    "dashboard",
     "professional",
     "minimalist",
     "standard",
     "streamlined",
     "vbi-react-starter",
     "vseed-llm-test",
-    "vscode-extension",
-    "webview-ui",
     "website"
   ]
 }

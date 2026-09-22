@@ -9,5 +9,20 @@
   "fullscreenError": "Tidak dapat beralih layar penuh. Silakan coba lagi.",
   "editChart": "Edit grafik: {{title}}",
   "untitledChart": "Grafik tanpa judul",
-  "backToDashboard": "Kembali ke dasbor"
+  "backToDashboard": "Kembali ke dasbor",
+  "dashboardTheme": "Tema dasbor",
+  "themeLight": "Terang",
+  "themeDark": "Gelap",
+  "themeVolcanoBlue": "Biru vulkanik",
+  "themeClean": "Pastel segar",
+  "themeOutskirts": "Pinggiran kota",
+  "themeBlueOrange": "Biru dan jingga otomotif",
+  "themeFinanceYellow": "Kuning keuangan",
+  "themeWenLvCyan": "Sian pariwisata",
+  "themeElectricGreen": "Hijau listrik",
+  "themeECommercePurple": "Ungu e-commerce",
+  "themeRedBlue": "Merah dan biru",
+  "themePartyRed": "Merah partai",
+  "themeGroupLight": "Terang",
+  "themeGroupDark": "Gelap"
 }

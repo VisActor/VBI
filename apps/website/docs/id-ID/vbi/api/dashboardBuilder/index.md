@@ -7,6 +7,7 @@
 | **doc** | `Y.Doc` | - |
 | **dsl** | `Y.Map<any>` | - |
 | **undoManager** | `UndoManager` | - |
+| **theme** | `DashboardThemeBuilder` | - |
 | **chart** | `DashboardChartCollectionBuilder<TQueryDSL, TSeedDSL, VBIDashboardBuilder<TQueryDSL, TSeedDSL>>` | - |
 | **insight** | `DashboardInsightCollectionBuilder<TQueryDSL, TSeedDSL, VBIDashboardBuilder<TQueryDSL, TSeedDSL>>` | - |
 
