@@ -2,8 +2,17 @@ import { act, fireEvent, render, screen, waitFor, within } from '@testing-librar
 import { createVBI } from '@visactor/vbi'
 import { expect, rs, test } from '@rstest/core'
 import type { VBIChartBuilder } from '@visactor/vbi'
-import { DashboardRenderer } from '../src'
+import {
+  DashboardRenderer,
+  DashboardToolbar,
+  DashboardEditToggle,
+  DashboardThemePicker,
+  DashboardFullscreenButton,
+  useDashboard,
+  registerDashboardTheme,
+} from '../src'
 import { observerCount, resize } from './resize'
+import { brandTokens } from './theme-fixture'
 
 const standardProps = rs.hoisted(() => rs.fn())
 rs.mock('standard', () => ({
@@ -12,12 +21,19 @@ rs.mock('standard', () => ({
     mode: string
     locale: string
     theme: string
+    chartTheme?: string
     hideLocale?: boolean
     hideTheme?: boolean
   }) => {
     standardProps(props)
     return (
-      <div data-testid='standard' data-theme={props.theme} data-locale={props.locale} data-mode={props.mode}>
+      <div
+        data-testid='standard'
+        data-theme={props.theme}
+        data-chart-theme={props.chartTheme}
+        data-locale={props.locale}
+        data-mode={props.mode}
+      >
         {props.builder.getUUID()}
         {props.mode === 'edit' ? (
           <button onClick={() => props.builder.chartType.changeChartType('line')}>Change chart type</button>
@@ -285,12 +301,224 @@ test('isolates edit switches and does not offer editing for unresolved resources
   expect(screen.queryByRole('button', { name: '编辑图表：Missing' })).not.toBeInTheDocument()
 })
 
-test('uses only the external theme, even when dashboard metadata specifies a different theme', () => {
+test('uses the saved theme unless the host explicitly overrides it', () => {
   const vbi = createVBI()
   const builder = vbi.dashboard.create({ ...vbi.dashboard.createEmpty(), meta: { title: 'Theme', theme: 'dark' } })
   const view = render(<DashboardRenderer builder={builder} />)
+  expect(view.container.querySelector('section')).toHaveAttribute('data-theme', 'dark')
+  view.rerender(<DashboardRenderer builder={builder} theme='light' />)
   expect(view.container.querySelector('section')).toHaveAttribute('data-theme', 'light')
   expect(builder.build().meta.theme).toBe('dark')
+  view.rerender(<DashboardRenderer builder={builder} />)
+  act(() => builder.theme.setTheme('light'))
+  expect(view.container.querySelector('section')).toHaveAttribute('data-theme', 'light')
+})
+
+test('composes built-in and custom toolbar controls with shared editing and theme state', () => {
+  const { builder } = createChartDashboard()
+  function DarkThemeAction() {
+    const { editing, onThemeChange } = useDashboard()
+    return (
+      <button disabled={!editing} onClick={() => onThemeChange?.('dark')}>
+        切换深色
+      </button>
+    )
+  }
+  const toolbar = (
+    <DashboardToolbar>
+      <DashboardEditToggle />
+      <DarkThemeAction />
+      <DashboardThemePicker />
+    </DashboardToolbar>
+  )
+  const view = render(<DashboardRenderer builder={builder} mode='edit' toolbar={toolbar} />)
+  const controls = within(screen.getByRole('group', { name: '仪表盘工具栏' }))
+  expect(screen.queryByRole('button', { name: '进入全屏' })).not.toBeInTheDocument()
+  fireEvent.click(controls.getByRole('button', { name: '切换深色' }))
+  expect(builder.theme.getTheme()).toBe('dark')
+  expect(screen.getByTestId('standard')).toHaveAttribute('data-chart-theme', 'dark')
+  fireEvent.click(controls.getByRole('switch', { name: '启用编辑' }))
+  expect(controls.getByRole('button', { name: '切换深色' })).toBeDisabled()
+  expect(controls.getByRole('combobox')).toBeDisabled()
+  expect(screen.queryByRole('button', { name: '编辑图表：销售图表' })).not.toBeInTheDocument()
+  fireEvent.click(controls.getByRole('switch', { name: '启用编辑' }))
+  expect(screen.getByRole('button', { name: '编辑图表：销售图表' })).toBeInTheDocument()
+
+  view.rerender(<DashboardRenderer builder={builder} mode='view' toolbar={toolbar} />)
+  expect(controls.queryByRole('switch')).not.toBeInTheDocument()
+  expect(controls.queryByRole('combobox')).not.toBeInTheDocument()
+  expect(controls.getByRole('button', { name: '切换深色' })).toBeDisabled()
+  view.rerender(<DashboardRenderer builder={builder} toolbar={null} />)
+  expect(screen.queryByRole('group', { name: '仪表盘工具栏' })).not.toBeInTheDocument()
+  expect(screen.getByRole('article', { name: '销售图表' })).toBeInTheDocument()
+})
+
+test('cleans up fullscreen when its control is removed while keeping the dashboard mounted', async () => {
+  const { builder } = createChartDashboard()
+  const view = render(<DashboardRenderer builder={builder} toolbar={<DashboardFullscreenButton />} />)
+  const root = view.container.querySelector('section')!
+  const setFullscreen = (element: Element | null) => {
+    Object.defineProperty(document, 'fullscreenElement', { configurable: true, value: element })
+    document.dispatchEvent(new Event('fullscreenchange'))
+  }
+  root.requestFullscreen = rs.fn().mockImplementation(async () => setFullscreen(root))
+  const exit = rs.fn().mockImplementation(async () => setFullscreen(null))
+  document.exitFullscreen = exit
+  try {
+    await act(async () => fireEvent.click(screen.getByRole('button', { name: '进入全屏' })))
+    expect(await screen.findByRole('button', { name: '退出全屏' })).toBeInTheDocument()
+    view.rerender(<DashboardRenderer builder={builder} toolbar={null} />)
+    expect(exit).toHaveBeenCalledTimes(1)
+    expect(view.container.querySelector('section')).toBe(root)
+    expect(screen.getByRole('article', { name: '销售图表' })).toBeInTheDocument()
+  } finally {
+    view.unmount()
+    Reflect.deleteProperty(document, 'fullscreenElement')
+    delete (document as Partial<Document>).exitFullscreen
+  }
+})
+
+test('selects a preset from the toolbar, persists it and supports undo without changing the chart', async () => {
+  const { builder, chart } = createChartDashboard()
+  const original = chart.build()
+  const view = render(<DashboardRenderer builder={builder} mode='edit' />)
+  const root = view.container.querySelector('section')!
+  fireEvent.mouseDown(screen.getByRole('combobox', { name: '仪表盘主题' }))
+  const option = await screen.findByRole('option', { name: '火山蓝' })
+  expect(screen.getByText('浅色')).toBeInTheDocument()
+  expect(screen.getByText('深色')).toBeInTheDocument()
+  expect(screen.getAllByRole('option')).toHaveLength(12)
+  expect(option.textContent).toBe('')
+  expect(option.querySelector('.vbi-dashboard-theme-dot')).toHaveStyle({ background: '#006EFF' })
+  // The popup stays inside the dashboard so it also works in browser fullscreen.
+  expect(root).toContainElement(option)
+  const palette = option.querySelector('.vbi-dashboard-theme-option')!
+  fireEvent.mouseEnter(palette)
+  const optionTooltip = await screen.findByRole('tooltip', { name: '火山蓝' })
+  expect(root).toContainElement(optionTooltip)
+  fireEvent.mouseLeave(palette)
+  await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeInTheDocument())
+  fireEvent.click(option)
+  expect(builder.theme.getTheme()).toBe('volcanoBlue')
+  expect(root).toHaveAttribute('data-theme', 'volcanoBlue')
+  expect(root.querySelector('.vbi-dashboard-theme-select')).not.toHaveTextContent('火山蓝')
+  expect(root.querySelector('.vbi-dashboard-theme-select .vbi-dashboard-theme-dot')).toHaveStyle({
+    background: '#006EFF',
+  })
+  expect(root).toHaveStyle({ background: '#0c0929' })
+  expect(screen.getByTestId('standard')).toHaveAttribute('data-chart-theme', 'volcanoBlue')
+  expect(chart.build()).toEqual(original)
+  const currentColor = root.querySelector('.vbi-dashboard-theme-select .vbi-dashboard-theme-dot')!
+  fireEvent.mouseEnter(currentColor)
+  expect(await screen.findByRole('tooltip', { name: '火山蓝' })).toBeInTheDocument()
+  fireEvent.mouseLeave(currentColor)
+  await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeInTheDocument())
+  act(() => builder.undoManager.undo())
+  expect(root).toHaveAttribute('data-theme', 'light')
+  fireEvent.click(screen.getByRole('switch', { name: '启用编辑' }))
+  expect(screen.getByRole('combobox', { name: '仪表盘主题' })).toBeDisabled()
+  view.rerender(<DashboardRenderer builder={builder} mode='view' />)
+  expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
+})
+
+test('offers registered themes and delegates controlled selections to the host without changing the DSL', async () => {
+  registerDashboardTheme('test-toolbar-brand', { label: 'Custom brand', tokens: brandTokens })
+  const { builder } = createChartDashboard()
+  const original = builder.build()
+  const onThemeChange = rs.fn()
+  const view = render(<DashboardRenderer builder={builder} mode='edit' theme='dark' locale='en-US' />)
+  expect(screen.getByRole('combobox', { name: 'Dashboard theme' })).toBeDisabled()
+  view.rerender(
+    <DashboardRenderer builder={builder} mode='edit' theme='dark' locale='en-US' onThemeChange={onThemeChange} />,
+  )
+  fireEvent.mouseDown(screen.getByRole('combobox', { name: 'Dashboard theme' }))
+  fireEvent.click(await screen.findByRole('option', { name: 'Custom brand' }))
+  expect(onThemeChange).toHaveBeenCalledWith('test-toolbar-brand')
+  expect(builder.build()).toEqual(original)
+  expect(view.container.querySelector('section')).toHaveAttribute('data-theme', 'dark')
+  view.rerender(
+    <DashboardRenderer
+      builder={builder}
+      mode='edit'
+      theme='test-toolbar-brand'
+      locale='en-US'
+      onThemeChange={onThemeChange}
+    />,
+  )
+  expect(view.container.querySelector('section')).toHaveAttribute('data-theme', 'test-toolbar-brand')
+})
+
+test('applies a brand theme to cards, previews and the open editor without changing the chart', async () => {
+  registerDashboardTheme('test-dashboard-brand', {
+    tokens: brandTokens,
+    dashboard: { widgetBorderRadius: 12, gap: 20, padding: 24, toolbarBackground: '#17372b' },
+  })
+  const { builder, chart } = createChartDashboard()
+  builder.theme.setTheme('test-dashboard-brand')
+  const original = chart.build()
+  const view = render(<DashboardRenderer builder={builder} mode='edit' />)
+  expect(view.container.querySelector('section')).toHaveAttribute('data-theme', 'test-dashboard-brand')
+  expect(view.container.querySelector('section')).toHaveStyle({
+    background: '#091a14',
+    color: '#edfdf5',
+    padding: '24px',
+    fontFamily: 'Georgia, serif',
+  })
+  expect(screen.getByRole('article')).toHaveStyle({
+    background: '#102b22',
+    borderColor: '#315448',
+    borderRadius: '12px',
+  })
+  expect(screen.getByRole('group', { name: '仪表盘工具栏' })).toHaveStyle({ background: '#17372b' })
+  expect(view.container.querySelector('[data-dashboard-grid]')).toHaveStyle({ gap: '20px' })
+  fireEvent.click(screen.getByRole('button', { name: '编辑图表：销售图表' }))
+  await screen.findByRole('dialog')
+  for (const standard of screen.getAllByTestId('standard')) {
+    expect(standard).toHaveAttribute('data-chart-theme', 'test-dashboard-brand')
+    expect(standard).toHaveAttribute('data-theme', 'dark')
+  }
+  expect(standardProps).toHaveBeenCalledWith(
+    expect.objectContaining({
+      themeToken: expect.objectContaining({
+        colorPrimary: '#22c55e',
+        colorText: '#edfdf5',
+        fontFamily: 'Georgia, serif',
+      }),
+    }),
+  )
+  act(() => builder.theme.setTheme('light'))
+  expect(screen.getByRole('dialog')).toBeInTheDocument()
+  for (const standard of screen.getAllByTestId('standard')) {
+    expect(standard).toHaveAttribute('data-chart-theme', 'light')
+  }
+  expect(chart.build()).toEqual(original)
+})
+
+test('isolates themes for dashboards sharing a chart and falls back consistently for unknown names', () => {
+  const vbi = createVBI()
+  const chart = vbi.chart.create(vbi.chart.createEmpty('demo'))
+  const first = vbi.dashboard.create(vbi.dashboard.createEmpty())
+  const second = vbi.dashboard.create(vbi.dashboard.createEmpty())
+  for (const builder of [first, second]) {
+    builder.chart.add((widget) => widget.setChart(chart).setLayouts({ lg: { x: 0, y: 0, w: 12, h: 5 } }))
+  }
+  first.theme.setTheme('dark')
+  second.theme.setTheme('unknown-brand')
+  const original = chart.build()
+  const view = render(
+    <>
+      <DashboardRenderer builder={first} />
+      <DashboardRenderer builder={second} />
+    </>,
+  )
+  const [firstRoot, secondRoot] = view.container.querySelectorAll('section')
+  expect(firstRoot).toHaveAttribute('data-theme', 'dark')
+  expect(secondRoot).toHaveAttribute('data-theme', 'light')
+  expect(within(firstRoot).getByTestId('standard')).toHaveAttribute('data-chart-theme', 'dark')
+  expect(within(secondRoot).getByTestId('standard')).toHaveAttribute('data-chart-theme', 'light')
+  act(() => first.theme.setTheme('light'))
+  expect(second.theme.getTheme()).toBe('unknown-brand')
+  expect(chart.build()).toEqual(original)
 })
 
 test('handles fullscreen failure, retry, browser exit and unmount without affecting another dashboard', async () => {

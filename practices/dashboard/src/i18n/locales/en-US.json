@@ -9,5 +9,20 @@
   "fullscreenError": "Unable to change fullscreen. Please try again.",
   "editChart": "Edit chart: {{title}}",
   "untitledChart": "Untitled chart",
-  "backToDashboard": "Back to dashboard"
+  "backToDashboard": "Back to dashboard",
+  "dashboardTheme": "Dashboard theme",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "themeVolcanoBlue": "Volcano blue",
+  "themeClean": "Fresh pastels",
+  "themeOutskirts": "Outskirts",
+  "themeBlueOrange": "Automotive blue & orange",
+  "themeFinanceYellow": "Finance yellow",
+  "themeWenLvCyan": "Tourism cyan",
+  "themeElectricGreen": "Electric green",
+  "themeECommercePurple": "E-commerce purple",
+  "themeRedBlue": "Red & blue",
+  "themePartyRed": "Party red",
+  "themeGroupLight": "Light",
+  "themeGroupDark": "Dark"
 }

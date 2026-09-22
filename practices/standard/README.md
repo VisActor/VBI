@@ -11,6 +11,20 @@ import { APP as Standard } from 'standard'
 
 The chart fills its container's width and height. Give the parent a defined height (including a size assigned by flex or grid layout); the renderer does not impose a minimum chart height.
 
+For a registered VSeed brand theme, pass `chartTheme` alongside the UI's `theme` (`light` or `dark`). Optional `themeToken` overrides Ant Design tokens after Standard's defaults. These presentation props apply in both view and edit modes without changing the chart DSL or repeating its data query:
+
+```tsx
+;<Standard
+  builder={chartBuilder}
+  mode='view'
+  theme='dark'
+  chartTheme='emerald'
+  themeToken={{ colorPrimary: '#34d399', colorText: '#edfdf5', colorBgContainer: '#102b22' }}
+/>
+```
+
+The host registers the VSeed theme before rendering. Without `chartTheme`, the existing `theme` prop supplies both the UI mode and chart theme.
+
 ## Setup
 
 Install the dependencies:

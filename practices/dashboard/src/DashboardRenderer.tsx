@@ -1,30 +1,27 @@
-import { useEffect, useRef, useState } from 'react'
-import type { VBIChartBuilder, VBIDashboardBuilder, VBIDashboardDSL, VBIInsightBuilder } from '@visactor/vbi'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import type { VBIDashboardBuilder, VBIDashboardDSL } from '@visactor/vbi'
 import type { Locale } from '@visactor/vseed'
-import { EditOutlined } from '@ant-design/icons'
-import { Button, ConfigProvider, theme as antdTheme } from 'antd'
-import { APP as Standard } from 'standard'
+import { ConfigProvider, theme as antdTheme } from 'antd'
 import { useBuilderSnapshot } from './useBuilderSnapshot'
-import { useContainerWidth } from './useContainerWidth'
-import { resolveLayout } from './layout'
-import { useTranslation } from './i18n'
+import { useChartEditor } from './useChartEditor'
 import { antdLocales } from './i18n/antd'
-import { Toolbar } from './Toolbar'
+import { DashboardContext } from './DashboardContext'
+import { DashboardGrid } from './DashboardGrid'
+import { DashboardToolbar } from './toolbar'
 import { ChartEditor } from './ChartEditor'
-import { useFullscreen } from './useFullscreen'
+import { resolveDashboardTheme, type ResolvedDashboardTheme } from './theme'
 import './dashboard.css'
 
 export interface DashboardRendererProps {
   builder: VBIDashboardBuilder
   mode?: 'view' | 'edit'
   locale?: Locale
-  theme?: 'light' | 'dark'
-}
-
-function Insight({ builder, locale }: { builder: VBIInsightBuilder; locale: Locale }) {
-  const insight = useBuilderSnapshot(builder)
-  const t = useTranslation(locale)
-  return <div className='vbi-dashboard-insight'>{insight.content || t('noData')}</div>
+  /** Temporary presentation override. Defaults to the saved dashboard theme. */
+  theme?: string
+  /** Handle a toolbar selection when the host controls the theme prop. */
+  onThemeChange?: (name: string) => void
+  /** Replace or compose toolbar controls. Pass null to hide the toolbar. */
+  toolbar?: ReactNode
 }
 
 function DashboardContent({
@@ -33,133 +30,67 @@ function DashboardContent({
   locale,
   theme,
   mode,
-}: Required<DashboardRendererProps> & { dsl: VBIDashboardDSL }) {
+  onThemeChange,
+  toolbar,
+}: Required<Pick<DashboardRendererProps, 'builder' | 'locale' | 'mode'>> & {
+  dsl: VBIDashboardDSL
+  theme: ResolvedDashboardTheme
+  onThemeChange?: (name: string) => void
+  toolbar: ReactNode
+}) {
   const { token } = antdTheme.useToken()
-  const t = useTranslation(locale)
   const root = useRef<HTMLElement>(null)
-  const fullscreen = useFullscreen(root)
   const [editing, setEditing] = useState(true)
-  const [selection, setSelection] = useState<{
-    dashboard: VBIDashboardBuilder
-    widgetId: string
-    chart: VBIChartBuilder
-  } | null>(null)
   const canEdit = mode === 'edit' && editing
-  const selectedWidget =
-    canEdit && selection?.dashboard === builder
-      ? dsl.widgets.find(
-          (widget) =>
-            widget.id === selection.widgetId &&
-            widget.type === 'chart' &&
-            builder.getChartBuilder(widget.chartId) === selection.chart,
-        )
-      : undefined
+  const editor = useChartEditor(builder, dsl.widgets, canEdit)
 
-  useEffect(() => {
-    if (!selectedWidget) setSelection(null)
-  }, [selectedWidget])
   useEffect(() => {
     setEditing(true)
   }, [builder])
-  const { ref, width } = useContainerWidth()
-  const layout = resolveLayout(dsl, width)
+
   return (
-    <section
-      ref={root}
-      className='vbi-dashboard'
-      data-theme={theme}
-      lang={locale}
-      style={{ color: token.colorText, background: token.colorBgLayout, borderRadius: token.borderRadiusLG }}
+    <DashboardContext.Provider
+      value={{ locale, theme, mode, editing: canEdit, onEditingChange: setEditing, onThemeChange, containerRef: root }}
     >
-      <Toolbar
-        locale={locale}
-        theme={theme}
-        mode={mode}
-        editing={editing}
-        onEditingChange={setEditing}
-        fullscreen={fullscreen}
-      />
-      {dsl.meta.title || dsl.meta.description ? (
-        <header className='vbi-dashboard-heading'>
-          {dsl.meta.title ? <h2>{dsl.meta.title}</h2> : null}
-          {dsl.meta.description ? <p style={{ color: token.colorTextSecondary }}>{dsl.meta.description}</p> : null}
-        </header>
-      ) : null}
-      <div
-        ref={ref}
-        data-dashboard-grid
-        className='vbi-dashboard-grid'
-        style={{ gridTemplateColumns: `repeat(${layout.columns}, minmax(0, 1fr))` }}
+      <section
+        ref={root}
+        className='vbi-dashboard'
+        data-theme={theme.name}
+        lang={locale}
+        style={{
+          color: token.colorText,
+          background: theme.dashboard.backgroundColor ?? token.colorBgLayout,
+          borderRadius: token.borderRadiusLG,
+          fontFamily: token.fontFamily,
+          padding: theme.dashboard.padding,
+        }}
       >
-        {layout.widgets.map(({ widget, style }) => {
-          const insight = widget.type === 'insight' ? builder.getInsightBuilder(widget.insightId) : undefined
-          const chart = widget.type === 'chart' ? builder.getChartBuilder(widget.chartId) : undefined
-          return (
-            <article
-              key={widget.id}
-              className='vbi-dashboard-widget'
-              aria-label={widget.title}
-              style={{
-                ...style,
-                background: token.colorBgContainer,
-                borderColor: token.colorBorderSecondary,
-                borderRadius: token.borderRadiusLG,
-              }}
-            >
-              {widget.title || widget.description || (canEdit && chart) ? (
-                <header className='vbi-dashboard-widget-heading'>
-                  <div className='vbi-dashboard-widget-title'>
-                    {widget.title ? <h3>{widget.title}</h3> : null}
-                    {canEdit && chart ? (
-                      <Button
-                        type='text'
-                        size='small'
-                        icon={<EditOutlined />}
-                        aria-label={t('editChart', { title: widget.title || t('untitledChart') })}
-                        title={t('editChart', { title: widget.title || t('untitledChart') })}
-                        onClick={() => setSelection({ dashboard: builder, widgetId: widget.id, chart })}
-                      />
-                    ) : null}
-                  </div>
-                  {widget.description ? <p style={{ color: token.colorTextSecondary }}>{widget.description}</p> : null}
-                </header>
-              ) : null}
-              <div className='vbi-dashboard-widget-content'>
-                {insight ? (
-                  <Insight builder={insight} locale={locale} />
-                ) : chart ? (
-                  <Standard
-                    key={chart.getUUID()}
-                    builder={chart}
-                    mode='view'
-                    border={false}
-                    locale={locale}
-                    theme={theme}
-                  />
-                ) : (
-                  <div role='status'>{t('missing')}</div>
-                )}
-              </div>
-            </article>
-          )
-        })}
-      </div>
-      {!dsl.widgets.length ? (
-        <div className='vbi-dashboard-empty' role='status'>
-          {t('empty')}
-        </div>
-      ) : null}
-      {selectedWidget && selection && root.current ? (
-        <ChartEditor
-          builder={selection.chart}
-          title={selectedWidget.title ?? ''}
+        {toolbar}
+        {dsl.meta.title || dsl.meta.description ? (
+          <header className='vbi-dashboard-heading'>
+            {dsl.meta.title ? <h2>{dsl.meta.title}</h2> : null}
+            {dsl.meta.description ? <p style={{ color: token.colorTextSecondary }}>{dsl.meta.description}</p> : null}
+          </header>
+        ) : null}
+        <DashboardGrid
+          builder={builder}
+          dsl={dsl}
           locale={locale}
           theme={theme}
-          container={root.current}
-          onClose={() => setSelection(null)}
+          onEdit={canEdit ? editor.open : undefined}
         />
-      ) : null}
-    </section>
+        {editor.selected && root.current ? (
+          <ChartEditor
+            builder={editor.selected.chart}
+            title={editor.selected.title}
+            locale={locale}
+            theme={theme}
+            container={root.current}
+            onClose={editor.close}
+          />
+        ) : null}
+      </section>
+    </DashboardContext.Provider>
   )
 }
 
@@ -167,18 +98,31 @@ export function DashboardRenderer({
   builder,
   mode = 'view',
   locale = 'zh-CN',
-  theme = 'light',
+  theme: themeOverride,
+  onThemeChange,
+  toolbar = <DashboardToolbar />,
 }: DashboardRendererProps) {
   const dsl = useBuilderSnapshot(builder)
+  const themeName = themeOverride ?? dsl.meta.theme
+  const theme = useMemo(() => resolveDashboardTheme(themeName), [themeName])
   return (
-    <ConfigProvider
-      locale={antdLocales[locale]}
-      theme={{
-        algorithm: theme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
-        token: { borderRadius: 8, borderRadiusOuter: 18, fontSize: 14 },
-      }}
-    >
-      <DashboardContent builder={builder} dsl={dsl} mode={mode} locale={locale} theme={theme} />
+    <ConfigProvider locale={antdLocales[locale]} theme={theme.config}>
+      <DashboardContent
+        builder={builder}
+        dsl={dsl}
+        mode={mode}
+        locale={locale}
+        theme={theme}
+        toolbar={toolbar}
+        onThemeChange={
+          themeOverride === undefined
+            ? (name) => {
+                builder.theme.setTheme(name)
+                onThemeChange?.(name)
+              }
+            : onThemeChange
+        }
+      />
     </ConfigProvider>
   )
 }

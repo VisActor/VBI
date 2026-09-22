@@ -263,6 +263,13 @@ const API_SECTIONS = [
     },
     items: [
       {
+        type: 'file',
+        name: 'theme',
+        label: 'dashboardBuilder.theme',
+        file: 'features/theme/theme-builder.ts',
+        displayName: 'DashboardThemeBuilder',
+      },
+      {
         type: 'dir',
         name: 'chart',
         label: 'dashboardBuilder.chart',

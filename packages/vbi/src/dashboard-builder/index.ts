@@ -4,4 +4,5 @@ export {
   DashboardChartCollectionBuilder,
   DashboardInsightBuilder,
   DashboardInsightCollectionBuilder,
+  DashboardThemeBuilder,
 } from './features'

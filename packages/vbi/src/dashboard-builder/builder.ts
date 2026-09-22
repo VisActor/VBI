@@ -8,7 +8,12 @@ import { getOrCreateDashboardWidgets } from 'src/vbi/from/dashboard-widget-y-map
 import type { VBIResourceRegistry } from 'src/vbi/resources'
 import { ensureResourceUUID, getResourceUUID } from 'src/vbi/resource-uuid'
 import type * as Y from 'yjs'
-import { DashboardChartCollectionBuilder, DashboardInsightCollectionBuilder, UndoManager } from './features'
+import {
+  DashboardChartCollectionBuilder,
+  DashboardInsightCollectionBuilder,
+  DashboardThemeBuilder,
+  UndoManager,
+} from './features'
 import { applyUpdateToDoc, buildVBIDashboardDSL, encodeDocStateAsUpdate, isEmptyVBIDashboardDSL } from './modules'
 
 export interface VBIDashboardBuilderDependencies<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
@@ -23,6 +28,7 @@ export class VBIDashboardBuilder<
   public doc: Y.Doc
   public dsl: Y.Map<any>
   public undoManager: UndoManager
+  public theme: DashboardThemeBuilder
   public chart: DashboardChartCollectionBuilder<TQueryDSL, TSeedDSL, VBIDashboardBuilder<TQueryDSL, TSeedDSL>>
   public insight: DashboardInsightCollectionBuilder<TQueryDSL, TSeedDSL, VBIDashboardBuilder<TQueryDSL, TSeedDSL>>
   private builderOptions?: VBIDashboardBuilderOptions<TQueryDSL, TSeedDSL>
@@ -55,6 +61,7 @@ export class VBIDashboardBuilder<
     })
 
     this.undoManager = new UndoManager(this.dsl)
+    this.theme = new DashboardThemeBuilder(this.dsl)
     this.chart = new DashboardChartCollectionBuilder<TQueryDSL, TSeedDSL, VBIDashboardBuilder<TQueryDSL, TSeedDSL>>(
       doc,
       this.dsl,

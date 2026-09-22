@@ -1,0 +1,30 @@
+.vbi-dashboard-theme-select {
+  width: 40px;
+  flex-shrink: 0;
+}
+.vbi-dashboard-theme-dot {
+  display: block;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  border-radius: 50%;
+}
+.vbi-dashboard-theme-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.vbi-dashboard-theme-swatches {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  height: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(128, 128, 128, 0.25);
+  border-radius: 5px;
+}
+.vbi-dashboard-theme-swatches > span {
+  flex: 1;
+  min-width: 0;
+}

@@ -1,6 +1,6 @@
 {
   "extends": ["./tsconfig.json", "../../tsconfig.test.json"],
-  "include": ["src", "tests/**/*", "tests/**/*.json"],
+  "include": ["src", "src/**/*.json", "tests/**/*", "tests/**/*.json"],
   "compilerOptions": {
     "rootDir": ".",
     "types": ["@rstest/core/globals", "@testing-library/jest-dom"],

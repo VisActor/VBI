@@ -1,0 +1,34 @@
+{
+  "builder": "dashboard",
+  "name": "brand-dashboard-theme",
+  "description": "复用 VSeed token 注册品牌主题，统一图表色板、文字、背景和卡片样式；主题切换不修改引用的图表资源。",
+  "priority": 3,
+  "tags": ["theme"],
+  "preview": {
+    "themes": {
+      "retail-emerald": {
+        "tokens": {
+          "baseTheme": "dark",
+          "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "colorScheme": ["#34d399", "#38bdf8", "#fbbf24", "#a78bfa"],
+          "linearColorScheme": ["#123b32", "#34d399"],
+          "textPrimary": "#edfdf5",
+          "textSecondary": "#a4c7ba",
+          "borderColor": "#315448",
+          "surfaceColor": "#102b22",
+          "surfaceBackgroundColor": "#091a14",
+          "accentColor": "#34d399",
+          "tooltipBackgroundColor": "#15382c"
+        },
+        "dashboard": {
+          "widgetBorderRadius": 12,
+          "toolbarBackground": "#102b22",
+          "padding": 20,
+          "gap": 16
+        },
+        "label": "零售翡翠"
+      }
+    }
+  },
+  "code": "const chartBuilder = LocalVBI.chart.create(LocalVBI.chart.createEmpty('demoSupermarket'))\nchartBuilder.chartType.changeChartType('column')\nchartBuilder.dimensions.add('product_type', node => node.setAlias('商品品类'))\nchartBuilder.measures.add('sales', node => node.setAlias('销售额').setAggregate({ func: 'sum' }))\n\nconst insightBuilder = LocalVBI.insight.create(LocalVBI.insight.createEmpty())\ninsightBuilder.setContent('按品类比较销售贡献，结合利润质量制定下一步经营计划。')\n\nconst dashboardBuilder = LocalVBI.dashboard.create({\n  ...LocalVBI.dashboard.createEmpty(),\n  meta: { title: '翡翠绿经营看板', description: '品类表现 / 销售贡献与经营观察' },\n})\ndashboardBuilder.theme.setTheme('retail-emerald')\n\ndashboardBuilder.chart.add(widget => widget\n  .setChart(chartBuilder)\n  .setTitle('品类销售额')\n  .setLayouts({ lg: { x: 0, y: 0, w: 8, h: 5 }, md: { x: 0, y: 0, w: 6, h: 5 } }))\ndashboardBuilder.insight.add(widget => widget\n  .setInsightId(insightBuilder)\n  .setTitle('经营观察')\n  .setLayouts({ lg: { x: 8, y: 0, w: 4, h: 5 }, md: { x: 0, y: 5, w: 6, h: 3 } }))"
+}

@@ -9,5 +9,20 @@
   "fullscreenError": "Không thể chuyển chế độ toàn màn hình. Vui lòng thử lại.",
   "editChart": "Chỉnh sửa biểu đồ: {{title}}",
   "untitledChart": "Biểu đồ chưa có tiêu đề",
-  "backToDashboard": "Quay lại bảng điều khiển"
+  "backToDashboard": "Quay lại bảng điều khiển",
+  "dashboardTheme": "Giao diện bảng điều khiển",
+  "themeLight": "Sáng",
+  "themeDark": "Tối",
+  "themeVolcanoBlue": "Xanh núi lửa",
+  "themeClean": "Pastel tươi",
+  "themeOutskirts": "Ngoại ô",
+  "themeBlueOrange": "Xanh và cam ô tô",
+  "themeFinanceYellow": "Vàng tài chính",
+  "themeWenLvCyan": "Xanh ngọc du lịch",
+  "themeElectricGreen": "Xanh điện lực",
+  "themeECommercePurple": "Tím thương mại điện tử",
+  "themeRedBlue": "Đỏ và xanh",
+  "themePartyRed": "Đỏ xây dựng Đảng",
+  "themeGroupLight": "Sáng",
+  "themeGroupDark": "Tối"
 }

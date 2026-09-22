@@ -1,5 +1,5 @@
 import { rs } from '@rstest/core'
-import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
+import { createVBI } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 const MOCK_SYSTEM_TIME = new Date('2026-03-23T00:00:00.000Z')
@@ -83,7 +83,7 @@ describe('Dashboard', () => {
     )
     topCustomers.limit.setLimit(6)
 
-    const builder = LocalVBI.dashboard.create({
+    const dashboardBuilder = LocalVBI.dashboard.create({
       ...LocalVBI.dashboard.createEmpty(),
       // 断点基于仪表盘内容宽度；400px 起让文档预览也能并排展示卡片。
       breakpoints: { xxl: 1600, xl: 1200, lg: 960, md: 640, sm: 400, xs: 0 },
@@ -93,159 +93,156 @@ describe('Dashboard', () => {
       },
     })
 
-    const applyBuilder = async (builder: VBIDashboardBuilder) => {
-      // 摘要也来自真实查询，通过 Insight Builder 保存显示文本。
-      const summary = await totals.buildVSeed()
-      const readTotal = (field: string) => {
-        const id = totals.measures.find((node) => node.getField() === field)?.getId()
-        return id ? Number(summary.dataset[0]?.[id] ?? 0) : 0
-      }
-      const sales = readTotal('sales')
-      const profit = readTotal('profit')
-      salesSummary.setContent(
-        [
-          `销售额  ¥${(sales / 10000).toFixed(2)} 万`,
-          `利润  ¥${(profit / 10000).toFixed(2)} 万`,
-          `利润率  ${sales ? ((profit / sales) * 100).toFixed(1) : '0.0'}%`,
-        ].join('\n\n'),
-      )
-      customerSummary.setContent(
-        [
-          `订单  ${readTotal('order_id').toFixed(0)} 单`,
-          `客户  ${readTotal('customer_id').toFixed(0)} 位`,
-          `销量  ${readTotal('amount').toFixed(0)} 件`,
-        ].join('\n\n'),
-      )
-
-      builder.insight.add((widget) => {
-        widget
-          .setInsightId(salesSummary)
-          .setTitle('经营快照')
-          .setDescription('全量销售与利润')
-          .setLayouts({
-            lg: { x: 0, y: 0, w: 3, h: 4 },
-            md: { x: 0, y: 0, w: 3, h: 3 },
-            sm: { x: 0, y: 0, w: 2, h: 3 },
-            xs: { x: 0, y: 0, w: 2, h: 3 },
-          })
-      })
-
-      builder.insight.add((widget) => {
-        widget
-          .setInsightId(customerSummary)
-          .setTitle('客户与订单')
-          .setDescription('去重客户与订单统计')
-          .setLayouts({
-            lg: { x: 3, y: 0, w: 3, h: 4 },
-            md: { x: 3, y: 0, w: 3, h: 3 },
-            sm: { x: 2, y: 0, w: 2, h: 3 },
-            xs: { x: 0, y: 3, w: 2, h: 3 },
-          })
-      })
-
-      builder.chart.add((widget) => {
-        widget
-          .setChart(categoryShare)
-          .setTitle('品类销售占比')
-          .setLayouts({
-            lg: { x: 6, y: 0, w: 3, h: 4 },
-            md: { x: 0, y: 3, w: 3, h: 4 },
-            sm: { x: 0, y: 3, w: 4, h: 4 },
-            xs: { x: 0, y: 6, w: 2, h: 4 },
-          })
-      })
-
-      builder.chart.add((widget) => {
-        widget
-          .setChart(customerShare)
-          .setTitle('客群销售占比')
-          .setLayouts({
-            lg: { x: 9, y: 0, w: 3, h: 4 },
-            md: { x: 3, y: 3, w: 3, h: 4 },
-            sm: { x: 0, y: 7, w: 4, h: 4 },
-            xs: { x: 0, y: 10, w: 2, h: 4 },
-          })
-      })
-
-      builder.chart.add((widget) => {
-        widget
-          .setChart(monthlyTrend)
-          .setTitle('销售与利润趋势')
-          .setDescription('月度双轴对比 · 最早 12 个月')
-          .setLayouts({
-            lg: { x: 0, y: 4, w: 8, h: 5 },
-            md: { x: 0, y: 7, w: 6, h: 5 },
-            sm: { x: 0, y: 11, w: 4, h: 5 },
-            xs: { x: 0, y: 14, w: 2, h: 5 },
-          })
-      })
-
-      builder.chart.add((widget) => {
-        widget
-          .setChart(provinceRanking)
-          .setTitle('省份销售 TOP 6')
-          .setDescription('按销售额降序排列')
-          .setLayouts({
-            lg: { x: 8, y: 4, w: 4, h: 5 },
-            md: { x: 0, y: 12, w: 3, h: 5 },
-            sm: { x: 0, y: 16, w: 4, h: 5 },
-            xs: { x: 0, y: 19, w: 2, h: 5 },
-          })
-      })
-
-      builder.chart.add((widget) => {
-        widget
-          .setChart(categoryProfit)
-          .setTitle('品类利润')
-          .setLayouts({
-            lg: { x: 0, y: 9, w: 4, h: 5 },
-            md: { x: 3, y: 12, w: 3, h: 5 },
-            sm: { x: 0, y: 21, w: 4, h: 5 },
-            xs: { x: 0, y: 24, w: 2, h: 5 },
-          })
-      })
-
-      builder.chart.add((widget) => {
-        widget
-          .setChart(deliveryOrders)
-          .setTitle('配送订单分布')
-          .setLayouts({
-            lg: { x: 4, y: 9, w: 4, h: 5 },
-            md: { x: 0, y: 17, w: 3, h: 5 },
-            sm: { x: 0, y: 26, w: 4, h: 5 },
-            xs: { x: 0, y: 29, w: 2, h: 5 },
-          })
-      })
-
-      builder.chart.add((widget) => {
-        widget
-          .setChart(topCustomers)
-          .setTitle('重点客户 TOP 6')
-          .setDescription('销售额与利润明细')
-          .setLayouts({
-            lg: { x: 8, y: 9, w: 4, h: 5 },
-            md: { x: 3, y: 17, w: 3, h: 5 },
-            sm: { x: 0, y: 31, w: 4, h: 5 },
-            xs: { x: 0, y: 34, w: 2, h: 5 },
-          })
-      })
-
-      builder.insight.add((widget) => {
-        widget
-          .setInsightId(actions)
-          .setTitle('经营观察与行动')
-          .setDescription('结合趋势、结构与明细制定下一步计划')
-          .setLayouts({
-            lg: { x: 0, y: 14, w: 12, h: 3 },
-            md: { x: 0, y: 22, w: 6, h: 4 },
-            sm: { x: 0, y: 36, w: 4, h: 4 },
-            xs: { x: 0, y: 39, w: 2, h: 4 },
-          })
-      })
+    // 摘要也来自真实查询，通过 Insight Builder 保存显示文本。
+    const summary = await totals.buildVSeed()
+    const readTotal = (field: string) => {
+      const id = totals.measures.find((node) => node.getField() === field)?.getId()
+      return id ? Number(summary.dataset[0]?.[id] ?? 0) : 0
     }
-    await applyBuilder(builder)
+    const sales = readTotal('sales')
+    const profit = readTotal('profit')
+    salesSummary.setContent(
+      [
+        `销售额  ¥${(sales / 10000).toFixed(2)} 万`,
+        `利润  ¥${(profit / 10000).toFixed(2)} 万`,
+        `利润率  ${sales ? ((profit / sales) * 100).toFixed(1) : '0.0'}%`,
+      ].join('\n\n'),
+    )
+    customerSummary.setContent(
+      [
+        `订单  ${readTotal('order_id').toFixed(0)} 单`,
+        `客户  ${readTotal('customer_id').toFixed(0)} 位`,
+        `销量  ${readTotal('amount').toFixed(0)} 件`,
+      ].join('\n\n'),
+    )
 
-    const dashboardDSL = builder.build()
+    dashboardBuilder.insight.add((widget) => {
+      widget
+        .setInsightId(salesSummary)
+        .setTitle('经营快照')
+        .setDescription('全量销售与利润')
+        .setLayouts({
+          lg: { x: 0, y: 0, w: 3, h: 4 },
+          md: { x: 0, y: 0, w: 3, h: 3 },
+          sm: { x: 0, y: 0, w: 2, h: 3 },
+          xs: { x: 0, y: 0, w: 2, h: 3 },
+        })
+    })
+
+    dashboardBuilder.insight.add((widget) => {
+      widget
+        .setInsightId(customerSummary)
+        .setTitle('客户与订单')
+        .setDescription('去重客户与订单统计')
+        .setLayouts({
+          lg: { x: 3, y: 0, w: 3, h: 4 },
+          md: { x: 3, y: 0, w: 3, h: 3 },
+          sm: { x: 2, y: 0, w: 2, h: 3 },
+          xs: { x: 0, y: 3, w: 2, h: 3 },
+        })
+    })
+
+    dashboardBuilder.chart.add((widget) => {
+      widget
+        .setChart(categoryShare)
+        .setTitle('品类销售占比')
+        .setLayouts({
+          lg: { x: 6, y: 0, w: 3, h: 4 },
+          md: { x: 0, y: 3, w: 3, h: 4 },
+          sm: { x: 0, y: 3, w: 4, h: 4 },
+          xs: { x: 0, y: 6, w: 2, h: 4 },
+        })
+    })
+
+    dashboardBuilder.chart.add((widget) => {
+      widget
+        .setChart(customerShare)
+        .setTitle('客群销售占比')
+        .setLayouts({
+          lg: { x: 9, y: 0, w: 3, h: 4 },
+          md: { x: 3, y: 3, w: 3, h: 4 },
+          sm: { x: 0, y: 7, w: 4, h: 4 },
+          xs: { x: 0, y: 10, w: 2, h: 4 },
+        })
+    })
+
+    dashboardBuilder.chart.add((widget) => {
+      widget
+        .setChart(monthlyTrend)
+        .setTitle('销售与利润趋势')
+        .setDescription('月度双轴对比 · 最早 12 个月')
+        .setLayouts({
+          lg: { x: 0, y: 4, w: 8, h: 5 },
+          md: { x: 0, y: 7, w: 6, h: 5 },
+          sm: { x: 0, y: 11, w: 4, h: 5 },
+          xs: { x: 0, y: 14, w: 2, h: 5 },
+        })
+    })
+
+    dashboardBuilder.chart.add((widget) => {
+      widget
+        .setChart(provinceRanking)
+        .setTitle('省份销售 TOP 6')
+        .setDescription('按销售额降序排列')
+        .setLayouts({
+          lg: { x: 8, y: 4, w: 4, h: 5 },
+          md: { x: 0, y: 12, w: 3, h: 5 },
+          sm: { x: 0, y: 16, w: 4, h: 5 },
+          xs: { x: 0, y: 19, w: 2, h: 5 },
+        })
+    })
+
+    dashboardBuilder.chart.add((widget) => {
+      widget
+        .setChart(categoryProfit)
+        .setTitle('品类利润')
+        .setLayouts({
+          lg: { x: 0, y: 9, w: 4, h: 5 },
+          md: { x: 3, y: 12, w: 3, h: 5 },
+          sm: { x: 0, y: 21, w: 4, h: 5 },
+          xs: { x: 0, y: 24, w: 2, h: 5 },
+        })
+    })
+
+    dashboardBuilder.chart.add((widget) => {
+      widget
+        .setChart(deliveryOrders)
+        .setTitle('配送订单分布')
+        .setLayouts({
+          lg: { x: 4, y: 9, w: 4, h: 5 },
+          md: { x: 0, y: 17, w: 3, h: 5 },
+          sm: { x: 0, y: 26, w: 4, h: 5 },
+          xs: { x: 0, y: 29, w: 2, h: 5 },
+        })
+    })
+
+    dashboardBuilder.chart.add((widget) => {
+      widget
+        .setChart(topCustomers)
+        .setTitle('重点客户 TOP 6')
+        .setDescription('销售额与利润明细')
+        .setLayouts({
+          lg: { x: 8, y: 9, w: 4, h: 5 },
+          md: { x: 3, y: 17, w: 3, h: 5 },
+          sm: { x: 0, y: 31, w: 4, h: 5 },
+          xs: { x: 0, y: 34, w: 2, h: 5 },
+        })
+    })
+
+    dashboardBuilder.insight.add((widget) => {
+      widget
+        .setInsightId(actions)
+        .setTitle('经营观察与行动')
+        .setDescription('结合趋势、结构与明细制定下一步计划')
+        .setLayouts({
+          lg: { x: 0, y: 14, w: 12, h: 3 },
+          md: { x: 0, y: 22, w: 6, h: 4 },
+          sm: { x: 0, y: 36, w: 4, h: 4 },
+          xs: { x: 0, y: 39, w: 2, h: 4 },
+        })
+    })
+
+    const dashboardDSL = dashboardBuilder.build()
     expect(dashboardDSL).toMatchInlineSnapshot(`
       {
         "breakpoints": {
@@ -689,36 +686,33 @@ describe('Dashboard', () => {
       insights: { salesInsight },
     }
 
-    const builder = LocalVBI.dashboard.create({
+    const dashboardBuilder = LocalVBI.dashboard.create({
       ...LocalVBI.dashboard.createEmpty(),
       meta: { title: '销售仪表盘' },
     })
 
-    const applyBuilder = (builder: VBIDashboardBuilder) => {
-      builder.chart.add((chart) => {
-        chart
-          .setChart(resources.charts.salesChart)
-          .setTitle('销售趋势')
-          .setDescription('按省份汇总销售额，展示前 8 项')
-          .setLayouts({
-            lg: { x: 0, y: 0, w: 8, h: 6 },
-            md: { x: 0, y: 0, w: 6, h: 5 },
-          })
-      })
+    dashboardBuilder.chart.add((chart) => {
+      chart
+        .setChart(resources.charts.salesChart)
+        .setTitle('销售趋势')
+        .setDescription('按省份汇总销售额，展示前 8 项')
+        .setLayouts({
+          lg: { x: 0, y: 0, w: 8, h: 6 },
+          md: { x: 0, y: 0, w: 6, h: 5 },
+        })
+    })
 
-      builder.insight.add((insight) => {
-        insight
-          .setInsightId(resources.insights.salesInsight)
-          .setTitle('关键洞察')
-          .setLayouts({
-            lg: { x: 8, y: 0, w: 4, h: 6 },
-            md: { x: 0, y: 5, w: 6, h: 3 },
-          })
-      })
-    }
-    await applyBuilder(builder)
+    dashboardBuilder.insight.add((insight) => {
+      insight
+        .setInsightId(resources.insights.salesInsight)
+        .setTitle('关键洞察')
+        .setLayouts({
+          lg: { x: 8, y: 0, w: 4, h: 6 },
+          md: { x: 0, y: 5, w: 6, h: 3 },
+        })
+    })
 
-    const dashboardDSL = builder.build()
+    const dashboardDSL = dashboardBuilder.build()
     expect(dashboardDSL).toMatchInlineSnapshot(`
       {
         "breakpoints": {
@@ -825,51 +819,48 @@ describe('Dashboard', () => {
       insights: { opsInsight },
     }
 
-    const builder = LocalVBI.dashboard.create({
+    const dashboardBuilder = LocalVBI.dashboard.create({
       ...LocalVBI.dashboard.createEmpty(),
       meta: { title: '经营看板' },
     })
 
-    const applyBuilder = (builder: VBIDashboardBuilder) => {
-      builder.chart.add((chart) => {
-        chart
-          .setChart(resources.charts.salesChart)
-          .setTitle('区域销售')
-          .setDescription('按省份汇总销售额，展示前 8 项')
-          .setLayouts({
-            lg: { x: 0, y: 0, w: 7, h: 5 },
-            md: { x: 0, y: 0, w: 6, h: 4 },
-            sm: { x: 0, y: 0, w: 4, h: 4 },
-          })
-      })
+    dashboardBuilder.chart.add((chart) => {
+      chart
+        .setChart(resources.charts.salesChart)
+        .setTitle('区域销售')
+        .setDescription('按省份汇总销售额，展示前 8 项')
+        .setLayouts({
+          lg: { x: 0, y: 0, w: 7, h: 5 },
+          md: { x: 0, y: 0, w: 6, h: 4 },
+          sm: { x: 0, y: 0, w: 4, h: 4 },
+        })
+    })
 
-      builder.chart.add((chart) => {
-        chart
-          .setChart(resources.charts.profitChart)
-          .setTitle('利润趋势')
-          .setDescription('按月份汇总利润，展示前 8 个月')
-          .setLayouts({
-            lg: { x: 7, y: 0, w: 5, h: 5 },
-            md: { x: 0, y: 4, w: 6, h: 4 },
-            sm: { x: 0, y: 4, w: 4, h: 4 },
-          })
-      })
+    dashboardBuilder.chart.add((chart) => {
+      chart
+        .setChart(resources.charts.profitChart)
+        .setTitle('利润趋势')
+        .setDescription('按月份汇总利润，展示前 8 个月')
+        .setLayouts({
+          lg: { x: 7, y: 0, w: 5, h: 5 },
+          md: { x: 0, y: 4, w: 6, h: 4 },
+          sm: { x: 0, y: 4, w: 4, h: 4 },
+        })
+    })
 
-      builder.insight.add((insight) => {
-        insight
-          .setInsightId(resources.insights.opsInsight)
-          .setTitle('经营洞察')
-          .setDescription('销售与利润联动说明')
-          .setLayouts({
-            lg: { x: 0, y: 5, w: 12, h: 3 },
-            md: { x: 0, y: 8, w: 6, h: 3 },
-            sm: { x: 0, y: 8, w: 4, h: 3 },
-          })
-      })
-    }
-    await applyBuilder(builder)
+    dashboardBuilder.insight.add((insight) => {
+      insight
+        .setInsightId(resources.insights.opsInsight)
+        .setTitle('经营洞察')
+        .setDescription('销售与利润联动说明')
+        .setLayouts({
+          lg: { x: 0, y: 5, w: 12, h: 3 },
+          md: { x: 0, y: 8, w: 6, h: 3 },
+          sm: { x: 0, y: 8, w: 4, h: 3 },
+        })
+    })
 
-    const dashboardDSL = builder.build()
+    const dashboardDSL = dashboardBuilder.build()
     expect(dashboardDSL).toMatchInlineSnapshot(`
       {
         "breakpoints": {
@@ -1006,36 +997,33 @@ describe('Dashboard', () => {
       insights: { retainedInsight },
     }
 
-    const builder = LocalVBI.dashboard.create({
+    const dashboardBuilder = LocalVBI.dashboard.create({
       ...LocalVBI.dashboard.createEmpty(),
       meta: { title: '组件更新与移除' },
     })
 
-    const applyBuilder = (builder: VBIDashboardBuilder) => {
-      builder.chart.add((chart) => {
-        chart.setTitle('临时图表').setLayouts({ lg: { x: 0, y: 0, w: 6, h: 4 } })
-      })
-      builder.insight.add((insight) => {
-        insight
-          .setInsightId(resources.insights.retainedInsight)
-          .setTitle('保留洞察')
-          .setLayouts({ lg: { x: 6, y: 0, w: 6, h: 4 } })
-      })
+    dashboardBuilder.chart.add((chart) => {
+      chart.setTitle('临时图表').setLayouts({ lg: { x: 0, y: 0, w: 6, h: 4 } })
+    })
+    dashboardBuilder.insight.add((insight) => {
+      insight
+        .setInsightId(resources.insights.retainedInsight)
+        .setTitle('保留洞察')
+        .setLayouts({ lg: { x: 6, y: 0, w: 6, h: 4 } })
+    })
 
-      const [chartWidget] = builder.chart.toJSON()
-      const [insightWidget] = builder.insight.toJSON()
+    const [chartWidget] = dashboardBuilder.chart.toJSON()
+    const [insightWidget] = dashboardBuilder.insight.toJSON()
 
-      builder.chart.update(chartWidget.id, (chart) => {
-        chart.setDescription('更新后移除').setLayouts({ lg: { x: 0, y: 1, w: 5, h: 3 } })
-      })
-      builder.insight.update(insightWidget.id, (insight) => {
-        insight.setDescription('仪表盘保留的洞察说明')
-      })
-      builder.chart.remove(chartWidget.id)
-    }
-    await applyBuilder(builder)
+    dashboardBuilder.chart.update(chartWidget.id, (chart) => {
+      chart.setDescription('更新后移除').setLayouts({ lg: { x: 0, y: 1, w: 5, h: 3 } })
+    })
+    dashboardBuilder.insight.update(insightWidget.id, (insight) => {
+      insight.setDescription('仪表盘保留的洞察说明')
+    })
+    dashboardBuilder.chart.remove(chartWidget.id)
 
-    const dashboardDSL = builder.build()
+    const dashboardDSL = dashboardBuilder.build()
     expect(dashboardDSL).toMatchInlineSnapshot(`
       {
         "breakpoints": {
