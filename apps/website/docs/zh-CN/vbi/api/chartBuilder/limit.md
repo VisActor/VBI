@@ -46,8 +46,10 @@ observe(callback: ObserveCallback): () => void
 **定义**:
 
 ```typescript
-setLimit(limit: number)
+setLimit(limit: number): void
 ```
+
+**返回**: `void`
 
 **参数**:
 

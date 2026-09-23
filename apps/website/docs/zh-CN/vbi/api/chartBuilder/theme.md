@@ -46,8 +46,10 @@ observe(callback: ObserveCallback): () => void
 **定义**:
 
 ```typescript
-setTheme(theme: string)
+setTheme(theme: string): void
 ```
+
+**返回**: `void`
 
 **参数**:
 

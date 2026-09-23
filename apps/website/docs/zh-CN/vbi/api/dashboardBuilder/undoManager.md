@@ -165,3 +165,16 @@ destroy(): void
 ```
 
 **返回**: `void`
+
+---
+
+# UndoManagerOptions
+
+撤销历史选项。只记录本地事务；默认追踪 origin 为 null 的事务。
+
+## 属性
+
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| **captureTimeout?** | `number` | 合并相邻操作的时间窗口（毫秒）；0 表示每个事务独立成一步。 |
+| **trackedOrigins?** | `Set<unknown>` | 需要记录的本地事务来源，可包含 origin 对象或其构造函数。 |

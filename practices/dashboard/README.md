@@ -44,13 +44,15 @@ Supported locales: `zh-CN`, `en-US`, `ja-JP`, `de-DE`, `id-ID`, `fr-FR`, `ko-KR`
 
 ## Toolbar composition
 
-Pass `toolbar={null}` to hide the toolbar, or supply any React node to replace it. `DashboardToolbar` provides the themed layout; its default children are `DashboardEditToggle`, `DashboardThemePicker` and `DashboardFullscreenButton`. Supplying children lets you select, reorder or extend those controls without changing the renderer:
+Pass `toolbar={null}` to hide the toolbar, or supply any React node to replace it. `DashboardToolbar` provides the themed layout; its default children are `DashboardEditToggle`, `DashboardUndoButton`, `DashboardRedoButton`, `DashboardThemePicker` and `DashboardFullscreenButton`. Supplying children lets you select, reorder or extend those controls without changing the renderer:
 
 ```tsx
 import {
   DashboardRenderer,
   DashboardToolbar,
   DashboardEditToggle,
+  DashboardUndoButton,
+  DashboardRedoButton,
   DashboardThemePicker,
   DashboardFullscreenButton,
   useDashboard,
@@ -71,6 +73,8 @@ function ResetThemeButton() {
   toolbar={
     <DashboardToolbar>
       <DashboardEditToggle />
+      <DashboardUndoButton />
+      <DashboardRedoButton />
       <ResetThemeButton />
       <DashboardThemePicker />
       <DashboardFullscreenButton />
@@ -79,9 +83,15 @@ function ResetThemeButton() {
 />
 ```
 
-Toolbar controls and `useDashboard()` run inside `DashboardRenderer`. The hook exposes locale, resolved theme, mode, effective editing state, editing/theme callbacks and the dashboard container ref. Each dashboard has its own context. `editing` is false in view mode; `onThemeChange` is absent when a host-controlled theme is read-only. Custom controls should respect those capabilities. Document operations use the host's Builder; the context does not expose the DSL or add another state store.
+Toolbar controls and `useDashboard()` run inside `DashboardRenderer`. The hook exposes locale, resolved theme, mode, effective editing state, the Builder's `undoManager`, editing/theme callbacks and the dashboard container ref. Each dashboard has its own context. `editing` is false in view mode; `onThemeChange` is absent when a host-controlled theme is read-only. Custom controls should respect those capabilities. Document operations use the host's Builder; the context does not expose the DSL or add another state store.
+
+Undo and redo operate on `dashboardBuilder.undoManager`, including widget, layout and saved theme changes. The buttons are hidden in view mode and disabled while editing is off or their history stack is empty. They subscribe to history events, so programmatic undo/redo and `clear()` update availability even without a document change. Subscriptions follow Builder replacement and are released when controls unmount. Labels and tooltips follow the dashboard locale.
+
+Dashboard history records local Yjs transactions; remote updates and edits inside separately referenced chart/insight documents do not enter this history. Use the referenced resource's own history for its content edits. `dashboardBuilder.transact()` groups related dashboard changes into one undo step. A host-controlled theme override is not part of Dashboard history unless the host writes it through the Builder.
 
 Fullscreen state, errors and browser listeners belong to `DashboardFullscreenButton`. Omitting that control avoids its listeners; removing it exits any fullscreen session it owns. The grid and chart editor work independently of which toolbar controls are present.
+
+The default toolbar follows Standard's compact presentation: a flat themed surface, small outlined buttons with 12px icons, 6px spacing within groups and thin vertical dividers. Editing and the joined undo/redo buttons sit on the left; the theme picker and fullscreen button sit on the right. Narrow containers scroll the toolbar horizontally. Tooltips and theme menus stay inside the dashboard so they remain visible in fullscreen.
 
 ## Themes
 
@@ -177,7 +187,7 @@ return chartBuilder ? (
 
 ## Editing and fullscreen
 
-Every dashboard has a rounded toolbar with a fullscreen toggle. Fullscreen measures the expanded container and reflows the existing responsive layout. Escape exits browser fullscreen; failed fullscreen requests display a localized, retryable message.
+Every dashboard has a compact toolbar with a fullscreen toggle. Fullscreen measures the expanded container and reflows the existing responsive layout. Escape exits browser fullscreen; failed fullscreen requests display a localized, retryable message.
 
 `mode="view"` is read-only. `mode="edit"` adds an **Enable editing** switch, initially on, and an edit button in each resolved chart card. Clicking that button opens a viewport-sized editor using Standard's public `mode="edit"` interface and the same chart builder. Changes apply immediately; closing the editor returns to the updated dashboard. The editor closes when its widget is removed, its resource or dashboard builder is replaced, or editing is disabled. This is chart editing, not dashboard layout editing.
 

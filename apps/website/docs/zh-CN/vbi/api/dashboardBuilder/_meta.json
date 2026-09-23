@@ -1,6 +1,11 @@
 [
   {
     "type": "file",
+    "name": "undoManager",
+    "label": "dashboardBuilder.undoManager"
+  },
+  {
+    "type": "file",
     "name": "theme",
     "label": "dashboardBuilder.theme"
   },

@@ -693,6 +693,67 @@ export default () => {
 }
 ```
 
+## undo-redo-dashboard
+
+仪表盘组件、响应式布局与主题按事务一起撤销和重做，引用的洞察内容独立保存。
+
+
+> 标签: `undoManager` `yjs`
+
+
+```tsx preview
+import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
+import { DashboardRenderer, type DashboardRendererProps } from 'dashboard'
+import { useLang } from '@rspress/core/runtime'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [dashboardBuilder, setDashboardBuilder] = useState<VBIDashboardBuilder | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const locale = useLang() as DashboardRendererProps['locale']
+
+  useEffect(() => {
+    let cancelled = false
+    const run = async () => {
+      try {
+        const LocalVBI = createVBI()
+        const insightBuilder = LocalVBI.insight.create(LocalVBI.insight.createEmpty())
+        insightBuilder.setContent('撤销删除操作后，组件和所有断点布局一起恢复。')
+        const dashboardBuilder = LocalVBI.dashboard.create({
+          ...LocalVBI.dashboard.createEmpty(),
+          meta: { title: '仪表盘撤销与重做' },
+        })
+        dashboardBuilder.transact(() => {
+          dashboardBuilder.theme.setTheme('dark')
+          dashboardBuilder.insight.add(widget => widget
+            .setInsightId(insightBuilder)
+            .setTitle('可恢复的经营洞察')
+            .setLayouts({ lg: { x: 0, y: 0, w: 8, h: 4 }, md: { x: 0, y: 0, w: 6, h: 4 } }))
+        })
+        if (!dashboardBuilder.undoManager.undo() || !dashboardBuilder.isEmpty()) {
+          throw new Error('撤销必须同时还原组件与布局')
+        }
+        if (!dashboardBuilder.undoManager.redo()) throw new Error('重做失败')
+        const [widget] = dashboardBuilder.insight.toJSON()
+        dashboardBuilder.insight.remove(widget.id)
+        dashboardBuilder.undoManager.undo()
+
+        if (!cancelled) setDashboardBuilder(dashboardBuilder)
+      } catch (err) {
+        if (!cancelled) setError(err instanceof Error ? err.message : String(err))
+      }
+    }
+    void run()
+    return () => { cancelled = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (!dashboardBuilder) return <div role='status'>Loading...</div>
+
+  return <DashboardRenderer builder={dashboardBuilder} mode='edit' locale={locale} />
+}
+```
+
 ## executive-dashboard-widget-lifecycle
 
 经营看板先校验组件布局，再组合销售图表与经营洞察，并在调整布局后同步到协作副本

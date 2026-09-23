@@ -148,8 +148,10 @@ find(predicate: (entry: HavingFilterNodeBuilder | HavingGroupBuilder, index: num
 **定义**:
 
 ```typescript
-clear()
+clear(): this
 ```
+
+**返回**: `this`
 
 ### toJSON
 

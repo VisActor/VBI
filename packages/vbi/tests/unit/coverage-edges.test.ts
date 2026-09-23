@@ -280,7 +280,7 @@ describe('unit/coverage edges', () => {
     mergeWidgetLayoutsIntoDSL(dsl, 'widget', { lg: { x: 0, y: 0, w: 1, h: 1 } })
     dsl.set('layout', new Y.Map())
     mergeWidgetLayoutsIntoDSL(dsl, 'widget', { lg: { x: 0, y: 0, w: 1, h: 1 }, md: undefined })
-    expect(dsl.get('layout')).toMatchObject({ lg: [{ widgetId: 'widget' }] })
+    expect((dsl.get('layout') as Y.Map<any>).toJSON()).toMatchObject({ lg: [{ widgetId: 'widget' }] })
 
     const widgetMap = attach(new Y.Map<any>())
     widgetMap.set('id', 'widget')

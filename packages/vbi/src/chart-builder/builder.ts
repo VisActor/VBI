@@ -46,6 +46,7 @@ export class VBIChartBuilder<
   public theme: ThemeBuilder
   public locale: LocaleBuilder
   public limit: LimitBuilder
+  /** @description 图表撤销历史，每个 Yjs 事务独立成一步；连续 add / update 不按时间合并，doc.transact 可显式合并多个修改。 */
   public undoManager: UndoManager
 
   constructor(doc: Y.Doc, options?: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>, dsl?: Y.Map<any>) {
@@ -57,7 +58,7 @@ export class VBIChartBuilder<
       ensureResourceUUID(this.dsl)
     })
 
-    this.undoManager = new UndoManager(this.dsl)
+    this.undoManager = new UndoManager(this.dsl, { captureTimeout: 0 })
     this.chartType = new ChartTypeBuilder(doc, this.dsl)
     this.measures = new MeasuresBuilder(doc, this.dsl)
     this.dimensions = new DimensionsBuilder(doc, this.dsl)

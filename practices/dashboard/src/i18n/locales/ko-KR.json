@@ -24,5 +24,7 @@
   "themeRedBlue": "레드와 블루",
   "themePartyRed": "당 건설 레드",
   "themeGroupLight": "밝은 테마",
-  "themeGroupDark": "어두운 테마"
+  "themeGroupDark": "어두운 테마",
+  "undo": "실행 취소",
+  "redo": "다시 실행"
 }

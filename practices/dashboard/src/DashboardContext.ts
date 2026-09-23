@@ -1,7 +1,7 @@
 import { createContext, useContext, type RefObject } from 'react'
 import type { Locale } from '@visactor/vseed'
 import type { ResolvedDashboardTheme } from './theme'
-import type { VBIDashboardThemeOption } from '@visactor/vbi'
+import type { VBIDashboardBuilder, VBIDashboardThemeOption } from '@visactor/vbi'
 
 export interface DashboardContextValue {
   locale: Locale
@@ -9,6 +9,7 @@ export interface DashboardContextValue {
   themeOptions: VBIDashboardThemeOption[]
   mode: 'view' | 'edit'
   editing: boolean
+  undoManager: VBIDashboardBuilder['undoManager']
   onEditingChange: (enabled: boolean) => void
   onThemeChange?: (name: string) => void
   containerRef: RefObject<HTMLElement | null>
@@ -16,7 +17,7 @@ export interface DashboardContextValue {
 
 export const DashboardContext = createContext<DashboardContextValue | null>(null)
 
-/** Presentation state for dashboard controls; document changes still belong to Builder. */
+/** Dashboard presentation and Builder capabilities shared by toolbar controls. */
 export function useDashboard(): DashboardContextValue {
   const context = useContext(DashboardContext)
   if (!context) throw new Error('Dashboard controls must be rendered inside DashboardRenderer')

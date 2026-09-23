@@ -46,8 +46,10 @@ observe(callback: ObserveCallback): () => void
 **定义**:
 
 ```typescript
-changeChartType(chartType: string)
+changeChartType(chartType: string): void
 ```
+
+**返回**: `void`
 
 **参数**:
 
@@ -74,8 +76,10 @@ getChartType(): string
 **定义**:
 
 ```typescript
-getSupportedDimensionEncodings()
+getSupportedDimensionEncodings(): SupportedDimensionEncoding[]
 ```
+
+**返回**: `SupportedDimensionEncoding[]`
 
 ### getRecommendedDimensionEncodings
 
@@ -84,8 +88,10 @@ getSupportedDimensionEncodings()
 **定义**:
 
 ```typescript
-getRecommendedDimensionEncodings(dimensionCount?: number)
+getRecommendedDimensionEncodings(dimensionCount?: number): SupportedDimensionEncoding[]
 ```
+
+**返回**: `SupportedDimensionEncoding[]`
 
 **参数**:
 
@@ -100,8 +106,10 @@ getRecommendedDimensionEncodings(dimensionCount?: number)
 **定义**:
 
 ```typescript
-getSupportedMeasureEncodings()
+getSupportedMeasureEncodings(): SupportedMeasureEncoding[]
 ```
+
+**返回**: `SupportedMeasureEncoding[]`
 
 ### getRecommendedMeasureEncodings
 
@@ -110,8 +118,10 @@ getSupportedMeasureEncodings()
 **定义**:
 
 ```typescript
-getRecommendedMeasureEncodings(measureCount?: number)
+getRecommendedMeasureEncodings(measureCount?: number): SupportedMeasureEncoding[]
 ```
+
+**返回**: `SupportedMeasureEncoding[]`
 
 **参数**:
 

@@ -60,6 +60,7 @@ function DashboardContent({
         themeOptions,
         mode,
         editing: canEdit,
+        undoManager: builder.undoManager,
         onEditingChange: setEditing,
         onThemeChange,
         containerRef: root,

@@ -24,5 +24,7 @@
   "themeRedBlue": "Rot und Blau",
   "themePartyRed": "Parteirot",
   "themeGroupLight": "Hell",
-  "themeGroupDark": "Dunkel"
+  "themeGroupDark": "Dunkel",
+  "undo": "Rückgängig",
+  "redo": "Wiederholen"
 }

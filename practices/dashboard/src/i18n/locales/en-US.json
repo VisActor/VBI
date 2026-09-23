@@ -24,5 +24,7 @@
   "themeRedBlue": "Red & blue",
   "themePartyRed": "Party red",
   "themeGroupLight": "Light",
-  "themeGroupDark": "Dark"
+  "themeGroupDark": "Dark",
+  "undo": "Undo",
+  "redo": "Redo"
 }

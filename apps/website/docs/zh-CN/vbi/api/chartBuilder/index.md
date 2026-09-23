@@ -15,7 +15,7 @@
 | **theme** | `ThemeBuilder` | - |
 | **locale** | `LocaleBuilder` | - |
 | **limit** | `LimitBuilder` | - |
-| **undoManager** | `UndoManager` | - |
+| **undoManager** | `UndoManager` | 图表撤销历史，每个 Yjs 事务独立成一步；连续 add / update 不按时间合并，doc.transact 可显式合并多个修改。 |
 
 
 ## 方法
@@ -130,7 +130,7 @@ isEmpty(): boolean
 **定义**:
 
 ```typescript
-getSchema(): Promise<any>
+getSchema(): Promise<{ name: string; type: string; }[]>
 ```
 
-**返回**: `Promise<any>`
+**返回**: `Promise<{ name: string; type: string; }[]>`

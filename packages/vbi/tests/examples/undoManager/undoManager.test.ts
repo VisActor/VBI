@@ -50,13 +50,24 @@ describe('chart / UndoManager', () => {
       builder.measures.add('profit', (node) => {
         node.setAlias('利润').setEncoding('yAxis').setAggregate({ func: 'sum' })
       })
+      builder.limit.setLimit(5)
 
-      if (builder.undoManager.canUndo()) {
-        builder.undoManager.undo()
+      // 第一步只撤销 limit，新增的利润指标仍然存在。
+      builder.undoManager.undo()
+      if (builder.limit.getLimit() !== 10 || builder.measures.toJSON().length !== 2) {
+        throw new Error('Each chart transaction should be a separate undo step')
       }
 
-      if (builder.undoManager.canRedo()) {
-        builder.undoManager.redo()
+      // 第二步撤销整个 add，包括回调内的别名、编码和聚合配置。
+      builder.undoManager.undo()
+      if (builder.measures.toJSON().length !== 1) {
+        throw new Error('Undo should remove only the added measure')
+      }
+
+      builder.undoManager.redo()
+      builder.undoManager.redo()
+      if (builder.limit.getLimit() !== 5 || builder.measures.toJSON().length !== 2) {
+        throw new Error('Redo should restore each chart transaction')
       }
     }
     await applyBuilder(builder)
@@ -72,7 +83,7 @@ describe('chart / UndoManager', () => {
           "id": "root",
           "op": "and",
         },
-        "limit": 10,
+        "limit": 5,
         "locale": "zh-CN",
         "measures": [
           {
@@ -109,7 +120,7 @@ describe('chart / UndoManager', () => {
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
         "groupBy": [],
-        "limit": 10,
+        "limit": 5,
         "select": [
           {
             "aggr": {

@@ -31818,7 +31818,7 @@ function createVBI(defaultBuilderOptions) {
 		insight: createVBIInsightNamespace(resourceRegistry)
 	};
 }
-var MeasureNodeBuilder, id_id, getOrCreateMeasures, normalizeMeasureNodeIds, locateMeasureIndexById, MEASURE_ENCODING_SUPPORT, repeatEncoding, STRATEGY_BY_CHART_TYPE, DEFAULT_STRATEGY, getSupportedMeasureEncodingsForChartType, getRecommendedMeasureEncodingsForChartType, MeasuresBuilder, DimensionNodeBuilder, getOrCreateDimensions, normalizeDimensionNodeIds, locateDimensionIndexById, DIMENSION_ENCODING_SUPPORT, dimension_encoding_repeatEncoding, alternateEncoding, dimension_encoding_STRATEGY_BY_CHART_TYPE, dimension_encoding_DEFAULT_STRATEGY, getSupportedDimensionEncodingsForChartType, getRecommendedDimensionEncodingsForChartType, DimensionsBuilder, reapplyDimensionEncodings, reapplyMeasureEncodings, ChartTypeBuilder, WhereFilterNodeBuilder, WhereGroupBuilder, WhereFilterBuilder, HavingFilterNodeBuilder, HavingGroupBuilder, HavingFilterBuilder, ThemeBuilder, LocaleBuilder, LimitBuilder, UndoManager, VBI_TO_VQUERY_MEASURE_AGGR_FUNC_MAP, VBI_TO_VQUERY_DIMENSION_AGGR_FUNC_MAP, mapAggregateForVQuery, mapDimensionAggregateForVQuery, buildSelect, buildGroupBy, buildWhere, buildHaving, toOrderItem, buildOrderBy, buildLimit, buildVQuery, buildVQueryDSL, connectorMap, registerConnector, getConnector, buildVSeedDSL, defaultVBIChartBuilderAdapters, resolveVBIChartBuilderAdapters, applyUpdateToDoc, encodeDocStateAsUpdate, buildVBIChartDSL, getCollectionLength, isEmptyVBIChartDSL, getBuilderSchema, UUID_KEY, ensureResourceUUID, getResourceUUID, VBIChartBuilder, zVBIDashboardBreakpoint, zVBIDashboardBreakpoints, VBIDashboardDefaultBreakpoints, createEmptyDashboardLayout, createEmptyDashboard, createDashboardWidgetYMap, getOrCreateDashboardWidgets, locateDashboardWidgetIndexById, removeDashboardWidgetLayouts, resolveResourceReference, DashboardChartBuilder, mergeWidgetLayoutsIntoDSL, DashboardChartCollectionBuilder, insight_builder_resolveResourceReference, DashboardInsightBuilder, DashboardInsightCollectionBuilder, zVBIDashboardThemeDefinition, zVBIDashboardTheme, zVBIDashboardMeta, presetDashboardThemes, builtinThemes, registeredThemes, nextThemeId, DashboardThemeBuilder, zVBIDashboardItemLayout, zVBIDashboardLayout, zVBIDashboardBaseWidget, zVBIDashboardChartWidget, zVBIDashboardInsightWidget, zVBIDashboardWidget, zVBIDashboardDSL, buildVBIDashboardDSL, is_empty_getCollectionLength, isEmptyVBIDashboardDSL, VBIDashboardBuilder, zVBIInsightDSL, buildVBIInsightDSL, isEmptyVBIInsightDSL, VBIInsightBuilder, createEmptyChart, createEmptyInsight, shouldEnsureIdForObject, toYMap, ensureYArray, ensureHavingGroup, ensureWhereGroup, setBaseDSLFields, createChartBuilderFromVBIChartDSLInput, mergeChartBuilderOptions, createVBIChartNamespace, createVBIConnectorNamespace, createDashboardBuilderFromVBIDashboardDSLInput, mergeDashboardBuilderOptions, createVBIDashboardNamespace, createInsightBuilderFromVBIInsightDSLInput, createVBIInsightNamespace, zDimensionAggregate, zVBISortOrder, zVBISort, zVBIDimensionSchema, zVBIDimensionGroupSchema, zVBIDimensionTree, zSimpleAggregate, zQuantileAggregate, zAggregate, zHavingLogicalOperator, zVBIHavingFilter, zVBIHavingGroup, zVBIHavingClause, zVBIDSLLocale, zNumFormatObject, zVBIMeasureFormat, zVBIMeasure, zVBIMeasureGroup, zVBIMeasureTree, zVBIDSLTheme, zVBIWhereDateInput, zVBIWhereDatePeriod, zVBIWhereDatePredicate, zWhereLogicalOperator, zVBIWhereDateFilter, zVBIWhereScalarFilter, zVBIWhereFilter, zVBIWhereGroup, zVBIWhereClause, zVBIChartDSL, createVBIResourceNamespace, createResourceStore, createChartStore, createInsightStore, createVBIResourceRegistry, VBI;
+var MeasureNodeBuilder, id_id, getOrCreateMeasures, normalizeMeasureNodeIds, locateMeasureIndexById, MEASURE_ENCODING_SUPPORT, repeatEncoding, STRATEGY_BY_CHART_TYPE, DEFAULT_STRATEGY, getSupportedMeasureEncodingsForChartType, getRecommendedMeasureEncodingsForChartType, MeasuresBuilder, DimensionNodeBuilder, getOrCreateDimensions, normalizeDimensionNodeIds, locateDimensionIndexById, DIMENSION_ENCODING_SUPPORT, dimension_encoding_repeatEncoding, alternateEncoding, dimension_encoding_STRATEGY_BY_CHART_TYPE, dimension_encoding_DEFAULT_STRATEGY, getSupportedDimensionEncodingsForChartType, getRecommendedDimensionEncodingsForChartType, DimensionsBuilder, reapplyDimensionEncodings, reapplyMeasureEncodings, ChartTypeBuilder, WhereFilterNodeBuilder, WhereGroupBuilder, WhereFilterBuilder, HavingFilterNodeBuilder, HavingGroupBuilder, HavingFilterBuilder, ThemeBuilder, LocaleBuilder, LimitBuilder, UndoManager, VBI_TO_VQUERY_MEASURE_AGGR_FUNC_MAP, VBI_TO_VQUERY_DIMENSION_AGGR_FUNC_MAP, mapAggregateForVQuery, mapDimensionAggregateForVQuery, buildSelect, buildGroupBy, buildWhere, buildHaving, toOrderItem, buildOrderBy, buildLimit, buildVQuery, buildVQueryDSL, connectorMap, registerConnector, getConnector, buildVSeedDSL, defaultVBIChartBuilderAdapters, resolveVBIChartBuilderAdapters, applyUpdateToDoc, encodeDocStateAsUpdate, buildVBIChartDSL, getCollectionLength, isEmptyVBIChartDSL, getBuilderSchema, UUID_KEY, ensureResourceUUID, getResourceUUID, VBIChartBuilder, zVBIDashboardBreakpoint, zVBIDashboardBreakpoints, VBIDashboardDefaultBreakpoints, createEmptyDashboardLayout, createEmptyDashboard, createDashboardWidgetYMap, getOrCreateDashboardWidgets, locateDashboardWidgetIndexById, removeDashboardWidgetLayouts, ensureDashboardLayout, mergeWidgetLayoutsIntoDSL, resolveResourceReference, DashboardChartBuilder, DashboardChartCollectionBuilder, insight_builder_resolveResourceReference, DashboardInsightBuilder, DashboardInsightCollectionBuilder, zVBIDashboardThemeDefinition, zVBIDashboardTheme, zVBIDashboardMeta, presetDashboardThemes, builtinThemes, registeredThemes, nextThemeId, DashboardThemeBuilder, zVBIDashboardItemLayout, zVBIDashboardLayout, zVBIDashboardBaseWidget, zVBIDashboardChartWidget, zVBIDashboardInsightWidget, zVBIDashboardWidget, zVBIDashboardDSL, buildVBIDashboardDSL, is_empty_getCollectionLength, isEmptyVBIDashboardDSL, VBIDashboardBuilder, zVBIInsightDSL, buildVBIInsightDSL, isEmptyVBIInsightDSL, VBIInsightBuilder, createEmptyChart, createEmptyInsight, shouldEnsureIdForObject, toYMap, ensureYArray, ensureHavingGroup, ensureWhereGroup, setBaseDSLFields, createChartBuilderFromVBIChartDSLInput, mergeChartBuilderOptions, createVBIChartNamespace, createVBIConnectorNamespace, createDashboardBuilderFromVBIDashboardDSLInput, mergeDashboardBuilderOptions, createVBIDashboardNamespace, createInsightBuilderFromVBIInsightDSLInput, createVBIInsightNamespace, zDimensionAggregate, zVBISortOrder, zVBISort, zVBIDimensionSchema, zVBIDimensionGroupSchema, zVBIDimensionTree, zSimpleAggregate, zQuantileAggregate, zAggregate, zHavingLogicalOperator, zVBIHavingFilter, zVBIHavingGroup, zVBIHavingClause, zVBIDSLLocale, zNumFormatObject, zVBIMeasureFormat, zVBIMeasure, zVBIMeasureGroup, zVBIMeasureTree, zVBIDSLTheme, zVBIWhereDateInput, zVBIWhereDatePeriod, zVBIWhereDatePredicate, zWhereLogicalOperator, zVBIWhereDateFilter, zVBIWhereScalarFilter, zVBIWhereFilter, zVBIWhereGroup, zVBIWhereClause, zVBIChartDSL, createVBIResourceNamespace, createResourceStore, createChartStore, createInsightStore, createVBIResourceRegistry, VBI;
 var init_dist = __esmMin((() => {
 	init_dist$1();
 	init_esm();
@@ -33434,8 +33434,12 @@ var init_dist = __esmMin((() => {
 	};
 	UndoManager = class {
 		manager;
-		constructor(scope) {
-			this.manager = new UndoManager$1(scope);
+		constructor(scope, options = {}) {
+			this.manager = new UndoManager$1(scope, {
+				...options,
+				trackedOrigins: new Set(options.trackedOrigins ?? [null]),
+				captureTransaction: (transaction) => transaction.local
+			});
 		}
 		undo() {
 			return null !== this.manager.undo();
@@ -33451,6 +33455,30 @@ var init_dist = __esmMin((() => {
 		}
 		clear(clearUndoStack, clearRedoStack) {
 			this.manager.clear(clearUndoStack, clearRedoStack);
+		}
+		stopCapturing() {
+			this.manager.stopCapturing();
+		}
+		addTrackedOrigin(origin) {
+			this.manager.addTrackedOrigin(origin);
+		}
+		removeTrackedOrigin(origin) {
+			this.manager.removeTrackedOrigin(origin);
+		}
+		observe(callback) {
+			const events = [
+				"stack-item-added",
+				"stack-item-updated",
+				"stack-item-popped",
+				"stack-cleared"
+			];
+			for (const event of events) this.manager.on(event, callback);
+			return () => {
+				for (const event of events) this.manager.off(event, callback);
+			};
+		}
+		destroy() {
+			this.manager.destroy();
 		}
 	};
 	VBI_TO_VQUERY_MEASURE_AGGR_FUNC_MAP = {
@@ -33808,6 +33836,48 @@ var init_dist = __esmMin((() => {
 			if (changed) dsl.set("layout", plainLayout);
 		}
 	};
+	ensureDashboardLayout = (dsl) => {
+		const layout = dsl.get("layout");
+		if (layout instanceof YMap) return layout;
+		const result = new YMap();
+		for (const [breakpoint, items] of Object.entries(layout)) {
+			const array = new YArray();
+			for (const item of items ?? []) array.push([new YMap(Object.entries(item))]);
+			result.set(breakpoint, array);
+		}
+		dsl.set("layout", result);
+		return result;
+	};
+	mergeWidgetLayoutsIntoDSL = (dsl, widgetId, layouts) => {
+		const rootLayout = dsl.get("layout");
+		if (null == rootLayout || "object" != typeof rootLayout) return;
+		const layout = ensureDashboardLayout(dsl);
+		for (const [breakpoint, itemLayout] of Object.entries(layouts)) {
+			if (!itemLayout) continue;
+			let items = layout.get(breakpoint);
+			if (!items) {
+				items = new YArray();
+				layout.set(breakpoint, items);
+			}
+			const existing = items.toArray().find((item) => item.get("widgetId") === widgetId);
+			if (existing) for (const key of [
+				"x",
+				"y",
+				"w",
+				"h",
+				"static"
+			]) {
+				const value = itemLayout[key];
+				if (void 0 === value) existing.delete(key);
+				else if (existing.get(key) !== value) existing.set(key, value);
+			}
+			else items.push([new YMap(Object.entries({
+				id: id_id.uuid(),
+				widgetId,
+				...itemLayout
+			}))]);
+		}
+	};
 	resolveResourceReference = (value) => "string" == typeof value ? value : value.getUUID();
 	DashboardChartBuilder = class {
 		widget;
@@ -33846,26 +33916,6 @@ var init_dist = __esmMin((() => {
 			return this.widget.toJSON();
 		}
 	};
-	mergeWidgetLayoutsIntoDSL = (dsl, widgetId, layouts) => {
-		const rootLayout = dsl.get("layout");
-		if (null == rootLayout || "object" != typeof rootLayout) return;
-		const plainLayout = rootLayout instanceof YMap ? rootLayout.toJSON() : { ...rootLayout };
-		for (const [breakpoint, itemLayout] of Object.entries(layouts)) {
-			if (!itemLayout) continue;
-			const bp = breakpoint;
-			const items = Array.isArray(plainLayout[bp]) ? [...plainLayout[bp]] : [];
-			const existingIndex = items.findIndex((item) => item.widgetId === widgetId);
-			const layoutItem = {
-				id: id_id.uuid(),
-				widgetId,
-				...itemLayout
-			};
-			if (-1 !== existingIndex) items[existingIndex] = layoutItem;
-			else items.push(layoutItem);
-			plainLayout[bp] = items;
-		}
-		dsl.set("layout", plainLayout);
-	};
 	DashboardChartCollectionBuilder = class {
 		doc;
 		dsl;
@@ -33887,18 +33937,14 @@ var init_dist = __esmMin((() => {
 			const widgets = getOrCreateDashboardWidgets(this.dsl);
 			this.doc.transact(() => {
 				widgets.push([widgetMap]);
-			});
-			const builder = new DashboardChartBuilder(widgetMap, { getBuilder: (chartId) => this.dashboardBuilder.getChartBuilder(chartId) });
-			callback(builder);
-			const layouts = builder.getLayouts();
-			if (!layouts.lg) {
-				this.doc.transact(() => {
+				const builder = new DashboardChartBuilder(widgetMap, { getBuilder: (chartId) => this.dashboardBuilder.getChartBuilder(chartId) });
+				callback(builder);
+				const layouts = builder.getLayouts();
+				if (!layouts.lg) {
 					const index = locateDashboardWidgetIndexById(widgets, widgetId);
 					if (-1 !== index) widgets.delete(index, 1);
-				});
-				throw new Error("addChart requires layouts.lg to be set");
-			}
-			this.doc.transact(() => {
+					throw new Error("addChart requires layouts.lg to be set");
+				}
 				mergeWidgetLayoutsIntoDSL(this.dsl, widgetId, layouts);
 			});
 			return this.dashboardBuilder;
@@ -34003,18 +34049,14 @@ var init_dist = __esmMin((() => {
 			const widgets = getOrCreateDashboardWidgets(this.dsl);
 			this.doc.transact(() => {
 				widgets.push([widgetMap]);
-			});
-			const builder = new DashboardInsightBuilder(widgetMap, { getBuilder: (insightId) => this.dashboardBuilder.getInsightBuilder(insightId) });
-			callback(builder);
-			const layouts = builder.getLayouts();
-			if (!layouts.lg) {
-				this.doc.transact(() => {
+				const builder = new DashboardInsightBuilder(widgetMap, { getBuilder: (insightId) => this.dashboardBuilder.getInsightBuilder(insightId) });
+				callback(builder);
+				const layouts = builder.getLayouts();
+				if (!layouts.lg) {
 					const index = locateDashboardWidgetIndexById(widgets, widgetId);
 					if (-1 !== index) widgets.delete(index, 1);
-				});
-				throw new Error("addInsight requires layouts.lg to be set");
-			}
-			this.doc.transact(() => {
+					throw new Error("addInsight requires layouts.lg to be set");
+				}
 				mergeWidgetLayoutsIntoDSL(this.dsl, widgetId, layouts);
 			});
 			return this.dashboardBuilder;
@@ -34435,19 +34477,26 @@ var init_dist = __esmMin((() => {
 				getOrCreateDashboardWidgets(this.dsl);
 				if (void 0 === this.dsl.get("breakpoints")) this.dsl.set("breakpoints", { ...VBIDashboardDefaultBreakpoints });
 				if (void 0 === this.dsl.get("layout")) this.dsl.set("layout", createEmptyDashboardLayout());
+				ensureDashboardLayout(this.dsl);
 				if (void 0 === this.dsl.get("meta")) this.dsl.set("meta", {
 					title: "",
 					theme: "light"
 				});
 				if (void 0 === this.dsl.get("version")) this.dsl.set("version", 0);
 			});
-			this.undoManager = new UndoManager(this.dsl);
+			this.undoManager = new UndoManager(this.dsl, {
+				captureTimeout: 0,
+				...this.builderOptions?.undoManager
+			});
 			this.theme = new DashboardThemeBuilder(this.dsl);
 			this.chart = new DashboardChartCollectionBuilder(doc, this.dsl, this);
 			this.insight = new DashboardInsightCollectionBuilder(doc, this.dsl, this);
 		}
 		applyUpdate = (update, transactionOrigin) => applyUpdateToDoc(this.doc, update, transactionOrigin);
 		encodeStateAsUpdate = (targetStateVector) => encodeDocStateAsUpdate(this.doc, targetStateVector);
+		transact = (callback, origin) => {
+			this.doc.transact(callback, origin);
+		};
 		getUUID = () => getResourceUUID(this.dsl);
 		getChartBuilder = (chartId) => {
 			if (!this.resourceRegistry || !chartId) return;
@@ -34633,7 +34682,10 @@ var init_dist = __esmMin((() => {
 	};
 	mergeDashboardBuilderOptions = (base, overrides) => {
 		const chart = mergeChartBuilderOptions(base, overrides?.chart);
-		return chart ? { chart } : void 0;
+		return {
+			...overrides,
+			chart
+		};
 	};
 	createVBIDashboardNamespace = (defaultBuilderOptions, resourceRegistry) => ({
 		create: (dashboard, builderOptions) => {

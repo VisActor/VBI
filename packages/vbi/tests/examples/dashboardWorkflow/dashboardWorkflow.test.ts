@@ -144,7 +144,7 @@ describe('dashboard / DashboardWorkflow', () => {
           "lg": [
             {
               "h": 6,
-              "id": "id-13",
+              "id": "id-7",
               "w": 7,
               "widgetId": "id-5",
               "x": 0,
@@ -295,17 +295,17 @@ describe('dashboard / DashboardWorkflow', () => {
           "lg": [
             {
               "h": 5,
-              "id": "id-21",
+              "id": "id-19",
               "w": 7,
-              "widgetId": "id-19",
+              "widgetId": "id-17",
               "x": 0,
               "y": 0,
             },
             {
               "h": 5,
-              "id": "id-25",
+              "id": "id-23",
               "w": 5,
-              "widgetId": "id-23",
+              "widgetId": "id-21",
               "x": 7,
               "y": 0,
             },
@@ -313,17 +313,17 @@ describe('dashboard / DashboardWorkflow', () => {
           "md": [
             {
               "h": 4,
-              "id": "id-22",
+              "id": "id-20",
               "w": 6,
-              "widgetId": "id-19",
+              "widgetId": "id-17",
               "x": 0,
               "y": 0,
             },
             {
               "h": 3,
-              "id": "id-26",
+              "id": "id-24",
               "w": 6,
-              "widgetId": "id-23",
+              "widgetId": "id-21",
               "x": 0,
               "y": 4,
             },
@@ -343,13 +343,13 @@ describe('dashboard / DashboardWorkflow', () => {
           {
             "chartId": "uuid-1",
             "description": "清空草稿后重建的主图",
-            "id": "id-19",
+            "id": "id-17",
             "title": "最终品类销售",
             "type": "chart",
           },
           {
             "description": "清空草稿后重建的洞察",
-            "id": "id-23",
+            "id": "id-21",
             "insightId": "uuid-3",
             "title": "最终促销洞察",
             "type": "insight",

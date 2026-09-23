@@ -9,11 +9,6 @@ export interface ResolvedDashboardTheme {
   dashboard: NonNullable<VBIDashboardThemeDefinition['dashboard']>
 }
 
-const defaultToolbarBackground = {
-  light: 'linear-gradient(180deg, rgba(248, 250, 252, 0.92), rgba(255, 255, 255, 0.98))',
-  dark: 'linear-gradient(180deg, rgba(10, 17, 28, 0.9), rgba(15, 22, 35, 0.94))',
-}
-
 /** Adapt Builder output to Ant Design and Dashboard styles; no registration or state ownership. */
 export function createDashboardTheme({
   name,
@@ -50,7 +45,7 @@ export function createDashboardTheme({
     dashboard: {
       padding: 16,
       gap: 16,
-      toolbarBackground: definition ? definition.tokens.surfaceColor : defaultToolbarBackground[baseTheme],
+      toolbarBackground: definition?.tokens.surfaceColor,
       ...definition?.dashboard,
     },
   }

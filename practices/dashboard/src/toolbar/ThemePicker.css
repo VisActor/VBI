@@ -1,6 +1,10 @@
 .vbi-dashboard-theme-select {
-  width: 40px;
+  width: 28px;
   flex-shrink: 0;
+}
+.vbi-dashboard-theme-select .vbi-dashboard-theme-dot {
+  width: 14px;
+  height: 14px;
 }
 .vbi-dashboard-theme-dot {
   display: block;
