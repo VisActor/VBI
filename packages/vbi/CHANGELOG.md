@@ -1,5 +1,21 @@
 # @visactor/vbi
 
+## 0.6.0
+
+### Minor Changes
+
+- bc30539: Breaking change: remove Report Builder, its DSL and snapshot types, page builders,
+  creation helpers, and the `VBI.report` namespace. Use Dashboard Builder to compose
+  chart and insight resources. Existing chart, insight, and dashboard APIs remain available.
+
+  The platform also removes report management, Provider and Agent report APIs, and
+  report-reference queries. Existing report database tables remain archived and are
+  excluded from Prisma Client; this change does not delete or migrate their data.
+
+### Patch Changes
+
+- @visactor/vseed@0.6.0
+
 ## 0.5.7
 
 ### Patch Changes
@@ -92,6 +108,7 @@
 - d2f4f33: Refactor the VBI runtime API around explicit namespaces and dedicated resource stores.
 
   Breaking changes:
+
   - Rename empty DSL helpers on the namespace API:
     - `chart.generateEmptyDSL(...)` -> `chart.createEmpty(...)`
     - `insight.generateEmptyDSL(...)` -> `insight.createEmpty(...)`
@@ -99,6 +116,7 @@
   - Split the internal resource registry into explicit chart and insight stores and move the implementation under `src/vbi/resources/`.
 
   This change also updates the in-repo downstream usages in practices and apps to the new API.
+
   - @visactor/vseed@0.4.24
 
 ## 0.4.23
@@ -108,6 +126,7 @@
 - f5a9ad0: Refactor the VBI runtime API around namespaces and align APIs with the resource model.
 
   Breaking changes:
+
   - `createVBI()` no longer returns flat helpers such as `createChart` or `createInsight`, and the old empty helper names were removed. Use `chart.create`, `insight.create`, `chart.createEmpty`, `insight.createEmpty` instead.
   - @visactor/vseed@0.4.23
 
