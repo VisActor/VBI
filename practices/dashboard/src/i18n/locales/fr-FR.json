@@ -24,5 +24,7 @@
   "themeRedBlue": "Rouge et bleu",
   "themePartyRed": "Rouge du Parti",
   "themeGroupLight": "Clair",
-  "themeGroupDark": "Sombre"
+  "themeGroupDark": "Sombre",
+  "undo": "Annuler",
+  "redo": "Rétablir"
 }

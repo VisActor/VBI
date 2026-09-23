@@ -24,5 +24,7 @@
   "themeRedBlue": "Merah dan biru",
   "themePartyRed": "Merah partai",
   "themeGroupLight": "Terang",
-  "themeGroupDark": "Gelap"
+  "themeGroupDark": "Gelap",
+  "undo": "Urungkan",
+  "redo": "Ulangi"
 }

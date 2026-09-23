@@ -1,6 +1,36 @@
 import { createVBI } from '@visactor/vbi'
 import { rs } from '@rstest/core'
 import { Builder as VSeedBuilder, registerAll, type TokenThemeDefinition } from '@visactor/vseed'
+import * as Y from 'yjs'
+import { DashboardThemeBuilder } from 'src/dashboard-builder/features/theme/theme-builder'
+
+test('defaults missing metadata to light and observes the first remote theme', () => {
+  const doc = new Y.Doc()
+  const dsl = doc.getMap('dsl')
+  const theme = new DashboardThemeBuilder(dsl)
+  expect(theme.getTheme()).toBe('light')
+  expect(theme.getThemeDefinitions()).toEqual({})
+  const changed = rs.fn(() => theme.getTheme())
+  const unsubscribe = theme.observe(changed)
+  dsl.set('meta', { title: 'Restored', theme: 'dark' })
+  expect(changed).toHaveBeenCalledTimes(1)
+  expect(changed).toHaveLastReturnedWith('dark')
+  unsubscribe()
+  doc.destroy()
+})
+
+test('returns an empty palette when the registered built-in theme has no chart colors', () => {
+  const vbi = createVBI()
+  const builder = vbi.dashboard.create(vbi.dashboard.createEmpty())
+  builder.theme.resolveTheme('light')
+  const original = VSeedBuilder.getTheme('light')
+  try {
+    VSeedBuilder.registerTheme('light', {})
+    expect(builder.theme.getThemeOptions().find(({ name }) => name === 'light')?.colors).toEqual([])
+  } finally {
+    VSeedBuilder.registerTheme('light', original)
+  }
+})
 
 const brand = {
   label: 'Emerald',

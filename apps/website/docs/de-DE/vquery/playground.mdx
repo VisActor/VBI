@@ -4,8 +4,9 @@ playgroundDirection: vertical
 ---
 
 ```tsx playground
+import { VQuery } from '@visactor/vquery'
+
 const run = async (setVSeed) => {
-  const { VQuery } = await import('@visactor/vquery')
   const vquery = new VQuery()
 
   const rawDataset = [

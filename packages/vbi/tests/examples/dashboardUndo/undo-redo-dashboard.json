@@ -1,0 +1,8 @@
+{
+  "builder": "dashboard",
+  "name": "undo-redo-dashboard",
+  "description": "仪表盘组件、响应式布局与主题按事务一起撤销和重做，引用的洞察内容独立保存。",
+  "priority": 1,
+  "tags": ["undoManager", "yjs"],
+  "code": "const insightBuilder = LocalVBI.insight.create(LocalVBI.insight.createEmpty())\ninsightBuilder.setContent('撤销删除操作后，组件和所有断点布局一起恢复。')\nconst dashboardBuilder = LocalVBI.dashboard.create({\n  ...LocalVBI.dashboard.createEmpty(),\n  meta: { title: '仪表盘撤销与重做' },\n})\ndashboardBuilder.transact(() => {\n  dashboardBuilder.theme.setTheme('dark')\n  dashboardBuilder.insight.add(widget => widget\n    .setInsightId(insightBuilder)\n    .setTitle('可恢复的经营洞察')\n    .setLayouts({ lg: { x: 0, y: 0, w: 8, h: 4 }, md: { x: 0, y: 0, w: 6, h: 4 } }))\n})\nif (!dashboardBuilder.undoManager.undo() || !dashboardBuilder.isEmpty()) {\n  throw new Error('撤销必须同时还原组件与布局')\n}\nif (!dashboardBuilder.undoManager.redo()) throw new Error('重做失败')\nconst [widget] = dashboardBuilder.insight.toJSON()\ndashboardBuilder.insight.remove(widget.id)\ndashboardBuilder.undoManager.undo()\n"
+}

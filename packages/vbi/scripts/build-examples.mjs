@@ -79,7 +79,7 @@ function generateDirDocs(dirName, locale = DEFAULT_LOCALE, title = dirName, incl
     md += '```\n\n'
   }
 
-  return md
+  return `${md.trimEnd()}\n`
 }
 
 function resolveExampleLink(group, dirName, exampleName, fromBuilderRoot = false) {
@@ -121,7 +121,7 @@ function generateBuilderIndexPage(group, locale = DEFAULT_LOCALE) {
     md += '\n\n'
   }
 
-  return md
+  return `${md.trimEnd()}\n`
 }
 
 function writeBuilderDocs(group) {

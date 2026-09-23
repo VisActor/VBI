@@ -24,5 +24,7 @@
   "themeRedBlue": "红蓝",
   "themePartyRed": "党建红",
   "themeGroupLight": "浅色",
-  "themeGroupDark": "深色"
+  "themeGroupDark": "深色",
+  "undo": "撤销",
+  "redo": "重做"
 }

@@ -11,7 +11,7 @@ const mergeDashboardBuilderOptions = <TQueryDSL = DefaultVBIQueryDSL, TSeedDSL =
   overrides?: VBIDashboardBuilderOptions<TQueryDSL, TSeedDSL>,
 ) => {
   const chart = mergeChartBuilderOptions(base, overrides?.chart)
-  return chart ? { chart } : undefined
+  return { ...overrides, chart }
 }
 
 export const createVBIDashboardNamespace = <TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>(

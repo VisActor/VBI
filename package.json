@@ -22,9 +22,9 @@
     "g": "pnpm -r g && pnpm run format",
     "dev:rsdoctor": "pnpm --filter=@visactor/vseed run dev:rsdoctor",
     "build:rsdoctor": "pnpm --filter=@visactor/vseed run build:rsdoctor",
-    "test": "turbo test --filter=!website",
-    "test:update": "turbo test:update --filter=!website",
-    "test:coverage": "pnpm -r test:coverage",
+    "test": "turbo test",
+    "test:update": "turbo test:update",
+    "test:coverage": "pnpm -r --workspace-concurrency=2 test:coverage && pnpm --filter @visactor/vseed run test:unit:coverage",
     "publish:ci": "turbo run build --filter=@visactor/vseed --filter=@visactor/vquery --filter=@visactor/vbi && pnpm changeset publish --filter=@visactor/vseed,@visactor/vquery,@visactor/vbi --access=public",
     "prepare": "husky"
   },

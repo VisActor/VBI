@@ -7,6 +7,8 @@ import {
   DashboardRenderer,
   DashboardToolbar,
   DashboardEditToggle,
+  DashboardUndoButton,
+  DashboardRedoButton,
   DashboardThemePicker,
   DashboardFullscreenButton,
   useDashboard,
@@ -220,6 +222,8 @@ test('keeps preview read-only and opens the referenced chart in a fullscreen edi
   const original = builder.build()
   const view = render(<DashboardRenderer builder={builder} />)
   expect(screen.queryByRole('switch')).not.toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: '撤销' })).not.toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: '重做' })).not.toBeInTheDocument()
   expect(screen.queryByRole('button', { name: '编辑图表：销售图表' })).not.toBeInTheDocument()
   expect(screen.getByRole('button', { name: '进入全屏' })).toBeInTheDocument()
 
@@ -327,6 +331,8 @@ test('composes built-in and custom toolbar controls with shared editing and them
   const toolbar = (
     <DashboardToolbar>
       <DashboardEditToggle />
+      <DashboardUndoButton />
+      <DashboardRedoButton />
       <DarkThemeAction />
       <DashboardThemePicker />
     </DashboardToolbar>
@@ -337,20 +343,147 @@ test('composes built-in and custom toolbar controls with shared editing and them
   fireEvent.click(controls.getByRole('button', { name: '切换深色' }))
   expect(builder.theme.getTheme()).toBe('dark')
   expect(screen.getByTestId('standard')).toHaveAttribute('data-chart-theme', 'dark')
+  fireEvent.click(controls.getByRole('button', { name: '撤销' }))
+  expect(builder.theme.getTheme()).toBe('light')
   fireEvent.click(controls.getByRole('switch', { name: '启用编辑' }))
+  expect(controls.getByRole('button', { name: '撤销' })).toBeDisabled()
+  expect(controls.getByRole('button', { name: '重做' })).toBeDisabled()
+  fireEvent.click(controls.getByRole('button', { name: '重做' }))
+  expect(builder.theme.getTheme()).toBe('light')
   expect(controls.getByRole('button', { name: '切换深色' })).toBeDisabled()
   expect(controls.getByRole('combobox')).toBeDisabled()
   expect(screen.queryByRole('button', { name: '编辑图表：销售图表' })).not.toBeInTheDocument()
   fireEvent.click(controls.getByRole('switch', { name: '启用编辑' }))
+  expect(controls.getByRole('button', { name: '撤销' })).toBeEnabled()
+  expect(controls.getByRole('button', { name: '重做' })).toBeEnabled()
+  fireEvent.click(controls.getByRole('button', { name: '重做' }))
+  expect(builder.theme.getTheme()).toBe('dark')
   expect(screen.getByRole('button', { name: '编辑图表：销售图表' })).toBeInTheDocument()
 
   view.rerender(<DashboardRenderer builder={builder} mode='view' toolbar={toolbar} />)
   expect(controls.queryByRole('switch')).not.toBeInTheDocument()
   expect(controls.queryByRole('combobox')).not.toBeInTheDocument()
+  expect(controls.queryByRole('button', { name: '撤销' })).not.toBeInTheDocument()
+  expect(controls.queryByRole('button', { name: '重做' })).not.toBeInTheDocument()
   expect(controls.getByRole('button', { name: '切换深色' })).toBeDisabled()
   view.rerender(<DashboardRenderer builder={builder} toolbar={null} />)
   expect(screen.queryByRole('group', { name: '仪表盘工具栏' })).not.toBeInTheDocument()
   expect(screen.getByRole('article', { name: '销售图表' })).toBeInTheDocument()
+})
+
+test('undoes and redoes a dashboard transaction atomically and invalidates redo on a new edit', async () => {
+  const vbi = createVBI()
+  const builder = vbi.dashboard.create(vbi.dashboard.createEmpty())
+  const view = render(<DashboardRenderer builder={builder} mode='edit' locale='en-US' />)
+  const undo = screen.getByRole('button', { name: 'Undo' })
+  const redo = screen.getByRole('button', { name: 'Redo' })
+  expect(undo).toBeDisabled()
+  expect(redo).toBeDisabled()
+  act(() =>
+    builder.transact(() => {
+      builder.theme.setTheme('dark')
+      builder.insight.add((widget) => widget.setTitle('Local insight').setLayouts({ lg: { x: 0, y: 0, w: 6, h: 3 } }))
+    }),
+  )
+  const edited = builder.build()
+  expect(undo).toBeEnabled()
+  expect(redo).toBeDisabled()
+  fireEvent.mouseEnter(undo)
+  expect(view.container.querySelector('section')).toContainElement(await screen.findByRole('tooltip', { name: 'Undo' }))
+  fireEvent.mouseLeave(undo)
+  await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeInTheDocument())
+  fireEvent.click(undo)
+  expect(screen.queryByRole('article')).not.toBeInTheDocument()
+  expect(view.container.querySelector('section')).toHaveAttribute('data-theme', 'light')
+  expect(undo).toBeDisabled()
+  expect(redo).toBeEnabled()
+  fireEvent.click(redo)
+  expect(screen.getByRole('article', { name: 'Local insight' })).toBeInTheDocument()
+  expect(view.container.querySelector('section')).toHaveAttribute('data-theme', 'dark')
+  expect(builder.build()).toEqual(edited)
+  expect(undo).toBeEnabled()
+  expect(redo).toBeDisabled()
+  fireEvent.click(undo)
+  act(() =>
+    builder.insight.add((widget) => widget.setTitle('New insight').setLayouts({ lg: { x: 0, y: 0, w: 6, h: 3 } })),
+  )
+  expect(redo).toBeDisabled()
+  fireEvent.click(redo)
+  expect(screen.queryByRole('article', { name: 'Local insight' })).not.toBeInTheDocument()
+  expect(screen.getByRole('article', { name: 'New insight' })).toBeInTheDocument()
+})
+
+test('follows external history operations and selective clearing without document updates', () => {
+  const { builder } = createChartDashboard()
+  render(<DashboardRenderer builder={builder} mode='edit' />)
+  const undo = screen.getByRole('button', { name: '撤销' })
+  const redo = screen.getByRole('button', { name: '重做' })
+  act(() => builder.theme.setTheme('dark'))
+  act(() => builder.undoManager.undo())
+  expect(undo).toBeEnabled()
+  expect(redo).toBeEnabled()
+  const onDocumentUpdate = rs.fn()
+  builder.doc.on('update', onDocumentUpdate)
+  act(() => builder.undoManager.clear(true, false))
+  expect(undo).toBeDisabled()
+  expect(redo).toBeEnabled()
+  act(() => builder.undoManager.clear(false, true))
+  expect(redo).toBeDisabled()
+  expect(onDocumentUpdate).not.toHaveBeenCalled()
+  builder.doc.off('update', onDocumentUpdate)
+  act(() => builder.theme.setTheme('dark'))
+  expect(undo).toBeEnabled()
+  act(() => builder.undoManager.clear())
+  expect(undo).toBeDisabled()
+})
+
+test('switches history subscriptions with the builder and releases them when controls unmount', () => {
+  const first = createChartDashboard().builder
+  const vbi = createVBI()
+  const second = vbi.dashboard.create(vbi.dashboard.createEmpty())
+  function trackSubscriptions(manager: typeof first.undoManager) {
+    const observe = manager.observe.bind(manager)
+    const cleanups: ReturnType<typeof rs.fn>[] = []
+    rs.spyOn(manager, 'observe').mockImplementation((notify) => {
+      const cleanup = rs.fn(observe(notify))
+      cleanups.push(cleanup)
+      return cleanup
+    })
+    return cleanups
+  }
+  const firstCleanups = trackSubscriptions(first.undoManager)
+  const secondCleanups = trackSubscriptions(second.undoManager)
+  const view = render(<DashboardRenderer builder={first} mode='edit' />)
+  expect(firstCleanups).toHaveLength(2)
+  expect(screen.getByRole('button', { name: '撤销' })).toBeEnabled()
+  view.rerender(<DashboardRenderer builder={second} mode='edit' />)
+  for (const cleanup of firstCleanups) expect(cleanup).toHaveBeenCalledTimes(1)
+  expect(secondCleanups).toHaveLength(2)
+  expect(screen.getByRole('button', { name: '撤销' })).toBeDisabled()
+  act(() => first.theme.setTheme('dark'))
+  expect(screen.getByRole('button', { name: '撤销' })).toBeDisabled()
+  act(() => second.theme.setTheme('dark'))
+  fireEvent.click(screen.getByRole('button', { name: '撤销' }))
+  expect(first.theme.getTheme()).toBe('dark')
+  expect(second.theme.getTheme()).toBe('light')
+  view.rerender(<DashboardRenderer builder={second} mode='edit' toolbar={null} />)
+  for (const cleanup of secondCleanups) expect(cleanup).toHaveBeenCalledTimes(1)
+  expect(view.container.querySelector('section')).toBeInTheDocument()
+  view.unmount()
+  for (const cleanup of secondCleanups) expect(cleanup).toHaveBeenCalledTimes(1)
+})
+
+test('keeps referenced chart edits outside the dashboard toolbar history', () => {
+  const { builder, chart } = createChartDashboard()
+  builder.undoManager.clear()
+  render(<DashboardRenderer builder={builder} mode='edit' />)
+  act(() => chart.chartType.changeChartType('line'))
+  expect(screen.getByRole('button', { name: '撤销' })).toBeDisabled()
+  expect(screen.getByRole('button', { name: '重做' })).toBeDisabled()
+  act(() => builder.theme.setTheme('dark'))
+  fireEvent.click(screen.getByRole('button', { name: '撤销' }))
+  expect(builder.theme.getTheme()).toBe('light')
+  expect(chart.build().chartType).toBe('line')
 })
 
 test('cleans up fullscreen when its control is removed while keeping the dashboard mounted', async () => {
@@ -365,6 +498,10 @@ test('cleans up fullscreen when its control is removed while keeping the dashboa
   const exit = rs.fn().mockImplementation(async () => setFullscreen(null))
   document.exitFullscreen = exit
   try {
+    fireEvent.mouseEnter(screen.getByRole('button', { name: '进入全屏' }))
+    expect(root).toContainElement(await screen.findByRole('tooltip', { name: '进入全屏' }))
+    fireEvent.mouseLeave(screen.getByRole('button', { name: '进入全屏' }))
+    await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeInTheDocument())
     await act(async () => fireEvent.click(screen.getByRole('button', { name: '进入全屏' })))
     expect(await screen.findByRole('button', { name: '退出全屏' })).toBeInTheDocument()
     view.rerender(<DashboardRenderer builder={builder} toolbar={null} />)
@@ -413,8 +550,10 @@ test('selects a preset from the toolbar, persists it and supports undo without c
   expect(await screen.findByRole('tooltip', { name: '火山蓝' })).toBeInTheDocument()
   fireEvent.mouseLeave(currentColor)
   await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeInTheDocument())
-  act(() => builder.undoManager.undo())
+  fireEvent.click(screen.getByRole('button', { name: '撤销' }))
   expect(root).toHaveAttribute('data-theme', 'light')
+  fireEvent.click(screen.getByRole('button', { name: '重做' }))
+  expect(root).toHaveAttribute('data-theme', 'volcanoBlue')
   fireEvent.click(screen.getByRole('switch', { name: '启用编辑' }))
   expect(screen.getByRole('combobox', { name: '仪表盘主题' })).toBeDisabled()
   view.rerender(<DashboardRenderer builder={builder} mode='view' />)

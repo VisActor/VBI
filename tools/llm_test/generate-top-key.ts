@@ -54,10 +54,7 @@ files.forEach((file: any) => {
         const allTag = jsDoc[0]?.getTags()
         // console.log(allTag?.map(tag => tag.getTagName()))
         const descriptionTag = allTag?.find((tag) => tag.getTagName() === 'description')
-        if (descriptionTag) {
-          // console.log(`描述: ${descriptionTag.getCommentText()}`);
-          keyPath.description = descriptionTag.getCommentText()
-        }
+        keyPath.description = descriptionTag?.getCommentText() || jsDoc[0]?.getDescription().trim()
       }
 
       keyPaths.push(keyPath)

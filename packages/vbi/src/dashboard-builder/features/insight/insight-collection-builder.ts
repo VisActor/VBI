@@ -26,6 +26,7 @@ export class DashboardInsightCollectionBuilder<
     private dashboardBuilder: TDashboardBuilder,
   ) {}
 
+  /** @description 新增洞察组件，回调必须设置 layouts.lg。组件与各断点布局在同一个 Yjs 事务中写入，可一起撤销。 */
   add(callback: (insight: DashboardInsightBuilder<TQueryDSL, TSeedDSL>) => void): TDashboardBuilder {
     const widgetId = id.uuid()
     const insightId = id.uuid()
@@ -41,31 +42,24 @@ export class DashboardInsightCollectionBuilder<
 
     this.doc.transact(() => {
       widgets.push([widgetMap])
-    })
-
-    const builder = new DashboardInsightBuilder<TQueryDSL, TSeedDSL>(widgetMap, {
-      getBuilder: (insightId) => this.dashboardBuilder.getInsightBuilder(insightId),
-    })
-    callback(builder)
-
-    const layouts = builder.getLayouts()
-    if (!layouts.lg) {
-      this.doc.transact(() => {
-        const index = locateDashboardWidgetIndexById(widgets, widgetId)
-        if (index !== -1) {
-          widgets.delete(index, 1)
-        }
+      const builder = new DashboardInsightBuilder<TQueryDSL, TSeedDSL>(widgetMap, {
+        getBuilder: (insightId) => this.dashboardBuilder.getInsightBuilder(insightId),
       })
-      throw new Error('addInsight requires layouts.lg to be set')
-    }
+      callback(builder)
 
-    this.doc.transact(() => {
+      const layouts = builder.getLayouts()
+      if (!layouts.lg) {
+        const index = locateDashboardWidgetIndexById(widgets, widgetId)
+        if (index !== -1) widgets.delete(index, 1)
+        throw new Error('addInsight requires layouts.lg to be set')
+      }
       mergeWidgetLayoutsIntoDSL(this.dsl, widgetId, layouts)
     })
 
     return this.dashboardBuilder
   }
 
+  /** @description 在同一个 Yjs 事务中更新洞察组件及布局；未找到组件时抛出错误。 */
   update(
     widgetId: string,
     callback: (insight: DashboardInsightBuilder<TQueryDSL, TSeedDSL>) => void,
@@ -85,6 +79,7 @@ export class DashboardInsightCollectionBuilder<
     return this.dashboardBuilder
   }
 
+  /** @description 在同一个 Yjs 事务中删除洞察组件及全部断点布局，可一起恢复；引用资源不会删除。 */
   remove(widgetId: string): TDashboardBuilder {
     this.doc.transact(() => {
       const widgets = getOrCreateDashboardWidgets(this.dsl)
@@ -97,10 +92,12 @@ export class DashboardInsightCollectionBuilder<
     return this.dashboardBuilder
   }
 
+  /** @description 通过组件 ID 或引用资源 ID 获取组件构建器，未找到时返回 undefined。 */
   get(widgetId: string): DashboardInsightBuilder<TQueryDSL, TSeedDSL> | undefined {
     return this.find(widgetId)
   }
 
+  /** @description 通过组件 ID 或引用资源 ID 查找第一个匹配的组件。 */
   find(id: string): DashboardInsightBuilder<TQueryDSL, TSeedDSL> | undefined {
     const widgets = getOrCreateDashboardWidgets(this.dsl)
     for (let index = 0; index < widgets.length; index += 1) {
@@ -116,6 +113,7 @@ export class DashboardInsightCollectionBuilder<
     return undefined
   }
 
+  /** @description 按仪表盘顺序获取全部洞察组件构建器。 */
   findAll(): DashboardInsightBuilder<TQueryDSL, TSeedDSL>[] {
     const widgets = getOrCreateDashboardWidgets(this.dsl)
     const result: DashboardInsightBuilder<TQueryDSL, TSeedDSL>[] = []
@@ -131,6 +129,7 @@ export class DashboardInsightCollectionBuilder<
     return result
   }
 
+  /** @description 导出全部洞察组件的纯 JSON 配置。 */
   toJSON(): VBIDashboardWidget[] {
     return this.findAll().map((builder) => builder.toJSON())
   }

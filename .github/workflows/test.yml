@@ -104,5 +104,5 @@ jobs:
       - name: Build packages and examples
         run: pnpm run build
 
-      - name: Run tests
-        run: pnpm run test
+      - name: Run tests and enforce coverage thresholds
+        run: pnpm run test:coverage

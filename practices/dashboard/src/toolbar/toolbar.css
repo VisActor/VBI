@@ -1,14 +1,32 @@
 .vbi-dashboard-toolbar {
   margin-bottom: 16px;
   position: relative;
+  width: 100%;
+  min-height: 32px;
+  padding: 4px 6px;
+  overflow-x: auto;
+}
+.vbi-dashboard-toolbar-content {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 16px;
-  min-height: 40px;
-  padding: 4px 10px;
-  border: 1px solid;
+  gap: 12px;
+  min-width: max-content;
+}
+.vbi-dashboard-toolbar-group {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 6px;
+  white-space: nowrap;
+}
+.vbi-dashboard-toolbar-editing {
+  margin-right: auto;
+}
+.vbi-dashboard-toolbar-divider {
+  width: 1px;
+  height: 16px;
+  flex-shrink: 0;
 }
 .vbi-dashboard-edit-switch {
   margin-right: auto;
@@ -16,8 +34,9 @@
   align-items: center;
   gap: 8px;
   font-size: 12px;
+  white-space: nowrap;
   cursor: pointer;
 }
 .vbi-dashboard-toolbar-error {
-  flex-basis: 100%;
+  white-space: normal;
 }

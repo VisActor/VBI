@@ -49,12 +49,12 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:update": "vitest run --update",
-    "test:coverage": "vitest run  --update --coverage && node scripts/build-coverage-badge.mjs && open coverage/index.html",
+    "test:coverage": "vitest run --coverage && node scripts/build-coverage-badge.mjs",
     "test:unit": "vitest run tests/unit",
-    "test:unit:coverage": "vitest run tests/unit --coverage && open coverage/index.html",
+    "test:unit:coverage": "vitest run tests/unit --mode unit --coverage",
     "test:integration": "vitest run --exclude tests/unit",
     "test:integration:update": "vitest run --exclude tests/unit --update",
-    "test:integration:coverage": "vitest run --exclude tests/unit --coverage && open coverage/index.html"
+    "test:integration:coverage": "vitest run --exclude tests/unit --mode integration --coverage"
   },
   "dependencies": {
     "@visactor/vdataset": "~1.0.21",
@@ -65,9 +65,9 @@
   },
   "devDependencies": {
     "@rsdoctor/rspack-plugin": "1.2.3",
-    "@rslib/core": "0.20.3",
-    "@rstest/core": "0.8.3",
-    "@rstest/coverage-istanbul": "0.1.0",
+    "@rslib/core": "1.0.1",
+    "@rstest/core": "0.12.0",
+    "@rstest/coverage-istanbul": "0.12.0",
     "@types/node": "24.10.1",
     "@types/tinycolor2": "1.4.3",
     "@visactor/vchart": "2.0.23-alpha.6",
@@ -76,10 +76,11 @@
     "@vitest/coverage-v8": "3.2.4",
     "jsdom": "26.1.0",
     "rstest-canvas-mock": "0.0.5",
-    "typescript": "6.0.2",
+    "typescript": "7.0.2",
     "vi-canvas-mock": "^1.0.0",
     "ts-morph": "26.0.0",
-    "vitest": "3.2.4"
+    "vitest": "3.2.4",
+    "@swc/helpers": "0.5.23"
   },
   "sideEffects": false
 }

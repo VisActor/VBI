@@ -1,5 +1,5 @@
-import { VBI } from '@visactor/vbi'
-import type { DatasetColumn, RawDatasetSource, VQueryDSL } from '@visactor/vquery'
+import { VBI, type VBIConnector } from '@visactor/vbi'
+import type { DatasetColumn, RawDatasetSource, VQuery, VQueryDSL } from '@visactor/vquery'
 
 export const DEMO_CONNECTOR_ID = 'demoSupermarket'
 
@@ -34,10 +34,11 @@ export const registerDemoConnector = () => {
   }
   registered = true
 
-  VBI.connectors.register(DEMO_CONNECTOR_ID, async () => {
-    const { VQuery } = await import('@visactor/vquery')
-    const vquery = new VQuery()
-    let datasetReady: Promise<void> | undefined
+  let vqueryReady: Promise<VQuery> | undefined
+  let datasetReady: Promise<void> | undefined
+
+  VBI.connectors.register(DEMO_CONNECTOR_ID, async (): Promise<VBIConnector> => {
+    const vquery = await (vqueryReady ??= import('@visactor/vquery').then(({ VQuery }) => new VQuery()))
 
     return {
       discoverSchema: async () => {

@@ -9,10 +9,13 @@
     "format": "oxfmt .",
     "lint": "oxlint .",
     "typecheck": "tsc --noEmit",
-    "preview": "rspress preview"
+    "preview": "rspress preview",
+    "test": "rstest run",
+    "test:update": "rstest run --update",
+    "test:coverage": "rstest run --coverage"
   },
   "dependencies": {
-    "@rspress/core": "2.0.11",
+    "@rspress/core": "2.0.22",
     "@visactor/vbi": "workspace:*",
     "@visactor/vchart": "2.0.23-alpha.6",
     "@visactor/vquery": "workspace:*",
@@ -28,10 +31,12 @@
     "dashboard": "workspace:*"
   },
   "devDependencies": {
-    "@rspress/plugin-playground": "2.0.11",
-    "@rspress/plugin-preview": "2.0.11",
+    "@rspress/plugin-playground": "2.0.22",
+    "@rspress/plugin-preview": "2.0.22",
     "@types/node": "24.10.1",
     "@types/react": "19.2.7",
-    "typescript": "6.0.2"
+    "typescript": "7.0.2",
+    "@rstest/core": "0.12.0",
+    "@rstest/coverage-istanbul": "0.12.0"
   }
 }

@@ -24,5 +24,7 @@
   "themeRedBlue": "Đỏ và xanh",
   "themePartyRed": "Đỏ xây dựng Đảng",
   "themeGroupLight": "Sáng",
-  "themeGroupDark": "Tối"
+  "themeGroupDark": "Tối",
+  "undo": "Hoàn tác",
+  "redo": "Làm lại"
 }

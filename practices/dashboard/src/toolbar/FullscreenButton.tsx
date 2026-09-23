@@ -1,5 +1,5 @@
 import { FullscreenExitOutlined, FullscreenOutlined } from '@ant-design/icons'
-import { Button, theme as antdTheme } from 'antd'
+import { Button, Tooltip, theme as antdTheme } from 'antd'
 import { useDashboard } from '../DashboardContext'
 import { useTranslation } from '../i18n'
 import { useFullscreen } from './useFullscreen'
@@ -12,15 +12,25 @@ export function DashboardFullscreenButton() {
   const label = t(fullscreen ? 'exitFullscreen' : 'enterFullscreen')
   return (
     <>
-      <Button
-        type='text'
-        size='small'
-        icon={fullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
-        aria-label={label}
+      <Tooltip
         title={label}
-        loading={pending}
-        onClick={() => void toggle()}
-      />
+        getPopupContainer={(trigger) => trigger.closest<HTMLElement>('.vbi-dashboard')!}
+        destroyOnHidden
+      >
+        <Button
+          size='small'
+          icon={
+            fullscreen ? (
+              <FullscreenExitOutlined style={{ fontSize: 12 }} />
+            ) : (
+              <FullscreenOutlined style={{ fontSize: 12 }} />
+            )
+          }
+          aria-label={label}
+          loading={pending}
+          onClick={() => void toggle()}
+        />
+      </Tooltip>
       {error ? (
         <div className='vbi-dashboard-toolbar-error' role='alert' style={{ color: token.colorError }}>
           {t('fullscreenError')}

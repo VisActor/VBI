@@ -24,5 +24,7 @@
   "themeRedBlue": "レッド＆ブルー",
   "themePartyRed": "党建レッド",
   "themeGroupLight": "ライト",
-  "themeGroupDark": "ダーク"
+  "themeGroupDark": "ダーク",
+  "undo": "元に戻す",
+  "redo": "やり直す"
 }

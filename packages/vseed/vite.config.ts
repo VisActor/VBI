@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   cacheDir: 'node_modules/.vitest',
   test: {
     root: '.',
@@ -16,7 +16,14 @@ export default defineConfig({
       provider: 'v8',
       include: ['src/**/*.ts'],
       reporter: ['text', 'json', 'html', 'json-summary'],
-      reportsDirectory: './coverage',
+      reportsDirectory: mode === 'unit' || mode === 'integration' ? `./coverage/${mode}` : './coverage',
+      // V8 branch counts vary slightly between runs; use verified floors.
+      thresholds:
+        mode === 'unit'
+          ? { statements: 73.01, lines: 73.01, branches: 70.5, functions: 72.08 }
+          : mode === 'integration'
+            ? undefined
+            : { statements: 89.13, lines: 89.13, branches: 78.7, functions: 80.67 },
     },
     globals: true,
     environment: 'jsdom',
@@ -26,4 +33,4 @@ export default defineConfig({
       '@visactor/vseed': new URL('./src', import.meta.url).pathname,
     },
   },
-})
+}))

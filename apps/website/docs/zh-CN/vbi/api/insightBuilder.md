@@ -31,10 +31,10 @@ constructor(doc: Y.Doc, dsl?: Y.Map<any>)
 **定义**:
 
 ```typescript
-applyUpdate(update: Uint8Array, transactionOrigin?: any): any
+applyUpdate(update: Uint8Array, transactionOrigin?: any): void
 ```
 
-**返回**: `any`
+**返回**: `void`
 
 **参数**:
 
@@ -48,10 +48,10 @@ applyUpdate(update: Uint8Array, transactionOrigin?: any): any
 **定义**:
 
 ```typescript
-encodeStateAsUpdate(targetStateVector?: Uint8Array): any
+encodeStateAsUpdate(targetStateVector?: Uint8Array): Uint8Array<ArrayBufferLike>
 ```
 
-**返回**: `any`
+**返回**: `Uint8Array<ArrayBufferLike>`
 
 **参数**:
 

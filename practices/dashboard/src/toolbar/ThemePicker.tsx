@@ -6,7 +6,7 @@ import { getThemeLabel } from '../i18n/theme'
 import './ThemePicker.css'
 
 const selectStyles: SelectProps['styles'] = {
-  root: { paddingInline: 8 },
+  root: { paddingInline: 4 },
   content: { display: 'flex', alignItems: 'center', justifyContent: 'center', marginInlineEnd: 0 },
   popup: {
     root: { padding: 6, borderRadius: 12 },
@@ -23,7 +23,7 @@ function ThemePreview({ label, colors, compact = false }: { label: string; color
     <Tooltip
       title={label}
       placement={compact ? 'top' : 'left'}
-      getPopupContainer={(trigger) => trigger.closest<HTMLElement>('.vbi-dashboard')!}
+      getPopupContainer={(trigger: HTMLElement) => trigger.closest<HTMLElement>('.vbi-dashboard')!}
       destroyOnHidden
     >
       {compact ? (
@@ -65,6 +65,7 @@ export function DashboardThemePicker() {
   return (
     <Select
       id={id}
+      size='small'
       className='vbi-dashboard-theme-select'
       aria-label={t('dashboardTheme')}
       aria-description={selected.label}
@@ -75,13 +76,12 @@ export function DashboardThemePicker() {
       options={groups}
       labelRender={() => <ThemePreview label={selected.label} colors={selected.colors} compact />}
       suffixIcon={null}
-      variant='borderless'
       popupMatchSelectWidth={216}
       placement='bottomRight'
       styles={selectStyles}
       virtual={false}
       listHeight={320}
-      getPopupContainer={(trigger) => trigger.parentElement!}
+      getPopupContainer={(trigger: HTMLElement) => trigger.closest<HTMLElement>('.vbi-dashboard')!}
     />
   )
 }

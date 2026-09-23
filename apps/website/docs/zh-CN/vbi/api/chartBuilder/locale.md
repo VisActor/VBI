@@ -46,8 +46,10 @@ observe(callback: ObserveCallback): () => void
 **定义**:
 
 ```typescript
-setLocale(locale: string)
+setLocale(locale: string): void
 ```
+
+**返回**: `void`
 
 **参数**:
 

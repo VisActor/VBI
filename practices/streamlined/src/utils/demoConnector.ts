@@ -1,4 +1,4 @@
-import { VBI, type VBIChartBuilder } from '@visactor/vbi'
+import { VBI, type VBIChartBuilder, type VBIConnector } from '@visactor/vbi'
 import { VQuery, type DatasetColumn, type RawDatasetSource, type VQueryDSL } from '@visactor/vquery'
 
 export const DEMO_CONNECTOR_ID = 'demo'
@@ -10,7 +10,7 @@ export const registerDemoConnector = () => {
   registered = true
 
   const vquery = new VQuery()
-  VBI.connectors.register(DEMO_CONNECTOR_ID, async () => {
+  VBI.connectors.register(DEMO_CONNECTOR_ID, async (): Promise<VBIConnector> => {
     return {
       discoverSchema: async () => {
         return [

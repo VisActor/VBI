@@ -21,7 +21,10 @@ const SOURCE_ROOTS = {
   dashboard: path.resolve(__dirname, '../src/dashboard-builder'),
   vbi: path.resolve(__dirname, '../src/vbi'),
 }
-const OUTPUT_DIR = path.resolve(__dirname, '../../../apps/website/docs/zh-CN/vbi/api')
+const outputArg = process.argv.find((arg) => arg.startsWith('--output-dir='))?.slice('--output-dir='.length)
+const OUTPUT_DIR = outputArg
+  ? path.resolve(outputArg)
+  : path.resolve(__dirname, '../../../apps/website/docs/zh-CN/vbi/api')
 const API_OVERVIEW_PAGE = `---
 overview: true
 title: API
@@ -257,11 +260,25 @@ const API_SECTIONS = [
     name: 'dashboardBuilder',
     label: 'dashboardBuilder',
     root: 'dashboard',
-    index: {
-      file: 'builder.ts',
-      displayName: 'VBIDashboardBuilder',
-    },
+    index: [
+      { file: 'builder.ts', displayName: 'VBIDashboardBuilder' },
+      { kind: 'interface', file: 'builder.ts', displayName: 'VBIDashboardBuilderDependencies' },
+      { kind: 'interface', file: '../types/builder/dashboard.ts', displayName: 'VBIDashboardBuilderOptions' },
+    ],
     items: [
+      {
+        type: 'file',
+        name: 'undoManager',
+        label: 'dashboardBuilder.undoManager',
+        docs: [
+          { file: '../chart-builder/features/undo-manager/undo-manager.ts', displayName: 'UndoManager' },
+          {
+            kind: 'interface',
+            file: '../chart-builder/features/undo-manager/undo-manager.ts',
+            displayName: 'UndoManagerOptions',
+          },
+        ],
+      },
       {
         type: 'file',
         name: 'theme',
@@ -341,7 +358,10 @@ const resolveSourcePath = (config) => {
   return path.join(root, config.file)
 }
 
-const isPrivate = (node) => node.hasModifier?.(SyntaxKind.PrivateKeyword)
+const isPrivate = (node) =>
+  node.hasModifier?.(SyntaxKind.PrivateKeyword) ||
+  node.hasModifier?.(SyntaxKind.ProtectedKeyword) ||
+  node.getJsDocs?.().some((doc) => doc.getTags().some((tag) => tag.getTagName() === 'internal'))
 
 const hasBody = (node) => Boolean(node.getBody?.())
 
@@ -433,7 +453,10 @@ const getDeprecated = (node) => {
 // 声明解析（单次 Project 实例）
 // ============================================================================
 
-const project = new Project({ compilerOptions: { allowJs: true, noEmit: true } })
+const project = new Project({
+  tsConfigFilePath: path.resolve(__dirname, '../tsconfig.json'),
+  skipAddingFilesFromTsConfig: true,
+})
 
 /** @description 解析参数列表。 */
 const parseParams = (node) =>
@@ -462,7 +485,7 @@ const toMethodDoc = (method, options = {}) => ({
   name: method.getName(),
   typeParams: parseTypeParams(method),
   params: parseParams(method),
-  returnType: method.getReturnTypeNode?.() ? simplifyType(method.getReturnTypeNode().getText()) : '',
+  returnType: simplifyType(method.getReturnTypeNode?.()?.getText() || method.getReturnType().getText(method)),
   description: getDescription(method),
   deprecated: getDeprecated(method),
   paramsDoc: getParamDocs(method),
@@ -584,8 +607,8 @@ const parseByKind = {
     return typeAlias ? parseTypeAliasDeclaration(typeAlias) : createTypeDoc()
   },
   class: (sourceFile, symbolName) => {
-    const classDecl = findByName(sourceFile.getClasses(), symbolName) || sourceFile.getClasses()[0]
-    return classDecl ? parseClassDeclaration(classDecl) : createStructuredDoc()
+    const classDecl = sourceFile.getClassOrThrow(symbolName)
+    return parseClassDeclaration(classDecl)
   },
 }
 
@@ -825,6 +848,16 @@ const generateSection = (section) => {
 function generateDocs() {
   console.log('Building API docs from TypeScript declarations...\n')
 
+  // Every public Dashboard sub-builder must have its own navigable API page.
+  const dashboard = API_SECTIONS.find((section) => section.name === 'dashboardBuilder')
+  const source = project.addSourceFileAtPath(path.join(SOURCE_ROOTS.dashboard, 'builder.ts'))
+  for (const property of source.getClassOrThrow('VBIDashboardBuilder').getProperties()) {
+    if (isPrivate(property) || ['doc', 'dsl'].includes(property.getName())) continue
+    if (property.getInitializer()?.getKind() === SyntaxKind.ArrowFunction) continue
+    if (!dashboard.items.some((item) => item.name === property.getName())) {
+      throw new Error(`Missing Dashboard API section: ${property.getName()}`)
+    }
+  }
   resetDir(OUTPUT_DIR)
 
   for (const section of API_SECTIONS) {
@@ -843,6 +876,8 @@ function generateDocs() {
 
   writeFile(path.join(OUTPUT_DIR, 'index.md'), API_OVERVIEW_PAGE)
   console.log('Generated: index.md')
+
+  if (outputArg) return
 
   // 4. 确保父级 _meta.json 包含 api 条目
   const parentMetaPath = path.resolve(__dirname, '../../../apps/website/docs/zh-CN/vbi/_meta.json')

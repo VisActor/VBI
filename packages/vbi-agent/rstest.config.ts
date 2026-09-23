@@ -9,5 +9,8 @@ export default defineConfig({
   includeSource: ['src/**/*.{js,ts}'],
   coverage: {
     enabled: false,
+    provider: 'istanbul',
+    include: ['src/**'],
+    reporters: ['text', 'html', 'json', 'json-summary'],
   },
 })

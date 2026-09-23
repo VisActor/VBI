@@ -34,7 +34,7 @@
     "lint": "oxlint --fix .",
     "test": "rstest",
     "test:update": "rstest --update",
-    "test:coverage": "rstest --coverage && node scripts/build-coverage-badge.mjs && open coverage/index.html",
+    "test:coverage": "rstest --coverage && node scripts/build-coverage-badge.mjs",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json",
     "build:test": "node scripts/build-tests.mjs",
     "build:examples": "node scripts/build-examples.mjs",
@@ -54,12 +54,13 @@
     "@visactor/vseed": "workspace:*"
   },
   "devDependencies": {
-    "@rslib/core": "0.20.3",
-    "@rstest/core": "0.8.3",
+    "@rslib/core": "1.0.1",
+    "@rstest/core": "0.12.0",
     "@types/node": "24.10.1",
     "@types/uuid": "11.0.0",
     "@visactor/vquery": "workspace:*",
     "ts-morph": "26.0.0",
-    "typescript": "6.0.2"
+    "typescript": "7.0.2",
+    "@rstest/coverage-istanbul": "0.12.0"
   }
 }

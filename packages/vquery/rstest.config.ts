@@ -8,6 +8,7 @@ export default defineConfig({
   setupFiles: ['./tests/setup.ts'],
   coverage: {
     enabled: true,
+    provider: 'istanbul',
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
