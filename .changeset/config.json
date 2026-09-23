@@ -8,6 +8,7 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": [
+    "@visactor/vbi-component",
     "@visactor/vbi-agent",
     "@visactor/vbi-react",
     "@internal/bugserver-trigger",
