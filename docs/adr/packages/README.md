@@ -6,7 +6,6 @@ This directory centralizes package-level designs, ADRs, plans, and example sourc
 - `vquery/`: documentation related to `@visactor/vquery`
 - `vseed/`: documentation related to `@visactor/vseed`
 - `vbi-react/`: documentation related to `@visactor/vbi-react`
-- `vbi-agent/`: documentation related to `@visactor/vbi-agent`
 - `vbi-component/`: documentation related to `@visactor/vbi-component`
 
 Organization principles:
