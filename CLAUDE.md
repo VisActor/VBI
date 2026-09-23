@@ -11,7 +11,6 @@ VBI/
 │   └── website/                    # Official documentation, examples, and playground
 ├── packages/                       # Package-level implementations
 │   ├── vbi/                        # Configuration layer for VBIChartDSL, Builder, and collaborative editing
-│   ├── vbi-agent/                  # Builder Agent runtime and tool protocol
 │   ├── vbi-component/              # Shared component layer for VBI
 │   ├── vquery/                     # Query layer for QueryDSL-to-SQL and data querying
 │   ├── vseed/                      # Rendering layer for VSeedDSL-to-VChart/VTable specs
