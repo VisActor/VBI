@@ -4,6 +4,7 @@ import type { Datum, VChartSpecPipe, VSeed } from 'src/types'
 import { ANNOTATION_AREA_TEXT_STYLE_BY_POSITION, isSubset } from './utils'
 import { ANNOTATION_Z_INDEX } from '../../../../utils/constant'
 import { isBarLikeChart } from 'src/pipeline/utils/chatType'
+import { annotationAreaRangePositions, assertAnnotationAreaRangeAxes } from './annotationAreaRange'
 
 export const annotationAreaBand: VChartSpecPipe = (spec, context) => {
   const { advancedVSeed, vseed } = context
@@ -31,6 +32,7 @@ export const annotationAreaBand: VChartSpecPipe = (spec, context) => {
   const markArea = annotationAreaList.flatMap((annotationArea) => {
     const {
       selector: selectorPoint,
+      range,
       text = '',
       textColor = theme?.textColor ?? '#ffffff',
       textFontSize = theme?.textFontSize ?? 12,
@@ -53,6 +55,7 @@ export const annotationAreaBand: VChartSpecPipe = (spec, context) => {
       outerPadding = theme?.outerPadding ?? 4,
     } = annotationArea
     const textBackgroundOpacity = theme?.textBackgroundOpacity
+    if (range) assertAnnotationAreaRangeAxes(range, spec as ILineChartSpec)
     const textPosition: string = annotationArea.textPosition ?? defaultTextPosition
     const textAlign =
       annotationArea.textAlign ??
@@ -69,8 +72,10 @@ export const annotationAreaBand: VChartSpecPipe = (spec, context) => {
     return {
       zIndex: ANNOTATION_Z_INDEX,
       regionRelative: true,
+      ...(range ? { clip: true } : {}),
       // coordinates: selectedData,
       positions: (data: Datum[], context: ICartesianSeries & { _scaleConfig?: { bandPosition?: number } }) => {
+        if (range) return annotationAreaRangePositions(range, context)
         const positionData = data.filter((item) => selectedData.some((datum) => isSubset(datum, item)))
         const xyList = positionData.map((datum) => context.dataToPosition(datum) as { x: number; y: number })
 

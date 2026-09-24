@@ -1,0 +1,20 @@
+{
+  "name": "条形图：高危险区域",
+  "description": "横向条形图的数值轴是 x，因此风险阈值写在 range.x，分类 y 轴铺满。x/y 对应实际坐标轴，不随图表方向互换含义。",
+  "vseed": {
+    "chartType": "bar",
+    "dataset": [
+      { "month": "一月", "value": 5 },
+      { "month": "二月", "value": 15 },
+      { "month": "三月", "value": 20 }
+    ],
+    "dimensions": [{ "id": "month", "encoding": "yAxis" }],
+    "measures": [{ "id": "value", "encoding": "xAxis" }],
+    "annotationArea": {
+      "range": { "x": { "min": 10, "max": "axisMax" } },
+      "text": "高危险区域",
+      "areaColor": "#ef4444",
+      "areaColorOpacity": 0.12
+    }
+  }
+}

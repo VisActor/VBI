@@ -1,0 +1,24 @@
+{
+  "name": "散点图：转化率目标带",
+  "description": "range.y 使用原始数值 0.2–0.4，显示为 20%–40%；未指定 x 时横向铺满绘图区。标签格式化不改变边界，outerPadding 不作用于 range。",
+  "vseed": {
+    "chartType": "scatter",
+    "dataset": [
+      { "channel": "A", "cost": 10, "conversion": 0.1 },
+      { "channel": "B", "cost": 60, "conversion": 0.3 },
+      { "channel": "C", "cost": 130, "conversion": 0.6 }
+    ],
+    "dimensions": [{ "id": "channel", "encoding": "color" }],
+    "measures": [
+      { "id": "cost", "encoding": "xAxis" },
+      { "id": "conversion", "encoding": "yAxis" }
+    ],
+    "yAxis": { "autoFormat": false, "numFormat": { "type": "percent" } },
+    "annotationArea": {
+      "range": { "y": { "min": 0.2, "max": 0.4 } },
+      "text": "目标转化率 20%–40%",
+      "areaColor": "#22c55e",
+      "areaColorOpacity": 0.12
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { zAnnotationPoint } from '../../annotation/zAnnotationPoint'
 import { zAnnotationDifferenceLine } from '../../annotation/zAnnotationDifferenceLine'
 import { zAnnotationHorizontalLine } from '../../annotation/zAnnotationHorizontalLine'
-import { zAnnotationArea } from '../../annotation/zAnnotationArea'
+import { zAnnotationAreaStyle } from '../../annotation/zAnnotationArea'
 
 export const zAnnotationPointConfig = zAnnotationPoint
   .omit({ selector: true, measureId: true, text: true })
@@ -47,7 +47,7 @@ export const zAnnotationHorizontalLineConfig = zAnnotationHorizontalLine
 
 export const zAnnotationVerticalLineConfig = zAnnotationHorizontalLineConfig.clone()
 
-export const zAnnotationAreaConfig = zAnnotationArea
+export const zAnnotationAreaConfig = zAnnotationAreaStyle
   .pick({
     textColor: true,
     textFontSize: true,

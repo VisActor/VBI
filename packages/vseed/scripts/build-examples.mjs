@@ -117,7 +117,7 @@ function generateDocs() {
           md += `${json.description}\n\n`
         }
 
-        md += '```tsx preview \n'
+        md += '```tsx preview\n'
         md += "import { VSeedRender } from '@components'\n\n"
         md += `export default () => {\n`
         const vseedString = JSON.stringify(json.vseed, null, 2)

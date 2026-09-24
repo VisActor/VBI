@@ -1,0 +1,26 @@
+{
+  "name": "直方图重点观察区间",
+  "description": "直方图的横轴也是数值线性轴，range.x 可以精确标注连续区间；未指定 y 时覆盖整个绘图区。",
+  "vseed": {
+    "chartType": "histogram",
+    "dataset": [
+      { "value": 1 },
+      { "value": 1 },
+      { "value": 2 },
+      { "value": 3 },
+      { "value": 4 },
+      { "value": 5 },
+      { "value": 7 },
+      { "value": 8 },
+      { "value": 9 },
+      { "value": 10 }
+    ],
+    "measures": [{ "id": "value" }],
+    "annotationArea": {
+      "range": { "x": { "min": 3, "max": 7 } },
+      "text": "重点观察区间",
+      "areaColor": "#ef4444",
+      "areaColorOpacity": 0.12
+    }
+  }
+}
