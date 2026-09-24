@@ -1,0 +1,27 @@
+{
+  "name": "箱线图：高危险区间",
+  "description": "箱线图的数值 y 轴标出高危险区间，分类 x 轴铺满；可直观看出各组箱体和须与阈值区间的关系。",
+  "vseed": {
+    "chartType": "boxPlot",
+    "dataset": [
+      { "group": "甲组", "value": 4 },
+      { "group": "甲组", "value": 8 },
+      { "group": "甲组", "value": 11 },
+      { "group": "甲组", "value": 14 },
+      { "group": "甲组", "value": 18 },
+      { "group": "乙组", "value": 6 },
+      { "group": "乙组", "value": 9 },
+      { "group": "乙组", "value": 13 },
+      { "group": "乙组", "value": 17 },
+      { "group": "乙组", "value": 22 }
+    ],
+    "dimensions": [{ "id": "group", "encoding": "xAxis" }],
+    "measures": [{ "id": "value", "encoding": "yAxis" }],
+    "annotationArea": {
+      "range": { "y": { "min": 15, "max": "axisMax" } },
+      "text": "高危险区间",
+      "areaColor": "#ef4444",
+      "areaColorOpacity": 0.12
+    }
+  }
+}

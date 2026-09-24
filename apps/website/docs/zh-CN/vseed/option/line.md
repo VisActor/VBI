@@ -5121,7 +5121,7 @@ true
 **Type:** `AreaSelector | AreaSelectors | undefined`
 
 :::note{title=描述}
-依赖选择的数据, 进行数据标记.
+selector 与 range 必须且只能配置一种。selector 依赖选择的数据确定分类色带。折线/面积使用类别中心加 outerPadding；柱/条使用完整 band 边界加 outerPadding。
 
 :::
 
@@ -5467,7 +5467,7 @@ true
 **Type:** `number | undefined`
 
 :::note{title=描述}
-标注区域区域的边距
+selector 分类色带的像素边距。range 模式不应用此边距，以保持精确的数据坐标边界。
 
 :::
 
@@ -5475,6 +5475,78 @@ true
 0
 
 
+
+### range
+
+**Type:** `AnnotationAreaRange | undefined`
+
+:::note{title=描述}
+selector 与 range 必须且只能配置一种。range 按数据坐标定义区域，至少指定 x/y 中的一项，每项都必须填写 min/max。可使用 axisMin/axisMax 表示当前轴边界。
+
+仅支持普通数值线性轴，可用于折线、面积、柱、条、箱线、直方图、散点图及其适用的分组/百分比变体；不支持分类/对数轴范围、双轴图、透视组合图和动态竞赛图。
+
+
+
+按轴坐标定义矩形，至少指定 x/y 中的一项。未指定的轴铺满绘图区；完全越界时不绘制，部分越界时裁剪，不扩大坐标轴。
+
+:::
+
+
+#### x
+
+**Type:** `AnnotationAxisRange | undefined`
+
+:::note{title=描述}
+数值线性轴上的区间。必须同时指定 min/max；两个数值端点必须满足 min < max。
+
+:::
+
+
+##### min
+
+**Type:** `number | "axisMin"`
+
+:::note{title=描述}
+数据坐标下界；axisMin 表示当前轴的最小值。百分比使用原始数值，例如 0.2 表示 20%。
+
+:::
+
+##### max
+
+**Type:** `number | "axisMax"`
+
+:::note{title=描述}
+数据坐标上界；axisMax 表示当前轴的最大值。反向轴仍按数值大小解释上下界。
+
+:::
+
+#### y
+
+**Type:** `AnnotationAxisRange | undefined`
+
+:::note{title=描述}
+数值线性轴上的区间。必须同时指定 min/max；两个数值端点必须满足 min < max。
+
+:::
+
+
+##### min
+
+**Type:** `number | "axisMin"`
+
+:::note{title=描述}
+数据坐标下界；axisMin 表示当前轴的最小值。百分比使用原始数值，例如 0.2 表示 20%。
+
+:::
+
+##### max
+
+**Type:** `number | "axisMax"`
+
+:::note{title=描述}
+数据坐标上界；axisMax 表示当前轴的最大值。反向轴仍按数值大小解释上下界。
+
+:::
 
 
 ## annotationDifferenceLine
