@@ -1,6 +1,6 @@
 {
   "name": "bar",
-  "description": "bar",
+  "description": "已有 selector 分类色带：选中 2021 年，沿数值 x 轴铺满绘图区；沿分类 y 轴使用完整 band 边界加 outerPadding，保持历史行为。",
   "vseed": {
     "chartType": "bar",
     "dataset": [

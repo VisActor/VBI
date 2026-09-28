@@ -1,10 +1,32 @@
 import type { AreaSelectors, AreaSelector } from '../../dataSelector/selector'
+import type { AnnotationAreaRange } from './annotationAreaRange'
 
-export type AnnotationArea = {
-  /**
-   * @description 依赖选择的数据, 进行数据标记.
-   */
-  selector?: AreaSelector | AreaSelectors
+/**
+ * @description 区域标注，selector 与 range 必须且只能配置一种。
+ * selector 保留分类色带语义；range 按数值线性轴的原始坐标绘制，不依赖区域内是否存在数据点。
+ * range 支持普通折线、面积、柱、条、箱线、直方图、散点图及其适用的分组/百分比变体；不支持分类/对数轴范围、双轴图、透视组合图和动态竞赛图。
+ * @example { range: { y: { min: 10, max: 'axisMax' } }, text: '高危险区域', areaColor: '#ef4444', areaColorOpacity: 0.12 }
+ */
+export type AnnotationArea = (
+  | {
+      /**
+       * @description selector 与 range 必须且只能配置一种。selector 依赖选择的数据确定分类色带。折线/面积使用类别中心加 outerPadding；柱/条使用完整 band 边界加 outerPadding。
+       */
+      selector: AreaSelector | AreaSelectors
+      range?: never
+    }
+  | {
+      selector?: never
+      /**
+       * @description selector 与 range 必须且只能配置一种。range 按数据坐标定义区域，至少指定 x/y 中的一项，每项都必须填写 min/max。可使用 axisMin/axisMax 表示当前轴边界。
+       * 仅支持普通数值线性轴，可用于折线、面积、柱、条、箱线、直方图、散点图及其适用的分组/百分比变体；不支持分类/对数轴范围、双轴图、透视组合图和动态竞赛图。
+       */
+      range: AnnotationAreaRange
+    }
+) &
+  AnnotationAreaStyle
+
+export type AnnotationAreaStyle = {
   /**
    * @description 标注的文本
    * @default ''
@@ -113,7 +135,7 @@ export type AnnotationArea = {
    */
   areaLineDash?: number[]
   /**
-   * @description 标注区域区域的边距
+   * @description selector 分类色带的像素边距。range 模式不应用此边距，以保持精确的数据坐标边界。
    * @example 0
    */
   outerPadding?: number

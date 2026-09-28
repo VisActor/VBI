@@ -1,10 +1,140 @@
 # AnnotationArea
 
+## 面积图：二月到三月分类色带
+
+已有 selector 正例：选中二月、三月，纵向铺满绘图区。沿 x 的历史边界是选中类别中心加 outerPadding（默认 4px），不是面积曲线下方，也不是完整 band 外沿。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "area",
+  "dataset": [
+    {
+      "month": "一月",
+      "region": "华东",
+      "value": 10
+    },
+    {
+      "month": "一月",
+      "region": "华西",
+      "value": 8
+    },
+    {
+      "month": "二月",
+      "region": "华东",
+      "value": 15
+    },
+    {
+      "month": "二月",
+      "region": "华西",
+      "value": 12
+    },
+    {
+      "month": "三月",
+      "region": "华东",
+      "value": 20
+    },
+    {
+      "month": "三月",
+      "region": "华西",
+      "value": 18
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "month",
+      "encoding": "xAxis"
+    },
+    {
+      "id": "region",
+      "encoding": "color"
+    }
+  ],
+  "measures": [
+    {
+      "id": "value",
+      "encoding": "yAxis"
+    }
+  ],
+  "annotationArea": [
+    {
+      "selector": {
+        "field": "month",
+        "operator": "in",
+        "value": [
+          "二月",
+          "三月"
+        ]
+      },
+      "text": "后两月"
+    }
+  ]
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 条形图：高危险区域
+
+横向条形图的数值轴是 x，因此风险阈值写在 range.x，分类 y 轴铺满。x/y 对应实际坐标轴，不随图表方向互换含义。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "bar",
+  "dataset": [
+    {
+      "month": "一月",
+      "value": 5
+    },
+    {
+      "month": "二月",
+      "value": 15
+    },
+    {
+      "month": "三月",
+      "value": 20
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "month",
+      "encoding": "yAxis"
+    }
+  ],
+  "measures": [
+    {
+      "id": "value",
+      "encoding": "xAxis"
+    }
+  ],
+  "annotationArea": {
+    "range": {
+      "x": {
+        "min": 10,
+        "max": "axisMax"
+      }
+    },
+    "text": "高危险区域",
+    "areaColor": "#ef4444",
+    "areaColorOpacity": 0.12
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
 ## bar
 
-bar
+已有 selector 分类色带：选中 2021 年，沿数值 x 轴铺满绘图区；沿分类 y 轴使用完整 band 边界加 outerPadding，保持历史行为。
 
-```tsx preview 
+```tsx preview
 import { VSeedRender } from '@components'
 
 export default () => {
@@ -76,11 +206,145 @@ export default () => {
 }
 ```
 
+## 箱线图：高危险区间
+
+箱线图的数值 y 轴标出高危险区间，分类 x 轴铺满；可直观看出各组箱体和须与阈值区间的关系。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "boxPlot",
+  "dataset": [
+    {
+      "group": "甲组",
+      "value": 4
+    },
+    {
+      "group": "甲组",
+      "value": 8
+    },
+    {
+      "group": "甲组",
+      "value": 11
+    },
+    {
+      "group": "甲组",
+      "value": 14
+    },
+    {
+      "group": "甲组",
+      "value": 18
+    },
+    {
+      "group": "乙组",
+      "value": 6
+    },
+    {
+      "group": "乙组",
+      "value": 9
+    },
+    {
+      "group": "乙组",
+      "value": 13
+    },
+    {
+      "group": "乙组",
+      "value": 17
+    },
+    {
+      "group": "乙组",
+      "value": 22
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "group",
+      "encoding": "xAxis"
+    }
+  ],
+  "measures": [
+    {
+      "id": "value",
+      "encoding": "yAxis"
+    }
+  ],
+  "annotationArea": {
+    "range": {
+      "y": {
+        "min": 15,
+        "max": "axisMax"
+      }
+    },
+    "text": "高危险区间",
+    "areaColor": "#ef4444",
+    "areaColorOpacity": 0.12
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 柱状图：高危险区域
+
+柱状图在数值 y 轴上绘制 10 到轴上限的水平色带，分类 x 轴铺满。range 两个数值端点必须满足 min < max。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "column",
+  "dataset": [
+    {
+      "month": "一月",
+      "value": 5
+    },
+    {
+      "month": "二月",
+      "value": 15
+    },
+    {
+      "month": "三月",
+      "value": 20
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "month",
+      "encoding": "xAxis"
+    }
+  ],
+  "measures": [
+    {
+      "id": "value",
+      "encoding": "yAxis"
+    }
+  ],
+  "annotationArea": {
+    "range": {
+      "y": {
+        "min": 10,
+        "max": "axisMax"
+      }
+    },
+    "text": "高危险区域",
+    "areaColor": "#ef4444",
+    "areaColorOpacity": 0.12
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
 ## column
 
 column
 
-```tsx preview 
+```tsx preview
 import { VSeedRender } from '@components'
 
 export default () => {
@@ -150,11 +414,128 @@ export default () => {
 }
 ```
 
+## 直方图重点观察区间
+
+直方图的横轴也是数值线性轴，range.x 可以精确标注连续区间；未指定 y 时覆盖整个绘图区。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "histogram",
+  "dataset": [
+    {
+      "value": 1
+    },
+    {
+      "value": 1
+    },
+    {
+      "value": 2
+    },
+    {
+      "value": 3
+    },
+    {
+      "value": 4
+    },
+    {
+      "value": 5
+    },
+    {
+      "value": 7
+    },
+    {
+      "value": 8
+    },
+    {
+      "value": 9
+    },
+    {
+      "value": 10
+    }
+  ],
+  "measures": [
+    {
+      "id": "value"
+    }
+  ],
+  "annotationArea": {
+    "range": {
+      "x": {
+        "min": 3,
+        "max": 7
+      }
+    },
+    "text": "重点观察区间",
+    "areaColor": "#ef4444",
+    "areaColorOpacity": 0.12
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 折线图：高危险区域
+
+y 从 10 到 axisMax，x 分类轴铺满。指定数值范围与按 selector 选出高风险月份不同：风险区域始终覆盖所有月份，并随最终轴范围更新。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "line",
+  "dataset": [
+    {
+      "month": "一月",
+      "value": 5
+    },
+    {
+      "month": "二月",
+      "value": 15
+    },
+    {
+      "month": "三月",
+      "value": 20
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "month",
+      "encoding": "xAxis"
+    }
+  ],
+  "measures": [
+    {
+      "id": "value",
+      "encoding": "yAxis"
+    }
+  ],
+  "annotationArea": {
+    "range": {
+      "y": {
+        "min": 10,
+        "max": "axisMax"
+      }
+    },
+    "text": "高危险区域",
+    "areaColor": "#ef4444",
+    "areaColorOpacity": 0.12
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
 ## line
 
 line
 
-```tsx preview 
+```tsx preview
 import { VSeedRender } from '@components'
 
 export default () => {
@@ -218,6 +599,280 @@ export default () => {
       "alias": "数量"
     }
   ]
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 散点图：无数据点的目标区域
+
+目标矩形内没有数据点也可绘制。axisMax 指当前最终坐标轴上限，此处手动设置为 100%；它不是数据最大值 60%。TypeScript 可从 @visactor/vseed 导入 AxisBoundaryEnum.Min / Max，JSON 使用 axisMin / axisMax。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "scatter",
+  "dataset": [
+    {
+      "channel": "A",
+      "cost": 10,
+      "conversion": 0.1
+    },
+    {
+      "channel": "B",
+      "cost": 60,
+      "conversion": 0.3
+    },
+    {
+      "channel": "C",
+      "cost": 130,
+      "conversion": 0.6
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "channel",
+      "encoding": "color"
+    }
+  ],
+  "measures": [
+    {
+      "id": "cost",
+      "encoding": "xAxis"
+    },
+    {
+      "id": "conversion",
+      "encoding": "yAxis"
+    }
+  ],
+  "yAxis": {
+    "min": 0,
+    "max": 1,
+    "autoFormat": false,
+    "numFormat": {
+      "type": "percent"
+    }
+  },
+  "annotationArea": {
+    "range": {
+      "x": {
+        "min": 0,
+        "max": 100
+      },
+      "y": {
+        "min": 0.7,
+        "max": "axisMax"
+      }
+    },
+    "text": "待达成目标",
+    "areaColor": "#22c55e",
+    "areaColorOpacity": 0.12
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 散点图：二维目标矩形
+
+同时限制成本 0–100 和转化率 20%–40%。即使只有 B 点位于区间内，也绘制完整矩形；区域不随点的顺序或数量收缩。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "scatter",
+  "dataset": [
+    {
+      "channel": "A",
+      "cost": 10,
+      "conversion": 0.1
+    },
+    {
+      "channel": "B",
+      "cost": 60,
+      "conversion": 0.3
+    },
+    {
+      "channel": "C",
+      "cost": 130,
+      "conversion": 0.6
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "channel",
+      "encoding": "color"
+    }
+  ],
+  "measures": [
+    {
+      "id": "cost",
+      "encoding": "xAxis"
+    },
+    {
+      "id": "conversion",
+      "encoding": "yAxis"
+    }
+  ],
+  "yAxis": {
+    "autoFormat": false,
+    "numFormat": {
+      "type": "percent"
+    }
+  },
+  "annotationArea": {
+    "range": {
+      "x": {
+        "min": 0,
+        "max": 100
+      },
+      "y": {
+        "min": 0.2,
+        "max": 0.4
+      }
+    },
+    "text": "目标区域",
+    "areaColor": "#22c55e",
+    "areaColorOpacity": 0.12
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 散点图：成本窗口
+
+range.x 使用原始数据坐标 0–100；未指定 y 时纵向铺满绘图区。range 与 selector 互斥，指定轴必须同时填写 min/max；范围不会扩大轴域，部分越界裁剪、完全越界不绘制。支持普通折线、面积、柱、条、箱线、直方图、散点图及适用的分组/百分比变体的数值线性轴（含反向轴）；不支持分类/对数轴范围、双轴图、透视组合图、动态竞赛图。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "scatter",
+  "dataset": [
+    {
+      "channel": "A",
+      "cost": 10,
+      "conversion": 0.1
+    },
+    {
+      "channel": "B",
+      "cost": 60,
+      "conversion": 0.3
+    },
+    {
+      "channel": "C",
+      "cost": 130,
+      "conversion": 0.6
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "channel",
+      "encoding": "color"
+    }
+  ],
+  "measures": [
+    {
+      "id": "cost",
+      "encoding": "xAxis"
+    },
+    {
+      "id": "conversion",
+      "encoding": "yAxis"
+    }
+  ],
+  "yAxis": {
+    "autoFormat": false,
+    "numFormat": {
+      "type": "percent"
+    }
+  },
+  "annotationArea": {
+    "range": {
+      "x": {
+        "min": 0,
+        "max": 100
+      }
+    },
+    "text": "成本 0–100",
+    "areaColor": "#3b82f6",
+    "areaColorOpacity": 0.12
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 散点图：转化率目标带
+
+range.y 使用原始数值 0.2–0.4，显示为 20%–40%；未指定 x 时横向铺满绘图区。标签格式化不改变边界，outerPadding 不作用于 range。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "scatter",
+  "dataset": [
+    {
+      "channel": "A",
+      "cost": 10,
+      "conversion": 0.1
+    },
+    {
+      "channel": "B",
+      "cost": 60,
+      "conversion": 0.3
+    },
+    {
+      "channel": "C",
+      "cost": 130,
+      "conversion": 0.6
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "channel",
+      "encoding": "color"
+    }
+  ],
+  "measures": [
+    {
+      "id": "cost",
+      "encoding": "xAxis"
+    },
+    {
+      "id": "conversion",
+      "encoding": "yAxis"
+    }
+  ],
+  "yAxis": {
+    "autoFormat": false,
+    "numFormat": {
+      "type": "percent"
+    }
+  },
+  "annotationArea": {
+    "range": {
+      "y": {
+        "min": 0.2,
+        "max": 0.4
+      }
+    },
+    "text": "目标转化率 20%–40%",
+    "areaColor": "#22c55e",
+    "areaColorOpacity": 0.12
+  }
 }
 
   return <VSeedRender vseed={vseedConfig} />

@@ -19,7 +19,7 @@ const CONFIG = {
  * Documentation Generator Class
  * Handles the generation of markdown documentation from TypeScript interfaces.
  */
-class DocsGenerator {
+export class DocsGenerator {
   constructor(config) {
     this.config = config
     this.project = new Project({
@@ -140,7 +140,7 @@ class DocsGenerator {
   /**
    * Generate markdown for a node (Interface or Property)
    */
-  generateMarkdown(node, level = 1, visited = new Set()) {
+  generateMarkdown(node, level = 1, visited = new Set(), optionalInSomeBranch = false) {
     const isInterface = node.getKind() === SyntaxKind.InterfaceDeclaration
     const isProperty =
       node.getKind() === SyntaxKind.PropertySignature || node.getKind() === SyntaxKind.PropertyDeclaration
@@ -173,7 +173,8 @@ class DocsGenerator {
     let markdown = `${'#'.repeat(level)} ${name}\n\n`
 
     if (isProperty) {
-      markdown += `**Type:** \`${this.formatType(node)}\`\n\n`
+      const type = this.formatType(node)
+      markdown += `**Type:** \`${optionalInSomeBranch && !/\bundefined\b/.test(type) ? `${type} | undefined` : type}\`\n\n`
     }
 
     // Add documentation tags (description, example, etc.)
@@ -276,13 +277,13 @@ class DocsGenerator {
     ]
 
     tagMappings.forEach(({ key, title, type }) => {
-      const content = (tags[key] || []).join('\n\n').replace(/\n/g, '\n\n').replace(/\-/g, '\\-')
+      const content = (tags[key] || []).join('\n\n').replace(/\n/g, '\n\n').replace(/-/g, '\\-')
       if (content) {
         markdown += `:::${type}{title=${title}}\n${content}\n\n:::\n\n`
       }
     })
 
-    const example = (tags.example || []).join('\n\n').replace(/\n/g, '\n').replace(/\-/g, '\\-')
+    const example = (tags.example || []).join('\n\n').replace(/\n/g, '\n').replace(/-/g, '\\-')
     if (example) {
       markdown += `**示例**\n${example}\n\n\n\n`
     }
@@ -306,13 +307,24 @@ class DocsGenerator {
       .filter(
         (d) => d && (d.getKind() === SyntaxKind.PropertySignature || d.getKind() === SyntaxKind.PropertyDeclaration),
       )
+      // An optional never marks a mutually exclusive branch, not a documented value.
+      .filter((d) => !d.getType().getNonNullableType().isNever())
 
     // Deduplicate properties by name
     const uniqueDeclarations = [...new Map(propertyDeclarations.map((item) => [item.getName(), item])).values()]
 
     if (uniqueDeclarations.length === 0) return ''
 
-    return uniqueDeclarations.map((subProp) => this.generateMarkdown(subProp, level + 1, new Set(visited))).join('')
+    return uniqueDeclarations
+      .map((subProp) => {
+        const name = subProp.getName()
+        // Shared fields can be optional in one union branch even if the chosen declaration is required.
+        const branchProperties = typesToProcess.map((type) => type.getProperty(name))
+        const optionalInSomeBranch =
+          branchProperties.every(Boolean) && branchProperties.some((property) => property.isOptional())
+        return this.generateMarkdown(subProp, level + 1, new Set(visited), optionalInSomeBranch)
+      })
+      .join('')
   }
 
   /**
@@ -397,9 +409,10 @@ class DocsGenerator {
 // Entry Point
 // ==================================================================================
 
-const generator = new DocsGenerator(CONFIG)
-
-generator.run().catch((err) => {
-  console.error('Failed to generate documentation:', err)
-  process.exit(1)
-})
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+  const generator = new DocsGenerator(CONFIG)
+  generator.run().catch((err) => {
+    console.error('Failed to generate documentation:', err)
+    process.exit(1)
+  })
+}

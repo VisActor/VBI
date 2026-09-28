@@ -1,8 +1,23 @@
 import { zAreaSelector, zAreaSelectors } from '../../dataSelector/selector'
 import { z } from 'zod'
+import { AxisBoundaryEnum } from './annotationAreaRange'
 
-export const zAnnotationArea = z.object({
-  selector: z.union([zAreaSelector, zAreaSelectors]).nullish(),
+export const zAnnotationAxisRange = z
+  .object({
+    min: z.number().finite().or(z.literal(AxisBoundaryEnum.Min)),
+    max: z.number().finite().or(z.literal(AxisBoundaryEnum.Max)),
+  })
+  .strict()
+  .refine(({ min, max }) => typeof min !== 'number' || typeof max !== 'number' || min < max, {
+    message: 'min must be less than max',
+  })
+
+export const zAnnotationAreaRange = z
+  .object({ x: zAnnotationAxisRange.optional(), y: zAnnotationAxisRange.optional() })
+  .strict()
+  .refine(({ x, y }) => x !== undefined || y !== undefined, { message: 'range requires x or y' })
+
+export const zAnnotationAreaStyle = z.object({
   textPosition: z
     .enum(['top', 'topRight', 'topLeft', 'bottom', 'bottomLeft', 'bottomRight', 'left', 'right'])
     .default('top')
@@ -30,3 +45,14 @@ export const zAnnotationArea = z.object({
 
   outerPadding: z.number().default(4).nullish(),
 })
+
+export const zAnnotationArea = z.union([
+  zAnnotationAreaStyle.extend({
+    selector: z.union([zAreaSelector, zAreaSelectors]),
+    range: z.never().optional(),
+  }),
+  zAnnotationAreaStyle.extend({
+    selector: z.never().optional(),
+    range: zAnnotationAreaRange,
+  }),
+])

@@ -1,0 +1,20 @@
+{
+  "name": "柱状图：高危险区域",
+  "description": "柱状图在数值 y 轴上绘制 10 到轴上限的水平色带，分类 x 轴铺满。range 两个数值端点必须满足 min < max。",
+  "vseed": {
+    "chartType": "column",
+    "dataset": [
+      { "month": "一月", "value": 5 },
+      { "month": "二月", "value": 15 },
+      { "month": "三月", "value": 20 }
+    ],
+    "dimensions": [{ "id": "month", "encoding": "xAxis" }],
+    "measures": [{ "id": "value", "encoding": "yAxis" }],
+    "annotationArea": {
+      "range": { "y": { "min": 10, "max": "axisMax" } },
+      "text": "高危险区域",
+      "areaColor": "#ef4444",
+      "areaColorOpacity": 0.12
+    }
+  }
+}
