@@ -1,5 +1,5 @@
 import { n as __esmMin, o as __toESM, r as __exportAll } from "./rolldown-runtime.js";
-import { $ as d$6, A as init_yjs, An as H$4, At as m$8, B as date, Bn as preview_exports$1, Bt as PivotTableAll, Cn as isUndefined, Ct as D$4, D as YMap, Dn as init_esm$1, Dt as i$9, E as YArray, En as esm_default, Et as r$11, F as _enum, Fn as h$5, Ft as C$6, G as number, Gt as boxplot, Hn as init_entry_preview_docs, Ht as ListTableAll, I as any, In as init_client, J as string, Jn as init_entry_preview, K as object, Kn as setCustomElementsManifest, L as array$1, Ln as proxyCustomElement, Lt as init_es$2, Mn as createEvent, N as v4, Nn as forceUpdate, Nt as i$7, O as applyUpdate, On as StreamLight, P as init_zod, Pn as getRenderingRef, Q as init_dist$1, Qn as setup, Qt as Color, R as boolean, Rn as transformTag, Rt as PivotChart, S as Kysely, St as y$10, T as UndoManager$1, Tn as isNil, U as lazy, Un as entry_preview_argtypes_exports, V as discriminatedUnion, Vn as entry_preview_docs_exports, W as literal, Wn as init_entry_preview_argtypes, Wt as init_es$1, X as union, Xn as init_preload_helper, Y as tuple, Yn as __vitePreload, Yt as chartModule, Z as require_tinycolor, Zn as init_runtime, Zt as init_es, _n as pickWithout, an as regressionPolynomial, ct as n$11, dn as regressionLinear, dt as e$8, en as ecdf, f as init_dist$3, fn as clamper, g as PostgresQueryCompiler, gt as t$14, j as init_dist$2, jn as Host, jt as T$4, k as encodeStateAsUpdate, ln as regressionLogistic, m as PostgresAdapter, mn as array, mt as n$10, nt as k$7, ot as o$9, p as init_esm$2, q as record, qn as entry_preview_exports, qt as bin, rn as kde, rt as i$10, sn as regressionLowess, ut as o$10, v as DummyDriver, vt as t$13, w as Doc, x as sql, xn as isArray, yn as merge, yt as i$8, z as custom, zn as init_preview$1 } from "./vendor.js";
+import { $ as d$6, $n as init_runtime, $t as normalizePadding, A as init_yjs, An as StreamLight, At as m$8, B as date, Bn as transformTag, Bt as PivotTableAll, Cn as isArray, Ct as D$4, D as YMap, Dn as isNil, Dt as i$9, E as YArray, Et as r$11, F as _enum, Fn as forceUpdate, Ft as C$6, G as number, Gn as entry_preview_argtypes_exports, Gt as boxplot, Hn as preview_exports$1, Ht as ListTableAll, I as any, In as getRenderingRef, J as string, Jn as setCustomElementsManifest, K as object, Kn as init_entry_preview_argtypes, L as array$1, Ln as h$5, Lt as init_es$2, Mn as H$4, N as v4, Nn as Host, Nt as i$7, O as applyUpdate, On as esm_default, P as init_zod, Pn as createEvent, Q as init_dist$1, Qn as init_preload_helper, R as boolean, Rn as init_client, Rt as PivotChart, S as Kysely, St as y$10, T as UndoManager$1, Tn as isUndefined, U as lazy, Un as entry_preview_docs_exports, V as discriminatedUnion, Vn as init_preview$1, W as literal, Wn as init_entry_preview_docs, Wt as init_es$1, X as union, Xn as init_entry_preview, Y as tuple, Yn as entry_preview_exports, Yt as chartModule, Z as require_tinycolor, Zn as __vitePreload, Zt as init_es, an as kde, ct as n$11, dn as regressionLogistic, dt as e$8, en as Color, er as setup, f as init_dist$3, g as PostgresQueryCompiler, gn as array, gt as t$14, j as init_dist$2, jt as T$4, k as encodeStateAsUpdate, kn as init_esm$1, ln as regressionLowess, m as PostgresAdapter, mn as clamper, mt as n$10, nn as ecdf, nt as k$7, ot as o$9, p as init_esm$2, pn as regressionLinear, q as record, qt as bin, rt as i$10, sn as regressionPolynomial, ut as o$10, v as DummyDriver, vt as t$13, w as Doc, x as sql, xn as merge, yn as pickWithout, yt as i$8, z as custom, zn as proxyCustomElement } from "./vendor.js";
 //#region iframe.html?html-proxy&inline-css&index=0.css
 var init_iframe_html_html_proxy_inline_css_index_0 = __esmMin((() => {}));
 //#endregion
@@ -9397,6 +9397,195 @@ var init_stack$1 = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region ../vseed/dist/esm/dataSelector/selector.js
+function nearlyEqual(a, b, epsilon = 1e-8) {
+	if (Number.isNaN(a) || Number.isNaN(b)) return false;
+	if (a === b) return true;
+	return Math.abs(a - b) <= epsilon;
+}
+var selector_selector, isValueSelector, isPartialDatumSelector, isFieldSelector, isMeasureSelector, isDimensionSelector, selectByMeasure, selectByDmension, selectByField, matchesFieldSelector, selectByPartial, selectByValue, matchesCellSelector, matchesDatum, isDynamicFilterLike, isRowWithFieldDynamicFilter, isValueDynamicFilter, isDynamicFilter, validateFilterResult, executeDynamicFilter, matchDynamicFilterResult, selectorWithDynamicFilter;
+var init_selector$1 = __esmMin((() => {
+	init_dist$1();
+	init_sandbox();
+	init_dataReshape();
+	selector_selector = (vchartDatum, selector, selectorMode = "And") => {
+		if (!selector) return true;
+		const datum = y$10(vchartDatum, Object.keys(vchartDatum).filter((k) => k.toLocaleLowerCase().startsWith("__vchart")));
+		return (Array.isArray(selector) ? selector : [selector])["And" === selectorMode ? "every" : "some"]((selector) => {
+			if (isValueSelector(selector)) return selectByValue(selector, datum);
+			else if (isFieldSelector(selector)) return selectByField(selector, datum);
+			else if (isMeasureSelector(selector)) return selectByMeasure(selector, datum);
+			else if (isDimensionSelector(selector)) return selectByDmension(selector, datum);
+			else if (isPartialDatumSelector(selector)) return selectByPartial(selector, datum);
+			return false;
+		});
+	};
+	isValueSelector = (selector) => "string" == typeof selector || "number" == typeof selector;
+	isPartialDatumSelector = (selector) => "object" == typeof selector && null !== selector;
+	isFieldSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && !("operator" in selector) && !("op" in selector) && !("value" in selector);
+	isMeasureSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && ("operator" in selector || "op" in selector) && "value" in selector && ([
+		"=",
+		"==",
+		"!=",
+		">",
+		"<",
+		">=",
+		"<=",
+		"between"
+	].includes(selector.operator) || [
+		"=",
+		"==",
+		"!=",
+		">",
+		"<",
+		">=",
+		"<=",
+		"between"
+	].includes(selector.op));
+	isDimensionSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && ("operator" in selector || "op" in selector) && "value" in selector && (["in", "not in"].includes(selector.operator) || ["in", "not in"].includes(selector.op));
+	selectByMeasure = (selector, datum) => {
+		const op = selector.operator || selector.op;
+		const selectorValueArr = Array.isArray(selector.value) ? selector.value : [selector.value];
+		switch (op) {
+			case "=":
+				if (String(datum[selector.field]) === String(selectorValueArr[0]) || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case "==":
+				if (datum[selector.field] === selectorValueArr[0]) return true;
+				break;
+			case "!=":
+				if (datum[selector.field] !== selectorValueArr[0]) return true;
+				break;
+			case ">":
+				if (datum[selector.field] > selectorValueArr[0] && !nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case "<":
+				if (datum[selector.field] < selectorValueArr[0] && !nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case ">=":
+				if (datum[selector.field] >= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case "<=":
+				if (datum[selector.field] <= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case "between":
+				if (Array.isArray(selector.value) && (datum[selector.field] >= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) && (datum[selector.field] <= selectorValueArr[1] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[1])))) return true;
+				break;
+		}
+		return false;
+	};
+	selectByDmension = (selector, datum) => {
+		const op = selector.operator || selector.op;
+		const selectorValueArr = Array.isArray(selector.value) ? selector.value : [selector.value];
+		switch (op) {
+			case "in":
+				if (selectorValueArr.includes(datum[selector.field])) return true;
+				break;
+			case "not in":
+				if (!selectorValueArr.includes(datum[selector.field])) return true;
+				break;
+		}
+		return false;
+	};
+	selectByField = (selector, datum) => {
+		const fields = Array.isArray(selector.field) ? selector.field : [selector.field];
+		const datumKeys = Object.keys(datum);
+		return fields.some((field) => datumKeys.includes(field));
+	};
+	matchesFieldSelector = (field, fieldSelector) => {
+		return (Array.isArray(fieldSelector.field) ? fieldSelector.field : [fieldSelector.field]).includes(field);
+	};
+	selectByPartial = (selector, datum) => Object.keys(selector).every((key) => datum[key] === selector[key]);
+	selectByValue = (selector, datum) => Object.values(datum).some((v) => v === selector);
+	matchesCellSelector = (cell, filterRes) => {
+		if (filterRes["__row_index"] !== cell["__row_index"]) return false;
+		return "*" === filterRes.field || Object.keys(cell).includes(filterRes.field);
+	};
+	matchesDatum = (target, candidate) => Object.keys(candidate).every((key) => target[key] === candidate[key]);
+	isDynamicFilterLike = (selector, expectedTypes) => "object" == typeof selector && null !== selector && "type" in selector && expectedTypes.includes(selector.type) && "code" in selector && "string" == typeof selector.code;
+	isRowWithFieldDynamicFilter = (selector) => isDynamicFilterLike(selector, ["row-with-field"]);
+	isValueDynamicFilter = (selector) => isDynamicFilterLike(selector, ["value"]);
+	isDynamicFilter = (selector) => isDynamicFilterLike(selector, ["row-with-field", "value"]);
+	validateFilterResult = (result, filter) => {
+		if (isValueDynamicFilter(filter)) {
+			if ("number" != typeof result && "string" != typeof result) throw new TypeError(`ValueDynamicFilter must return a number or string, but got: ${typeof result}. Code: "${filter.code}"`);
+			return;
+		}
+		if (!Array.isArray(result)) throw new TypeError(`${isRowWithFieldDynamicFilter(filter) ? "TableDynamicFilter" : "ChartDynamicFilter"} must return an array, but got: ${typeof result}. Code: "${filter.code}"`);
+		if (isRowWithFieldDynamicFilter(filter)) for (let i = 0; i < result.length; i++) {
+			const item = result[i];
+			if ("object" != typeof item || null === item) throw new TypeError(`TableDynamicFilter array element at index ${i} must be an object, got: ${typeof item}`);
+			if (!("__row_index" in item) && "__row_index" in item === false) throw new TypeError(`TableDynamicFilter array element at index ${i} must contain __row_index or InnerRowIndex field`);
+			if (!("field" in item)) throw new TypeError(`TableDynamicFilter array element at index ${i} must contain 'field' field`);
+		}
+	};
+	executeDynamicFilter = async (filter, allData) => {
+		try {
+			const { success, data, error } = await executeFilterCode({
+				code: filter.code,
+				data: allData
+			});
+			if (!success) {
+				console.warn("[vseed] Dynamic filter execution failed:", error);
+				return {
+					success: false,
+					data: isRowWithFieldDynamicFilter(filter) ? [] : "",
+					error
+				};
+			}
+			try {
+				validateFilterResult(data, filter);
+			} catch (validationError) {
+				console.error("[vseed] Dynamic filter result validation failed:", validationError);
+				return {
+					success: false,
+					data: isRowWithFieldDynamicFilter(filter) ? [] : "",
+					error: validationError instanceof Error ? validationError.message : String(validationError)
+				};
+			}
+			return {
+				success,
+				data
+			};
+		} catch (error) {
+			const errorMessage = error instanceof Error ? error.message : String(error);
+			console.error("[vseed] Dynamic filter execution threw exception:", errorMessage);
+			return {
+				success: false,
+				data: isRowWithFieldDynamicFilter(filter) ? [] : "",
+				error: errorMessage
+			};
+		}
+	};
+	matchDynamicFilterResult = (result, datum, selectorType = "table") => {
+		if ("number" == typeof result || "string" == typeof result) throw new Error("matchDynamicFilterResult does not support ValueDynamicFilter results");
+		if ("table" === selectorType) return result.some((item) => matchesCellSelector(datum, item));
+		return result.some((item) => matchesDatum(datum, item));
+	};
+	selectorWithDynamicFilter = (vchartDatum, selectorConfig, defaultSelector) => {
+		if (!selectorConfig) return true;
+		if (isValueDynamicFilter(selectorConfig)) {
+			if (selectorConfig.fallback) {
+				const fallbackSelector = Array.isArray(selectorConfig.fallback) ? selectorConfig.fallback : [selectorConfig.fallback];
+				return selector_selector(vchartDatum, fallbackSelector);
+			}
+			return defaultSelector ? selector_selector(vchartDatum, defaultSelector) : false;
+		}
+		const selectorType = isRowWithFieldDynamicFilter(selectorConfig) ? "table" : "chart";
+		if (selectorConfig.result?.success && selectorConfig.result.data) return matchDynamicFilterResult(selectorConfig.result.data, vchartDatum, selectorType);
+		if (selectorConfig.fallback) {
+			const fallbackSelector = Array.isArray(selectorConfig.fallback) ? selectorConfig.fallback : [selectorConfig.fallback];
+			return selector_selector(vchartDatum, fallbackSelector);
+		}
+		return defaultSelector ? selector_selector(vchartDatum, defaultSelector) : false;
+	};
+}));
+//#endregion
+//#region ../vseed/dist/esm/dataSelector/index.js
+var init_dataSelector$1 = __esmMin((() => {
+	init_selector$1();
+}));
+//#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/stack/stackCornerRadiusUtils.js
 var reverseStackCornerRadius, mergeStackCornerRadius, getStackRangeCornerRadius, callbacks, createCornerRadius, createStackCornerRadius, createBarCornerRadius, hasMoveInAnimation;
 var init_stackCornerRadiusUtils = __esmMin((() => {
@@ -9468,6 +9657,8 @@ var init_stackCornerRadiusUtils = __esmMin((() => {
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/stack/stackCornerRadius.js
 var hasBarMoveInAnimation, stackCornerRadius_stackCornerRadius;
 var init_stackCornerRadius$2 = __esmMin((() => {
+	init_es();
+	init_dataSelector$1();
 	init_stackCornerRadiusUtils();
 	hasBarMoveInAnimation = (spec) => [
 		spec.animationAppear,
@@ -9478,13 +9669,23 @@ var init_stackCornerRadius$2 = __esmMin((() => {
 	stackCornerRadius_stackCornerRadius = (spec, context) => {
 		const { advancedVSeed, vseed } = context;
 		const { chartType } = vseed;
-		const stackCornerRadius = advancedVSeed.config?.[chartType]?.stackCornerRadius;
-		const styles = advancedVSeed.markStyle?.barStyle;
-		if (null == stackCornerRadius || (Array.isArray(styles) ? styles : styles ? [styles] : []).some((rule) => null != rule.barRadius)) return spec;
-		if (!(advancedVSeed.datasetReshapeInfo?.[0]?.unfoldInfo.colorItems.length === 1) && !hasBarMoveInAnimation(spec)) return {
-			...spec,
-			stackCornerRadius: createStackCornerRadius(stackCornerRadius)
-		};
+		const stackCornerRadius = advancedVSeed.config?.[chartType]?.stackCornerRadius ?? 0;
+		if (!hasBarMoveInAnimation(spec)) {
+			const styles = advancedVSeed.markStyle?.barStyle;
+			const rules = (Array.isArray(styles) ? styles : styles ? [styles] : []).filter((rule) => null != rule.barRadius).reverse();
+			const defaultRadius = createStackCornerRadius(stackCornerRadius);
+			const clipRadius = rules.length ? (attributes, datum) => {
+				const radius = defaultRadius(attributes, datum);
+				const rule = rules.find((rule) => rule.dynamicFilter ? selectorWithDynamicFilter(datum, rule.dynamicFilter, rule.selector) : selector_selector(datum, rule.selector));
+				if (!rule) return radius;
+				const barRadius = normalizePadding(rule.barRadius);
+				return normalizePadding(radius).map((corner, index) => Math.min(corner, barRadius[index]));
+			} : defaultRadius;
+			return {
+				...spec,
+				stackCornerRadius: clipRadius
+			};
+		}
 		return {
 			...spec,
 			bar: {
@@ -10490,195 +10691,6 @@ var init_tooltip$3 = __esmMin((() => {
 	init_tooltipHierarchy();
 	init_tooltipHierarchySankey();
 	init_tooltipSankey();
-}));
-//#endregion
-//#region ../vseed/dist/esm/dataSelector/selector.js
-function nearlyEqual(a, b, epsilon = 1e-8) {
-	if (Number.isNaN(a) || Number.isNaN(b)) return false;
-	if (a === b) return true;
-	return Math.abs(a - b) <= epsilon;
-}
-var selector_selector, isValueSelector, isPartialDatumSelector, isFieldSelector, isMeasureSelector, isDimensionSelector, selectByMeasure, selectByDmension, selectByField, matchesFieldSelector, selectByPartial, selectByValue, matchesCellSelector, matchesDatum, isDynamicFilterLike, isRowWithFieldDynamicFilter, isValueDynamicFilter, isDynamicFilter, validateFilterResult, executeDynamicFilter, matchDynamicFilterResult, selectorWithDynamicFilter;
-var init_selector$1 = __esmMin((() => {
-	init_dist$1();
-	init_sandbox();
-	init_dataReshape();
-	selector_selector = (vchartDatum, selector, selectorMode = "And") => {
-		if (!selector) return true;
-		const datum = y$10(vchartDatum, Object.keys(vchartDatum).filter((k) => k.toLocaleLowerCase().startsWith("__vchart")));
-		return (Array.isArray(selector) ? selector : [selector])["And" === selectorMode ? "every" : "some"]((selector) => {
-			if (isValueSelector(selector)) return selectByValue(selector, datum);
-			else if (isFieldSelector(selector)) return selectByField(selector, datum);
-			else if (isMeasureSelector(selector)) return selectByMeasure(selector, datum);
-			else if (isDimensionSelector(selector)) return selectByDmension(selector, datum);
-			else if (isPartialDatumSelector(selector)) return selectByPartial(selector, datum);
-			return false;
-		});
-	};
-	isValueSelector = (selector) => "string" == typeof selector || "number" == typeof selector;
-	isPartialDatumSelector = (selector) => "object" == typeof selector && null !== selector;
-	isFieldSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && !("operator" in selector) && !("op" in selector) && !("value" in selector);
-	isMeasureSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && ("operator" in selector || "op" in selector) && "value" in selector && ([
-		"=",
-		"==",
-		"!=",
-		">",
-		"<",
-		">=",
-		"<=",
-		"between"
-	].includes(selector.operator) || [
-		"=",
-		"==",
-		"!=",
-		">",
-		"<",
-		">=",
-		"<=",
-		"between"
-	].includes(selector.op));
-	isDimensionSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && ("operator" in selector || "op" in selector) && "value" in selector && (["in", "not in"].includes(selector.operator) || ["in", "not in"].includes(selector.op));
-	selectByMeasure = (selector, datum) => {
-		const op = selector.operator || selector.op;
-		const selectorValueArr = Array.isArray(selector.value) ? selector.value : [selector.value];
-		switch (op) {
-			case "=":
-				if (String(datum[selector.field]) === String(selectorValueArr[0]) || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case "==":
-				if (datum[selector.field] === selectorValueArr[0]) return true;
-				break;
-			case "!=":
-				if (datum[selector.field] !== selectorValueArr[0]) return true;
-				break;
-			case ">":
-				if (datum[selector.field] > selectorValueArr[0] && !nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case "<":
-				if (datum[selector.field] < selectorValueArr[0] && !nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case ">=":
-				if (datum[selector.field] >= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case "<=":
-				if (datum[selector.field] <= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case "between":
-				if (Array.isArray(selector.value) && (datum[selector.field] >= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) && (datum[selector.field] <= selectorValueArr[1] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[1])))) return true;
-				break;
-		}
-		return false;
-	};
-	selectByDmension = (selector, datum) => {
-		const op = selector.operator || selector.op;
-		const selectorValueArr = Array.isArray(selector.value) ? selector.value : [selector.value];
-		switch (op) {
-			case "in":
-				if (selectorValueArr.includes(datum[selector.field])) return true;
-				break;
-			case "not in":
-				if (!selectorValueArr.includes(datum[selector.field])) return true;
-				break;
-		}
-		return false;
-	};
-	selectByField = (selector, datum) => {
-		const fields = Array.isArray(selector.field) ? selector.field : [selector.field];
-		const datumKeys = Object.keys(datum);
-		return fields.some((field) => datumKeys.includes(field));
-	};
-	matchesFieldSelector = (field, fieldSelector) => {
-		return (Array.isArray(fieldSelector.field) ? fieldSelector.field : [fieldSelector.field]).includes(field);
-	};
-	selectByPartial = (selector, datum) => Object.keys(selector).every((key) => datum[key] === selector[key]);
-	selectByValue = (selector, datum) => Object.values(datum).some((v) => v === selector);
-	matchesCellSelector = (cell, filterRes) => {
-		if (filterRes["__row_index"] !== cell["__row_index"]) return false;
-		return "*" === filterRes.field || Object.keys(cell).includes(filterRes.field);
-	};
-	matchesDatum = (target, candidate) => Object.keys(candidate).every((key) => target[key] === candidate[key]);
-	isDynamicFilterLike = (selector, expectedTypes) => "object" == typeof selector && null !== selector && "type" in selector && expectedTypes.includes(selector.type) && "code" in selector && "string" == typeof selector.code;
-	isRowWithFieldDynamicFilter = (selector) => isDynamicFilterLike(selector, ["row-with-field"]);
-	isValueDynamicFilter = (selector) => isDynamicFilterLike(selector, ["value"]);
-	isDynamicFilter = (selector) => isDynamicFilterLike(selector, ["row-with-field", "value"]);
-	validateFilterResult = (result, filter) => {
-		if (isValueDynamicFilter(filter)) {
-			if ("number" != typeof result && "string" != typeof result) throw new TypeError(`ValueDynamicFilter must return a number or string, but got: ${typeof result}. Code: "${filter.code}"`);
-			return;
-		}
-		if (!Array.isArray(result)) throw new TypeError(`${isRowWithFieldDynamicFilter(filter) ? "TableDynamicFilter" : "ChartDynamicFilter"} must return an array, but got: ${typeof result}. Code: "${filter.code}"`);
-		if (isRowWithFieldDynamicFilter(filter)) for (let i = 0; i < result.length; i++) {
-			const item = result[i];
-			if ("object" != typeof item || null === item) throw new TypeError(`TableDynamicFilter array element at index ${i} must be an object, got: ${typeof item}`);
-			if (!("__row_index" in item) && "__row_index" in item === false) throw new TypeError(`TableDynamicFilter array element at index ${i} must contain __row_index or InnerRowIndex field`);
-			if (!("field" in item)) throw new TypeError(`TableDynamicFilter array element at index ${i} must contain 'field' field`);
-		}
-	};
-	executeDynamicFilter = async (filter, allData) => {
-		try {
-			const { success, data, error } = await executeFilterCode({
-				code: filter.code,
-				data: allData
-			});
-			if (!success) {
-				console.warn("[vseed] Dynamic filter execution failed:", error);
-				return {
-					success: false,
-					data: isRowWithFieldDynamicFilter(filter) ? [] : "",
-					error
-				};
-			}
-			try {
-				validateFilterResult(data, filter);
-			} catch (validationError) {
-				console.error("[vseed] Dynamic filter result validation failed:", validationError);
-				return {
-					success: false,
-					data: isRowWithFieldDynamicFilter(filter) ? [] : "",
-					error: validationError instanceof Error ? validationError.message : String(validationError)
-				};
-			}
-			return {
-				success,
-				data
-			};
-		} catch (error) {
-			const errorMessage = error instanceof Error ? error.message : String(error);
-			console.error("[vseed] Dynamic filter execution threw exception:", errorMessage);
-			return {
-				success: false,
-				data: isRowWithFieldDynamicFilter(filter) ? [] : "",
-				error: errorMessage
-			};
-		}
-	};
-	matchDynamicFilterResult = (result, datum, selectorType = "table") => {
-		if ("number" == typeof result || "string" == typeof result) throw new Error("matchDynamicFilterResult does not support ValueDynamicFilter results");
-		if ("table" === selectorType) return result.some((item) => matchesCellSelector(datum, item));
-		return result.some((item) => matchesDatum(datum, item));
-	};
-	selectorWithDynamicFilter = (vchartDatum, selectorConfig, defaultSelector) => {
-		if (!selectorConfig) return true;
-		if (isValueDynamicFilter(selectorConfig)) {
-			if (selectorConfig.fallback) {
-				const fallbackSelector = Array.isArray(selectorConfig.fallback) ? selectorConfig.fallback : [selectorConfig.fallback];
-				return selector_selector(vchartDatum, fallbackSelector);
-			}
-			return defaultSelector ? selector_selector(vchartDatum, defaultSelector) : false;
-		}
-		const selectorType = isRowWithFieldDynamicFilter(selectorConfig) ? "table" : "chart";
-		if (selectorConfig.result?.success && selectorConfig.result.data) return matchDynamicFilterResult(selectorConfig.result.data, vchartDatum, selectorType);
-		if (selectorConfig.fallback) {
-			const fallbackSelector = Array.isArray(selectorConfig.fallback) ? selectorConfig.fallback : [selectorConfig.fallback];
-			return selector_selector(vchartDatum, fallbackSelector);
-		}
-		return defaultSelector ? selector_selector(vchartDatum, defaultSelector) : false;
-	};
-}));
-//#endregion
-//#region ../vseed/dist/esm/dataSelector/index.js
-var init_dataSelector$1 = __esmMin((() => {
-	init_selector$1();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/label/label.js

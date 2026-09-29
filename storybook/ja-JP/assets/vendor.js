@@ -50363,7 +50363,7 @@ var init_color$6 = __esmMin((() => {
 var init_type$70 = __esmMin((() => {}));
 //#endregion
 //#region ../../node_modules/.pnpm/@visactor+vutils@1.0.24/node_modules/@visactor/vutils/es/padding.js
-function normalizePadding(padding) {
+function normalizePadding$1(padding) {
 	if (isValidNumber$1(padding)) return [
 		padding,
 		padding,
@@ -97171,7 +97171,7 @@ var init_tag$3 = __esmMin((() => {
 		render() {
 			var _a, _b, _c;
 			this.cacheStates();
-			const { text = "", textStyle = {}, shape = {}, panel = {}, space = 4, minWidth, maxWidth, padding = 4, visible, state, type, textAlwaysCenter, containerTextAlign } = this.attribute, parsedPadding = normalizePadding(padding), group = this.createOrUpdateChild("tag-content", {
+			const { text = "", textStyle = {}, shape = {}, panel = {}, space = 4, minWidth, maxWidth, padding = 4, visible, state, type, textAlwaysCenter, containerTextAlign } = this.attribute, parsedPadding = normalizePadding$1(padding), group = this.createOrUpdateChild("tag-content", {
 				x: 0,
 				y: 0,
 				zIndex: 1
@@ -98052,7 +98052,7 @@ var init_line$16 = __esmMin((() => {
 		constructor(attributes, options) {
 			var _a;
 			if (attributes.labelHoverOnAxis && (attributes.labelHoverOnAxis.textStyle = Object.assign({}, attributes.label.style, attributes.labelHoverOnAxis.textStyle), void 0 === attributes.labelHoverOnAxis.space)) {
-				const { padding = 2 } = attributes.labelHoverOnAxis, parsedPadding = normalizePadding(padding), toDiffPadding = "bottom" === attributes.orient ? parsedPadding[0] : "left" === attributes.orient ? parsedPadding[1] : "top" === attributes.orient ? parsedPadding[2] : parsedPadding[3], space = (null !== (_a = attributes.label.space) && void 0 !== _a ? _a : LineAxis$1.defaultAttributes.label.space) - toDiffPadding;
+				const { padding = 2 } = attributes.labelHoverOnAxis, parsedPadding = normalizePadding$1(padding), toDiffPadding = "bottom" === attributes.orient ? parsedPadding[0] : "left" === attributes.orient ? parsedPadding[1] : "top" === attributes.orient ? parsedPadding[2] : parsedPadding[3], space = (null !== (_a = attributes.label.space) && void 0 !== _a ? _a : LineAxis$1.defaultAttributes.label.space) - toDiffPadding;
 				attributes.labelHoverOnAxis.space = space;
 			}
 			super((null == options ? void 0 : options.skipDefault) ? attributes : merge$3({}, LineAxis$1.defaultAttributes, attributes), options), this.labelHoverOnAxisGroup = null;
@@ -98357,7 +98357,7 @@ var init_line$16 = __esmMin((() => {
 			const axisLineWidth = line && line.visible ? null !== (_b = line.style.lineWidth) && void 0 !== _b ? _b : 1 : 0, tickLength = tick && tick.visible ? null !== (_c = tick.length) && void 0 !== _c ? _c : 4 : 0;
 			if (title && title.visible && "string" == typeof title.text) {
 				titleHeight = measureTextSize$1(title.text, title.textStyle, null === (_e = null === (_d = this.stage) || void 0 === _d ? void 0 : _d.getTheme()) || void 0 === _e ? void 0 : _e.text).height;
-				const padding = normalizePadding(title.padding);
+				const padding = normalizePadding$1(title.padding);
 				titleSpacing = title.space + padding[0] + padding[2];
 			}
 			return limitLength && (limitLength = (limitLength - labelSpace - titleSpacing - titleHeight - axisLineWidth - tickLength) / layerCount), limitLength;
@@ -101898,7 +101898,7 @@ var init_scrollbar$3 = __esmMin((() => {
 				height: sliderSize
 			};
 			const slider = group.createOrUpdateChild("slider", Object.assign(Object.assign(Object.assign(Object.assign({}, sliderAttribute), { cornerRadius: this._getDefaultSliderCornerRadius() }), sliderStyle), {
-				boundsPadding: normalizePadding(padding),
+				boundsPadding: normalizePadding$1(padding),
 				pickMode: "imprecise"
 			}), "rect");
 			this._slider = slider, this._container = group;
@@ -101910,7 +101910,7 @@ var init_scrollbar$3 = __esmMin((() => {
 		}
 		getSliderRenderBounds() {
 			if (this._sliderRenderBounds) return this._sliderRenderBounds;
-			const { width, height, padding = 2 } = this.attribute, [top, right, bottom, left] = normalizePadding(padding), renderBounds = {
+			const { width, height, padding = 2 } = this.attribute, [top, right, bottom, left] = normalizePadding$1(padding), renderBounds = {
 				x1: left,
 				y1: top,
 				x2: width - right,
@@ -102182,7 +102182,7 @@ var init_poptip$4 = __esmMin((() => {
 			const { titleStyle = {}, position, contentStyle = {}, panel, logoSymbol, poptipAnchor = "position", logoText, logoTextStyle = {}, triangleMode = "default", space = 4, minWidth = 0, maxWidth = Infinity, padding = 4, maxWidthPercent, visible, state, dx = 0, dy = 0, positionBounds } = this.attribute;
 			let { title = "", content = "" } = this.attribute;
 			title = this.attribute.titleFormatMethod ? this.attribute.titleFormatMethod(title) : title, content = this.attribute.contentFormatMethod ? this.attribute.contentFormatMethod(content) : content;
-			const parsedPadding = normalizePadding(padding), group = this.createOrUpdateChild("poptip-content", {
+			const parsedPadding = normalizePadding$1(padding), group = this.createOrUpdateChild("poptip-content", {
 				x: 0,
 				y: 0,
 				zIndex: 1
@@ -106455,7 +106455,7 @@ var init_pager$3 = __esmMin((() => {
 			this._reset();
 			const { layout = "horizontal", handler = DEFAULT_HANDLER_STYLE$1, total, defaultCurrent = 1, textStyle, padding = 0 } = this.attribute;
 			this._current = defaultCurrent;
-			const parsedPadding = normalizePadding(padding), isHorizontal = "horizontal" === layout, container = graphicCreator$1.group({
+			const parsedPadding = normalizePadding$1(padding), isHorizontal = "horizontal" === layout, container = graphicCreator$1.group({
 				x: 0,
 				y: 0
 			}), handlerStyle = handler.style || {}, handlerSize = handlerStyle.size || 15, handlerSpace = null !== (_a = handler.space) && void 0 !== _a ? _a : 8, handlerState = handler.state || {};
@@ -106557,7 +106557,7 @@ var init_base$20 = __esmMin((() => {
 		render() {
 			this.removeAllChild(!0);
 			const { interactive = !0, title, padding = 0 } = this.attribute;
-			this._parsedPadding = normalizePadding(padding);
+			this._parsedPadding = normalizePadding$1(padding);
 			const innerView = graphicCreator$1.group({
 				x: this._parsedPadding[3],
 				y: this._parsedPadding[0],
@@ -106574,7 +106574,7 @@ var init_base$20 = __esmMin((() => {
 				y: 0,
 				text,
 				textStyle,
-				padding: normalizePadding(padding),
+				padding: normalizePadding$1(padding),
 				minWidth,
 				maxWidth
 			};
@@ -106790,7 +106790,7 @@ var init_discrete$4 = __esmMin((() => {
 		}
 		_renderEachItem(item, isSelected, index, items) {
 			var _a, _b;
-			const { id, label, value, shape } = item, { padding = 0, focus, focusIconStyle, align, autoEllipsisStrategy } = this.attribute.item, { shape: shapeAttr, label: labelAttr, value: valueAttr, background } = this.attribute.item, shapeStyle = this._handleStyle(shapeAttr, item, isSelected, index, items), labelStyle = this._handleStyle(labelAttr, item, isSelected, index, items), valueStyle = this._handleStyle(valueAttr, item, isSelected, index, items), backgroundStyle = this._handleStyle(background, item, isSelected, index, items), parsedPadding = normalizePadding(padding);
+			const { id, label, value, shape } = item, { padding = 0, focus, focusIconStyle, align, autoEllipsisStrategy } = this.attribute.item, { shape: shapeAttr, label: labelAttr, value: valueAttr, background } = this.attribute.item, shapeStyle = this._handleStyle(shapeAttr, item, isSelected, index, items), labelStyle = this._handleStyle(labelAttr, item, isSelected, index, items), valueStyle = this._handleStyle(valueAttr, item, isSelected, index, items), backgroundStyle = this._handleStyle(background, item, isSelected, index, items), parsedPadding = normalizePadding$1(padding);
 			let itemGroup;
 			!1 === background.visible ? (itemGroup = graphicCreator$1.group({
 				x: 0,
@@ -108038,7 +108038,7 @@ var init_title$9 = __esmMin((() => {
 		}
 		render() {
 			var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v;
-			const { textType, text, subtextType, textStyle = {}, subtext, subtextStyle = {}, width, height, minWidth, maxWidth, minHeight, maxHeight, align, verticalAlign, padding = 0 } = this.attribute, parsedPadding = normalizePadding(padding), group = this.createOrUpdateChild("title-container", {
+			const { textType, text, subtextType, textStyle = {}, subtext, subtextStyle = {}, width, height, minWidth, maxWidth, minHeight, maxHeight, align, verticalAlign, padding = 0 } = this.attribute, parsedPadding = normalizePadding$1(padding), group = this.createOrUpdateChild("title-container", {
 				x: parsedPadding[3],
 				y: parsedPadding[0],
 				zIndex: 1
@@ -109310,7 +109310,7 @@ var init_tooltip$6 = __esmMin((() => {
 			const { visible, content, panel, keyWidth, valueWidth, hasContentShape, autoCalculatePosition, autoMeasure, align } = this.attribute;
 			if (!visible) return void this.hideAll();
 			autoMeasure && Tooltip$2.measureTooltip(this.attribute), autoCalculatePosition && Tooltip$2.calculateTooltipPosition(this.attribute);
-			const padding = normalizePadding(this.attribute.padding);
+			const padding = normalizePadding$1(this.attribute.padding);
 			this._tooltipPanel = this.createOrUpdateChild("tooltip-background", Object.assign({ visible: !0 }, panel), "rect"), this._tooltipTitleContainer = this.createOrUpdateChild("tooltip-title", {
 				visible: !0,
 				x: padding[3],
@@ -109405,7 +109405,7 @@ var init_tooltip$6 = __esmMin((() => {
 			return "left" === positionX ? x -= tooltipBoxWidth + offsetX : "center" === positionX ? x -= tooltipBoxWidth / 2 : x += offsetX, "top" === positionY ? y -= tooltipBoxHeight + offsetY : "middle" === positionY ? y -= tooltipBoxHeight / 2 : y += offsetY, x + tooltipBoxWidth > parentBounds.x2 && (x -= tooltipBoxWidth + offsetX), y + tooltipBoxHeight > parentBounds.y2 && (y -= tooltipBoxHeight + offsetY), x < parentBounds.x1 && (x = parentBounds.x1), y < parentBounds.y1 && (y = parentBounds.y1), attribute.x = x, attribute.y = y, attribute;
 		}
 		static measureTooltip(attribute) {
-			const { content, contentStyle } = attribute, padding = normalizePadding(attribute.padding), titleAttr = Tooltip$2.getTitleAttr(attribute);
+			const { content, contentStyle } = attribute, padding = normalizePadding$1(attribute.padding), titleAttr = Tooltip$2.getTitleAttr(attribute);
 			let maxWidth = 0, containerHeight = padding[0] + padding[2], titleMaxHeight = 0;
 			const { value: titleValue, shape: titleShape } = titleAttr, { visible: titleHasShape = !1, symbolType: titleShapeType = "" } = null != titleShape ? titleShape : {};
 			if (isValid$1(titleValue) && "object" != typeof titleAttr.value.text) {
@@ -124115,7 +124115,7 @@ var init_heatmap$2 = __esmMin((() => {
 		}
 		initCellBackgroundMarkStyle() {
 			var _a, _b, _c;
-			const padding = normalizePadding(null !== (_c = null === (_b = null === (_a = this._spec.cellBackground) || void 0 === _a ? void 0 : _a.style) || void 0 === _b ? void 0 : _b.padding) && void 0 !== _c ? _c : 0);
+			const padding = normalizePadding$1(null !== (_c = null === (_b = null === (_a = this._spec.cellBackground) || void 0 === _a ? void 0 : _a.style) || void 0 === _b ? void 0 : _b.padding) && void 0 !== _c ? _c : 0);
 			this.setMarkStyle(this._backgroundMark, {
 				x: (datum) => {
 					const width = this.getCellSize(this._xAxisHelper);
@@ -130876,7 +130876,7 @@ function transformLabelAttributes(label, markerData, markAttributeContext) {
 		return (null == shape ? void 0 : shape.visible) ? labelAttrs.shape = Object.assign({ visible: !0 }, transformToGraphic$1(shape.style)) : labelAttrs.shape = { visible: !1 }, !1 !== labelBackground.visible ? (labelAttrs.panel = Object.assign({
 			visible: !0,
 			customShape: labelBackground.customShape
-		}, transformStyle(transformToGraphic$1(labelBackground.style), markerData, markAttributeContext)), isValid$1(labelBackground.padding) && (labelAttrs.padding = normalizePadding(labelBackground.padding))) : (labelAttrs.panel = { visible: !1 }, labelAttrs.padding = 0), style && (labelAttrs.textStyle = transformStyle(transformToGraphic$1(style), markerData, markAttributeContext)), labelAttrs;
+		}, transformStyle(transformToGraphic$1(labelBackground.style), markerData, markAttributeContext)), isValid$1(labelBackground.padding) && (labelAttrs.padding = normalizePadding$1(labelBackground.padding))) : (labelAttrs.panel = { visible: !1 }, labelAttrs.padding = 0), style && (labelAttrs.textStyle = transformStyle(transformToGraphic$1(style), markerData, markAttributeContext)), labelAttrs;
 	}
 	return { visible: !1 };
 }
@@ -134695,7 +134695,7 @@ var init_style$5 = __esmMin((() => {
 		let panelPadding = null;
 		null != border && border.color && (panelStyle.borderColor = border.color), backgroundColor && (panelStyle.backgroundColor = backgroundColor), panelStyle.boxShadow = shadow ? `${shadow.x}px ${shadow.y}px ${shadow.blur}px ${shadow.spread}px ${shadow.color}` : "initial";
 		const { radius } = null != border ? border : {};
-		return isValid$1(radius) && (panelStyle.borderRadius = isValidNumber$1(radius) ? `${radius}px` : `${radius}`), isValid$1(padding) && (panelPadding = normalizePadding(padding), panelStyle.padding = getPixelPropertyStr(panelPadding)), {
+		return isValid$1(radius) && (panelStyle.borderRadius = isValidNumber$1(radius) ? `${radius}px` : `${radius}`), isValid$1(padding) && (panelPadding = normalizePadding$1(padding), panelStyle.padding = getPixelPropertyStr(panelPadding)), {
 			panelStyle,
 			panelPadding
 		};
@@ -135019,7 +135019,7 @@ var init_attribute = __esmMin((() => {
 	};
 	getTooltipAttributes = (actualTooltip, spec, globalFontFamily) => {
 		var _a, _b, _c, _d, _e;
-		const { style = {}, enterable, transitionDuration } = spec, { panel = {}, titleLabel, shape, keyLabel, valueLabel, spaceRow: commonSpaceRow, align } = style, padding = normalizePadding(panel.padding), paddingSpec = normalizeLayoutPaddingSpec(panel.padding), titleStyle = getTextAttributes(Object.assign({ textAlign: "right" === align ? "right" : "left" }, titleLabel), globalFontFamily), keyStyle = getTextAttributes(Object.assign({ textAlign: "right" === align ? "right" : "left" }, keyLabel), globalFontFamily), valueStyle = getTextAttributes(valueLabel, globalFontFamily), shapeStyle = {
+		const { style = {}, enterable, transitionDuration } = spec, { panel = {}, titleLabel, shape, keyLabel, valueLabel, spaceRow: commonSpaceRow, align } = style, padding = normalizePadding$1(panel.padding), paddingSpec = normalizeLayoutPaddingSpec(panel.padding), titleStyle = getTextAttributes(Object.assign({ textAlign: "right" === align ? "right" : "left" }, titleLabel), globalFontFamily), keyStyle = getTextAttributes(Object.assign({ textAlign: "right" === align ? "right" : "left" }, keyLabel), globalFontFamily), valueStyle = getTextAttributes(valueLabel, globalFontFamily), shapeStyle = {
 			fill: !0,
 			size: null !== (_a = null == shape ? void 0 : shape.size) && void 0 !== _a ? _a : 8,
 			spacing: null !== (_b = null == shape ? void 0 : shape.spacing) && void 0 !== _b ? _b : 6
@@ -156416,7 +156416,7 @@ var init_scrollbar$1 = __esmMin((() => {
 				height: sliderSize
 			};
 			const slider = group.createOrUpdateChild("slider", Object.assign(Object.assign(Object.assign(Object.assign({}, sliderAttribute), { cornerRadius: this._getDefaultSliderCornerRadius() }), sliderStyle), {
-				boundsPadding: normalizePadding(padding),
+				boundsPadding: normalizePadding$1(padding),
 				pickMode: "imprecise"
 			}), "rect");
 			this._slider = slider, this._container = group;
@@ -156428,7 +156428,7 @@ var init_scrollbar$1 = __esmMin((() => {
 		}
 		getSliderRenderBounds() {
 			if (this._sliderRenderBounds) return this._sliderRenderBounds;
-			const { width, height, padding = 2 } = this.attribute, [top, right, bottom, left] = normalizePadding(padding), renderBounds = {
+			const { width, height, padding = 2 } = this.attribute, [top, right, bottom, left] = normalizePadding$1(padding), renderBounds = {
 				x1: left,
 				y1: top,
 				x2: width - right,
@@ -156647,7 +156647,7 @@ var init_tag$1 = __esmMin((() => {
 		render() {
 			var _a, _b, _c;
 			this.cacheStates();
-			const { text = "", textStyle = {}, shape = {}, panel = {}, space = 4, minWidth, maxWidth, padding = 4, visible, state, type, textAlwaysCenter, containerTextAlign } = this.attribute, parsedPadding = normalizePadding(padding), group = this.createOrUpdateChild("tag-content", {
+			const { text = "", textStyle = {}, shape = {}, panel = {}, space = 4, minWidth, maxWidth, padding = 4, visible, state, type, textAlwaysCenter, containerTextAlign } = this.attribute, parsedPadding = normalizePadding$1(padding), group = this.createOrUpdateChild("tag-content", {
 				x: 0,
 				y: 0,
 				zIndex: 1
@@ -156882,7 +156882,7 @@ var init_poptip$1 = __esmMin((() => {
 			const { titleStyle = {}, position, contentStyle = {}, panel, logoSymbol, poptipAnchor = "position", logoText, logoTextStyle = {}, triangleMode = "default", space = 4, minWidth = 0, maxWidth = Infinity, padding = 4, maxWidthPercent, visible, state, dx = 0, dy = 0, positionBounds } = this.attribute;
 			let { title = "", content = "" } = this.attribute;
 			title = this.attribute.titleFormatMethod ? this.attribute.titleFormatMethod(title) : title, content = this.attribute.contentFormatMethod ? this.attribute.contentFormatMethod(content) : content;
-			const parsedPadding = normalizePadding(padding), group = this.createOrUpdateChild("poptip-content", {
+			const parsedPadding = normalizePadding$1(padding), group = this.createOrUpdateChild("poptip-content", {
 				x: 0,
 				y: 0,
 				zIndex: 1
@@ -163699,7 +163699,7 @@ var init_line$3 = __esmMin((() => {
 		constructor(attributes, options) {
 			var _a;
 			if (attributes.labelHoverOnAxis && (attributes.labelHoverOnAxis.textStyle = Object.assign({}, attributes.label.style, attributes.labelHoverOnAxis.textStyle), void 0 === attributes.labelHoverOnAxis.space)) {
-				const { padding = 2 } = attributes.labelHoverOnAxis, parsedPadding = normalizePadding(padding), toDiffPadding = "bottom" === attributes.orient ? parsedPadding[0] : "left" === attributes.orient ? parsedPadding[1] : "top" === attributes.orient ? parsedPadding[2] : parsedPadding[3], space = (null !== (_a = attributes.label.space) && void 0 !== _a ? _a : LineAxis.defaultAttributes.label.space) - toDiffPadding;
+				const { padding = 2 } = attributes.labelHoverOnAxis, parsedPadding = normalizePadding$1(padding), toDiffPadding = "bottom" === attributes.orient ? parsedPadding[0] : "left" === attributes.orient ? parsedPadding[1] : "top" === attributes.orient ? parsedPadding[2] : parsedPadding[3], space = (null !== (_a = attributes.label.space) && void 0 !== _a ? _a : LineAxis.defaultAttributes.label.space) - toDiffPadding;
 				attributes.labelHoverOnAxis.space = space;
 			}
 			super((null == options ? void 0 : options.skipDefault) ? attributes : merge$3({}, LineAxis.defaultAttributes, attributes), options), this.labelHoverOnAxisGroup = null;
@@ -164004,7 +164004,7 @@ var init_line$3 = __esmMin((() => {
 			const axisLineWidth = line && line.visible ? null !== (_b = line.style.lineWidth) && void 0 !== _b ? _b : 1 : 0, tickLength = tick && tick.visible ? null !== (_c = tick.length) && void 0 !== _c ? _c : 4 : 0;
 			if (title && title.visible && "string" == typeof title.text) {
 				titleHeight = measureTextSize(title.text, title.textStyle, null === (_e = null === (_d = this.stage) || void 0 === _d ? void 0 : _d.getTheme()) || void 0 === _e ? void 0 : _e.text).height;
-				const padding = normalizePadding(title.padding);
+				const padding = normalizePadding$1(title.padding);
 				titleSpacing = title.space + padding[0] + padding[2];
 			}
 			return limitLength && (limitLength = (limitLength - labelSpace - titleSpacing - titleHeight - axisLineWidth - tickLength) / layerCount), limitLength;
@@ -164572,7 +164572,7 @@ var init_pager$1 = __esmMin((() => {
 			this._reset();
 			const { layout = "horizontal", handler = DEFAULT_HANDLER_STYLE, total, defaultCurrent = 1, textStyle, padding = 0 } = this.attribute;
 			this._current = defaultCurrent;
-			const parsedPadding = normalizePadding(padding), isHorizontal = "horizontal" === layout, container = graphicCreator.group({
+			const parsedPadding = normalizePadding$1(padding), isHorizontal = "horizontal" === layout, container = graphicCreator.group({
 				x: 0,
 				y: 0
 			}), handlerStyle = handler.style || {}, handlerSize = handlerStyle.size || 15, handlerSpace = null !== (_a = handler.space) && void 0 !== _a ? _a : 8, handlerState = handler.state || {};
@@ -164674,7 +164674,7 @@ var init_base$1 = __esmMin((() => {
 		render() {
 			this.removeAllChild(!0);
 			const { interactive = !0, title, padding = 0 } = this.attribute;
-			this._parsedPadding = normalizePadding(padding);
+			this._parsedPadding = normalizePadding$1(padding);
 			const innerView = graphicCreator.group({
 				x: this._parsedPadding[3],
 				y: this._parsedPadding[0],
@@ -164691,7 +164691,7 @@ var init_base$1 = __esmMin((() => {
 				y: 0,
 				text,
 				textStyle,
-				padding: normalizePadding(padding),
+				padding: normalizePadding$1(padding),
 				minWidth,
 				maxWidth
 			};
@@ -164901,7 +164901,7 @@ var init_discrete = __esmMin((() => {
 		}
 		_renderEachItem(item, isSelected, index, items) {
 			var _a, _b;
-			const { id, label, value, shape } = item, { padding = 0, focus, focusIconStyle, align, autoEllipsisStrategy } = this.attribute.item, { shape: shapeAttr, label: labelAttr, value: valueAttr, background } = this.attribute.item, shapeStyle = this._handleStyle(shapeAttr, item, isSelected, index, items), labelStyle = this._handleStyle(labelAttr, item, isSelected, index, items), valueStyle = this._handleStyle(valueAttr, item, isSelected, index, items), backgroundStyle = this._handleStyle(background, item, isSelected, index, items), parsedPadding = normalizePadding(padding);
+			const { id, label, value, shape } = item, { padding = 0, focus, focusIconStyle, align, autoEllipsisStrategy } = this.attribute.item, { shape: shapeAttr, label: labelAttr, value: valueAttr, background } = this.attribute.item, shapeStyle = this._handleStyle(shapeAttr, item, isSelected, index, items), labelStyle = this._handleStyle(labelAttr, item, isSelected, index, items), valueStyle = this._handleStyle(valueAttr, item, isSelected, index, items), backgroundStyle = this._handleStyle(background, item, isSelected, index, items), parsedPadding = normalizePadding$1(padding);
 			let itemGroup;
 			!1 === background.visible ? (itemGroup = graphicCreator.group({
 				x: 0,
@@ -166113,7 +166113,7 @@ var init_title$4 = __esmMin((() => {
 		}
 		render() {
 			var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v;
-			const { textType, text, subtextType, textStyle = {}, subtext, subtextStyle = {}, width, height, minWidth, maxWidth, minHeight, maxHeight, align, verticalAlign, padding = 0 } = this.attribute, parsedPadding = normalizePadding(padding), group = this.createOrUpdateChild("title-container", {
+			const { textType, text, subtextType, textStyle = {}, subtext, subtextStyle = {}, width, height, minWidth, maxWidth, minHeight, maxHeight, align, verticalAlign, padding = 0 } = this.attribute, parsedPadding = normalizePadding$1(padding), group = this.createOrUpdateChild("title-container", {
 				x: parsedPadding[3],
 				y: parsedPadding[0],
 				zIndex: 1
@@ -169074,7 +169074,65 @@ var init_color = __esmMin((() => {
 var init_type$1 = __esmMin((() => {}));
 //#endregion
 //#region ../../node_modules/.pnpm/@visactor+vutils@1.0.23/node_modules/@visactor/vutils/es/padding.js
-var init_padding$1 = __esmMin((() => {}));
+function normalizePadding(padding) {
+	if (isValidNumber(padding)) return [
+		padding,
+		padding,
+		padding,
+		padding
+	];
+	if (isArray$1(padding)) {
+		const length = padding.length;
+		if (1 === length) {
+			const paddingValue = padding[0];
+			return [
+				paddingValue,
+				paddingValue,
+				paddingValue,
+				paddingValue
+			];
+		}
+		if (2 === length) {
+			const [vertical, horizontal] = padding;
+			return [
+				vertical,
+				horizontal,
+				vertical,
+				horizontal
+			];
+		}
+		if (3 === length) {
+			const [top, horizontal, bottom] = padding;
+			return [
+				top,
+				horizontal,
+				bottom,
+				horizontal
+			];
+		}
+		if (4 === length) return padding;
+	}
+	if (isObject$9(padding)) {
+		const { top = 0, right = 0, bottom = 0, left = 0 } = padding;
+		return [
+			top,
+			right,
+			bottom,
+			left
+		];
+	}
+	return [
+		0,
+		0,
+		0,
+		0
+	];
+}
+var init_padding$1 = __esmMin((() => {
+	init_isValidNumber();
+	init_isArray();
+	init_isObject();
+}));
 //#endregion
 //#region ../../node_modules/.pnpm/@visactor+vutils@1.0.23/node_modules/@visactor/vutils/es/time/formatUtils.js
 var init_formatUtils = __esmMin((() => {}));
@@ -283933,4 +283991,4 @@ var init_mocker_runtime = __esmMin((() => {
 	globalThis.__STORYBOOK_MOCKER__ = registerModuleMocker(() => new ModuleMockerInterceptor());
 }));
 //#endregion
-export { d$2 as $, init_Color as $t, init_yjs as A, H$2 as An, m$2 as At, date as B, preview_exports as Bn, PivotTableAll as Bt, init_kysely as C, isUndefined$1 as Cn, D$2 as Ct, YMap as D, init_esm$1 as Dn, i$5 as Dt, YArray as E, esm_default as En, r$3 as Et, _enum as F, h$3 as Fn, C$3 as Ft, number as G, init_chunk_6OBW3LSX as Gn, boxplot as Gt, init_schemas as H, init_entry_preview_docs as Hn, ListTableAll as Ht, any$1 as I, init_client as In, init_chunk_3GOCSNFN as It, string as J, init_entry_preview as Jn, init_bin as Jt, object as K, setCustomElementsManifest as Kn, init_boxplot as Kt, array as L, proxyCustomElement as Ln, init_es$1 as Lt, init_v4 as M, createEvent as Mn, init_chunk_7ZI6JRPB as Mt, v4 as N, forceUpdate as Nn, i$7 as Nt, applyUpdate as O, StreamLight$1 as On, init_chunk_2T7K3PFL as Ot, init_zod as P, getRenderingRef as Pn, init_chunk_QJLMYOTX as Pt, init_dist$5 as Q, setup as Qn, Color as Qt, boolean as R, transformTag as Rn, PivotChart as Rt, Kysely as S, init_isUndefined as Sn, y$2 as St, UndoManager as T, isNil as Tn, init_chunk_BZNENX2T as Tt, lazy$2 as U, entry_preview_argtypes_exports as Un, init_ListTable_all as Ut, discriminatedUnion as V, entry_preview_docs_exports as Vn, init_PivotTable_all as Vt, literal as W, init_entry_preview_argtypes as Wn, init_es$4 as Wt, union as X, init_preload_helper as Xn, init_register$1 as Xt, tuple as Y, __vitePreload as Yn, chartModule as Yt, require_tinycolor as Z, init_runtime as Zn, init_es$5 as Zt, init_postgres_query_compiler as _, pickWithout as _n, init_chunk_5S4PYKVY as _t, init_UserOutlined as a, regressionPolynomial as an, init_chunk_BO3LQZNF as at, init_sql as b, init_isArray as bn, init_chunk_3ZJAREUD as bt, MailOutlined as c, init_regression_logistic as cn, n$2 as ct, init_LikeFilled as d, regressionLinear as dn, e$1 as dt, ecdf as en, init_chunk_BCBB46UE as et, init_dist$2 as f, clamper as fn, init_chunk_6GTAPB47 as ft, PostgresQueryCompiler as g, init_pickWithout as gn, t$1 as gt, init_postgres_adapter as h, init_array$1 as hn, init_chunk_SFZGYJFI as ht, UserOutlined as i, init_regression_polynomial as in, init_chunk_HVPVHFDT as it, init_dist$4 as j, Host as jn, T$2 as jt, encodeStateAsUpdate as k, init_streamLight$1 as kn, init_chunk_NFFV4IQT as kt, init_MailOutlined as l, regressionLogistic as ln, init_chunk_NMC53JVB as lt, PostgresAdapter as m, array$2 as mn, n$3 as mt, init_mocker_runtime as n, init_kde as nn, k$2 as nt, SettingOutlined as o, init_regression_lowess as on, o$2 as ot, init_esm as p, init_clamper as pn, init_chunk_JK3VNB42 as pt, record as q, entry_preview_exports as qn, bin as qt, init_es as r, kde as rn, i$3 as rt, init_SettingOutlined as s, regressionLowess as sn, init_chunk_VCYTMP4D as st, ModuleMockerInterceptor as t, init_ecdf as tn, init_chunk_HGKLN5KY as tt, LikeFilled as u, init_regression_linear as un, o$3 as ut, DummyDriver as v, init_merge as vn, t$2 as vt, Doc as w, init_isNil as wn, init_chunk_PDQFB3TV as wt, sql as x, isArray$1 as xn, init_chunk_KI5X74E2 as xt, init_dummy_driver as y, merge$2 as yn, i$4 as yt, custom as z, init_preview as zn, init_PivotChart as zt };
+export { d$2 as $, init_runtime as $n, normalizePadding as $t, init_yjs as A, StreamLight$1 as An, m$2 as At, date as B, transformTag as Bn, PivotTableAll as Bt, init_kysely as C, isArray$1 as Cn, D$2 as Ct, YMap as D, isNil as Dn, i$5 as Dt, YArray as E, init_isNil as En, r$3 as Et, _enum as F, forceUpdate as Fn, C$3 as Ft, number as G, entry_preview_argtypes_exports as Gn, boxplot as Gt, init_schemas as H, preview_exports as Hn, ListTableAll as Ht, any$1 as I, getRenderingRef as In, init_chunk_3GOCSNFN as It, string as J, setCustomElementsManifest as Jn, init_bin as Jt, object as K, init_entry_preview_argtypes as Kn, init_boxplot as Kt, array as L, h$3 as Ln, init_es$1 as Lt, init_v4 as M, H$2 as Mn, init_chunk_7ZI6JRPB as Mt, v4 as N, Host as Nn, i$7 as Nt, applyUpdate as O, esm_default as On, init_chunk_2T7K3PFL as Ot, init_zod as P, createEvent as Pn, init_chunk_QJLMYOTX as Pt, init_dist$5 as Q, init_preload_helper as Qn, init_padding$1 as Qt, boolean as R, init_client as Rn, PivotChart as Rt, Kysely as S, init_isArray as Sn, y$2 as St, UndoManager as T, isUndefined$1 as Tn, init_chunk_BZNENX2T as Tt, lazy$2 as U, entry_preview_docs_exports as Un, init_ListTable_all as Ut, discriminatedUnion as V, init_preview as Vn, init_PivotTable_all as Vt, literal as W, init_entry_preview_docs as Wn, init_es$4 as Wt, union as X, init_entry_preview as Xn, init_register$1 as Xt, tuple as Y, entry_preview_exports as Yn, chartModule as Yt, require_tinycolor as Z, __vitePreload as Zn, init_es$5 as Zt, init_postgres_query_compiler as _, init_array$1 as _n, init_chunk_5S4PYKVY as _t, init_UserOutlined as a, kde as an, init_chunk_BO3LQZNF as at, init_sql as b, init_merge as bn, init_chunk_3ZJAREUD as bt, MailOutlined as c, init_regression_lowess as cn, n$2 as ct, init_LikeFilled as d, regressionLogistic as dn, e$1 as dt, Color as en, setup as er, init_chunk_BCBB46UE as et, init_dist$2 as f, init_regression_linear as fn, init_chunk_6GTAPB47 as ft, PostgresQueryCompiler as g, array$2 as gn, t$1 as gt, init_postgres_adapter as h, init_clamper as hn, init_chunk_SFZGYJFI as ht, UserOutlined as i, init_kde as in, init_chunk_HVPVHFDT as it, init_dist$4 as j, init_streamLight$1 as jn, T$2 as jt, encodeStateAsUpdate as k, init_esm$1 as kn, init_chunk_NFFV4IQT as kt, init_MailOutlined as l, regressionLowess as ln, init_chunk_NMC53JVB as lt, PostgresAdapter as m, clamper as mn, n$3 as mt, init_mocker_runtime as n, ecdf as nn, k$2 as nt, SettingOutlined as o, init_regression_polynomial as on, o$2 as ot, init_esm as p, regressionLinear as pn, init_chunk_JK3VNB42 as pt, record as q, init_chunk_6OBW3LSX as qn, bin as qt, init_es as r, init_ecdf as rn, i$3 as rt, init_SettingOutlined as s, regressionPolynomial as sn, init_chunk_VCYTMP4D as st, ModuleMockerInterceptor as t, init_Color as tn, init_chunk_HGKLN5KY as tt, LikeFilled as u, init_regression_logistic as un, o$3 as ut, DummyDriver as v, init_pickWithout as vn, t$2 as vt, Doc as w, init_isUndefined as wn, init_chunk_PDQFB3TV as wt, sql as x, merge$2 as xn, init_chunk_KI5X74E2 as xt, init_dummy_driver as y, pickWithout as yn, i$4 as yt, custom as z, proxyCustomElement as zn, init_PivotChart as zt };
