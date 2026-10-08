@@ -8,9 +8,11 @@
 | ----------- | ------------------------ | -------------------------------------------- |
 | Mini line   | 连续趋势、增长走势       | 使用细线，默认隐藏常驻数据点，悬停仍可读数。 |
 | Mini area   | 强调趋势的规模或总量     | 在细线下增加面积填充，保留轮廓可读性。       |
-| Mini column | 每日利润、订单数等离散值 | 保留零基线和负值，使用小圆角柱体。           |
+| Mini column | 每日利润、订单数等离散值 | 保留零值基准和负值，使用小圆角柱体。         |
 
-迷你图建议宽 80–140px、高 56–80px，与指标文本并排。单卡展示一个主要指标，避免堆叠多个图例、长说明和装饰图标。坐标轴、图例和常驻标签可以隐藏，保留 Tooltip 与必要的时间口径；HTML 容器通过 `role="img"` 和 `aria-label` 说明趋势含义。
+迷你图建议宽 80–140px、高 56–80px，与指标文本并排。单卡展示一个主要指标，避免堆叠长说明和装饰图标。
+
+**Mini line、Mini area、Mini column 都必须禁用数据标签、图例和全部坐标轴元素，包括轴标题、轴标签、轴线、刻度与网格线；悬停时也不显示坐标轴上的准星标签。** 只保留折线、面积或柱体表达趋势，不为已隐藏的元素预留空间，不额外添加图表标题、参考线或注释，做到真正的 mini，而不是缩小的完整图表。可以保留按需出现的 Tooltip 与指标文本联动，时间口径放在指标卡文本或 Tooltip 中；HTML 容器通过 `role="img"` 和 `aria-label` 说明趋势含义。柱图保留零值在数值尺度中的基准作用，但不绘制零线。
 
 文本与图表使用同一筛选范围和基础查询结果。汇总文本不依赖对逐日去重订单数再次求和；客单价和利润率使用汇总值计算。日期按顺序排列；只有业务确认“当天无记录即为零”时才补零，未知或缺失数据不要当作零。查询与派生指标的状态归属见[实践技巧](../usage/tips.md)。
 
@@ -20,7 +22,7 @@
 
 ### 公共配置
 
-示例使用已聚合的每日销售额，页面先按配色文档初始化 `--accent`，以下配置只消费这一颜色变量。接入 VBI 的 `buildVSeed()` 时保留其 `dataset`、维度和度量 ID，在返回的 seed 上补充以下视觉属性即可。
+示例使用已聚合的每日销售额，页面先按配色文档初始化 `--accent`，以下配置只消费这一颜色变量。三种迷你图都必须复用以下隐藏标签、图例与坐标轴的公共配置，并在各自配置中关闭准星标签。接入 VBI 的 `buildVSeed()` 时保留其 `dataset`、维度和度量 ID，在返回的 seed 上补充以下视觉属性即可。
 
 ```javascript
 registerAll()
@@ -35,6 +37,16 @@ const dailySales = [
   { date: '2026-10-06', value: 180 },
   { date: '2026-10-07', value: 165 },
 ]
+function miniAxis() {
+  return {
+    visible: false,
+    title: { visible: false },
+    label: { visible: false },
+    line: { visible: false },
+    tick: { visible: false },
+    grid: { visible: false },
+  }
+}
 function miniBase() {
   return {
     theme: 'light',
@@ -47,8 +59,8 @@ function miniBase() {
     color: { colorScheme: [accent] },
     label: { enable: false },
     legend: { enable: false },
-    xAxis: { visible: false },
-    yAxis: { visible: false, zero: true },
+    xAxis: miniAxis(),
+    yAxis: { ...miniAxis(), zero: true }, // 保留零值基准，不显示轴线或零线。
     tooltip: { enable: true },
     animation: {
       enable: !reducedMotion.matches,
@@ -67,12 +79,13 @@ function miniBase() {
 const miniColumnSeed = {
   ...miniBase(),
   chartType: 'column',
+  crosshairRect: { labelVisible: false },
   barMaxWidth: 12,
   barStyle: { barRadius: 2, barColor: accent, barColorOpacity: 0.75, barGradient: false, barBorderWidth: 0 },
 }
 ```
 
-展示利润时替换为已查询的每日利润数据和度量别名，负值保留在零线下方；语义色配置统一见[配色与背景最佳实践](./design.md#图表配色与页面同步)。
+展示利润时替换为已查询的每日利润数据和度量别名，负值保留在零值基准下方；语义色配置统一见[配色与背景最佳实践](./design.md#图表配色与页面同步)。
 
 ### Mini line
 
@@ -80,6 +93,7 @@ const miniColumnSeed = {
 const miniLineSeed = {
   ...miniBase(),
   chartType: 'line',
+  crosshairLine: { labelVisible: false },
   pointStyle: { pointVisible: false },
   lineStyle: { lineWidth: 1.5, lineColor: accent, lineSmooth: false },
 }
@@ -91,13 +105,14 @@ const miniLineSeed = {
 const miniAreaSeed = {
   ...miniBase(),
   chartType: 'area',
+  crosshairLine: { labelVisible: false },
   pointStyle: { pointVisible: false },
   lineStyle: { lineWidth: 1.5, lineColor: accent, lineSmooth: false },
   areaStyle: { areaColor: accent, areaColorOpacity: 0.18, areaGradient: false },
 }
 ```
 
-三者均默认使用直线连接数据点，避免平滑曲线产生数据中不存在的峰谷。若主趋势采用平滑曲线，迷你趋势的选择也应保持一致。
+Mini line 与 Mini area 默认使用直线连接数据点，避免平滑曲线产生数据中不存在的峰谷。若主趋势采用平滑曲线，迷你趋势的选择也应保持一致。
 
 ### 构建与更新实例
 
@@ -242,8 +257,9 @@ async function resumeMetricHover(nextMetrics) {
 
 ## 验收
 
+- 三种迷你图均不显示数据标签、图例、坐标轴及其标题、标签、轴线、刻度、网格线，也不为这些元素预留空间；悬停不出现准星标签，Tooltip 与指标文本联动正常。
 - 切换 30 → 14 → 7 → 30 天，指标文本和迷你图使用一致范围，复用同一渲染实例。
 - 悬停主图时全部指标更新，悬停小图时只有所属卡片更新，移出后恢复相同作用域的汇总。
 - 快速移动鼠标或切换周期，旧定时任务和旧数值动画不会覆盖最新值；悬停不增加查询次数。
-- 零分母、空值和负利润正确显示，柱图负值位于零线下；移动端无文字与图表重叠。
+- 零分母、空值和负利润正确显示，柱图负值位于零值基准下方且不绘制零线；移动端无文字与图表重叠。
 - 减少动态效果模式下停止数值过渡与图表动画；销毁后无残留监听、定时器和动画帧。

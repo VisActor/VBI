@@ -2,15 +2,42 @@
 
 用一个 HTML 文件接入 VBI：无需框架或打包工具，使用 Builder 配置分析，再交给 VChart 或 VTable 渲染。VBI、VQuery、VSeed 通过浏览器 ESM 加载，VChart 和 VTable 使用发布包中的浏览器 bundle。本文先给出实践入口，再提供可直接运行的图表与表格教程；状态归属、查询复用和复杂页面组织见[最佳实践](./tips.md)。
 
+**可直接打开或分享的独立 HTML，必须将分析数据内置在 HTML 中。** JSON 使用内联数组，CSV 使用内联文本，再通过 VQuery 的 `rawDataset` 接入。不要在运行时用 `fetch()` 读取旁边的 JSON / CSV 文件或依赖远程数据 URL：通过 `file://` 打开时，本地文件请求可能因 `origin: null` 被浏览器拦截；远程请求也可能受 CORS、网络或预览环境限制，导致 `blocked`、`Failed to fetch` 和图表空白。内置数据不代表完全离线，本文的 CDN 模块仍需联网加载。
+
+## 数据源必须内置在 HTML 中
+
+生成页面前先读取原始数据文件，将完整数据写入 HTML；不要只写数据文件路径，也不要让页面初始化时再下载数据。下方完整教程使用内联 JSON 数组。CSV 可采用以下方式，由 VQuery 解析，避免自行按逗号拆分而破坏带引号的字段：
+
+```html
+<!-- prettier-ignore -->
+<script type="text/plain" id="csv-data">
+region,channel,sales
+华东,线上,100
+华北,线下,80
+</script>
+<script type="module">
+  // 放在 VQuery 导入后，沿用下方教程的数据集初始化流程。
+  const csvText = document.querySelector('#csv-data').textContent.trim()
+  const source = {
+    type: 'csv',
+    rawDataset: new TextEncoder().encode(csvText).buffer,
+  }
+</script>
+```
+
+数据集的 `schema` 应与内置数据字段一致。生成内联数据时还需处理 HTML 的脚本结束标记：如果原始文本包含 `</script>`，应改用安全序列化的 JSON 字符串（将 `<` 转义为 `\u003c`），运行时还原后再传给 VQuery，避免数据截断脚本元素。不要用 `mode: 'no-cors'` 或关闭浏览器安全策略绕过数据加载失败。
+
+交付前用 `file://` 直接打开 HTML，检查筛选、聚合和渲染；在 Network 中确认没有 JSON / CSV 数据请求，在 Console 中确认没有数据加载错误。若业务明确需要实时远程数据，应通过 HTTP(S) 部署并正确配置数据服务的 CORS，同时显示加载失败状态；这类页面需要另行验证部署环境。
+
 ## 从三个实践示例选择起点
 
-| 示例                                                            | 适合学习                                     | 阅读代码时关注                                              |
-| --------------------------------------------------------------- | -------------------------------------------- | ----------------------------------------------------------- |
-| [精致散点图](../../examples/charts/polished-chart.html)         | 单图编码、图例筛选与精细标注                 | `chartBuilder`、`decorate()`、`render()`                    |
-| [轻量看板](../../examples/dashboard/lightweight-dashboard.html) | 汇总指标、周期比较、自定义 HTML 卡片         | `createChart()`、`rowsOf()`、`layoutDashboard()`            |
-| [业务大屏](../../examples/screen/large-screen.html)             | 多图组合、Dashboard / Insight 资源、局部筛选 | `drawSocial()`、`drawIncome()`、`filterChart()`、`layout()` |
+| 示例                                                            | 适合学习                                       | 阅读代码时关注                                              |
+| --------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------------------- |
+| [精致散点图](../../examples/charts/polished-chart.html)         | 单图编码、图例筛选与精细标注                   | `chartBuilder`、`decorate()`、`render()`                    |
+| [轻量看板](../../examples/dashboard/lightweight-dashboard.html) | 顶部洞察、汇总指标、周期比较、自定义 HTML 卡片 | `summarizePeriod()`、`rowsOf()`、`layoutDashboard()`        |
+| [业务大屏](../../examples/screen/large-screen.html)             | 多图组合、Dashboard / Insight 资源、局部筛选   | `drawSocial()`、`drawIncome()`、`filterChart()`、`layout()` |
 
-用浏览器直接打开示例 HTML。浏览器需要联网加载 CDN 模块；复制大屏时同时保留 `assets/large-screen-live-preview.png`，另外两个示例可以单独复制 HTML。
+用浏览器直接打开示例 HTML。浏览器需要联网加载 CDN 模块；复制大屏时同时保留 `assets/large-screen-live-preview.png`，另外两个示例可以单独复制 HTML。轻量看板当前仍通过网络加载 CSV，复制为独立交付页面时，必须按上文将 CSV 内置，并将数据初始化改为读取内联文本。
 
 轻量看板直接加载 [Supermarket CSV](https://visactor.github.io/VBI/dataset/supermarket.csv)，以数据中的最新订单日期为截止日，切换最近 7、14、30 个日历日，并与前一个等长周期比较。VQuery 负责解析 CSV；接入层将订单日期规范为 ISO 日期和 UTC 日序号，VBI Builder 配置日期筛选、销售额与利润求和、订单 ID 去重计数。消费者订单占比使用 `customer_type = 消费者` 的去重订单数除以总订单数；区域订单数也各自去重，同一订单可能涉及多个地区，因此不能直接相加。图表将没有订单的日期显示为零，亏损日期用负向利润柱显示。
 
@@ -20,7 +47,9 @@
 
 轻量看板提供八种页面配色，包含默认薄荷绿及七种柔和参考色。点击标题旁的色点可同步切换背景、图标与图表颜色，保留左上到右下的柔白光束；配色切换不改变统计周期和指标口径，下降指标与亏损柱保留红色语义。
 
-标题旁的三个布局图标按钮将现有四个指标组织为趋势主导、指标先行或分段叙事，选中状态通过按钮和当前布局名称表达。三种布局统一使用最大 1140px 的外壳宽度，窄屏自适应；切换只改变内部排列。切换通过 Dashboard Builder 更新 `lg/xs` 坐标，保留图表资源、配色、统计周期和区域明细的展开状态；UI 按容器宽度读取布局、同步 DOM 顺序并调整图表尺寸。主趋势联动全部指标，迷你图只联动自身。布局原理见[布局最佳实践](../best-practices/layout.md)。
+标题旁的三个布局图标按钮将顶部洞察与四个指标组织为趋势主导、指标先行或分段叙事，选中状态通过按钮和当前布局名称表达。三种布局统一使用最大 1140px 的外壳宽度，窄屏自适应；切换只改变内部排列。切换通过 Dashboard Builder 更新 `lg/xs` 坐标，保留图表、洞察资源、配色、统计周期和区域明细的展开状态；UI 按容器宽度读取布局、同步 DOM 顺序并调整图表尺寸。主趋势联动全部指标，迷你图只联动自身。布局原理见[布局最佳实践](../best-practices/layout.md)。
+
+三种布局都在图表前展示“AI 洞察”：先说明销售额、去重订单数、利润共 3 项指标及当前起止日期、比较周期，再用列表逐项列出本期值与环比波动，每项一句，增长用绿色、下跌用红色，同时保留箭头与方向文字。独立示例使用真实汇总结果生成摘要演示，未调用模型服务；指标数量、周期说明和 Markdown 列表统一经 Insight Builder 保存。切换 7、14、30 天会更新周期与所有列表项；布局、配色切换和图表悬停保留区间列表及方向颜色。接入 AI 时，将同一范围的指标清单、本期值、前期值与周期提供给模型，再将返回的逐项结论写入该 Insight 资源。
 
 轻量看板的数据核对基准（当前 CSV 最新订单日期为 2019-12-30，共 9,959 条明细；金额显示取整）：
 
@@ -46,7 +75,7 @@
 
 ## 运行一个完整 HTML：柱状图、普通表与透视表
 
-将下面代码保存为 `index.html`，直接用浏览器打开。它使用同一份销售明细，支持切换三种视图、按地区筛选，并显示当前 DSL 和查询结果。为便于核对，数据只有五行。
+将下面代码保存为 `index.html`，直接用浏览器打开。它使用内置在 HTML 中的同一份销售明细，无需额外数据文件或数据请求，支持切换三种视图、按地区筛选，并显示当前 DSL 和查询结果。为便于核对，数据只有五行。
 
 下面的独立教程与轻量看板固定使用 VBI / VQuery / VSeed `0.6.4`，VChart `2.1.7`；教程另加入 VTable `1.23.1`，无需本地构建。固定版本可避免 `latest` 缓存使依赖版本不一致。
 
@@ -143,6 +172,7 @@ VChart 的 `build/index.min.js` 和 VTable 的 `dist/vtable.min.js` 通过普通
         ]
         const source = {
           type: 'json',
+          // 数据随 HTML 交付，不通过 fetch() 读取外部 JSON / CSV。
           rawDataset: [
             { region: '华东', channel: '线上', sales: 100 },
             { region: '华东', channel: '线上', sales: 200 },
@@ -307,15 +337,16 @@ DSL 不包含连接器实现、原始数据、外部图片，以及页面后加�
 
 ## 常见问题
 
-| 现象                       | 检查与处理                                                                                                                                                                                                              |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 模块加载失败或缺少命名导出 | VBI、VQuery、VSeed 使用固定版本的 `+esm` 入口；VChart、VTable 使用浏览器 bundle，并保留本文的 import map。普通 `<script src>` 不会提供 ESM 导出；原始 npm ESM 文件还可能包含裸模块名。更换 CDN 或版本后重新验证依赖链。 |
-| `VQuery` 引入 Node 依赖    | 使用本文显式指定的 `dist/browser/esm/browser.js/+esm` 浏览器入口。                                                                                                                                                      |
-| 刷新后提示数据集未加载     | 更新已有数据集时传入完整的 `connectorId, schema, source`，并等待更新结束后再查询。                                                                                                                                      |
-| VSeed 无法构建图表类型     | 在 `Builder.from(seed).build()` 前调用 `registerAll()`；确认使用的是已注册且支持的 `chartType`。                                                                                                                        |
-| 图表或表格为空白           | 先检查容器尺寸、查询错误和 `seed.dataset`，再确认 `chartType` 与渲染器对应；数据列 ID 应与维度、度量 ID 一致。                                                                                                          |
-| 普通表行数少于原始数据     | 检查 `buildVQuery()` 的分组、聚合、筛选与 limit；表格使用查询结果，不直接展示原始数组。                                                                                                                                 |
-| 图表显示但透视表方向不对   | 显式设置维度的 `row` / `column` 编码；修改后重新构建 VSeed 和表格 options。                                                                                                                                             |
-| 页面一直显示加载中         | 静态导入失败不能由模块主体内的 `try/catch` 捕获；本例用动态 `import()` 捕获加载错误，再区分初始化和查询渲染错误。                                                                                                       |
+| 现象                                              | 检查与处理                                                                                                                                                                                                              |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 数据请求出现 `blocked`、CORS 或 `Failed to fetch` | 检查是否用 `fetch()` 读取本地 JSON / CSV 或远程数据 URL。独立 HTML 必须内置数据并通过 `rawDataset` 接入；同目录文件也可能在 `file://` 下被拦截。实时远程数据需在 HTTP(S) 部署环境验证 CORS。                            |
+| 模块加载失败或缺少命名导出                        | VBI、VQuery、VSeed 使用固定版本的 `+esm` 入口；VChart、VTable 使用浏览器 bundle，并保留本文的 import map。普通 `<script src>` 不会提供 ESM 导出；原始 npm ESM 文件还可能包含裸模块名。更换 CDN 或版本后重新验证依赖链。 |
+| `VQuery` 引入 Node 依赖                           | 使用本文显式指定的 `dist/browser/esm/browser.js/+esm` 浏览器入口。                                                                                                                                                      |
+| 刷新后提示数据集未加载                            | 更新已有数据集时传入完整的 `connectorId, schema, source`，并等待更新结束后再查询。                                                                                                                                      |
+| VSeed 无法构建图表类型                            | 在 `Builder.from(seed).build()` 前调用 `registerAll()`；确认使用的是已注册且支持的 `chartType`。                                                                                                                        |
+| 图表或表格为空白                                  | 先检查容器尺寸、查询错误和 `seed.dataset`，再确认 `chartType` 与渲染器对应；数据列 ID 应与维度、度量 ID 一致。                                                                                                          |
+| 普通表行数少于原始数据                            | 检查 `buildVQuery()` 的分组、聚合、筛选与 limit；表格使用查询结果，不直接展示原始数组。                                                                                                                                 |
+| 图表显示但透视表方向不对                          | 显式设置维度的 `row` / `column` 编码；修改后重新构建 VSeed 和表格 options。                                                                                                                                             |
+| 页面一直显示加载中                                | 静态导入失败不能由模块主体内的 `try/catch` 捕获；本例用动态 `import()` 捕获加载错误，再区分初始化和查询渲染错误。                                                                                                       |
 
 更多接口见 [VBI 实例](../api/vbi/vbi.md)、[Chart Builder](../api/vbi/chart-builder.md)、[Dashboard Builder](../api/vbi/dashboard-builder.md) 和 [DSL 类型](../api/vbi/types.md)。

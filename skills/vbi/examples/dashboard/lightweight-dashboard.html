@@ -25,6 +25,8 @@
         --background-start: #c7e9df;
         --background-end: #ddd6ed;
         --light-edge: #eee7f833;
+        --insight-up: #12815e;
+        --insight-down: #c64a3f;
       }
 
       body {
@@ -319,24 +321,89 @@
       .dashboard {
         display: grid;
         grid-template-columns: repeat(12, minmax(0, 1fr));
-        grid-auto-rows: 44px;
+        grid-auto-rows: minmax(44px, auto);
         gap: 18px;
+      }
+
+      .insight-card {
+        padding: 14px 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .insight-heading {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+      }
+
+      .insight-heading h2 {
+        color: var(--accent-ink);
+        font-size: 12px;
+        font-weight: 650;
+      }
+
+      .insight-scope {
+        color: #78858d;
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .insight-demo {
+        color: #78858d;
+        font-size: 10px;
+      }
+
+      .insight-body {
+        display: grid;
+        gap: 8px;
+      }
+
+      .insight-list {
+        display: grid;
+        gap: 6px;
+        margin: 0;
+        padding-left: 20px;
+        font-size: 14px;
+        line-height: 1.65;
+        overflow-wrap: anywhere;
+      }
+
+      .insight-list li::marker {
+        color: #909aa4;
+      }
+
+      .insight-list strong {
+        font-weight: 600;
+      }
+
+      .insight-change {
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .insight-change[data-direction='up'] {
+        color: var(--insight-up);
+      }
+
+      .insight-change[data-direction='down'] {
+        color: var(--insight-down);
       }
 
       .card-slot {
         min-width: 0;
+        min-height: min-content;
         display: flex;
         flex-direction: column;
       }
 
-      .card-slot:has(> .metric-card) {
-        perspective: 800px;
-      }
-
       .card {
         flex: 1;
-        min-height: 0;
-        height: 100%;
+        min-height: min-content;
+        height: auto;
         position: relative;
         border: 1px solid #ffffffb3;
         border-radius: 26px;
@@ -346,8 +413,7 @@
       }
 
       .metric-card {
-        transform: rotate3d(var(--tilt-x, 0), var(--tilt-y, 1), 0, var(--tilt-angle, 0deg));
-        transform-style: preserve-3d;
+        transform: perspective(800px) rotate3d(var(--tilt-x, 0), var(--tilt-y, 1), 0, var(--tilt-angle, 0deg));
       }
 
       .expanded .metric-card {
@@ -453,6 +519,7 @@
         flex: 1;
         min-height: 150px;
         width: 100%;
+        contain: size;
       }
 
       .plot-labels {
@@ -551,6 +618,7 @@
         height: 77px;
         flex-shrink: 0;
         align-self: flex-end;
+        contain: size;
       }
 
       #growth-card .mini-plot {
@@ -622,7 +690,7 @@
         margin-top: 0;
       }
 
-      .dashboard[data-layout='story'] .card-slot::before {
+      .dashboard[data-layout='story'] .card-slot[data-section]::before {
         content: attr(data-section);
         margin: 0 4px 12px;
         color: #71818b;
@@ -748,10 +816,6 @@
           padding: 26px 22px;
         }
 
-        .dashboard {
-          grid-auto-rows: 44px;
-        }
-
         .topbar {
           margin-bottom: 32px;
         }
@@ -840,6 +904,10 @@
 
         .small-card {
           padding: 20px 24px;
+        }
+
+        .insight-card {
+          padding: 18px 20px;
         }
 
         .mini-plot {
@@ -1074,7 +1142,19 @@
           </div>
         </section>
         <section id="dashboard" class="dashboard" aria-label="销售指标仪表盘">
-          <div id="hero-slot" class="card-slot" data-enter="2">
+          <div id="insight-slot" class="card-slot" data-enter="2">
+            <article id="insight-card" class="card insight-card" aria-labelledby="insight-title" aria-busy="true">
+              <div class="insight-heading">
+                <h2 id="insight-title">AI 洞察</h2>
+                <span class="insight-demo">指标波动 · 摘要演示</span>
+              </div>
+              <div class="insight-body" aria-live="polite" aria-atomic="true">
+                <p id="insight-scope" class="insight-scope">正在分析指标波动…</p>
+                <ul id="insight-list" class="insight-list"></ul>
+              </div>
+            </article>
+          </div>
+          <div id="hero-slot" class="card-slot" data-enter="3">
             <article id="hero-card" class="card hero" aria-labelledby="hero-title">
               <div class="hero-top">
                 <div class="card-heading">
@@ -1101,7 +1181,7 @@
                 </figcaption>
               </figure>
               <div class="hero-bottom">
-                <div class="submetric" data-enter="6">
+                <div class="submetric" data-enter="7">
                   <span class="icon-box accent"
                     ><svg class="icon">
                       <use href="#icon-trend" /></svg
@@ -1111,7 +1191,7 @@
                     <strong id="margin">—</strong>
                   </div>
                 </div>
-                <div class="submetric" data-enter="7">
+                <div class="submetric" data-enter="8">
                   <span class="icon-box secondary"
                     ><svg class="icon">
                       <use href="#icon-users" /></svg
@@ -1124,7 +1204,7 @@
               </div>
             </article>
           </div>
-          <div id="growth-slot" class="card-slot" data-enter="3">
+          <div id="growth-slot" class="card-slot" data-enter="4">
             <article id="growth-card" class="card metric-card small-card" aria-labelledby="growth-title">
               <div class="card-heading">
                 <span class="icon-box accent"
@@ -1142,7 +1222,7 @@
               </div>
             </article>
           </div>
-          <div id="orders-slot" class="card-slot" data-enter="4">
+          <div id="orders-slot" class="card-slot" data-enter="5">
             <article id="orders-card" class="card metric-card small-card" aria-labelledby="orders-title">
               <div class="card-heading">
                 <span class="icon-box"
@@ -1175,7 +1255,7 @@
               </div>
             </article>
           </div>
-          <div id="profit-slot" class="card-slot" data-enter="5">
+          <div id="profit-slot" class="card-slot" data-enter="6">
             <article id="profit-card" class="card metric-card small-card" aria-labelledby="profit-title">
               <div class="card-heading">
                 <span class="icon-box"
@@ -1196,7 +1276,7 @@
             </article>
           </div>
         </section>
-        <details class="details" id="region-details" data-enter="8">
+        <details class="details" id="region-details" data-enter="9">
           <summary>
             <span class="summary-title"
               ><svg class="icon">
@@ -1677,6 +1757,8 @@
       async function run(task) {
         document.querySelectorAll('fieldset').forEach((controls) => (controls.disabled = true))
         document.body.dataset.state = 'loading'
+        $('#insight-card').setAttribute('aria-busy', 'true')
+        renderInsightContent('正在更新当前统计周期的指标波动…')
         status.textContent = '正在加载数据…'
         try {
           await task()
@@ -1685,10 +1767,12 @@
           revealComponents()
         } catch (error) {
           document.body.dataset.state = 'error'
+          renderInsightContent('数据加载失败，暂无法分析指标波动。')
           status.textContent = `加载失败：${error.message}`
           finishEntrance()
           console.error(error)
         } finally {
+          $('#insight-card').setAttribute('aria-busy', 'false')
           document.querySelectorAll('fieldset').forEach((controls) => (controls.disabled = !controlsReady))
         }
       }
@@ -1696,22 +1780,58 @@
         dashboard.chart.add((widget) => widget.setChart(chart).setTitle(title).setLayouts({ lg, xs }))
         slot.dataset.widget = dashboard.chart.find(chart.getUUID()).getId()
       }
-      // 配方复用现有四个指标；可恢复的位置写入 Dashboard DSL，容器样式由 UI 管理。
+      // 三种布局共用顶部洞察与四个指标；可恢复的位置写入 Dashboard DSL。
       const layoutPresets = {
         focus: {
           expanded: [],
-          lg: { hero: [0, 0, 8, 9], growth: [8, 0, 4, 3], orders: [8, 3, 4, 3], profit: [8, 6, 4, 3] },
-          xs: { hero: [0, 0, 12, 9], growth: [0, 9, 12, 3], orders: [0, 12, 12, 3], profit: [0, 15, 12, 3] },
+          lg: {
+            insight: [0, 0, 12, 3],
+            hero: [0, 3, 8, 9],
+            growth: [8, 3, 4, 3],
+            orders: [8, 6, 4, 3],
+            profit: [8, 9, 4, 3],
+          },
+          xs: {
+            insight: [0, 0, 12, 4],
+            hero: [0, 4, 12, 9],
+            growth: [0, 13, 12, 3],
+            orders: [0, 16, 12, 3],
+            profit: [0, 19, 12, 3],
+          },
         },
         kpiFirst: {
           expanded: [],
-          lg: { orders: [0, 0, 4, 3], growth: [4, 0, 4, 3], profit: [8, 0, 4, 3], hero: [0, 3, 12, 9] },
-          xs: { orders: [0, 0, 12, 3], growth: [0, 3, 12, 3], profit: [0, 6, 12, 3], hero: [0, 9, 12, 9] },
+          lg: {
+            insight: [0, 0, 12, 3],
+            orders: [0, 3, 4, 3],
+            growth: [4, 3, 4, 3],
+            profit: [8, 3, 4, 3],
+            hero: [0, 6, 12, 9],
+          },
+          xs: {
+            insight: [0, 0, 12, 4],
+            orders: [0, 4, 12, 3],
+            growth: [0, 7, 12, 3],
+            profit: [0, 10, 12, 3],
+            hero: [0, 13, 12, 9],
+          },
         },
         story: {
           expanded: ['growth', 'profit'],
-          lg: { hero: [0, 0, 12, 9], growth: [0, 9, 6, 6], profit: [6, 9, 6, 6], orders: [0, 15, 12, 4] },
-          xs: { hero: [0, 0, 12, 9], growth: [0, 9, 12, 6], profit: [0, 15, 12, 6], orders: [0, 21, 12, 4] },
+          lg: {
+            insight: [0, 0, 12, 3],
+            hero: [0, 3, 12, 9],
+            growth: [0, 12, 6, 6],
+            profit: [6, 12, 6, 6],
+            orders: [0, 18, 12, 4],
+          },
+          xs: {
+            insight: [0, 0, 12, 4],
+            hero: [0, 4, 12, 9],
+            growth: [0, 13, 12, 6],
+            profit: [0, 19, 12, 6],
+            orders: [0, 25, 12, 4],
+          },
         },
       }
       const position = ([x, y, w, h]) => ({ x, y, w, h })
@@ -1750,6 +1870,64 @@
           direction: percent < 0 ? 'down' : 'up',
           value: percent,
         }
+      }
+
+      // 先确定独立指标和周期，再逐项列出本期值与波动；增长率不重复计为指标。
+      // 实际接入 AI 时，将同一统计范围的逐项结论写入 Insight Builder。
+      function summarizePeriod(total, prior, firstDay, lastDay) {
+        const days = lastDay - firstDay + 1
+        const metrics = [
+          { field: 'sales', label: '销售额', format: money },
+          { field: 'order_id', label: '订单数', format: (value) => `${number(value)} 单` },
+          { field: 'profit', label: '利润', format: money },
+        ]
+        const items = metrics.map(({ field, label, format }) => {
+          const current = total[field]
+          const previous = prior[field]
+          if (!Number.isFinite(current)) return `- ${label}：暂无有效数据，暂无法判断变化。`
+          const value = format(current)
+          if (!Number.isFinite(previous)) return `- ${label}：${value}，缺少前期数据，暂无法比较。`
+          if (!previous) return `- ${label}：${value}，前期为 0，增速不适用。`
+          const percent = changeText(current, previous).value
+          const change =
+            Math.abs(percent) < 0.05
+              ? '基本持平'
+              : `${percent < 0 ? '↓ 下跌' : '↑ 增长'} ${Math.abs(percent).toFixed(1)}%`
+          return `- ${label}：${value}，环比${change}。`
+        })
+        return [
+          `${metrics.length} 项指标 · ${dateKey(firstDay)} — ${dateKey(lastDay)} · 对比前 ${days} 天`,
+          ...items,
+        ].join('\n')
+      }
+
+      // Insight 保存可读的周期说明与 Markdown 列表；UI 只根据箭头标记着色。
+      function renderInsightContent(content) {
+        const [scope = '', ...lines] = content.split('\n')
+        $('#insight-scope').textContent = scope
+        const items = lines
+          .filter((line) => line.startsWith('- '))
+          .map((line) => {
+            let text = line.slice(2)
+            const item = document.createElement('li')
+            const labelEnd = text.indexOf('：') + 1
+            if (labelEnd) {
+              const label = document.createElement('strong')
+              label.textContent = text.slice(0, labelEnd)
+              item.append(label)
+              text = text.slice(labelEnd)
+            }
+            const match = text.match(/[↑↓]\s*(?:增长|下跌)\s*\d+(?:\.\d+)?%/)
+            if (match) {
+              const change = document.createElement('span')
+              change.className = 'insight-change'
+              change.dataset.direction = match[0].startsWith('↑') ? 'up' : 'down'
+              change.textContent = match[0]
+              item.append(text.slice(0, match.index), change, text.slice(match.index + match[0].length))
+            } else item.append(text)
+            return item
+          })
+        $('#insight-list').replaceChildren(...items)
       }
       function setChange(selector, change) {
         $(selector).dataset.direction = change.direction
@@ -1849,6 +2027,21 @@
           breakpoints: { ...emptyDashboard.breakpoints, lg: 800 },
           meta: { title: 'Brand · 经营概览', theme: 'light' },
         })
+        const insight = VBI.insight.create(VBI.insight.createEmpty())
+        dashboard.insight.add((widget) => {
+          widget
+            .setInsightId(insight)
+            .setTitle('AI 洞察')
+            .setLayouts({
+              lg: position(layoutPresets.focus.lg.insight),
+              xs: position(layoutPresets.focus.xs.insight),
+            })
+          $('#insight-slot').dataset.widget = widget.getId()
+        })
+        const renderInsight = () => {
+          renderInsightContent(insight.build().content)
+        }
+        insight.dsl.observeDeep(renderInsight)
         const trend = createChart(connectorId, 'area', 'order_date')
         const growth = createChart(connectorId, 'area', 'order_date')
         const totals = createChart(connectorId, 'table', null, ['sales', 'order_id', 'profit'])
@@ -1901,6 +2094,9 @@
             orders: '证据 · 客户结构',
           }
           dashboard.doc.transact(() => {
+            dashboard.insight.update($('#insight-slot').dataset.widget, (widget) =>
+              widget.setLayouts({ lg: position(preset.lg.insight), xs: position(preset.xs.insight) }),
+            )
             for (const role of Object.keys(widgets)) {
               const slot = $(`#${role}-slot`)
               dashboard.chart.update(slot.dataset.widget, (widget) =>
@@ -1954,6 +2150,8 @@
             draw($('#profit-trend'), buildChartSpec(profitSeed, firstDay, lastDay, true), profit),
           ])
           if (disposed || currentRevision !== revision) return
+          insight.setContent(summarizePeriod(total, prior, firstDay, lastDay))
+          renderInsight()
           const byDate = new Map(dailyRows.map((row) => [row.order_date, row]))
           const consumersByDate = new Map(consumerRows.map((row) => [row.order_date, row]))
           function restore(scope = 'all') {
@@ -2079,6 +2277,7 @@
         window.addEventListener('pagehide', (event) => {
           if (event.persisted) return
           disposed = true
+          insight.dsl.unobserveDeep(renderInsight)
           charts.forEach((chart) => chart.dsl.unobserveDeep(requestRender))
           hoverSubscriptions.forEach((subscription) => subscription.dispose())
           resizeObserver.disconnect()
