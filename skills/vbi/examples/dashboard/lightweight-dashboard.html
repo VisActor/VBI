@@ -15,7 +15,16 @@
         color-scheme: light;
         --ink: #28333e;
         --muted: #909aa4;
-        --mint: #16c99e;
+        --accent: #16c99e;
+        --accent-ink: #16c99e;
+        --accent-soft: #e0f9f1;
+        --secondary: #5c90d6;
+        --secondary-soft: #e7effc;
+        --brand-color: #283d3a;
+        --background-base: #edf2f1;
+        --background-start: #c7e9df;
+        --background-end: #ddd6ed;
+        --light-edge: #eee7f833;
       }
 
       body {
@@ -24,7 +33,7 @@
         isolation: isolate;
         margin: 0;
         color: var(--ink);
-        background: #edf2f1;
+        background: var(--background-base);
         font-family: Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif;
         -webkit-font-smoothing: antialiased;
       }
@@ -40,8 +49,8 @@
         z-index: -2;
         inset: -18%;
         background:
-          radial-gradient(ellipse at 14% 22%, #c7e9df 0%, #c7e9df00 62%),
-          radial-gradient(ellipse at 88% 78%, #ddd6ed 0%, #ddd6ed00 64%);
+          radial-gradient(ellipse at 14% 22%, var(--background-start) 0%, transparent 62%),
+          radial-gradient(ellipse at 88% 78%, var(--background-end) 0%, transparent 64%);
         filter: blur(64px);
       }
 
@@ -57,8 +66,8 @@
             #ffffff70 43%,
             #ffffffd9 46%,
             #ffffff80 49%,
-            #eee7f833 54%,
-            #eee7f800 61%
+            var(--light-edge) 54%,
+            transparent 61%
           );
         filter: blur(18px);
       }
@@ -70,7 +79,7 @@
 
       button:focus-visible,
       summary:focus-visible {
-        outline: 3px solid #67d9bd;
+        outline: 3px solid var(--accent-ink);
         outline-offset: 5px;
       }
 
@@ -130,7 +139,7 @@
         width: 30px;
         height: 30px;
         border-radius: 10px;
-        background: #283d3a;
+        background: var(--brand-color);
         color: white;
       }
 
@@ -145,7 +154,59 @@
       }
 
       .heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 18px;
         margin-bottom: 25px;
+      }
+
+      .palette {
+        display: grid;
+        gap: 7px;
+        justify-items: end;
+      }
+
+      .color-picker {
+        display: flex;
+        gap: 7px;
+        padding: 7px;
+        border: 1px solid #ffffffa6;
+        border-radius: 24px;
+        background: #ffffff65;
+      }
+
+      .color-picker button {
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        border-radius: 50%;
+        box-shadow: inset 0 0 0 1px #28333e0a;
+        background: var(--swatch);
+        transition: box-shadow 0.2s;
+      }
+
+      .color-picker button[aria-pressed='true'] {
+        box-shadow:
+          0 0 0 2px #fff,
+          0 0 0 3px var(--accent);
+      }
+
+      .color-picker button[aria-pressed='true']::after {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: white;
+      }
+
+      #palette-label {
+        color: #78858d;
+        font-size: 10px;
+        font-variant-numeric: tabular-nums;
       }
 
       h1 {
@@ -182,14 +243,14 @@
         flex-shrink: 0;
       }
 
-      .icon-box.mint {
-        background: #e0f9f1;
-        color: var(--mint);
+      .icon-box.accent {
+        background: var(--accent-soft);
+        color: var(--accent-ink);
       }
 
-      .icon-box.blue {
-        background: #e7effc;
-        color: #5c90d6;
+      .icon-box.secondary {
+        background: var(--secondary-soft);
+        color: var(--secondary);
       }
 
       .dashboard {
@@ -299,7 +360,7 @@
       }
 
       .change {
-        color: var(--mint);
+        color: var(--accent-ink);
         font-weight: 600;
         white-space: nowrap;
       }
@@ -589,6 +650,10 @@
       }
 
       @media (max-width: 540px) {
+        .palette {
+          justify-items: start;
+        }
+
         .shell {
           padding: 22px 16px;
         }
@@ -750,8 +815,87 @@
       </header>
       <main>
         <section class="heading" data-enter="1">
-          <h1>经营概览</h1>
-          <p class="subtitle" id="period-label">正在读取订单日期…</p>
+          <div>
+            <h1>经营概览</h1>
+            <p class="subtitle" id="period-label">正在读取订单日期…</p>
+          </div>
+          <div class="palette">
+            <fieldset disabled class="color-picker" aria-label="选择页面配色">
+              <button
+                type="button"
+                data-color="#16C99E"
+                data-name="薄荷绿"
+                style="--swatch: #16c99e"
+                aria-label="薄荷绿 #16C99E"
+                title="薄荷绿 #16C99E"
+                aria-pressed="true"
+              ></button>
+              <button
+                type="button"
+                data-color="#D8B4B6"
+                data-name="雾玫粉"
+                style="--swatch: #d8b4b6"
+                aria-label="雾玫粉 #D8B4B6"
+                title="雾玫粉 #D8B4B6"
+                aria-pressed="false"
+              ></button>
+              <button
+                type="button"
+                data-color="#AFCBDA"
+                data-name="海盐蓝"
+                style="--swatch: #afcbda"
+                aria-label="海盐蓝 #AFCBDA"
+                title="海盐蓝 #AFCBDA"
+                aria-pressed="false"
+              ></button>
+              <button
+                type="button"
+                data-color="#7FA69A"
+                data-name="森雾青"
+                style="--swatch: #7fa69a"
+                aria-label="森雾青 #7FA69A"
+                title="森雾青 #7FA69A"
+                aria-pressed="false"
+              ></button>
+              <button
+                type="button"
+                data-color="#B9AFD8"
+                data-name="薰衣紫"
+                style="--swatch: #b9afd8"
+                aria-label="薰衣紫 #B9AFD8"
+                title="薰衣紫 #B9AFD8"
+                aria-pressed="false"
+              ></button>
+              <button
+                type="button"
+                data-color="#F0C4A8"
+                data-name="杏桃橙"
+                style="--swatch: #f0c4a8"
+                aria-label="杏桃橙 #F0C4A8"
+                title="杏桃橙 #F0C4A8"
+                aria-pressed="false"
+              ></button>
+              <button
+                type="button"
+                data-color="#89A8A0"
+                data-name="竹月青"
+                style="--swatch: #89a8a0"
+                aria-label="竹月青 #89A8A0"
+                title="竹月青 #89A8A0"
+                aria-pressed="false"
+              ></button>
+              <button
+                type="button"
+                data-color="#A8C7E8"
+                data-name="晴空蓝"
+                style="--swatch: #a8c7e8"
+                aria-label="晴空蓝 #A8C7E8"
+                title="晴空蓝 #A8C7E8"
+                aria-pressed="false"
+              ></button>
+            </fieldset>
+            <output id="palette-label" aria-live="polite">薄荷绿 · #16C99E</output>
+          </div>
         </section>
         <section id="dashboard" class="dashboard" aria-label="销售指标仪表盘">
           <div id="hero-slot" class="card-slot" data-enter="2">
@@ -782,7 +926,7 @@
               </figure>
               <div class="hero-bottom">
                 <div class="submetric" data-enter="6">
-                  <span class="icon-box mint"
+                  <span class="icon-box accent"
                     ><svg class="icon">
                       <use href="#icon-trend" /></svg
                   ></span>
@@ -792,7 +936,7 @@
                   </div>
                 </div>
                 <div class="submetric" data-enter="7">
-                  <span class="icon-box blue"
+                  <span class="icon-box secondary"
                     ><svg class="icon">
                       <use href="#icon-users" /></svg
                   ></span>
@@ -807,7 +951,7 @@
           <div id="growth-slot" class="card-slot" data-enter="3">
             <article id="growth-card" class="card metric-card small-card" aria-labelledby="growth-title">
               <div class="card-heading">
-                <span class="icon-box mint"
+                <span class="icon-box accent"
                   ><svg class="icon">
                     <use href="#icon-target" /></svg
                 ></span>
@@ -941,6 +1085,48 @@
         new Intl.DateTimeFormat('zh-CN', { dateStyle: 'long', timeZone: 'UTC' }).format(day * dayMilliseconds)
       let sourceInfo
       let controlsReady = false
+
+      function mixColor(color, target, weight) {
+        return (
+          '#' +
+          [1, 3, 5]
+            .map((offset) => {
+              const from = parseInt(color.slice(offset, offset + 2), 16)
+              const to = parseInt(target.slice(offset, offset + 2), 16)
+              return Math.round(from + (to - from) * weight)
+                .toString(16)
+                .padStart(2, '0')
+            })
+            .join('')
+        )
+      }
+
+      let palette
+      function selectPalette(button) {
+        const color = button.dataset.color
+        const secondary = mixColor(color, '#B9AFD8', 0.6)
+        palette = {
+          accent: color,
+          ring: mixColor(color, '#FFFFFF', 0.25),
+          ringTrack: mixColor(color, '#FFFFFF', 0.75),
+        }
+        const tokens = {
+          '--accent': color,
+          '--accent-ink': mixColor(color, '#28333E', 0.22),
+          '--accent-soft': mixColor(color, '#FFFFFF', 0.88),
+          '--secondary': mixColor(secondary, '#28333E', 0.1),
+          '--secondary-soft': mixColor(secondary, '#FFFFFF', 0.88),
+          '--brand-color': mixColor(color, '#28333E', 0.8),
+          '--background-base': mixColor(color, '#F3F4F6', 0.96),
+          '--background-start': mixColor(color, '#EDF2F1', 0.74),
+        }
+        for (const [name, value] of Object.entries(tokens)) document.documentElement.style.setProperty(name, value)
+        document
+          .querySelectorAll('[data-color]')
+          .forEach((option) => option.setAttribute('aria-pressed', String(option === button)))
+        $('#palette-label').textContent = `${button.dataset.name} · ${color}`
+      }
+      selectPalette($('.color-picker [aria-pressed="true"]'))
 
       // VQuery 解析 CSV；接入层只规范日期，筛选、求和和订单去重仍由 VBI → VQuery 执行。
       async function connectSupermarket(connectorId) {
@@ -1152,7 +1338,7 @@
         Object.assign(seed, {
           backgroundColor: 'transparent',
           animation: updateAnimation(),
-          color: { colorScheme: ['#19cba1'] },
+          color: { colorScheme: [palette.accent] },
           label: { enable: false },
           legend: { enable: false },
           xAxis: { visible: false },
@@ -1167,14 +1353,14 @@
           seed.pointStyle = { pointVisible: false }
           seed.lineStyle = { lineWidth: mini ? 1.5 : 2.5, lineSmooth: true }
           seed.areaStyle = {
-            areaColor: '#19cba1',
+            areaColor: palette.accent,
             areaColorOpacity: 0.27,
             areaGradient: true,
           }
         }
         if (seed.chartType === 'column') {
           seed.barStyle = [
-            { barRadius: 4, barColorOpacity: 0.68, barColor: '#19cba1', barGradient: false, barBorderWidth: 0 },
+            { barRadius: 4, barColorOpacity: 0.68, barColor: palette.accent, barGradient: false, barBorderWidth: 0 },
             {
               selector: { field: valueId, operator: '<', value: 0 },
               barColor: '#d47c6a',
@@ -1220,7 +1406,7 @@
             },
           ],
           backgroundColor: 'transparent',
-          color: { colorScheme: ['#56dabb', '#c1f3e6'] },
+          color: { colorScheme: [palette.ring, palette.ringTrack] },
           label: { enable: false },
           // 图例只说明分类，保持中心占比与完整订单口径一致。
           legend: {
@@ -1258,7 +1444,7 @@
       }
 
       async function run(task) {
-        $('fieldset').disabled = true
+        document.querySelectorAll('fieldset').forEach((controls) => (controls.disabled = true))
         document.body.dataset.state = 'loading'
         status.textContent = '正在加载数据…'
         try {
@@ -1272,7 +1458,7 @@
           finishEntrance()
           console.error(error)
         } finally {
-          $('fieldset').disabled = !controlsReady
+          document.querySelectorAll('fieldset').forEach((controls) => (controls.disabled = !controlsReady))
         }
       }
       function bindWidget(dashboard, chart, slot, title, lg, xs) {
@@ -1573,6 +1759,13 @@
           button.addEventListener('click', () => {
             // 控件只修改 DSL；嵌套筛选变更由 observeDeep 统一驱动刷新。
             applyPeriod(Number(button.dataset.days))
+          }),
+        )
+        document.querySelectorAll('[data-color]').forEach((button) =>
+          button.addEventListener('click', () => {
+            if (button.getAttribute('aria-pressed') === 'true') return
+            selectPalette(button)
+            requestRender()
           }),
         )
         $('#region-details').addEventListener('toggle', (event) => {

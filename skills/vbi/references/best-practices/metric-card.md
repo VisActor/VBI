@@ -1,13 +1,13 @@
 # 指标卡最佳实践
 
-指标卡由短标题、指标文本和迷你图组成。参考[轻量看板示例](../../examples/dashboard/lightweight-dashboard.html)的主趋势、销售增长与利润卡片；页面宽度、颜色、圆角和联动方向遵循[设计与布局最佳实践](./design-and-layout.md)。
+指标卡由短标题、指标文本和迷你图组成。参考[轻量看板示例](../../examples/dashboard/lightweight-dashboard.html)的主趋势、销售增长与利润卡片；页面宽度、圆角和联动方向遵循[设计与布局最佳实践](./design-and-layout.md)，强调色、填充色与正负值颜色见[配色与背景最佳实践](./color-and-background.md)。
 
 ## 文本与迷你图配合
 
 | 迷你图      | 适用内容                 | 展示要求                                     |
 | ----------- | ------------------------ | -------------------------------------------- |
 | Mini line   | 连续趋势、增长走势       | 使用细线，默认隐藏常驻数据点，悬停仍可读数。 |
-| Mini area   | 强调趋势的规模或总量     | 在细线下增加同一强调色的低透明度填充。       |
+| Mini area   | 强调趋势的规模或总量     | 在细线下增加面积填充，保留轮廓可读性。       |
 | Mini column | 每日利润、订单数等离散值 | 保留零基线和负值，使用小圆角柱体。           |
 
 迷你图建议宽 80–140px、高 56–80px，与指标文本并排。单卡展示一个主要指标，避免堆叠多个图例、长说明和装饰图标。坐标轴、图例和常驻标签可以隐藏，保留 Tooltip 与必要的时间口径；HTML 容器通过 `role="img"` 和 `aria-label` 说明趋势含义。
@@ -20,11 +20,11 @@
 
 ### 公共配置
 
-示例使用已聚合的每日销售额。接入 VBI 的 `buildVSeed()` 时保留其 `dataset`、维度和度量 ID，在返回的 seed 上补充以下视觉属性即可。
+示例使用已聚合的每日销售额，页面先按配色文档初始化 `--accent`，以下配置只消费这一颜色变量。接入 VBI 的 `buildVSeed()` 时保留其 `dataset`、维度和度量 ID，在返回的 seed 上补充以下视觉属性即可。
 
 ```javascript
 registerAll()
-const accent = '#16c99e'
+const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
 const dailySales = [
   { date: '2026-10-01', value: 120 },
@@ -72,7 +72,7 @@ const miniColumnSeed = {
 }
 ```
 
-展示利润时替换为已查询的每日利润数据和度量别名，负值保留在零线下方；不通过第二种强调色掩盖或区分正负值。
+展示利润时替换为已查询的每日利润数据和度量别名，负值保留在零线下方；语义色配置统一见[配色与背景最佳实践](./color-and-background.md#图表配色与页面同步)。
 
 ### Mini line
 

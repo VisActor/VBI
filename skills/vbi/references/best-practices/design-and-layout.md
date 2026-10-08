@@ -1,6 +1,6 @@
 # Dashboard 设计与布局最佳实践
 
-适用于经营概览、轻量看板和指标仪表盘。参考[轻量看板示例](../../examples/dashboard/lightweight-dashboard.html)的主次区域、响应式网格和单向联动；新页面采用本文的宽度、圆角、颜色和动效约束。
+适用于经营概览、轻量看板和指标仪表盘。参考[轻量看板示例](../../examples/dashboard/lightweight-dashboard.html)的主次区域、响应式网格和单向联动；新页面采用本文的宽度、圆角和动效约束；配色与背景实现见[配色与背景最佳实践](./color-and-background.md)。
 
 ## 页面与视觉约束
 
@@ -13,67 +13,10 @@
 | 联动方向 | **禁止子区域反向联动主区域，也禁止子区域跨区域联动其他子区域**；子区域可在自身内部独立联动。Header 中的全局过滤器可以统一改变全部区域的分析范围。 |
 | 3D 动效  | 主区域禁止倾斜；子区域可选用轻微倾斜，任意时刻的倾斜幅度不超过 **2°**。触屏和减少动态效果模式下关闭倾斜。                                         |
 | 卡片入场 | 每张卡片均使用延时入场动画，按当前视觉布局自上而下依次出现；间隔稍长，采用缓和淡入与轻微上移。                                                    |
-| 颜色     | 一个 Dashboard 只使用一个强调色，以浅色背景和中性色文字为主；通过明暗、透明度和位置建立层级，避免为每张卡片分配不同颜色。                         |
-| 背景     | 根据系列色选择两种低饱和颜色，以大面积柔和模糊渐变自然融合；柔白斜光从左上穿至右下，边缘柔化并带轻微散射，突出卡片内容。                          |
 | 圆角     | 使用小圆角，卡片建议 **8px**，控件建议 **4–6px**；避免大圆角卡片和胶囊式页面容器。                                                                |
 | 页面结构 | 采用 **Header + Content**，无需 Footer。Header 只保留标题、过滤器等重要内容，不添加 subtitle、导入 DSL 按钮或冗长说明。                           |
 
-单一强调色不能代替信息表达：增减、负值和选中状态同时使用符号、数值、位置或文字表达。卡片保留短标题、指标单位和必要的比较口径；加载、错误等反馈放在 Header 或相关卡片内，不为它们增加 Footer。
-
-## 低饱和渐变与柔白斜光
-
-根据图表系列色选择两种协调的低饱和背景色，形成大面积柔和、模糊的渐变，自然融合；一束柔白光从左上斜穿至右下，像阳光透过毛玻璃，边缘柔化并带轻微散射。整体保持低饱和、轻盈通透，视觉重点落在卡片内容上。两种背景色只作装饰，图表系列、选中控件与重点指标仍使用同一个强调色。
-
-纯 CSS 使用 `body::before` 绘制底层渐变，`body::after` 绘制白色斜光。将以下声明合并到页面样式，保留现有 DOM、网格布局、卡片尺寸和交互处理：
-
-```css
-body {
-  position: relative;
-  min-height: 100svh;
-  isolation: isolate;
-  margin: 0;
-  color: var(--ink);
-  background: #edf2f1;
-  font-family: Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-body::before,
-body::after {
-  content: '';
-  position: fixed;
-  pointer-events: none;
-}
-
-body::before {
-  z-index: -2;
-  inset: -18%;
-  background:
-    radial-gradient(ellipse at 14% 22%, #c7e9df 0%, #c7e9df00 62%),
-    radial-gradient(ellipse at 88% 78%, #ddd6ed 0%, #ddd6ed00 64%);
-  filter: blur(64px);
-}
-
-body::after {
-  z-index: -1;
-  inset: -10%;
-  background:
-    radial-gradient(ellipse at 24% 0%, #ffffffb3 0%, #ffffff00 48%),
-    linear-gradient(
-      52deg,
-      #ffffff00 32%,
-      #ffffff14 38%,
-      #ffffff70 43%,
-      #ffffffd9 46%,
-      #ffffff80 49%,
-      #eee7f833 54%,
-      #eee7f800 61%
-    );
-  filter: blur(18px);
-}
-```
-
-`isolation: isolate` 将负层级背景留在页面的独立堆叠上下文中；两层伪元素位于内容下方，`pointer-events: none` 保证点击与悬停命中卡片、过滤器和图表。负 `inset` 为模糊边缘预留空间，滚动时背景保持固定。不对卡片或 Content 容器应用 `filter`，保持文字和图表清晰。
+卡片保留短标题、指标单位和必要的比较口径；加载、错误等反馈放在 Header 或相关卡片内，不为它们增加 Footer。
 
 ## 用 Dashboard DSL 保存布局
 
@@ -125,7 +68,7 @@ for (const { chart, title, slot, lg, xs } of widgets) {
 
 ## Header + Content 示例
 
-将下面的结构与上述 Builder 片段组合。过滤器的选中值应由当前分析配置初始化，点击只修改相关 Builder；具体刷新与指标绘制沿用轻量看板的 `applyPeriod()`、`requestRender()` 和 `draw()`。
+将下面的结构与上述 Builder 片段组合。样式中的颜色变量由[配色与背景最佳实践](./color-and-background.md#统一颜色变量)初始化；此处只定义布局与控件结构。过滤器的选中值应由当前分析配置初始化，点击只修改相关 Builder；具体刷新与指标绘制沿用轻量看板的 `applyPeriod()`、`requestRender()` 和 `draw()`。
 
 ```html
 <div class="dashboard-view">
@@ -177,14 +120,9 @@ for (const { chart, title, slot, lg, xs } of widgets) {
 * {
   box-sizing: border-box;
 }
-:root {
-  --accent: #16c99e;
-  --ink: #28333e;
-  --muted: #64717e;
-}
 body {
   margin: 0;
-  background: #edf2f1;
+  background: var(--background-base);
   color: var(--ink);
   font-family: Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
@@ -219,16 +157,16 @@ h2 {
 }
 .filters button {
   padding: 8px 12px;
-  border: 1px solid #dce2e7;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background: #fff;
+  background: var(--surface);
   color: var(--ink);
   font: inherit;
   cursor: pointer;
 }
 .filters button[aria-pressed='true'] {
   border-color: var(--accent);
-  background: #e7faf4;
+  background: var(--accent-soft);
 }
 .filters button:focus-visible {
   outline: 2px solid var(--accent);
@@ -247,9 +185,9 @@ h2 {
 .card {
   height: 100%;
   padding: 20px;
-  border: 1px solid #e5eaee;
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: #fff;
+  background: var(--surface);
 }
 .main-card {
   display: flex;
@@ -434,6 +372,6 @@ entranceMotion.addEventListener('change', onEntranceMotionChange)
 
 ## 示例参考与验收
 
-轻量看板提供 `bindWidget()`、`layoutDashboard()`、`bindMetricHover()` 与实例更新的完整参考。其现有 1120px 外壳、26px 卡片圆角、多种装饰颜色、较大倾斜角、subtitle 和 Footer 是旧页面的设计选择；新页面按本文调整。
+轻量看板提供 `bindWidget()`、`layoutDashboard()`、`bindMetricHover()` 与实例更新的完整参考。其现有 1120px 外壳、26px 卡片圆角、较大倾斜角、subtitle 和 Footer 是旧页面的设计选择；新页面按本文调整。
 
-验收覆盖移动端 375px / 390px、桌面 1440px、大屏 1920px：无横向溢出，大屏内容不超过 1140px；所有展示内容位于卡片内；主图能联动子卡片，子图只更新自身且移出恢复；主区域保持平面，子区域倾斜始终不超过 2°；卡片按实际位置自上而下依次缓和入场，筛选时不重复入场；减少动态效果模式下关闭倾斜与入场；渐变与斜光柔和，背景不影响文字清晰度，也不拦截点击、Tooltip 或悬停联动。保存恢复与查询口径另见[实践技巧](../usage/tips.md)。
+验收覆盖移动端 375px / 390px、桌面 1440px、大屏 1920px：无横向溢出，大屏内容不超过 1140px；所有展示内容位于卡片内；主图能联动子卡片，子图只更新自身且移出恢复；主区域保持平面，子区域倾斜始终不超过 2°；卡片按实际位置自上而下依次缓和入场，筛选时不重复入场；减少动态效果模式下关闭倾斜与入场。保存恢复与查询口径另见[实践技巧](../usage/tips.md)。
