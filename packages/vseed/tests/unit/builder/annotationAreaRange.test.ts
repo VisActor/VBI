@@ -355,6 +355,30 @@ describe('annotationArea coordinate ranges', () => {
     expect(mark.positions(advanced.dataset.flat(), context)).toEqual(expected)
   })
 
+  test('uses the categorical y bandwidth when the numeric x helper returns undefined', () => {
+    const builder = Builder.from({
+      chartType: 'bar',
+      dataset,
+      dimensions: [{ id: 'channel' }],
+      measures: [{ id: 'cost' }],
+      annotationArea: { selector: { field: 'channel', operator: 'in', value: ['B', 'C'] } },
+    } as VSeed)
+    const advanced = builder.buildAdvanced()!
+    const spec = builder.buildSpec(advanced) as ILineChartSpec
+    const [mark] = spec.markArea as Array<{ positions: (data: Datum[], series: ICartesianSeries) => unknown }>
+    const context = {
+      ...series(),
+      fieldX: ['channel'],
+      fieldY: ['channel'],
+      _scaleConfig: { bandPosition: 0.5 },
+      getXAxisHelper: () => ({ getBandwidth: () => undefined }),
+      getYAxisHelper: () => ({ getBandwidth: () => 40 }),
+      dataToPosition: (datum: Datum) => ({ x: 50, y: datum.channel === 'B' ? 50 : 90 }),
+    } as unknown as ICartesianSeries
+
+    expect(mark.positions(advanced.dataset.flat(), context)).toEqual(rectangle(0, 26, 300, 114))
+  })
+
   test('omits geometry until the plot has a finite positive size', () => {
     const positions = getPositions(scatter({ range: { y: { min: 0, max: 1 } } }))
     expect([positions([], series(0, 200)), positions([], series(300, NaN))]).toEqual([[], []])

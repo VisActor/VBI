@@ -82,21 +82,21 @@ export const annotationAreaBand: VChartSpecPipe = (spec, context) => {
         const bandPosition = context?._scaleConfig?.bandPosition || 0
 
         const yAxisHelper = context.getYAxisHelper() as unknown as {
-          getBandwidth: (depth?: number) => number
+          getBandwidth?: (depth?: number) => number | undefined
           getScale: () => {
             range: () => number[]
           }
         }
         const xAxisHelper = context.getXAxisHelper() as unknown as {
-          getBandwidth: (depth?: number) => number
+          getBandwidth?: (depth?: number) => number | undefined
           getScale: () => {
             range: () => number[]
           }
         }
 
-        if (typeof xAxisHelper?.getBandwidth === 'function') {
-          const depth = context.fieldX.length ?? 0
-          const xBandWidth = xAxisHelper?.getBandwidth?.(depth - 1)
+        // Linear axes may expose getBandwidth but return undefined; only a finite width identifies a band axis.
+        const xBandWidth = xAxisHelper?.getBandwidth?.((context.fieldX.length ?? 0) - 1)
+        if (typeof xBandWidth === 'number' && Number.isFinite(xBandWidth)) {
           const regionRect = context.getRegion().getLayoutRect()
           const startX = Math.min(...xyList.map((item) => item.x)) - (outerPadding || 4)
           const endX = Math.max(...xyList.map((item) => item.x)) + (outerPadding || 4)
@@ -134,9 +134,8 @@ export const annotationAreaBand: VChartSpecPipe = (spec, context) => {
           ]
         }
 
-        if (typeof yAxisHelper?.getBandwidth === 'function') {
-          const depth = context.fieldY.length ?? 0
-          const yBandWidth = yAxisHelper?.getBandwidth?.(depth - 1)
+        const yBandWidth = yAxisHelper?.getBandwidth?.((context.fieldY.length ?? 0) - 1)
+        if (typeof yBandWidth === 'number' && Number.isFinite(yBandWidth)) {
           const regionRect = context.getRegion().getLayoutRect()
 
           const startY = Math.min(...xyList.map((item) => item.y)) - (outerPadding || 4)
