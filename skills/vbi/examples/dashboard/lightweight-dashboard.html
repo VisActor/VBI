@@ -19,11 +19,48 @@
       }
 
       body {
+        position: relative;
+        min-height: 100svh;
+        isolation: isolate;
         margin: 0;
         color: var(--ink);
-        background: #edf0f3;
+        background: #edf2f1;
         font-family: Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif;
         -webkit-font-smoothing: antialiased;
+      }
+
+      body::before,
+      body::after {
+        content: '';
+        position: fixed;
+        pointer-events: none;
+      }
+
+      body::before {
+        z-index: -2;
+        inset: -18%;
+        background:
+          radial-gradient(ellipse at 14% 22%, #c7e9df 0%, #c7e9df00 62%),
+          radial-gradient(ellipse at 88% 78%, #ddd6ed 0%, #ddd6ed00 64%);
+        filter: blur(64px);
+      }
+
+      body::after {
+        z-index: -1;
+        inset: -10%;
+        background:
+          radial-gradient(ellipse at 24% 0%, #ffffffb3 0%, #ffffff00 48%),
+          linear-gradient(
+            52deg,
+            #ffffff00 32%,
+            #ffffff14 38%,
+            #ffffff70 43%,
+            #ffffffd9 46%,
+            #ffffff80 49%,
+            #eee7f833 54%,
+            #eee7f800 61%
+          );
+        filter: blur(18px);
       }
 
       button {

@@ -324,8 +324,9 @@ export async function buildApiReference(project, sourceRoot, config) {
             .getFilePath()
             .replace('/src/', '')
             .replace(/\.d\.ts$/, '.ts')
-      const sourceLink = toPosix(path.relative(config.outputDir, path.join(sourceRoot, relative)))
-      parts.push(`## ${record.name}`, `源码：[packages/${packageName}/src/${relative}](${sourceLink})`)
+      const sourcePath = `packages/${packageName}/src/${relative}`
+      const sourceLink = `https://github.com/VisActor/VBI/blob/main/${sourcePath}`
+      parts.push(`## ${record.name}`, `源码：[${sourcePath}](${sourceLink})`)
       parts.push(
         record.exports.length
           ? `包导出：${record.exports.map((name) => `\`${name}\``).join('、')}`

@@ -166,7 +166,7 @@ import type {
 
 ## AdvancedPipe
 
-源码：[packages/vseed/src/types/pipeline/advancedVSeed/advancedVSeed.ts](../../../../../packages/vseed/src/types/pipeline/advancedVSeed/advancedVSeed.ts)
+源码：[packages/vseed/src/types/pipeline/advancedVSeed/advancedVSeed.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/advancedVSeed/advancedVSeed.ts)
 
 包导出：`AdvancedPipe`
 
@@ -178,7 +178,7 @@ export type AdvancedPipe = Pipe<AdvancedVSeed, AdvancedPipelineContext>
 
 ## AdvancedPipeline
 
-源码：[packages/vseed/src/types/pipeline/advancedVSeed/advancedVSeed.ts](../../../../../packages/vseed/src/types/pipeline/advancedVSeed/advancedVSeed.ts)
+源码：[packages/vseed/src/types/pipeline/advancedVSeed/advancedVSeed.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/advancedVSeed/advancedVSeed.ts)
 
 包导出：`AdvancedPipeline`
 
@@ -190,7 +190,7 @@ export type AdvancedPipeline = Pipe<AdvancedVSeed, AdvancedPipelineContext>[]
 
 ## AdvancedPipelineContext
 
-源码：[packages/vseed/src/types/pipeline/advancedVSeed/advancedVSeed.ts](../../../../../packages/vseed/src/types/pipeline/advancedVSeed/advancedVSeed.ts)
+源码：[packages/vseed/src/types/pipeline/advancedVSeed/advancedVSeed.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/advancedVSeed/advancedVSeed.ts)
 
 包导出：`AdvancedPipelineContext`
 
@@ -205,7 +205,7 @@ export type AdvancedPipelineContext = {
 
 ## AliasFormatter
 
-源码：[packages/vseed/src/pipeline/utils/format/createAliasFormatter.ts](../../../../../packages/vseed/src/pipeline/utils/format/createAliasFormatter.ts)
+源码：[packages/vseed/src/pipeline/utils/format/createAliasFormatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/format/createAliasFormatter.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -215,7 +215,7 @@ type AliasFormatter = (value: string | number) => string | number
 
 ## AliasMap
 
-源码：[packages/vseed/src/pipeline/utils/format/createAliasFormatter.ts](../../../../../packages/vseed/src/pipeline/utils/format/createAliasFormatter.ts)
+源码：[packages/vseed/src/pipeline/utils/format/createAliasFormatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/format/createAliasFormatter.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -230,7 +230,7 @@ type AliasMap = Record<
 
 ## ANNOTATION_Z_INDEX
 
-源码：[packages/vseed/src/pipeline/utils/constant.ts](../../../../../packages/vseed/src/pipeline/utils/constant.ts)
+源码：[packages/vseed/src/pipeline/utils/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/constant.ts)
 
 包导出：`ANNOTATION_Z_INDEX`
 
@@ -240,7 +240,7 @@ const ANNOTATION_Z_INDEX = 1000
 
 ## areaAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/area.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/area.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/area.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/area.ts)
 
 包导出：`areaAdvancedPipeline`
 
@@ -252,7 +252,7 @@ const areaAdvancedPipeline: AdvancedPipeline
 
 ## areaPercentAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/areaPercent.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/areaPercent.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/areaPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/areaPercent.ts)
 
 包导出：`areaPercentAdvancedPipeline`
 
@@ -264,7 +264,7 @@ const areaPercentAdvancedPipeline: AdvancedPipeline
 
 ## areaPercentSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/areaPercent.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/areaPercent.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/areaPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/areaPercent.ts)
 
 包导出：`areaPercentSpecPipeline`
 
@@ -276,7 +276,7 @@ const areaPercentSpecPipeline: import('src/types').SpecPipe[]
 
 ## areaSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/area.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/area.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/area.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/area.ts)
 
 包导出：`areaSpecPipeline`
 
@@ -288,7 +288,7 @@ const areaSpecPipeline: import('src/types').SpecPipe[]
 
 ## autoFormatter
 
-源码：[packages/vseed/src/pipeline/utils/format/createFormatter.ts](../../../../../packages/vseed/src/pipeline/utils/format/createFormatter.ts)
+源码：[packages/vseed/src/pipeline/utils/format/createFormatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/format/createFormatter.ts)
 
 包导出：`autoFormatter`
 
@@ -307,7 +307,7 @@ locale = intl.getLocale()
 
 ## autoNumFormatter
 
-源码：[packages/vseed/src/pipeline/utils/format/createNumFormatter.ts](../../../../../packages/vseed/src/pipeline/utils/format/createNumFormatter.ts)
+源码：[packages/vseed/src/pipeline/utils/format/createNumFormatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/format/createNumFormatter.ts)
 
 包导出：`autoNumFormatter`
 
@@ -326,7 +326,7 @@ locale = intl.getLocale()
 
 ## AXIS_LABEL_SPACE
 
-源码：[packages/vseed/src/pipeline/utils/constant.ts](../../../../../packages/vseed/src/pipeline/utils/constant.ts)
+源码：[packages/vseed/src/pipeline/utils/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/constant.ts)
 
 包导出：`AXIS_LABEL_SPACE`
 
@@ -336,7 +336,7 @@ const AXIS_LABEL_SPACE = 8
 
 ## BAND_AXIS_INNER_OFFSET_IN_PIVOT
 
-源码：[packages/vseed/src/pipeline/utils/constant.ts](../../../../../packages/vseed/src/pipeline/utils/constant.ts)
+源码：[packages/vseed/src/pipeline/utils/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/constant.ts)
 
 包导出：`BAND_AXIS_INNER_OFFSET_IN_PIVOT`
 
@@ -346,7 +346,7 @@ const BAND_AXIS_INNER_OFFSET_IN_PIVOT = 2
 
 ## barAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/bar.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/bar.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/bar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/bar.ts)
 
 包导出：`barAdvancedPipeline`
 
@@ -358,7 +358,7 @@ const barAdvancedPipeline: AdvancedPipeline
 
 ## barParallelAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/barParallel.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/barParallel.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/barParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/barParallel.ts)
 
 包导出：`barParallelAdvancedPipeline`
 
@@ -370,7 +370,7 @@ const barParallelAdvancedPipeline: AdvancedPipeline
 
 ## barParallelSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/barParallel.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/barParallel.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/barParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/barParallel.ts)
 
 包导出：`barParallelSpecPipeline`
 
@@ -382,7 +382,7 @@ const barParallelSpecPipeline: import('src/types').SpecPipe[]
 
 ## barPercentAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/barPercent.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/barPercent.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/barPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/barPercent.ts)
 
 包导出：`barPercentAdvancedPipeline`
 
@@ -394,7 +394,7 @@ const barPercentAdvancedPipeline: AdvancedPipeline
 
 ## barPercentSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/barPercent.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/barPercent.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/barPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/barPercent.ts)
 
 包导出：`barPercentSpecPipeline`
 
@@ -406,7 +406,7 @@ const barPercentSpecPipeline: import('src/types').SpecPipe[]
 
 ## barSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/bar.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/bar.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/bar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/bar.ts)
 
 包导出：`barSpecPipeline`
 
@@ -418,7 +418,7 @@ const barSpecPipeline: import('src/types').SpecPipe[]
 
 ## boxplotAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/boxplot.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/boxplot.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/boxplot.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/boxplot.ts)
 
 包导出：`boxplotAdvancedPipeline`
 
@@ -430,7 +430,7 @@ const boxplotAdvancedPipeline: AdvancedPipeline
 
 ## boxplotSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/boxplot.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/boxplot.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/boxplot.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/boxplot.ts)
 
 包导出：`boxplotSpecPipeline`
 
@@ -442,7 +442,7 @@ const boxplotSpecPipeline: import('src/types').SpecPipe[]
 
 ## BUILTIN_UTILS_SOURCE
 
-源码：[packages/vseed/src/pipeline/utils/sandbox/builtin-utils.ts](../../../../../packages/vseed/src/pipeline/utils/sandbox/builtin-utils.ts)
+源码：[packages/vseed/src/pipeline/utils/sandbox/builtin-utils.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/sandbox/builtin-utils.ts)
 
 包导出：`BUILTIN_UTILS_SOURCE`
 
@@ -456,7 +456,7 @@ const BUILTIN_UTILS_SOURCE: string
 
 ## ChartTypeEnum
 
-源码：[packages/vseed/src/pipeline/utils/constant.ts](../../../../../packages/vseed/src/pipeline/utils/constant.ts)
+源码：[packages/vseed/src/pipeline/utils/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/constant.ts)
 
 包导出：`ChartTypeEnum`
 
@@ -500,7 +500,7 @@ const ChartTypeEnum: {
 
 ## checkVSeed
 
-源码：[packages/vseed/src/pipeline/utils/valid/checkVSeed.ts](../../../../../packages/vseed/src/pipeline/utils/valid/checkVSeed.ts)
+源码：[packages/vseed/src/pipeline/utils/valid/checkVSeed.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/valid/checkVSeed.ts)
 
 包导出：`checkVSeed`
 
@@ -512,7 +512,7 @@ const checkVSeed: (vseed: VSeed) => void
 
 ## circlePackingAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/circlePacking.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/circlePacking.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/circlePacking.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/circlePacking.ts)
 
 包导出：`circlePackingAdvancedPipeline`
 
@@ -524,7 +524,7 @@ const circlePackingAdvancedPipeline: AdvancedPipeline
 
 ## circlePackingSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/circlePacking.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/circlePacking.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/circlePacking.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/circlePacking.ts)
 
 包导出：`circlePackingSpecPipeline`
 
@@ -536,7 +536,7 @@ const circlePackingSpecPipeline: import('src/types').SpecPipe[]
 
 ## columnAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/column.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/column.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/column.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/column.ts)
 
 包导出：`columnAdvancedPipeline`
 
@@ -548,7 +548,7 @@ const columnAdvancedPipeline: AdvancedPipeline
 
 ## columnParallelAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/columnParallel.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/columnParallel.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/columnParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/columnParallel.ts)
 
 包导出：`columnParallelAdvancedPipeline`
 
@@ -560,7 +560,7 @@ const columnParallelAdvancedPipeline: AdvancedPipeline
 
 ## columnParallelSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/columnParallel.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/columnParallel.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/columnParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/columnParallel.ts)
 
 包导出：`columnParallelSpecPipeline`
 
@@ -572,7 +572,7 @@ const columnParallelSpecPipeline: import('src/types').SpecPipe[]
 
 ## columnPercentAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/columnPercent.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/columnPercent.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/columnPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/columnPercent.ts)
 
 包导出：`columnPercentAdvancedPipeline`
 
@@ -584,7 +584,7 @@ const columnPercentAdvancedPipeline: AdvancedPipeline
 
 ## columnPercentSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/columnPercent.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/columnPercent.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/columnPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/columnPercent.ts)
 
 包导出：`columnPercentSpecPipeline`
 
@@ -596,7 +596,7 @@ const columnPercentSpecPipeline: import('src/types').SpecPipe[]
 
 ## columnSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/column.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/column.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/column.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/column.ts)
 
 包导出：`columnSpecPipeline`
 
@@ -608,7 +608,7 @@ const columnSpecPipeline: import('src/types').SpecPipe[]
 
 ## condition
 
-源码：[packages/vseed/src/pipeline/spec/chart/utils/condition.ts](../../../../../packages/vseed/src/pipeline/spec/chart/utils/condition.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/utils/condition.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/utils/condition.ts)
 
 包导出：`condition`
 
@@ -620,7 +620,7 @@ const condition: <T extends SpecPipe>(condition: Condition, truePipe: T, falsePi
 
 ## Condition
 
-源码：[packages/vseed/src/pipeline/spec/chart/utils/condition.ts](../../../../../packages/vseed/src/pipeline/spec/chart/utils/condition.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/utils/condition.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/utils/condition.ts)
 
 包导出：`Condition`
 
@@ -632,7 +632,7 @@ export type Condition = (context: SpecPipelineContext) => boolean
 
 ## createAliasFormatter
 
-源码：[packages/vseed/src/pipeline/utils/format/createAliasFormatter.ts](../../../../../packages/vseed/src/pipeline/utils/format/createAliasFormatter.ts)
+源码：[packages/vseed/src/pipeline/utils/format/createAliasFormatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/format/createAliasFormatter.ts)
 
 包导出：`createAliasFormatter`
 
@@ -645,7 +645,7 @@ const createAliasFormatter: (aliases: AliasMap) => AliasFormatter | undefined
 
 ## createFormatter
 
-源码：[packages/vseed/src/pipeline/utils/format/createFormatter.ts](../../../../../packages/vseed/src/pipeline/utils/format/createFormatter.ts)
+源码：[packages/vseed/src/pipeline/utils/format/createFormatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/format/createFormatter.ts)
 
 包导出：`createFormatter`
 
@@ -657,7 +657,7 @@ const createFormatter: (format: Partial<NumFormat>, locale?: Locale) => Formatte
 
 ## createFormatterByDimension
 
-源码：[packages/vseed/src/pipeline/utils/format/createFormatterByDimension.ts](../../../../../packages/vseed/src/pipeline/utils/format/createFormatterByDimension.ts)
+源码：[packages/vseed/src/pipeline/utils/format/createFormatterByDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/format/createFormatterByDimension.ts)
 
 包导出：`createFormatterByDimension`
 
@@ -676,7 +676,7 @@ locale = intl.getLocale()
 
 ## createFormatterByMeasure
 
-源码：[packages/vseed/src/pipeline/utils/format/createFormatterByMeasure.ts](../../../../../packages/vseed/src/pipeline/utils/format/createFormatterByMeasure.ts)
+源码：[packages/vseed/src/pipeline/utils/format/createFormatterByMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/format/createFormatterByMeasure.ts)
 
 包导出：`createFormatterByMeasure`
 
@@ -688,7 +688,7 @@ const createFormatterByMeasure: (measure?: Measure) => Formatter
 
 ## createNumFormatter
 
-源码：[packages/vseed/src/pipeline/utils/format/createNumFormatter.ts](../../../../../packages/vseed/src/pipeline/utils/format/createNumFormatter.ts)
+源码：[packages/vseed/src/pipeline/utils/format/createNumFormatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/format/createNumFormatter.ts)
 
 包导出：`createNumFormatter`
 
@@ -707,7 +707,7 @@ locale = intl.getLocale()
 
 ## createTimeFormatter
 
-源码：[packages/vseed/src/pipeline/utils/format/createTimeFormatter.ts](../../../../../packages/vseed/src/pipeline/utils/format/createTimeFormatter.ts)
+源码：[packages/vseed/src/pipeline/utils/format/createTimeFormatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/format/createTimeFormatter.ts)
 
 包导出：`createTimeFormatter`
 
@@ -726,7 +726,7 @@ fallbackLocale = intl.getLocale()
 
 ## DATUM_HIDE_KEY
 
-源码：[packages/vseed/src/pipeline/utils/constant.ts](../../../../../packages/vseed/src/pipeline/utils/constant.ts)
+源码：[packages/vseed/src/pipeline/utils/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/constant.ts)
 
 包导出：`DATUM_HIDE_KEY`
 
@@ -736,7 +736,7 @@ const DATUM_HIDE_KEY = '__VSEED_HideItem__'
 
 ## DEFAULT_DUAL_CHART_TYPE
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`DEFAULT_DUAL_CHART_TYPE`
 
@@ -752,7 +752,7 @@ const DEFAULT_DUAL_CHART_TYPE: {
 
 ## DEFAULT_PARENT_ID
 
-源码：[packages/vseed/src/pipeline/utils/constant.ts](../../../../../packages/vseed/src/pipeline/utils/constant.ts)
+源码：[packages/vseed/src/pipeline/utils/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/constant.ts)
 
 包导出：`DEFAULT_PARENT_ID`
 
@@ -762,7 +762,7 @@ const DEFAULT_PARENT_ID = '__DefaultParentId__'
 
 ## deleteDimensionTreeByCallback
 
-源码：[packages/vseed/src/pipeline/utils/dimensions/delete.ts](../../../../../packages/vseed/src/pipeline/utils/dimensions/delete.ts)
+源码：[packages/vseed/src/pipeline/utils/dimensions/delete.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/dimensions/delete.ts)
 
 包导出：`deleteDimensionTreeByCallback`
 
@@ -783,7 +783,7 @@ const deleteDimensionTreeByCallback: <T extends DimensionTree>(
 
 ## deleteMeasureTreeByCallback
 
-源码：[packages/vseed/src/pipeline/utils/measures/delete.ts](../../../../../packages/vseed/src/pipeline/utils/measures/delete.ts)
+源码：[packages/vseed/src/pipeline/utils/measures/delete.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/measures/delete.ts)
 
 包导出：`deleteMeasureTreeByCallback`
 
@@ -804,7 +804,7 @@ const deleteMeasureTreeByCallback: <T extends MeasureTree>(
 
 ## donutAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/donut.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/donut.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/donut.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/donut.ts)
 
 包导出：`donutAdvancedPipeline`
 
@@ -816,7 +816,7 @@ const donutAdvancedPipeline: AdvancedPipeline
 
 ## donutSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/donut.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/donut.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/donut.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/donut.ts)
 
 包导出：`donutSpecPipeline`
 
@@ -828,7 +828,7 @@ const donutSpecPipeline: import('src/types').SpecPipe[]
 
 ## DUAL_AXIS_CHART_COLUMN_Z_INDEX
 
-源码：[packages/vseed/src/pipeline/utils/constant.ts](../../../../../packages/vseed/src/pipeline/utils/constant.ts)
+源码：[packages/vseed/src/pipeline/utils/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/constant.ts)
 
 包导出：`DUAL_AXIS_CHART_COLUMN_Z_INDEX`
 
@@ -838,7 +838,7 @@ const DUAL_AXIS_CHART_COLUMN_Z_INDEX = 1000
 
 ## DUAL_AXIS_CHART_NON_COLUMN_Z_INDEX
 
-源码：[packages/vseed/src/pipeline/utils/constant.ts](../../../../../packages/vseed/src/pipeline/utils/constant.ts)
+源码：[packages/vseed/src/pipeline/utils/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/constant.ts)
 
 包导出：`DUAL_AXIS_CHART_NON_COLUMN_Z_INDEX`
 
@@ -848,7 +848,7 @@ const DUAL_AXIS_CHART_NON_COLUMN_Z_INDEX = 1001
 
 ## DUAL_AXIS_LABEL_Z_INDEX
 
-源码：[packages/vseed/src/pipeline/utils/constant.ts](../../../../../packages/vseed/src/pipeline/utils/constant.ts)
+源码：[packages/vseed/src/pipeline/utils/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/constant.ts)
 
 包导出：`DUAL_AXIS_LABEL_Z_INDEX`
 
@@ -858,7 +858,7 @@ const DUAL_AXIS_LABEL_Z_INDEX = 1002
 
 ## dualAxisAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/dualAxis.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/dualAxis.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/dualAxis.ts)
 
 包导出：`dualAxisAdvancedPipeline`
 
@@ -870,7 +870,7 @@ const dualAxisAdvancedPipeline: AdvancedPipeline
 
 ## dualAxisSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/dualAxis.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/dualAxis.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/dualAxis.ts)
 
 包导出：`dualAxisSpecPipeline`
 
@@ -882,7 +882,7 @@ const dualAxisSpecPipeline: import('src/types').SpecPipe[]
 
 ## execPipeline
 
-源码：[packages/vseed/src/pipeline/utils/pipeline.ts](../../../../../packages/vseed/src/pipeline/utils/pipeline.ts)
+源码：[packages/vseed/src/pipeline/utils/pipeline.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/pipeline.ts)
 
 包导出：`execPipeline`
 
@@ -908,7 +908,7 @@ initialValue = {}
 
 ## ExecPipelineType
 
-源码：[packages/vseed/src/types/pipeline/pipeline.ts](../../../../../packages/vseed/src/types/pipeline/pipeline.ts)
+源码：[packages/vseed/src/types/pipeline/pipeline.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/pipeline.ts)
 
 包导出：`ExecPipelineType`
 
@@ -920,7 +920,7 @@ export type ExecPipelineType = <T, U>(pipeline: Array<Pipe<T, U>>, context: U, i
 
 ## executeFilterCode
 
-源码：[packages/vseed/src/pipeline/utils/sandbox/execute.ts](../../../../../packages/vseed/src/pipeline/utils/sandbox/execute.ts)
+源码：[packages/vseed/src/pipeline/utils/sandbox/execute.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/sandbox/execute.ts)
 
 包导出：`executeFilterCode`
 
@@ -936,7 +936,7 @@ export declare function executeFilterCode(options: CodeExecutionOptions): Promis
 
 ## findAllMeasures
 
-源码：[packages/vseed/src/pipeline/utils/measures/find.ts](../../../../../packages/vseed/src/pipeline/utils/measures/find.ts)
+源码：[packages/vseed/src/pipeline/utils/measures/find.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/measures/find.ts)
 
 包导出：`findAllMeasures`
 
@@ -955,7 +955,7 @@ measures = []
 
 ## findFirstMeasure
 
-源码：[packages/vseed/src/pipeline/utils/measures/find.ts](../../../../../packages/vseed/src/pipeline/utils/measures/find.ts)
+源码：[packages/vseed/src/pipeline/utils/measures/find.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/measures/find.ts)
 
 包导出：`findFirstMeasure`
 
@@ -974,7 +974,7 @@ measures = []
 
 ## findMeasureById
 
-源码：[packages/vseed/src/pipeline/utils/measures/find.ts](../../../../../packages/vseed/src/pipeline/utils/measures/find.ts)
+源码：[packages/vseed/src/pipeline/utils/measures/find.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/measures/find.ts)
 
 包导出：`findMeasureById`
 
@@ -993,7 +993,7 @@ measures = []
 
 ## findTreeNodesBy
 
-源码：[packages/vseed/src/pipeline/utils/tree/traverse.ts](../../../../../packages/vseed/src/pipeline/utils/tree/traverse.ts)
+源码：[packages/vseed/src/pipeline/utils/tree/traverse.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/tree/traverse.ts)
 
 包导出：`findTreeNodesBy`
 
@@ -1017,7 +1017,7 @@ childrenKey = 'children' as K
 
 ## flatReshapeMeasures
 
-源码：[packages/vseed/src/pipeline/utils/measures/find.ts](../../../../../packages/vseed/src/pipeline/utils/measures/find.ts)
+源码：[packages/vseed/src/pipeline/utils/measures/find.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/measures/find.ts)
 
 包导出：`flatReshapeMeasures`
 
@@ -1029,7 +1029,7 @@ const flatReshapeMeasures: (reshapeMeasures: Measure[][]) => Measure[]
 
 ## funnelAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/funnel.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/funnel.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/funnel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/funnel.ts)
 
 包导出：`funnelAdvancedPipeline`
 
@@ -1041,7 +1041,7 @@ const funnelAdvancedPipeline: AdvancedPipeline
 
 ## funnelSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/funnel.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/funnel.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/funnel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/funnel.ts)
 
 包导出：`funnelSpecPipeline`
 
@@ -1053,7 +1053,7 @@ const funnelSpecPipeline: import('src/types').SpecPipe[]
 
 ## HAS_BUILTIN_UTILS
 
-源码：[packages/vseed/src/pipeline/utils/sandbox/builtin-utils.ts](../../../../../packages/vseed/src/pipeline/utils/sandbox/builtin-utils.ts)
+源码：[packages/vseed/src/pipeline/utils/sandbox/builtin-utils.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/sandbox/builtin-utils.ts)
 
 包导出：`HAS_BUILTIN_UTILS`
 
@@ -1063,7 +1063,7 @@ const HAS_BUILTIN_UTILS: boolean
 
 ## hasMultipleMeasureInSingleView
 
-源码：[packages/vseed/src/pipeline/utils/measures/find.ts](../../../../../packages/vseed/src/pipeline/utils/measures/find.ts)
+源码：[packages/vseed/src/pipeline/utils/measures/find.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/measures/find.ts)
 
 包导出：`hasMultipleMeasureInSingleView`
 
@@ -1075,7 +1075,7 @@ const hasMultipleMeasureInSingleView: (reshapeMeasures: Measure[][]) => boolean
 
 ## heatmapAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/heatmap.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/heatmap.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/heatmap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/heatmap.ts)
 
 包导出：`heatmapAdvancedPipeline`
 
@@ -1087,7 +1087,7 @@ const heatmapAdvancedPipeline: AdvancedPipeline
 
 ## heatmapSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/heatmap.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/heatmap.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/heatmap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/heatmap.ts)
 
 包导出：`heatmapSpecPipeline`
 
@@ -1099,7 +1099,7 @@ const heatmapSpecPipeline: import('src/types').SpecPipe[]
 
 ## hierarchySankeyAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/hierarchySankey.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/hierarchySankey.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/hierarchySankey.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/hierarchySankey.ts)
 
 包导出：`hierarchySankeyAdvancedPipeline`
 
@@ -1111,7 +1111,7 @@ const hierarchySankeyAdvancedPipeline: AdvancedPipeline
 
 ## hierarchySankeySpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/hierarchySankey.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/hierarchySankey.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/hierarchySankey.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/hierarchySankey.ts)
 
 包导出：`hierarchySankeySpecPipeline`
 
@@ -1123,7 +1123,7 @@ const hierarchySankeySpecPipeline: import('src/types').SpecPipe[]
 
 ## histogramAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/histogram.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/histogram.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/histogram.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/histogram.ts)
 
 包导出：`histogramAdvancedPipeline`
 
@@ -1135,7 +1135,7 @@ const histogramAdvancedPipeline: AdvancedPipeline
 
 ## histogramSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/histogram.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/histogram.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/histogram.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/histogram.ts)
 
 包导出：`histogramSpecPipeline`
 
@@ -1147,7 +1147,7 @@ const histogramSpecPipeline: import('src/types').SpecPipe[]
 
 ## initializeWorkerPool
 
-源码：[packages/vseed/src/pipeline/utils/sandbox/execute.ts](../../../../../packages/vseed/src/pipeline/utils/sandbox/execute.ts)
+源码：[packages/vseed/src/pipeline/utils/sandbox/execute.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/sandbox/execute.ts)
 
 包导出：`initializeWorkerPool`
 
@@ -1194,7 +1194,7 @@ options = {}
 
 ## isAreaPercent
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isAreaPercent`
 
@@ -1206,7 +1206,7 @@ const isAreaPercent: (vseed: VSeed) => vseed is import('src/types').AreaPercent
 
 ## isBarLikeChart
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isBarLikeChart`
 
@@ -1224,7 +1224,7 @@ const isBarLikeChart: (
 
 ## isBarPercent
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isBarPercent`
 
@@ -1236,7 +1236,7 @@ const isBarPercent: (vseed: VSeed) => vseed is import('src/types').BarPercent
 
 ## isColumnPercent
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isColumnPercent`
 
@@ -1248,7 +1248,7 @@ const isColumnPercent: (vseed: VSeed) => vseed is import('src/types').ColumnPerc
 
 ## isCombination
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isCombination`
 
@@ -1263,7 +1263,7 @@ const isCombination: (vseed: VSeed) => boolean | undefined
 
 ## isDimension
 
-源码：[packages/vseed/src/pipeline/utils/dimensions/typeGuard.ts](../../../../../packages/vseed/src/pipeline/utils/dimensions/typeGuard.ts)
+源码：[packages/vseed/src/pipeline/utils/dimensions/typeGuard.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/dimensions/typeGuard.ts)
 
 包导出：`isDimension`
 
@@ -1275,7 +1275,7 @@ const isDimension: (dimension: Dimension | DimensionGroup) => dimension is Dimen
 
 ## isDimensionGroup
 
-源码：[packages/vseed/src/pipeline/utils/dimensions/typeGuard.ts](../../../../../packages/vseed/src/pipeline/utils/dimensions/typeGuard.ts)
+源码：[packages/vseed/src/pipeline/utils/dimensions/typeGuard.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/dimensions/typeGuard.ts)
 
 包导出：`isDimensionGroup`
 
@@ -1287,7 +1287,7 @@ const isDimensionGroup: (dimension: Dimension | DimensionGroup) => dimension is 
 
 ## isDualAxisChartType
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isDualAxisChartType`
 
@@ -1297,7 +1297,7 @@ const isDualAxisChartType: (chartType: string | undefined) => boolean | '' | und
 
 ## isHierarchySankey
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isHierarchySankey`
 
@@ -1309,7 +1309,7 @@ const isHierarchySankey: (vseed: VSeed) => vseed is import('src/types').Hierarch
 
 ## isMeasure
 
-源码：[packages/vseed/src/pipeline/utils/measures/typeGuard.ts](../../../../../packages/vseed/src/pipeline/utils/measures/typeGuard.ts)
+源码：[packages/vseed/src/pipeline/utils/measures/typeGuard.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/measures/typeGuard.ts)
 
 包导出：`isMeasure`
 
@@ -1321,7 +1321,7 @@ const isMeasure: (measure: Measure | MeasureGroup) => measure is Measure
 
 ## isMeasureGroup
 
-源码：[packages/vseed/src/pipeline/utils/measures/typeGuard.ts](../../../../../packages/vseed/src/pipeline/utils/measures/typeGuard.ts)
+源码：[packages/vseed/src/pipeline/utils/measures/typeGuard.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/measures/typeGuard.ts)
 
 包导出：`isMeasureGroup`
 
@@ -1333,7 +1333,7 @@ const isMeasureGroup: (measure: Measure | MeasureGroup) => measure is MeasureGro
 
 ## isMeasures
 
-源码：[packages/vseed/src/pipeline/utils/measures/typeGuard.ts](../../../../../packages/vseed/src/pipeline/utils/measures/typeGuard.ts)
+源码：[packages/vseed/src/pipeline/utils/measures/typeGuard.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/measures/typeGuard.ts)
 
 包导出：`isMeasures`
 
@@ -1345,7 +1345,7 @@ const isMeasures: (measures: Measure[] | MeasureGroup[]) => measures is Measure[
 
 ## isPivot
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isPivot`
 
@@ -1360,7 +1360,7 @@ const isPivot: (vseed: VSeed) => boolean
 
 ## isPivotChart
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isPivotChart`
 
@@ -1379,7 +1379,7 @@ const isPivotChart: (vseed: VSeed) => boolean | undefined
 
 ## isPivotTable
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isPivotTable`
 
@@ -1391,7 +1391,7 @@ const isPivotTable: (vseed: VSeed) => vseed is import('src/types').PivotTable
 
 ## isPositionMeasure
 
-源码：[packages/vseed/src/pipeline/utils/measures/typeGuard.ts](../../../../../packages/vseed/src/pipeline/utils/measures/typeGuard.ts)
+源码：[packages/vseed/src/pipeline/utils/measures/typeGuard.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/measures/typeGuard.ts)
 
 包导出：`isPositionMeasure`
 
@@ -1403,7 +1403,7 @@ const isPositionMeasure: (measure: Measure, chartType: ChartType) => boolean
 
 ## isRadar
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isRadar`
 
@@ -1415,7 +1415,7 @@ const isRadar: (vseed: VSeed) => vseed is import('src/types').Radar
 
 ## isRectungularCoordinate
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isRectungularCoordinate`
 
@@ -1425,7 +1425,7 @@ const isRectungularCoordinate: (chartType: string) => boolean
 
 ## isSankey
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isSankey`
 
@@ -1437,7 +1437,7 @@ const isSankey: (vseed: VSeed) => vseed is import('src/types').Sankey
 
 ## isTable
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isTable`
 
@@ -1449,7 +1449,7 @@ const isTable: (vseed: VSeed) => vseed is import('src/types').Table
 
 ## isVChart
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isVChart`
 
@@ -1461,7 +1461,7 @@ const isVChart: (vseed: VSeed) => boolean
 
 ## isVTable
 
-源码：[packages/vseed/src/pipeline/utils/chatType.ts](../../../../../packages/vseed/src/pipeline/utils/chatType.ts)
+源码：[packages/vseed/src/pipeline/utils/chatType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/chatType.ts)
 
 包导出：`isVTable`
 
@@ -1473,7 +1473,7 @@ const isVTable: (vseed: VSeed) => boolean
 
 ## lineAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/line.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/line.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/line.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/line.ts)
 
 包导出：`lineAdvancedPipeline`
 
@@ -1485,7 +1485,7 @@ const lineAdvancedPipeline: AdvancedPipeline
 
 ## LINEAR_AXIS_INNER_OFFSET_TOP
 
-源码：[packages/vseed/src/pipeline/utils/constant.ts](../../../../../packages/vseed/src/pipeline/utils/constant.ts)
+源码：[packages/vseed/src/pipeline/utils/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/constant.ts)
 
 包导出：`LINEAR_AXIS_INNER_OFFSET_TOP`
 
@@ -1495,7 +1495,7 @@ const LINEAR_AXIS_INNER_OFFSET_TOP = 12
 
 ## lineSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/line.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/line.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/line.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/line.ts)
 
 包导出：`lineSpecPipeline`
 
@@ -1507,7 +1507,7 @@ const lineSpecPipeline: import('src/types').SpecPipe[]
 
 ## ListTableSpecPipe
 
-源码：[packages/vseed/src/types/pipeline/spec/spec.ts](../../../../../packages/vseed/src/types/pipeline/spec/spec.ts)
+源码：[packages/vseed/src/types/pipeline/spec/spec.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/spec/spec.ts)
 
 包导出：`ListTableSpecPipe`
 
@@ -1519,7 +1519,7 @@ export type ListTableSpecPipe = Pipe<ListTableConstructorOptions, SpecPipelineCo
 
 ## ListTableSpecPipeline
 
-源码：[packages/vseed/src/types/pipeline/spec/spec.ts](../../../../../packages/vseed/src/types/pipeline/spec/spec.ts)
+源码：[packages/vseed/src/types/pipeline/spec/spec.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/spec/spec.ts)
 
 包导出：`ListTableSpecPipeline`
 
@@ -1531,7 +1531,7 @@ export type ListTableSpecPipeline = ListTableSpecPipe[]
 
 ## measureDepth
 
-源码：[packages/vseed/src/pipeline/utils/measures/depth.ts](../../../../../packages/vseed/src/pipeline/utils/measures/depth.ts)
+源码：[packages/vseed/src/pipeline/utils/measures/depth.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/measures/depth.ts)
 
 包导出：`measureDepth`
 
@@ -1556,7 +1556,7 @@ measures = []
 
 ## NullToUndefined
 
-源码：[packages/vseed/src/pipeline/utils/replaceNullToUndefined.ts](../../../../../packages/vseed/src/pipeline/utils/replaceNullToUndefined.ts)
+源码：[packages/vseed/src/pipeline/utils/replaceNullToUndefined.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/replaceNullToUndefined.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -1574,7 +1574,7 @@ type NullToUndefined<T> = T extends null
 
 ## pieAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/pie.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/pie.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/pie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/pie.ts)
 
 包导出：`pieAdvancedPipeline`
 
@@ -1586,7 +1586,7 @@ const pieAdvancedPipeline: AdvancedPipeline
 
 ## pieSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/pie.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/pie.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/pie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/pie.ts)
 
 包导出：`pieSpecPipeline`
 
@@ -1598,7 +1598,7 @@ const pieSpecPipeline: import('src/types').SpecPipe[]
 
 ## Pipe
 
-源码：[packages/vseed/src/types/pipeline/pipeline.ts](../../../../../packages/vseed/src/types/pipeline/pipeline.ts)
+源码：[packages/vseed/src/types/pipeline/pipeline.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/pipeline.ts)
 
 包导出：`Pipe`
 
@@ -1608,7 +1608,7 @@ export type Pipe<T, U> = (result: Partial<T>, context: U) => Partial<T>
 
 ## PivotChartSpecPipe
 
-源码：[packages/vseed/src/types/pipeline/spec/spec.ts](../../../../../packages/vseed/src/types/pipeline/spec/spec.ts)
+源码：[packages/vseed/src/types/pipeline/spec/spec.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/spec/spec.ts)
 
 包导出：`PivotChartSpecPipe`
 
@@ -1620,7 +1620,7 @@ export type PivotChartSpecPipe = Pipe<PivotChartConstructorOptions, SpecPipeline
 
 ## PivotChartSpecPipeline
 
-源码：[packages/vseed/src/types/pipeline/spec/spec.ts](../../../../../packages/vseed/src/types/pipeline/spec/spec.ts)
+源码：[packages/vseed/src/types/pipeline/spec/spec.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/spec/spec.ts)
 
 包导出：`PivotChartSpecPipeline`
 
@@ -1632,7 +1632,7 @@ export type PivotChartSpecPipeline = PivotChartSpecPipe[]
 
 ## pivotTableAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/table/pipeline/pivotTable.ts](../../../../../packages/vseed/src/pipeline/advanced/table/pipeline/pivotTable.ts)
+源码：[packages/vseed/src/pipeline/advanced/table/pipeline/pivotTable.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/table/pipeline/pivotTable.ts)
 
 包导出：`pivotTableAdvancedPipeline`
 
@@ -1644,7 +1644,7 @@ const pivotTableAdvancedPipeline: AdvancedPipeline
 
 ## PivotTableSpecPipe
 
-源码：[packages/vseed/src/types/pipeline/spec/spec.ts](../../../../../packages/vseed/src/types/pipeline/spec/spec.ts)
+源码：[packages/vseed/src/types/pipeline/spec/spec.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/spec/spec.ts)
 
 包导出：`PivotTableSpecPipe`
 
@@ -1656,7 +1656,7 @@ export type PivotTableSpecPipe = Pipe<PivotTableConstructorOptions, SpecPipeline
 
 ## pivotTableSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/table/pipeline/pivotTable.ts](../../../../../packages/vseed/src/pipeline/spec/table/pipeline/pivotTable.ts)
+源码：[packages/vseed/src/pipeline/spec/table/pipeline/pivotTable.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/table/pipeline/pivotTable.ts)
 
 包导出：`pivotTableSpecPipeline`
 
@@ -1668,7 +1668,7 @@ const pivotTableSpecPipeline: SpecPipeline
 
 ## PivotTableSpecPipeline
 
-源码：[packages/vseed/src/types/pipeline/spec/spec.ts](../../../../../packages/vseed/src/types/pipeline/spec/spec.ts)
+源码：[packages/vseed/src/types/pipeline/spec/spec.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/spec/spec.ts)
 
 包导出：`PivotTableSpecPipeline`
 
@@ -1680,7 +1680,7 @@ export type PivotTableSpecPipeline = PivotTableSpecPipe[]
 
 ## preorderTraverse
 
-源码：[packages/vseed/src/pipeline/utils/tree/traverse.ts](../../../../../packages/vseed/src/pipeline/utils/tree/traverse.ts)
+源码：[packages/vseed/src/pipeline/utils/tree/traverse.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/tree/traverse.ts)
 
 包导出：`preorderTraverse`
 
@@ -1701,7 +1701,7 @@ childrenKey = 'children' as K
 
 ## raceBarAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/raceBar.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/raceBar.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/raceBar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/raceBar.ts)
 
 包导出：`raceBarAdvancedPipeline`
 
@@ -1713,7 +1713,7 @@ const raceBarAdvancedPipeline: AdvancedPipeline
 
 ## raceBarSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/raceBar.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/raceBar.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/raceBar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/raceBar.ts)
 
 包导出：`raceBarSpecPipeline`
 
@@ -1725,7 +1725,7 @@ const raceBarSpecPipeline: VChartSpecPipeline
 
 ## raceColumnAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/raceColumn.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/raceColumn.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/raceColumn.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/raceColumn.ts)
 
 包导出：`raceColumnAdvancedPipeline`
 
@@ -1737,7 +1737,7 @@ const raceColumnAdvancedPipeline: AdvancedPipeline
 
 ## raceColumnSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/raceColumn.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/raceColumn.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/raceColumn.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/raceColumn.ts)
 
 包导出：`raceColumnSpecPipeline`
 
@@ -1749,7 +1749,7 @@ const raceColumnSpecPipeline: VChartSpecPipeline
 
 ## raceDonutAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/raceDonut.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/raceDonut.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/raceDonut.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/raceDonut.ts)
 
 包导出：`raceDonutAdvancedPipeline`
 
@@ -1761,7 +1761,7 @@ const raceDonutAdvancedPipeline: AdvancedPipeline
 
 ## raceDonutSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/raceDonut.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/raceDonut.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/raceDonut.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/raceDonut.ts)
 
 包导出：`raceDonutSpecPipeline`
 
@@ -1773,7 +1773,7 @@ const raceDonutSpecPipeline: VChartSpecPipeline
 
 ## raceLineAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/raceLine.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/raceLine.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/raceLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/raceLine.ts)
 
 包导出：`raceLineAdvancedPipeline`
 
@@ -1785,7 +1785,7 @@ const raceLineAdvancedPipeline: AdvancedPipeline
 
 ## raceLineSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/raceLine.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/raceLine.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/raceLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/raceLine.ts)
 
 包导出：`raceLineSpecPipeline`
 
@@ -1797,7 +1797,7 @@ const raceLineSpecPipeline: VChartSpecPipeline
 
 ## racePieAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/racePie.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/racePie.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/racePie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/racePie.ts)
 
 包导出：`racePieAdvancedPipeline`
 
@@ -1809,7 +1809,7 @@ const racePieAdvancedPipeline: AdvancedPipeline
 
 ## racePieSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/racePie.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/racePie.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/racePie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/racePie.ts)
 
 包导出：`racePieSpecPipeline`
 
@@ -1821,7 +1821,7 @@ const racePieSpecPipeline: VChartSpecPipeline
 
 ## raceScatterAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/raceScatter.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/raceScatter.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/raceScatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/raceScatter.ts)
 
 包导出：`raceScatterAdvancedPipeline`
 
@@ -1833,7 +1833,7 @@ const raceScatterAdvancedPipeline: AdvancedPipeline
 
 ## raceScatterSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/raceScatter.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/raceScatter.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/raceScatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/raceScatter.ts)
 
 包导出：`raceScatterSpecPipeline`
 
@@ -1845,7 +1845,7 @@ const raceScatterSpecPipeline: VChartSpecPipeline
 
 ## radarAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/radar.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/radar.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/radar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/radar.ts)
 
 包导出：`radarAdvancedPipeline`
 
@@ -1857,7 +1857,7 @@ const radarAdvancedPipeline: AdvancedPipeline
 
 ## radarSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/radar.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/radar.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/radar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/radar.ts)
 
 包导出：`radarSpecPipeline`
 
@@ -1869,7 +1869,7 @@ const radarSpecPipeline: SpecPipeline
 
 ## replaceNullToUndefined
 
-源码：[packages/vseed/src/pipeline/utils/replaceNullToUndefined.ts](../../../../../packages/vseed/src/pipeline/utils/replaceNullToUndefined.ts)
+源码：[packages/vseed/src/pipeline/utils/replaceNullToUndefined.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/replaceNullToUndefined.ts)
 
 包导出：`replaceNullToUndefined`
 
@@ -1881,7 +1881,7 @@ const replaceNullToUndefined: <T>(obj: T) => NullToUndefined<T>
 
 ## revisedBoxPlotFieldKey
 
-源码：[packages/vseed/src/pipeline/utils/boxplot.ts](../../../../../packages/vseed/src/pipeline/utils/boxplot.ts)
+源码：[packages/vseed/src/pipeline/utils/boxplot.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/boxplot.ts)
 
 包导出：`revisedBoxPlotFieldKey`
 
@@ -1898,7 +1898,7 @@ isPivotChart = true
 
 ## roseAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/rose.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/rose.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/rose.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/rose.ts)
 
 包导出：`roseAdvancedPipeline`
 
@@ -1910,7 +1910,7 @@ const roseAdvancedPipeline: AdvancedPipeline
 
 ## roseParallelAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/roseParallel.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/roseParallel.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/roseParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/roseParallel.ts)
 
 包导出：`roseParallelAdvancedPipeline`
 
@@ -1922,7 +1922,7 @@ const roseParallelAdvancedPipeline: AdvancedPipeline
 
 ## roseParallelSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/roseParallel.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/roseParallel.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/roseParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/roseParallel.ts)
 
 包导出：`roseParallelSpecPipeline`
 
@@ -1934,7 +1934,7 @@ const roseParallelSpecPipeline: import('src/types').SpecPipe[]
 
 ## roseSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/rose.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/rose.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/rose.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/rose.ts)
 
 包导出：`roseSpecPipeline`
 
@@ -1946,7 +1946,7 @@ const roseSpecPipeline: import('src/types').SpecPipe[]
 
 ## sankeyAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/sankey.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/sankey.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/sankey.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/sankey.ts)
 
 包导出：`sankeyAdvancedPipeline`
 
@@ -1958,7 +1958,7 @@ const sankeyAdvancedPipeline: AdvancedPipeline
 
 ## sankeySpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/sankey.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/sankey.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/sankey.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/sankey.ts)
 
 包导出：`sankeySpecPipeline`
 
@@ -1970,7 +1970,7 @@ const sankeySpecPipeline: import('src/types').SpecPipe[]
 
 ## scatterAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/scatter.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/scatter.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/scatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/scatter.ts)
 
 包导出：`scatterAdvancedPipeline`
 
@@ -1982,7 +1982,7 @@ const scatterAdvancedPipeline: AdvancedPipeline
 
 ## scatterSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/scatter.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/scatter.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/scatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/scatter.ts)
 
 包导出：`scatterSpecPipeline`
 
@@ -1994,7 +1994,7 @@ const scatterSpecPipeline: import('src/types').SpecPipe[]
 
 ## SpecPipe
 
-源码：[packages/vseed/src/types/pipeline/spec/spec.ts](../../../../../packages/vseed/src/types/pipeline/spec/spec.ts)
+源码：[packages/vseed/src/types/pipeline/spec/spec.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/spec/spec.ts)
 
 包导出：`SpecPipe`
 
@@ -2006,7 +2006,7 @@ export type SpecPipe = VChartSpecPipe | PivotChartSpecPipe | ListTableSpecPipe |
 
 ## SpecPipeline
 
-源码：[packages/vseed/src/types/pipeline/spec/spec.ts](../../../../../packages/vseed/src/types/pipeline/spec/spec.ts)
+源码：[packages/vseed/src/types/pipeline/spec/spec.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/spec/spec.ts)
 
 包导出：`SpecPipeline`
 
@@ -2018,7 +2018,7 @@ export type SpecPipeline = SpecPipe[]
 
 ## SpecPipelineContext
 
-源码：[packages/vseed/src/types/pipeline/spec/spec.ts](../../../../../packages/vseed/src/types/pipeline/spec/spec.ts)
+源码：[packages/vseed/src/types/pipeline/spec/spec.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/spec/spec.ts)
 
 包导出：`SpecPipelineContext`
 
@@ -2033,7 +2033,7 @@ export type SpecPipelineContext = {
 
 ## sunburstAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/sunburst.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/sunburst.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/sunburst.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/sunburst.ts)
 
 包导出：`sunburstAdvancedPipeline`
 
@@ -2045,7 +2045,7 @@ const sunburstAdvancedPipeline: AdvancedPipeline
 
 ## sunburstSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/sunburst.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/sunburst.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/sunburst.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/sunburst.ts)
 
 包导出：`sunburstSpecPipeline`
 
@@ -2057,7 +2057,7 @@ const sunburstSpecPipeline: import('src/types').SpecPipe[]
 
 ## tableAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/table/pipeline/table.ts](../../../../../packages/vseed/src/pipeline/advanced/table/pipeline/table.ts)
+源码：[packages/vseed/src/pipeline/advanced/table/pipeline/table.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/table/pipeline/table.ts)
 
 包导出：`tableAdvancedPipeline`
 
@@ -2069,7 +2069,7 @@ const tableAdvancedPipeline: AdvancedPipeline
 
 ## tableSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/table/pipeline/table.ts](../../../../../packages/vseed/src/pipeline/spec/table/pipeline/table.ts)
+源码：[packages/vseed/src/pipeline/spec/table/pipeline/table.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/table/pipeline/table.ts)
 
 包导出：`tableSpecPipeline`
 
@@ -2081,7 +2081,7 @@ const tableSpecPipeline: SpecPipeline
 
 ## terminateWorkerPool
 
-源码：[packages/vseed/src/pipeline/utils/sandbox/execute.ts](../../../../../packages/vseed/src/pipeline/utils/sandbox/execute.ts)
+源码：[packages/vseed/src/pipeline/utils/sandbox/execute.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/sandbox/execute.ts)
 
 包导出：`terminateWorkerPool`
 
@@ -2116,7 +2116,7 @@ export declare function terminateWorkerPool(): void
 
 ## treeMapAdvancedPipeline
 
-源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/treeMap.ts](../../../../../packages/vseed/src/pipeline/advanced/chart/pipeline/treeMap.ts)
+源码：[packages/vseed/src/pipeline/advanced/chart/pipeline/treeMap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/advanced/chart/pipeline/treeMap.ts)
 
 包导出：`treeMapAdvancedPipeline`
 
@@ -2128,7 +2128,7 @@ const treeMapAdvancedPipeline: AdvancedPipeline
 
 ## treeMapSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/treeMap.ts](../../../../../packages/vseed/src/pipeline/spec/chart/pipeline/treeMap.ts)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/treeMap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/treeMap.ts)
 
 包导出：`treeMapSpecPipeline`
 
@@ -2140,7 +2140,7 @@ const treeMapSpecPipeline: import('src/types').SpecPipe[]
 
 ## validateCodeSafety
 
-源码：[packages/vseed/src/pipeline/utils/sandbox/execute.ts](../../../../../packages/vseed/src/pipeline/utils/sandbox/execute.ts)
+源码：[packages/vseed/src/pipeline/utils/sandbox/execute.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/utils/sandbox/execute.ts)
 
 包导出：`validateCodeSafety`
 
@@ -2154,7 +2154,7 @@ export declare function validateCodeSafety(code: string): void
 
 ## VChartSpecPipe
 
-源码：[packages/vseed/src/types/pipeline/spec/spec.ts](../../../../../packages/vseed/src/types/pipeline/spec/spec.ts)
+源码：[packages/vseed/src/types/pipeline/spec/spec.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/spec/spec.ts)
 
 包导出：`VChartSpecPipe`
 
@@ -2166,7 +2166,7 @@ export type VChartSpecPipe = Pipe<ISpec, SpecPipelineContext>
 
 ## VChartSpecPipeline
 
-源码：[packages/vseed/src/types/pipeline/spec/spec.ts](../../../../../packages/vseed/src/types/pipeline/spec/spec.ts)
+源码：[packages/vseed/src/types/pipeline/spec/spec.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/pipeline/spec/spec.ts)
 
 包导出：`VChartSpecPipeline`
 

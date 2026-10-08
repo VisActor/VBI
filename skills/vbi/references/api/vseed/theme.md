@@ -22,7 +22,7 @@ import { z } from 'zod'
 
 ## lightTheme
 
-源码：[packages/vseed/src/theme/light/light.ts](../../../../../packages/vseed/src/theme/light/light.ts)
+源码：[packages/vseed/src/theme/light/light.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/theme/light/light.ts)
 
 包导出：`lightTheme`
 
@@ -34,7 +34,7 @@ const lightTheme: () => CustomThemeConfig
 
 ## darkTheme
 
-源码：[packages/vseed/src/theme/dark/dark.ts](../../../../../packages/vseed/src/theme/dark/dark.ts)
+源码：[packages/vseed/src/theme/dark/dark.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/theme/dark/dark.ts)
 
 包导出：`darkTheme`
 
@@ -46,7 +46,7 @@ const darkTheme: () => CustomThemeConfig
 
 ## createTokenThemeConfig
 
-源码：[packages/vseed/src/theme/tokenTheme.ts](../../../../../packages/vseed/src/theme/tokenTheme.ts)
+源码：[packages/vseed/src/theme/tokenTheme.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/theme/tokenTheme.ts)
 
 包导出：`createTokenThemeConfig`
 
@@ -58,7 +58,7 @@ const createTokenThemeConfig: (tokens: TokenThemeDefinition) => CustomThemeConfi
 
 ## registerTokenTheme
 
-源码：[packages/vseed/src/theme/tokenTheme.ts](../../../../../packages/vseed/src/theme/tokenTheme.ts)
+源码：[packages/vseed/src/theme/tokenTheme.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/theme/tokenTheme.ts)
 
 包导出：`registerTokenTheme`
 
@@ -70,7 +70,7 @@ const registerTokenTheme: (themeName: string, tokens: TokenThemeDefinition, opti
 
 ## RegisterTokenThemeOptions
 
-源码：[packages/vseed/src/theme/tokenTheme.ts](../../../../../packages/vseed/src/theme/tokenTheme.ts)
+源码：[packages/vseed/src/theme/tokenTheme.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/theme/tokenTheme.ts)
 
 包导出：`RegisterTokenThemeOptions`
 
@@ -82,7 +82,7 @@ export type RegisterTokenThemeOptions = {
 
 ## registerTokenThemes
 
-源码：[packages/vseed/src/theme/tokenTheme.ts](../../../../../packages/vseed/src/theme/tokenTheme.ts)
+源码：[packages/vseed/src/theme/tokenTheme.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/theme/tokenTheme.ts)
 
 包导出：`registerTokenThemes`
 
@@ -94,7 +94,7 @@ const registerTokenThemes: (themes: TokenThemeRegistry, options?: RegisterTokenT
 
 ## TokenThemeBase
 
-源码：[packages/vseed/src/theme/tokenTheme.ts](../../../../../packages/vseed/src/theme/tokenTheme.ts)
+源码：[packages/vseed/src/theme/tokenTheme.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/theme/tokenTheme.ts)
 
 包导出：`TokenThemeBase`
 
@@ -106,7 +106,7 @@ export type TokenThemeBase = TokenThemeDefinition['baseTheme']
 
 ## TokenThemeDefinition
 
-源码：[packages/vseed/src/theme/tokenThemeSchema.ts](../../../../../packages/vseed/src/theme/tokenThemeSchema.ts)
+源码：[packages/vseed/src/theme/tokenThemeSchema.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/theme/tokenThemeSchema.ts)
 
 包导出：`TokenThemeDefinition`
 
@@ -118,7 +118,7 @@ export type TokenThemeDefinition = z.infer<typeof zTokenThemeDefinition>
 
 ## TokenThemeRegistry
 
-源码：[packages/vseed/src/theme/tokenTheme.ts](../../../../../packages/vseed/src/theme/tokenTheme.ts)
+源码：[packages/vseed/src/theme/tokenTheme.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/theme/tokenTheme.ts)
 
 包导出：`TokenThemeRegistry`
 

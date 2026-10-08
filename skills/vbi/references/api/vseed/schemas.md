@@ -198,7 +198,7 @@ import { z } from 'zod'
 
 ## zVSeed
 
-源码：[packages/vseed/src/types/zVseed.ts](../../../../../packages/vseed/src/types/zVseed.ts)
+源码：[packages/vseed/src/types/zVseed.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/zVseed.ts)
 
 包导出：`zVSeed`
 
@@ -255,7 +255,7 @@ const zVSeed: z.ZodTypeAny = z.discriminatedUnion('chartType', [
 
 ## zAdvancedVSeed
 
-源码：[packages/vseed/src/types/advancedVSeed.ts](../../../../../packages/vseed/src/types/advancedVSeed.ts)
+源码：[packages/vseed/src/types/advancedVSeed.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/advancedVSeed.ts)
 
 包导出：`zAdvancedVSeed`
 
@@ -290,7 +290,7 @@ const zAdvancedVSeed: z.ZodType<AdvancedVSeed> = z.object({
 
 ## zAnalysis
 
-源码：[packages/vseed/src/types/properties/analysis/analysis.ts](../../../../../packages/vseed/src/types/properties/analysis/analysis.ts)
+源码：[packages/vseed/src/types/properties/analysis/analysis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/analysis/analysis.ts)
 
 包导出：`zAnalysis`
 
@@ -302,7 +302,7 @@ const zAnalysis = z.object({
 
 ## zAnnotation
 
-源码：[packages/vseed/src/types/properties/annotation/annotation.ts](../../../../../packages/vseed/src/types/properties/annotation/annotation.ts)
+源码：[packages/vseed/src/types/properties/annotation/annotation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/annotation.ts)
 
 包导出：`zAnnotation`
 
@@ -320,7 +320,7 @@ const zAnnotation = z.object({
 
 ## zAnnotationArea
 
-源码：[packages/vseed/src/types/properties/annotation/zAnnotationArea.ts](../../../../../packages/vseed/src/types/properties/annotation/zAnnotationArea.ts)
+源码：[packages/vseed/src/types/properties/annotation/zAnnotationArea.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/zAnnotationArea.ts)
 
 包导出：`zAnnotationArea`
 
@@ -360,7 +360,7 @@ const zAnnotationArea = z.object({
 
 ## zAnnotationAreaConfig
 
-源码：[packages/vseed/src/types/properties/config/annotation/zAnnotation.ts](../../../../../packages/vseed/src/types/properties/config/annotation/zAnnotation.ts)
+源码：[packages/vseed/src/types/properties/config/annotation/zAnnotation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/annotation/zAnnotation.ts)
 
 包导出：`zAnnotationAreaConfig`
 
@@ -397,7 +397,7 @@ const zAnnotationAreaConfig = zAnnotationArea
 
 ## zAnnotationConfig
 
-源码：[packages/vseed/src/types/properties/config/annotation/zAnnotation.ts](../../../../../packages/vseed/src/types/properties/config/annotation/zAnnotation.ts)
+源码：[packages/vseed/src/types/properties/config/annotation/zAnnotation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/annotation/zAnnotation.ts)
 
 包导出：`zAnnotationConfig`
 
@@ -415,7 +415,7 @@ const zAnnotationConfig = z.object({
 
 ## zAnnotationDifferenceLine
 
-源码：[packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts](../../../../../packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts)
+源码：[packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts)
 
 包导出：`zAnnotationDifferenceLine`
 
@@ -437,7 +437,7 @@ const zAnnotationDifferenceLine = z.object({
 
 ## zAnnotationDifferenceLineConfig
 
-源码：[packages/vseed/src/types/properties/config/annotation/zAnnotation.ts](../../../../../packages/vseed/src/types/properties/config/annotation/zAnnotation.ts)
+源码：[packages/vseed/src/types/properties/config/annotation/zAnnotation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/annotation/zAnnotation.ts)
 
 包导出：`zAnnotationDifferenceLineConfig`
 
@@ -466,7 +466,7 @@ const zAnnotationDifferenceLineConfig = zAnnotationDifferenceLine
 
 ## zAnnotationHorizontalLine
 
-源码：[packages/vseed/src/types/properties/annotation/zAnnotationHorizontalLine.ts](../../../../../packages/vseed/src/types/properties/annotation/zAnnotationHorizontalLine.ts)
+源码：[packages/vseed/src/types/properties/annotation/zAnnotationHorizontalLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/zAnnotationHorizontalLine.ts)
 
 包导出：`zAnnotationHorizontalLine`
 
@@ -506,7 +506,7 @@ const zAnnotationHorizontalLine = z.object({
 
 ## zAnnotationHorizontalLineConfig
 
-源码：[packages/vseed/src/types/properties/config/annotation/zAnnotation.ts](../../../../../packages/vseed/src/types/properties/config/annotation/zAnnotation.ts)
+源码：[packages/vseed/src/types/properties/config/annotation/zAnnotation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/annotation/zAnnotation.ts)
 
 包导出：`zAnnotationHorizontalLineConfig`
 
@@ -549,7 +549,7 @@ const zAnnotationHorizontalLineConfig = zAnnotationHorizontalLine
 
 ## zAnnotationPoint
 
-源码：[packages/vseed/src/types/properties/annotation/zAnnotationPoint.ts](../../../../../packages/vseed/src/types/properties/annotation/zAnnotationPoint.ts)
+源码：[packages/vseed/src/types/properties/annotation/zAnnotationPoint.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/zAnnotationPoint.ts)
 
 包导出：`zAnnotationPoint`
 
@@ -580,7 +580,7 @@ const zAnnotationPoint = z.object({
 
 ## zAnnotationPointConfig
 
-源码：[packages/vseed/src/types/properties/config/annotation/zAnnotation.ts](../../../../../packages/vseed/src/types/properties/config/annotation/zAnnotation.ts)
+源码：[packages/vseed/src/types/properties/config/annotation/zAnnotation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/annotation/zAnnotation.ts)
 
 包导出：`zAnnotationPointConfig`
 
@@ -594,7 +594,7 @@ const zAnnotationPointConfig = zAnnotationPoint.omit({ selector: true, measureId
 
 ## zAnnotationVerticalLine
 
-源码：[packages/vseed/src/types/properties/annotation/zAnnotationVerticalLine.ts](../../../../../packages/vseed/src/types/properties/annotation/zAnnotationVerticalLine.ts)
+源码：[packages/vseed/src/types/properties/annotation/zAnnotationVerticalLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/zAnnotationVerticalLine.ts)
 
 包导出：`zAnnotationVerticalLine`
 
@@ -634,7 +634,7 @@ const zAnnotationVerticalLine = z.object({
 
 ## zAnnotationVerticalLineConfig
 
-源码：[packages/vseed/src/types/properties/config/annotation/zAnnotation.ts](../../../../../packages/vseed/src/types/properties/config/annotation/zAnnotation.ts)
+源码：[packages/vseed/src/types/properties/config/annotation/zAnnotation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/annotation/zAnnotation.ts)
 
 包导出：`zAnnotationVerticalLineConfig`
 
@@ -646,7 +646,7 @@ const zAnnotationVerticalLineConfig = zAnnotationHorizontalLineConfig.clone()
 
 ## zArea
 
-源码：[packages/vseed/src/types/chartType/area/zArea.ts](../../../../../packages/vseed/src/types/chartType/area/zArea.ts)
+源码：[packages/vseed/src/types/chartType/area/zArea.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/area/zArea.ts)
 
 包导出：`zArea`
 
@@ -688,7 +688,7 @@ const zArea = z.object({
 
 ## zAreaConfig
 
-源码：[packages/vseed/src/types/properties/config/area.ts](../../../../../packages/vseed/src/types/properties/config/area.ts)
+源码：[packages/vseed/src/types/properties/config/area.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/area.ts)
 
 包导出：`zAreaConfig`
 
@@ -718,7 +718,7 @@ const zAreaConfig = z.object({
 
 ## zAreaPercent
 
-源码：[packages/vseed/src/types/chartType/areaPercent/zAreaPercent.ts](../../../../../packages/vseed/src/types/chartType/areaPercent/zAreaPercent.ts)
+源码：[packages/vseed/src/types/chartType/areaPercent/zAreaPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/areaPercent/zAreaPercent.ts)
 
 包导出：`zAreaPercent`
 
@@ -759,7 +759,7 @@ const zAreaPercent = z.object({
 
 ## zAreaPercentConfig
 
-源码：[packages/vseed/src/types/properties/config/area.ts](../../../../../packages/vseed/src/types/properties/config/area.ts)
+源码：[packages/vseed/src/types/properties/config/area.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/area.ts)
 
 包导出：`zAreaPercentConfig`
 
@@ -771,7 +771,7 @@ const zAreaPercentConfig = zAreaConfig
 
 ## zAreaSelector
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`zAreaSelector`
 
@@ -783,7 +783,7 @@ const zAreaSelector = z.union([zFieldSelector, zMeasureSelector, zDimensionSelec
 
 ## zAreaSelectors
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`zAreaSelectors`
 
@@ -795,7 +795,7 @@ const zAreaSelectors = z.array(zAreaSelector)
 
 ## zAreaStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/zAreaStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/zAreaStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/zAreaStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/zAreaStyle.ts)
 
 包导出：`zAreaStyle`
 
@@ -814,7 +814,7 @@ const zAreaStyle = z.object({
 
 ## zBackgroundColor
 
-源码：[packages/vseed/src/types/properties/config/backgroundColor/backgroundColor.ts](../../../../../packages/vseed/src/types/properties/config/backgroundColor/backgroundColor.ts)
+源码：[packages/vseed/src/types/properties/config/backgroundColor/backgroundColor.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/backgroundColor/backgroundColor.ts)
 
 包导出：`zBackgroundColor`
 
@@ -824,7 +824,7 @@ const zBackgroundColor = z.string().default('transparent').nullish()
 
 ## zBar
 
-源码：[packages/vseed/src/types/chartType/bar/zBar.ts](../../../../../packages/vseed/src/types/chartType/bar/zBar.ts)
+源码：[packages/vseed/src/types/chartType/bar/zBar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/bar/zBar.ts)
 
 包导出：`zBar`
 
@@ -867,7 +867,7 @@ const zBar = z.object({
 
 ## zBarConfig
 
-源码：[packages/vseed/src/types/properties/config/bar.ts](../../../../../packages/vseed/src/types/properties/config/bar.ts)
+源码：[packages/vseed/src/types/properties/config/bar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/bar.ts)
 
 包导出：`zBarConfig`
 
@@ -899,7 +899,7 @@ const zBarConfig = z.object({
 
 ## zBarGapInGroup
 
-源码：[packages/vseed/src/types/properties/config/barWidth/index.ts](../../../../../packages/vseed/src/types/properties/config/barWidth/index.ts)
+源码：[packages/vseed/src/types/properties/config/barWidth/index.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/barWidth/index.ts)
 
 包导出：`zBarGapInGroup`
 
@@ -909,7 +909,7 @@ const zBarGapInGroup = z.number().or(z.string())
 
 ## zBarLikeAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/zAnimation.ts](../../../../../packages/vseed/src/types/properties/config/animation/zAnimation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/zAnimation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/zAnimation.ts)
 
 包导出：`zBarLikeAnimation`
 
@@ -924,7 +924,7 @@ const zBarLikeAnimation = createAnimation({
 
 ## zBarMaxWidth
 
-源码：[packages/vseed/src/types/properties/config/barWidth/index.ts](../../../../../packages/vseed/src/types/properties/config/barWidth/index.ts)
+源码：[packages/vseed/src/types/properties/config/barWidth/index.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/barWidth/index.ts)
 
 包导出：`zBarMaxWidth`
 
@@ -934,7 +934,7 @@ const zBarMaxWidth = z.number().or(z.string())
 
 ## zBarParallel
 
-源码：[packages/vseed/src/types/chartType/barParallel/zBarParallel.ts](../../../../../packages/vseed/src/types/chartType/barParallel/zBarParallel.ts)
+源码：[packages/vseed/src/types/chartType/barParallel/zBarParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/barParallel/zBarParallel.ts)
 
 包导出：`zBarParallel`
 
@@ -977,7 +977,7 @@ const zBarParallel = z.object({
 
 ## zBarParallelConfig
 
-源码：[packages/vseed/src/types/properties/config/bar.ts](../../../../../packages/vseed/src/types/properties/config/bar.ts)
+源码：[packages/vseed/src/types/properties/config/bar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/bar.ts)
 
 包导出：`zBarParallelConfig`
 
@@ -989,7 +989,7 @@ const zBarParallelConfig = zBarConfig
 
 ## zBarPercent
 
-源码：[packages/vseed/src/types/chartType/barPercent/zBarPercent.ts](../../../../../packages/vseed/src/types/chartType/barPercent/zBarPercent.ts)
+源码：[packages/vseed/src/types/chartType/barPercent/zBarPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/barPercent/zBarPercent.ts)
 
 包导出：`zBarPercent`
 
@@ -1031,7 +1031,7 @@ const zBarPercent = z.object({
 
 ## zBarPercentConfig
 
-源码：[packages/vseed/src/types/properties/config/bar.ts](../../../../../packages/vseed/src/types/properties/config/bar.ts)
+源码：[packages/vseed/src/types/properties/config/bar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/bar.ts)
 
 包导出：`zBarPercentConfig`
 
@@ -1043,7 +1043,7 @@ const zBarPercentConfig = zBarConfig
 
 ## zBarStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/zBarStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/zBarStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/zBarStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/zBarStyle.ts)
 
 包导出：`zBarStyle`
 
@@ -1066,7 +1066,7 @@ const zBarStyle = z.object({
 
 ## zBodyCellStyle
 
-源码：[packages/vseed/src/types/properties/cellStyle/bodyCellStyle.ts](../../../../../packages/vseed/src/types/properties/cellStyle/bodyCellStyle.ts)
+源码：[packages/vseed/src/types/properties/cellStyle/bodyCellStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/cellStyle/bodyCellStyle.ts)
 
 包导出：`zBodyCellStyle`
 
@@ -1099,7 +1099,7 @@ const zBodyCellStyle = z.object({
 
 ## zBoxGapInGroup
 
-源码：[packages/vseed/src/types/properties/config/boxWidth/zBoxWidth.ts](../../../../../packages/vseed/src/types/properties/config/boxWidth/zBoxWidth.ts)
+源码：[packages/vseed/src/types/properties/config/boxWidth/zBoxWidth.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/boxWidth/zBoxWidth.ts)
 
 包导出：`zBoxGapInGroup`
 
@@ -1109,7 +1109,7 @@ const zBoxGapInGroup = z.number().or(z.string())
 
 ## zBoxMaxWidth
 
-源码：[packages/vseed/src/types/properties/config/boxWidth/zBoxWidth.ts](../../../../../packages/vseed/src/types/properties/config/boxWidth/zBoxWidth.ts)
+源码：[packages/vseed/src/types/properties/config/boxWidth/zBoxWidth.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/boxWidth/zBoxWidth.ts)
 
 包导出：`zBoxMaxWidth`
 
@@ -1119,7 +1119,7 @@ const zBoxMaxWidth = z.number().or(z.string())
 
 ## zBoxPlot
 
-源码：[packages/vseed/src/types/chartType/boxPlot/zBoxPlot.ts](../../../../../packages/vseed/src/types/chartType/boxPlot/zBoxPlot.ts)
+源码：[packages/vseed/src/types/chartType/boxPlot/zBoxPlot.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/boxPlot/zBoxPlot.ts)
 
 包导出：`zBoxPlot`
 
@@ -1162,7 +1162,7 @@ const zBoxPlot = z.object({
 
 ## zBoxplotConfig
 
-源码：[packages/vseed/src/types/properties/config/boxplot.ts](../../../../../packages/vseed/src/types/properties/config/boxplot.ts)
+源码：[packages/vseed/src/types/properties/config/boxplot.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/boxplot.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -1195,7 +1195,7 @@ const zBoxplotConfig = z.object({
 
 ## zBoxPlotStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/zBoxPlotStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/zBoxPlotStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/zBoxPlotStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/zBoxPlotStyle.ts)
 
 包导出：`zBoxPlotStyle`
 
@@ -1218,7 +1218,7 @@ const zBoxPlotStyle = z.object({
 
 ## zBrush
 
-源码：[packages/vseed/src/types/properties/brush/zBrush.ts](../../../../../packages/vseed/src/types/properties/brush/zBrush.ts)
+源码：[packages/vseed/src/types/properties/brush/zBrush.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/brush/zBrush.ts)
 
 包导出：`zBrush`
 
@@ -1235,7 +1235,7 @@ const zBrush = z.object({
 
 ## zBrushConfig
 
-源码：[packages/vseed/src/types/properties/brush/zBrush.ts](../../../../../packages/vseed/src/types/properties/brush/zBrush.ts)
+源码：[packages/vseed/src/types/properties/brush/zBrush.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/brush/zBrush.ts)
 
 包导出：`zBrushConfig`
 
@@ -1249,7 +1249,7 @@ const zBrushConfig = z.object({
 
 ## zCellSelector
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`zCellSelector`
 
@@ -1262,7 +1262,7 @@ const zCellSelector = z.object({
 
 ## zCellStyle
 
-源码：[packages/vseed/src/types/properties/cellStyle/cellStyle.ts](../../../../../packages/vseed/src/types/properties/cellStyle/cellStyle.ts)
+源码：[packages/vseed/src/types/properties/cellStyle/cellStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/cellStyle/cellStyle.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -1276,7 +1276,7 @@ const zCellStyle = z.object({
 
 ## zCenterText
 
-源码：[packages/vseed/src/types/properties/config/centerText.ts](../../../../../packages/vseed/src/types/properties/config/centerText.ts)
+源码：[packages/vseed/src/types/properties/config/centerText.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/centerText.ts)
 
 包导出：`zCenterText`
 
@@ -1289,7 +1289,7 @@ const zCenterText = z.object({
 
 ## zCenterTextConfig
 
-源码：[packages/vseed/src/types/properties/config/centerText.ts](../../../../../packages/vseed/src/types/properties/config/centerText.ts)
+源码：[packages/vseed/src/types/properties/config/centerText.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/centerText.ts)
 
 包导出：`zCenterTextConfig`
 
@@ -1308,7 +1308,7 @@ const zCenterTextConfig = zCenterText.extend({
 
 ## zChartDynamicFilter
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`zChartDynamicFilter`
 
@@ -1331,7 +1331,7 @@ const zChartDynamicFilter = z.object({
 
 ## zChartType
 
-源码：[packages/vseed/src/types/properties/chartType/chartType.ts](../../../../../packages/vseed/src/types/properties/chartType/chartType.ts)
+源码：[packages/vseed/src/types/properties/chartType/chartType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/chartType/chartType.ts)
 
 包导出：`zChartType`
 
@@ -1381,7 +1381,7 @@ const zChartType = z.enum([
 
 ## zCirclePacking
 
-源码：[packages/vseed/src/types/chartType/circlePacking/zCirclePacking.ts](../../../../../packages/vseed/src/types/chartType/circlePacking/zCirclePacking.ts)
+源码：[packages/vseed/src/types/chartType/circlePacking/zCirclePacking.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/circlePacking/zCirclePacking.ts)
 
 包导出：`zCirclePacking`
 
@@ -1406,7 +1406,7 @@ const zCirclePacking = z.object({
 
 ## zCirclePackingConfig
 
-源码：[packages/vseed/src/types/properties/config/circlePacking.ts](../../../../../packages/vseed/src/types/properties/config/circlePacking.ts)
+源码：[packages/vseed/src/types/properties/config/circlePacking.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/circlePacking.ts)
 
 包导出：`zCirclePackingConfig`
 
@@ -1425,7 +1425,7 @@ const zCirclePackingConfig = z.object({
 
 ## zColor
 
-源码：[packages/vseed/src/types/properties/config/color/color.ts](../../../../../packages/vseed/src/types/properties/config/color/color.ts)
+源码：[packages/vseed/src/types/properties/config/color/color.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/color/color.ts)
 
 包导出：`zColor`
 
@@ -1439,7 +1439,7 @@ const zColor = z.object({
 
 ## zColorLegend
 
-源码：[packages/vseed/src/types/properties/config/legend/legend.ts](../../../../../packages/vseed/src/types/properties/config/legend/legend.ts)
+源码：[packages/vseed/src/types/properties/config/legend/legend.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/legend/legend.ts)
 
 包导出：`zColorLegend`
 
@@ -1481,7 +1481,7 @@ const zColorLegend = z.object({
 
 ## zColumn
 
-源码：[packages/vseed/src/types/chartType/column/zColumn.ts](../../../../../packages/vseed/src/types/chartType/column/zColumn.ts)
+源码：[packages/vseed/src/types/chartType/column/zColumn.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/column/zColumn.ts)
 
 包导出：`zColumn`
 
@@ -1528,7 +1528,7 @@ const zColumn = z.object({
 
 ## zColumnConfig
 
-源码：[packages/vseed/src/types/properties/config/column.ts](../../../../../packages/vseed/src/types/properties/config/column.ts)
+源码：[packages/vseed/src/types/properties/config/column.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/column.ts)
 
 包导出：`zColumnConfig`
 
@@ -1542,7 +1542,7 @@ const zColumnConfig = zColumnParallelConfig.extend({
 
 ## zColumnParallel
 
-源码：[packages/vseed/src/types/chartType/columnParallel/zColumnParallel.ts](../../../../../packages/vseed/src/types/chartType/columnParallel/zColumnParallel.ts)
+源码：[packages/vseed/src/types/chartType/columnParallel/zColumnParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/columnParallel/zColumnParallel.ts)
 
 包导出：`zColumnParallel`
 
@@ -1587,7 +1587,7 @@ const zColumnParallel = z.object({
 
 ## zColumnParallelConfig
 
-源码：[packages/vseed/src/types/properties/config/column.ts](../../../../../packages/vseed/src/types/properties/config/column.ts)
+源码：[packages/vseed/src/types/properties/config/column.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/column.ts)
 
 包导出：`zColumnParallelConfig`
 
@@ -1621,7 +1621,7 @@ const zColumnParallelConfig = z.object({
 
 ## zColumnPercent
 
-源码：[packages/vseed/src/types/chartType/columnPercent/zColumnPercent.ts](../../../../../packages/vseed/src/types/chartType/columnPercent/zColumnPercent.ts)
+源码：[packages/vseed/src/types/chartType/columnPercent/zColumnPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/columnPercent/zColumnPercent.ts)
 
 包导出：`zColumnPercent`
 
@@ -1663,7 +1663,7 @@ const zColumnPercent = z.object({
 
 ## zColumnPercentConfig
 
-源码：[packages/vseed/src/types/properties/config/column.ts](../../../../../packages/vseed/src/types/properties/config/column.ts)
+源码：[packages/vseed/src/types/properties/config/column.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/column.ts)
 
 包导出：`zColumnPercentConfig`
 
@@ -1675,7 +1675,7 @@ const zColumnPercentConfig = zColumnParallelConfig.extend({})
 
 ## zConfig
 
-源码：[packages/vseed/src/types/properties/config/config.ts](../../../../../packages/vseed/src/types/properties/config/config.ts)
+源码：[packages/vseed/src/types/properties/config/config.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/config.ts)
 
 包导出：`zConfig`
 
@@ -1732,7 +1732,7 @@ const zConfig = z.object({
 
 ## zCornerRadius
 
-源码：[packages/vseed/src/types/properties/config/cornerRadius/cornerRadius.ts](../../../../../packages/vseed/src/types/properties/config/cornerRadius/cornerRadius.ts)
+源码：[packages/vseed/src/types/properties/config/cornerRadius/cornerRadius.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/cornerRadius/cornerRadius.ts)
 
 包导出：`zCornerRadius`
 
@@ -1742,7 +1742,7 @@ const zCornerRadius = z.number().or(z.array(z.number()))
 
 ## zCrosshairLine
 
-源码：[packages/vseed/src/types/properties/config/crosshair/zCrosshair.ts](../../../../../packages/vseed/src/types/properties/config/crosshair/zCrosshair.ts)
+源码：[packages/vseed/src/types/properties/config/crosshair/zCrosshair.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/crosshair/zCrosshair.ts)
 
 包导出：`zCrosshairLine`
 
@@ -1759,7 +1759,7 @@ const zCrosshairLine = z.object({
 
 ## zCrosshairRect
 
-源码：[packages/vseed/src/types/properties/config/crosshair/zCrosshair.ts](../../../../../packages/vseed/src/types/properties/config/crosshair/zCrosshair.ts)
+源码：[packages/vseed/src/types/properties/config/crosshair/zCrosshair.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/crosshair/zCrosshair.ts)
 
 包导出：`zCrosshairRect`
 
@@ -1775,7 +1775,7 @@ const zCrosshairRect = z.object({
 
 ## zCustomTheme
 
-源码：[packages/vseed/src/types/properties/theme/customTheme.ts](../../../../../packages/vseed/src/types/properties/theme/customTheme.ts)
+源码：[packages/vseed/src/types/properties/theme/customTheme.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/theme/customTheme.ts)
 
 包导出：`zCustomTheme`
 
@@ -1787,7 +1787,7 @@ const zCustomTheme = z.record(z.string(), zCustomThemeConfig).nullish()
 
 ## zCustomThemeConfig
 
-源码：[packages/vseed/src/types/properties/theme/customTheme.ts](../../../../../packages/vseed/src/types/properties/theme/customTheme.ts)
+源码：[packages/vseed/src/types/properties/theme/customTheme.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/theme/customTheme.ts)
 
 包导出：`zCustomThemeConfig`
 
@@ -1801,7 +1801,7 @@ const zCustomThemeConfig = z.object({
 
 ## zDataset
 
-源码：[packages/vseed/src/types/properties/dataset/dataset.ts](../../../../../packages/vseed/src/types/properties/dataset/dataset.ts)
+源码：[packages/vseed/src/types/properties/dataset/dataset.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dataset/dataset.ts)
 
 包导出：`zDataset`
 
@@ -1813,7 +1813,7 @@ const zDataset = z.array(zDatum)
 
 ## zDatasetReshapeInfo
 
-源码：[packages/vseed/src/types/properties/datasetReshapeInfo/zDatasetReshapeInfo.ts](../../../../../packages/vseed/src/types/properties/datasetReshapeInfo/zDatasetReshapeInfo.ts)
+源码：[packages/vseed/src/types/properties/datasetReshapeInfo/zDatasetReshapeInfo.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/datasetReshapeInfo/zDatasetReshapeInfo.ts)
 
 包导出：`zDatasetReshapeInfo`
 
@@ -1833,7 +1833,7 @@ const zDatasetReshapeInfo = z.array(
 
 ## zDatum
 
-源码：[packages/vseed/src/types/properties/dataset/dataset.ts](../../../../../packages/vseed/src/types/properties/dataset/dataset.ts)
+源码：[packages/vseed/src/types/properties/dataset/dataset.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dataset/dataset.ts)
 
 包导出：`zDatum`
 
@@ -1853,7 +1853,7 @@ const zDatum = z.record(z.string().or(z.number()), z.any())
 
 ## zDifferenceAnchor
 
-源码：[packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts](../../../../../packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts)
+源码：[packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts)
 
 包导出：`zDifferenceAnchor`
 
@@ -1867,7 +1867,7 @@ const zDifferenceAnchor = z.object({
 
 ## zDifferenceSelector
 
-源码：[packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts](../../../../../packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts)
+源码：[packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts)
 
 包导出：`zDifferenceSelector`
 
@@ -1879,7 +1879,7 @@ const zDifferenceSelector = z.union([zPartialSelector, zMeasureSelector, zDimens
 
 ## zDifferenceSelectors
 
-源码：[packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts](../../../../../packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts)
+源码：[packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/zAnnotationDifferenceLine.ts)
 
 包导出：`zDifferenceSelectors`
 
@@ -1891,7 +1891,7 @@ const zDifferenceSelectors = z.array(zDifferenceSelector)
 
 ## zDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/zDimensions.ts](../../../../../packages/vseed/src/types/properties/dimensions/zDimensions.ts)
+源码：[packages/vseed/src/types/properties/dimensions/zDimensions.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/zDimensions.ts)
 
 包导出：`zDimension`
 
@@ -1908,7 +1908,7 @@ const zDimension = z.object({
 
 ## zDimensionEncoding
 
-源码：[packages/vseed/src/types/properties/encoding/zDimensionEncoding.ts](../../../../../packages/vseed/src/types/properties/encoding/zDimensionEncoding.ts)
+源码：[packages/vseed/src/types/properties/encoding/zDimensionEncoding.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/encoding/zDimensionEncoding.ts)
 
 包导出：`zDimensionEncoding`
 
@@ -1932,7 +1932,7 @@ const zDimensionEncoding = z.enum([
 
 ## zDimensionGroup
 
-源码：[packages/vseed/src/types/properties/dimensions/zDimensions.ts](../../../../../packages/vseed/src/types/properties/dimensions/zDimensions.ts)
+源码：[packages/vseed/src/types/properties/dimensions/zDimensions.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/zDimensions.ts)
 
 包导出：`zDimensionGroup`
 
@@ -1950,7 +1950,7 @@ const zDimensionGroup: z.ZodType<DimensionGroup> = z.object({
 
 ## zDimensionLinkage
 
-源码：[packages/vseed/src/types/properties/config/dimensionLinkage/dimensionLinkage.ts](../../../../../packages/vseed/src/types/properties/config/dimensionLinkage/dimensionLinkage.ts)
+源码：[packages/vseed/src/types/properties/config/dimensionLinkage/dimensionLinkage.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/dimensionLinkage/dimensionLinkage.ts)
 
 包导出：`zDimensionLinkage`
 
@@ -1964,7 +1964,7 @@ const zDimensionLinkage = z.object({
 
 ## zDimensions
 
-源码：[packages/vseed/src/types/properties/dimensions/zDimensions.ts](../../../../../packages/vseed/src/types/properties/dimensions/zDimensions.ts)
+源码：[packages/vseed/src/types/properties/dimensions/zDimensions.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/zDimensions.ts)
 
 包导出：`zDimensions`
 
@@ -1976,7 +1976,7 @@ const zDimensions = z.array(zDimension)
 
 ## zDimensionSelector
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`zDimensionSelector`
 
@@ -1991,7 +1991,7 @@ const zDimensionSelector = z.object({
 
 ## zDimensionTree
 
-源码：[packages/vseed/src/types/properties/dimensions/zDimensions.ts](../../../../../packages/vseed/src/types/properties/dimensions/zDimensions.ts)
+源码：[packages/vseed/src/types/properties/dimensions/zDimensions.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/zDimensions.ts)
 
 包导出：`zDimensionTree`
 
@@ -2003,7 +2003,7 @@ const zDimensionTree = z.array(zDimensionGroup.or(zDimension))
 
 ## zDonut
 
-源码：[packages/vseed/src/types/chartType/donut/zDonut.ts](../../../../../packages/vseed/src/types/chartType/donut/zDonut.ts)
+源码：[packages/vseed/src/types/chartType/donut/zDonut.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/donut/zDonut.ts)
 
 包导出：`zDonut`
 
@@ -2035,7 +2035,7 @@ const zDonut = z.object({
 
 ## zDonutConfig
 
-源码：[packages/vseed/src/types/properties/config/pie.ts](../../../../../packages/vseed/src/types/properties/config/pie.ts)
+源码：[packages/vseed/src/types/properties/config/pie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/pie.ts)
 
 包导出：`zDonutConfig`
 
@@ -2047,7 +2047,7 @@ const zDonutConfig = zPieConfig.extend({ centerText: zCenterTextConfig.nullish()
 
 ## zDualAxis
 
-源码：[packages/vseed/src/types/chartType/dualAxis/zDualAxis.ts](../../../../../packages/vseed/src/types/chartType/dualAxis/zDualAxis.ts)
+源码：[packages/vseed/src/types/chartType/dualAxis/zDualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/dualAxis/zDualAxis.ts)
 
 包导出：`zDualAxis`
 
@@ -2100,7 +2100,7 @@ const zDualAxis = z.object({
 
 ## zDualAxisConfig
 
-源码：[packages/vseed/src/types/properties/config/dualAxis.ts](../../../../../packages/vseed/src/types/properties/config/dualAxis.ts)
+源码：[packages/vseed/src/types/properties/config/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/dualAxis.ts)
 
 包导出：`zDualAxisConfig`
 
@@ -2131,7 +2131,7 @@ const zDualAxisConfig = z.object({
 
 ## zDualMeasure
 
-源码：[packages/vseed/src/types/properties/measures/zDualMeasures.ts](../../../../../packages/vseed/src/types/properties/measures/zDualMeasures.ts)
+源码：[packages/vseed/src/types/properties/measures/zDualMeasures.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/zDualMeasures.ts)
 
 包导出：`zDualMeasure`
 
@@ -2146,7 +2146,7 @@ const zDualMeasure = zMeasure.extend({
 
 ## zDualMeasures
 
-源码：[packages/vseed/src/types/properties/measures/zDualMeasures.ts](../../../../../packages/vseed/src/types/properties/measures/zDualMeasures.ts)
+源码：[packages/vseed/src/types/properties/measures/zDualMeasures.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/zDualMeasures.ts)
 
 包导出：`zDualMeasures`
 
@@ -2158,7 +2158,7 @@ const zDualMeasures = z.array(zDualMeasure)
 
 ## zDynamicFilter
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`zDynamicFilter`
 
@@ -2173,7 +2173,7 @@ const zDynamicFilter = z.union([zTableDynamicFilter, zChartDynamicFilter])
 
 ## zEcdfRegressionLine
 
-源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](../../../../../packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
+源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
 
 包导出：`zEcdfRegressionLine`
 
@@ -2192,7 +2192,7 @@ const zEcdfRegressionLine = z.object({
 
 ## zEncoding
 
-源码：[packages/vseed/src/types/properties/encoding/zEncoding.ts](../../../../../packages/vseed/src/types/properties/encoding/zEncoding.ts)
+源码：[packages/vseed/src/types/properties/encoding/zEncoding.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/encoding/zEncoding.ts)
 
 包导出：`zEncoding`
 
@@ -2231,7 +2231,7 @@ const zEncoding = z.object({
 
 ## zFieldSelector
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`zFieldSelector`
 
@@ -2243,7 +2243,7 @@ const zFieldSelector = z.object({
 
 ## zFoldInfo
 
-源码：[packages/vseed/src/types/properties/datasetReshapeInfo/zDatasetReshapeInfo.ts](../../../../../packages/vseed/src/types/properties/datasetReshapeInfo/zDatasetReshapeInfo.ts)
+源码：[packages/vseed/src/types/properties/datasetReshapeInfo/zDatasetReshapeInfo.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/datasetReshapeInfo/zDatasetReshapeInfo.ts)
 
 包导出：`zFoldInfo`
 
@@ -2266,7 +2266,7 @@ const zFoldInfo = z.object({
 
 ## zFunnel
 
-源码：[packages/vseed/src/types/chartType/funnel/zFunnel.ts](../../../../../packages/vseed/src/types/chartType/funnel/zFunnel.ts)
+源码：[packages/vseed/src/types/chartType/funnel/zFunnel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/funnel/zFunnel.ts)
 
 包导出：`zFunnel`
 
@@ -2294,7 +2294,7 @@ const zFunnel = z.object({
 
 ## zFunnelConfig
 
-源码：[packages/vseed/src/types/properties/config/funnel.ts](../../../../../packages/vseed/src/types/properties/config/funnel.ts)
+源码：[packages/vseed/src/types/properties/config/funnel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/funnel.ts)
 
 包导出：`zFunnelConfig`
 
@@ -2315,7 +2315,7 @@ const zFunnelConfig = z.object({
 
 ## zFunnelTransform
 
-源码：[packages/vseed/src/types/properties/config/funnelTransform/zFunnelTransform.ts](../../../../../packages/vseed/src/types/properties/config/funnelTransform/zFunnelTransform.ts)
+源码：[packages/vseed/src/types/properties/config/funnelTransform/zFunnelTransform.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/funnelTransform/zFunnelTransform.ts)
 
 包导出：`zFunnelTransform`
 
@@ -2328,7 +2328,7 @@ const zFunnelTransform = z.object({
 
 ## zHeatmap
 
-源码：[packages/vseed/src/types/chartType/heatmap/zHeatmap.ts](../../../../../packages/vseed/src/types/chartType/heatmap/zHeatmap.ts)
+源码：[packages/vseed/src/types/chartType/heatmap/zHeatmap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/heatmap/zHeatmap.ts)
 
 包导出：`zHeatmap`
 
@@ -2355,7 +2355,7 @@ const zHeatmap = z.object({
 
 ## zHeatmapCell
 
-源码：[packages/vseed/src/types/properties/config/heatmap/zHeatmap.ts](../../../../../packages/vseed/src/types/properties/config/heatmap/zHeatmap.ts)
+源码：[packages/vseed/src/types/properties/config/heatmap/zHeatmap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/heatmap/zHeatmap.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -2370,7 +2370,7 @@ const zHeatmapCell = z.object({
 
 ## zHeatmapConfig
 
-源码：[packages/vseed/src/types/properties/config/heatmap.ts](../../../../../packages/vseed/src/types/properties/config/heatmap.ts)
+源码：[packages/vseed/src/types/properties/config/heatmap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/heatmap.ts)
 
 包导出：`zHeatmapConfig`
 
@@ -2396,7 +2396,7 @@ const zHeatmapConfig = z.object({
 
 ## zHierarchySankey
 
-源码：[packages/vseed/src/types/chartType/hierarchySankey/zHierarchySankey.ts](../../../../../packages/vseed/src/types/chartType/hierarchySankey/zHierarchySankey.ts)
+源码：[packages/vseed/src/types/chartType/hierarchySankey/zHierarchySankey.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/hierarchySankey/zHierarchySankey.ts)
 
 包导出：`zHierarchySankey`
 
@@ -2422,7 +2422,7 @@ const zHierarchySankey = z.object({
 
 ## zHierarchySankeyConfig
 
-源码：[packages/vseed/src/types/properties/config/hierarchySankey.ts](../../../../../packages/vseed/src/types/properties/config/hierarchySankey.ts)
+源码：[packages/vseed/src/types/properties/config/hierarchySankey.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/hierarchySankey.ts)
 
 包导出：`zHierarchySankeyConfig`
 
@@ -2441,7 +2441,7 @@ const zHierarchySankeyConfig = z.object({
 
 ## zHistogram
 
-源码：[packages/vseed/src/types/chartType/histogram/zHistogram.ts](../../../../../packages/vseed/src/types/chartType/histogram/zHistogram.ts)
+源码：[packages/vseed/src/types/chartType/histogram/zHistogram.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/histogram/zHistogram.ts)
 
 包导出：`zHistogram`
 
@@ -2485,7 +2485,7 @@ const zHistogram = z.object({
 
 ## zHistogramConfig
 
-源码：[packages/vseed/src/types/properties/config/histogram.ts](../../../../../packages/vseed/src/types/properties/config/histogram.ts)
+源码：[packages/vseed/src/types/properties/config/histogram.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/histogram.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -2519,7 +2519,7 @@ const zHistogramConfig = z.object({
 
 ## zKdeRegressionLine
 
-源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](../../../../../packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
+源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
 
 包导出：`zKdeRegressionLine`
 
@@ -2531,7 +2531,7 @@ const zKdeRegressionLine = zEcdfRegressionLine.extend({})
 
 ## zLabel
 
-源码：[packages/vseed/src/types/properties/config/label/zLabel.ts](../../../../../packages/vseed/src/types/properties/config/label/zLabel.ts)
+源码：[packages/vseed/src/types/properties/config/label/zLabel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/label/zLabel.ts)
 
 包导出：`zLabel`
 
@@ -2560,7 +2560,7 @@ const zLabel = z.object({
 
 ## zLegend
 
-源码：[packages/vseed/src/types/properties/config/legend/legend.ts](../../../../../packages/vseed/src/types/properties/config/legend/legend.ts)
+源码：[packages/vseed/src/types/properties/config/legend/legend.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/legend/legend.ts)
 
 包导出：`zLegend`
 
@@ -2632,7 +2632,7 @@ const zLegend = z.object({
 
 ## zLine
 
-源码：[packages/vseed/src/types/chartType/line/zLine.ts](../../../../../packages/vseed/src/types/chartType/line/zLine.ts)
+源码：[packages/vseed/src/types/chartType/line/zLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/line/zLine.ts)
 
 包导出：`zLine`
 
@@ -2675,7 +2675,7 @@ const zLine = z.object({
 
 ## zLinearColor
 
-源码：[packages/vseed/src/types/properties/config/color/color.ts](../../../../../packages/vseed/src/types/properties/config/color/color.ts)
+源码：[packages/vseed/src/types/properties/config/color/color.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/color/color.ts)
 
 包导出：`zLinearColor`
 
@@ -2687,7 +2687,7 @@ const zLinearColor = z.object({
 
 ## zLineAreaAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/zAnimation.ts](../../../../../packages/vseed/src/types/properties/config/animation/zAnimation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/zAnimation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/zAnimation.ts)
 
 包导出：`zLineAreaAnimation`
 
@@ -2702,7 +2702,7 @@ const zLineAreaAnimation = createAnimation({
 
 ## zLinearRegressionLine
 
-源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](../../../../../packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
+源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
 
 包导出：`zLinearRegressionLine`
 
@@ -2722,7 +2722,7 @@ const zLinearRegressionLine = zEcdfRegressionLine.extend({
 
 ## zLineConfig
 
-源码：[packages/vseed/src/types/properties/config/line.ts](../../../../../packages/vseed/src/types/properties/config/line.ts)
+源码：[packages/vseed/src/types/properties/config/line.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/line.ts)
 
 包导出：`zLineConfig`
 
@@ -2752,7 +2752,7 @@ const zLineConfig = z.object({
 
 ## zLineStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/zLineStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/zLineStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/zLineStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/zLineStyle.ts)
 
 包导出：`zLineStyle`
 
@@ -2773,7 +2773,7 @@ const zLineStyle = z.object({
 
 ## zLocale
 
-源码：[packages/vseed/src/types/i18n/i18n.ts](../../../../../packages/vseed/src/types/i18n/i18n.ts)
+源码：[packages/vseed/src/types/i18n/i18n.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/i18n/i18n.ts)
 
 包导出：`zLocale`
 
@@ -2785,7 +2785,7 @@ const zLocale = z.enum(LOCALES).default('zh-CN')
 
 ## zLogisticRegressionLine
 
-源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](../../../../../packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
+源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
 
 包导出：`zLogisticRegressionLine`
 
@@ -2797,7 +2797,7 @@ const zLogisticRegressionLine = zLinearRegressionLine.extend({})
 
 ## zLowessRegressionLine
 
-源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](../../../../../packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
+源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
 
 包导出：`zLowessRegressionLine`
 
@@ -2809,7 +2809,7 @@ const zLowessRegressionLine = zLinearRegressionLine.extend({})
 
 ## zMarkStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/zMarkStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/zMarkStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/zMarkStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/zMarkStyle.ts)
 
 包导出：`zMarkStyle`
 
@@ -2828,7 +2828,7 @@ const zMarkStyle = z.object({
 
 ## zMeasure
 
-源码：[packages/vseed/src/types/properties/measures/zMeasures.ts](../../../../../packages/vseed/src/types/properties/measures/zMeasures.ts)
+源码：[packages/vseed/src/types/properties/measures/zMeasures.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/zMeasures.ts)
 
 包导出：`zMeasure`
 
@@ -2873,7 +2873,7 @@ const zMeasure = z.object({
 
 ## zMeasureEncoding
 
-源码：[packages/vseed/src/types/properties/encoding/zMeasureEncoding.ts](../../../../../packages/vseed/src/types/properties/encoding/zMeasureEncoding.ts)
+源码：[packages/vseed/src/types/properties/encoding/zMeasureEncoding.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/encoding/zMeasureEncoding.ts)
 
 包导出：`zMeasureEncoding`
 
@@ -2896,7 +2896,7 @@ const zMeasureEncoding = z.enum([
 
 ## zMeasureGroup
 
-源码：[packages/vseed/src/types/properties/measures/zMeasures.ts](../../../../../packages/vseed/src/types/properties/measures/zMeasures.ts)
+源码：[packages/vseed/src/types/properties/measures/zMeasures.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/zMeasures.ts)
 
 包导出：`zMeasureGroup`
 
@@ -2914,7 +2914,7 @@ const zMeasureGroup: z.ZodType<MeasureGroup> = z.object({
 
 ## zMeasures
 
-源码：[packages/vseed/src/types/properties/measures/zMeasures.ts](../../../../../packages/vseed/src/types/properties/measures/zMeasures.ts)
+源码：[packages/vseed/src/types/properties/measures/zMeasures.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/zMeasures.ts)
 
 包导出：`zMeasures`
 
@@ -2926,7 +2926,7 @@ const zMeasures = z.array(zMeasure)
 
 ## zMeasureSelector
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`zMeasureSelector`
 
@@ -2941,7 +2941,7 @@ const zMeasureSelector = z.object({
 
 ## zMeasureTree
 
-源码：[packages/vseed/src/types/properties/measures/zMeasures.ts](../../../../../packages/vseed/src/types/properties/measures/zMeasures.ts)
+源码：[packages/vseed/src/types/properties/measures/zMeasures.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/zMeasures.ts)
 
 包导出：`zMeasureTree`
 
@@ -2953,7 +2953,7 @@ const zMeasureTree = z.array(zMeasureGroup.or(zMeasure))
 
 ## zNumFormat
 
-源码：[packages/vseed/src/types/properties/format/numFormat.ts](../../../../../packages/vseed/src/types/properties/format/numFormat.ts)
+源码：[packages/vseed/src/types/properties/format/numFormat.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/format/numFormat.ts)
 
 包导出：`zNumFormat`
 
@@ -2980,7 +2980,7 @@ const zNumFormat = z
 
 ## zOutlierStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/zOutlierStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/zOutlierStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/zOutlierStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/zOutlierStyle.ts)
 
 包导出：`zOutlierStyle`
 
@@ -3001,7 +3001,7 @@ const zOutlierStyle = z.object({
 
 ## zPage
 
-源码：[packages/vseed/src/types/properties/page/zPage.ts](../../../../../packages/vseed/src/types/properties/page/zPage.ts)
+源码：[packages/vseed/src/types/properties/page/zPage.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/page/zPage.ts)
 
 包导出：`zPage`
 
@@ -3014,7 +3014,7 @@ const zPage = z.object({
 
 ## zPartialSelector
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`zPartialSelector`
 
@@ -3026,7 +3026,7 @@ const zPartialSelector = zDatum
 
 ## zPie
 
-源码：[packages/vseed/src/types/chartType/pie/zPie.ts](../../../../../packages/vseed/src/types/chartType/pie/zPie.ts)
+源码：[packages/vseed/src/types/chartType/pie/zPie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/pie/zPie.ts)
 
 包导出：`zPie`
 
@@ -3056,7 +3056,7 @@ const zPie = z.object({
 
 ## zPieConfig
 
-源码：[packages/vseed/src/types/properties/config/pie.ts](../../../../../packages/vseed/src/types/properties/config/pie.ts)
+源码：[packages/vseed/src/types/properties/config/pie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/pie.ts)
 
 包导出：`zPieConfig`
 
@@ -3071,7 +3071,7 @@ const zPieConfig = zPolarConfig.extend({
 
 ## zPieGeometry
 
-源码：[packages/vseed/src/types/properties/config/pieGeometry.ts](../../../../../packages/vseed/src/types/properties/config/pieGeometry.ts)
+源码：[packages/vseed/src/types/properties/config/pieGeometry.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/pieGeometry.ts)
 
 包导出：`zPieGeometry`
 
@@ -3086,7 +3086,7 @@ const zPieGeometry = z.object({
 
 ## zPieLabel
 
-源码：[packages/vseed/src/types/properties/config/label/zPieLabel.ts](../../../../../packages/vseed/src/types/properties/config/label/zPieLabel.ts)
+源码：[packages/vseed/src/types/properties/config/label/zPieLabel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/label/zPieLabel.ts)
 
 包导出：`zPieLabel`
 
@@ -3100,7 +3100,7 @@ const zPieLabel = zLabel.extend({
 
 ## zPieLikeAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/zAnimation.ts](../../../../../packages/vseed/src/types/properties/config/animation/zAnimation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/zAnimation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/zAnimation.ts)
 
 包导出：`zPieLikeAnimation`
 
@@ -3115,7 +3115,7 @@ const zPieLikeAnimation = createAnimation({
 
 ## zPieStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/zPieStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/zPieStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/zPieStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/zPieStyle.ts)
 
 包导出：`zPieStyle`
 
@@ -3130,7 +3130,7 @@ const zPieStyle = z.object({
 
 ## zPivotChartGridConfig
 
-源码：[packages/vseed/src/types/properties/config/pivotGrid/pivotGrid.ts](../../../../../packages/vseed/src/types/properties/config/pivotGrid/pivotGrid.ts)
+源码：[packages/vseed/src/types/properties/config/pivotGrid/pivotGrid.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/pivotGrid/pivotGrid.ts)
 
 包导出：`zPivotChartGridConfig`
 
@@ -3163,7 +3163,7 @@ const zPivotChartGridConfig = z.object({
 
 ## zPivotTable
 
-源码：[packages/vseed/src/types/chartType/pivotTable/zPivotTable.ts](../../../../../packages/vseed/src/types/chartType/pivotTable/zPivotTable.ts)
+源码：[packages/vseed/src/types/chartType/pivotTable/zPivotTable.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/pivotTable/zPivotTable.ts)
 
 包导出：`zPivotTable`
 
@@ -3203,7 +3203,7 @@ const zPivotTable = z.object({
 
 ## zPivotTableConfig
 
-源码：[packages/vseed/src/types/properties/config/pivotTable.ts](../../../../../packages/vseed/src/types/properties/config/pivotTable.ts)
+源码：[packages/vseed/src/types/properties/config/pivotTable.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/pivotTable.ts)
 
 包导出：`zPivotTableConfig`
 
@@ -3215,7 +3215,7 @@ const zPivotTableConfig = zTableConfig
 
 ## zPivotTableTotals
 
-源码：[packages/vseed/src/types/properties/totals/zTotals.ts](../../../../../packages/vseed/src/types/properties/totals/zTotals.ts)
+源码：[packages/vseed/src/types/properties/totals/zTotals.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/totals/zTotals.ts)
 
 包导出：`zPivotTableTotals`
 
@@ -3230,7 +3230,7 @@ const zPivotTableTotals = z.object({
 
 ## zPlayer
 
-源码：[packages/vseed/src/types/properties/config/player/zPlayer.ts](../../../../../packages/vseed/src/types/properties/config/player/zPlayer.ts)
+源码：[packages/vseed/src/types/properties/config/player/zPlayer.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/player/zPlayer.ts)
 
 包导出：`zPlayer`
 
@@ -3257,7 +3257,7 @@ const zPlayer = z.object({
 
 ## zPointStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/zPointStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/zPointStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/zPointStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/zPointStyle.ts)
 
 包导出：`zPointStyle`
 
@@ -3279,7 +3279,7 @@ const zPointStyle = z.object({
 
 ## zPolynomialRegressionLine
 
-源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](../../../../../packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
+源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
 
 包导出：`zPolynomialRegressionLine`
 
@@ -3293,7 +3293,7 @@ const zPolynomialRegressionLine = zLinearRegressionLine.extend({
 
 ## zRaceBar
 
-源码：[packages/vseed/src/types/chartType/raceBar/zRaceBar.ts](../../../../../packages/vseed/src/types/chartType/raceBar/zRaceBar.ts)
+源码：[packages/vseed/src/types/chartType/raceBar/zRaceBar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/raceBar/zRaceBar.ts)
 
 包导出：`zRaceBar`
 
@@ -3336,7 +3336,7 @@ const zRaceBar = z.object({
 
 ## zRaceBarConfig
 
-源码：[packages/vseed/src/types/properties/config/race.ts](../../../../../packages/vseed/src/types/properties/config/race.ts)
+源码：[packages/vseed/src/types/properties/config/race.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/race.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -3350,7 +3350,7 @@ const zRaceBarConfig = zBarConfig.extend({
 
 ## zRaceColumn
 
-源码：[packages/vseed/src/types/chartType/raceColumn/zRaceColumn.ts](../../../../../packages/vseed/src/types/chartType/raceColumn/zRaceColumn.ts)
+源码：[packages/vseed/src/types/chartType/raceColumn/zRaceColumn.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/raceColumn/zRaceColumn.ts)
 
 包导出：`zRaceColumn`
 
@@ -3393,7 +3393,7 @@ const zRaceColumn = z.object({
 
 ## zRaceColumnConfig
 
-源码：[packages/vseed/src/types/properties/config/race.ts](../../../../../packages/vseed/src/types/properties/config/race.ts)
+源码：[packages/vseed/src/types/properties/config/race.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/race.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -3407,7 +3407,7 @@ const zRaceColumnConfig = zColumnConfig.extend({
 
 ## zRaceDonut
 
-源码：[packages/vseed/src/types/chartType/raceDonut/zRaceDonut.ts](../../../../../packages/vseed/src/types/chartType/raceDonut/zRaceDonut.ts)
+源码：[packages/vseed/src/types/chartType/raceDonut/zRaceDonut.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/raceDonut/zRaceDonut.ts)
 
 包导出：`zRaceDonut`
 
@@ -3436,7 +3436,7 @@ const zRaceDonut = z.object({
 
 ## zRaceDonutConfig
 
-源码：[packages/vseed/src/types/properties/config/race.ts](../../../../../packages/vseed/src/types/properties/config/race.ts)
+源码：[packages/vseed/src/types/properties/config/race.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/race.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -3452,7 +3452,7 @@ const zRaceDonutConfig = zScatterConfig.extend({
 
 ## zRaceLine
 
-源码：[packages/vseed/src/types/chartType/raceLine/zRaceLine.ts](../../../../../packages/vseed/src/types/chartType/raceLine/zRaceLine.ts)
+源码：[packages/vseed/src/types/chartType/raceLine/zRaceLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/raceLine/zRaceLine.ts)
 
 包导出：`zRaceLine`
 
@@ -3493,7 +3493,7 @@ const zRaceLine = z.object({
 
 ## zRaceLineConfig
 
-源码：[packages/vseed/src/types/properties/config/race.ts](../../../../../packages/vseed/src/types/properties/config/race.ts)
+源码：[packages/vseed/src/types/properties/config/race.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/race.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -3507,7 +3507,7 @@ const zRaceLineConfig = zScatterConfig.extend({
 
 ## zRacePie
 
-源码：[packages/vseed/src/types/chartType/racePie/zRacePie.ts](../../../../../packages/vseed/src/types/chartType/racePie/zRacePie.ts)
+源码：[packages/vseed/src/types/chartType/racePie/zRacePie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/racePie/zRacePie.ts)
 
 包导出：`zRacePie`
 
@@ -3536,7 +3536,7 @@ const zRacePie = z.object({
 
 ## zRacePieConfig
 
-源码：[packages/vseed/src/types/properties/config/race.ts](../../../../../packages/vseed/src/types/properties/config/race.ts)
+源码：[packages/vseed/src/types/properties/config/race.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/race.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -3552,7 +3552,7 @@ const zRacePieConfig = zScatterConfig.extend({
 
 ## zRaceScatter
 
-源码：[packages/vseed/src/types/chartType/raceScatter/zRaceScatter.ts](../../../../../packages/vseed/src/types/chartType/raceScatter/zRaceScatter.ts)
+源码：[packages/vseed/src/types/chartType/raceScatter/zRaceScatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/raceScatter/zRaceScatter.ts)
 
 包导出：`zRaceScatter`
 
@@ -3594,7 +3594,7 @@ const zRaceScatter = z.object({
 
 ## zRaceScatterConfig
 
-源码：[packages/vseed/src/types/properties/config/race.ts](../../../../../packages/vseed/src/types/properties/config/race.ts)
+源码：[packages/vseed/src/types/properties/config/race.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/race.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -3608,7 +3608,7 @@ const zRaceScatterConfig = zScatterConfig.extend({
 
 ## zRadar
 
-源码：[packages/vseed/src/types/chartType/radar/zRadar.ts](../../../../../packages/vseed/src/types/chartType/radar/zRadar.ts)
+源码：[packages/vseed/src/types/chartType/radar/zRadar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/radar/zRadar.ts)
 
 包导出：`zRadar`
 
@@ -3637,7 +3637,7 @@ const zRadar = z.object({
 
 ## zRadarAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/zAnimation.ts](../../../../../packages/vseed/src/types/properties/config/animation/zAnimation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/zAnimation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/zAnimation.ts)
 
 包导出：`zRadarAnimation`
 
@@ -3651,7 +3651,7 @@ const zRadarAnimation = createAnimation({
 
 ## zRadarConfig
 
-源码：[packages/vseed/src/types/properties/config/pie.ts](../../../../../packages/vseed/src/types/properties/config/pie.ts)
+源码：[packages/vseed/src/types/properties/config/pie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/pie.ts)
 
 包导出：`zRadarConfig`
 
@@ -3665,7 +3665,7 @@ const zRadarConfig = zPolarConfig.extend({
 
 ## zRegionPadding
 
-源码：[packages/vseed/src/types/properties/regionPadding/zRegionPadding.ts](../../../../../packages/vseed/src/types/properties/regionPadding/zRegionPadding.ts)
+源码：[packages/vseed/src/types/properties/regionPadding/zRegionPadding.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regionPadding/zRegionPadding.ts)
 
 包导出：`zRegionPadding`
 
@@ -3675,7 +3675,7 @@ const zRegionPadding = z.number().nonnegative().or(zRegionPaddingObject)
 
 ## zRegressionLine
 
-源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](../../../../../packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
+源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
 
 包导出：`zRegressionLine`
 
@@ -3694,7 +3694,7 @@ const zRegressionLine = z.object({
 
 ## zRose
 
-源码：[packages/vseed/src/types/chartType/rose/zRose.ts](../../../../../packages/vseed/src/types/chartType/rose/zRose.ts)
+源码：[packages/vseed/src/types/chartType/rose/zRose.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/rose/zRose.ts)
 
 包导出：`zRose`
 
@@ -3722,7 +3722,7 @@ const zRose = z.object({
 
 ## zRoseConfig
 
-源码：[packages/vseed/src/types/properties/config/rose.ts](../../../../../packages/vseed/src/types/properties/config/rose.ts)
+源码：[packages/vseed/src/types/properties/config/rose.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/rose.ts)
 
 包导出：`zRoseConfig`
 
@@ -3743,7 +3743,7 @@ const zRoseConfig = z.object({
 
 ## zRoseParallel
 
-源码：[packages/vseed/src/types/chartType/roseParallel/zRoseParallel.ts](../../../../../packages/vseed/src/types/chartType/roseParallel/zRoseParallel.ts)
+源码：[packages/vseed/src/types/chartType/roseParallel/zRoseParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/roseParallel/zRoseParallel.ts)
 
 包导出：`zRoseParallel`
 
@@ -3772,7 +3772,7 @@ const zRoseParallel = z.object({
 
 ## zRoseParallelConfig
 
-源码：[packages/vseed/src/types/properties/config/rose.ts](../../../../../packages/vseed/src/types/properties/config/rose.ts)
+源码：[packages/vseed/src/types/properties/config/rose.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/rose.ts)
 
 包导出：`zRoseParallelConfig`
 
@@ -3784,7 +3784,7 @@ const zRoseParallelConfig = zRoseConfig
 
 ## zRowOrColumnTotalConfig
 
-源码：[packages/vseed/src/types/properties/totals/zTotals.ts](../../../../../packages/vseed/src/types/properties/totals/zTotals.ts)
+源码：[packages/vseed/src/types/properties/totals/zTotals.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/totals/zTotals.ts)
 
 包导出：`zRowOrColumnTotalConfig`
 
@@ -3798,7 +3798,7 @@ const zRowOrColumnTotalConfig = z.object({
 
 ## zSankey
 
-源码：[packages/vseed/src/types/chartType/sankey/zSankey.ts](../../../../../packages/vseed/src/types/chartType/sankey/zSankey.ts)
+源码：[packages/vseed/src/types/chartType/sankey/zSankey.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/sankey/zSankey.ts)
 
 包导出：`zSankey`
 
@@ -3824,7 +3824,7 @@ const zSankey = z.object({
 
 ## zSankeyConfig
 
-源码：[packages/vseed/src/types/properties/config/sankey.ts](../../../../../packages/vseed/src/types/properties/config/sankey.ts)
+源码：[packages/vseed/src/types/properties/config/sankey.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/sankey.ts)
 
 包导出：`zSankeyConfig`
 
@@ -3843,7 +3843,7 @@ const zSankeyConfig = z.object({
 
 ## zScatter
 
-源码：[packages/vseed/src/types/chartType/scatter/zScatter.ts](../../../../../packages/vseed/src/types/chartType/scatter/zScatter.ts)
+源码：[packages/vseed/src/types/chartType/scatter/zScatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/scatter/zScatter.ts)
 
 包导出：`zScatter`
 
@@ -3887,7 +3887,7 @@ const zScatter = z.object({
 
 ## zScatterAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/zAnimation.ts](../../../../../packages/vseed/src/types/properties/config/animation/zAnimation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/zAnimation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/zAnimation.ts)
 
 包导出：`zScatterAnimation`
 
@@ -3902,7 +3902,7 @@ const zScatterAnimation = createAnimation({
 
 ## zScatterConfig
 
-源码：[packages/vseed/src/types/properties/config/scatter.ts](../../../../../packages/vseed/src/types/properties/config/scatter.ts)
+源码：[packages/vseed/src/types/properties/config/scatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/scatter.ts)
 
 包导出：`zScatterConfig`
 
@@ -3934,7 +3934,7 @@ const zScatterConfig = z.object({
 
 ## zSelector
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`zSelector`
 
@@ -3953,7 +3953,7 @@ const zSelector = z.union([
 
 ## zSelectors
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`zSelectors`
 
@@ -3965,7 +3965,7 @@ const zSelectors = z.array(zSelector)
 
 ## zSort
 
-源码：[packages/vseed/src/types/properties/analysis/sort.ts](../../../../../packages/vseed/src/types/properties/analysis/sort.ts)
+源码：[packages/vseed/src/types/properties/analysis/sort.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/analysis/sort.ts)
 
 包导出：`zSort`
 
@@ -3979,7 +3979,7 @@ const zSort = z.object({
 
 ## zSortLegend
 
-源码：[packages/vseed/src/types/properties/analysis/sortLegend.ts](../../../../../packages/vseed/src/types/properties/analysis/sortLegend.ts)
+源码：[packages/vseed/src/types/properties/analysis/sortLegend.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/analysis/sortLegend.ts)
 
 包导出：`zSortLegend`
 
@@ -3993,7 +3993,7 @@ const zSortLegend = z.object({
 
 ## zStackCornerRadius
 
-源码：[packages/vseed/src/types/properties/config/stackCornerRadius/stackCornerRadius.ts](../../../../../packages/vseed/src/types/properties/config/stackCornerRadius/stackCornerRadius.ts)
+源码：[packages/vseed/src/types/properties/config/stackCornerRadius/stackCornerRadius.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/stackCornerRadius/stackCornerRadius.ts)
 
 包导出：`zStackCornerRadius`
 
@@ -4003,7 +4003,7 @@ const zStackCornerRadius = z.boolean()
 
 ## zSunburst
 
-源码：[packages/vseed/src/types/chartType/sunburst/zSunburst.ts](../../../../../packages/vseed/src/types/chartType/sunburst/zSunburst.ts)
+源码：[packages/vseed/src/types/chartType/sunburst/zSunburst.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/sunburst/zSunburst.ts)
 
 包导出：`zSunburst`
 
@@ -4028,7 +4028,7 @@ const zSunburst = z.object({
 
 ## zSunburstConfig
 
-源码：[packages/vseed/src/types/properties/config/sunburst.ts](../../../../../packages/vseed/src/types/properties/config/sunburst.ts)
+源码：[packages/vseed/src/types/properties/config/sunburst.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/sunburst.ts)
 
 包导出：`zSunburstConfig`
 
@@ -4047,7 +4047,7 @@ const zSunburstConfig = z.object({
 
 ## zTable
 
-源码：[packages/vseed/src/types/chartType/table/zTable.ts](../../../../../packages/vseed/src/types/chartType/table/zTable.ts)
+源码：[packages/vseed/src/types/chartType/table/zTable.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/table/zTable.ts)
 
 包导出：`zTable`
 
@@ -4086,7 +4086,7 @@ const zTable = z.object({
 
 ## zTableConfig
 
-源码：[packages/vseed/src/types/properties/config/table.ts](../../../../../packages/vseed/src/types/properties/config/table.ts)
+源码：[packages/vseed/src/types/properties/config/table.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/table.ts)
 
 包导出：`zTableConfig`
 
@@ -4141,7 +4141,7 @@ const zTableConfig = z.object({
 
 ## zTableDynamicFilter
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`zTableDynamicFilter`
 
@@ -4164,7 +4164,7 @@ const zTableDynamicFilter = z.object({
 
 ## zTheme
 
-源码：[packages/vseed/src/types/properties/theme/theme.ts](../../../../../packages/vseed/src/types/properties/theme/theme.ts)
+源码：[packages/vseed/src/types/properties/theme/theme.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/theme/theme.ts)
 
 包导出：`zTheme`
 
@@ -4174,7 +4174,7 @@ const zTheme = z.string()
 
 ## zTimeFormat
 
-源码：[packages/vseed/src/types/properties/format/timeFormat.ts](../../../../../packages/vseed/src/types/properties/format/timeFormat.ts)
+源码：[packages/vseed/src/types/properties/format/timeFormat.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/format/timeFormat.ts)
 
 包导出：`zTimeFormat`
 
@@ -4188,7 +4188,7 @@ const zTimeFormat = z
 
 ## zTokenThemeDefinition
 
-源码：[packages/vseed/src/theme/tokenThemeSchema.ts](../../../../../packages/vseed/src/theme/tokenThemeSchema.ts)
+源码：[packages/vseed/src/theme/tokenThemeSchema.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/theme/tokenThemeSchema.ts)
 
 包导出：`zTokenThemeDefinition`
 
@@ -4266,7 +4266,7 @@ const zTokenThemeDefinition = z.object({
 
 ## zTooltip
 
-源码：[packages/vseed/src/types/properties/config/tooltip/tooltip.ts](../../../../../packages/vseed/src/types/properties/config/tooltip/tooltip.ts)
+源码：[packages/vseed/src/types/properties/config/tooltip/tooltip.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/tooltip/tooltip.ts)
 
 包导出：`zTooltip`
 
@@ -4290,7 +4290,7 @@ const zTooltip = z.object({
 
 ## zTotalType
 
-源码：[packages/vseed/src/types/properties/aggregation/zAggregation.ts](../../../../../packages/vseed/src/types/properties/aggregation/zAggregation.ts)
+源码：[packages/vseed/src/types/properties/aggregation/zAggregation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/aggregation/zAggregation.ts)
 
 包导出：`zTotalType`
 
@@ -4300,7 +4300,7 @@ const zTotalType = z.enum(['sum', 'avg', 'max', 'min', 'count'])
 
 ## zTreeMap
 
-源码：[packages/vseed/src/types/chartType/treeMap/zTreeMap.ts](../../../../../packages/vseed/src/types/chartType/treeMap/zTreeMap.ts)
+源码：[packages/vseed/src/types/chartType/treeMap/zTreeMap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/treeMap/zTreeMap.ts)
 
 包导出：`zTreeMap`
 
@@ -4325,7 +4325,7 @@ const zTreeMap = z.object({
 
 ## zTreeMapConfig
 
-源码：[packages/vseed/src/types/properties/config/treeMap.ts](../../../../../packages/vseed/src/types/properties/config/treeMap.ts)
+源码：[packages/vseed/src/types/properties/config/treeMap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/treeMap.ts)
 
 包导出：`zTreeMapConfig`
 
@@ -4344,7 +4344,7 @@ const zTreeMapConfig = z.object({
 
 ## zUnfoldInfo
 
-源码：[packages/vseed/src/types/properties/datasetReshapeInfo/zDatasetReshapeInfo.ts](../../../../../packages/vseed/src/types/properties/datasetReshapeInfo/zDatasetReshapeInfo.ts)
+源码：[packages/vseed/src/types/properties/datasetReshapeInfo/zDatasetReshapeInfo.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/datasetReshapeInfo/zDatasetReshapeInfo.ts)
 
 包导出：`zUnfoldInfo`
 
@@ -4367,7 +4367,7 @@ const zUnfoldInfo = z.object({
 
 ## zValueDynamicFilter
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`zValueDynamicFilter`
 
@@ -4388,7 +4388,7 @@ const zValueDynamicFilter = z.object({
 
 ## zWhiskersConfig
 
-源码：[packages/vseed/src/types/properties/config/whiskers/index.ts](../../../../../packages/vseed/src/types/properties/config/whiskers/index.ts)
+源码：[packages/vseed/src/types/properties/config/whiskers/index.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/whiskers/index.ts)
 
 包导出：`zWhiskersConfig`
 
@@ -4398,7 +4398,7 @@ const zWhiskersConfig = z.number().or(z.array(z.number())).default(1.5)
 
 ## zXBandAxis
 
-源码：[packages/vseed/src/types/properties/config/axes/zBandAxis.ts](../../../../../packages/vseed/src/types/properties/config/axes/zBandAxis.ts)
+源码：[packages/vseed/src/types/properties/config/axes/zBandAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/axes/zBandAxis.ts)
 
 包导出：`zXBandAxis`
 
@@ -4474,7 +4474,7 @@ const zXBandAxis = z.object({
 
 ## zXLinearAxis
 
-源码：[packages/vseed/src/types/properties/config/axes/zLinearAxis.ts](../../../../../packages/vseed/src/types/properties/config/axes/zLinearAxis.ts)
+源码：[packages/vseed/src/types/properties/config/axes/zLinearAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/axes/zLinearAxis.ts)
 
 包导出：`zXLinearAxis`
 
@@ -4554,7 +4554,7 @@ const zXLinearAxis = z.object({
 
 ## zYBandAxis
 
-源码：[packages/vseed/src/types/properties/config/axes/zBandAxis.ts](../../../../../packages/vseed/src/types/properties/config/axes/zBandAxis.ts)
+源码：[packages/vseed/src/types/properties/config/axes/zBandAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/axes/zBandAxis.ts)
 
 包导出：`zYBandAxis`
 
@@ -4566,7 +4566,7 @@ const zYBandAxis = zXBandAxis
 
 ## zYLinearAxis
 
-源码：[packages/vseed/src/types/properties/config/axes/zLinearAxis.ts](../../../../../packages/vseed/src/types/properties/config/axes/zLinearAxis.ts)
+源码：[packages/vseed/src/types/properties/config/axes/zLinearAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/axes/zLinearAxis.ts)
 
 包导出：`zYLinearAxis`
 

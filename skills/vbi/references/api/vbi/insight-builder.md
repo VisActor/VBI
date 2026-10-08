@@ -14,7 +14,7 @@ import type * as Y from 'yjs'
 
 ## VBIInsightBuilder
 
-源码：[packages/vbi/src/insight-builder/builder.ts](../../../../../packages/vbi/src/insight-builder/builder.ts)
+源码：[packages/vbi/src/insight-builder/builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/insight-builder/builder.ts)
 
 包导出：`VBIInsightBuilder`
 
