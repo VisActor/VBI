@@ -112,7 +112,7 @@
       }
 
       .shell {
-        max-width: 1120px;
+        max-width: 1140px;
         margin: auto;
         padding: 32px 28px 24px;
       }
@@ -166,6 +166,69 @@
         display: grid;
         gap: 7px;
         justify-items: end;
+      }
+
+      .view-controls {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 12px;
+        max-width: 100%;
+      }
+
+      .layout-picker {
+        display: grid;
+        gap: 7px;
+      }
+
+      .layout-options {
+        display: flex;
+        gap: 4px;
+        padding: 4px;
+        border: 1px solid #ffffffa6;
+        border-radius: 12px;
+        background: #ffffff65;
+      }
+
+      .layout-options button {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 32px;
+        padding: 6px;
+        border-radius: 8px;
+        color: #7d8b93;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+
+      .layout-options button:hover {
+        background: #ffffff80;
+      }
+
+      .layout-options button[aria-pressed='true'] {
+        background: #ffffffed;
+        color: var(--accent-ink);
+        box-shadow: 0 2px 5px #2436440a;
+      }
+
+      .layout-options button:focus-visible {
+        outline: 2px solid var(--accent-ink);
+        outline-offset: 2px;
+      }
+
+      .layout-options svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.4;
+      }
+
+      #layout-label {
+        color: #78858d;
+        font-size: 10px;
       }
 
       .color-picker {
@@ -262,6 +325,8 @@
 
       .card-slot {
         min-width: 0;
+        display: flex;
+        flex-direction: column;
       }
 
       .card-slot:has(> .metric-card) {
@@ -269,6 +334,8 @@
       }
 
       .card {
+        flex: 1;
+        min-height: 0;
         height: 100%;
         position: relative;
         border: 1px solid #ffffffb3;
@@ -279,8 +346,12 @@
       }
 
       .metric-card {
-        transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+        transform: rotate3d(var(--tilt-x, 0), var(--tilt-y, 1), 0, var(--tilt-angle, 0deg));
         transform-style: preserve-3d;
+      }
+
+      .expanded .metric-card {
+        transform: none;
       }
 
       .hero {
@@ -511,7 +582,57 @@
       }
 
       #orders-card .small-body {
-        margin-top: 8px;
+        margin-top: 4px;
+      }
+
+      .expanded .small-card {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .expanded .small-body {
+        flex: 1;
+        min-height: 0;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .expanded .small-body > div:first-child {
+        flex-shrink: 0;
+      }
+
+      .expanded .small-value {
+        font-size: 40px;
+      }
+
+      .expanded #growth,
+      .expanded #profit {
+        font-size: 40px;
+      }
+
+      .expanded .mini-plot {
+        width: 100%;
+        height: auto;
+        min-height: 90px;
+        flex: 1;
+        align-self: stretch;
+      }
+
+      .expanded #growth-card .mini-plot {
+        margin-top: 0;
+      }
+
+      .dashboard[data-layout='story'] .card-slot::before {
+        content: attr(data-section);
+        margin: 0 4px 12px;
+        color: #71818b;
+        font-size: 12px;
+      }
+
+      .dashboard[data-layout='story'] .card {
+        border-color: #ffffff80;
+        background: #fbfdff;
+        box-shadow: none;
       }
 
       .details {
@@ -641,7 +762,7 @@
 
         .mini-plot {
           width: 150px;
-          height: 90px;
+          height: 77px;
         }
 
         .small-body {
@@ -763,6 +884,12 @@
           opacity: 1;
         }
       }
+
+      @media (hover: none), (pointer: coarse) {
+        .metric-card {
+          transform: none !important;
+        }
+      }
     </style>
   </head>
 
@@ -819,82 +946,131 @@
             <h1>经营概览</h1>
             <p class="subtitle" id="period-label">正在读取订单日期…</p>
           </div>
-          <div class="palette">
-            <fieldset disabled class="color-picker" aria-label="选择页面配色">
-              <button
-                type="button"
-                data-color="#16C99E"
-                data-name="薄荷绿"
-                style="--swatch: #16c99e"
-                aria-label="薄荷绿 #16C99E"
-                title="薄荷绿 #16C99E"
-                aria-pressed="true"
-              ></button>
-              <button
-                type="button"
-                data-color="#D8B4B6"
-                data-name="雾玫粉"
-                style="--swatch: #d8b4b6"
-                aria-label="雾玫粉 #D8B4B6"
-                title="雾玫粉 #D8B4B6"
-                aria-pressed="false"
-              ></button>
-              <button
-                type="button"
-                data-color="#AFCBDA"
-                data-name="海盐蓝"
-                style="--swatch: #afcbda"
-                aria-label="海盐蓝 #AFCBDA"
-                title="海盐蓝 #AFCBDA"
-                aria-pressed="false"
-              ></button>
-              <button
-                type="button"
-                data-color="#7FA69A"
-                data-name="森雾青"
-                style="--swatch: #7fa69a"
-                aria-label="森雾青 #7FA69A"
-                title="森雾青 #7FA69A"
-                aria-pressed="false"
-              ></button>
-              <button
-                type="button"
-                data-color="#B9AFD8"
-                data-name="薰衣紫"
-                style="--swatch: #b9afd8"
-                aria-label="薰衣紫 #B9AFD8"
-                title="薰衣紫 #B9AFD8"
-                aria-pressed="false"
-              ></button>
-              <button
-                type="button"
-                data-color="#F0C4A8"
-                data-name="杏桃橙"
-                style="--swatch: #f0c4a8"
-                aria-label="杏桃橙 #F0C4A8"
-                title="杏桃橙 #F0C4A8"
-                aria-pressed="false"
-              ></button>
-              <button
-                type="button"
-                data-color="#89A8A0"
-                data-name="竹月青"
-                style="--swatch: #89a8a0"
-                aria-label="竹月青 #89A8A0"
-                title="竹月青 #89A8A0"
-                aria-pressed="false"
-              ></button>
-              <button
-                type="button"
-                data-color="#A8C7E8"
-                data-name="晴空蓝"
-                style="--swatch: #a8c7e8"
-                aria-label="晴空蓝 #A8C7E8"
-                title="晴空蓝 #A8C7E8"
-                aria-pressed="false"
-              ></button>
+          <div class="view-controls">
+            <fieldset disabled class="layout-picker" aria-label="选择仪表盘布局">
+              <div class="layout-options">
+                <button
+                  type="button"
+                  data-layout="focus"
+                  aria-pressed="true"
+                  aria-label="趋势主导布局"
+                  title="趋势主导"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="4" width="11" height="16" rx="1.5" />
+                    <rect x="17" y="4" width="4" height="4" rx="0.8" />
+                    <rect x="17" y="10" width="4" height="4" rx="0.8" />
+                    <rect x="17" y="16" width="4" height="4" rx="0.8" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  data-layout="kpiFirst"
+                  aria-pressed="false"
+                  aria-label="指标先行布局"
+                  title="指标先行"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="4" width="5" height="4" rx="0.8" />
+                    <rect x="10" y="4" width="5" height="4" rx="0.8" />
+                    <rect x="17" y="4" width="4" height="4" rx="0.8" />
+                    <rect x="3" y="11" width="18" height="9" rx="1.5" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  data-layout="story"
+                  aria-pressed="false"
+                  aria-label="分段叙事布局"
+                  title="分段叙事"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="6" rx="1.2" />
+                    <rect x="3" y="12" width="8" height="4" rx="0.8" />
+                    <rect x="13" y="12" width="8" height="4" rx="0.8" />
+                    <rect x="3" y="19" width="18" height="2" rx="0.5" />
+                  </svg>
+                </button>
+              </div>
+              <output id="layout-label" aria-live="polite">布局 · 趋势主导</output>
             </fieldset>
-            <output id="palette-label" aria-live="polite">薄荷绿 · #16C99E</output>
+            <div class="palette">
+              <fieldset disabled class="color-picker" aria-label="选择页面配色">
+                <button
+                  type="button"
+                  data-color="#16C99E"
+                  data-name="薄荷绿"
+                  style="--swatch: #16c99e"
+                  aria-label="薄荷绿 #16C99E"
+                  title="薄荷绿 #16C99E"
+                  aria-pressed="true"
+                ></button>
+                <button
+                  type="button"
+                  data-color="#D8B4B6"
+                  data-name="雾玫粉"
+                  style="--swatch: #d8b4b6"
+                  aria-label="雾玫粉 #D8B4B6"
+                  title="雾玫粉 #D8B4B6"
+                  aria-pressed="false"
+                ></button>
+                <button
+                  type="button"
+                  data-color="#AFCBDA"
+                  data-name="海盐蓝"
+                  style="--swatch: #afcbda"
+                  aria-label="海盐蓝 #AFCBDA"
+                  title="海盐蓝 #AFCBDA"
+                  aria-pressed="false"
+                ></button>
+                <button
+                  type="button"
+                  data-color="#7FA69A"
+                  data-name="森雾青"
+                  style="--swatch: #7fa69a"
+                  aria-label="森雾青 #7FA69A"
+                  title="森雾青 #7FA69A"
+                  aria-pressed="false"
+                ></button>
+                <button
+                  type="button"
+                  data-color="#B9AFD8"
+                  data-name="薰衣紫"
+                  style="--swatch: #b9afd8"
+                  aria-label="薰衣紫 #B9AFD8"
+                  title="薰衣紫 #B9AFD8"
+                  aria-pressed="false"
+                ></button>
+                <button
+                  type="button"
+                  data-color="#F0C4A8"
+                  data-name="杏桃橙"
+                  style="--swatch: #f0c4a8"
+                  aria-label="杏桃橙 #F0C4A8"
+                  title="杏桃橙 #F0C4A8"
+                  aria-pressed="false"
+                ></button>
+                <button
+                  type="button"
+                  data-color="#89A8A0"
+                  data-name="竹月青"
+                  style="--swatch: #89a8a0"
+                  aria-label="竹月青 #89A8A0"
+                  title="竹月青 #89A8A0"
+                  aria-pressed="false"
+                ></button>
+                <button
+                  type="button"
+                  data-color="#A8C7E8"
+                  data-name="晴空蓝"
+                  style="--swatch: #a8c7e8"
+                  aria-label="晴空蓝 #A8C7E8"
+                  title="晴空蓝 #A8C7E8"
+                  aria-pressed="false"
+                ></button>
+              </fieldset>
+              <output id="palette-label" aria-live="polite">薄荷绿 · #16C99E</output>
+            </div>
           </div>
         </section>
         <section id="dashboard" class="dashboard" aria-label="销售指标仪表盘">
@@ -910,7 +1086,7 @@
                 </div>
                 <fieldset disabled class="segment" aria-label="选择统计天数">
                   <button data-days="7" aria-pressed="false">7 天</button
-                  ><button data-days="12" aria-pressed="false">12 天</button
+                  ><button data-days="14" aria-pressed="false">14 天</button
                   ><button data-days="30" aria-pressed="true">30 天</button>
                 </fieldset>
               </div>
@@ -1073,7 +1249,8 @@
 
       registerAll()
       const $ = (selector) => document.querySelector(selector)
-      const number = (value) => new Intl.NumberFormat('zh-CN', { maximumFractionDigits: 0 }).format(value)
+      const numberFormatter = new Intl.NumberFormat('zh-CN', { maximumFractionDigits: 0 })
+      const number = (value) => numberFormatter.format(value)
       const money = (value) => `¥${number(value)}`
       const renderedCharts = new Map()
       const status = $('#status')
@@ -1204,6 +1381,47 @@
       }
 
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
+      const finePointer = matchMedia('(hover: hover) and (pointer: fine)')
+      const metricAnimations = new Map()
+      function animateMetric(selector, value, format, emptyText = '—') {
+        const element = $(selector)
+        const previous = metricAnimations.get(element)
+        if (previous && previous.target === value) return
+        if (previous) cancelAnimationFrame(previous.frame)
+        if (!Number.isFinite(value)) {
+          metricAnimations.delete(element)
+          element.textContent = emptyText
+          return
+        }
+        const state = { value: previous?.value ?? value, target: value, format, frame: 0 }
+        metricAnimations.set(element, state)
+        if (!previous || reducedMotion.matches || state.value === value) {
+          state.value = value
+          element.textContent = format(value)
+          return
+        }
+        const from = state.value
+        const started = performance.now()
+        function tick(now) {
+          const progress = Math.min(1, (now - started) / 600)
+          state.value = from + (value - from) * (1 - (1 - progress) ** 3)
+          element.textContent = format(state.value)
+          state.frame = progress < 1 ? requestAnimationFrame(tick) : 0
+        }
+        state.frame = requestAnimationFrame(tick)
+      }
+      function finishMetricAnimations() {
+        metricAnimations.forEach((state, element) => {
+          cancelAnimationFrame(state.frame)
+          state.frame = 0
+          state.value = state.target
+          element.textContent = state.format(state.target)
+        })
+      }
+      function onMetricMotionChange() {
+        if (reducedMotion.matches) finishMetricAnimations()
+      }
+      reducedMotion.addEventListener('change', onMetricMotionChange)
       let entrances = []
       let hasEntered = false
 
@@ -1248,22 +1466,26 @@
           vy = 0,
           frame = 0,
           last = 0
+        function applyTilt(pitch, yaw) {
+          const length = Math.hypot(pitch, yaw)
+          card.style.setProperty('--tilt-x', String(length ? pitch / length : 0))
+          card.style.setProperty('--tilt-y', String(length ? yaw / length : 1))
+          card.style.setProperty('--tilt-angle', `${Math.min(2, length).toFixed(3)}deg`)
+        }
         function tick(now) {
           const dt = last ? Math.min((now - last) / 16.667, 2) : 1
           last = now
-          vx = (vx + (targetX - x) * 0.14 * dt) * Math.pow(0.76, dt)
-          vy = (vy + (targetY - y) * 0.14 * dt) * Math.pow(0.76, dt)
+          vx = (vx + (targetX - x) * 0.1 * dt) * Math.pow(0.78, dt)
+          vy = (vy + (targetY - y) * 0.1 * dt) * Math.pow(0.78, dt)
           x += vx * dt
           y += vy * dt
-          card.style.setProperty('--rx', `${x.toFixed(3)}deg`)
-          card.style.setProperty('--ry', `${y.toFixed(3)}deg`)
+          applyTilt(x, y)
           if (Math.abs(targetX - x) + Math.abs(targetY - y) + Math.abs(vx) + Math.abs(vy) > 0.008)
             frame = requestAnimationFrame(tick)
           else {
             frame = 0
             last = 0
-            card.style.setProperty('--rx', `${targetX}deg`)
-            card.style.setProperty('--ry', `${targetY}deg`)
+            applyTilt(targetX, targetY)
           }
         }
         function start() {
@@ -1273,20 +1495,27 @@
           hovering = false
           targetX = 0
           targetY = 0
-          if (reducedMotion.matches) {
+          if (reducedMotion.matches || !finePointer.matches) {
             cancelAnimationFrame(frame)
             frame = 0
             last = 0
             x = y = vx = vy = 0
-            card.style.setProperty('--rx', '0deg')
-            card.style.setProperty('--ry', '0deg')
+            applyTilt(0, 0)
           } else start()
         }
         // 捕获阶段读取坐标，避免内部图表截断事件冒泡；单张卡片开始可见即可交互。
         document.addEventListener(
           'pointermove',
           (event) => {
-            if (reducedMotion.matches) return
+            if (
+              reducedMotion.matches ||
+              !finePointer.matches ||
+              event.pointerType !== 'mouse' ||
+              slot.classList.contains('expanded')
+            ) {
+              if (hovering) reset()
+              return
+            }
             const rect = slot.getBoundingClientRect()
             const inside =
               event.clientX >= rect.left &&
@@ -1298,11 +1527,11 @@
               return
             }
             hovering = true
-            const px = (event.clientX - rect.left) / rect.width
-            const py = (event.clientY - rect.top) / rect.height
-            const strength = event.pointerType === 'touch' ? 4 : 8
-            targetX = (0.5 - py) * strength * 2
-            targetY = (px - 0.5) * strength * 2
+            const px = ((event.clientX - rect.left) / rect.width - 0.5) * 2
+            const py = ((event.clientY - rect.top) / rect.height - 0.5) * 2
+            const length = Math.max(1, Math.hypot(px, py))
+            targetX = (-py / length) * 1.5
+            targetY = (px / length) * 1.5
             start()
           },
           { capture: true, passive: true },
@@ -1322,8 +1551,10 @@
         document.addEventListener('scroll', resetHover, { capture: true, passive: true })
         window.addEventListener('blur', resetHover)
         reducedMotion.addEventListener('change', reset)
+        finePointer.addEventListener('change', reset)
+        return reset
       }
-      document.querySelectorAll('.metric-card').forEach(bindMetricCardMotion)
+      const resetCardMotion = [...document.querySelectorAll('.metric-card')].map(bindMetricCardMotion)
 
       function buildChartSpec(seed, firstDay, lastDay, mini = false) {
         const dateId = seed.dimensions[0].id
@@ -1465,14 +1696,40 @@
         dashboard.chart.add((widget) => widget.setChart(chart).setTitle(title).setLayouts({ lg, xs }))
         slot.dataset.widget = dashboard.chart.find(chart.getUUID()).getId()
       }
+      // 配方复用现有四个指标；可恢复的位置写入 Dashboard DSL，容器样式由 UI 管理。
+      const layoutPresets = {
+        focus: {
+          expanded: [],
+          lg: { hero: [0, 0, 8, 9], growth: [8, 0, 4, 3], orders: [8, 3, 4, 3], profit: [8, 6, 4, 3] },
+          xs: { hero: [0, 0, 12, 9], growth: [0, 9, 12, 3], orders: [0, 12, 12, 3], profit: [0, 15, 12, 3] },
+        },
+        kpiFirst: {
+          expanded: [],
+          lg: { orders: [0, 0, 4, 3], growth: [4, 0, 4, 3], profit: [8, 0, 4, 3], hero: [0, 3, 12, 9] },
+          xs: { orders: [0, 0, 12, 3], growth: [0, 3, 12, 3], profit: [0, 6, 12, 3], hero: [0, 9, 12, 9] },
+        },
+        story: {
+          expanded: ['growth', 'profit'],
+          lg: { hero: [0, 0, 12, 9], growth: [0, 9, 6, 6], profit: [6, 9, 6, 6], orders: [0, 15, 12, 4] },
+          xs: { hero: [0, 0, 12, 9], growth: [0, 9, 12, 6], profit: [0, 15, 12, 6], orders: [0, 21, 12, 4] },
+        },
+      }
+      const position = ([x, y, w, h]) => ({ x, y, w, h })
       function layoutDashboard(dashboard) {
         const dsl = dashboard.build()
-        const breakpoint = innerWidth >= dsl.breakpoints.lg ? 'lg' : 'xs'
-        for (const item of dsl.layout[breakpoint]) {
+        const grid = $('#dashboard')
+        const breakpoint = grid.clientWidth >= dsl.breakpoints.lg ? 'lg' : 'xs'
+        grid.dataset.breakpoint = breakpoint
+        const focused = document.activeElement
+        const ordered = [...dsl.layout[breakpoint]].sort((a, b) => a.y - b.y || a.x - b.x)
+        for (const [index, item] of ordered.entries()) {
           const slot = document.querySelector(`[data-widget="${item.widgetId}"]`)
+          if (grid.children[index] !== slot) grid.insertBefore(slot, grid.children[index] ?? null)
           slot.style.gridColumn = `${item.x + 1} / span ${item.w}`
           slot.style.gridRow = `${item.y + 1} / span ${item.h}`
+          slot.dataset.enter = index + 2
         }
+        if (grid.contains(focused) && document.activeElement !== focused) focused.focus({ preventScroll: true })
         requestAnimationFrame(() =>
           renderedCharts.forEach((instance, element) => instance.resize(element.clientWidth, element.clientHeight)),
         )
@@ -1486,42 +1743,57 @@
         })
       }
       function changeText(current, previous) {
-        if (!previous) return { text: '暂无可比数据', direction: 'flat', percent: '—' }
+        if (!previous) return { text: '暂无可比数据', direction: 'flat' }
         const percent = ((current - previous) / Math.abs(previous)) * 100
         return {
           text: `${percent >= 0 ? '↑' : '↓'} ${Math.abs(percent).toFixed(1)}%`,
           direction: percent < 0 ? 'down' : 'up',
-          percent: `${percent >= 0 ? '+' : ''}${percent.toFixed(1)}%`,
+          value: percent,
         }
       }
       function setChange(selector, change) {
-        $(selector).textContent = change.text
         $(selector).dataset.direction = change.direction
+        animateMetric(
+          selector,
+          change.value,
+          (value) => {
+            $(selector).dataset.direction = value < 0 ? 'down' : 'up'
+            return `${value >= 0 ? '↑' : '↓'} ${Math.abs(value).toFixed(1)}%`
+          },
+          change.text,
+        )
       }
       function showMetrics(total, prior, consumerTotal, comparison, scope = 'all') {
         const salesChange = changeText(total.sales, prior.sales)
         if (scope === 'all') {
-          $('#sales').textContent = money(total.sales)
-          $('#average').textContent = total.order_id ? money(total.sales / total.order_id) : '—'
-          $('#margin').textContent = total.sales ? `${((total.profit / total.sales) * 100).toFixed(1)}%` : '—'
+          animateMetric('#sales', total.sales, money)
+          animateMetric('#average', total.order_id ? total.sales / total.order_id : undefined, money)
+          animateMetric(
+            '#margin',
+            total.sales ? (total.profit / total.sales) * 100 : undefined,
+            (value) => `${value.toFixed(1)}%`,
+          )
           setChange('#sales-change', salesChange)
         }
         if (scope === 'all' || scope === 'growth') {
-          $('#growth').textContent = salesChange.percent
           $('#growth').dataset.direction = salesChange.direction
+          animateMetric('#growth', salesChange.value, (value) => {
+            $('#growth').dataset.direction = value < 0 ? 'down' : 'up'
+            return `${value >= 0 ? '+' : ''}${value.toFixed(1)}%`
+          })
         }
         if (scope === 'all' || scope === 'profit') {
-          $('#profit').textContent = money(total.profit)
+          animateMetric('#profit', total.profit, money)
           setChange('#profit-change', changeText(total.profit, prior.profit))
         }
         const labels = scope === 'all' ? '.compare-label' : `#${scope}-card .compare-label`
         document.querySelectorAll(labels).forEach((label) => (label.textContent = comparison))
         if (scope === 'all' || scope === 'orders') {
-          $('#orders').textContent = number(total.order_id)
+          animateMetric('#orders', total.order_id, number)
           setChange('#orders-change', changeText(total.order_id, prior.order_id))
           const share = total.order_id ? (consumerTotal.order_id / total.order_id) * 100 : 0
           $('#consumer-ring').setAttribute('aria-valuenow', share.toFixed(1))
-          $('#consumer-share').textContent = total.order_id ? `${Math.round(share)}%` : '—'
+          animateMetric('#consumer-share', total.order_id ? share : undefined, (value) => `${Math.round(value)}%`)
           return draw($('#consumer-ring-plot'), buildConsumerRingSpec(share, total.order_id > 0))
         }
       }
@@ -1571,8 +1843,10 @@
       const connectorId = 'vbi-example-supermarket'
       await run(async () => {
         sourceInfo = await connectSupermarket(connectorId)
+        const emptyDashboard = VBI.dashboard.createEmpty()
         const dashboard = VBI.dashboard.create({
-          ...VBI.dashboard.createEmpty(),
+          ...emptyDashboard,
+          breakpoints: { ...emptyDashboard.breakpoints, lg: 800 },
           meta: { title: 'Brand · 经营概览', theme: 'light' },
         })
         const trend = createChart(connectorId, 'area', 'order_date')
@@ -1584,38 +1858,22 @@
         const regions = createChart(connectorId, 'table', 'area', ['sales', 'order_id', 'profit'])
         const dailyTotals = createChart(connectorId, 'table', 'order_date', ['sales', 'order_id', 'profit'])
         const dailyConsumers = createChart(connectorId, 'table', 'order_date', ['order_id'])
-        bindWidget(
-          dashboard,
-          trend,
-          $('#hero-slot'),
-          '销售总额',
-          { x: 0, y: 0, w: 8, h: 9 },
-          { x: 0, y: 0, w: 12, h: 9 },
-        )
-        bindWidget(
-          dashboard,
-          growth,
-          $('#growth-slot'),
-          '销售增长',
-          { x: 8, y: 0, w: 4, h: 3 },
-          { x: 0, y: 9, w: 12, h: 3 },
-        )
-        bindWidget(
-          dashboard,
-          totals,
-          $('#orders-slot'),
-          '订单总数',
-          { x: 8, y: 3, w: 4, h: 3 },
-          { x: 0, y: 12, w: 12, h: 3 },
-        )
-        bindWidget(
-          dashboard,
-          profit,
-          $('#profit-slot'),
-          '利润',
-          { x: 8, y: 6, w: 4, h: 3 },
-          { x: 0, y: 15, w: 12, h: 3 },
-        )
+        const widgets = {
+          hero: { chart: trend, title: '销售总额' },
+          growth: { chart: growth, title: '销售增长' },
+          orders: { chart: totals, title: '订单总数' },
+          profit: { chart: profit, title: '利润' },
+        }
+        for (const [role, { chart, title }] of Object.entries(widgets)) {
+          bindWidget(
+            dashboard,
+            chart,
+            $(`#${role}-slot`),
+            title,
+            position(layoutPresets.focus.lg[role]),
+            position(layoutPresets.focus.xs[role]),
+          )
+        }
         const charts = [trend, growth, totals, profit, previous, consumers, regions, dailyTotals, dailyConsumers]
         consumers.whereFilter.add('customer_type', (node) => node.setOperator('eq').setValue('消费者'))
         dailyConsumers.whereFilter.add('customer_type', (node) => node.setOperator('eq').setValue('消费者'))
@@ -1631,6 +1889,36 @@
         let disposed = false
         let hoverMetrics
         const hoverSubscriptions = new Map()
+        function selectLayout(mode) {
+          const preset = layoutPresets[mode]
+          hoverSubscriptions.forEach((subscription) => subscription.reset())
+          resetCardMotion.forEach((reset) => reset())
+          if (hasEntered) finishEntrance()
+          const sections = {
+            hero: '结果 · 销售表现',
+            growth: '原因 · 增长走势',
+            profit: '原因 · 盈利表现',
+            orders: '证据 · 客户结构',
+          }
+          dashboard.doc.transact(() => {
+            for (const role of Object.keys(widgets)) {
+              const slot = $(`#${role}-slot`)
+              dashboard.chart.update(slot.dataset.widget, (widget) =>
+                widget.setLayouts({ lg: position(preset.lg[role]), xs: position(preset.xs[role]) }),
+              )
+              slot.classList.toggle('expanded', preset.expanded.includes(role))
+              slot.dataset.section = sections[role]
+            }
+          })
+          $('#dashboard').dataset.layout = mode
+          document
+            .querySelectorAll('.layout-picker [data-layout]')
+            .forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.layout === mode)))
+          $('#layout-label').textContent = `布局 · ${$(`.layout-picker [data-layout="${mode}"]`).title}`
+          renderedCharts.forEach((instance) => instance.hideTooltip())
+          hoverMetrics?.restore()?.catch((error) => console.error(error))
+          layoutDashboard(dashboard)
+        }
         async function render(currentRevision) {
           const { min: firstDay, max: lastDay } = trend.whereFilter
             .find((node) => 'getField' in node && node.getField() === 'order_day')
@@ -1686,7 +1974,7 @@
             )
           }
           hoverMetrics = { showDate, restore }
-          // 主图联动全部指标，小图仅更新所属卡片。
+          // 主图联动全部指标，小图只更新所属卡片。
           for (const [chart, scope] of [
             [trend, 'all'],
             [growth, 'growth'],
@@ -1751,7 +2039,7 @@
           return refreshTask
         }
         applyPeriod(30)
-        layoutDashboard(dashboard)
+        selectLayout($('.layout-picker [aria-pressed="true"]').dataset.layout)
         await render(revision)
         // 直接使用现有 DSL 订阅，无需等待 Builder 的同名便捷接口发布。
         charts.forEach((chart) => chart.dsl.observeDeep(requestRender))
@@ -1768,6 +2056,11 @@
             requestRender()
           }),
         )
+        document.querySelectorAll('.layout-picker [data-layout]').forEach((button) =>
+          button.addEventListener('click', () => {
+            if (button.getAttribute('aria-pressed') !== 'true') selectLayout(button.dataset.layout)
+          }),
+        )
         $('#region-details').addEventListener('toggle', (event) => {
           if (!event.target.open || reducedMotion.matches) return
           document.querySelectorAll('tbody tr').forEach((row, index) =>
@@ -1780,16 +2073,19 @@
             ),
           )
         })
-        const onResize = () => layoutDashboard(dashboard)
-        window.addEventListener('resize', onResize)
+        const resizeObserver = new ResizeObserver(() => layoutDashboard(dashboard))
+        resizeObserver.observe($('#dashboard'))
         reducedMotion.addEventListener('change', requestRender)
         window.addEventListener('pagehide', (event) => {
           if (event.persisted) return
           disposed = true
           charts.forEach((chart) => chart.dsl.unobserveDeep(requestRender))
           hoverSubscriptions.forEach((subscription) => subscription.dispose())
-          window.removeEventListener('resize', onResize)
+          resizeObserver.disconnect()
           reducedMotion.removeEventListener('change', requestRender)
+          reducedMotion.removeEventListener('change', onMetricMotionChange)
+          finishMetricAnimations()
+          metricAnimations.clear()
           renderedCharts.forEach((instance) => instance.release())
           charts.forEach((chart) => chart.instance.bind(undefined))
           renderedCharts.clear()
