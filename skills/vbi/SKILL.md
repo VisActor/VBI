@@ -12,4 +12,5 @@ description: 使用 VBI 的 DSL 和 Builder 构建图表、仪表盘与洞察。
 - [核心能力](references/usage/capabilities.md)：了解 VBI 的能力与职责。
 - [实践技巧](references/usage/tips.md)：查询复用、状态归属与配置恢复。
 - [HTML 接入](references/usage/how-use-vbi-in-html.md)：浏览器 ESM 接入与完整示例。
-- [API 索引](references/api/index.md)：查阅接口与类型。
+- [VBI API 索引](references/api/vbi/index.md)：查阅 VBI 接口与类型。
+- [VSeed API 补充](references/api/vseed/index.md)：涉及 VSeed DSL、Spec 构建或渲染集成时，查阅 Builder、注册、主题与数据工具。

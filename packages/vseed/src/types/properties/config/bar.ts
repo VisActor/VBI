@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zYBandAxis, zXLinearAxis } from './axes'
 import { zCrosshairRect } from './crosshair'
+import { zCornerRadius } from './cornerRadius'
 import { zStackCornerRadius } from './stackCornerRadius/stackCornerRadius'
 import { zBackgroundColor } from './backgroundColor/backgroundColor'
 import { zColor } from './color/color'
@@ -26,6 +27,7 @@ export const zBarConfig = z.object({
   xAxis: zXLinearAxis.nullish(),
   yAxis: zYBandAxis.nullish(),
   crosshairRect: zCrosshairRect.nullish(),
+  cornerRadius: zCornerRadius.nullish(),
   stackCornerRadius: zStackCornerRadius.nullish(),
   pivotGrid: zPivotChartGridConfig.nullish(),
   annotation: zAnnotationConfig.nullish(),

@@ -96,7 +96,7 @@
       },
       "autoFormat": true
     },
-    "stackCornerRadius": 0,
+    "stackCornerRadius": false,
     "measures": [
       {
         "id": "co_20250916102539_ed6a",

@@ -26,6 +26,8 @@ export const getHistogramTheme = () => {
 
   return {
     ...baseConfig,
+    cornerRadius: [4, 4, 0, 0],
+    stackCornerRadius: false,
     xAxis: linearAxis,
     yAxis: linearAxis,
     crosshairRect,

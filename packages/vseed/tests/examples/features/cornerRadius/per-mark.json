@@ -1,0 +1,46 @@
+{
+  "name": "单个图元圆角",
+  "description": "cornerRadius 对每个图元单独绘制圆角，默认不启用整组 clip，适合平滑的更新动画。",
+  "vseed": {
+    "chartType": "column",
+    "cornerRadius": [10, 10, 0, 0],
+    "dataset": [
+      {
+        "category": "A",
+        "series": "East",
+        "value": 10
+      },
+      {
+        "category": "A",
+        "series": "West",
+        "value": 20
+      },
+      {
+        "category": "B",
+        "series": "East",
+        "value": -10
+      },
+      {
+        "category": "B",
+        "series": "West",
+        "value": -20
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "category"
+      },
+      {
+        "id": "series"
+      }
+    ],
+    "measures": [
+      {
+        "id": "value"
+      }
+    ],
+    "barStyle": {
+      "barBorderWidth": 0
+    }
+  }
+}

@@ -19,6 +19,7 @@ export const columnConfig: AdvancedPipe = (advancedVSeed, context) => {
     'xAxis',
     'yAxis',
     'crosshairRect',
+    'cornerRadius',
     'stackCornerRadius',
     'barMaxWidth',
     'barGapInGroup',

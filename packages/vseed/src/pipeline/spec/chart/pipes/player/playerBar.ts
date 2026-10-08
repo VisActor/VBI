@@ -69,7 +69,6 @@ export const playerBar: VChartSpecPipe = (spec, context) => {
   return {
     ...result,
     dataKey,
-    stackCornerRadius: undefined,
     animationUpdate: {
       bar: [
         {

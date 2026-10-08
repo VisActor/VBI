@@ -2771,14 +2771,34 @@ Y轴动画配置
 :::
 
 
-## stackCornerRadius
+## cornerRadius
 
 **Type:** `number | number[] | undefined`
 
 :::note{title=描述}
-并列柱状图 堆叠圆角
+柱图圆角的数值或数组，默认启用。当 stackCornerRadius 为 false 时，每个图元独立绘制圆角；为 true 时，通过 clip 裁剪整组堆叠柱体。数值设置所有角，数组按左上、右上、右下、左下排列，数据为负值时圆角方向自动翻转。设为 0 可关闭。barStyle.barRadius 可覆盖单个图元的圆角；stackCornerRadius 为 true 时，整组圆角统一使用 cornerRadius，不受 barStyle.barRadius 影响。
 
 :::
+
+**示例**
+[4, 4, 0, 0]
+
+
+
+
+## stackCornerRadius
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否使用整组堆叠圆角，默认 false。设为 true 时，通过 clip 裁剪整组柱体，圆角值统一读取 cornerRadius，保留堆叠内部的直角连接，并优先于 barStyle.barRadius（包括条件样式）。设为 false 时，cornerRadius 对每个图元单独生效。注意：开启 stackCornerRadius 会引起更新动画重叠的 bug，整组 clip 裁剪路径与图元更新动画不同步，依赖 VChart 修复；需要平滑更新动画时建议保持 false。
+
+:::
+
+**示例**
+true
+
+
 
 
 ## barMaxWidth

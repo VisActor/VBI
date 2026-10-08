@@ -1137,17 +1137,22 @@
         }
         if (seed.chartType === 'column') {
           seed.barStyle = [
-            { barRadius: 4, barColorOpacity: 0.68, barColor: '#19cba1', barGradient: true, barBorderWidth: 0 },
+            { barRadius: 4, barColorOpacity: 0.68, barColor: '#19cba1', barGradient: false, barBorderWidth: 0 },
             {
               selector: { field: valueId, operator: '<', value: 0 },
               barColor: '#d47c6a',
-              barGradient: true,
+              barGradient: false,
               barBorderWidth: 0,
             },
           ]
         }
         const spec = Builder.from(seed).build()
         spec.padding = { top: 8, bottom: 4, left: 3, right: 9 }
+        if (seed.chartType === 'column') {
+          // 堆叠圆角裁剪路径直接跳到最终位置，会截断日期重排时的动画中间帧。
+          // 此单系列小图由 barRadius 绘制圆角，关闭额外的堆叠裁剪即可。
+          spec.stackCornerRadius = 0
+        }
         return spec
       }
 

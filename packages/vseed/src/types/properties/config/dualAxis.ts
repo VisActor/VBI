@@ -1,5 +1,7 @@
 import { z } from 'zod'
 import { zXBandAxis, zYLinearAxis } from './axes'
+import { zCornerRadius } from './cornerRadius'
+import { zStackCornerRadius } from './stackCornerRadius'
 import { zCrosshairRect } from './crosshair'
 import { zBackgroundColor } from './backgroundColor/backgroundColor'
 import { zColor } from './color/color'
@@ -25,6 +27,8 @@ export const zDualAxisConfig = z.object({
 
   xAxis: zXBandAxis.nullish(),
   crosshairRect: zCrosshairRect.nullish(),
+  cornerRadius: zCornerRadius.nullish(),
+  stackCornerRadius: zStackCornerRadius.nullish(),
   pivotGrid: zPivotChartGridConfig.nullish(),
   annotation: zAnnotationConfig.nullish(),
 

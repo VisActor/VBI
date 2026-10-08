@@ -3,7 +3,8 @@
   "description": "",
   "vseed": {
     "chartType": "columnPercent",
-    "stackCornerRadius": 10,
+    "cornerRadius": 10,
+    "stackCornerRadius": true,
     "dataset": [
       {
         "date": "2019",

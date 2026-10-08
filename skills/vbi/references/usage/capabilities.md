@@ -22,4 +22,4 @@ VBI 通过 DSL 描述可保存、恢复和复用的 BI 状态，通过 Builder �
 - 保存仪表盘时同时保存引用的图表、洞察资源；仪表盘 DSL 保存资源 ID，资源内容通过 `resources.snapshot()` 导出。
 - 新增仪表盘组件需提供 `layouts.lg`；布局通过组件集合的 `add` / `update` 回调提交。仪表盘与引用资源各自维护文档及撤销历史。
 
-按需查阅：[实例与资源](api/vbi.md)、[图表 Builder](api/chart-builder.md)、[仪表盘 Builder](api/dashboard-builder.md)、[洞察 Builder](api/insight-builder.md)、[DSL 类型](api/types.md)。
+按需查阅：[实例与资源](../api/vbi/vbi.md)、[图表 Builder](../api/vbi/chart-builder.md)、[仪表盘 Builder](../api/vbi/dashboard-builder.md)、[洞察 Builder](../api/vbi/insight-builder.md)、[DSL 类型](../api/vbi/types.md)。

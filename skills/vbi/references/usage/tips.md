@@ -1,8 +1,8 @@
 # VBI 使用最佳实践
 
-从三个 HTML 示例提炼的接入与复用技巧，适用于单图、自定义指标卡和仪表盘。先阅读本文确定数据、状态与渲染的分工；浏览器 ESM 入口和完整启动代码见[在 HTML 中使用 VBI](./how-use-vbi-in-html.md)，接口签名见 [API 索引](../api/index.md)。
+从三个 HTML 示例提炼的接入与复用技巧，适用于单图、自定义指标卡和仪表盘。先阅读本文确定数据、状态与渲染的分工；浏览器 ESM 入口和完整启动代码见[在 HTML 中使用 VBI](./how-use-vbi-in-html.md)，接口签名见 [API 索引](../api/vbi/index.md)。
 
-示例入口：[精致散点图](../../examples/polished-chart.html)、[轻量看板](../../examples/lightweight-dashboard.html)、[业务大屏](../../examples/large-screen.html)。其中的固定日期、配色、标签偏移和图形组合服务于各自场景，不作为其他页面的默认配置。
+示例入口：[精致散点图](../../examples/charts/polished-chart.html)、[轻量看板](../../examples/dashboard/lightweight-dashboard.html)、[业务大屏](../../examples/screen/large-screen.html)。其中的固定日期、配色、标签偏移和图形组合服务于各自场景，不作为其他页面的默认配置。
 
 下面的片段按场景选用，假定已导入 `VBI`、`VQuery`、VSeed 的 `Builder` / `registerAll` 及 `VChart`，并准备好片段使用的图表 Builder 或 DOM 容器。
 
@@ -163,7 +163,7 @@ dashboard.chart.add((widget) => {
 })
 ```
 
-新增组件提供 `lg` 布局；`setLayouts()` 在组件集合的 `add` / `update` 回调中提交。在集合回调外调用它不会写入 Dashboard 布局。完整操作见 [Dashboard Builder API](../api/dashboard-builder.md)。
+新增组件提供 `lg` 布局；`setLayouts()` 在组件集合的 `add` / `update` 回调中提交。在集合回调外调用它不会写入 Dashboard 布局。完整操作见 [Dashboard Builder API](../api/vbi/dashboard-builder.md)。
 
 UI 从 `dashboard.build().layout[breakpoint]` 读取布局，按 `widgetId` 找到容器，将 `x/y/w/h` 映射为 CSS Grid 的列、行和跨度。列数、行高及断点对应的样式由宿主明确配置，CSS 与 DSL 的断点要保持一致；三个示例中的具体网格比例不必照搬。
 
@@ -218,6 +218,7 @@ const restored = VBI.dashboard.create(saved.dashboard)
 - 加载和查询错误分别处理。静态 `import` 失败发生在模块主体执行之前，内部 `run()` 的 `try/catch` 无法捕获；需要页面内反馈模块加载失败时，使用可捕获的动态导入初始化流程。
 - 单次操作可像示例一样在查询期间禁用相关控件；允许连续交互时，由调用方处理过期请求结果，避免旧结果覆盖新筛选。
 - 首次创建 VChart 并绑定到 `chart.instance`，后续使用已有实例的 `updateSpec(spec)` 更新。保留 `spec.animation`，通过 `animationUpdate` 设置更新动画；只关闭入场动画时使用 `animationAppear: false`，并尊重减少动态效果的系统偏好。
+- 柱图切换日期范围时，若图元坐标平滑变化而可见柱体仍跳变，检查 `stackCornerRadius`：VChart 的整组 clip 路径与图元更新动画不同步，会引起更新动画重叠的 bug，依赖 VChart 修复。新版 VSeed 默认启用单个图元的 `cornerRadius`，关闭 `stackCornerRadius`；`stackCornerRadius` 为布尔开关，默认 `false`；设为 `true` 时，整组裁剪统一读取 `cornerRadius` 的值，并优先于 `barStyle.barRadius`。轻量看板模板仍固定使用 0.6.4，由 `barRadius` 绘制圆角，并在生成 spec 后设置 `spec.stackCornerRadius = 0` 兼容旧默认；升级后可移除该覆盖。`region.clip` 继续用于绘图区边界。
 - 更新 spec 时保持语义未变的回调引用稳定。轻量看板复用日期 crosshair 的格式化函数，避免 VChart 将新闭包识别为十字线配置变化而内部重建图表；验收时检查实际过渡帧，不能只确认调用了 `updateSpec()`。
 - 轻量看板的利润柱图展示完整所选区间；环形图将已有查询结果转换为 VSeed `donut`，复用 VChart 实例更新扇区。回归检查应覆盖 30 → 12 → 7 → 30 天，确认柱体数量、位置和扇区角度都随数据改变，折线退出动画也不会出现多余的点。
 - 悬停联动按来源限定范围：轻量看板主图更新全部四张卡片，右侧小图仅更新所属卡片；移出时恢复相同范围的区间汇总。日期按钮统一改变所有卡片的统计区间。

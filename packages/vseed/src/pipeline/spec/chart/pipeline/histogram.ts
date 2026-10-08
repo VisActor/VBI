@@ -13,6 +13,7 @@ import {
   pivotColumnDimensions,
   pivotRowDimensions,
   columnStyle,
+  barCornerRadius,
   annotationPointOfHistogram,
   annotationVerticalLine,
   annotationHorizontalLine,
@@ -41,6 +42,7 @@ import {
 const histogram: VChartSpecPipeline = [
   fontFamilyTheme,
   initHistogram,
+  barCornerRadius,
   colorAdapter(color, linearColor),
   backgroundColor,
   datasetHistogram,
@@ -68,6 +70,7 @@ const pivotHistogram: PivotChartSpecPipeline = [
   pivotIndicators([
     fontFamilyTheme,
     initHistogram,
+    barCornerRadius,
     colorAdapter(color, linearColor),
     backgroundColor,
     datasetHistogram,
