@@ -7,7 +7,8 @@ description: 使用 VBI 的 DSL 和 Builder 构建图表、仪表盘与洞察。
 
 - [核心能力](references/usage/capabilities.md)：了解 VBI 的能力与职责。
 - [实践技巧](references/usage/tips.md)：查询复用、状态归属与配置恢复。
-- [设计与布局最佳实践](references/best-practices/design-and-layout.md)：1140px 响应式卡片布局、单向联动、柔和渐变背景与逐卡延时入场。
+- [设计与布局最佳实践](references/best-practices/design-and-layout.md)：1140px 响应式卡片布局、单向联动、轻微倾斜与逐卡延时入场。
+- [配色与背景最佳实践](references/best-practices/color-and-background.md)：参考色板、统一颜色变量、柔和渐变与柔白斜光，以及页面和图表配色同步切换。
 - [指标卡最佳实践](references/best-practices/metric-card.md)：迷你折线、柱状和面积图配置，指标文本更新动画与悬停联动。
 - [HTML 接入](references/usage/how-use-vbi-in-html.md)：浏览器 ESM 接入与完整示例。
 
