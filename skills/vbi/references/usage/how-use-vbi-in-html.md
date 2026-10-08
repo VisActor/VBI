@@ -1,14 +1,14 @@
 # 在 HTML 中使用 VBI
 
-用一个 HTML 文件接入 VBI：无需框架或打包工具，使用 Builder 配置分析，再交给 VChart 或 VTable 渲染。VBI、VQuery、VSeed 通过浏览器 ESM 加载，VChart 和 VTable 使用发布包中的浏览器 bundle。本文先给出实践入口，再提供可直接运行的图表与表格教程；状态归属、查询复用和复杂页面组织见[最佳实践](./best-practices.md)。
+用一个 HTML 文件接入 VBI：无需框架或打包工具，使用 Builder 配置分析，再交给 VChart 或 VTable 渲染。VBI、VQuery、VSeed 通过浏览器 ESM 加载，VChart 和 VTable 使用发布包中的浏览器 bundle。本文先给出实践入口，再提供可直接运行的图表与表格教程；状态归属、查询复用和复杂页面组织见[最佳实践](./tips.md)。
 
 ## 从三个实践示例选择起点
 
-| 示例                                                  | 适合学习                                     | 阅读代码时关注                                              |
-| ----------------------------------------------------- | -------------------------------------------- | ----------------------------------------------------------- |
-| [精致散点图](../../examples/polished-chart.html)      | 单图编码、图例筛选与精细标注                 | `chartBuilder`、`decorate()`、`render()`                    |
-| [轻量看板](../../examples/lightweight-dashboard.html) | 汇总指标、周期比较、自定义 HTML 卡片         | `createChart()`、`rowsOf()`、`layoutDashboard()`            |
-| [业务大屏](../../examples/large-screen.html)          | 多图组合、Dashboard / Insight 资源、局部筛选 | `drawSocial()`、`drawIncome()`、`filterChart()`、`layout()` |
+| 示例                                                            | 适合学习                                     | 阅读代码时关注                                              |
+| --------------------------------------------------------------- | -------------------------------------------- | ----------------------------------------------------------- |
+| [精致散点图](../../examples/charts/polished-chart.html)         | 单图编码、图例筛选与精细标注                 | `chartBuilder`、`decorate()`、`render()`                    |
+| [轻量看板](../../examples/dashboard/lightweight-dashboard.html) | 汇总指标、周期比较、自定义 HTML 卡片         | `createChart()`、`rowsOf()`、`layoutDashboard()`            |
+| [业务大屏](../../examples/screen/large-screen.html)             | 多图组合、Dashboard / Insight 资源、局部筛选 | `drawSocial()`、`drawIncome()`、`filterChart()`、`layout()` |
 
 用浏览器直接打开示例 HTML。浏览器需要联网加载 CDN 模块；复制大屏时同时保留 `assets/large-screen-live-preview.png`，另外两个示例可以单独复制 HTML。
 
@@ -280,7 +280,7 @@ VTable 的构造函数接收容器和 options，不调用 VChart 的 `renderSync
 - `builder.build()` 返回可序列化的 VBI 图表 DSL；`builder.buildVQuery()` 只生成查询，不请求数据。只构建这两种配置时，不必注册连接器或创建渲染器。
 - `buildVSeed()` 会调用连接器的 `discoverSchema()` 和 `query()`，此前需要注册对应的 `connectorId`。返回数据以维度、度量 ID 为列名，保留这些 ID 供 VSeed 使用。
 - 修改字段、聚合和过滤条件后重新查询。只修改视觉样式时，可以基于已有 seed 构建新 options；同一份查询结果也可以同时提供给图形、指标卡和 HTML 表格。
-- VChart 与 VTable 的原生配置不同。先在 VSeed 层设置支持的主题、格式或样式，再按所选渲染器补充特有配置，具体分层见[最佳实践](./best-practices.md)。
+- VChart 与 VTable 的原生配置不同。先在 VSeed 层设置支持的主题、格式或样式，再按所选渲染器补充特有配置，具体分层见[最佳实践](./tips.md)。
 
 ### 保存与恢复
 
@@ -312,4 +312,4 @@ DSL 不包含连接器实现、原始数据、外部图片，以及页面后加�
 | 图表显示但透视表方向不对   | 显式设置维度的 `row` / `column` 编码；修改后重新构建 VSeed 和表格 options。                                                                                                                                             |
 | 页面一直显示加载中         | 静态导入失败不能由模块主体内的 `try/catch` 捕获；本例用动态 `import()` 捕获加载错误，再区分初始化和查询渲染错误。                                                                                                       |
 
-更多接口见 [VBI 实例](../api/vbi.md)、[Chart Builder](../api/chart-builder.md)、[Dashboard Builder](../api/dashboard-builder.md) 和 [DSL 类型](../api/types.md)。
+更多接口见 [VBI 实例](../api/vbi/vbi.md)、[Chart Builder](../api/vbi/chart-builder.md)、[Dashboard Builder](../api/vbi/dashboard-builder.md) 和 [DSL 类型](../api/vbi/types.md)。

@@ -56,6 +56,11 @@
   },
   {
     "type": "file",
+    "name": "cornerRadius",
+    "label": "CornerRadius"
+  },
+  {
+    "type": "file",
     "name": "dataset",
     "label": "Dataset"
   },

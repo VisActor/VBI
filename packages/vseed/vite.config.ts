@@ -20,10 +20,10 @@ export default defineConfig(({ mode }) => ({
       // V8 branch counts vary slightly between runs; use verified floors.
       thresholds:
         mode === 'unit'
-          ? { statements: 82.57, lines: 82.57, branches: 77.0, functions: 81.7 }
+          ? { statements: 83.95, lines: 83.95, branches: 77.22, functions: 82.26 }
           : mode === 'integration'
             ? undefined
-            : { statements: 90.98, lines: 90.98, branches: 82.1, functions: 84.5 },
+            : { statements: 91.02, lines: 91.02, branches: 82.23, functions: 84.56 },
     },
     globals: true,
     environment: 'jsdom',

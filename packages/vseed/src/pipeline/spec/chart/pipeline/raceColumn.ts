@@ -1,7 +1,7 @@
 import type { VChartSpecPipeline } from 'src/types'
 import {
   initColumn,
-  stackCornerRadius,
+  barCornerRadius,
   barMaxWidth,
   colorAdapter,
   color,
@@ -31,7 +31,7 @@ import {
 const raceColumn: VChartSpecPipeline = [
   fontFamilyTheme,
   initColumn,
-  stackCornerRadius,
+  barCornerRadius,
   barMaxWidth,
   colorAdapter(color, linearColor),
   backgroundColor,

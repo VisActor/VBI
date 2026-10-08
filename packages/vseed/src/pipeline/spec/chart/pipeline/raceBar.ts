@@ -12,7 +12,7 @@ import {
   annotationHorizontalLine,
   annotationAreaBand,
   horizontalCrosshairRect,
-  stackCornerRadius,
+  barCornerRadius,
   progressive,
   colorAdapter,
   linearColor,
@@ -31,7 +31,7 @@ import {
 const raceBar: VChartSpecPipeline = [
   fontFamilyTheme,
   initBar,
-  stackCornerRadius,
+  barCornerRadius,
   barMaxWidth,
   colorAdapter(color, linearColor),
   backgroundColor,

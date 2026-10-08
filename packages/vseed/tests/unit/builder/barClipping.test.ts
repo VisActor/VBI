@@ -7,8 +7,8 @@ import dualAxisCase from '../../integrations/dualAxis/combination/columnParallel
 
 beforeAll(registerAll)
 
-test.each([columnCase, barCase, dualAxisCase])('$name keeps strokes within the native bar bounds', (fixture) => {
-  const spec = Builder.from(fixture.vseed as VSeed).build<any>()
+test.each([columnCase, barCase, dualAxisCase])('$name explicitly clips strokes to the requested group outline', (fixture) => {
+  const spec = Builder.from({ ...fixture.vseed, cornerRadius: 4, stackCornerRadius: true } as VSeed).build<any>()
   const element = document.createElement('div')
   document.body.append(element)
   const chart = new VChart({ ...spec, width: 500, height: 500 }, { dom: element, animation: false })

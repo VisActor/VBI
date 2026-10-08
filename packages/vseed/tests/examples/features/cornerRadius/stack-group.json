@@ -1,0 +1,47 @@
+{
+  "name": "整组堆叠圆角",
+  "description": "cornerRadius 设置圆角值，stackCornerRadius: true 切换为整组堆叠圆角，通过 clip 裁剪整组，堆叠内部保持直角。开启 stackCornerRadius 会引起更新动画重叠的 bug，依赖 VChart 修复。",
+  "vseed": {
+    "chartType": "column",
+    "cornerRadius": [10, 10, 0, 0],
+    "stackCornerRadius": true,
+    "dataset": [
+      {
+        "category": "A",
+        "series": "East",
+        "value": 10
+      },
+      {
+        "category": "A",
+        "series": "West",
+        "value": 20
+      },
+      {
+        "category": "B",
+        "series": "East",
+        "value": -10
+      },
+      {
+        "category": "B",
+        "series": "West",
+        "value": -20
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "category"
+      },
+      {
+        "id": "series"
+      }
+    ],
+    "measures": [
+      {
+        "id": "value"
+      }
+    ],
+    "barStyle": {
+      "barBorderWidth": 0
+    }
+  }
+}

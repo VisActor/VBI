@@ -31,7 +31,8 @@ export const getColumnTheme = () => {
     xAxis: bandAxis,
     yAxis: linearAxis,
     crosshairRect: crosshairRect,
-    stackCornerRadius: [4, 4, 0, 0],
+    cornerRadius: [4, 4, 0, 0],
+    stackCornerRadius: false,
     pivotGrid: getDarkPivotChartGridConfig(),
     annotation: getDarkAnnotation(),
 
@@ -59,7 +60,8 @@ export const getColumnParallelTheme = () => {
     xAxis: bandAxis,
     yAxis: linearAxis,
     crosshairRect: crosshairRect,
-    stackCornerRadius: [4, 4, 0, 0],
+    cornerRadius: [4, 4, 0, 0],
+    stackCornerRadius: false,
     pivotGrid: getDarkPivotChartGridConfig(),
     annotation: getDarkAnnotation(),
   }

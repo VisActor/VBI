@@ -1,2 +1,2 @@
 export { stackInverse } from './stack'
-export { stackCornerRadius } from './stackCornerRadius'
+export { barCornerRadius } from './barCornerRadius'

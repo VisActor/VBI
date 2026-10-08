@@ -12,6 +12,8 @@ import {
   zBarStyle,
   zColor,
   zCrosshairRect,
+  zCornerRadius,
+  zStackCornerRadius,
   zDataset,
   zDimensionLinkage,
   zDimensions,
@@ -51,6 +53,8 @@ export const zDualAxis = z.object({
   brush: zBrush.nullish(),
 
   crosshairRect: zCrosshairRect.nullish(),
+  cornerRadius: zCornerRadius.nullish(),
+  stackCornerRadius: zStackCornerRadius.nullish(),
   sort: zSort.nullish(),
   sortLegend: zSortLegend.nullish(),
   theme: zTheme.nullish(),

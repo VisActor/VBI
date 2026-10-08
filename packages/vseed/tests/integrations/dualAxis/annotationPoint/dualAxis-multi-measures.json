@@ -17,7 +17,8 @@
       "labelColor": "#FDFDFD",
       "labelFontSize": 12
     },
-    "stackCornerRadius": 6,
+    "cornerRadius": 6,
+    "stackCornerRadius": true,
     "barMaxWidth": 72,
     "xAxis": {
       "grid": {
