@@ -5,6 +5,7 @@ import {
   pivotAdapter,
   areaPercentConfig,
   annotation,
+  rejectPivotAnnotationAreaRange,
   markStyle,
   sortXBandAxis,
   sortLegend,
@@ -40,4 +41,5 @@ export const areaPercentAdvancedPipeline: AdvancedPipeline = [
   theme,
   markStyle,
   annotation,
+  pivotAdapter([], [rejectPivotAnnotationAreaRange]),
 ]

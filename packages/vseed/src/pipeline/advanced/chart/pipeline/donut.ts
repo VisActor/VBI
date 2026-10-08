@@ -4,6 +4,7 @@ import {
   theme,
   pivotAdapter,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
   donutConfig,
   encodingForPie,
   reshapeWithEncoding,
@@ -34,4 +35,5 @@ export const donutAdvancedPipeline: AdvancedPipeline = [
   donutConfig,
   theme,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
 ]

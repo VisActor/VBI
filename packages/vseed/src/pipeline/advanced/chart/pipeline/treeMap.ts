@@ -4,6 +4,7 @@ import {
   theme,
   pivotAdapter,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
   reshapeWithEncoding,
   pivotReshapeWithEncoding,
   encodingForHierarchy,
@@ -34,4 +35,5 @@ export const treeMapAdvancedPipeline: AdvancedPipeline = [
   treeMapConfig,
   theme,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
 ]

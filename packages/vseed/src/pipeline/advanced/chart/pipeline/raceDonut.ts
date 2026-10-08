@@ -6,6 +6,7 @@ import {
   pivotAdapter,
   donutConfig,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
   reshapeWithEncoding,
   pivotReshapeWithEncoding,
   defaultMeasures,
@@ -34,4 +35,5 @@ export const raceDonutAdvancedPipeline: AdvancedPipeline = [
   donutConfig,
   theme,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
 ]

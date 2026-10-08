@@ -6,6 +6,7 @@ import {
   columnConfig,
   markStyle,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
   sortXBandAxis,
   sortLegend,
   reshapeWithEncoding,
@@ -41,5 +42,6 @@ export const raceColumnAdvancedPipeline: AdvancedPipeline = [
   theme,
   markStyle,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
   regressionLine,
 ]

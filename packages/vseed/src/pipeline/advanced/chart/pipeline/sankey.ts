@@ -15,6 +15,7 @@ import {
   reshapeWithEncoding,
   theme,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
   pickDimensionsForReshape,
 } from '../pipes'
 
@@ -34,4 +35,5 @@ export const sankeyAdvancedPipeline: AdvancedPipeline = [
   sankeyConfig,
   theme,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
 ]

@@ -4,6 +4,7 @@ import {
   theme,
   pivotAdapter,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
   markStyle,
   sortXBandAxis,
   heatmapConfig,
@@ -38,4 +39,5 @@ export const heatmapAdvancedPipeline: AdvancedPipeline = [
   theme,
   markStyle,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
 ]

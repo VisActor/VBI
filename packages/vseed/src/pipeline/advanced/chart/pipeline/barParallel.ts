@@ -7,6 +7,7 @@ import {
   barParallelConfig,
   markStyle,
   annotation,
+  rejectPivotAnnotationAreaRange,
   sortYBandAxis,
   sortLegend,
   reshapeWithEncoding,
@@ -40,4 +41,5 @@ export const barParallelAdvancedPipeline: AdvancedPipeline = [
   theme,
   markStyle,
   annotation,
+  pivotAdapter([], [rejectPivotAnnotationAreaRange]),
 ]

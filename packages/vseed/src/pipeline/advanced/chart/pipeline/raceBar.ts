@@ -7,6 +7,7 @@ import {
   barConfig,
   markStyle,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
   sortYBandAxis,
   sortLegend,
   reshapeWithEncoding,
@@ -40,4 +41,5 @@ export const raceBarAdvancedPipeline: AdvancedPipeline = [
   theme,
   markStyle,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
 ]

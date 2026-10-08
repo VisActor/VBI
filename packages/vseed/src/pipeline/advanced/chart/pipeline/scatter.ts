@@ -4,6 +4,7 @@ import {
   theme,
   pivotAdapter,
   annotation,
+  rejectPivotAnnotationAreaRange,
   markStyle,
   scatterConfig,
   encodingForScatter,
@@ -38,5 +39,6 @@ export const scatterAdvancedPipeline: AdvancedPipeline = [
   theme,
   markStyle,
   annotation,
+  pivotAdapter([], [rejectPivotAnnotationAreaRange]),
   regressionLine,
 ]

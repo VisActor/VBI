@@ -4,6 +4,7 @@ import {
   theme,
   pivotAdapter,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
   markStyle,
   sortLegend,
   radarConfig,
@@ -39,4 +40,5 @@ export const radarAdvancedPipeline: AdvancedPipeline = [
   theme,
   markStyle,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
 ]

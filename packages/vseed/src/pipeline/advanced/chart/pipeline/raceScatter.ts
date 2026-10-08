@@ -4,6 +4,7 @@ import {
   theme,
   pivotAdapter,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
   markStyle,
   scatterConfig,
   encodingForRaceScatter,
@@ -38,5 +39,6 @@ export const raceScatterAdvancedPipeline: AdvancedPipeline = [
   theme,
   markStyle,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
   regressionLine,
 ]

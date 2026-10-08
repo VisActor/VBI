@@ -6,6 +6,7 @@ import {
   pivotAdapter,
   pieConfig,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
   reshapeWithEncoding,
   pivotReshapeWithEncoding,
   defaultMeasures,
@@ -34,4 +35,5 @@ export const racePieAdvancedPipeline: AdvancedPipeline = [
   pieConfig,
   theme,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
 ]

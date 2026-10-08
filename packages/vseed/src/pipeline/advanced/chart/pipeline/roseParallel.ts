@@ -5,6 +5,7 @@ import {
   pivotAdapter,
   markStyle,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
   roseParallelConfig,
   reshapeWithEncoding,
   pivotReshapeWithEncoding,
@@ -36,4 +37,5 @@ export const roseParallelAdvancedPipeline: AdvancedPipeline = [
   theme,
   markStyle,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
 ]

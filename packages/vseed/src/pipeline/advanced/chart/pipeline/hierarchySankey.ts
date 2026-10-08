@@ -3,6 +3,7 @@ import {
   initAdvancedVSeed,
   theme,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
   encodingForHierarchy,
   buildMeasures,
   defaultMeasures,
@@ -34,4 +35,5 @@ export const hierarchySankeyAdvancedPipeline: AdvancedPipeline = [
   hierarchySankeyConfig,
   theme,
   annotation,
+  rejectUnsupportedAnnotationAreaRange,
 ]

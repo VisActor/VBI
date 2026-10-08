@@ -1,22 +1,6 @@
 import { pick } from 'remeda'
 import type { AdvancedPipe, AdvancedVSeed } from 'src/types'
 import { zAnnotationAreaRange } from 'src/types'
-import { isPivotChart } from 'src/pipeline/utils/chatType'
-
-const rangeChartTypes = new Set([
-  'line',
-  'area',
-  'areaPercent',
-  'column',
-  'columnParallel',
-  'columnPercent',
-  'bar',
-  'barParallel',
-  'barPercent',
-  'boxPlot',
-  'histogram',
-  'scatter',
-])
 
 export const annotation: AdvancedPipe = (advancedVSeed, context) => {
   const { vseed } = context
@@ -45,12 +29,6 @@ export const annotation: AdvancedPipe = (advancedVSeed, context) => {
     if (!validation.success) {
       const issues = validation.error.issues.map((issue) => `${issue.path.join('.')}: ${issue.message}`).join('; ')
       throw new Error(`${path}.range: ${issues}`)
-    }
-    if (!rangeChartTypes.has(vseed.chartType)) {
-      throw new Error(`${path}.range does not support chartType ${vseed.chartType}`)
-    }
-    if (isPivotChart(vseed)) {
-      throw new Error(`${path}.range does not support pivot or combination charts`)
     }
   })
 
