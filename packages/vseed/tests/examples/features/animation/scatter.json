@@ -6,12 +6,12 @@
     "animation": {
       "enable": true,
       "params": {
-        "appear": { "enable": true, "effects": ["scale"], "duration": 0.8 },
-        "update": { "enable": true, "effects": ["growth"], "duration": 0.5 },
+        "appear": { "enable": true, "effects": ["scale"], "duration": 800 },
+        "update": { "enable": true, "effects": ["growth"], "duration": 500 },
         "loop": {
           "enable": true,
-          "interval": 1,
-          "loop": { "enable": true, "effects": ["growth"], "duration": 1 },
+          "interval": 1000,
+          "loop": { "enable": true, "effects": ["growth"], "duration": 1000 },
           "atmosphere": { "effect": "ripple", "color": "#76b7b2", "ease": "linear" }
         }
       }

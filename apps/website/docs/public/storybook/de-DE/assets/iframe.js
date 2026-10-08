@@ -1,5 +1,5 @@
-import { a as __toESM, n as __esmMin, r as __exportAll } from "./rolldown-runtime.js";
-import { $ as d$6, $t as bin, A as init_yjs, An as H$4, At as m$8, B as date, Bn as preview_exports$1, Bt as PivotTableAll, Cn as merge, Ct as D$4, D as YMap, Dn as isUndefined, Dt as i$10, E as YArray, Et as r$11, F as _enum, Fn as h$5, Ft as C$6, G as number, Hn as init_entry_preview_docs, Ht as ListTableAll, I as any, In as init_client, J as string, Jn as init_entry_preview, Jt as StreamLight, K as object, Kn as setCustomElementsManifest, Kt as esm_default, L as array$1, Ln as proxyCustomElement, Lt as init_es$2, Mn as createEvent, N as v4, Nn as forceUpdate, Nt as i$7, O as applyUpdate, P as init_zod, Pn as getRenderingRef, Q as init_dist$1, Qn as setup, R as boolean, Rn as transformTag, Rt as PivotChart, S as Kysely, St as y$10, T as UndoManager$1, Tn as isArray, U as lazy, Un as entry_preview_argtypes_exports, V as discriminatedUnion, Vn as entry_preview_docs_exports, W as literal, Wn as init_entry_preview_argtypes, Wt as chartModule, X as union, Xn as init_preload_helper, Xt as init_es$1, Y as tuple, Yn as __vitePreload, Z as require_tinycolor, Zn as init_runtime, Zt as boxplot, ct as n$11, dn as regressionLowess, dt as e$8, f as init_dist$3, g as PostgresQueryCompiler, gn as clamper, gt as t$14, hn as regressionLinear, in as ecdf, j as init_dist$2, jn as Host, jt as T$4, k as encodeStateAsUpdate, kn as isNil, ln as regressionPolynomial, m as PostgresAdapter, mt as n$10, nn as Color, nt as k$7, ot as o$9, p as init_esm$2, pn as regressionLogistic, q as record, qn as entry_preview_exports, qt as init_esm$1, rt as i$9, sn as kde, tn as init_es, ut as o$10, v as DummyDriver, vn as array, vt as t$13, w as Doc, x as sql, xn as pickWithout, yt as i$8, z as custom, zn as init_preview$1 } from "./vendor.js";
+import { n as __esmMin, o as __toESM, r as __exportAll } from "./rolldown-runtime.js";
+import { $ as d$6, $n as init_runtime, $t as normalizePadding, A as init_yjs, An as StreamLight, At as m$8, B as date, Bn as transformTag, Bt as PivotTableAll, Cn as isArray, Ct as D$4, D as YMap, Dn as isNil, Dt as i$9, E as YArray, Et as r$11, F as _enum, Fn as forceUpdate, Ft as C$6, G as number, Gn as entry_preview_argtypes_exports, Gt as boxplot, Hn as preview_exports$1, Ht as ListTableAll, I as any, In as getRenderingRef, J as string, Jn as setCustomElementsManifest, K as object, Kn as init_entry_preview_argtypes, L as array$1, Ln as h$5, Lt as init_es$2, Mn as H$4, N as v4, Nn as Host, Nt as i$7, O as applyUpdate, On as esm_default, P as init_zod, Pn as createEvent, Q as init_dist$1, Qn as init_preload_helper, R as boolean, Rn as init_client, Rt as PivotChart, S as Kysely, St as y$10, T as UndoManager$1, Tn as isUndefined, U as lazy, Un as entry_preview_docs_exports, V as discriminatedUnion, Vn as init_preview$1, W as literal, Wn as init_entry_preview_docs, Wt as init_es$1, X as union, Xn as init_entry_preview, Y as tuple, Yn as entry_preview_exports, Yt as chartModule, Z as require_tinycolor, Zn as __vitePreload, Zt as init_es, an as kde, ct as n$11, dn as regressionLogistic, dt as e$8, en as Color, er as setup, f as init_dist$3, g as PostgresQueryCompiler, gn as array, gt as t$14, j as init_dist$2, jt as T$4, k as encodeStateAsUpdate, kn as init_esm$1, ln as regressionLowess, m as PostgresAdapter, mn as clamper, mt as n$10, nn as ecdf, nt as k$7, ot as o$9, p as init_esm$2, pn as regressionLinear, q as record, qt as bin, rt as i$10, sn as regressionPolynomial, ut as o$10, v as DummyDriver, vt as t$13, w as Doc, x as sql, xn as merge, yn as pickWithout, yt as i$8, z as custom, zn as proxyCustomElement } from "./vendor.js";
 //#region iframe.html?html-proxy&inline-css&index=0.css
 var init_iframe_html_html_proxy_inline_css_index_0 = __esmMin((() => {}));
 //#endregion
@@ -5532,7 +5532,7 @@ var init_utils$5 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/utils/chatType.js
-var isTable, isPivotTable, isRadar, isAreaPercent, isColumnPercent, isBarPercent, isSankey, isBarLikeChart, isVTable, isVChart, isPivotChart, isPivot, isCombination, isRectungularCoordinate, DEFAULT_DUAL_CHART_TYPE, isDualAxisChartType;
+var isTable, isPivotTable, isAreaPercent, isColumnPercent, isBarPercent, isSankey, isBarLikeChart, isVTable, isVChart, isPivotChart, isPivot, isCombination, isRectungularCoordinate, DEFAULT_DUAL_CHART_TYPE, isDualAxisChartType;
 var init_chatType = __esmMin((() => {
 	init_measures$2();
 	init_utils$5();
@@ -5540,7 +5540,6 @@ var init_chatType = __esmMin((() => {
 	init_constant$1();
 	isTable = (vseed) => vseed.chartType === ChartTypeEnum.Table;
 	isPivotTable = (vseed) => vseed.chartType === ChartTypeEnum.PivotTable;
-	isRadar = (vseed) => vseed.chartType === ChartTypeEnum.Radar;
 	isAreaPercent = (vseed) => vseed.chartType === ChartTypeEnum.AreaPercent;
 	isColumnPercent = (vseed) => vseed.chartType === ChartTypeEnum.ColumnPercent;
 	isBarPercent = (vseed) => vseed.chartType === ChartTypeEnum.BarPercent;
@@ -5910,10 +5909,11 @@ var init_createFormatterByMeasure = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/utils/format/createTimeFormatter.js
-var DEFAULT_SEPARATOR, parseTimeValue, parseTextParts, pad2, getWeekNumber, getIntlFormatter, formatQuarter, formatWeek, formatDefault, createTimeFormatter;
+var DEFAULT_SEPARATOR, formatters$2, parseTimeValue, parseTextParts, pad2, getWeekNumber, getIntlFormatter, formatQuarter, formatWeek, formatDefault, createTimeFormatter;
 var init_createTimeFormatter = __esmMin((() => {
 	init_i18n$2();
 	DEFAULT_SEPARATOR = "-";
+	formatters$2 = /* @__PURE__ */ new Map();
 	parseTimeValue = (value) => {
 		if (null == value) return;
 		if ("number" == typeof value && Number.isFinite(value)) {
@@ -6043,15 +6043,20 @@ var init_createTimeFormatter = __esmMin((() => {
 		}
 	};
 	createTimeFormatter = (format, fallbackLocale = intl.getLocale()) => {
-		if (!format) return (value) => String(value);
+		if (!format) return String;
 		const { type } = format;
 		const finalLocale = fallbackLocale;
+		const key = `${finalLocale}:${type}`;
+		const cached = formatters$2.get(key);
+		if (cached) return cached;
 		const intlFormatter = getIntlFormatter(type, finalLocale);
-		return (value) => {
+		const formatter = (value) => {
 			const date = parseTimeValue(value);
 			if (!date) return String(value);
 			return formatDefault(date, type, intlFormatter, finalLocale, null == value ? void 0 : String(value)).replaceAll("/", DEFAULT_SEPARATOR).replaceAll(".", DEFAULT_SEPARATOR);
 		};
+		formatters$2.set(key, formatter);
+		return formatter;
 	};
 }));
 //#endregion
@@ -6061,9 +6066,27 @@ var init_createFormatterByDimension = __esmMin((() => {
 	init_createTimeFormatter();
 	init_i18n$2();
 	createFormatterByDimension = (dimension, locale = intl.getLocale()) => {
-		if (!dimension) return (v) => String(v);
-		if (dimension.timeFormat) return createTimeFormatter(dimension.timeFormat, locale);
-		return (v) => String(v);
+		if (dimension?.timeFormat) return createTimeFormatter(dimension.timeFormat, locale);
+		return String;
+	};
+}));
+//#endregion
+//#region ../vseed/dist/esm/pipeline/utils/format/createAliasFormatter.js
+var formatters$1, cacheLimit, createAliasFormatter;
+var init_createAliasFormatter = __esmMin((() => {
+	formatters$1 = /* @__PURE__ */ new Map();
+	cacheLimit = 64;
+	createAliasFormatter = (aliases) => {
+		const entries = Object.entries(aliases).filter(([id, { alias }]) => id !== alias).map(([id, { alias }]) => [id, alias]).sort(([a], [b]) => a.localeCompare(b));
+		if (!entries.length) return;
+		const key = JSON.stringify(entries);
+		const cached = formatters$1.get(key);
+		if (cached) return cached;
+		const values = new Map(entries);
+		const formatter = (value) => values.get(String(value)) ?? value;
+		if (formatters$1.size === cacheLimit) formatters$1.delete(formatters$1.keys().next().value);
+		formatters$1.set(key, formatter);
+		return formatter;
 	};
 }));
 //#endregion
@@ -6074,6 +6097,7 @@ var init_format$1 = __esmMin((() => {
 	init_createFormatterByMeasure();
 	init_createTimeFormatter();
 	init_createFormatterByDimension();
+	init_createAliasFormatter();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/utils/dimensions/typeGuard.js
@@ -8200,7 +8224,7 @@ function colorAdapter(ordinalPipe, linearPipe) {
 		return ordinalPipe(spec, context);
 	};
 }
-var isLinearColor, getColorMeasureId;
+var isLinearColor, getColorMeasureId, getColorField;
 var init_colorAdapter = __esmMin((() => {
 	isLinearColor = (advancedVSeed, vseed) => {
 		const { encoding, chartType } = advancedVSeed;
@@ -8214,6 +8238,10 @@ var init_colorAdapter = __esmMin((() => {
 			const { color } = encoding;
 			return color?.[0];
 		}
+	};
+	getColorField = (advancedVSeed, vseed) => {
+		const { unfoldInfo } = advancedVSeed.datasetReshapeInfo[0];
+		return isLinearColor(advancedVSeed, vseed) ? unfoldInfo.encodingColor : unfoldInfo.encodingColorId;
 	};
 }));
 //#endregion
@@ -8800,6 +8828,20 @@ var init_bandAxisStyle = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region ../vseed/dist/esm/pipeline/spec/chart/pipes/axes/bandAxisFormatter.js
+var formatters, bandAxisFormatter;
+var init_bandAxisFormatter = __esmMin((() => {
+	formatters = /* @__PURE__ */ new WeakMap();
+	bandAxisFormatter = (formatter) => {
+		let result = formatters.get(formatter);
+		if (!result) {
+			result = (text) => Array.isArray(text) ? text : formatter(String(text ?? ""));
+			formatters.set(formatter, result);
+		}
+		return result;
+	};
+}));
+//#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/axes/xBand.js
 var xBand;
 var init_xBand = __esmMin((() => {
@@ -8807,6 +8849,7 @@ var init_xBand = __esmMin((() => {
 	init_dataReshape();
 	init_es();
 	init_bandAxisStyle();
+	init_bandAxisFormatter();
 	init_utils$4();
 	xBand = (spec, context) => {
 		const result = { ...spec };
@@ -8831,13 +8874,8 @@ var init_xBand = __esmMin((() => {
 			const dimensionMap = new Map(dimensions.map((item) => [item.id, item]));
 			const dimIds = (encoding.x || []).filter((v) => v !== MeasureId);
 			const dimFormatter = dimIds.length ? createFormatterByDimension(dimensionMap.get(dimIds[0]), advancedVSeed.locale) : null;
-			bandAxis.label.formatMethod = (text) => {
-				if (isArray(text)) return text;
-				if (onlyMeasureId) return colorIdMap[String(text)]?.alias ?? text;
-				const rawText = String(text ?? "");
-				if (!dimFormatter) return rawText;
-				return dimFormatter(rawText);
-			};
+			const formatter = onlyMeasureId ? createAliasFormatter(colorIdMap) : dimFormatter;
+			bandAxis.label.formatMethod = bandAxisFormatter(formatter ?? String);
 		}
 		result.axes = [...result.axes, bandAxis];
 		return result;
@@ -8985,6 +9023,7 @@ var init_yBand = __esmMin((() => {
 	init_dataReshape();
 	init_es();
 	init_bandAxisStyle();
+	init_bandAxisFormatter();
 	init_utils$4();
 	yBand = (spec, context) => {
 		const result = { ...spec };
@@ -9011,13 +9050,8 @@ var init_yBand = __esmMin((() => {
 			const dimensionMap = new Map(dimensions.map((item) => [item.id, item]));
 			const dimIds = (encoding.y || []).filter((v) => v !== MeasureId);
 			const dimFormatter = dimIds.length ? createFormatterByDimension(dimensionMap.get(dimIds[0]), advancedVSeed.locale) : null;
-			bandAxis.label.formatMethod = (text) => {
-				if (isArray(text)) return text;
-				if (onlyMeasureId) return colorIdMap[String(text)]?.alias ?? text;
-				const rawText = String(text ?? "");
-				if (!dimFormatter) return rawText;
-				return dimFormatter(rawText);
-			};
+			const formatter = onlyMeasureId ? createAliasFormatter(colorIdMap) : dimFormatter;
+			bandAxis.label.formatMethod = bandAxisFormatter(formatter ?? String);
 		}
 		result.axes = [...result.axes, bandAxis];
 		return result;
@@ -9363,8 +9397,197 @@ var init_stack$1 = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region ../vseed/dist/esm/dataSelector/selector.js
+function nearlyEqual(a, b, epsilon = 1e-8) {
+	if (Number.isNaN(a) || Number.isNaN(b)) return false;
+	if (a === b) return true;
+	return Math.abs(a - b) <= epsilon;
+}
+var selector_selector, isValueSelector, isPartialDatumSelector, isFieldSelector, isMeasureSelector, isDimensionSelector, selectByMeasure, selectByDmension, selectByField, matchesFieldSelector, selectByPartial, selectByValue, matchesCellSelector, matchesDatum, isDynamicFilterLike, isRowWithFieldDynamicFilter, isValueDynamicFilter, isDynamicFilter, validateFilterResult, executeDynamicFilter, matchDynamicFilterResult, selectorWithDynamicFilter;
+var init_selector$1 = __esmMin((() => {
+	init_dist$1();
+	init_sandbox();
+	init_dataReshape();
+	selector_selector = (vchartDatum, selector, selectorMode = "And") => {
+		if (!selector) return true;
+		const datum = y$10(vchartDatum, Object.keys(vchartDatum).filter((k) => k.toLocaleLowerCase().startsWith("__vchart")));
+		return (Array.isArray(selector) ? selector : [selector])["And" === selectorMode ? "every" : "some"]((selector) => {
+			if (isValueSelector(selector)) return selectByValue(selector, datum);
+			else if (isFieldSelector(selector)) return selectByField(selector, datum);
+			else if (isMeasureSelector(selector)) return selectByMeasure(selector, datum);
+			else if (isDimensionSelector(selector)) return selectByDmension(selector, datum);
+			else if (isPartialDatumSelector(selector)) return selectByPartial(selector, datum);
+			return false;
+		});
+	};
+	isValueSelector = (selector) => "string" == typeof selector || "number" == typeof selector;
+	isPartialDatumSelector = (selector) => "object" == typeof selector && null !== selector;
+	isFieldSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && !("operator" in selector) && !("op" in selector) && !("value" in selector);
+	isMeasureSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && ("operator" in selector || "op" in selector) && "value" in selector && ([
+		"=",
+		"==",
+		"!=",
+		">",
+		"<",
+		">=",
+		"<=",
+		"between"
+	].includes(selector.operator) || [
+		"=",
+		"==",
+		"!=",
+		">",
+		"<",
+		">=",
+		"<=",
+		"between"
+	].includes(selector.op));
+	isDimensionSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && ("operator" in selector || "op" in selector) && "value" in selector && (["in", "not in"].includes(selector.operator) || ["in", "not in"].includes(selector.op));
+	selectByMeasure = (selector, datum) => {
+		const op = selector.operator || selector.op;
+		const selectorValueArr = Array.isArray(selector.value) ? selector.value : [selector.value];
+		switch (op) {
+			case "=":
+				if (String(datum[selector.field]) === String(selectorValueArr[0]) || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case "==":
+				if (datum[selector.field] === selectorValueArr[0]) return true;
+				break;
+			case "!=":
+				if (datum[selector.field] !== selectorValueArr[0]) return true;
+				break;
+			case ">":
+				if (datum[selector.field] > selectorValueArr[0] && !nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case "<":
+				if (datum[selector.field] < selectorValueArr[0] && !nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case ">=":
+				if (datum[selector.field] >= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case "<=":
+				if (datum[selector.field] <= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case "between":
+				if (Array.isArray(selector.value) && (datum[selector.field] >= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) && (datum[selector.field] <= selectorValueArr[1] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[1])))) return true;
+				break;
+		}
+		return false;
+	};
+	selectByDmension = (selector, datum) => {
+		const op = selector.operator || selector.op;
+		const selectorValueArr = Array.isArray(selector.value) ? selector.value : [selector.value];
+		switch (op) {
+			case "in":
+				if (selectorValueArr.includes(datum[selector.field])) return true;
+				break;
+			case "not in":
+				if (!selectorValueArr.includes(datum[selector.field])) return true;
+				break;
+		}
+		return false;
+	};
+	selectByField = (selector, datum) => {
+		const fields = Array.isArray(selector.field) ? selector.field : [selector.field];
+		const datumKeys = Object.keys(datum);
+		return fields.some((field) => datumKeys.includes(field));
+	};
+	matchesFieldSelector = (field, fieldSelector) => {
+		return (Array.isArray(fieldSelector.field) ? fieldSelector.field : [fieldSelector.field]).includes(field);
+	};
+	selectByPartial = (selector, datum) => Object.keys(selector).every((key) => datum[key] === selector[key]);
+	selectByValue = (selector, datum) => Object.values(datum).some((v) => v === selector);
+	matchesCellSelector = (cell, filterRes) => {
+		if (filterRes["__row_index"] !== cell["__row_index"]) return false;
+		return "*" === filterRes.field || Object.keys(cell).includes(filterRes.field);
+	};
+	matchesDatum = (target, candidate) => Object.keys(candidate).every((key) => target[key] === candidate[key]);
+	isDynamicFilterLike = (selector, expectedTypes) => "object" == typeof selector && null !== selector && "type" in selector && expectedTypes.includes(selector.type) && "code" in selector && "string" == typeof selector.code;
+	isRowWithFieldDynamicFilter = (selector) => isDynamicFilterLike(selector, ["row-with-field"]);
+	isValueDynamicFilter = (selector) => isDynamicFilterLike(selector, ["value"]);
+	isDynamicFilter = (selector) => isDynamicFilterLike(selector, ["row-with-field", "value"]);
+	validateFilterResult = (result, filter) => {
+		if (isValueDynamicFilter(filter)) {
+			if ("number" != typeof result && "string" != typeof result) throw new TypeError(`ValueDynamicFilter must return a number or string, but got: ${typeof result}. Code: "${filter.code}"`);
+			return;
+		}
+		if (!Array.isArray(result)) throw new TypeError(`${isRowWithFieldDynamicFilter(filter) ? "TableDynamicFilter" : "ChartDynamicFilter"} must return an array, but got: ${typeof result}. Code: "${filter.code}"`);
+		if (isRowWithFieldDynamicFilter(filter)) for (let i = 0; i < result.length; i++) {
+			const item = result[i];
+			if ("object" != typeof item || null === item) throw new TypeError(`TableDynamicFilter array element at index ${i} must be an object, got: ${typeof item}`);
+			if (!("__row_index" in item) && "__row_index" in item === false) throw new TypeError(`TableDynamicFilter array element at index ${i} must contain __row_index or InnerRowIndex field`);
+			if (!("field" in item)) throw new TypeError(`TableDynamicFilter array element at index ${i} must contain 'field' field`);
+		}
+	};
+	executeDynamicFilter = async (filter, allData) => {
+		try {
+			const { success, data, error } = await executeFilterCode({
+				code: filter.code,
+				data: allData
+			});
+			if (!success) {
+				console.warn("[vseed] Dynamic filter execution failed:", error);
+				return {
+					success: false,
+					data: isRowWithFieldDynamicFilter(filter) ? [] : "",
+					error
+				};
+			}
+			try {
+				validateFilterResult(data, filter);
+			} catch (validationError) {
+				console.error("[vseed] Dynamic filter result validation failed:", validationError);
+				return {
+					success: false,
+					data: isRowWithFieldDynamicFilter(filter) ? [] : "",
+					error: validationError instanceof Error ? validationError.message : String(validationError)
+				};
+			}
+			return {
+				success,
+				data
+			};
+		} catch (error) {
+			const errorMessage = error instanceof Error ? error.message : String(error);
+			console.error("[vseed] Dynamic filter execution threw exception:", errorMessage);
+			return {
+				success: false,
+				data: isRowWithFieldDynamicFilter(filter) ? [] : "",
+				error: errorMessage
+			};
+		}
+	};
+	matchDynamicFilterResult = (result, datum, selectorType = "table") => {
+		if ("number" == typeof result || "string" == typeof result) throw new Error("matchDynamicFilterResult does not support ValueDynamicFilter results");
+		if ("table" === selectorType) return result.some((item) => matchesCellSelector(datum, item));
+		return result.some((item) => matchesDatum(datum, item));
+	};
+	selectorWithDynamicFilter = (vchartDatum, selectorConfig, defaultSelector) => {
+		if (!selectorConfig) return true;
+		if (isValueDynamicFilter(selectorConfig)) {
+			if (selectorConfig.fallback) {
+				const fallbackSelector = Array.isArray(selectorConfig.fallback) ? selectorConfig.fallback : [selectorConfig.fallback];
+				return selector_selector(vchartDatum, fallbackSelector);
+			}
+			return defaultSelector ? selector_selector(vchartDatum, defaultSelector) : false;
+		}
+		const selectorType = isRowWithFieldDynamicFilter(selectorConfig) ? "table" : "chart";
+		if (selectorConfig.result?.success && selectorConfig.result.data) return matchDynamicFilterResult(selectorConfig.result.data, vchartDatum, selectorType);
+		if (selectorConfig.fallback) {
+			const fallbackSelector = Array.isArray(selectorConfig.fallback) ? selectorConfig.fallback : [selectorConfig.fallback];
+			return selector_selector(vchartDatum, fallbackSelector);
+		}
+		return defaultSelector ? selector_selector(vchartDatum, defaultSelector) : false;
+	};
+}));
+//#endregion
+//#region ../vseed/dist/esm/dataSelector/index.js
+var init_dataSelector$1 = __esmMin((() => {
+	init_selector$1();
+}));
+//#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/stack/stackCornerRadiusUtils.js
-var reverseStackCornerRadius, mergeStackCornerRadius, getStackRangeCornerRadius, createStackCornerRadius, hasMoveInAnimation;
+var reverseStackCornerRadius, mergeStackCornerRadius, getStackRangeCornerRadius, callbacks, createCornerRadius, createStackCornerRadius, createBarCornerRadius, hasMoveInAnimation;
 var init_stackCornerRadiusUtils = __esmMin((() => {
 	init_constant();
 	reverseStackCornerRadius = (cornerRadius) => {
@@ -9398,14 +9621,30 @@ var init_stackCornerRadiusUtils = __esmMin((() => {
 		if (hasNegativePart) return reverseStackCornerRadius(cornerRadius);
 		return 0;
 	};
-	createStackCornerRadius = (cornerRadius) => (_, datum) => {
-		const stackRangeCornerRadius = getStackRangeCornerRadius(cornerRadius, datum);
-		if (void 0 !== stackRangeCornerRadius) return stackRangeCornerRadius;
-		const value = datum?.[datum?.[FoldMeasureId]];
-		if (value > 0) return cornerRadius;
-		if (value < 0) return reverseStackCornerRadius(cornerRadius);
-		return 0;
+	callbacks = /* @__PURE__ */ new Map();
+	createCornerRadius = (radius) => {
+		const key = JSON.stringify(radius);
+		const cached = callbacks.get(key);
+		if (cached) return cached;
+		const cornerRadius = Array.isArray(radius) ? [...radius] : radius;
+		const bar = (datum) => {
+			const stackRangeCornerRadius = getStackRangeCornerRadius(cornerRadius, datum);
+			if (void 0 !== stackRangeCornerRadius) return stackRangeCornerRadius;
+			const value = datum?.[datum?.[FoldMeasureId]];
+			if (value > 0) return cornerRadius;
+			if (value < 0) return reverseStackCornerRadius(cornerRadius);
+			return 0;
+		};
+		const result = {
+			bar,
+			stack: (_, datum) => bar(datum)
+		};
+		if (64 === callbacks.size) callbacks.delete(callbacks.keys().next().value);
+		callbacks.set(key, result);
+		return result;
 	};
+	createStackCornerRadius = (radius) => createCornerRadius(radius).stack;
+	createBarCornerRadius = (radius) => createCornerRadius(radius).bar;
 	hasMoveInAnimation = (animation) => {
 		if (!animation) return false;
 		if (Array.isArray(animation)) return animation.some(hasMoveInAnimation);
@@ -9418,6 +9657,8 @@ var init_stackCornerRadiusUtils = __esmMin((() => {
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/stack/stackCornerRadius.js
 var hasBarMoveInAnimation, stackCornerRadius_stackCornerRadius;
 var init_stackCornerRadius$2 = __esmMin((() => {
+	init_es();
+	init_dataSelector$1();
 	init_stackCornerRadiusUtils();
 	hasBarMoveInAnimation = (spec) => [
 		spec.animationAppear,
@@ -9428,20 +9669,30 @@ var init_stackCornerRadius$2 = __esmMin((() => {
 	stackCornerRadius_stackCornerRadius = (spec, context) => {
 		const { advancedVSeed, vseed } = context;
 		const { chartType } = vseed;
-		const stackCornerRadius = advancedVSeed.config?.[chartType]?.stackCornerRadius;
-		if ("dualAxis" === chartType && "bar" !== spec.type) return spec;
-		const stackCornerRadiusCallback = createStackCornerRadius(stackCornerRadius);
-		if (!hasBarMoveInAnimation(spec)) return {
-			...spec,
-			stackCornerRadius: stackCornerRadiusCallback
-		};
+		const stackCornerRadius = advancedVSeed.config?.[chartType]?.stackCornerRadius ?? 0;
+		if (!hasBarMoveInAnimation(spec)) {
+			const styles = advancedVSeed.markStyle?.barStyle;
+			const rules = (Array.isArray(styles) ? styles : styles ? [styles] : []).filter((rule) => null != rule.barRadius).reverse();
+			const defaultRadius = createStackCornerRadius(stackCornerRadius);
+			const clipRadius = rules.length ? (attributes, datum) => {
+				const radius = defaultRadius(attributes, datum);
+				const rule = rules.find((rule) => rule.dynamicFilter ? selectorWithDynamicFilter(datum, rule.dynamicFilter, rule.selector) : selector_selector(datum, rule.selector));
+				if (!rule) return radius;
+				const barRadius = normalizePadding(rule.barRadius);
+				return normalizePadding(radius).map((corner, index) => Math.min(corner, barRadius[index]));
+			} : defaultRadius;
+			return {
+				...spec,
+				stackCornerRadius: clipRadius
+			};
+		}
 		return {
 			...spec,
 			bar: {
 				...spec.bar,
 				style: {
 					...spec.bar?.style,
-					cornerRadius: stackCornerRadiusCallback
+					cornerRadius: createBarCornerRadius(stackCornerRadius)
 				}
 			}
 		};
@@ -10442,195 +10693,6 @@ var init_tooltip$3 = __esmMin((() => {
 	init_tooltipSankey();
 }));
 //#endregion
-//#region ../vseed/dist/esm/dataSelector/selector.js
-function nearlyEqual(a, b, epsilon = 1e-8) {
-	if (Number.isNaN(a) || Number.isNaN(b)) return false;
-	if (a === b) return true;
-	return Math.abs(a - b) <= epsilon;
-}
-var selector_selector, isValueSelector, isPartialDatumSelector, isFieldSelector, isMeasureSelector, isDimensionSelector, selectByMeasure, selectByDmension, selectByField, matchesFieldSelector, selectByPartial, selectByValue, matchesCellSelector, matchesDatum, isDynamicFilterLike, isRowWithFieldDynamicFilter, isValueDynamicFilter, isDynamicFilter, validateFilterResult, executeDynamicFilter, matchDynamicFilterResult, selectorWithDynamicFilter;
-var init_selector$1 = __esmMin((() => {
-	init_dist$1();
-	init_sandbox();
-	init_dataReshape();
-	selector_selector = (vchartDatum, selector, selectorMode = "And") => {
-		if (!selector) return true;
-		const datum = y$10(vchartDatum, Object.keys(vchartDatum).filter((k) => k.toLocaleLowerCase().startsWith("__vchart")));
-		return (Array.isArray(selector) ? selector : [selector])["And" === selectorMode ? "every" : "some"]((selector) => {
-			if (isValueSelector(selector)) return selectByValue(selector, datum);
-			else if (isFieldSelector(selector)) return selectByField(selector, datum);
-			else if (isMeasureSelector(selector)) return selectByMeasure(selector, datum);
-			else if (isDimensionSelector(selector)) return selectByDmension(selector, datum);
-			else if (isPartialDatumSelector(selector)) return selectByPartial(selector, datum);
-			return false;
-		});
-	};
-	isValueSelector = (selector) => "string" == typeof selector || "number" == typeof selector;
-	isPartialDatumSelector = (selector) => "object" == typeof selector && null !== selector;
-	isFieldSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && !("operator" in selector) && !("op" in selector) && !("value" in selector);
-	isMeasureSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && ("operator" in selector || "op" in selector) && "value" in selector && ([
-		"=",
-		"==",
-		"!=",
-		">",
-		"<",
-		">=",
-		"<=",
-		"between"
-	].includes(selector.operator) || [
-		"=",
-		"==",
-		"!=",
-		">",
-		"<",
-		">=",
-		"<=",
-		"between"
-	].includes(selector.op));
-	isDimensionSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && ("operator" in selector || "op" in selector) && "value" in selector && (["in", "not in"].includes(selector.operator) || ["in", "not in"].includes(selector.op));
-	selectByMeasure = (selector, datum) => {
-		const op = selector.operator || selector.op;
-		const selectorValueArr = Array.isArray(selector.value) ? selector.value : [selector.value];
-		switch (op) {
-			case "=":
-				if (String(datum[selector.field]) === String(selectorValueArr[0]) || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case "==":
-				if (datum[selector.field] === selectorValueArr[0]) return true;
-				break;
-			case "!=":
-				if (datum[selector.field] !== selectorValueArr[0]) return true;
-				break;
-			case ">":
-				if (datum[selector.field] > selectorValueArr[0] && !nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case "<":
-				if (datum[selector.field] < selectorValueArr[0] && !nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case ">=":
-				if (datum[selector.field] >= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case "<=":
-				if (datum[selector.field] <= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case "between":
-				if (Array.isArray(selector.value) && (datum[selector.field] >= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) && (datum[selector.field] <= selectorValueArr[1] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[1])))) return true;
-				break;
-		}
-		return false;
-	};
-	selectByDmension = (selector, datum) => {
-		const op = selector.operator || selector.op;
-		const selectorValueArr = Array.isArray(selector.value) ? selector.value : [selector.value];
-		switch (op) {
-			case "in":
-				if (selectorValueArr.includes(datum[selector.field])) return true;
-				break;
-			case "not in":
-				if (!selectorValueArr.includes(datum[selector.field])) return true;
-				break;
-		}
-		return false;
-	};
-	selectByField = (selector, datum) => {
-		const fields = Array.isArray(selector.field) ? selector.field : [selector.field];
-		const datumKeys = Object.keys(datum);
-		return fields.some((field) => datumKeys.includes(field));
-	};
-	matchesFieldSelector = (field, fieldSelector) => {
-		return (Array.isArray(fieldSelector.field) ? fieldSelector.field : [fieldSelector.field]).includes(field);
-	};
-	selectByPartial = (selector, datum) => Object.keys(selector).every((key) => datum[key] === selector[key]);
-	selectByValue = (selector, datum) => Object.values(datum).some((v) => v === selector);
-	matchesCellSelector = (cell, filterRes) => {
-		if (filterRes["__row_index"] !== cell["__row_index"]) return false;
-		return "*" === filterRes.field || Object.keys(cell).includes(filterRes.field);
-	};
-	matchesDatum = (target, candidate) => Object.keys(candidate).every((key) => target[key] === candidate[key]);
-	isDynamicFilterLike = (selector, expectedTypes) => "object" == typeof selector && null !== selector && "type" in selector && expectedTypes.includes(selector.type) && "code" in selector && "string" == typeof selector.code;
-	isRowWithFieldDynamicFilter = (selector) => isDynamicFilterLike(selector, ["row-with-field"]);
-	isValueDynamicFilter = (selector) => isDynamicFilterLike(selector, ["value"]);
-	isDynamicFilter = (selector) => isDynamicFilterLike(selector, ["row-with-field", "value"]);
-	validateFilterResult = (result, filter) => {
-		if (isValueDynamicFilter(filter)) {
-			if ("number" != typeof result && "string" != typeof result) throw new TypeError(`ValueDynamicFilter must return a number or string, but got: ${typeof result}. Code: "${filter.code}"`);
-			return;
-		}
-		if (!Array.isArray(result)) throw new TypeError(`${isRowWithFieldDynamicFilter(filter) ? "TableDynamicFilter" : "ChartDynamicFilter"} must return an array, but got: ${typeof result}. Code: "${filter.code}"`);
-		if (isRowWithFieldDynamicFilter(filter)) for (let i = 0; i < result.length; i++) {
-			const item = result[i];
-			if ("object" != typeof item || null === item) throw new TypeError(`TableDynamicFilter array element at index ${i} must be an object, got: ${typeof item}`);
-			if (!("__row_index" in item) && "__row_index" in item === false) throw new TypeError(`TableDynamicFilter array element at index ${i} must contain __row_index or InnerRowIndex field`);
-			if (!("field" in item)) throw new TypeError(`TableDynamicFilter array element at index ${i} must contain 'field' field`);
-		}
-	};
-	executeDynamicFilter = async (filter, allData) => {
-		try {
-			const { success, data, error } = await executeFilterCode({
-				code: filter.code,
-				data: allData
-			});
-			if (!success) {
-				console.warn("[vseed] Dynamic filter execution failed:", error);
-				return {
-					success: false,
-					data: isRowWithFieldDynamicFilter(filter) ? [] : "",
-					error
-				};
-			}
-			try {
-				validateFilterResult(data, filter);
-			} catch (validationError) {
-				console.error("[vseed] Dynamic filter result validation failed:", validationError);
-				return {
-					success: false,
-					data: isRowWithFieldDynamicFilter(filter) ? [] : "",
-					error: validationError instanceof Error ? validationError.message : String(validationError)
-				};
-			}
-			return {
-				success,
-				data
-			};
-		} catch (error) {
-			const errorMessage = error instanceof Error ? error.message : String(error);
-			console.error("[vseed] Dynamic filter execution threw exception:", errorMessage);
-			return {
-				success: false,
-				data: isRowWithFieldDynamicFilter(filter) ? [] : "",
-				error: errorMessage
-			};
-		}
-	};
-	matchDynamicFilterResult = (result, datum, selectorType = "table") => {
-		if ("number" == typeof result || "string" == typeof result) throw new Error("matchDynamicFilterResult does not support ValueDynamicFilter results");
-		if ("table" === selectorType) return result.some((item) => matchesCellSelector(datum, item));
-		return result.some((item) => matchesDatum(datum, item));
-	};
-	selectorWithDynamicFilter = (vchartDatum, selectorConfig, defaultSelector) => {
-		if (!selectorConfig) return true;
-		if (isValueDynamicFilter(selectorConfig)) {
-			if (selectorConfig.fallback) {
-				const fallbackSelector = Array.isArray(selectorConfig.fallback) ? selectorConfig.fallback : [selectorConfig.fallback];
-				return selector_selector(vchartDatum, fallbackSelector);
-			}
-			return defaultSelector ? selector_selector(vchartDatum, defaultSelector) : false;
-		}
-		const selectorType = isRowWithFieldDynamicFilter(selectorConfig) ? "table" : "chart";
-		if (selectorConfig.result?.success && selectorConfig.result.data) return matchDynamicFilterResult(selectorConfig.result.data, vchartDatum, selectorType);
-		if (selectorConfig.fallback) {
-			const fallbackSelector = Array.isArray(selectorConfig.fallback) ? selectorConfig.fallback : [selectorConfig.fallback];
-			return selector_selector(vchartDatum, fallbackSelector);
-		}
-		return defaultSelector ? selector_selector(vchartDatum, defaultSelector) : false;
-	};
-}));
-//#endregion
-//#region ../vseed/dist/esm/dataSelector/index.js
-var init_dataSelector$1 = __esmMin((() => {
-	init_selector$1();
-}));
-//#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/label/label.js
 var label_label, generateMeasureValue, generateMeasurePercent, buildLabel$2;
 var init_label$3 = __esmMin((() => {
@@ -10664,6 +10726,7 @@ var init_label$3 = __esmMin((() => {
 		return formatter(num / sum);
 	};
 	buildLabel$2 = (label, vseedMeasures = [], vseedDimensions = [], advancedVSeedDimensions, advancedVSeedMeasures, encoding, foldInfoList, locale = "zh-CN") => {
+		if (false === label.enable) return { visible: false };
 		const { enable, wrap, showValue, showValuePercent, showDimension, labelOverlap, labelColorSmartInvert, labelStroke, labelColor, labelFontSize, labelFontWeight, labelBackgroundColor, labelPosition, autoFormat, numFormat = {} } = label;
 		const labelDims = T$4(vseedDimensions.some((item) => encoding.label?.includes(item.id)) ? vseedDimensions.filter((item) => encoding.label?.includes(item.id)) : showDimension ? advancedVSeedDimensions.filter((d) => d.id !== "__MeaId__" && "row" !== d.encoding && "column" !== d.encoding) : [], (item) => item.id);
 		const labelMeas = T$4(vseedMeasures.filter((item) => encoding.label?.includes(item.id)), (item) => item.id);
@@ -10734,7 +10797,7 @@ var init_labelDualAxis = __esmMin((() => {
 		const { chartType } = advancedVSeed;
 		const baseConfig = advancedVSeed.config[chartType];
 		result.label = buildLabel$2(baseConfig.label, vseed.measures, vseed.dimensions, advancedVSeed.dimensions, advancedVSeed.measures, encoding, [options.foldInfo], advancedVSeed?.locale);
-		result.label.zIndex = DUAL_AXIS_LABEL_Z_INDEX;
+		if (false !== baseConfig.label.enable) result.label.zIndex = DUAL_AXIS_LABEL_Z_INDEX;
 		return result;
 	};
 }));
@@ -10769,7 +10832,7 @@ var init_labelPie = __esmMin((() => {
 		const foldInfo = datasetReshapeInfo[0].foldInfo;
 		const { label } = baseConfig;
 		result.label = buildLabel$2(label, vseed.measures, vseed.dimensions, advancedVSeed.dimensions, advancedVSeed.measures, encoding, [foldInfo], advancedVSeed?.locale);
-		if (label.labelLayout) result.label.layout = { align: label.labelLayout };
+		if (false !== label.enable && label.labelLayout) result.label.layout = { align: label.labelLayout };
 		return result;
 	};
 }));
@@ -10993,6 +11056,7 @@ var init_labelHierarchySankey = __esmMin((() => {
 		return result;
 	};
 	buildLabel$1 = (label, vseedMeasures = [], vseedDimensions = [], advancedVSeedDimensions, advancedVSeedMeasures, encoding, foldInfoList, locale = "zh-CN") => {
+		if (false === label.enable) return { visible: false };
 		const { enable, wrap, showValue, showValuePercent, showDimension, labelOverlap, labelColorSmartInvert, labelStroke, labelColor, labelFontSize, labelFontWeight, labelBackgroundColor, labelPosition, autoFormat, numFormat = {} } = label;
 		const labelDims = T$4(vseedDimensions.some((item) => encoding.label?.includes(item.id)) ? vseedDimensions.filter((item) => encoding.label?.includes(item.id)) : showDimension ? advancedVSeedDimensions.filter((d) => d.id !== "__MeaId__" && "row" !== d.encoding && "column" !== d.encoding) : [], (item) => item.id);
 		const labelMeas = T$4(vseedMeasures.filter((item) => encoding.label?.includes(item.id)), (item) => item.id);
@@ -11075,6 +11139,7 @@ var init_labelSankey = __esmMin((() => {
 		return result;
 	};
 	buildLabel = (label, vseedMeasures, advancedVSeedMeasures, labelEncodingIds, foldInfo) => {
+		if (false === label.enable) return { visible: false };
 		const { enable, wrap, showValue, showValuePercent, showDimension, labelOverlap, labelColorSmartInvert, labelStroke, labelColor, labelFontSize, labelFontWeight, labelBackgroundColor, labelPosition, autoFormat, numFormat = {} } = label;
 		const labelMeasures = T$4(vseedMeasures.filter((item) => labelEncodingIds.includes(item.id)), (item) => item.id);
 		const percentFormatter = createFormatter(t$13(numFormat, { type: "percent" }));
@@ -11152,6 +11217,7 @@ var init_label$2 = __esmMin((() => {
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/legend/discreteLegend.js
 var discreteLegend;
 var init_discreteLegend = __esmMin((() => {
+	init_utils$4();
 	discreteLegend = (spec, context) => {
 		const result = { ...spec };
 		const { advancedVSeed } = context;
@@ -11159,6 +11225,10 @@ var init_discreteLegend = __esmMin((() => {
 		const { unfoldInfo } = datasetReshapeInfo[0];
 		const baseConfig = advancedVSeed.config[chartType];
 		if (!baseConfig || !baseConfig.legend) return result;
+		if (false === baseConfig.legend.enable) return {
+			...result,
+			legends: { visible: false }
+		};
 		const { legend } = baseConfig;
 		const { enable, position = "bottom", labelFontColor, labelColor, labelFontSize = 12, pagerIconColor, pagerIconDisableColor, labelFontWeight, maxSize = 1, border, shapeType = "rectRound" } = legend || {};
 		const orient = [
@@ -11236,7 +11306,7 @@ var init_discreteLegend = __esmMin((() => {
 					} }
 				},
 				label: {
-					formatMethod: (value) => unfoldInfo.colorIdMap[String(value)]?.alias ?? value,
+					formatMethod: createAliasFormatter(unfoldInfo.colorIdMap),
 					style: {
 						fontSize: labelFontSize,
 						fill: labelColor || labelFontColor,
@@ -11322,6 +11392,7 @@ var init_color$5 = __esmMin((() => {
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/legend/pivotDiscreteLegend.js
 var pivotDiscreteLegend;
 var init_pivotDiscreteLegend = __esmMin((() => {
+	init_utils$4();
 	init_dist$1();
 	init_color$5();
 	pivotDiscreteLegend = (spec, context) => {
@@ -11330,6 +11401,10 @@ var init_pivotDiscreteLegend = __esmMin((() => {
 		const { chartType } = advancedVSeed;
 		const baseConfig = advancedVSeed.config[chartType];
 		if (!baseConfig || !baseConfig.legend || !baseConfig.color) return result;
+		if (false === baseConfig.legend.enable) return {
+			...result,
+			legends: []
+		};
 		const { datasetReshapeInfo } = advancedVSeed;
 		const colorItems = i$7(datasetReshapeInfo.flatMap((d) => d.unfoldInfo.colorItems));
 		const colorIdMap = datasetReshapeInfo.reduce((prev, cur) => ({
@@ -11414,7 +11489,7 @@ var init_pivotDiscreteLegend = __esmMin((() => {
 					}
 				},
 				label: {
-					formatMethod: (value) => colorIdMap[value]?.alias ?? value,
+					formatMethod: createAliasFormatter(colorIdMap),
 					style: {
 						fontSize: labelFontSize,
 						fill: labelColor || labelFontColor,
@@ -11445,6 +11520,10 @@ var init_colorLegend = __esmMin((() => {
 		const { unfoldInfo } = datasetReshapeInfo[0];
 		const baseConfig = advancedVSeed.config[chartType];
 		if (!baseConfig || !baseConfig.legend) return result;
+		if (false === baseConfig.legend.enable) return {
+			...result,
+			legends: { visible: false }
+		};
 		const { legend } = baseConfig;
 		const { enable, position = "bottom", labelFontColor, labelColor, labelFontSize = 12, labelFontWeight, railBackgroundColor, handlerBorderColor } = legend || {};
 		result.legends = {
@@ -11520,6 +11599,10 @@ var init_pivotColorLegend = __esmMin((() => {
 		const { chartType } = advancedVSeed;
 		const baseConfig = advancedVSeed.config[chartType];
 		if (!baseConfig || !baseConfig.legend || !baseConfig.color) return result;
+		if (false === baseConfig.legend.enable) return {
+			...result,
+			legends: []
+		};
 		const { datasetReshapeInfo } = advancedVSeed;
 		const max = Math.max(...datasetReshapeInfo.map((d) => d.foldInfo.statistics.colorMax));
 		const min = Math.min(...datasetReshapeInfo.map((d) => d.foldInfo.statistics.colorMin));
@@ -11595,7 +11678,7 @@ var init_heatmapColorLegend = __esmMin((() => {
 	init_constant$1();
 	heatmapColorLegend = (spec, context) => {
 		const result = colorLegend(spec, context);
-		if (result.legends) result.legends.customFilter = (data, range, key) => {
+		if (result.legends && false !== result.legends.visible) result.legends.customFilter = (data, range, key) => {
 			const min = Math.min(range[0], range[1]);
 			const max = Math.max(range[0], range[1]);
 			return (data ?? []).map((entry) => {
@@ -11675,7 +11758,7 @@ var init_colorBarStyleFill = __esmMin((() => {
 		const { datasetReshapeInfo } = advancedVSeed;
 		const { unfoldInfo } = datasetReshapeInfo[0];
 		if (isLinearColor(advancedVSeed, vseed)) {
-			if (result?.bar?.style) result.bar.style.fill = {
+			if (result?.bar?.style) result.bar.style.fill ??= {
 				field: unfoldInfo.encodingColor,
 				scale: "color"
 			};
@@ -11694,7 +11777,7 @@ var init_colorLineStyleFill = __esmMin((() => {
 		const { datasetReshapeInfo } = advancedVSeed;
 		const { unfoldInfo } = datasetReshapeInfo[0];
 		if (isLinearColor(advancedVSeed, vseed)) {
-			if (result?.line?.style) result.line.style.stroke = {
+			if (result?.line?.style) result.line.style.stroke ??= {
 				field: unfoldInfo.encodingColor,
 				scale: "color"
 			};
@@ -11713,7 +11796,7 @@ var init_colorPointStyleFill = __esmMin((() => {
 		const { datasetReshapeInfo } = advancedVSeed;
 		const { unfoldInfo } = datasetReshapeInfo[0];
 		if (isLinearColor(advancedVSeed, vseed)) {
-			if (result?.point?.style) result.point.style.fill = {
+			if (result?.point?.style) result.point.style.fill ??= {
 				field: unfoldInfo.encodingColor,
 				scale: "color"
 			};
@@ -11732,7 +11815,7 @@ var init_colorAreaStyleFill = __esmMin((() => {
 		const { datasetReshapeInfo } = advancedVSeed;
 		const { unfoldInfo } = datasetReshapeInfo[0];
 		if (isLinearColor(advancedVSeed, vseed)) {
-			if (result?.area?.style) result.area.style.fill = {
+			if (result?.area?.style) result.area.style.fill ??= {
 				field: unfoldInfo.encodingColor,
 				scale: "color"
 			};
@@ -12374,6 +12457,7 @@ var init_pointState = __esmMin((() => {
 		const point = spec.point || {};
 		return {
 			...spec,
+			activePoint: true,
 			point: {
 				...point,
 				state: {
@@ -12418,122 +12502,182 @@ var init_pointState = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region ../vseed/dist/esm/pipeline/spec/chart/pipes/markStyle/compileMarkStyles.js
+var always, compileMarkStyles;
+var init_compileMarkStyles = __esmMin((() => {
+	init_es();
+	always = () => true;
+	compileMarkStyles = (rules, toStyle, toFilter) => {
+		const style = {};
+		const state = {};
+		let conditional = false;
+		(Array.isArray(rules) ? rules : rules ? [rules] : []).forEach((rule, index) => {
+			const attributes = toStyle(rule, index);
+			const filtered = null != rule.selector || null != rule.dynamicFilter;
+			conditional ||= filtered;
+			if (conditional) state[`custom${index + 1}`] = {
+				level: index + 1,
+				filter: filtered ? toFilter(rule) : always,
+				style: attributes
+			};
+			else merge(style, attributes);
+		});
+		return {
+			style,
+			state
+		};
+	};
+}));
+//#endregion
+//#region ../vseed/dist/esm/pipeline/spec/chart/pipes/markStyle/gradientFill.js
+var import_tinycolor$3, bottomToTop, gradientFill, createGradientFill;
+var init_gradientFill = __esmMin((() => {
+	import_tinycolor$3 = /* @__PURE__ */ __toESM(require_tinycolor(), 1);
+	bottomToTop = {
+		x0: 0,
+		y0: 1,
+		x1: 0,
+		y1: 0
+	};
+	gradientFill = (color, direction) => ({
+		gradient: "linear",
+		...direction,
+		stops: [{
+			offset: 0,
+			color: (0, import_tinycolor$3.default)(color).setAlpha(0).toRgbString()
+		}, {
+			offset: 1,
+			color
+		}]
+	});
+	createGradientFill = (color, enabled, colorField, direction = bottomToTop) => {
+		if (!enabled) return color;
+		if (color && "function" != typeof direction) return gradientFill(color, direction);
+		return (datum, context) => gradientFill(color ?? context.globalScale("color", datum[colorField]), "function" == typeof direction ? direction(datum) : direction);
+	};
+}));
+//#endregion
+//#region ../vseed/dist/esm/pipeline/spec/chart/pipes/markStyle/barGradient.js
+var endpoints, horizontalBarGradient, verticalBarGradient;
+var init_barGradient = __esmMin((() => {
+	endpoints = (datum, valueField) => {
+		const start = Number(datum.__VCHART_STACK_START ?? 0);
+		const end = Number(datum.__VCHART_STACK_END ?? datum[valueField]);
+		const length = Math.abs(end - start);
+		if (!length) return [0, 1];
+		const min = Math.min(start, end);
+		return [(0 - min) / length, (end - min) / length];
+	};
+	horizontalBarGradient = (datum, valueField) => {
+		const [x0, x1] = endpoints(datum, valueField);
+		return {
+			x0,
+			y0: 0,
+			x1,
+			y1: 0
+		};
+	};
+	verticalBarGradient = (datum, valueField) => {
+		const [start, end] = endpoints(datum, valueField);
+		return {
+			x0: 0,
+			y0: 1 - start,
+			x1: 0,
+			y1: 1 - end
+		};
+	};
+}));
+//#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/markStyle/barStyle.js
-var barStyle_barStyle;
-var init_barStyle$1 = __esmMin((() => {
+var createBarStyle, barStyle, columnStyle;
+var init_barStyle = __esmMin((() => {
 	init_dataSelector$1();
-	init_dist$1();
-	barStyle_barStyle = (spec, context) => {
-		const { advancedVSeed } = context;
-		const { markStyle, dataset = [] } = advancedVSeed;
-		const { barStyle } = markStyle;
-		const showStroke = dataset.length <= 100;
-		const result = {
+	init_compileMarkStyles();
+	init_gradientFill();
+	init_colorAdapter();
+	init_barGradient();
+	createBarStyle = (field, direction) => (spec, { advancedVSeed, vseed }) => {
+		const colorField = getColorField(advancedVSeed, vseed);
+		const gradientDirection = (datum) => direction(datum, spec[field]);
+		const bar = compileMarkStyles(advancedVSeed.markStyle.barStyle, ({ barBorderColor, barBorderStyle, barBorderWidth = 1, barColor, barGradient, barColorOpacity, barBorderOpacity, barRadius, barVisible = true }) => ({
+			visible: barVisible,
+			fill: createGradientFill(barColor, barGradient, colorField, gradientDirection),
+			fillOpacity: barColorOpacity,
+			cornerRadius: barRadius,
+			lineWidth: barBorderWidth,
+			stroke: barBorderColor,
+			strokeOpacity: barBorderOpacity,
+			lineDash: "dashed" === barBorderStyle ? [5, 2] : "dotted" === barBorderStyle ? [2, 5] : [0, 0]
+		}), (rule) => (datum) => rule.dynamicFilter ? selectorWithDynamicFilter(datum, rule.dynamicFilter, rule.selector) : selector_selector(datum, rule.selector));
+		return {
 			...spec,
 			bar: {
 				style: {
 					visible: true,
 					fillOpacity: 1,
-					lineWidth: showStroke ? 1 : 0
+					lineWidth: advancedVSeed.dataset.length <= 100 ? 1 : 0,
+					...spec.bar?.style,
+					...bar.style
 				},
-				state: { hover: { fillOpacity: .6 } }
+				state: {
+					...spec.bar?.state,
+					hover: { fillOpacity: .6 },
+					...bar.state
+				}
 			}
 		};
-		if (n$10(barStyle) || n$11(barStyle)) return result;
-		const customMap = (Array.isArray(barStyle) ? barStyle : [barStyle]).reduce((result, style, index) => {
-			const { barBorderColor, barBorderStyle, barBorderWidth = 1, barColor, barColorOpacity, barBorderOpacity, barRadius, barVisible = true } = style;
-			const lineDash = "dashed" === barBorderStyle ? [5, 2] : "dotted" === barBorderStyle ? [2, 5] : [0, 0];
-			return {
-				...result,
-				[`custom${index + 1}`]: {
-					level: index + 1,
-					filter: (datum) => {
-						if (style.dynamicFilter ? selectorWithDynamicFilter(datum, style.dynamicFilter, style.selector) : selector_selector(datum, style.selector)) return true;
-						return false;
-					},
-					style: {
-						visible: barVisible,
-						fill: barColor,
-						fillOpacity: barColorOpacity,
-						cornerRadius: barRadius,
-						lineWidth: barBorderWidth,
-						stroke: barBorderColor,
-						strokeOpacity: barBorderOpacity,
-						lineDash
-					}
-				}
-			};
-		}, {});
-		result.bar.state = {
-			...result.bar.state,
-			...customMap
-		};
-		return result;
 	};
+	barStyle = createBarStyle("xField", horizontalBarGradient);
+	columnStyle = createBarStyle("yField", verticalBarGradient);
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/markStyle/pointStyle.js
-var pointStyle_pointStyle;
-var init_pointStyle$1 = __esmMin((() => {
+var pointStyle;
+var init_pointStyle = __esmMin((() => {
 	init_dataSelector$1();
-	init_dist$1();
-	pointStyle_pointStyle = (spec, context) => {
-		const { advancedVSeed } = context;
-		const { markStyle } = advancedVSeed;
-		const { pointStyle } = markStyle;
-		const result = {
-			...spec,
-			point: { style: {} }
-		};
-		if (n$10(pointStyle) || n$11(pointStyle)) return result;
-		const customMap = (Array.isArray(pointStyle) ? pointStyle : [pointStyle]).reduce((result, style, index) => {
-			const { pointBorderColor, pointBorderStyle, pointBorderWidth = 1, pointColor, pointColorOpacity, pointSize, pointVisible = true } = style;
-			const lineDash = "dashed" === pointBorderStyle ? [5, 2] : "dotted" === pointBorderStyle ? [2, 5] : [0, 0];
+	init_compileMarkStyles();
+	pointStyle = (spec, { advancedVSeed }) => {
+		const point = compileMarkStyles(advancedVSeed.markStyle.pointStyle, ({ pointBorderColor, pointBorderStyle, pointBorderWidth = 1, pointColor, pointColorOpacity, pointSize, pointVisible = true }) => ({
+			visible: pointVisible,
+			size: pointSize,
+			fill: pointColor,
+			fillOpacity: pointColorOpacity,
+			innerBorder: {
+				stroke: pointBorderColor,
+				lineWidth: pointBorderWidth,
+				distance: pointBorderWidth / 2,
+				lineDash: "dashed" === pointBorderStyle ? [5, 2] : "dotted" === pointBorderStyle ? [2, 5] : [0, 0]
+			}
+		}), (rule) => (datum) => rule.dynamicFilter ? selectorWithDynamicFilter(datum, rule.dynamicFilter, rule.selector) : selector_selector(datum, rule.selector));
+		if (!Object.keys(point.state).length) {
+			const { visible, ...style } = point.style;
 			return {
-				...result,
-				[`custom${index + 1}`]: {
-					level: index + 1,
-					filter: (datum) => {
-						if (style.dynamicFilter ? selectorWithDynamicFilter(datum, style.dynamicFilter, style.selector) : selector_selector(datum, style.selector)) return true;
-						return false;
-					},
-					style: {
-						visible: pointVisible,
-						size: pointSize,
-						fill: pointColor,
-						fillOpacity: pointColorOpacity,
-						innerBorder: {
-							stroke: pointBorderColor,
-							lineWidth: pointBorderWidth,
-							distance: (pointBorderWidth || 0) / 2,
-							lineDash
-						}
-					}
+				...spec,
+				point: {
+					visible,
+					style,
+					state: point.state
 				}
 			};
-		}, {});
+		}
 		return {
-			...result,
-			point: {
-				...result.point,
-				state: { ...customMap }
-			}
+			...spec,
+			point
 		};
 	};
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/markStyle/curve/curve.js
-var getCurveType, getCurveTension;
+var cartesianCurve, closedCurve;
 var init_curve$1 = __esmMin((() => {
-	init_utils$4();
-	getCurveType = (vseed, lineSmooth = false) => {
-		if (!lineSmooth) return "linear";
-		return isRadar(vseed) ? "catmullRomClosed" : "monotone";
-	};
-	getCurveTension = (vseed, lineSmooth = false) => {
-		if (!lineSmooth) return 0;
-		return isRadar(vseed) ? .4 : 0;
-	};
+	cartesianCurve = (smooth = false) => ({
+		curveType: smooth ? "monotone" : "linear",
+		curveTension: 0
+	});
+	closedCurve = (smooth = false) => ({
+		curveType: smooth ? "catmullRomClosed" : "linear",
+		curveTension: smooth ? .4 : 0
+	});
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/markStyle/curve/index.js
@@ -12542,113 +12686,69 @@ var init_curve = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/markStyle/lineStyle.js
-var lineStyle_lineStyle;
-var init_lineStyle$1 = __esmMin((() => {
+var createLineStyle, lineStyle_lineStyle, radarLineStyle;
+var init_lineStyle = __esmMin((() => {
 	init_dataSelector$1();
-	init_dist$1();
 	init_curve();
-	lineStyle_lineStyle = (spec, context) => {
-		const { advancedVSeed } = context;
-		const { markStyle } = advancedVSeed;
-		const { lineStyle } = markStyle;
-		const result = {
-			...spec,
-			line: { style: {} }
-		};
-		if (n$10(lineStyle) || n$11(lineStyle)) return result;
-		const customMap = (Array.isArray(lineStyle) ? lineStyle : [lineStyle]).reduce((result, style, index) => {
-			const { lineColor, lineColorOpacity, lineSmooth, lineStyle, lineWidth = 2, lineVisible = true } = style;
-			const dashSegment = 2 * lineWidth;
-			const dashGap = lineWidth;
-			const lineDash = "dashed" === lineStyle ? [dashSegment, dashSegment] : "dotted" === lineStyle ? [dashGap / 2, 2 * dashGap] : [0, 0];
-			const curveType = getCurveType(context.vseed, lineSmooth);
-			const curveTension = getCurveTension(context.vseed, lineSmooth);
-			return {
-				...result,
-				[`custom${index + 1}`]: {
-					level: index + 1,
-					filter: (_, node) => {
-						const lineData = node.renderNode.context.data;
-						for (const d of lineData) if (style.dynamicFilter ? selectorWithDynamicFilter(d, style.dynamicFilter, style.selector) : selector_selector(d, style.selector)) return true;
-						return false;
-					},
-					style: {
-						visible: lineVisible,
-						curveType,
-						curveTension,
-						strokeOpacity: lineColorOpacity,
-						stroke: lineColor,
-						lineWidth,
-						lineDash
-					}
-				}
-			};
-		}, {});
+	init_compileMarkStyles();
+	createLineStyle = (curve) => (spec, { advancedVSeed }) => {
+		const line = compileMarkStyles(advancedVSeed.markStyle.lineStyle, ({ lineColor, lineColorOpacity, lineSmooth, lineStyle, lineWidth = 2, lineVisible = true }) => ({
+			visible: lineVisible,
+			...curve(lineSmooth),
+			strokeOpacity: lineColorOpacity,
+			stroke: lineColor,
+			lineWidth,
+			lineDash: "dashed" === lineStyle ? [2 * lineWidth, 2 * lineWidth] : "dotted" === lineStyle ? [lineWidth / 2, 2 * lineWidth] : [0, 0]
+		}), (rule) => (_, node) => node.renderNode.context.data.some((datum) => rule.dynamicFilter ? selectorWithDynamicFilter(datum, rule.dynamicFilter, rule.selector) : selector_selector(datum, rule.selector)));
 		return {
-			...result,
-			line: {
-				...result.line,
-				state: { ...customMap }
-			}
+			...spec,
+			line
 		};
 	};
+	lineStyle_lineStyle = createLineStyle(cartesianCurve);
+	radarLineStyle = createLineStyle(closedCurve);
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/markStyle/areaStyle.js
-var areaStyle_areaStyle;
+var createAreaStyle, areaStyle_areaStyle, radarAreaStyle;
 var init_areaStyle = __esmMin((() => {
 	init_dataSelector$1();
 	init_dist$1();
 	init_curve();
-	areaStyle_areaStyle = (spec, context) => {
-		const { advancedVSeed } = context;
+	init_compileMarkStyles();
+	init_gradientFill();
+	init_colorAdapter();
+	createAreaStyle = (curve) => (spec, { advancedVSeed, vseed }) => {
 		const { markStyle, datasetReshapeInfo, dataset } = advancedVSeed;
 		const { areaStyle, lineStyle } = markStyle;
-		const { unfoldInfo } = datasetReshapeInfo[0];
-		const result = {
+		const lineStyles = Array.isArray(lineStyle) ? lineStyle : [lineStyle];
+		const baseCurve = {
+			...curve(),
+			...i$9(spec.line?.style ?? {}, ["curveType", "curveTension"])
+		};
+		const group = datasetReshapeInfo[0].unfoldInfo.encodingColorId ?? "";
+		const colorField = getColorField(advancedVSeed, vseed);
+		let groups;
+		const area = compileMarkStyles(areaStyle ?? {}, (style, index) => ({
+			...areaStyle && lineStyles[index] ? curve(lineStyles[index].lineSmooth) : baseCurve,
+			visible: style.areaVisible ?? true,
+			fill: createGradientFill(style.areaColor, style.areaGradient, colorField),
+			fillOpacity: style.areaColorOpacity
+		}), (rule) => {
+			groups ??= i$10(dataset, (datum) => datum[group]);
+			const areaGroups = groups;
+			return (datum) => (areaGroups[datum[group]] ?? []).some((entry) => rule.dynamicFilter ? selectorWithDynamicFilter(entry, rule.dynamicFilter, rule.selector) : selector_selector(entry, rule.selector));
+		});
+		return {
 			...spec,
 			area: {
 				visible: true,
-				style: {}
-			}
-		};
-		if (n$10(areaStyle) || n$11(areaStyle)) return result;
-		const areaStyles = Array.isArray(areaStyle) ? areaStyle : [areaStyle];
-		const lineStyles = Array.isArray(lineStyle) ? lineStyle : [lineStyle];
-		const group = unfoldInfo.encodingColorId;
-		const areaGroups = i$9(dataset, (d) => d[group ?? ""]);
-		const customMap = areaStyles.reduce((result, style, index) => {
-			const { areaColor, areaColorOpacity, areaVisible = true } = style;
-			const curveType = getCurveType(context.vseed, lineStyles[index]?.lineSmooth);
-			const curveTension = getCurveTension(context.vseed, lineStyles[index]?.lineSmooth);
-			return {
-				...result,
-				[`custom${index + 1}`]: {
-					level: index + 1,
-					filter: (datum) => {
-						const lineData = areaGroups[datum[group ?? ""]];
-						for (const d of lineData) if (selector_selector(d, style.selector)) return true;
-						return false;
-					},
-					style: {
-						curveType,
-						curveTension,
-						visible: areaVisible,
-						fill: areaColor,
-						fillOpacity: areaColorOpacity
-					}
-				}
-			};
-		}, {});
-		return {
-			...result,
-			area: {
-				...result.area,
-				visible: true,
-				state: { ...customMap }
+				...area
 			}
 		};
 	};
+	areaStyle_areaStyle = createAreaStyle(cartesianCurve);
+	radarAreaStyle = createAreaStyle(closedCurve);
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/markStyle/cellStyle.js
@@ -12767,7 +12867,7 @@ var init_funnelTransformStyle = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/markStyle/boxPlotStyle.js
 var boxPlotStyle_boxPlotStyle;
-var init_boxPlotStyle$1 = __esmMin((() => {
+var init_boxPlotStyle = __esmMin((() => {
 	init_dataSelector$1();
 	init_dist$1();
 	boxPlotStyle_boxPlotStyle = (spec, context) => {
@@ -12823,7 +12923,7 @@ var init_boxPlotStyle$1 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/markStyle/outlierStyle.js
 var outlierStyle_outlierStyle;
-var init_outlierStyle$1 = __esmMin((() => {
+var init_outlierStyle = __esmMin((() => {
 	init_dataSelector$1();
 	init_dist$1();
 	outlierStyle_outlierStyle = (spec, context) => {
@@ -12904,19 +13004,19 @@ var init_sankeyInteractive = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/markStyle/index.js
-var init_markStyle$4 = __esmMin((() => {
+var init_markStyle$3 = __esmMin((() => {
 	init_pointState();
-	init_barStyle$1();
-	init_pointStyle$1();
-	init_lineStyle$1();
+	init_barStyle();
+	init_pointStyle();
+	init_lineStyle();
 	init_areaStyle();
 	init_cellStyle$4();
 	init_funnelStyle();
 	init_pieStyle();
 	init_roseStyle();
 	init_funnelTransformStyle();
-	init_boxPlotStyle$1();
-	init_outlierStyle$1();
+	init_boxPlotStyle();
+	init_outlierStyle();
 	init_sankeyInteractive();
 }));
 //#endregion
@@ -14392,10 +14492,10 @@ var init_verticalCrosshairLine = __esmMin((() => {
 		const config = advancedVSeed.config?.[chartType]?.crosshairLine;
 		if (!config) return result;
 		if (!result.crosshair) result.crosshair = {};
-		const visible = config.visible || true;
+		const visible = config.visible ?? true;
 		const lineColor = config.lineColor || void 0;
 		const labelColor = config.labelColor || void 0;
-		const labelVisible = config.labelVisible || void 0;
+		const labelVisible = config.labelVisible ?? void 0;
 		const labelBackgroundColor = config.labelBackgroundColor || void 0;
 		const crosshair = result.crosshair;
 		crosshair.xField = {
@@ -14419,7 +14519,7 @@ var init_verticalCrosshairLine = __esmMin((() => {
 			}
 		};
 		const xAxisFormatter = (result.axes?.find((v) => "bottom" === v.orient))?.label?.formatMethod;
-		if (xAxisFormatter) crosshair.xField.label.formatMethod = (text) => xAxisFormatter(text);
+		if (xAxisFormatter) crosshair.xField.label.formatMethod = xAxisFormatter;
 		return result;
 	};
 }));
@@ -14434,7 +14534,7 @@ var init_verticalCrosshairRect = __esmMin((() => {
 		const config = advancedVSeed.config?.[chartType]?.crosshairRect;
 		if (!config) return result;
 		if (!result.crosshair) result.crosshair = {};
-		const visible = config.visible || true;
+		const visible = config.visible ?? true;
 		const rectColor = config.rectColor || void 0;
 		const labelColor = config.labelColor || void 0;
 		const labelVisible = config.labelVisible || false;
@@ -14460,7 +14560,7 @@ var init_verticalCrosshairRect = __esmMin((() => {
 			}
 		};
 		const xAxisFormatter = (result.axes?.find((v) => "bottom" === v.orient))?.label?.formatMethod;
-		if (xAxisFormatter) crosshair.xField.label.formatMethod = (text) => xAxisFormatter(text);
+		if (xAxisFormatter) crosshair.xField.label.formatMethod = xAxisFormatter;
 		return result;
 	};
 }));
@@ -14475,7 +14575,7 @@ var init_horizontalCrosshairRect = __esmMin((() => {
 		const config = advancedVSeed.config?.[chartType]?.crosshairRect;
 		if (!config) return result;
 		if (!result.crosshair) result.crosshair = {};
-		const visible = config.visible || true;
+		const visible = config.visible ?? true;
 		const rectColor = config.rectColor || void 0;
 		const labelColor = config.labelColor || void 0;
 		const labelVisible = config.labelVisible || false;
@@ -14501,7 +14601,7 @@ var init_horizontalCrosshairRect = __esmMin((() => {
 			}
 		};
 		const yAxisFormatter = (result.axes?.find((v) => "left" === v.orient))?.label?.formatMethod;
-		if (yAxisFormatter) crosshair.yField.label.formatMethod = (text) => yAxisFormatter(text);
+		if (yAxisFormatter) crosshair.yField.label.formatMethod = yAxisFormatter;
 		return result;
 	};
 }));
@@ -14516,10 +14616,10 @@ var init_horizontalCrosshairLine = __esmMin((() => {
 		const config = advancedVSeed.config?.[chartType]?.crosshairLine;
 		if (!config) return result;
 		if (!result.crosshair) result.crosshair = {};
-		const visible = config.visible || true;
+		const visible = config.visible ?? true;
 		const lineColor = config.lineColor || void 0;
 		const labelColor = config.labelColor || void 0;
-		const labelVisible = config.labelVisible || void 0;
+		const labelVisible = config.labelVisible ?? void 0;
 		const labelBackgroundColor = config.labelBackgroundColor || void 0;
 		const crosshair = result.crosshair;
 		crosshair.yField = {
@@ -14543,7 +14643,7 @@ var init_horizontalCrosshairLine = __esmMin((() => {
 			}
 		};
 		const yAxisFormatter = (result.axes?.find((v) => "left" === v.orient))?.label?.formatMethod;
-		if (yAxisFormatter) crosshair.yField.label.formatMethod = (text) => yAxisFormatter(text);
+		if (yAxisFormatter) crosshair.yField.label.formatMethod = yAxisFormatter;
 		return result;
 	};
 }));
@@ -15346,8 +15446,7 @@ var init_columnRegressionLine = __esmMin((() => {
 							alpha: getAlphaByConfidenceLevel(confidenceLevel)
 						});
 						const N = xValues.length;
-						const xAxisHelper = s.getXAxisHelper();
-						const halfBandWidth = xAxisHelper ? xAxisHelper.getBandwidth(0) / 2 : 0;
+						const halfBandWidth = (s.getXAxisHelper()?.getBandwidth?.(0) ?? 0) / 2;
 						const result = {
 							linePoints: evaluateGrid(N).map((datum, index) => {
 								const d = {
@@ -15570,7 +15669,7 @@ var init_playerBar = __esmMin((() => {
 		const { maxCount, autoPlay = true, interval = 1e3, loop = false, position, railColor, trackColor, sliderHandleColor, sliderHandleBorderColor, startButtonColor, pauseButtonColor, backwardButtonColor, forwardButtonColor } = player;
 		const duration = interval;
 		const exchangeDuration = .6 * interval;
-		const dataGroups = i$9(advancedVSeed.dataset, (item) => item[encodingPlayer]);
+		const dataGroups = i$10(advancedVSeed.dataset, (item) => item[encodingPlayer]);
 		if (result.data && "values" in result.data) result.data.values = [];
 		const yValues = T$4(advancedVSeed.dataset.map((d) => d[encodingY]), (item) => item);
 		const specs = Object.values(dataGroups).map((items) => {
@@ -15721,7 +15820,7 @@ var init_playerColumn = __esmMin((() => {
 		const { encodingPlayer, encodingX } = unfoldInfo;
 		const { measureValue } = foldInfo;
 		const { maxCount, autoPlay = true, interval = 1e3, loop = false, position, railColor, trackColor, sliderHandleColor, sliderHandleBorderColor, startButtonColor, pauseButtonColor, backwardButtonColor, forwardButtonColor } = player;
-		const dataGroups = i$9(advancedVSeed.dataset, (item) => item[encodingPlayer]);
+		const dataGroups = i$10(advancedVSeed.dataset, (item) => item[encodingPlayer]);
 		if (result.data && "values" in result.data) result.data.values = [];
 		const xValues = T$4(advancedVSeed.dataset.map((d) => d[encodingX]), (item) => item);
 		const specs = Object.values(dataGroups).map((items) => {
@@ -15892,7 +15991,7 @@ var init_playerScatter = __esmMin((() => {
 		const { encodingPlayer } = unfoldInfo;
 		const { autoPlay = true, interval = 1e3, loop = false, position, railColor, trackColor, sliderHandleColor, sliderHandleBorderColor, startButtonColor, pauseButtonColor, backwardButtonColor, forwardButtonColor } = player;
 		const { maxCount } = player;
-		const dataGroups = i$9(advancedVSeed.dataset, (item) => item[encodingPlayer]);
+		const dataGroups = i$10(advancedVSeed.dataset, (item) => item[encodingPlayer]);
 		if (result.data && "values" in result.data) result.data.values = [];
 		const specs = Object.values(dataGroups).map((items) => ({ data: {
 			id,
@@ -16162,7 +16261,7 @@ var init_playerPie = __esmMin((() => {
 		const { unfoldInfo } = datasetReshapeInfo[0];
 		const { encodingPlayer } = unfoldInfo;
 		const { maxCount, autoPlay = true, interval = 1e3, loop = false, position, railColor, trackColor, sliderHandleColor, sliderHandleBorderColor, startButtonColor, pauseButtonColor, backwardButtonColor, forwardButtonColor } = player;
-		const dataGroups = i$9(advancedVSeed.dataset, (item) => item[encodingPlayer]);
+		const dataGroups = i$10(advancedVSeed.dataset, (item) => item[encodingPlayer]);
 		if (result.data && "values" in result.data) result.data.values = [];
 		const specs = Object.keys(dataGroups).sort().map((key) => {
 			const sortedItems = dataGroups[key];
@@ -16410,12 +16509,11 @@ var init_pointAtmosphere = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/utils/index.js
-var EFFECT_NONE, toMs, getPrimaryEffect, allowAnimation, allowLineOrAreaAnimation;
+var EFFECT_NONE, getPrimaryEffect, allowAnimation, allowLineOrAreaAnimation;
 var init_utils$2 = __esmMin((() => {
 	init_types$1();
 	init_pointAtmosphere();
 	EFFECT_NONE = VScreenAnimationType.none;
-	toMs = (seconds) => (seconds ?? 0) * 1e3;
 	getPrimaryEffect = (config) => config?.effects?.[0] ?? EFFECT_NONE;
 	allowAnimation = (config) => {
 		if (!config?.enable) return false;
@@ -16428,16 +16526,34 @@ var init_utils$2 = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/createAnimationPipe.js
+var createAnimationPipe;
+var init_createAnimationPipe = __esmMin((() => {
+	init_utils$2();
+	createAnimationPipe = (stages) => (spec, { advancedVSeed }) => {
+		const animation = advancedVSeed.config[advancedVSeed.chartType]?.animation;
+		if (!animation?.enable) return {
+			...spec,
+			animation: false
+		};
+		const { appear, update, loop } = animation.params ?? {};
+		const animationUpdate = stages.update(update, spec);
+		return {
+			...spec,
+			animation: true,
+			animationAppear: stages.appear(appear),
+			animationNormal: stages.loop(loop, allowAnimation(appear), spec),
+			animationEnter: stages.enter ? stages.enter(update, loop, spec) : animationUpdate,
+			animationUpdate,
+			animationExit: stages.exit(update)
+		};
+	};
+}));
+//#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/utils/barMotion.js
-var horizontalTypes, isHorizontalBar, getBarGrowOptions, growBar, fadeInBar, setRandomDataKey, getBarMoveOptions, moveInBar, moveOutBar;
+var isHorizontalBar, getBarGrowOptions, growBar, fadeInBar, setRandomDataKey, getBarMoveOptions, moveInBar, moveOutBar;
 var init_barMotion = __esmMin((() => {
-	init_utils$4();
-	horizontalTypes = [
-		ChartTypeEnum.Bar,
-		ChartTypeEnum.BarParallel,
-		ChartTypeEnum.BarPercent
-	];
-	isHorizontalBar = (chartType) => horizontalTypes.includes(chartType);
+	isHorizontalBar = (direction) => "horizontal" === direction;
 	getBarGrowOptions = (isHorizontal) => (_datum, _element, _opt, context) => {
 		const overall = context.vchart.getChart().getComponentsByType("cartesianAxis-linear")[0]._scale.range()[0];
 		return isHorizontal ? { overall } : {
@@ -16445,8 +16561,8 @@ var init_barMotion = __esmMin((() => {
 			overall
 		};
 	};
-	growBar = (chartType) => {
-		const isHorizontal = isHorizontalBar(chartType);
+	growBar = (direction) => {
+		const isHorizontal = isHorizontalBar(direction);
 		return {
 			type: isHorizontal ? "growWidthIn" : "growHeightIn",
 			oneByOne: false,
@@ -16465,30 +16581,30 @@ var init_barMotion = __esmMin((() => {
 		spec.dataKey = dataKey;
 		if ("common" === spec.type && Array.isArray(spec.series)) spec.series.forEach((series) => series.dataKey = dataKey);
 	};
-	getBarMoveOptions = (chartType, orient) => {
-		const direction = isHorizontalBar(chartType) ? "y" : "x";
-		const size = "x" === direction ? "width" : "height";
+	getBarMoveOptions = (direction, orient) => {
+		const axis = isHorizontalBar(direction) ? "y" : "x";
+		const size = "x" === axis ? "width" : "height";
 		const offsetSign = "in" === orient ? 1 : -1;
 		return {
-			direction,
+			direction: axis,
 			orient: "negative",
-			point: (_datum, element, opt) => ({ [direction]: element.getGraphicAttribute(direction) + offsetSign * opt[size] })
+			point: (_datum, element, opt) => ({ [axis]: element.getGraphicAttribute(axis) + offsetSign * opt[size] })
 		};
 	};
-	moveInBar = (chartType, spec, isUpdate = false) => {
+	moveInBar = (direction, spec, isUpdate = false) => {
 		if (!isUpdate && spec) setRandomDataKey(spec);
-		const excludeChannels = isHorizontalBar(chartType) ? ["x"] : ["y"];
+		const excludeChannels = isHorizontalBar(direction) ? ["x"] : ["y"];
 		return {
 			type: "moveIn",
 			options: {
-				...getBarMoveOptions(chartType, "in"),
+				...getBarMoveOptions(direction, "in"),
 				excludeChannels
 			}
 		};
 	};
-	moveOutBar = (chartType) => ({
+	moveOutBar = (direction) => ({
 		type: "moveOut",
-		options: getBarMoveOptions(chartType, "out")
+		options: getBarMoveOptions(direction, "out")
 	});
 }));
 //#endregion
@@ -16565,8 +16681,7 @@ var init_barGroup = __esmMin((() => {
 		const { count } = getGroupInfo(context.vchart, _datum);
 		return 0 === count ? 1e3 : totalDuration / count / 2;
 	};
-	groupHighLightBar = (startTime, config, duration, interval, atmosphereDuration, isHorizontal, spec) => {
-		const totalDuration = 1e3 * duration;
+	groupHighLightBar = (startTime, config, totalDuration, interval, atmosphereDuration, isHorizontal, spec) => {
 		const color = config.color ?? "#4A90E2";
 		const isGradientChart = spec?.bar?.style?.fill?.gradient === "linear";
 		const fillColor = atmosphereColorToFill(color, isGradientChart, isHorizontal);
@@ -16604,7 +16719,7 @@ var init_barGroup = __esmMin((() => {
 				},
 				delayAfter: (datum, _element, _ctx, context) => {
 					const { count, index } = getGroupInfo(context.vchart, datum);
-					return 0 === count ? 0 : (interval + atmosphereDuration) * 1e3 + (count - index - 1) * totalDuration / count;
+					return 0 === count ? 0 : interval + atmosphereDuration + (count - index - 1) * totalDuration / count;
 				},
 				duration: getSliceDuration(totalDuration)
 			}]
@@ -16619,9 +16734,9 @@ var init_bar$9 = __esmMin((() => {
 	init_barMotion();
 	init_barColor();
 	init_barGroup();
-	getLoopResult = (effect, chartType, spec) => {
-		if (effect === VScreenAnimationType.growth) return growBar(chartType);
-		if (effect === VScreenAnimationType.moveIn) return moveInBar(chartType, spec);
+	getLoopResult = (effect, direction, spec) => {
+		if (effect === VScreenAnimationType.growth) return growBar(direction);
+		if (effect === VScreenAnimationType.moveIn) return moveInBar(direction, spec);
 		if (effect === VScreenAnimationType.load) return fadeInBar();
 		return {};
 	};
@@ -16634,55 +16749,55 @@ var init_bar$8 = __esmMin((() => {
 	init_types$1();
 	init_utils$2();
 	init_bar$9();
-	barAppear = (config, chartType) => {
+	barAppear = (config, direction) => {
 		if (!allowAnimation(config)) return false;
 		const effect = getPrimaryEffect(config);
 		return { bar: {
-			...effect === VScreenAnimationType.growth ? growBar(chartType) : effect === VScreenAnimationType.load ? fadeInBar() : {},
+			...effect === VScreenAnimationType.growth ? growBar(direction) : effect === VScreenAnimationType.load ? fadeInBar() : {},
 			easing: config?.ease,
-			duration: toMs(config?.duration ?? 1)
+			duration: config?.duration ?? 1e3
 		} };
 	};
-	barUpdate = (config, chartType, spec) => {
-		if (!allowAnimation(config)) return false;
+	barUpdate = (config, direction, spec) => {
+		if (!config?.enable) return false;
 		return { bar: {
-			...getPrimaryEffect(config) === VScreenAnimationType.moveIn ? moveInBar(chartType, spec, true) : {},
+			...getPrimaryEffect(config) === VScreenAnimationType.moveIn ? moveInBar(direction, spec, true) : {},
 			easing: config?.ease,
-			duration: toMs(config?.duration ?? 1)
+			duration: config?.duration ?? 1e3
 		} };
 	};
-	barLoop = (config, ignoreFirstNormal, chartType, spec) => {
+	barLoop = (config, ignoreFirstNormal, direction, spec) => {
 		if (!config?.enable) return false;
 		const interval = config.interval ?? 0;
-		const startTime = ignoreFirstNormal ? toMs(interval) : 0;
+		const startTime = ignoreFirstNormal ? interval : 0;
 		const loop = config.loop;
 		const atmosphere = config.atmosphere;
 		const loopEffect = getPrimaryEffect(loop);
 		const result = [];
-		let loopDuration = loopEffect === VScreenAnimationType.none ? 0 : 1;
-		const atmosphereDuration = loopEffect === VScreenAnimationType.none ? 2 : 1;
+		let loopDuration = loopEffect === VScreenAnimationType.none ? 0 : 1e3;
+		const atmosphereDuration = loopEffect === VScreenAnimationType.none ? 2e3 : 1e3;
 		if (loopEffect === VScreenAnimationType.highLight && loop) {
-			loopDuration = loop.duration ?? .7 * getGroupCountFromSpec(spec).groupCount + .85;
-			result.push(...groupHighLightBar(startTime, loop, loopDuration, interval, atmosphereDuration, isHorizontalBar(chartType), spec));
+			loopDuration = loop.duration ?? 700 * getGroupCountFromSpec(spec).groupCount + 850;
+			result.push(...groupHighLightBar(startTime, loop, loopDuration, interval, atmosphereDuration, isHorizontalBar(direction), spec));
 		} else if (loop) result.push({
-			...getLoopResult(loopEffect, chartType, spec),
+			...getLoopResult(loopEffect, direction, spec),
 			startTime,
 			easing: loop.ease,
-			duration: toMs(loopDuration),
-			delayAfter: toMs(interval + atmosphereDuration),
+			duration: loopDuration,
+			delayAfter: interval + atmosphereDuration,
 			loop: true,
 			controlOptions: { immediatelyApply: false }
 		});
 		if (atmosphere?.ease || atmosphere?.color) result.push({
 			loop: true,
 			startTime,
-			delay: toMs(loopDuration),
-			delayAfter: toMs(interval),
-			duration: toMs(atmosphereDuration),
+			delay: loopDuration,
+			delayAfter: interval,
+			duration: atmosphereDuration,
 			easing: atmosphere.ease,
 			custom: StreamLight,
 			customParameters: {
-				isHorizontal: isHorizontalBar(chartType),
+				isHorizontal: isHorizontalBar(direction),
 				attribute: {
 					fill: transform2VChartColor(atmosphere.color),
 					blur: 0,
@@ -16692,12 +16807,12 @@ var init_bar$8 = __esmMin((() => {
 		});
 		return result.length > 0 ? { bar: result } : false;
 	};
-	barExit = (config, chartType) => {
-		if (!allowAnimation(config)) return false;
-		if (getPrimaryEffect(config) !== VScreenAnimationType.moveIn) return {};
+	barExit = (config, direction) => {
+		if (!config?.enable) return false;
 		return { bar: {
-			...moveOutBar(chartType),
-			duration: 1e3
+			...getPrimaryEffect(config) === VScreenAnimationType.moveIn ? moveOutBar(direction) : {},
+			duration: config.duration ?? 1e3,
+			easing: config.ease
 		} };
 	};
 }));
@@ -16723,7 +16838,7 @@ var init_lineOrArea$1 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/lineOrArea.js
-var lineOrAreaAppear, lineOrAreaLoop, lineOrAreaUpdate, lineOrAreaExit;
+var lineOrAreaAppear, lineOrAreaLoop, lineOrAreaUpdate;
 var init_lineOrArea = __esmMin((() => {
 	init_types$1();
 	init_utils$2();
@@ -16734,7 +16849,7 @@ var init_lineOrArea = __esmMin((() => {
 		if (!config || !allowLineOrAreaAnimation(config)) return false;
 		const { effects, ease, duration } = config;
 		const effect = effects?.[0];
-		const durationMs = (duration ?? 1) * 1e3;
+		const durationMs = duration ?? 1e3;
 		let lineOrAreaConfigByType = {};
 		let pointConfigByType = {};
 		if (effect === VScreenAnimationType.growth) {
@@ -16761,9 +16876,9 @@ var init_lineOrArea = __esmMin((() => {
 	};
 	lineOrAreaLoop = (config, ignoreFirstNormal) => {
 		if (!config?.enable) return false;
-		const { loop, atmosphere, interval = 5 } = config;
-		const totalDuration = 2;
-		const startTime = ignoreFirstNormal ? 1e3 * interval : 0;
+		const { loop, atmosphere, interval = 5e3 } = config;
+		const totalDuration = 2e3;
+		const startTime = ignoreFirstNormal ? interval : 0;
 		const lineOrAreaResult = [];
 		const pointResult = [];
 		const { effects: loopEffects = [], ease: loopEase = "linear" } = loop ?? {};
@@ -16773,8 +16888,8 @@ var init_lineOrArea = __esmMin((() => {
 		const timeLineConfig = {
 			startTime,
 			easing: loopEase,
-			duration: 1e3 * loopDuration,
-			delayAfter: (interval + atmosphereDuration) * 1e3,
+			duration: loopDuration,
+			delayAfter: interval + atmosphereDuration,
 			loop: true,
 			controlOptions: { immediatelyApply: false }
 		};
@@ -16790,9 +16905,9 @@ var init_lineOrArea = __esmMin((() => {
 		const atmosphereLineOrAreaResult = {
 			loop: true,
 			startTime,
-			delay: 1e3 * loopDuration,
-			delayAfter: 1e3 * interval,
-			duration: 1e3 * atmosphereDuration,
+			delay: loopDuration,
+			delayAfter: interval,
+			duration: atmosphereDuration,
 			easing: atmosphereEase,
 			custom: StreamLight,
 			customParameters: (...args) => ({
@@ -16808,8 +16923,8 @@ var init_lineOrArea = __esmMin((() => {
 		const atmospherePointResult = {
 			loop: true,
 			startTime,
-			delayAfter: (interval + atmosphereDuration) * 1e3,
-			duration: 1e3 * atmosphereDuration,
+			delayAfter: interval + atmosphereDuration,
+			duration: atmosphereDuration,
 			easing: atmosphereEase,
 			...atmospherePoint(atmosphereEffect)
 		};
@@ -16821,9 +16936,9 @@ var init_lineOrArea = __esmMin((() => {
 		};
 	};
 	lineOrAreaUpdate = (config) => {
-		if (!config || !allowLineOrAreaAnimation(config)) return false;
+		if (!config?.enable) return false;
 		const { ease, duration } = config;
-		const durationMs = (duration ?? 1) * 1e3;
+		const durationMs = duration ?? 1e3;
 		return {
 			line: {
 				easing: ease,
@@ -16834,25 +16949,6 @@ var init_lineOrArea = __esmMin((() => {
 				duration: durationMs
 			},
 			point: {
-				easing: ease,
-				duration: durationMs
-			}
-		};
-	};
-	lineOrAreaExit = (config) => {
-		if (!config || !allowLineOrAreaAnimation(config)) return false;
-		const { ease, duration } = config;
-		const durationMs = (duration ?? 1) * 1e3;
-		return {
-			line: {
-				easing: ease,
-				duration: durationMs
-			},
-			point: {
-				easing: ease,
-				duration: durationMs
-			},
-			area: {
 				easing: ease,
 				duration: durationMs
 			}
@@ -16868,21 +16964,20 @@ var init_pie$10 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/pie.js
-var pieAppear, pieUpdate, pieEnter, pieLoop, pieExit;
+var pieAppear, roseAppear, pieUpdate, pieEnter, pieLoop;
 var init_pie$9 = __esmMin((() => {
-	init_utils$4();
 	init_types$1();
 	init_utils$2();
 	init_pie$10();
-	pieAppear = (config, chartType) => {
+	pieAppear = (config) => {
 		if (!config || !allowAnimation(config)) return false;
 		const { effects, ease, duration } = config;
 		const effect = effects?.[0];
-		const durationMs = (duration ?? 1) * 1e3;
+		const durationMs = duration ?? 1e3;
 		let configByType = {};
 		if (effect === VScreenAnimationType.radial) configByType = radialPie();
 		else if (effect === VScreenAnimationType.scale) configByType = scalePie();
-		const result = {
+		return {
 			pie: {
 				...configByType,
 				easing: ease,
@@ -16894,13 +16989,18 @@ var init_pie$9 = __esmMin((() => {
 				duration: durationMs
 			}
 		};
-		if (chartType === ChartTypeEnum.Rose && effect === VScreenAnimationType.radial) result.preset = "growAngle";
-		return result;
+	};
+	roseAppear = (config) => {
+		const result = pieAppear(config);
+		return result && getPrimaryEffect(config) === VScreenAnimationType.radial ? {
+			...result,
+			preset: "growAngle"
+		} : result;
 	};
 	pieUpdate = (config) => {
-		if (!config || !allowAnimation(config)) return false;
+		if (!config?.enable) return false;
 		const { ease, duration } = config;
-		const durationMs = (duration ?? 1) * 1e3;
+		const durationMs = duration ?? 1e3;
 		return {
 			pie: {
 				easing: ease,
@@ -16913,9 +17013,9 @@ var init_pie$9 = __esmMin((() => {
 		};
 	};
 	pieEnter = (config, atmosphereConfig) => {
-		if (!config || !allowAnimation(config)) return false;
+		if (!config?.enable) return false;
 		const { ease, duration } = config;
-		const durationMs = (duration ?? 1) * 1e3;
+		const durationMs = duration ?? 1e3;
 		let configByType = {};
 		if (atmosphereConfig?.enable && getPrimaryEffect(atmosphereConfig.loop) === VScreenAnimationType.enlarge) configByType = { type: "fadeIn" };
 		return {
@@ -16934,9 +17034,9 @@ var init_pie$9 = __esmMin((() => {
 		if (!config?.enable) return false;
 		const { loop, interval = 0 } = config;
 		let loopResult = {};
-		const startTime = ignoreFirstNormal ? 1e3 * interval : 0;
+		const startTime = ignoreFirstNormal ? interval : 0;
 		const { effects: loopEffects = [], ease: loopEase } = loop ?? {};
-		const loopDuration = 1;
+		const loopDuration = 1e3;
 		const loopEffect = loopEffects[0];
 		if (loopEffect === VScreenAnimationType.enlarge) loopResult = [{
 			channel: { outerRadius: {
@@ -16944,11 +17044,11 @@ var init_pie$9 = __esmMin((() => {
 				to: (...p) => p[1].attribute.outerRadius + 10
 			} },
 			startTime,
-			oneByOne: 1e3 * loopDuration,
-			duration: loopDuration / 2 * 1e3,
+			oneByOne: loopDuration,
+			duration: loopDuration / 2,
 			loop: true,
 			easing: loopEase,
-			delayAfter: loopDuration / 2 * 1e3 + 1e3 * interval,
+			delayAfter: loopDuration / 2 + interval,
 			controlOptions: { immediatelyApply: false }
 		}, {
 			channel: { outerRadius: {
@@ -16956,11 +17056,11 @@ var init_pie$9 = __esmMin((() => {
 				to: (...p) => p[1].attribute.outerRadius
 			} },
 			startTime,
-			oneByOne: 1e3 * loopDuration,
-			duration: loopDuration / 2 * 1e3,
+			oneByOne: loopDuration,
+			duration: loopDuration / 2,
 			easing: loopEase,
-			delay: loopDuration / 2 * 1e3,
-			delayAfter: 1e3 * interval,
+			delay: loopDuration / 2,
+			delayAfter: interval,
 			loop: true,
 			controlOptions: { immediatelyApply: false }
 		}];
@@ -16984,11 +17084,11 @@ var init_pie$9 = __esmMin((() => {
 					}
 				},
 				startTime,
-				oneByOne: 1e3 * loopDuration,
-				duration: loopDuration / 2 * 1e3,
+				oneByOne: loopDuration,
+				duration: loopDuration / 2,
 				loop: true,
 				easing: loopEase,
-				delayAfter: loopDuration / 2 * 1e3 + 1e3 * interval,
+				delayAfter: loopDuration / 2 + interval,
 				controlOptions: { immediatelyApply: false }
 			}, {
 				channel: {
@@ -17008,11 +17108,11 @@ var init_pie$9 = __esmMin((() => {
 					}
 				},
 				startTime,
-				oneByOne: 1e3 * loopDuration,
-				duration: loopDuration / 2 * 1e3,
+				oneByOne: loopDuration,
+				duration: loopDuration / 2,
 				easing: loopEase,
-				delay: loopDuration / 2 * 1e3,
-				delayAfter: 1e3 * interval,
+				delay: loopDuration / 2,
+				delayAfter: interval,
 				loop: true,
 				controlOptions: { immediatelyApply: false }
 			}];
@@ -17022,30 +17122,29 @@ var init_pie$9 = __esmMin((() => {
 			rose: loopResult
 		};
 	};
-	pieExit = () => false;
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/radar.js
-var radarAppear, radarLoop, radarUpdate, radarExit;
+var radarAppear, radarLoop, radarUpdate;
 var init_radar$7 = __esmMin((() => {
 	init_utils$2();
 	radarAppear = (config) => {
 		if (!allowAnimation(config)) return false;
 		return {
 			preset: "radial" === getPrimaryEffect(config) ? "clipIn" : "grow",
-			duration: toMs(config?.duration),
+			duration: config?.duration ?? 0,
 			easing: config?.ease
 		};
 	};
 	radarLoop = (config, ignoreFirstNormal) => {
 		if (!config?.enable) return false;
 		const interval = config.interval ?? 0;
-		const startTime = ignoreFirstNormal ? toMs(interval) : 0;
+		const startTime = ignoreFirstNormal ? interval : 0;
 		if ((config.atmosphere?.effect ?? EFFECT_NONE) === EFFECT_NONE) return false;
 		return { point: {
 			loop: true,
 			startTime,
-			delayAfter: toMs(interval),
+			delayAfter: interval,
 			duration: 1e3,
 			easing: config.atmosphere?.ease,
 			...atmospherePoint(config.atmosphere?.effect),
@@ -17053,16 +17152,9 @@ var init_radar$7 = __esmMin((() => {
 		} };
 	};
 	radarUpdate = (config) => {
-		if (!allowAnimation(config)) return false;
+		if (!config?.enable) return false;
 		return {
-			duration: toMs(config?.duration),
-			easing: config?.ease
-		};
-	};
-	radarExit = (config) => {
-		if (!allowAnimation(config)) return false;
-		return {
-			duration: toMs(config?.duration),
+			duration: config.duration ?? 1e3,
 			easing: config?.ease
 		};
 	};
@@ -17113,30 +17205,30 @@ var init_scatter$10 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/scatter.js
-var scatterAppear, scatterLoop, scatterUpdate, scatterExit;
+var scatterAppear, scatterLoop, scatterUpdate;
 var init_scatter$9 = __esmMin((() => {
 	init_utils$2();
 	init_scatter$10();
 	scatterAppear = (config) => {
 		if (!allowAnimation(config)) return false;
 		const effect = getPrimaryEffect(config);
-		const duration = toMs(config?.duration);
+		const duration = config?.duration ?? 0;
 		return { point: "growth" === effect ? flyInScatter(duration, config?.ease) : "scale" === effect ? scaleInScatter(duration, config?.ease) : [] };
 	};
 	scatterLoop = (config, ignoreFirstNormal) => {
 		if (!config?.enable) return false;
 		const interval = config.interval ?? 0;
-		const startTime = ignoreFirstNormal ? toMs(interval) : 0;
+		const startTime = ignoreFirstNormal ? interval : 0;
 		const effect = getPrimaryEffect(config.loop);
 		const loopDuration = effect === EFFECT_NONE ? 0 : 1e3;
 		const atmosphereDuration = effect === EFFECT_NONE ? 2e3 : 1e3;
 		const result = [];
-		if ("growth" === effect) result.push(...flyInScatter(loopDuration, config.loop?.ease, true, startTime, toMs(interval + 1)));
-		else if ("scale" === effect) result.push(...scaleInScatter(loopDuration, config.loop?.ease, true, startTime, toMs(interval + 1)));
+		if ("growth" === effect) result.push(...flyInScatter(loopDuration, config.loop?.ease, true, startTime, interval + 1e3));
+		else if ("scale" === effect) result.push(...scaleInScatter(loopDuration, config.loop?.ease, true, startTime, interval + 1e3));
 		if ((config.atmosphere?.effect ?? EFFECT_NONE) !== EFFECT_NONE) result.push({
 			loop: true,
 			startTime,
-			delayAfter: toMs(interval),
+			delayAfter: interval,
 			duration: atmosphereDuration,
 			easing: config.atmosphere?.ease,
 			...atmospherePoint(config.atmosphere?.effect),
@@ -17145,111 +17237,61 @@ var init_scatter$9 = __esmMin((() => {
 		return { point: result };
 	};
 	scatterUpdate = (config) => {
-		if (!allowAnimation(config)) return false;
+		if (!config?.enable) return false;
 		return { point: {
-			duration: toMs(config?.duration),
-			easing: config?.ease
-		} };
-	};
-	scatterExit = (config) => {
-		if (!allowAnimation(config)) return false;
-		return { point: {
-			duration: toMs(config?.duration),
+			duration: config.duration ?? 1e3,
 			easing: config?.ease
 		} };
 	};
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/animation.js
-var barFamily, pieFamily, lineFamily, animation;
+var createBarAnimation, barAnimation, columnAnimation, lineAreaAnimation, pieStages, pieAnimation, roseAnimation, scatterAnimation, radarAnimation;
 var init_animation$2 = __esmMin((() => {
-	init_utils$2();
+	init_createAnimationPipe();
 	init_bar$8();
 	init_lineOrArea();
 	init_pie$9();
 	init_radar$7();
 	init_scatter$9();
-	barFamily = [
-		"bar",
-		"barPercent",
-		"barParallel",
-		"column",
-		"columnPercent",
-		"columnParallel"
-	];
-	pieFamily = [
-		"pie",
-		"donut",
-		"rose",
-		"roseParallel"
-	];
-	lineFamily = [
-		"line",
-		"area",
-		"areaPercent"
-	];
-	animation = (spec, context) => {
-		const { chartType, config } = context.advancedVSeed;
-		const nextSpec = { ...spec };
-		const animationConfig = (config?.[chartType])?.animation;
-		if (!animationConfig?.enable) {
-			nextSpec.animation = false;
-			return nextSpec;
-		}
-		const params = animationConfig.params;
-		const appear = params?.appear;
-		const ignoreFirstNormal = allowAnimation(appear);
-		let animationAppear = false;
-		let animationNormal = false;
-		let animationEnter = false;
-		let animationUpdate = false;
-		let animationExit = false;
-		if (barFamily.includes(chartType)) {
-			const barParams = params;
-			animationAppear = barAppear(barParams?.appear, chartType);
-			animationNormal = barLoop(barParams?.loop, ignoreFirstNormal, chartType, nextSpec);
-			animationEnter = barUpdate(barParams?.update, chartType, nextSpec);
-			animationUpdate = animationEnter;
-			animationExit = barExit(barParams?.update, chartType);
-		} else if (lineFamily.includes(chartType)) {
-			const lineParams = params;
-			animationAppear = lineOrAreaAppear(lineParams?.appear);
-			animationNormal = lineOrAreaLoop(lineParams?.loop, ignoreFirstNormal);
-			animationEnter = lineOrAreaUpdate(lineParams?.update);
-			animationUpdate = animationEnter;
-			animationExit = lineOrAreaExit(lineParams?.update);
-		} else if (pieFamily.includes(chartType)) {
-			const pieParams = params;
-			animationAppear = pieAppear(pieParams?.appear, chartType);
-			animationNormal = pieLoop(pieParams?.loop, ignoreFirstNormal);
-			animationEnter = pieEnter(pieParams?.update, pieParams?.loop);
-			animationUpdate = pieUpdate(pieParams?.update);
-			animationExit = pieExit();
-		} else if ("scatter" === chartType) {
-			const scatterParams = params;
-			animationAppear = scatterAppear(scatterParams?.appear);
-			animationNormal = scatterLoop(scatterParams?.loop, ignoreFirstNormal);
-			animationEnter = scatterUpdate(scatterParams?.update);
-			animationUpdate = animationEnter;
-			animationExit = scatterExit(scatterParams?.update);
-		} else if ("radar" === chartType) {
-			const radarParams = params;
-			animationAppear = radarAppear(radarParams?.appear);
-			animationNormal = radarLoop(radarParams?.loop, ignoreFirstNormal);
-			animationEnter = radarUpdate(radarParams?.update);
-			animationUpdate = animationEnter;
-			animationExit = radarExit(radarParams?.update);
-		}
-		return {
-			...nextSpec,
-			animation: true,
-			animationAppear,
-			animationNormal,
-			animationEnter,
-			animationUpdate,
-			animationExit
-		};
+	createBarAnimation = (direction) => createAnimationPipe({
+		appear: (config) => barAppear(config, direction),
+		loop: (config, afterAppear, spec) => barLoop(config, afterAppear, direction, spec),
+		update: (config, spec) => barUpdate(config, direction, spec),
+		exit: (config) => barExit(config, direction)
+	});
+	barAnimation = createBarAnimation("horizontal");
+	columnAnimation = createBarAnimation("vertical");
+	lineAreaAnimation = createAnimationPipe({
+		appear: lineOrAreaAppear,
+		loop: lineOrAreaLoop,
+		update: lineOrAreaUpdate,
+		exit: lineOrAreaUpdate
+	});
+	pieStages = {
+		appear: pieAppear,
+		loop: pieLoop,
+		update: pieUpdate,
+		enter: pieEnter,
+		exit: pieUpdate
 	};
+	pieAnimation = createAnimationPipe(pieStages);
+	roseAnimation = createAnimationPipe({
+		...pieStages,
+		appear: roseAppear
+	});
+	scatterAnimation = createAnimationPipe({
+		appear: scatterAppear,
+		loop: scatterLoop,
+		update: scatterUpdate,
+		exit: scatterUpdate
+	});
+	radarAnimation = createAnimationPipe({
+		appear: radarAppear,
+		loop: radarLoop,
+		update: radarUpdate,
+		exit: radarUpdate
+	});
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/index.js
@@ -17271,7 +17313,7 @@ var init_pipes$3 = __esmMin((() => {
 	init_legend$3();
 	init_color$4();
 	init_pivotChart();
-	init_markStyle$4();
+	init_markStyle$3();
 	init_annotation$5();
 	init_crosshair$2();
 	init_brush$2();
@@ -19641,7 +19683,7 @@ var init_line$7 = __esmMin((() => {
 		const { vseed } = context;
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
-		const config = replaceNullToUndefined(i$10(vseed, [
+		const config = replaceNullToUndefined(i$9(vseed, [
 			"backgroundColor",
 			"color",
 			"label",
@@ -19673,7 +19715,7 @@ var init_column$7 = __esmMin((() => {
 		const { vseed } = context;
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
-		const config = replaceNullToUndefined(i$10(vseed, [
+		const config = replaceNullToUndefined(i$9(vseed, [
 			"backgroundColor",
 			"color",
 			"label",
@@ -19708,7 +19750,7 @@ var init_pie$7 = __esmMin((() => {
 		const { vseed } = context;
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
-		const config = replaceNullToUndefined(i$10(vseed, [
+		const config = replaceNullToUndefined(i$9(vseed, [
 			"backgroundColor",
 			"color",
 			"label",
@@ -19735,7 +19777,7 @@ var init_dualAxis$7 = __esmMin((() => {
 		const { vseed } = context;
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
-		const config = replaceNullToUndefined(i$10(vseed, [
+		const config = replaceNullToUndefined(i$9(vseed, [
 			"backgroundColor",
 			"color",
 			"label",
@@ -19769,7 +19811,7 @@ var init_scatter$7 = __esmMin((() => {
 		const { vseed } = context;
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
-		const config = replaceNullToUndefined(i$10(vseed, [
+		const config = replaceNullToUndefined(i$9(vseed, [
 			"backgroundColor",
 			"color",
 			"label",
@@ -19805,7 +19847,7 @@ var init_histogram$6 = __esmMin((() => {
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
 		const hasColorEncoding = (advancedVSeed?.dimensions || []).find((field) => field?.encoding === "color");
-		const pickedConfig = i$10(vseed, [
+		const pickedConfig = i$9(vseed, [
 			"backgroundColor",
 			"color",
 			"label",
@@ -19883,7 +19925,7 @@ var init_boxplot$3 = __esmMin((() => {
 		const { vseed } = context;
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
-		const config = replaceNullToUndefined(i$10(vseed, [
+		const config = replaceNullToUndefined(i$9(vseed, [
 			"backgroundColor",
 			"color",
 			"label",
@@ -19914,7 +19956,7 @@ var init_heatmap$8 = __esmMin((() => {
 		const { vseed } = context;
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
-		const config = replaceNullToUndefined(i$10(vseed, [
+		const config = replaceNullToUndefined(i$9(vseed, [
 			"backgroundColor",
 			"color",
 			"label",
@@ -19943,7 +19985,7 @@ var init_treeMap$5 = __esmMin((() => {
 		const { vseed } = context;
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
-		const config = replaceNullToUndefined(i$10(vseed, [
+		const config = replaceNullToUndefined(i$9(vseed, [
 			"backgroundColor",
 			"color",
 			"label",
@@ -19967,7 +20009,7 @@ var init_sunburst$5 = __esmMin((() => {
 		const { vseed } = context;
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
-		const config = replaceNullToUndefined(i$10(vseed, [
+		const config = replaceNullToUndefined(i$9(vseed, [
 			"backgroundColor",
 			"color",
 			"label",
@@ -19991,7 +20033,7 @@ var init_circlePacking$5 = __esmMin((() => {
 		const { vseed } = context;
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
-		const config = replaceNullToUndefined(i$10(vseed, [
+		const config = replaceNullToUndefined(i$9(vseed, [
 			"backgroundColor",
 			"color",
 			"label",
@@ -20015,7 +20057,7 @@ var init_hierarchySankey$5 = __esmMin((() => {
 		const { vseed } = context;
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
-		const config = replaceNullToUndefined(i$10(vseed, [
+		const config = replaceNullToUndefined(i$9(vseed, [
 			"backgroundColor",
 			"color",
 			"label",
@@ -20039,7 +20081,7 @@ var init_sankey$5 = __esmMin((() => {
 		const { vseed } = context;
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
-		const config = replaceNullToUndefined(i$10(vseed, [
+		const config = replaceNullToUndefined(i$9(vseed, [
 			"backgroundColor",
 			"color",
 			"label",
@@ -20137,12 +20179,12 @@ var init_pivot$1 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/markStyle/markStyle.js
 var markStyle_markStyle;
-var init_markStyle$3 = __esmMin((() => {
+var init_markStyle$2 = __esmMin((() => {
 	init_dist$1();
 	init_utils$4();
 	markStyle_markStyle = (advancedVSeed, context) => {
 		const { vseed } = context;
-		const markStyle = replaceNullToUndefined(i$10(vseed, [
+		const markStyle = replaceNullToUndefined(i$9(vseed, [
 			"barStyle",
 			"pointStyle",
 			"lineStyle",
@@ -20158,8 +20200,8 @@ var init_markStyle$3 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/markStyle/index.js
-var init_markStyle$2 = __esmMin((() => {
-	init_markStyle$3();
+var init_markStyle$1 = __esmMin((() => {
+	init_markStyle$2();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/annotation/annotation.js
@@ -20168,7 +20210,7 @@ var init_annotation$4 = __esmMin((() => {
 	init_dist$1();
 	annotation_annotation = (advancedVSeed, context) => {
 		const { vseed } = context;
-		const annotation = i$10(vseed, [
+		const annotation = i$9(vseed, [
 			"annotationPoint",
 			"annotationHorizontalLine",
 			"annotationVerticalLine",
@@ -20604,7 +20646,7 @@ var init_pipes$2 = __esmMin((() => {
 	init_config$3();
 	init_theme$3();
 	init_pivot$1();
-	init_markStyle$2();
+	init_markStyle$1();
 	init_annotation$3();
 	init_analysis$2();
 	init_measures$1();
@@ -21478,7 +21520,7 @@ var init_tableConfig = __esmMin((() => {
 		const { vseed } = context;
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
-		const config = i$10(vseed, [
+		const config = i$9(vseed, [
 			"backgroundColor",
 			"bodyFontSize",
 			"bodyFontColor",
@@ -21507,7 +21549,7 @@ var init_pivotTableConfig = __esmMin((() => {
 		const { vseed } = context;
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
-		const config = i$10(vseed, [
+		const config = i$9(vseed, [
 			"backgroundColor",
 			"bodyFontSize",
 			"bodyFontColor",
@@ -21689,7 +21731,7 @@ var init_cellStyle$3 = __esmMin((() => {
 	init_utils$4();
 	cellStyle = (advancedVSeed, context) => {
 		const { vseed } = context;
-		const style = replaceNullToUndefined(i$10(vseed, ["bodyCellStyle"]));
+		const style = replaceNullToUndefined(i$9(vseed, ["bodyCellStyle"]));
 		return {
 			...advancedVSeed,
 			cellStyle: style
@@ -21795,7 +21837,7 @@ var init_line$5 = __esmMin((() => {
 	lineSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initLine,
-		animation,
+		lineAreaAnimation,
 		regionPadding,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
@@ -21806,7 +21848,7 @@ var init_line$5 = __esmMin((() => {
 		brush_brush,
 		verticalCrosshairLine,
 		colorAdapter(discreteLegend, colorLegend),
-		colorPointStyleFill(pointStyle_pointStyle),
+		colorPointStyleFill(pointStyle),
 		pointStateDimensionHover,
 		colorLineStyleFill(lineStyle_lineStyle),
 		label_label,
@@ -21825,7 +21867,7 @@ var init_line$5 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initLine,
-			animation,
+			lineAreaAnimation,
 			regionPadding,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
@@ -21835,7 +21877,7 @@ var init_line$5 = __esmMin((() => {
 			pivotAxisStyle(yLinear),
 			brush_brush,
 			verticalCrosshairLine,
-			colorPointStyleFill(pointStyle_pointStyle),
+			colorPointStyleFill(pointStyle),
 			pointStateDimensionHover,
 			colorLineStyleFill(lineStyle_lineStyle),
 			label_label,
@@ -21862,7 +21904,7 @@ var init_column$5 = __esmMin((() => {
 	columnSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initColumn,
-		animation,
+		columnAnimation,
 		regionPadding,
 		stackCornerRadius_stackCornerRadius,
 		barMaxWidth_barMaxWidth,
@@ -21878,7 +21920,7 @@ var init_column$5 = __esmMin((() => {
 		tooltip_tooltip({ titleEncoding: "x" }),
 		verticalCrosshairRect,
 		colorAdapter(discreteLegend, colorLegend),
-		colorBarStyleFill(barStyle_barStyle),
+		colorBarStyleFill(columnStyle),
 		annotationPoint,
 		annotationVerticalLine_annotationVerticalLine,
 		annotationHorizontalLine_annotationHorizontalLine,
@@ -21893,7 +21935,7 @@ var init_column$5 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initColumn,
-			animation,
+			columnAnimation,
 			regionPadding,
 			stackCornerRadius_stackCornerRadius,
 			barMaxWidth_barMaxWidth,
@@ -21908,7 +21950,7 @@ var init_column$5 = __esmMin((() => {
 			label_label,
 			tooltip_tooltip({ titleEncoding: "x" }),
 			verticalCrosshairRect,
-			colorBarStyleFill(barStyle_barStyle),
+			colorBarStyleFill(columnStyle),
 			annotationPoint,
 			annotationVerticalLine_annotationVerticalLine,
 			annotationHorizontalLine_annotationHorizontalLine,
@@ -21931,7 +21973,7 @@ var init_columnParallel$2 = __esmMin((() => {
 	columnParallelSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initColumnParallel,
-		animation,
+		columnAnimation,
 		regionPadding,
 		stackCornerRadius_stackCornerRadius,
 		barMaxWidth_barMaxWidth,
@@ -21947,7 +21989,7 @@ var init_columnParallel$2 = __esmMin((() => {
 		tooltip_tooltip({ titleEncoding: "x" }),
 		colorAdapter(discreteLegend, colorLegend),
 		verticalCrosshairRect,
-		colorBarStyleFill(barStyle_barStyle),
+		colorBarStyleFill(columnStyle),
 		annotationPoint,
 		annotationVerticalLine_annotationVerticalLine,
 		annotationHorizontalLine_annotationHorizontalLine,
@@ -21961,7 +22003,7 @@ var init_columnParallel$2 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initColumnParallel,
-			animation,
+			columnAnimation,
 			regionPadding,
 			stackCornerRadius_stackCornerRadius,
 			barMaxWidth_barMaxWidth,
@@ -21975,7 +22017,7 @@ var init_columnParallel$2 = __esmMin((() => {
 			label_label,
 			tooltip_tooltip({ titleEncoding: "x" }),
 			verticalCrosshairRect,
-			colorBarStyleFill(barStyle_barStyle),
+			colorBarStyleFill(columnStyle),
 			annotationPoint,
 			annotationVerticalLine_annotationVerticalLine,
 			annotationHorizontalLine_annotationHorizontalLine,
@@ -21997,7 +22039,7 @@ var init_columnPercent$2 = __esmMin((() => {
 	columnPercentSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initColumn,
-		animation,
+		columnAnimation,
 		regionPadding,
 		stackCornerRadius_stackCornerRadius,
 		stackInverse,
@@ -22014,7 +22056,7 @@ var init_columnPercent$2 = __esmMin((() => {
 		tooltip_tooltip({ titleEncoding: "x" }),
 		colorAdapter(discreteLegend, colorLegend),
 		verticalCrosshairRect,
-		colorBarStyleFill(barStyle_barStyle),
+		colorBarStyleFill(columnStyle),
 		annotationPoint,
 		annotationVerticalLine_annotationVerticalLine,
 		annotationHorizontalLine_annotationHorizontalLine,
@@ -22027,7 +22069,7 @@ var init_columnPercent$2 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initColumn,
-			animation,
+			columnAnimation,
 			regionPadding,
 			stackCornerRadius_stackCornerRadius,
 			stackInverse,
@@ -22043,7 +22085,7 @@ var init_columnPercent$2 = __esmMin((() => {
 			label_label,
 			tooltip_tooltip({ titleEncoding: "x" }),
 			verticalCrosshairRect,
-			colorBarStyleFill(barStyle_barStyle),
+			colorBarStyleFill(columnStyle),
 			annotationPoint,
 			annotationVerticalLine_annotationVerticalLine,
 			annotationHorizontalLine_annotationHorizontalLine,
@@ -22064,7 +22106,7 @@ var init_bar$5 = __esmMin((() => {
 	barSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initBar,
-		animation,
+		barAnimation,
 		regionPadding,
 		stackCornerRadius_stackCornerRadius,
 		barMaxWidth_barMaxWidth,
@@ -22079,7 +22121,7 @@ var init_bar$5 = __esmMin((() => {
 		tooltip_tooltip({ titleEncoding: "y" }),
 		colorAdapter(discreteLegend, colorLegend),
 		horizontalCrosshairRect,
-		colorBarStyleFill(barStyle_barStyle),
+		colorBarStyleFill(barStyle),
 		annotationPoint,
 		annotationVerticalLine_annotationVerticalLine,
 		annotationHorizontalLine_annotationHorizontalLine,
@@ -22093,7 +22135,7 @@ var init_bar$5 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initBar,
-			animation,
+			barAnimation,
 			regionPadding,
 			stackCornerRadius_stackCornerRadius,
 			barMaxWidth_barMaxWidth,
@@ -22106,7 +22148,7 @@ var init_bar$5 = __esmMin((() => {
 			label_label,
 			brush_brush,
 			tooltip_tooltip({ titleEncoding: "y" }),
-			colorBarStyleFill(barStyle_barStyle),
+			colorBarStyleFill(barStyle),
 			horizontalCrosshairRect,
 			annotationPoint,
 			annotationVerticalLine_annotationVerticalLine,
@@ -22142,7 +22184,7 @@ var init_raceBar$2 = __esmMin((() => {
 		tooltip_tooltip({ titleEncoding: "y" }),
 		colorAdapter(discreteLegend, colorLegend),
 		horizontalCrosshairRect,
-		colorBarStyleFill(barStyle_barStyle),
+		colorBarStyleFill(barStyle),
 		annotationPoint,
 		annotationVerticalLine_annotationVerticalLine,
 		annotationHorizontalLine_annotationHorizontalLine,
@@ -22170,7 +22212,7 @@ var init_raceColumn$2 = __esmMin((() => {
 		tooltip_tooltip({ titleEncoding: "x" }),
 		colorAdapter(discreteLegend, colorLegend),
 		horizontalCrosshairRect,
-		colorBarStyleFill(barStyle_barStyle),
+		colorBarStyleFill(columnStyle),
 		annotationPoint,
 		annotationVerticalLine_annotationVerticalLine,
 		annotationHorizontalLine_annotationHorizontalLine,
@@ -22198,7 +22240,7 @@ var init_raceScatter$2 = __esmMin((() => {
 		colorAdapter(discreteLegend, colorLegend),
 		verticalCrosshairLine,
 		horizontalCrosshairLine,
-		colorPointStyleFill(pointStyle_pointStyle),
+		colorPointStyleFill(pointStyle),
 		pointStateHover,
 		annotationPoint,
 		annotationVerticalLine_annotationVerticalLine,
@@ -22291,7 +22333,7 @@ var init_barParallel$2 = __esmMin((() => {
 	barParallelSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initBarParallel,
-		animation,
+		barAnimation,
 		regionPadding,
 		stackCornerRadius_stackCornerRadius,
 		barMaxWidth_barMaxWidth,
@@ -22307,7 +22349,7 @@ var init_barParallel$2 = __esmMin((() => {
 		tooltip_tooltip({ titleEncoding: "y" }),
 		colorAdapter(discreteLegend, colorLegend),
 		horizontalCrosshairRect,
-		colorBarStyleFill(barStyle_barStyle),
+		colorBarStyleFill(barStyle),
 		annotationPoint,
 		annotationVerticalLine_annotationVerticalLine,
 		annotationHorizontalLine_annotationHorizontalLine,
@@ -22321,7 +22363,7 @@ var init_barParallel$2 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initBarParallel,
-			animation,
+			barAnimation,
 			regionPadding,
 			stackCornerRadius_stackCornerRadius,
 			barMaxWidth_barMaxWidth,
@@ -22333,7 +22375,7 @@ var init_barParallel$2 = __esmMin((() => {
 			brush_brush,
 			label_label,
 			tooltip_tooltip({ titleEncoding: "y" }),
-			colorBarStyleFill(barStyle_barStyle),
+			colorBarStyleFill(barStyle),
 			horizontalCrosshairRect,
 			annotationPoint,
 			annotationVerticalLine_annotationVerticalLine,
@@ -22356,7 +22398,7 @@ var init_barPercent$2 = __esmMin((() => {
 	barPercentSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initBar,
-		animation,
+		barAnimation,
 		regionPadding,
 		stackCornerRadius_stackCornerRadius,
 		barMaxWidth_barMaxWidth,
@@ -22372,7 +22414,7 @@ var init_barPercent$2 = __esmMin((() => {
 		tooltip_tooltip({ titleEncoding: "y" }),
 		colorAdapter(discreteLegend, colorLegend),
 		horizontalCrosshairRect,
-		colorBarStyleFill(barStyle_barStyle),
+		colorBarStyleFill(barStyle),
 		annotationPoint,
 		annotationVerticalLine_annotationVerticalLine,
 		annotationHorizontalLine_annotationHorizontalLine,
@@ -22385,7 +22427,7 @@ var init_barPercent$2 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initBar,
-			animation,
+			barAnimation,
 			regionPadding,
 			stackCornerRadius_stackCornerRadius,
 			barMaxWidth_barMaxWidth,
@@ -22398,7 +22440,7 @@ var init_barPercent$2 = __esmMin((() => {
 			brush_brush,
 			label_label,
 			tooltip_tooltip({ titleEncoding: "y" }),
-			colorBarStyleFill(barStyle_barStyle),
+			colorBarStyleFill(barStyle),
 			horizontalCrosshairRect,
 			annotationPoint,
 			annotationVerticalLine_annotationVerticalLine,
@@ -22420,7 +22462,7 @@ var init_area$5 = __esmMin((() => {
 	areaSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initArea,
-		animation,
+		lineAreaAnimation,
 		regionPadding,
 		stackInverse,
 		colorAdapter(color_color, linearColor),
@@ -22434,7 +22476,7 @@ var init_area$5 = __esmMin((() => {
 		tooltip_tooltip({ titleEncoding: "x" }),
 		colorAdapter(discreteLegend, colorLegend),
 		verticalCrosshairLine,
-		colorPointStyleFill(pointStyle_pointStyle),
+		colorPointStyleFill(pointStyle),
 		pointStateDimensionHover,
 		colorLineStyleFill(lineStyle_lineStyle),
 		colorAreaStyleFill(areaStyle_areaStyle),
@@ -22452,7 +22494,7 @@ var init_area$5 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initArea,
-			animation,
+			lineAreaAnimation,
 			regionPadding,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
@@ -22465,7 +22507,7 @@ var init_area$5 = __esmMin((() => {
 			brush_brush,
 			tooltip_tooltip({ titleEncoding: "x" }),
 			verticalCrosshairLine,
-			colorPointStyleFill(pointStyle_pointStyle),
+			colorPointStyleFill(pointStyle),
 			pointStateDimensionHover,
 			colorLineStyleFill(lineStyle_lineStyle),
 			colorAreaStyleFill(areaStyle_areaStyle),
@@ -22491,7 +22533,7 @@ var init_areaPercent$2 = __esmMin((() => {
 	areaPercentSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initArea,
-		animation,
+		lineAreaAnimation,
 		regionPadding,
 		stackInverse,
 		colorAdapter(color_color, linearColor),
@@ -22506,7 +22548,7 @@ var init_areaPercent$2 = __esmMin((() => {
 		tooltip_tooltip({ titleEncoding: "x" }),
 		colorAdapter(discreteLegend, colorLegend),
 		verticalCrosshairLine,
-		colorPointStyleFill(pointStyle_pointStyle),
+		colorPointStyleFill(pointStyle),
 		pointStateDimensionHover,
 		colorLineStyleFill(lineStyle_lineStyle),
 		colorAreaStyleFill(areaStyle_areaStyle),
@@ -22522,7 +22564,7 @@ var init_areaPercent$2 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initArea,
-			animation,
+			lineAreaAnimation,
 			regionPadding,
 			stackInverse,
 			colorAdapter(color_color, linearColor),
@@ -22536,7 +22578,7 @@ var init_areaPercent$2 = __esmMin((() => {
 			brush_brush,
 			tooltip_tooltip({ titleEncoding: "x" }),
 			verticalCrosshairLine,
-			colorPointStyleFill(pointStyle_pointStyle),
+			colorPointStyleFill(pointStyle),
 			pointStateDimensionHover,
 			colorLineStyleFill(lineStyle_lineStyle),
 			colorAreaStyleFill(areaStyle_areaStyle),
@@ -22560,7 +22602,7 @@ var init_scatter$5 = __esmMin((() => {
 	scatterSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initScatter,
-		animation,
+		scatterAnimation,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetScatter,
@@ -22574,7 +22616,7 @@ var init_scatter$5 = __esmMin((() => {
 		colorAdapter(discreteLegend, colorLegend),
 		verticalCrosshairLine,
 		horizontalCrosshairLine,
-		colorPointStyleFill(pointStyle_pointStyle),
+		colorPointStyleFill(pointStyle),
 		pointStateHover,
 		annotationPoint,
 		annotationVerticalLine_annotationVerticalLine,
@@ -22592,7 +22634,7 @@ var init_scatter$5 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initScatter,
-			animation,
+			scatterAnimation,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetScatter,
@@ -22605,7 +22647,7 @@ var init_scatter$5 = __esmMin((() => {
 			tooltipScatter,
 			verticalCrosshairLine,
 			horizontalCrosshairLine,
-			colorPointStyleFill(pointStyle_pointStyle),
+			colorPointStyleFill(pointStyle),
 			pointStateHover,
 			annotationPoint,
 			annotationVerticalLine_annotationVerticalLine,
@@ -22640,9 +22682,9 @@ var init_dualAxis$5 = __esmMin((() => {
 			progressive,
 			barMaxWidth_barMaxWidth,
 			barGapInGroup_barGapInGroup,
-			stackCornerRadius_stackCornerRadius,
-			barStyleFilter(colorBarStyleFill(barStyle_barStyle)),
-			pointStyleFilter(colorPointStyleFill(pointStyle_pointStyle)),
+			barStyleFilter(stackCornerRadius_stackCornerRadius),
+			barStyleFilter(colorBarStyleFill(columnStyle)),
+			pointStyleFilter(colorPointStyleFill(pointStyle)),
 			pointStyleFilter(pointStateDimensionHover),
 			lineStyleFilter(colorLineStyleFill(lineStyle_lineStyle)),
 			areaStyleFilter(colorAreaStyleFill(areaStyle_areaStyle))
@@ -22677,9 +22719,9 @@ var init_dualAxis$5 = __esmMin((() => {
 				progressive,
 				barMaxWidth_barMaxWidth,
 				barGapInGroup_barGapInGroup,
-				stackCornerRadius_stackCornerRadius,
-				barStyleFilter(colorBarStyleFill(barStyle_barStyle)),
-				pointStyleFilter(colorPointStyleFill(pointStyle_pointStyle)),
+				barStyleFilter(stackCornerRadius_stackCornerRadius),
+				barStyleFilter(colorBarStyleFill(columnStyle)),
+				pointStyleFilter(colorPointStyleFill(pointStyle)),
 				pointStyleFilter(pointStateDimensionHover),
 				lineStyleFilter(colorLineStyleFill(lineStyle_lineStyle)),
 				areaStyleFilter(colorAreaStyleFill(areaStyle_areaStyle))
@@ -22712,7 +22754,7 @@ var init_pie$5 = __esmMin((() => {
 	pieSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initPie,
-		animation,
+		pieAnimation,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
@@ -22735,7 +22777,7 @@ var init_pie$5 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initPie,
-			animation,
+			pieAnimation,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetXY,
@@ -22765,7 +22807,7 @@ var init_donut$2 = __esmMin((() => {
 	donutSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initDonut,
-		animation,
+		pieAnimation,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
@@ -22788,7 +22830,7 @@ var init_donut$2 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initDonut,
-			animation,
+			pieAnimation,
 			addRegionPadding,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
@@ -22818,7 +22860,7 @@ var init_rose$5 = __esmMin((() => {
 	roseSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initRose,
-		animation,
+		roseAnimation,
 		stackCornerRadius_stackCornerRadius,
 		stackInverse,
 		colorAdapter(color_color, linearColor),
@@ -22840,7 +22882,7 @@ var init_rose$5 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initRose,
-			animation,
+			roseAnimation,
 			addRegionPadding,
 			stackCornerRadius_stackCornerRadius,
 			stackInverse,
@@ -22869,7 +22911,7 @@ var init_roseParallel$2 = __esmMin((() => {
 	roseParallelSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initRoseParallel,
-		animation,
+		roseAnimation,
 		stackCornerRadius_stackCornerRadius,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
@@ -22894,7 +22936,7 @@ var init_roseParallel$2 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initRoseParallel,
-			animation,
+			roseAnimation,
 			addRegionPadding,
 			stackCornerRadius_stackCornerRadius,
 			colorAdapter(color_color, linearColor),
@@ -22926,7 +22968,7 @@ var init_radar$4 = __esmMin((() => {
 	radarSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initRadar,
-		animation,
+		radarAnimation,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
@@ -22937,10 +22979,10 @@ var init_radar$4 = __esmMin((() => {
 		tooltip_tooltip({ titleEncoding: "angle" }),
 		colorAdapter(discreteLegend, colorLegend),
 		verticalCrosshairLine,
-		colorPointStyleFill(pointStyle_pointStyle),
+		colorPointStyleFill(pointStyle),
 		pointStateDimensionHover,
-		colorLineStyleFill(lineStyle_lineStyle),
-		colorAreaStyleFill(areaStyle_areaStyle)
+		colorLineStyleFill(radarLineStyle),
+		colorAreaStyleFill(radarAreaStyle)
 	], [
 		initPivot,
 		pivotGridStyle,
@@ -22950,7 +22992,7 @@ var init_radar$4 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initRadar,
-			animation,
+			radarAnimation,
 			addRegionPadding,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
@@ -22961,10 +23003,10 @@ var init_radar$4 = __esmMin((() => {
 			label_label,
 			tooltip_tooltip({ titleEncoding: "angle" }),
 			verticalCrosshairLine,
-			colorPointStyleFill(pointStyle_pointStyle),
+			colorPointStyleFill(pointStyle),
 			pointStateDimensionHover,
-			colorLineStyleFill(lineStyle_lineStyle),
-			colorAreaStyleFill(areaStyle_areaStyle)
+			colorLineStyleFill(radarLineStyle),
+			colorAreaStyleFill(radarAreaStyle)
 		]),
 		pivotRowDimensions,
 		pivotColumnDimensions,
@@ -23170,7 +23212,7 @@ var init_histogram$4 = __esmMin((() => {
 		tooltipHistogram,
 		colorAdapter(discreteLegend, colorLegend),
 		histogramVerticalCrosshairRect,
-		colorBarStyleFill(barStyle_barStyle),
+		colorBarStyleFill(columnStyle),
 		annotationPointOfHistogram,
 		annotationVerticalLine_annotationVerticalLine,
 		annotationHorizontalLine_annotationHorizontalLine,
@@ -23193,7 +23235,7 @@ var init_histogram$4 = __esmMin((() => {
 			brush_brush,
 			label_label,
 			tooltipHistogram,
-			colorBarStyleFill(barStyle_barStyle),
+			colorBarStyleFill(columnStyle),
 			histogramVerticalCrosshairRect,
 			annotationPointOfHistogram,
 			annotationVerticalLine_annotationVerticalLine,
@@ -24889,36 +24931,36 @@ var init_pivotTable$2 = __esmMin((() => {}));
 //#region ../vseed/dist/esm/types/properties/config/whiskers/index.js
 var init_whiskers = __esmMin((() => {}));
 //#endregion
-//#region ../vseed/dist/esm/types/properties/markStyle/barStyle.js
-var init_barStyle = __esmMin((() => {}));
+//#region ../vseed/dist/esm/types/properties/markStyle/zBarStyle.js
+var init_zBarStyle = __esmMin((() => {}));
 //#endregion
-//#region ../vseed/dist/esm/types/properties/markStyle/pointStyle.js
-var init_pointStyle = __esmMin((() => {}));
+//#region ../vseed/dist/esm/types/properties/markStyle/zPointStyle.js
+var init_zPointStyle = __esmMin((() => {}));
 //#endregion
-//#region ../vseed/dist/esm/types/properties/markStyle/lineStyle.js
-var init_lineStyle = __esmMin((() => {}));
+//#region ../vseed/dist/esm/types/properties/markStyle/zLineStyle.js
+var init_zLineStyle = __esmMin((() => {}));
 //#endregion
 //#region ../vseed/dist/esm/types/properties/markStyle/zAreaStyle.js
 var init_zAreaStyle = __esmMin((() => {}));
 //#endregion
-//#region ../vseed/dist/esm/types/properties/markStyle/boxPlotStyle.js
-var init_boxPlotStyle = __esmMin((() => {}));
+//#region ../vseed/dist/esm/types/properties/markStyle/zBoxPlotStyle.js
+var init_zBoxPlotStyle = __esmMin((() => {}));
 //#endregion
-//#region ../vseed/dist/esm/types/properties/markStyle/outlierStyle.js
-var init_outlierStyle = __esmMin((() => {}));
+//#region ../vseed/dist/esm/types/properties/markStyle/zOutlierStyle.js
+var init_zOutlierStyle = __esmMin((() => {}));
 //#endregion
-//#region ../vseed/dist/esm/types/properties/markStyle/markStyle.js
-var init_markStyle$1 = __esmMin((() => {}));
+//#region ../vseed/dist/esm/types/properties/markStyle/zMarkStyle.js
+var init_zMarkStyle = __esmMin((() => {}));
 //#endregion
 //#region ../vseed/dist/esm/types/properties/markStyle/index.js
 var init_markStyle = __esmMin((() => {
-	init_barStyle();
-	init_pointStyle();
-	init_lineStyle();
-	init_markStyle$1();
+	init_zBarStyle();
+	init_zPointStyle();
+	init_zLineStyle();
 	init_zAreaStyle();
-	init_boxPlotStyle();
-	init_outlierStyle();
+	init_zBoxPlotStyle();
+	init_zOutlierStyle();
+	init_zMarkStyle();
 }));
 //#endregion
 //#region ../vseed/dist/esm/types/properties/config/boxWidth/zBoxWidth.js
@@ -31818,7 +31860,7 @@ function createVBI(defaultBuilderOptions) {
 		insight: createVBIInsightNamespace(resourceRegistry)
 	};
 }
-var MeasureNodeBuilder, id_id, getOrCreateMeasures, normalizeMeasureNodeIds, locateMeasureIndexById, MEASURE_ENCODING_SUPPORT, repeatEncoding, STRATEGY_BY_CHART_TYPE, DEFAULT_STRATEGY, getSupportedMeasureEncodingsForChartType, getRecommendedMeasureEncodingsForChartType, MeasuresBuilder, DimensionNodeBuilder, getOrCreateDimensions, normalizeDimensionNodeIds, locateDimensionIndexById, DIMENSION_ENCODING_SUPPORT, dimension_encoding_repeatEncoding, alternateEncoding, dimension_encoding_STRATEGY_BY_CHART_TYPE, dimension_encoding_DEFAULT_STRATEGY, getSupportedDimensionEncodingsForChartType, getRecommendedDimensionEncodingsForChartType, DimensionsBuilder, reapplyDimensionEncodings, reapplyMeasureEncodings, ChartTypeBuilder, WhereFilterNodeBuilder, WhereGroupBuilder, WhereFilterBuilder, HavingFilterNodeBuilder, HavingGroupBuilder, HavingFilterBuilder, ThemeBuilder, LocaleBuilder, LimitBuilder, UndoManager, VBI_TO_VQUERY_MEASURE_AGGR_FUNC_MAP, VBI_TO_VQUERY_DIMENSION_AGGR_FUNC_MAP, mapAggregateForVQuery, mapDimensionAggregateForVQuery, buildSelect, buildGroupBy, buildWhere, buildHaving, toOrderItem, buildOrderBy, buildLimit, buildVQuery, buildVQueryDSL, connectorMap, registerConnector, getConnector, buildVSeedDSL, defaultVBIChartBuilderAdapters, resolveVBIChartBuilderAdapters, applyUpdateToDoc, encodeDocStateAsUpdate, buildVBIChartDSL, getCollectionLength, isEmptyVBIChartDSL, getBuilderSchema, UUID_KEY, ensureResourceUUID, getResourceUUID, VBIChartBuilder, zVBIDashboardBreakpoint, zVBIDashboardBreakpoints, VBIDashboardDefaultBreakpoints, createEmptyDashboardLayout, createEmptyDashboard, createDashboardWidgetYMap, getOrCreateDashboardWidgets, locateDashboardWidgetIndexById, removeDashboardWidgetLayouts, ensureDashboardLayout, mergeWidgetLayoutsIntoDSL, resolveResourceReference, DashboardChartBuilder, DashboardChartCollectionBuilder, insight_builder_resolveResourceReference, DashboardInsightBuilder, DashboardInsightCollectionBuilder, zVBIDashboardThemeDefinition, zVBIDashboardTheme, zVBIDashboardMeta, presetDashboardThemes, builtinThemes, registeredThemes, nextThemeId, DashboardThemeBuilder, zVBIDashboardItemLayout, zVBIDashboardLayout, zVBIDashboardBaseWidget, zVBIDashboardChartWidget, zVBIDashboardInsightWidget, zVBIDashboardWidget, zVBIDashboardDSL, buildVBIDashboardDSL, is_empty_getCollectionLength, isEmptyVBIDashboardDSL, VBIDashboardBuilder, zVBIInsightDSL, buildVBIInsightDSL, isEmptyVBIInsightDSL, VBIInsightBuilder, createEmptyChart, createEmptyInsight, shouldEnsureIdForObject, toYMap, ensureYArray, ensureHavingGroup, ensureWhereGroup, setBaseDSLFields, createChartBuilderFromVBIChartDSLInput, mergeChartBuilderOptions, createVBIChartNamespace, createVBIConnectorNamespace, createDashboardBuilderFromVBIDashboardDSLInput, mergeDashboardBuilderOptions, createVBIDashboardNamespace, createInsightBuilderFromVBIInsightDSLInput, createVBIInsightNamespace, zDimensionAggregate, zVBISortOrder, zVBISort, zVBIDimensionSchema, zVBIDimensionGroupSchema, zVBIDimensionTree, zSimpleAggregate, zQuantileAggregate, zAggregate, zHavingLogicalOperator, zVBIHavingFilter, zVBIHavingGroup, zVBIHavingClause, zVBIDSLLocale, zNumFormatObject, zVBIMeasureFormat, zVBIMeasure, zVBIMeasureGroup, zVBIMeasureTree, zVBIDSLTheme, zVBIWhereDateInput, zVBIWhereDatePeriod, zVBIWhereDatePredicate, zWhereLogicalOperator, zVBIWhereDateFilter, zVBIWhereScalarFilter, zVBIWhereFilter, zVBIWhereGroup, zVBIWhereClause, zVBIChartDSL, createVBIResourceNamespace, createResourceStore, createChartStore, createInsightStore, createVBIResourceRegistry, VBI;
+var MeasureNodeBuilder, id_id, getOrCreateMeasures, normalizeMeasureNodeIds, locateMeasureIndexById, MEASURE_ENCODING_SUPPORT, repeatEncoding, STRATEGY_BY_CHART_TYPE, DEFAULT_STRATEGY, getSupportedMeasureEncodingsForChartType, getRecommendedMeasureEncodingsForChartType, MeasuresBuilder, DimensionNodeBuilder, getOrCreateDimensions, normalizeDimensionNodeIds, locateDimensionIndexById, DIMENSION_ENCODING_SUPPORT, dimension_encoding_repeatEncoding, alternateEncoding, dimension_encoding_STRATEGY_BY_CHART_TYPE, dimension_encoding_DEFAULT_STRATEGY, getSupportedDimensionEncodingsForChartType, getRecommendedDimensionEncodingsForChartType, DimensionsBuilder, reapplyDimensionEncodings, reapplyMeasureEncodings, ChartTypeBuilder, instanceOwners, ChartInstanceBuilder, WhereFilterNodeBuilder, WhereGroupBuilder, WhereFilterBuilder, HavingFilterNodeBuilder, HavingGroupBuilder, HavingFilterBuilder, ThemeBuilder, LocaleBuilder, LimitBuilder, UndoManager, VBI_TO_VQUERY_MEASURE_AGGR_FUNC_MAP, VBI_TO_VQUERY_DIMENSION_AGGR_FUNC_MAP, mapAggregateForVQuery, mapDimensionAggregateForVQuery, buildSelect, buildGroupBy, buildWhere, buildHaving, toOrderItem, buildOrderBy, buildLimit, buildVQuery, buildVQueryDSL, connectorMap, registerConnector, getConnector, buildVSeedDSL, defaultVBIChartBuilderAdapters, resolveVBIChartBuilderAdapters, applyUpdateToDoc, encodeDocStateAsUpdate, buildVBIChartDSL, getCollectionLength, isEmptyVBIChartDSL, getBuilderSchema, UUID_KEY, ensureResourceUUID, getResourceUUID, VBIChartBuilder, zVBIDashboardBreakpoint, zVBIDashboardBreakpoints, VBIDashboardDefaultBreakpoints, createEmptyDashboardLayout, createEmptyDashboard, createDashboardWidgetYMap, getOrCreateDashboardWidgets, locateDashboardWidgetIndexById, removeDashboardWidgetLayouts, ensureDashboardLayout, mergeWidgetLayoutsIntoDSL, resolveResourceReference, DashboardChartBuilder, DashboardChartCollectionBuilder, insight_builder_resolveResourceReference, DashboardInsightBuilder, DashboardInsightCollectionBuilder, zVBIDashboardThemeDefinition, zVBIDashboardTheme, zVBIDashboardMeta, presetDashboardThemes, builtinThemes, registeredThemes, nextThemeId, DashboardThemeBuilder, zVBIDashboardItemLayout, zVBIDashboardLayout, zVBIDashboardBaseWidget, zVBIDashboardChartWidget, zVBIDashboardInsightWidget, zVBIDashboardWidget, zVBIDashboardDSL, buildVBIDashboardDSL, is_empty_getCollectionLength, isEmptyVBIDashboardDSL, VBIDashboardBuilder, zVBIInsightDSL, buildVBIInsightDSL, isEmptyVBIInsightDSL, VBIInsightBuilder, createEmptyChart, createEmptyInsight, shouldEnsureIdForObject, toYMap, ensureYArray, ensureHavingGroup, ensureWhereGroup, setBaseDSLFields, createChartBuilderFromVBIChartDSLInput, mergeChartBuilderOptions, createVBIChartNamespace, createVBIConnectorNamespace, createDashboardBuilderFromVBIDashboardDSLInput, mergeDashboardBuilderOptions, createVBIDashboardNamespace, createInsightBuilderFromVBIInsightDSLInput, createVBIInsightNamespace, zDimensionAggregate, zVBISortOrder, zVBISort, zVBIDimensionSchema, zVBIDimensionGroupSchema, zVBIDimensionTree, zSimpleAggregate, zQuantileAggregate, zAggregate, zHavingLogicalOperator, zVBIHavingFilter, zVBIHavingGroup, zVBIHavingClause, zVBIDSLLocale, zNumFormatObject, zVBIMeasureFormat, zVBIMeasure, zVBIMeasureGroup, zVBIMeasureTree, zVBIDSLTheme, zVBIWhereDateInput, zVBIWhereDatePeriod, zVBIWhereDatePredicate, zWhereLogicalOperator, zVBIWhereDateFilter, zVBIWhereScalarFilter, zVBIWhereFilter, zVBIWhereGroup, zVBIWhereClause, zVBIChartDSL, createVBIResourceNamespace, createResourceStore, createChartStore, createInsightStore, createVBIResourceRegistry, VBI;
 var init_dist = __esmMin((() => {
 	init_dist$1();
 	init_esm();
@@ -32992,6 +33034,43 @@ var init_dist = __esmMin((() => {
 			];
 		}
 	};
+	instanceOwners = /* @__PURE__ */ new WeakMap();
+	ChartInstanceBuilder = class {
+		chartType;
+		boundInstance;
+		boundChartType;
+		constructor(doc, chartType) {
+			this.chartType = chartType;
+			chartType.observe(() => {
+				if (chartType.getChartType() !== this.boundChartType) this.bind(void 0);
+			});
+			doc.on("destroy", () => this.bind(void 0));
+		}
+		bind(instance) {
+			const chartType = this.chartType.getChartType();
+			if (instance) {
+				const isTable = "table" === chartType || "pivotTable" === chartType;
+				if (isTable !== "getCellValue" in instance) throw new Error(`Chart type "${chartType}" requires a ${isTable ? "VTable" : "VChart"} instance`);
+				const owner = instanceOwners.get(instance);
+				if (owner && owner !== this) throw new Error("Instance is already bound to another chart builder");
+			}
+			if (this.boundInstance) instanceOwners.delete(this.boundInstance);
+			this.boundInstance = instance;
+			this.boundChartType = instance ? chartType : void 0;
+			if (instance) instanceOwners.set(instance, this);
+			return this;
+		}
+		get() {
+			return this.boundInstance;
+		}
+		on = (...args) => this.invoke("on", args);
+		off = (...args) => this.invoke("off", args);
+		invoke(method, args) {
+			const instance = this.boundInstance;
+			if (!instance) throw new Error("No chart instance is bound; call chartBuilder.instance.bind(instance) first");
+			return instance[method].apply(instance, args);
+		}
+	};
 	WhereFilterNodeBuilder = class {
 		yMap;
 		constructor(yMap) {
@@ -33700,6 +33779,7 @@ var init_dist = __esmMin((() => {
 		dsl;
 		adapters;
 		chartType;
+		instance;
 		measures;
 		dimensions;
 		havingFilter;
@@ -33715,8 +33795,9 @@ var init_dist = __esmMin((() => {
 			doc.transact(() => {
 				ensureResourceUUID(this.dsl);
 			});
-			this.undoManager = new UndoManager(this.dsl);
+			this.undoManager = new UndoManager(this.dsl, { captureTimeout: 0 });
 			this.chartType = new ChartTypeBuilder(doc, this.dsl);
+			this.instance = new ChartInstanceBuilder(doc, this.chartType);
 			this.measures = new MeasuresBuilder(doc, this.dsl);
 			this.dimensions = new DimensionsBuilder(doc, this.dsl);
 			this.havingFilter = new HavingFilterBuilder(doc, this.dsl);
@@ -33752,6 +33833,18 @@ var init_dist = __esmMin((() => {
 			});
 		};
 		build = () => buildVBIChartDSL(this.dsl);
+		observe(callback) {
+			this.dsl.observe(callback);
+		}
+		unobserve(callback) {
+			this.dsl.unobserve(callback);
+		}
+		observeDeep(callback) {
+			this.dsl.observeDeep(callback);
+		}
+		unobserveDeep(callback) {
+			this.dsl.unobserveDeep(callback);
+		}
 		isEmpty = () => isEmptyVBIChartDSL(this.dsl);
 		getSchema = async () => getBuilderSchema(this.dsl);
 	};
@@ -33787,7 +33880,7 @@ var init_dist = __esmMin((() => {
 		layout: createEmptyDashboardLayout(),
 		meta: {
 			title: "",
-			theme: "light"
+			theme: "light-default"
 		},
 		version: 0
 	});
@@ -34119,11 +34212,11 @@ var init_dist = __esmMin((() => {
 	zVBIDashboardMeta = object({
 		title: string(),
 		description: string().optional(),
-		theme: zVBIDashboardTheme.default("light"),
+		theme: zVBIDashboardTheme.default("light-default"),
 		themes: record(zVBIDashboardTheme, zVBIDashboardThemeDefinition).optional()
 	});
 	presetDashboardThemes = {
-		volcanoBlue: { tokens: {
+		"dark-volcano-blue": { tokens: {
 			baseTheme: "dark",
 			colorScheme: [
 				"#006EFF",
@@ -34143,7 +34236,7 @@ var init_dist = __esmMin((() => {
 			surfaceBackgroundColor: "#0c0929",
 			tooltipBackgroundColor: "#211d46"
 		} },
-		clean: { tokens: {
+		"light-clean": { tokens: {
 			baseTheme: "light",
 			colorScheme: [
 				"#fd7f6f",
@@ -34164,7 +34257,159 @@ var init_dist = __esmMin((() => {
 			surfaceBackgroundColor: "#f8f5ef",
 			tooltipBackgroundColor: "#fffdf8"
 		} },
-		outskirts: { tokens: {
+		"light-misty-rose": { tokens: {
+			baseTheme: "light",
+			colorScheme: [
+				"#D8B4B6",
+				"#A78F88",
+				"#AA7782",
+				"#CAB9A3",
+				"#8B7271",
+				"#BFA2AE"
+			],
+			linearColorScheme: ["#F7F2EE", "#D8B4B6"],
+			textPrimary: "#453738",
+			textSecondary: "#6F5A5C",
+			borderColor: "#E1D0D0",
+			surfaceColor: "#F7F2EE",
+			surfaceBackgroundColor: "#EFE5E5",
+			accentColor: "#985F70",
+			tooltipBackgroundColor: "#F7F2EE"
+		} },
+		"light-sea-salt-blue": { tokens: {
+			baseTheme: "light",
+			colorScheme: [
+				"#AFCBDA",
+				"#8BAAB8",
+				"#C9D2D5",
+				"#6F91A5",
+				"#A9BEBB",
+				"#98A5B8"
+			],
+			linearColorScheme: ["#F5F7F6", "#AFCBDA"],
+			textPrimary: "#293E4B",
+			textSecondary: "#536773",
+			borderColor: "#C9D2D5",
+			surfaceColor: "#F5F7F6",
+			surfaceBackgroundColor: "#E6EEF2",
+			accentColor: "#4C7B92",
+			tooltipBackgroundColor: "#F5F7F6"
+		} },
+		"light-forest-mist": { tokens: {
+			baseTheme: "light",
+			colorScheme: [
+				"#7FA69A",
+				"#B5C1B0",
+				"#C9B997",
+				"#567F70",
+				"#94A88C",
+				"#A3947C"
+			],
+			linearColorScheme: ["#F7F4EC", "#7FA69A"],
+			textPrimary: "#30473F",
+			textSecondary: "#506357",
+			borderColor: "#B5C1B0",
+			surfaceColor: "#F7F4EC",
+			surfaceBackgroundColor: "#E6DCC8",
+			accentColor: "#426B5C",
+			tooltipBackgroundColor: "#F7F4EC"
+		} },
+		"light-lavender": { tokens: {
+			baseTheme: "light",
+			colorScheme: [
+				"#B9AFD8",
+				"#D7D1DC",
+				"#927EB5",
+				"#AEA2BA",
+				"#867A96",
+				"#C7B6C5"
+			],
+			linearColorScheme: ["#F2EEEA", "#B9AFD8"],
+			textPrimary: "#40384D",
+			textSecondary: "#665A74",
+			borderColor: "#D7D1DC",
+			surfaceColor: "#F2EEEA",
+			surfaceBackgroundColor: "#E8E3EE",
+			accentColor: "#7A659D",
+			tooltipBackgroundColor: "#F2EEEA"
+		} },
+		"light-apricot-orange": { tokens: {
+			baseTheme: "light",
+			colorScheme: [
+				"#F0C4A8",
+				"#CFAF91",
+				"#D6A798",
+				"#B78669",
+				"#DFC7AF",
+				"#C89A8F"
+			],
+			linearColorScheme: ["#F6E2DB", "#F0C4A8"],
+			textPrimary: "#4A382D",
+			textSecondary: "#705A45",
+			borderColor: "#D9BEAD",
+			surfaceColor: "#F6E2DB",
+			surfaceBackgroundColor: "#EAD8C4",
+			accentColor: "#9F643D",
+			tooltipBackgroundColor: "#F6E2DB"
+		} },
+		"light-bamboo-moon": { tokens: {
+			baseTheme: "light",
+			colorScheme: [
+				"#89A8A0",
+				"#D7C5A1",
+				"#63847B",
+				"#B1BCA6",
+				"#AC956C",
+				"#96A998"
+			],
+			linearColorScheme: ["#F1EFE7", "#89A8A0"],
+			textPrimary: "#33483F",
+			textSecondary: "#586854",
+			borderColor: "#C2CBBE",
+			surfaceColor: "#F1EFE7",
+			surfaceBackgroundColor: "#E2E8DF",
+			accentColor: "#4F7566",
+			tooltipBackgroundColor: "#F1EFE7"
+		} },
+		"light-clear-sky-blue": { tokens: {
+			baseTheme: "light",
+			colorScheme: [
+				"#A8C7E8",
+				"#F3E1A0",
+				"#7CA3CD",
+				"#D1BD78",
+				"#9DAFBB",
+				"#6C8EB5"
+			],
+			linearColorScheme: ["#F8F7F1", "#A8C7E8"],
+			textPrimary: "#304358",
+			textSecondary: "#5A6C80",
+			borderColor: "#CDDDEC",
+			surfaceColor: "#F8F7F1",
+			surfaceBackgroundColor: "#E8EFF6",
+			accentColor: "#4E77A5",
+			tooltipBackgroundColor: "#F8F7F1"
+		} },
+		"light-cedar-rose": { tokens: {
+			baseTheme: "light",
+			colorScheme: [
+				"#E8D0D8",
+				"#B2C7DC",
+				"#BAC3D4",
+				"#B68F9F",
+				"#829BB5",
+				"#9E9EB7"
+			],
+			linearColorScheme: ["#EDF0F4", "#E8D0D8"],
+			textPrimary: "#3E4354",
+			textSecondary: "#5F6478",
+			borderColor: "#BAC3D4",
+			surfaceColor: "#EDF0F4",
+			surfaceBackgroundColor: "#E7E7EF",
+			accentColor: "#886D87",
+			tooltipBackgroundColor: "#EDF0F4"
+		} },
+		"dark-outskirts": { tokens: {
 			baseTheme: "dark",
 			colorScheme: [
 				"#cfcfcf",
@@ -34186,7 +34431,7 @@ var init_dist = __esmMin((() => {
 			surfaceBackgroundColor: "#0c0929",
 			tooltipBackgroundColor: "#211d46"
 		} },
-		blueOrange: { tokens: {
+		"dark-blue-orange": { tokens: {
 			baseTheme: "dark",
 			colorScheme: [
 				"#4ABEFF",
@@ -34206,7 +34451,7 @@ var init_dist = __esmMin((() => {
 			surfaceBackgroundColor: "#0c0929",
 			tooltipBackgroundColor: "#211d46"
 		} },
-		financeYellow: { tokens: {
+		"dark-finance-yellow": { tokens: {
 			baseTheme: "dark",
 			colorScheme: [
 				"#FFCF67",
@@ -34226,7 +34471,7 @@ var init_dist = __esmMin((() => {
 			surfaceBackgroundColor: "#0c0929",
 			tooltipBackgroundColor: "#211d46"
 		} },
-		wenLvCyan: { tokens: {
+		"dark-wen-lv-cyan": { tokens: {
 			baseTheme: "dark",
 			colorScheme: [
 				"#32E2CD",
@@ -34246,7 +34491,7 @@ var init_dist = __esmMin((() => {
 			surfaceBackgroundColor: "#071e1c",
 			tooltipBackgroundColor: "#163b34"
 		} },
-		electricGreen: { tokens: {
+		"dark-electric-green": { tokens: {
 			baseTheme: "dark",
 			colorScheme: [
 				"#08FEF3",
@@ -34266,7 +34511,7 @@ var init_dist = __esmMin((() => {
 			surfaceBackgroundColor: "#0c0929",
 			tooltipBackgroundColor: "#211d46"
 		} },
-		eCommercePurple: { tokens: {
+		"dark-e-commerce-purple": { tokens: {
 			baseTheme: "dark",
 			colorScheme: [
 				"#734AFF",
@@ -34286,7 +34531,7 @@ var init_dist = __esmMin((() => {
 			surfaceBackgroundColor: "#0c0929",
 			tooltipBackgroundColor: "#211d46"
 		} },
-		redBlue: { tokens: {
+		"dark-red-blue": { tokens: {
 			baseTheme: "dark",
 			colorScheme: [
 				"#006EFF",
@@ -34306,7 +34551,7 @@ var init_dist = __esmMin((() => {
 			surfaceBackgroundColor: "#0c0929",
 			tooltipBackgroundColor: "#211d46"
 		} },
-		partyRed: { tokens: {
+		"dark-party-red": { tokens: {
 			baseTheme: "dark",
 			colorScheme: [
 				"#E82F2F",
@@ -34342,7 +34587,7 @@ var init_dist = __esmMin((() => {
 			const listener = (event, transaction) => {
 				const change = event.changes.keys.get("meta");
 				const meta = this.dsl.get("meta");
-				if (change && ((change.oldValue?.theme ?? "light") !== this.getTheme() || JSON.stringify(change.oldValue?.themes) !== JSON.stringify(meta?.themes))) callback(event, transaction);
+				if (change && ((change.oldValue?.theme ?? "light-default") !== this.getTheme() || JSON.stringify(change.oldValue?.themes) !== JSON.stringify(meta?.themes))) callback(event, transaction);
 			};
 			this.dsl.observe(listener);
 			return () => this.dsl.unobserve(listener);
@@ -34380,13 +34625,13 @@ var init_dist = __esmMin((() => {
 		}
 		getThemeOptions() {
 			return [.../* @__PURE__ */ new Set([
-				"light",
-				"dark",
+				"light-default",
+				"dark-default",
 				...Object.keys(presetDashboardThemes),
 				...Object.keys(this.dsl.get("meta")?.themes ?? {})
 			])].map((name) => {
 				const definition = this.getThemeConfig(name);
-				const baseTheme = definition?.tokens.baseTheme ?? ("dark" === name ? "dark" : "light");
+				const baseTheme = definition?.tokens.baseTheme ?? ("dark-default" === name ? "dark" : "light");
 				return {
 					name,
 					baseTheme,
@@ -34397,18 +34642,18 @@ var init_dist = __esmMin((() => {
 		}
 		resolveTheme(theme = this.getTheme()) {
 			const definition = this.getThemeConfig(theme);
-			if (!definition && "light" !== theme && "dark" !== theme) return this.resolveTheme("light");
-			const baseTheme = definition?.tokens.baseTheme ?? ("dark" === theme ? "dark" : "light");
+			if (!definition && "light-default" !== theme && "dark-default" !== theme) return this.resolveTheme("light-default");
+			const baseTheme = definition?.tokens.baseTheme ?? ("dark-default" === theme ? "dark" : "light");
 			if (!definition) ensureBuiltinTheme(baseTheme);
 			return {
 				name: theme,
 				baseTheme,
 				definition,
-				chartTheme: definition ? registerVSeedTheme(definition.tokens) : theme
+				chartTheme: definition ? registerVSeedTheme(definition.tokens) : baseTheme
 			};
 		}
 		getTheme() {
-			return this.dsl.get("meta")?.theme ?? "light";
+			return this.dsl.get("meta")?.theme ?? "light-default";
 		}
 		toJSON() {
 			return this.getTheme();
@@ -34480,7 +34725,7 @@ var init_dist = __esmMin((() => {
 				ensureDashboardLayout(this.dsl);
 				if (void 0 === this.dsl.get("meta")) this.dsl.set("meta", {
 					title: "",
-					theme: "light"
+					theme: "light-default"
 				});
 				if (void 0 === this.dsl.get("version")) this.dsl.set("version", 0);
 			});

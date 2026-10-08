@@ -6,5 +6,6 @@ export const zAreaStyle = z.object({
   dynamicFilter: zChartDynamicFilter.optional(),
   areaVisible: z.boolean().nullish(),
   areaColor: z.string().nullish(),
+  areaGradient: z.boolean().nullish(),
   areaColorOpacity: z.number().nullish(),
 })

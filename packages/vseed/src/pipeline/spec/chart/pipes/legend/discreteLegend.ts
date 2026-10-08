@@ -1,3 +1,4 @@
+import { createAliasFormatter } from 'src/pipeline/utils'
 import type { Legend, VChartSpecPipe } from 'src/types'
 
 export const discreteLegend: VChartSpecPipe = (spec, context) => {
@@ -10,9 +11,14 @@ export const discreteLegend: VChartSpecPipe = (spec, context) => {
     return result
   }
 
+  if (baseConfig.legend.enable === false) {
+    return { ...result, legends: { visible: false } }
+  }
+
   const { legend } = baseConfig
   const {
     enable,
+    interactive = true,
     position = 'bottom',
     labelFontColor,
     labelColor,
@@ -42,6 +48,7 @@ export const discreteLegend: VChartSpecPipe = (spec, context) => {
 
   result.legends = {
     type: 'discrete',
+    ...(interactive === false ? { interactive: false, select: false, hover: false } : {}),
     visible: enable,
     maxCol: Math.max(1, maxSize),
     maxRow: Math.max(1, maxSize),
@@ -49,7 +56,7 @@ export const discreteLegend: VChartSpecPipe = (spec, context) => {
     orient,
     position: legendPosition,
     item: {
-      focus: true,
+      focus: interactive,
       maxWidth: '30%',
       focusIconStyle: {
         size: labelFontSize + 2,
@@ -82,9 +89,7 @@ export const discreteLegend: VChartSpecPipe = (spec, context) => {
         },
       },
       label: {
-        formatMethod: (value) => {
-          return unfoldInfo.colorIdMap[String(value)]?.alias ?? value
-        },
+        formatMethod: createAliasFormatter(unfoldInfo.colorIdMap),
         style: {
           fontSize: labelFontSize,
           fill: labelColor || labelFontColor,

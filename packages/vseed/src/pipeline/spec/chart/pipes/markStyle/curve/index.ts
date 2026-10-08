@@ -1,1 +1,1 @@
-export { getCurveType, getCurveTension } from './curve'
+export { cartesianCurve, closedCurve } from './curve'

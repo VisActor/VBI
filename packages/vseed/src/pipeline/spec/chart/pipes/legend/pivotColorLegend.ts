@@ -11,6 +11,10 @@ export const pivotColorLegend: PivotChartSpecPipe = (spec, context) => {
     return result
   }
 
+  if (baseConfig.legend.enable === false) {
+    return { ...result, legends: [] }
+  }
+
   const { datasetReshapeInfo } = advancedVSeed
   const max = Math.max(...datasetReshapeInfo.map((d) => d.foldInfo.statistics.colorMax))
   const min = Math.min(...datasetReshapeInfo.map((d) => d.foldInfo.statistics.colorMin))

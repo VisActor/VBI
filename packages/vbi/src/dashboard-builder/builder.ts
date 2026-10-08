@@ -61,7 +61,7 @@ export class VBIDashboardBuilder<
       if (this.dsl.get('meta') === undefined) {
         this.dsl.set('meta', {
           title: '',
-          theme: 'light',
+          theme: 'light-default',
         })
       }
       if (this.dsl.get('version') === undefined) {

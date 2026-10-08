@@ -2,9 +2,10 @@ import type { ISpec } from '@visactor/vchart'
 import type { VChartSpecPipe, XBandAxis } from 'src/types'
 import { defaultTitleText } from './title/defaultTitleText'
 import { MeasureId } from 'src/dataReshape'
-import { isArray, isNil } from '@visactor/vutils'
+import { isNil } from '@visactor/vutils'
 import { bandAxisStyle } from './bandAxisStyle'
-import { createFormatterByDimension } from 'src/pipeline/utils'
+import { bandAxisFormatter } from './bandAxisFormatter'
+import { createAliasFormatter, createFormatterByDimension } from 'src/pipeline/utils'
 
 export const xBand: VChartSpecPipe = (spec, context) => {
   const result = { ...spec } as ISpec
@@ -44,19 +45,8 @@ export const xBand: VChartSpecPipe = (spec, context) => {
       ? createFormatterByDimension(dimensionMap.get(dimIds[0]), advancedVSeed.locale)
       : null
 
-    bandAxis.label.formatMethod = (text: string | string[]) => {
-      if (isArray(text)) {
-        return text
-      }
-      if (onlyMeasureId) {
-        return colorIdMap[String(text)]?.alias ?? text
-      }
-      const rawText = String(text ?? '')
-      if (!dimFormatter) {
-        return rawText
-      }
-      return dimFormatter(rawText)
-    }
+    const formatter = onlyMeasureId ? createAliasFormatter(colorIdMap) : dimFormatter
+    bandAxis.label.formatMethod = bandAxisFormatter(formatter ?? String)
   }
 
   result.axes = [...result.axes, bandAxis] as ISpec['axes']

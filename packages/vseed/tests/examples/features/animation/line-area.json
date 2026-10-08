@@ -6,12 +6,12 @@
     "animation": {
       "enable": true,
       "params": {
-        "appear": { "enable": true, "effects": ["load"], "duration": 1, "ease": "cubicOut" },
-        "update": { "enable": true, "effects": ["growth"], "duration": 0.5 },
+        "appear": { "enable": true, "effects": ["load"], "duration": 1000, "ease": "cubicOut" },
+        "update": { "enable": true, "effects": ["growth"], "duration": 500 },
         "loop": {
           "enable": true,
-          "interval": 1,
-          "loop": { "enable": true, "effects": ["growth"], "duration": 1 },
+          "interval": 1000,
+          "loop": { "enable": true, "effects": ["growth"], "duration": 1000 },
           "atmosphere": { "effect": "breath", "color": "#f28e2b", "ease": "quadInOut" }
         }
       }

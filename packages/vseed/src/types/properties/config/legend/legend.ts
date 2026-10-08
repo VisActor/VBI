@@ -8,6 +8,11 @@ export type Legend = {
    */
   enable?: boolean
   /**
+   * @description 离散图例是否允许悬停、选择、聚焦和数据筛选。false 时仅说明分类。
+   * @default true
+   */
+  interactive?: boolean
+  /**
    * @description 图例边框是否开启
    * @warning 仅离散图例生效
    * @default true
@@ -113,6 +118,7 @@ export type Legend = {
 
 export const zLegend = z.object({
   enable: z.boolean().default(true).nullish(),
+  interactive: z.boolean().nullish(),
   border: z.boolean().default(true).nullish(),
   maxSize: z.number().default(1).nullish(),
   shapeType: z

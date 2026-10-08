@@ -26,5 +26,13 @@
   "themeGroupLight": "Hell",
   "themeGroupDark": "Dunkel",
   "undo": "Rückgängig",
-  "redo": "Wiederholen"
+  "redo": "Wiederholen",
+  "themeMistyRose": "Nebelrose",
+  "themeSeaSaltBlue": "Meersalzblau",
+  "themeForestMist": "Waldnebel",
+  "themeLavender": "Lavendel",
+  "themeApricotOrange": "Aprikosenorange",
+  "themeBambooMoon": "Bambusmond",
+  "themeClearSkyBlue": "Himmelblau",
+  "themeCedarRose": "Zedernrose"
 }

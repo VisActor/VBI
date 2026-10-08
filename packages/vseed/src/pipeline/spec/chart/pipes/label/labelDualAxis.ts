@@ -21,7 +21,9 @@ export const labelDualAxis = (options: DualAxisOptions): VChartSpecPipe => {
       [options.foldInfo],
       advancedVSeed?.locale,
     ) as unknown as ILineChartSpec['label']
-    ;(result.label as any)!.zIndex = DUAL_AXIS_LABEL_Z_INDEX
+    if (baseConfig.label.enable !== false) {
+      ;(result.label as any)!.zIndex = DUAL_AXIS_LABEL_Z_INDEX
+    }
     return result
   }
 }

@@ -1,5 +1,6 @@
 import type { Player } from 'src/types'
 import { getPieTheme } from './pie'
+import { getDefaultDonutGeometry } from '../common/pie'
 import { getLightPlayer } from '../common'
 
 export const getRacePieTheme = () => {
@@ -17,5 +18,5 @@ export const getRacePieTheme = () => {
 }
 
 export const getRaceDonutTheme = () => {
-  return getRacePieTheme()
+  return { ...getRacePieTheme(), ...getDefaultDonutGeometry() }
 }

@@ -8,6 +8,8 @@ pageType: doc
 
 通过 `barStyle` 属性配置矩形图元的样式。数组中第一项为默认样式，后续项为条件样式，满足 `selector` 条件的数据将应用对应的样式。
 
+`barRadius` 控制单根柱体圆角，包含条件样式。配置后不再使用会裁掉这些圆角的堆叠外轮廓裁剪；只需要整个堆叠轮廓圆角时，使用 `stackCornerRadius`。
+
 ```tsx direction=vertical playground
 import { useRef, useEffect } from 'react'
 import VChart from '@visactor/vchart'
@@ -274,3 +276,32 @@ const Demo = () => {
 
 export default Demo
 ```
+
+## 面积渐变
+
+设置 `areaStyle.areaGradient: true` 即可开启渐变：面积下方透明度为 0，向顶部渐变到 1。颜色继承同条样式的 `areaColor`，省略时使用当前系列或指标的颜色编码。
+
+```ts
+areaStyle: {
+  areaGradient: true,
+  areaColorOpacity: 0.35,
+}
+```
+
+`areaColorOpacity` 继续控制整体透明度，颜色自身的 alpha 也会保留。支持条件样式、透视面积图、百分比面积图和雷达图；面积边界沿用折线的平滑配置。省略开关或设为 `false` 时使用原有纯色填充。
+
+## 柱体渐变
+
+设置 `barStyle.barGradient: true` 即可开启渐变：零值基线透明度为 0，向正值或负值末端渐变到 1。横向条形图自动采用水平方向，纵向柱图采用垂直方向。
+
+```ts
+barStyle: {
+  barGradient: true,
+  barRadius: 4,
+  barColorOpacity: 0.8,
+}
+```
+
+支持柱图、条形图、堆叠、并列、百分比、透视图以及双轴图中的柱系列。堆叠段仍以零值为渐变起点。颜色继承同条样式的 `barColor`，省略时继承当前系列或指标的颜色编码；`barColorOpacity` 控制整体透明度，边框和圆角继续使用原有配置。
+
+每条条件规则独立解析自己的颜色和渐变，也支持 `dynamicFilter`。省略开关或设为 `false` 时使用原有纯色填充。

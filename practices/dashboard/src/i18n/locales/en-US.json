@@ -26,5 +26,13 @@
   "themeGroupLight": "Light",
   "themeGroupDark": "Dark",
   "undo": "Undo",
-  "redo": "Redo"
+  "redo": "Redo",
+  "themeMistyRose": "Misty rose",
+  "themeSeaSaltBlue": "Sea salt blue",
+  "themeForestMist": "Forest mist",
+  "themeLavender": "Lavender",
+  "themeApricotOrange": "Apricot orange",
+  "themeBambooMoon": "Bamboo moon",
+  "themeClearSkyBlue": "Clear sky blue",
+  "themeCedarRose": "Cedar rose"
 }

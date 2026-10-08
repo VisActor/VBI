@@ -1,10 +1,10 @@
 import type { VBIDashboardThemeDefinition } from 'src/types'
 
-// Palettes from VisActor/vchart-theme (MIT), with Dashboard surface tokens.
+// Original palettes from VisActor/vchart-theme (MIT), with Dashboard surface tokens.
 // https://github.com/VisActor/vchart-theme/blob/develop/packages/vchart-theme/src/v-screen/color-scheme-map.ts
 // Copyright (c) 2023 Bytedance, Inc. and its affiliates. See LICENSE.vchart-theme.
 export const presetDashboardThemes = {
-  volcanoBlue: {
+  'dark-volcano-blue': {
     tokens: {
       baseTheme: 'dark',
       colorScheme: ['#006EFF', '#00E5E5', '#2E55EA', '#B8E7FE', '#00D689', '#B7F9F5', '#FBCC71', '#F46E50'],
@@ -17,7 +17,7 @@ export const presetDashboardThemes = {
       tooltipBackgroundColor: '#211d46',
     },
   },
-  clean: {
+  'light-clean': {
     tokens: {
       baseTheme: 'light',
       colorScheme: ['#fd7f6f', '#7eb0d5', '#b2e061', '#bd7ebe', '#ffb55a', '#ffee65', '#beb9db', '#fdcce5', '#8bd3c7'],
@@ -30,7 +30,120 @@ export const presetDashboardThemes = {
       tooltipBackgroundColor: '#fffdf8',
     },
   },
-  outskirts: {
+  // Soft reference palettes, with their original hex colors and matching surface tokens.
+  'light-misty-rose': {
+    tokens: {
+      baseTheme: 'light',
+      colorScheme: ['#D8B4B6', '#A78F88', '#AA7782', '#CAB9A3', '#8B7271', '#BFA2AE'],
+      linearColorScheme: ['#F7F2EE', '#D8B4B6'],
+      textPrimary: '#453738',
+      textSecondary: '#6F5A5C',
+      borderColor: '#E1D0D0',
+      surfaceColor: '#F7F2EE',
+      surfaceBackgroundColor: '#EFE5E5',
+      accentColor: '#985F70',
+      tooltipBackgroundColor: '#F7F2EE',
+    },
+  },
+  'light-sea-salt-blue': {
+    tokens: {
+      baseTheme: 'light',
+      colorScheme: ['#AFCBDA', '#8BAAB8', '#C9D2D5', '#6F91A5', '#A9BEBB', '#98A5B8'],
+      linearColorScheme: ['#F5F7F6', '#AFCBDA'],
+      textPrimary: '#293E4B',
+      textSecondary: '#536773',
+      borderColor: '#C9D2D5',
+      surfaceColor: '#F5F7F6',
+      surfaceBackgroundColor: '#E6EEF2',
+      accentColor: '#4C7B92',
+      tooltipBackgroundColor: '#F5F7F6',
+    },
+  },
+  'light-forest-mist': {
+    tokens: {
+      baseTheme: 'light',
+      colorScheme: ['#7FA69A', '#B5C1B0', '#C9B997', '#567F70', '#94A88C', '#A3947C'],
+      linearColorScheme: ['#F7F4EC', '#7FA69A'],
+      textPrimary: '#30473F',
+      textSecondary: '#506357',
+      borderColor: '#B5C1B0',
+      surfaceColor: '#F7F4EC',
+      surfaceBackgroundColor: '#E6DCC8',
+      accentColor: '#426B5C',
+      tooltipBackgroundColor: '#F7F4EC',
+    },
+  },
+  'light-lavender': {
+    tokens: {
+      baseTheme: 'light',
+      colorScheme: ['#B9AFD8', '#D7D1DC', '#927EB5', '#AEA2BA', '#867A96', '#C7B6C5'],
+      linearColorScheme: ['#F2EEEA', '#B9AFD8'],
+      textPrimary: '#40384D',
+      textSecondary: '#665A74',
+      borderColor: '#D7D1DC',
+      surfaceColor: '#F2EEEA',
+      surfaceBackgroundColor: '#E8E3EE',
+      accentColor: '#7A659D',
+      tooltipBackgroundColor: '#F2EEEA',
+    },
+  },
+  'light-apricot-orange': {
+    tokens: {
+      baseTheme: 'light',
+      colorScheme: ['#F0C4A8', '#CFAF91', '#D6A798', '#B78669', '#DFC7AF', '#C89A8F'],
+      linearColorScheme: ['#F6E2DB', '#F0C4A8'],
+      textPrimary: '#4A382D',
+      textSecondary: '#705A45',
+      borderColor: '#D9BEAD',
+      surfaceColor: '#F6E2DB',
+      surfaceBackgroundColor: '#EAD8C4',
+      accentColor: '#9F643D',
+      tooltipBackgroundColor: '#F6E2DB',
+    },
+  },
+  'light-bamboo-moon': {
+    tokens: {
+      baseTheme: 'light',
+      colorScheme: ['#89A8A0', '#D7C5A1', '#63847B', '#B1BCA6', '#AC956C', '#96A998'],
+      linearColorScheme: ['#F1EFE7', '#89A8A0'],
+      textPrimary: '#33483F',
+      textSecondary: '#586854',
+      borderColor: '#C2CBBE',
+      surfaceColor: '#F1EFE7',
+      surfaceBackgroundColor: '#E2E8DF',
+      accentColor: '#4F7566',
+      tooltipBackgroundColor: '#F1EFE7',
+    },
+  },
+  'light-clear-sky-blue': {
+    tokens: {
+      baseTheme: 'light',
+      colorScheme: ['#A8C7E8', '#F3E1A0', '#7CA3CD', '#D1BD78', '#9DAFBB', '#6C8EB5'],
+      linearColorScheme: ['#F8F7F1', '#A8C7E8'],
+      textPrimary: '#304358',
+      textSecondary: '#5A6C80',
+      borderColor: '#CDDDEC',
+      surfaceColor: '#F8F7F1',
+      surfaceBackgroundColor: '#E8EFF6',
+      accentColor: '#4E77A5',
+      tooltipBackgroundColor: '#F8F7F1',
+    },
+  },
+  'light-cedar-rose': {
+    tokens: {
+      baseTheme: 'light',
+      colorScheme: ['#E8D0D8', '#B2C7DC', '#BAC3D4', '#B68F9F', '#829BB5', '#9E9EB7'],
+      linearColorScheme: ['#EDF0F4', '#E8D0D8'],
+      textPrimary: '#3E4354',
+      textSecondary: '#5F6478',
+      borderColor: '#BAC3D4',
+      surfaceColor: '#EDF0F4',
+      surfaceBackgroundColor: '#E7E7EF',
+      accentColor: '#886D87',
+      tooltipBackgroundColor: '#EDF0F4',
+    },
+  },
+  'dark-outskirts': {
     tokens: {
       baseTheme: 'dark',
       colorScheme: [
@@ -54,7 +167,7 @@ export const presetDashboardThemes = {
       tooltipBackgroundColor: '#211d46',
     },
   },
-  blueOrange: {
+  'dark-blue-orange': {
     tokens: {
       baseTheme: 'dark',
       colorScheme: ['#4ABEFF', '#E97A4B', '#A0D8FF', '#FFB99C', '#91A9B1', '#E9A94B', '#4BE99D', '#6F86FF'],
@@ -67,7 +180,7 @@ export const presetDashboardThemes = {
       tooltipBackgroundColor: '#211d46',
     },
   },
-  financeYellow: {
+  'dark-finance-yellow': {
     tokens: {
       baseTheme: 'dark',
       colorScheme: ['#FFCF67', '#FF9254', '#D7D7D7', '#E1C396', '#FFB99C', '#C5BEB4', '#96B9A8', '#C59C7F'],
@@ -80,7 +193,7 @@ export const presetDashboardThemes = {
       tooltipBackgroundColor: '#211d46',
     },
   },
-  wenLvCyan: {
+  'dark-wen-lv-cyan': {
     tokens: {
       baseTheme: 'dark',
       colorScheme: ['#32E2CD', '#FFCE70', '#B03C3C', '#BEEAE4', '#D66E41', '#E1E1E1', '#3BC080', '#435BD8'],
@@ -93,7 +206,7 @@ export const presetDashboardThemes = {
       tooltipBackgroundColor: '#163b34',
     },
   },
-  electricGreen: {
+  'dark-electric-green': {
     tokens: {
       baseTheme: 'dark',
       colorScheme: ['#08FEF3', '#FF7925', '#FBCC71', '#2EC8EA', '#B8FEF1', '#F9CFB7', '#D43A30', '#5FCEA6'],
@@ -106,7 +219,7 @@ export const presetDashboardThemes = {
       tooltipBackgroundColor: '#211d46',
     },
   },
-  eCommercePurple: {
+  'dark-e-commerce-purple': {
     tokens: {
       baseTheme: 'dark',
       colorScheme: ['#734AFF', '#FF6960', '#5484FF', '#CDC4EC', '#EAC4C2', '#34CECC', '#FFB054', '#C13C5C'],
@@ -119,7 +232,7 @@ export const presetDashboardThemes = {
       tooltipBackgroundColor: '#211d46',
     },
   },
-  redBlue: {
+  'dark-red-blue': {
     tokens: {
       baseTheme: 'dark',
       colorScheme: ['#006EFF', '#CC3B3B', '#B8E5FE', '#214FFF', '#FFCFCF', '#00E5E5', '#B7F9F5', '#FBCC71'],
@@ -132,7 +245,7 @@ export const presetDashboardThemes = {
       tooltipBackgroundColor: '#211d46',
     },
   },
-  partyRed: {
+  'dark-party-red': {
     tokens: {
       baseTheme: 'dark',
       colorScheme: ['#E82F2F', '#FF9635', '#D7D7D7', '#E19B96', '#FFB99C', '#C5BEB4', '#B99696', '#C59C7F'],

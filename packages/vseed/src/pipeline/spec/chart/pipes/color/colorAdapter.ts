@@ -43,3 +43,9 @@ export const getColorMeasureId = <T extends AdvancedVSeed, U extends VSeed>(
   }
   return undefined
 }
+
+/** Resolve from the encoding so mark styles do not depend on color-scale pipe order. */
+export const getColorField = (advancedVSeed: AdvancedVSeed, vseed: VSeed): string => {
+  const { unfoldInfo } = advancedVSeed.datasetReshapeInfo[0]
+  return isLinearColor(advancedVSeed, vseed) ? unfoldInfo.encodingColor : unfoldInfo.encodingColorId
+}

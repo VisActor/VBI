@@ -23,6 +23,8 @@ export { sunburstConfig } from './sunburst'
 export { circlePackingConfig } from './circlePacking'
 export { hierarchySankeyConfig } from './hierarchySankey'
 export { sankeyConfig } from './sankey'
+export { pieStyleConfig, centerTextConfig } from './piePresentation'
+export { pieGeometryConfig, donutGeometryConfig } from './pieGeometry'
 
 // area
 export const areaConfig = lineConfig

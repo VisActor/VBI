@@ -20,7 +20,7 @@ import {
   pointStateDimensionHover,
   progressive,
   areaStyle,
-  barStyle,
+  columnStyle,
   verticalCrosshairRect,
   yLinearSecondary,
   yLinearPrimary,
@@ -67,9 +67,9 @@ const dualAxis: VChartSpecPipeline = [
 
       barMaxWidth,
       barGapInGroup,
-      stackCornerRadius,
+      barStyleFilter(stackCornerRadius),
 
-      barStyleFilter(colorBarStyleFill(barStyle)),
+      barStyleFilter(colorBarStyleFill(columnStyle)),
       pointStyleFilter(colorPointStyleFill(pointStyle)),
       pointStyleFilter(pointStateDimensionHover),
       lineStyleFilter(colorLineStyleFill(lineStyle)),
@@ -110,9 +110,9 @@ const pivotDualAxis: PivotChartSpecPipeline = [
 
         barMaxWidth,
         barGapInGroup,
-        stackCornerRadius,
+        barStyleFilter(stackCornerRadius),
 
-        barStyleFilter(colorBarStyleFill(barStyle)),
+        barStyleFilter(colorBarStyleFill(columnStyle)),
         pointStyleFilter(colorPointStyleFill(pointStyle)),
         pointStyleFilter(pointStateDimensionHover),
         lineStyleFilter(colorLineStyleFill(lineStyle)),

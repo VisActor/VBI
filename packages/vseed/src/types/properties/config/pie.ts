@@ -7,8 +7,11 @@ import { zTooltip } from './tooltip/tooltip'
 import { zPivotChartGridConfig } from './pivotGrid'
 import { zBrushConfig } from '../brush/zBrush'
 import { zPieLikeAnimation, zRadarAnimation } from './animation'
+import { zPieGeometry } from './pieGeometry'
+import { zPieStyle } from '../markStyle/zPieStyle'
+import { zCenterTextConfig } from './centerText'
 
-export const zPieConfig = z.object({
+const zPolarConfig = z.object({
   backgroundColor: zBackgroundColor.nullish(),
   label: zPieLabel.nullish(),
   color: zColor.nullish(),
@@ -20,8 +23,12 @@ export const zPieConfig = z.object({
   brush: zBrushConfig.nullish(),
   animation: zPieLikeAnimation.nullish(),
 })
-export const zDonutConfig = zPieConfig
-export const zRadarConfig = zPieConfig.extend({
+export const zPieConfig = zPolarConfig.extend({
+  ...zPieGeometry.shape,
+  pieStyle: zPieStyle.nullish(),
+})
+export const zDonutConfig = zPieConfig.extend({ centerText: zCenterTextConfig.nullish() })
+export const zRadarConfig = zPolarConfig.extend({
   animation: zRadarAnimation.nullish(),
 })
 

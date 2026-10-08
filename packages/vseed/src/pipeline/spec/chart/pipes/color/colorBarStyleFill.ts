@@ -12,7 +12,7 @@ export const colorBarStyleFill = (stylePipe: VChartSpecPipe): VChartSpecPipe => 
 
     if (isLinearColor(advancedVSeed, vseed)) {
       if (result?.bar?.style) {
-        result.bar.style.fill = {
+        result.bar.style.fill ??= {
           field: unfoldInfo.encodingColor,
           scale: 'color',
         }

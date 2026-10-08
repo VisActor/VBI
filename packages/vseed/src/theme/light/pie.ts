@@ -7,6 +7,8 @@ import {
 } from '../common'
 import { getLightTooltip } from '../common/tooltip'
 
+import { getDefaultPieGeometry, getDefaultDonutGeometry, getDefaultPieStyle, getDefaultCenterText } from '../common/pie'
+
 export const getPieTheme = () => {
   const baseConfig = {
     backgroundColor: 'transparent',
@@ -19,6 +21,8 @@ export const getPieTheme = () => {
 
   return {
     ...baseConfig,
+    ...getDefaultPieGeometry(),
+    pieStyle: getDefaultPieStyle(),
     label: {
       ...baseConfig.label,
       showValuePercent: true,
@@ -31,5 +35,9 @@ export const getPieTheme = () => {
 }
 
 export const getDonutTheme = () => {
-  return getPieTheme()
+  return {
+    ...getPieTheme(),
+    ...getDefaultDonutGeometry(),
+    centerText: getDefaultCenterText(),
+  }
 }

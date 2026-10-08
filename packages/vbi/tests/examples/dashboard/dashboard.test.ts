@@ -587,7 +587,7 @@ describe('Dashboard', () => {
         },
         "meta": {
           "description": "RETAIL OPERATIONS / 演示数据全量汇总 · 趋势展示最早 12 个月",
-          "theme": "light",
+          "theme": "light-default",
           "title": "零售运营全景",
         },
         "uuid": "uuid-12",
@@ -766,7 +766,7 @@ describe('Dashboard', () => {
           "xxl": [],
         },
         "meta": {
-          "theme": "light",
+          "theme": "light-default",
           "title": "销售仪表盘",
         },
         "uuid": "uuid-3",
@@ -955,7 +955,7 @@ describe('Dashboard', () => {
           "xxl": [],
         },
         "meta": {
-          "theme": "light",
+          "theme": "light-default",
           "title": "经营看板",
         },
         "uuid": "uuid-4",
@@ -1052,7 +1052,7 @@ describe('Dashboard', () => {
           "xxl": [],
         },
         "meta": {
-          "theme": "light",
+          "theme": "light-default",
           "title": "组件更新与移除",
         },
         "uuid": "uuid-2",

@@ -46,7 +46,7 @@
 
 默认开启的功能:
 
-\- 默认开启图例、数据标签、提示信息、占比计算、中心文本
+\- 默认开启图例、数据标签、提示信息、占比计算；中心文本需显式配置 centerText
 
 :::
 
@@ -68,6 +68,126 @@
 'donut'
 
 
+
+
+## outerRadius
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+外半径占可用半径的比例，范围 (0, 1]，默认 0.8。
+
+:::
+
+
+## innerRadius
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+内半径占可用半径的比例，范围 [0, outerRadius)。默认外半径的 80%。
+
+:::
+
+
+## startAngle
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+起始角度，单位为度，默认 \-90。
+
+:::
+
+
+## endAngle
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+结束角度，默认 startAngle + 360；跨度必须在 (0, 360]。
+
+:::
+
+
+## pieStyle
+
+**Type:** `PieStyle | undefined`
+
+:::note{title=描述}
+扇区边框、圆角和悬停效果。
+
+:::
+
+
+### pieBorderColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+扇区边框颜色，默认跟随图表背景。
+
+:::
+
+### pieBorderWidth
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+扇区边框宽度，单位 px，默认按数据量自适应：不超过 30 条时为 1，否则为 0。0 表示无边框。
+
+:::
+
+### pieCornerRadius
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+扇区圆角，单位 px。
+
+:::
+
+### pieHoverEffect
+
+**Type:** `"none" | "opacity" | "enlarge" | undefined`
+
+:::note{title=描述}
+悬停效果：enlarge 放大（默认）、opacity 降低透明度（固定为 0.75）、none 关闭。
+
+:::
+
+
+## centerText
+
+**Type:** `CenterText | undefined`
+
+:::note{title=描述}
+固定中心主副文本；配置后默认开启，不随扇区交互变化。
+
+
+
+固定中心文本；主副文本默认 18/12px，超长文本按环内宽度省略，颜色跟随主题。省略 centerText 即不显示。
+
+:::
+
+
+### titleText
+
+**Type:** `string | number | undefined`
+
+:::note{title=描述}
+主文本，不随扇区交互变化。业务计算及无数据占位文本由调用方提供。
+
+:::
+
+### subTitleText
+
+**Type:** `string | number | undefined`
+
+:::note{title=描述}
+副文本。
+
+:::
 
 
 ## dataset
@@ -1255,6 +1375,15 @@ enable: true
 
 
 
+### interactive
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+离散图例是否允许悬停、选择、聚焦和数据筛选。false 时仅说明分类。
+
+:::
+
 ### border
 
 **Type:** `boolean | undefined`
@@ -1659,7 +1788,7 @@ brush的类型
 **Type:** `number | undefined`
 
 :::note{title=描述}
-动画时长，单位为毫秒
+动画时长，单位为毫秒；数据更新阶段默认 1000 毫秒，0 表示立即完成
 
 :::
 
@@ -1677,7 +1806,7 @@ brush的类型
 **Type:** `PieLikeUpdateAnimation | undefined`
 
 :::note{title=描述}
-饼图/环图/玫瑰图更新动画配置
+饼图/环图/玫瑰图数据进入、更新、退出的共同动画配置
 
 :::
 
@@ -1714,7 +1843,7 @@ brush的类型
 **Type:** `number | undefined`
 
 :::note{title=描述}
-动画时长，单位为毫秒
+动画时长，单位为毫秒；数据更新阶段默认 1000 毫秒，0 表示立即完成
 
 :::
 
@@ -1797,7 +1926,7 @@ brush的类型
 **Type:** `number | undefined`
 
 :::note{title=描述}
-动画时长，单位为毫秒
+动画时长，单位为毫秒；数据更新阶段默认 1000 毫秒，0 表示立即完成
 
 :::
 

@@ -1,10 +1,12 @@
-import type { IScatterChartSpec } from '@visactor/vchart'
+import type { ILineChartSpec, IScatterChartSpec } from '@visactor/vchart'
 import type { Datum, VChartSpecPipe } from 'src/types'
 
 export const pointStateDimensionHover: VChartSpecPipe = (spec) => {
-  const point = (spec as IScatterChartSpec).point || {}
+  const point = (spec as ILineChartSpec).point || {}
   const result = {
     ...spec,
+    // Keep dimension-hover points visible even when pointStyle hides ordinary points.
+    activePoint: true,
     point: {
       ...point,
       state: {
@@ -20,7 +22,7 @@ export const pointStateDimensionHover: VChartSpecPipe = (spec) => {
         },
       },
     },
-  } as IScatterChartSpec
+  } as ILineChartSpec
   return result
 }
 

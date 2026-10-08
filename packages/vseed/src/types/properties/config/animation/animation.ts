@@ -21,7 +21,7 @@ import type {
 export interface BarLikeAnimationParams {
   /** @description 条形/柱形图入场动画配置 */
   appear?: BarLikeAppearAnimation
-  /** @description 条形/柱形图更新动画配置 */
+  /** @description 条形/柱形图数据进入、更新、退出的共同动画配置 */
   update?: BarLikeUpdateAnimation
   /** @description 条形/柱形图循环动画配置 */
   loop?: BarLikeAnimationLoop
@@ -29,7 +29,7 @@ export interface BarLikeAnimationParams {
 export interface LineAreaAnimationParams {
   /** @description 折线/面积图入场动画配置 */
   appear?: LineAreaAppearAnimation
-  /** @description 折线/面积图更新动画配置 */
+  /** @description 折线/面积图数据进入、更新、退出的共同动画配置 */
   update?: LineAreaUpdateAnimation
   /** @description 折线/面积图循环动画配置 */
   loop?: LineAreaAnimationLoop
@@ -37,7 +37,7 @@ export interface LineAreaAnimationParams {
 export interface ScatterAnimationParams {
   /** @description 散点图入场动画配置 */
   appear?: ScatterAppearAnimation
-  /** @description 散点图更新动画配置 */
+  /** @description 散点图数据进入、更新、退出的共同动画配置 */
   update?: ScatterUpdateAnimation
   /** @description 散点图循环动画配置 */
   loop?: ScatterAnimationLoop
@@ -45,7 +45,7 @@ export interface ScatterAnimationParams {
 export interface PieLikeAnimationParams {
   /** @description 饼图/环图/玫瑰图入场动画配置 */
   appear?: PieLikeAppearAnimation
-  /** @description 饼图/环图/玫瑰图更新动画配置 */
+  /** @description 饼图/环图/玫瑰图数据进入、更新、退出的共同动画配置 */
   update?: PieLikeUpdateAnimation
   /** @description 饼图/环图/玫瑰图循环动画配置 */
   loop?: PieLikeAnimationLoop
@@ -53,7 +53,7 @@ export interface PieLikeAnimationParams {
 export interface RadarAnimationParams {
   /** @description 雷达图入场动画配置 */
   appear?: RadarAppearAnimation
-  /** @description 雷达图更新动画配置 */
+  /** @description 雷达图数据进入、更新、退出的共同动画配置 */
   update?: RadarUpdateAnimation
   /** @description 雷达图循环动画配置 */
   loop?: RadarAnimationLoop

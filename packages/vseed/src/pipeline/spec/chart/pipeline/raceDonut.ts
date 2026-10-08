@@ -1,12 +1,14 @@
 import type { VChartSpecPipeline } from 'src/types'
 import {
   initDonut,
+  pieGeometry,
   backgroundColor,
   labelPie,
   tooltip,
   discreteLegend,
   color,
   pieStyle,
+  pieHover,
   annotationPoint,
   annotationVerticalLine,
   annotationHorizontalLine,
@@ -26,6 +28,7 @@ import {
 const raceDonut: VChartSpecPipeline = [
   fontFamilyTheme,
   initDonut,
+  pieGeometry,
   colorAdapter(color, linearColor),
   backgroundColor,
   isPlayer(playerPie, datasetXY),
@@ -33,6 +36,7 @@ const raceDonut: VChartSpecPipeline = [
   brush,
   labelPie,
   colorPieStyleFill(pieStyle),
+  pieHover,
   colorAdapter(discreteLegend, colorLegend),
   tooltip({ titleEncoding: 'color' }),
   annotationPoint,

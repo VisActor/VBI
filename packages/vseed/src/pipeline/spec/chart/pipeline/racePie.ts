@@ -1,11 +1,13 @@
 import type { VChartSpecPipeline } from 'src/types'
 import {
   initPie,
+  pieGeometry,
   backgroundColor,
   tooltip,
   discreteLegend,
   color,
   pieStyle,
+  pieHover,
   annotationPoint,
   annotationVerticalLine,
   annotationHorizontalLine,
@@ -26,12 +28,14 @@ import {
 const racePie: VChartSpecPipeline = [
   fontFamilyTheme,
   initPie,
+  pieGeometry,
   colorAdapter(color, linearColor),
   backgroundColor,
   isPlayer(playerPie, datasetXY),
   progressive,
   brush,
   colorPieStyleFill(pieStyle),
+  pieHover,
   colorAdapter(discreteLegend, colorLegend),
   labelPie,
   tooltip({ titleEncoding: 'color' }),

@@ -22,7 +22,7 @@ export const labelPie: VChartSpecPipe = (spec, context) => {
     [foldInfo],
     advancedVSeed?.locale,
   ) as unknown as IPieChartSpec['label']
-  if (label.labelLayout) {
+  if (label.enable !== false && label.labelLayout) {
     ;(result.label as any)!.layout = {
       align: label.labelLayout,
     }

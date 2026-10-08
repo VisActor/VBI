@@ -12,7 +12,7 @@ export const colorAreaStyleFill = (stylePipe: VChartSpecPipe): VChartSpecPipe =>
 
     if (isLinearColor(advancedVSeed, vseed)) {
       if (result?.area?.style) {
-        result.area.style.fill = {
+        result.area.style.fill ??= {
           field: unfoldInfo.encodingColor,
           scale: 'color',
         }

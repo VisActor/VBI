@@ -30,7 +30,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@visactor/vbi": "workspace:*",
-    "@visactor/vchart": "2.0.23-alpha.6",
+    "@visactor/vchart": "2.1.7",
     "@visactor/vquery": "workspace:*",
     "@visactor/vseed": "workspace:*",
     "@visactor/vtable": "1.23.1",

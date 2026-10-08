@@ -1,82 +1,57 @@
 import type { IBarChartSpec } from '@visactor/vchart'
-import { selector, selectorWithDynamicFilter } from '../../../../../dataSelector'
+import { selector, selectorWithDynamicFilter } from 'src/dataSelector'
 import type { BarStyle, Datum, VChartSpecPipe } from 'src/types'
-import { isEmpty, isNullish } from 'remeda'
+import { compileMarkStyles } from './compileMarkStyles'
+import { createGradientFill } from './gradientFill'
+import { getColorField } from '../color/colorAdapter'
+import { horizontalBarGradient, verticalBarGradient } from './barGradient'
 
-export const barStyle: VChartSpecPipe = (spec, context) => {
-  const { advancedVSeed } = context
-  const { markStyle, dataset = [] } = advancedVSeed
-  const { barStyle } = markStyle
-
-  const showStroke = dataset.length <= 100
-
-  const result = {
-    ...spec,
-    bar: {
-      style: {
-        visible: true,
-        fillOpacity: 1,
-        lineWidth: showStroke ? 1 : 0,
-      },
-      state: {
-        hover: {
-          fillOpacity: 0.6,
-        },
-      },
-    },
-  } as IBarChartSpec
-
-  if (isNullish(barStyle) || isEmpty(barStyle)) {
-    return result
-  }
-
-  const barStyles = (Array.isArray(barStyle) ? barStyle : [barStyle]) as BarStyle[]
-
-  const customMap = barStyles.reduce<object>((result, style, index) => {
-    const {
-      barBorderColor,
-      barBorderStyle,
-      barBorderWidth = 1,
-      barColor,
-      barColorOpacity,
-      barBorderOpacity,
-      barRadius,
-      barVisible = true,
-    } = style
-
-    const lineDash = barBorderStyle === 'dashed' ? [5, 2] : barBorderStyle === 'dotted' ? [2, 5] : [0, 0]
+const createBarStyle =
+  (field: 'xField' | 'yField', direction: typeof horizontalBarGradient): VChartSpecPipe =>
+  (spec, { advancedVSeed, vseed }) => {
+    const colorField = getColorField(advancedVSeed, vseed)
+    const gradientDirection = (datum: Datum) => direction(datum, (spec as IBarChartSpec)[field] as string)
+    const bar = compileMarkStyles(
+      advancedVSeed.markStyle.barStyle as BarStyle | BarStyle[] | undefined,
+      ({
+        barBorderColor,
+        barBorderStyle,
+        barBorderWidth = 1,
+        barColor,
+        barGradient,
+        barColorOpacity,
+        barBorderOpacity,
+        barRadius,
+        barVisible = true,
+      }) => ({
+        visible: barVisible,
+        fill: createGradientFill(barColor, barGradient, colorField, gradientDirection),
+        fillOpacity: barColorOpacity,
+        cornerRadius: barRadius,
+        lineWidth: barBorderWidth,
+        stroke: barBorderColor,
+        strokeOpacity: barBorderOpacity,
+        lineDash: barBorderStyle === 'dashed' ? [5, 2] : barBorderStyle === 'dotted' ? [2, 5] : [0, 0],
+      }),
+      (rule) => (datum: Datum) =>
+        rule.dynamicFilter
+          ? selectorWithDynamicFilter(datum, rule.dynamicFilter, rule.selector)
+          : selector(datum, rule.selector),
+    )
     return {
-      ...result,
-      [`custom${index + 1}`]: {
-        // 优先级: 后者覆盖前者
-        level: index + 1,
-        filter: (datum: Datum) => {
-          const shouldApply = style.dynamicFilter
-            ? selectorWithDynamicFilter(datum, style.dynamicFilter, style.selector)
-            : selector(datum, style.selector)
-          if (shouldApply) {
-            return true
-          }
-          return false
-        },
+      ...spec,
+      bar: {
         style: {
-          visible: barVisible,
-          fill: barColor,
-          fillOpacity: barColorOpacity,
-          cornerRadius: barRadius,
-          lineWidth: barBorderWidth,
-          stroke: barBorderColor,
-          strokeOpacity: barBorderOpacity,
-          lineDash: lineDash,
+          visible: true,
+          fillOpacity: 1,
+          lineWidth: advancedVSeed.dataset.length <= 100 ? 1 : 0,
+          ...(spec as IBarChartSpec).bar?.style,
+          ...bar.style,
         },
+        state: { ...(spec as IBarChartSpec).bar?.state, hover: { fillOpacity: 0.6 }, ...bar.state },
       },
-    }
-  }, {})
-
-  result.bar!.state = {
-    ...result.bar!.state,
-    ...customMap,
+    } as IBarChartSpec
   }
 
-  return result
-}
+export const barStyle = createBarStyle('xField', horizontalBarGradient)
+export const columnStyle = createBarStyle('yField', verticalBarGradient)

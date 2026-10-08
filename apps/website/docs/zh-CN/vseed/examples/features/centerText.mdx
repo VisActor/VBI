@@ -1,0 +1,190 @@
+# CenterText
+
+## themeDefaults
+
+只配置中心文本内容。内外半径、悬停、字号、字重和间距使用主题默认值；省略 theme 时使用 light。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "donut",
+  "dataset": [
+    {
+      "category": "消费者",
+      "share": 62
+    },
+    {
+      "category": "其他客户",
+      "share": 38
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "category",
+      "encoding": "color"
+    }
+  ],
+  "measures": [
+    {
+      "id": "share",
+      "encoding": "angle"
+    }
+  ],
+  "label": {
+    "enable": false
+  },
+  "centerText": {
+    "titleText": "62%",
+    "subTitleText": "消费者"
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## emptyDonut
+
+无订单时两类占比均为零，展示固定占位文本，不伪造其他客户 100% 的扇区。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "donut",
+  "dataset": [
+    {
+      "category": "消费者",
+      "share": 0
+    },
+    {
+      "category": "其他客户",
+      "share": 0
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "category",
+      "encoding": "color"
+    }
+  ],
+  "measures": [
+    {
+      "id": "share",
+      "alias": "订单占比",
+      "encoding": "angle",
+      "format": {
+        "type": "number",
+        "suffix": "%",
+        "fractionDigits": 1
+      }
+    }
+  ],
+  "label": {
+    "enable": false
+  },
+  "color": {
+    "colorScheme": [
+      "#56dabb",
+      "#c1f3e6"
+    ]
+  },
+  "legend": {
+    "enable": false
+  },
+  "centerText": {
+    "titleText": "—",
+    "subTitleText": "消费者"
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## pivotDonutCenter
+
+透视环图的单元格组合相同几何和中心文本 pipe；中心文本固定，不对数据隐式求和。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "donut",
+  "dataset": [
+    {
+      "region": "华东",
+      "category": "消费者",
+      "share": 62
+    },
+    {
+      "region": "华东",
+      "category": "其他客户",
+      "share": 38
+    },
+    {
+      "region": "华南",
+      "category": "消费者",
+      "share": 40
+    },
+    {
+      "region": "华南",
+      "category": "其他客户",
+      "share": 60
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "region",
+      "encoding": "column"
+    },
+    {
+      "id": "category",
+      "encoding": "color"
+    }
+  ],
+  "measures": [
+    {
+      "id": "share",
+      "alias": "订单占比",
+      "encoding": "angle",
+      "format": {
+        "type": "number",
+        "suffix": "%",
+        "fractionDigits": 1
+      }
+    }
+  ],
+  "label": {
+    "enable": false
+  },
+  "color": {
+    "colorScheme": [
+      "#56dabb",
+      "#c1f3e6"
+    ]
+  },
+  "legend": {
+    "interactive": false,
+    "position": "bottom",
+    "border": false,
+    "shapeType": "circle",
+    "labelFontSize": 10
+  },
+  "outerRadius": 0.9,
+  "innerRadius": 0.6,
+  "centerText": {
+    "titleText": "客户分布"
+  },
+  "pieStyle": {
+    "pieBorderWidth": 0
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```

@@ -1367,6 +1367,15 @@ enable: true
 
 
 
+### interactive
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+离散图例是否允许悬停、选择、聚焦和数据筛选。false 时仅说明分类。
+
+:::
+
 ### border
 
 **Type:** `boolean | undefined`
@@ -3036,6 +3045,24 @@ prepare() 阶段写入，运行时只读
 
 :::
 
+### barGradient
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+柱体线性渐变
+
+
+
+开启后从零值基线透明渐变到数值末端的当前颜色，自动适配正负值和横纵方向；默认关闭。
+
+:::
+
+**示例**
+true
+
+
+
 ### barColorOpacity
 
 **Type:** `number | undefined`
@@ -3104,6 +3131,11 @@ dotted
 ### barRadius
 
 **Type:** `number | number[] | undefined`
+
+:::note{title=描述}
+单根柱体圆角；配置后优先于堆叠外轮廓圆角，支持条件样式。
+
+:::
 
 
 ## annotationPoint

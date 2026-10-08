@@ -66,6 +66,14 @@ test('generates the complete dashboard API, navigation, options and resolved Yjs
     }
     expect(read('theme.md')).toContain('### observe')
     expect(readFileSync(path.join(output, '_meta.json'), 'utf8')).toContain('dashboardBuilder')
+    const chart = readFileSync(path.join(output, 'chartBuilder/index.md'), 'utf8')
+    expect(chart).toContain('ChartInstanceBuilder')
+    const instance = readFileSync(path.join(output, 'chartBuilder/instance.md'), 'utf8')
+    expect(instance).toContain('bind(instance: VBIChartInstance | undefined): this')
+    expect(instance).toContain('get<T extends VBIChartInstance = VBIChartInstance>(): T | undefined')
+    expect(instance).toContain('**on**')
+    expect(instance).toContain('**off**')
+    expect(readFileSync(path.join(output, 'chartBuilder/_meta.json'), 'utf8')).toContain('instance')
   } finally {
     rmSync(output, { recursive: true, force: true })
   }

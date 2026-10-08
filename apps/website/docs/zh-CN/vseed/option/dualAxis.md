@@ -2610,6 +2610,15 @@ enable: true
 
 
 
+### interactive
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+离散图例是否允许悬停、选择、聚焦和数据筛选。false 时仅说明分类。
+
+:::
+
 ### border
 
 **Type:** `boolean | undefined`
@@ -3537,6 +3546,24 @@ prepare() 阶段写入，运行时只读
 
 :::
 
+### barGradient
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+柱体线性渐变
+
+
+
+开启后从零值基线透明渐变到数值末端的当前颜色，自动适配正负值和横纵方向；默认关闭。
+
+:::
+
+**示例**
+true
+
+
+
 ### barColorOpacity
 
 **Type:** `number | undefined`
@@ -3605,6 +3632,11 @@ dotted
 ### barRadius
 
 **Type:** `number | number[] | undefined`
+
+:::note{title=描述}
+单根柱体圆角；配置后优先于堆叠外轮廓圆角，支持条件样式。
+
+:::
 
 
 ## lineStyle
@@ -4324,7 +4356,7 @@ prepare() 阶段写入，运行时只读
 **Type:** `boolean | undefined`
 
 :::note{title=描述}
-点是否可见
+点是否默认可见。折线图、面积图（含百分比面积图）、雷达图及双轴图中的折线/面积系列设为 false 时，悬停对应维度仍会显示交互点。无条件设为 false 时不创建普通点图元，数据更新与退出动画也保持隐藏；条件样式仍可按数据控制可见性。
 
 :::
 
@@ -4767,6 +4799,24 @@ prepare() 阶段写入，运行时只读
 面积图元的颜色
 
 :::
+
+### areaGradient
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+面积线性渐变
+
+
+
+开启后从下方透明渐变到顶部的当前颜色；默认关闭。顶部透明度由 areaColorOpacity 控制。
+
+:::
+
+**示例**
+true
+
+
 
 ### areaColorOpacity
 

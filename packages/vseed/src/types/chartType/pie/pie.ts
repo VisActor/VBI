@@ -12,6 +12,7 @@ import type {
   Tooltip,
   Page,
   PieLikeAnimation,
+  PieStyle,
 } from '../../properties'
 import type { Brush } from '../../properties'
 
@@ -47,6 +48,18 @@ export interface Pie {
    * @example 'pie'
    */
   chartType: 'pie'
+
+  /** @description 外半径占可用半径的比例，范围 (0, 1]，默认 0.8。 */
+  outerRadius?: number
+  /** @description 内半径占可用半径的比例，范围 [0, outerRadius)。默认 0。 */
+  innerRadius?: number
+  /** @description 起始角度，单位为度，默认 -90。 */
+  startAngle?: number
+  /** @description 结束角度，默认 startAngle + 360；跨度必须在 (0, 360]。 */
+  endAngle?: number
+  /** @description 扇区边框、圆角和悬停效果。 */
+  pieStyle?: PieStyle
+
   /**
    * 数据集
    * @description 符合TidyData规范的且已经聚合的数据集，用于定义图表的数据来源和结构, 用户输入的数据集并不需要进行任何处理, VSeed带有强大的数据重塑功能, 会自行进行数据重塑, 饼图的数据最终会被转换为1个维度, 1个指标.

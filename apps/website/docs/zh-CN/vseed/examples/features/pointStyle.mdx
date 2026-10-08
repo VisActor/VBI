@@ -1,5 +1,63 @@
 # PointStyle
 
+## 隐藏常驻点，悬停显示交互点
+
+设置无条件 pointVisible: false 时不创建常驻点图元，数据更新和退出动画中也保持隐藏。鼠标移入绘图区时，当前维度上的交互点随 crosshair 显示，移出后隐藏；无需额外修改 VChart spec。折线图、面积图、百分比面积图、雷达图及双轴图中的折线/面积系列均支持。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "line",
+  "dataset": [
+    {
+      "month": "2025-07",
+      "profit": 62
+    },
+    {
+      "month": "2025-08",
+      "profit": 82
+    },
+    {
+      "month": "2025-09",
+      "profit": 84
+    },
+    {
+      "month": "2025-10",
+      "profit": 83
+    },
+    {
+      "month": "2025-11",
+      "profit": 85
+    },
+    {
+      "month": "2025-12",
+      "profit": 84
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "month",
+      "alias": "月份"
+    }
+  ],
+  "measures": [
+    {
+      "id": "profit",
+      "alias": "利润"
+    }
+  ],
+  "pointStyle": {
+    "pointVisible": false,
+    "pointSize": 8
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
 ## dimension condition
 
 dimension condition
@@ -410,4 +468,3 @@ export default () => {
   return <VSeedRender vseed={vseedConfig} />
 }
 ```
-

@@ -118,7 +118,7 @@ getThemeOptions(): VBIDashboardThemeOption[]
 
 ### resolveTheme
 
-Résout le thème et garantit son inscription VSeed sous un nom interne isolé. Un nom inconnu revient à light sans modifier le document.
+Résout le thème et garantit son inscription VSeed sous un nom interne isolé. Un nom inconnu revient à light-default sans modifier le document.
 
 **Définition**:
 
@@ -136,7 +136,7 @@ resolveTheme(theme?: string): VBIDashboardResolvedTheme
 
 ### getTheme
 
-Obtient le nom du thème, light par défaut.
+Obtient le nom du thème, light-default par défaut.
 
 **Définition**:
 

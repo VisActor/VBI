@@ -118,7 +118,7 @@ getThemeOptions(): VBIDashboardThemeOption[]
 
 ### resolveTheme
 
-테마를 해석하고 독립된 런타임 이름으로 VSeed 등록을 보장합니다. 알 수 없는 이름은 문서를 수정하지 않고 light로 대체합니다.
+테마를 해석하고 독립된 런타임 이름으로 VSeed 등록을 보장합니다. 알 수 없는 이름은 문서를 수정하지 않고 light-default로 대체합니다.
 
 **정의**:
 
@@ -136,7 +136,7 @@ resolveTheme(theme?: string): VBIDashboardResolvedTheme
 
 ### getTheme
 
-테마 이름을 가져옵니다. 기본값은 light입니다.
+테마 이름을 가져옵니다. 기본값은 light-default입니다.
 
 **정의**:
 

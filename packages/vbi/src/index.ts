@@ -1,5 +1,6 @@
 export {
   ChartTypeBuilder,
+  ChartInstanceBuilder,
   DimensionsBuilder,
   HavingFilterBuilder,
   LimitBuilder,

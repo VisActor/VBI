@@ -118,7 +118,7 @@ getThemeOptions(): VBIDashboardThemeOption[]
 
 ### resolveTheme
 
-Phân giải chủ đề và bảo đảm đăng ký VSeed với tên chạy độc lập. Tên không xác định dùng light mà không sửa tài liệu.
+Phân giải chủ đề và bảo đảm đăng ký VSeed với tên chạy độc lập. Tên không xác định dùng light-default mà không sửa tài liệu.
 
 **Định nghĩa**:
 
@@ -136,7 +136,7 @@ resolveTheme(theme?: string): VBIDashboardResolvedTheme
 
 ### getTheme
 
-Lấy tên chủ đề, mặc định là light.
+Lấy tên chủ đề, mặc định là light-default.
 
 **Định nghĩa**:
 

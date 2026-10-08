@@ -1,0 +1,48 @@
+{
+  "name": "emptyDonut",
+  "description": "无订单时两类占比均为零，展示固定占位文本，不伪造其他客户 100% 的扇区。",
+  "vseed": {
+    "chartType": "donut",
+    "dataset": [
+      {
+        "category": "消费者",
+        "share": 0
+      },
+      {
+        "category": "其他客户",
+        "share": 0
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "category",
+        "encoding": "color"
+      }
+    ],
+    "measures": [
+      {
+        "id": "share",
+        "alias": "订单占比",
+        "encoding": "angle",
+        "format": {
+          "type": "number",
+          "suffix": "%",
+          "fractionDigits": 1
+        }
+      }
+    ],
+    "label": {
+      "enable": false
+    },
+    "color": {
+      "colorScheme": ["#56dabb", "#c1f3e6"]
+    },
+    "legend": {
+      "enable": false
+    },
+    "centerText": {
+      "titleText": "—",
+      "subTitleText": "消费者"
+    }
+  }
+}

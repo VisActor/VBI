@@ -1,45 +1,23 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Coding Agent when working with code in this repository.
 
-## Repository Structure
+## Structure
 
-```
-VBI/
-├── .agents/skills/                 # Agent skills and development guidance
-├── apps/                           # Documentation site only
-│   └── website/                    # Official documentation, examples, and playground
-├── packages/                       # Package-level implementations
-│   ├── vbi/                        # Configuration layer for VBIChartDSL, Builder, and collaborative editing
-│   ├── vbi-component/              # Shared component layer for VBI
-│   ├── vquery/                     # Query layer for QueryDSL-to-SQL and data querying
-│   ├── vseed/                      # Rendering layer for VSeedDSL-to-VChart/VTable specs
-│   └── vbi-react/                  # React adapter and integration layer
-├── practices/                      # Practice examples at different complexity levels
-│   ├── standard/                   # Standard example
-│   ├── minimalist/                 # Minimal implementation example
-│   ├── professional/               # More business-oriented complete example
-│   ├── streamlined/                # Streamlined structure example
-│   └── vbi-react-starter/          # React Starter example
-├── docs/                           # Repository documentation and historical context
-│   ├── adr/                        # Unified entry for historical decisions, theme designs, and practice records
-│   │   ├── repository/             # Repository-level architecture and decisions
-│   │   ├── packages/               # Package-level historical documentation
-│   │   └── practices/              # Practice-level historical documentation
-│   ├── skills/                     # Agent-facing reference material
-│   └── superpowers/                # Other topic-specific documentation
-├── tools/                          # Development helper scripts and tools
-├── README.md                       # Project overview and usage instructions
-├── AGENTS.md                       # Coding Agent collaboration instructions
-└── CLAUDE.md                       # Claude Code collaboration instructions
-```
+- `packages/` owns reusable capabilities: `vbi` manages DSL configuration and Builders, `vquery` handles queries, and `vseed` builds VChart/VTable specs.
+- `apps/website` hosts documentation, examples, and the playground; `practices/` contains independent example applications.
+- `tools/` contains development utilities; `.agents/skills/` maintains agent workflows and development guidelines.
 
-## Project Scope
+## Capability Ownership
 
-VBI focuses on reusable packages and agent skills. `apps/` contains only the
-documentation website; `practices/` contains package integration examples.
-Standalone product applications and their deployment infrastructure are outside
-this repository's scope.
+VBI's core capabilities are exposed through DSLs and Builders and must be usable without a UI.
+Model chart or dashboard state that must be saved, restored, or reused across integrations in the owning DSL, and expose operations through its Builder.
+React integrations, components, and practices consume these public capabilities; transient interface state and concrete rendering remain in the UI layer.
+
+Builders own domain operations and DSL consistency; adapters translate at integration boundaries without owning domain rules.
+Use consistent domain terminology across DSLs, Builders, and adapters; introduce abstractions only for concrete responsibilities.
+
+Acceptance criterion: if all UI components were removed, would the VBI capability still exist and be usable through its DSL and Builder? If not, the headless capability is incomplete.
 
 ## Development Guidelines
 

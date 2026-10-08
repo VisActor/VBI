@@ -6,107 +6,88 @@ description: >
   updates, full package tests, fresh coverage, and website acceptance testing.
 ---
 
-# VBI Development
+# Development
 
-Read [Software Entropy Control](references/software-entropy.md) for ownership,
-source-of-truth decisions, maintainability, refactoring, and deletion rules.
-It is the only supporting reference for this skill.
+Read [Software Entropy Control](references/software-entropy.md) for shared
+ownership, source-of-truth, refactoring, and deletion rules. Module conventions
+below apply to their owning packages and integrations.
+
+## Repository-wide Coverage
+
+- Unit-test coverage must **never decrease** in statements, branches, functions,
+  or lines for any affected package. Before changing code or tooling, record a
+  fresh unit-only baseline; after generation and edits, rerun with the same
+  source scope and compare each metric per package. Full-suite coverage does
+  not replace unit-only coverage.
+- Keep providers and inclusion/exclusion rules comparable; explicitly review
+  instrumentation changes. Do not remove files, ignore branches, or lower
+  thresholds to pass. Raise committed thresholds when coverage improves.
+- `@visactor/vbi` and `@visactor/vquery` retain **100%** coverage and thresholds
+  in all four metrics.
+- Coverage runs must not update snapshots or open a browser. Review behavior
+  changes before explicitly updating snapshots. Report before/after percentages,
+  report locations, and unresolved gaps; do not claim incomplete checks passed.
+
+## VBI Module (`packages/vbi`)
+
+- VBIChartDSL, VQueryDSL, and VSeedDSL remain the sources of truth for their
+  respective domains. State that must be saved, restored, or reused belongs in
+  the owning DSL; Builders own domain operations and DSL consistency.
+- Adapters translate at integration boundaries; UI owns rendering and transient
+  state. Consumers use public APIs, and capabilities must remain usable without UI.
+- Keep domain terminology consistent. Practices stay independent; move shared
+  capabilities into their owning packages or local utilities.
+
+## VSeed Module (`packages/vseed`)
+
+- Keep each pipe atomic and focused on one responsibility. Do not branch on
+  chart type inside a pipe; select and compose pipes or inject strategies when
+  assembling the pipeline.
+- Preserve the pipeline design philosophy: concise code, high cohesion, low
+  coupling, and composition over special cases. Extend the smallest owning pipe
+  or shared mechanism; avoid duplicated logic and unnecessary abstractions.
+- Assess the impact on shared pipes, chart families, and downstream consumers
+  before changing behavior. Preserve existing DSL/API semantics, defaults,
+  rendering, and interactions; **no breaking changes**. Cover affected existing
+  configurations with regression tests and visual acceptance, not only new cases.
 
 ## Required Task Completion
 
-Before finishing every task:
+1. Identify changed packages and affected consumers. Read their `package.json`
+   scripts and test configuration for generation, full-test, and coverage commands.
+2. Update relevant docs, examples, and regression tests; remove obsolete cases.
+   Edit the owning source or generator for generated artifacts.
+3. Run each affected package's `g` script (root `pnpm run g` for repository-wide
+   generation). Inspect generated diffs, including snapshots. Report absent `g`
+   scripts as not applicable.
+4. After all edits and generation, run every affected package's complete tests
+   and fresh coverage. A full-suite coverage run can satisfy both; run omitted
+   suites separately. Focused tests, caches, and old reports do not satisfy this
+   gate. If no coverage script exists, use the runner's coverage command or report
+   unavailable support.
+5. Fix task-related failures and coverage gaps, then repeat affected generation
+   and checks. Run root `lint:check` and `typecheck` when available.
+6. Complete website browser acceptance below; a successful build or unit test
+   alone is insufficient.
+7. Report checked packages, generation, tests, coverage comparisons and report
+   paths, plus browser URLs, interactions, and outcomes. State blockers and
+   unverified checks explicitly.
 
-1. Identify all changed packages and affected consumers. Read their
-   `package.json` scripts and test configuration to determine the actual
-   generation, full-test, and coverage commands.
-2. Update relevant documentation, examples, and test cases to match the final
-   behavior. Cover changed behavior and regressions; remove obsolete cases and
-   references. Change the owning source or generator for generated artifacts.
-3. Run the `g` script for each affected package to refresh generated docs,
-   examples, tests, and other outputs. Use `pnpm run g` from the repository root
-   when repository-wide generation is required. Inspect the generated diff,
-   including any updated snapshots, for correctness.
-4. After generation and all edits, run the complete test suite for every
-   affected package and generate fresh coverage for the final state. Focused
-   tests, cached results, and existing coverage reports do not satisfy this
-   gate. A full-suite coverage run may satisfy both requirements if it includes
-   every test suite; run any omitted suites separately.
-5. Review test failures, coverage gaps in changed behavior, and generated
-   outputs. Fix task-related issues, update relevant tests and docs, then rerun
-   generation and validation for the affected scope. Do not lower coverage
-   thresholds or exclude changed code to make validation pass.
-   Apply the package coverage requirements below.
-6. Start the website with `pnpm dev` from the repository root and perform
-   browser acceptance testing against the running website. Follow the workflow
-   below; a successful build or passing unit tests alone do not satisfy this gate.
-7. Report the packages checked, generation and full-test results, fresh coverage
-   summaries and report locations, and website acceptance results (URL, pages,
-   interactions, and outcome). Explicitly report missing scripts, unavailable
-   coverage support, or blocked commands and their reasons; do not silently skip
-   them or claim incomplete validation passed.
+## Website Acceptance
 
-Typical package commands, adjusted to the scripts actually defined:
-
-```bash
-pnpm --filter <package-name> run g
-pnpm --filter <package-name> run test
-pnpm --filter <package-name> run test:coverage
-```
-
-If a package has no `g` script, report generation as not applicable. If it has no
-coverage script, use the configured test runner's coverage command when
-supported; otherwise report the missing coverage setup.
-
-## Website Development and Acceptance Testing
-
-Run these commands from the repository root. Use the Node.js and pnpm versions
-declared in the root `package.json`; on a fresh checkout or after dependency
-changes, install dependencies first:
-
-```bash
-pnpm install --frozen-lockfile
-pnpm dev
-```
-
-The root `dev` script delegates to `pnpm --filter=website run dev`, which starts
-the Rspress development server in `apps/website`. Keep it running while testing.
-Open the local URL printed by the server, including the configured `/VBI/` base
-path; use the actual reported port rather than assuming a fixed one.
-
-- Wait for compilation to finish, then open the website in a browser. Verify
-  the home page and the documentation, examples, or playground affected by the
-  change. Exercise the changed behavior and relevant interactions; check for
-  rendering failures, browser console errors, and failed requests. For changes
-  without visible UI impact, smoke-test the home page and a relevant example or
-  playground. An HTTP response alone does not prove browser acceptance.
-- Read `apps/website/AGENTS.md` for preview-service and stale-process guidance.
-  If output is stale or startup reports a port conflict, inspect the website
-  process and preview port `7890`; stop the confirmed stale website process and
-  restart `pnpm dev`. After restarting, hard-refresh the browser and remind the
-  user to do the same (`Ctrl+Shift+R`).
-- Keep browser acceptance separate from coverage runs, which must not open a
-  browser. Fix task-related failures and repeat the affected checks before
-  reporting acceptance as passed. If startup or browser access is blocked,
-  report the blocker and the checks that remain unverified.
-- Stop the development server you started after validation unless the user
-  needs it left running; report any server left running and its URL.
-
-## Package Coverage Requirements
-
-- `@visactor/vbi` and `@visactor/vquery`: unit tests must achieve **100%**
-  statements, branches, functions, and lines. Run each package's complete
-  `test:coverage` suite and keep all four thresholds at 100% in its test
-  configuration.
-- `@visactor/vseed`: unit-test coverage must **never decrease** in any of the
-  four metrics. Before changing code or tooling, run fresh unit-only coverage
-  on the starting revision and record the summary. After generation and edits,
-  rerun with the same source scope and compare every metric with that baseline.
-  Preserve full-suite coverage too; do not substitute it for unit-only coverage.
-  Raise committed thresholds when coverage improves; never lower them.
-- Keep coverage providers and inclusion/exclusion rules comparable. A tooling
-  upgrade that changes instrumentation requires an explicit before/after review;
-  it is not permission to remove files, ignore branches, or relax thresholds.
-- Coverage checks must run without updating snapshots or opening a browser.
-  Use explicit snapshot-update commands only after reviewing behavior changes.
-- Report the before/after percentages and report locations. Existing gaps must
-  be fixed before claiming these requirements pass.
+- Use the Node.js and pnpm versions in root `package.json`. On a fresh checkout
+  or after dependency changes, run `pnpm install --frozen-lockfile`.
+- Read `apps/website/AGENTS.md`, then run `pnpm dev` from the root. It starts the
+  Rspress website. Wait for compilation and use the printed URL and port with
+  `/VBI/`; keep the server running during acceptance.
+- Verify the home page and affected docs, examples, or playground in a browser.
+  Exercise changed behavior and interactions; check rendering, console errors,
+  and failed requests. Without visible UI changes, smoke-test the home page and
+  a relevant example. An HTTP response alone is not browser acceptance.
+- For stale output or port conflicts, inspect website processes and preview port
+  `7890`; stop only the confirmed stale process and restart `pnpm dev`. Hard-refresh
+  and remind the user to do the same (`Ctrl+Shift+R`).
+- Keep browser acceptance separate from coverage. Fix task-related failures and
+  repeat affected checks; report startup/access blockers and unverified behavior.
+- Stop servers you started after validation unless the user needs them; report
+  any server left running and its URL.

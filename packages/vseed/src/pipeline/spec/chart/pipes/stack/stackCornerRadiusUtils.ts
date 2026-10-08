@@ -57,8 +57,19 @@ const getStackRangeCornerRadius = (
   return 0
 }
 
-export const createStackCornerRadius = (cornerRadius: StackCornerRadius): StackCornerRadiusCallback => {
-  return (_: unknown, datum: Datum) => {
+type CornerRadiusCallbacks = {
+  bar: (datum: Datum) => StackCornerRadius | 0
+  stack: StackCornerRadiusCallback
+}
+
+const callbacks = new Map<string, CornerRadiusCallbacks>()
+
+const createCornerRadius = (radius: StackCornerRadius): CornerRadiusCallbacks => {
+  const key = JSON.stringify(radius)
+  const cached = callbacks.get(key)
+  if (cached) return cached
+  const cornerRadius = Array.isArray(radius) ? [...radius] : radius
+  const bar: CornerRadiusCallbacks['bar'] = (datum) => {
     const stackRangeCornerRadius = getStackRangeCornerRadius(cornerRadius, datum)
 
     if (stackRangeCornerRadius !== undefined) {
@@ -77,7 +88,17 @@ export const createStackCornerRadius = (cornerRadius: StackCornerRadius): StackC
 
     return 0
   }
+  const result = { bar, stack: (_: unknown, datum: Datum) => bar(datum) }
+  if (callbacks.size === 64) callbacks.delete(callbacks.keys().next().value!)
+  callbacks.set(key, result)
+  return result
 }
+
+export const createStackCornerRadius = (radius: StackCornerRadius): StackCornerRadiusCallback =>
+  createCornerRadius(radius).stack
+
+export const createBarCornerRadius = (radius: StackCornerRadius): CornerRadiusCallbacks['bar'] =>
+  createCornerRadius(radius).bar
 
 export const hasMoveInAnimation = (animation: unknown): boolean => {
   if (!animation) {

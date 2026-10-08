@@ -50,6 +50,8 @@ export const buildLabel = (
   foldInfoList: (Pick<FoldInfo, 'measureId' | 'measureValue'> & Partial<Pick<FoldInfo, 'statistics'>>)[],
   locale: Locale = 'zh-CN',
 ) => {
+  if (label.enable === false) return { visible: false }
+
   const {
     enable,
     wrap,

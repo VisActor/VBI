@@ -1,0 +1,138 @@
+import { ChartInstanceBuilder, createVBI, type VBIChartInstance } from '@visactor/vbi'
+import type { IVChart } from '@visactor/vchart'
+import type { BaseTableAPI } from '@visactor/vtable'
+import * as Y from 'yjs'
+
+const chartInstance = () => ({ on: rstest.fn(), off: rstest.fn(), release: rstest.fn() }) as unknown as IVChart
+const tableInstance = () => ({ ...chartInstance(), getCellValue: rstest.fn() }) as unknown as BaseTableAPI
+const createChart = (type = 'line') => {
+  const vbi = createVBI()
+  const chart = vbi.chart.create(vbi.chart.createEmpty('test'))
+  chart.chartType.changeChartType(type)
+  chart.undoManager.clear()
+  return chart
+}
+
+describe('chart instance binding', () => {
+  it('retains native chart event APIs and supports replacement and explicit unbinding', () => {
+    const chart = createChart()
+    const first = chartInstance()
+    const second = chartInstance()
+    expect(chart.instance).toBeInstanceOf(ChartInstanceBuilder)
+    expect(chart.instance.get()).toBeUndefined()
+    expect(chart.instance.bind(first)).toBe(chart.instance)
+    const handler = rstest.fn()
+    chart.instance.on('pointermove', handler)
+    chart.instance.off('pointermove', handler)
+    expect(first.on).toHaveBeenCalledWith('pointermove', handler)
+    expect(first.off).toHaveBeenCalledWith('pointermove', handler)
+    const query = { level: 'mark' as const }
+    chart.instance.on('pointermove', query, handler)
+    expect(first.on).toHaveBeenLastCalledWith('pointermove', query, handler)
+    expect(rstest.mocked(first.on).mock.contexts).toEqual([first, first])
+    expect(rstest.mocked(first.off).mock.contexts).toEqual([first])
+    chart.instance.bind(first).bind(second)
+    expect(chart.instance.get()).toBe(second)
+    chart.instance.on('pointermove', handler)
+    expect(second.on).toHaveBeenCalledWith('pointermove', handler)
+    expect(first.on).toHaveBeenCalledTimes(2)
+    expect(first.release).not.toHaveBeenCalled()
+    expect(chart.instance.bind(undefined)).toBe(chart.instance)
+    expect(chart.instance.get()).toBeUndefined()
+    expect(second.release).not.toHaveBeenCalled()
+    createChart().instance.bind(first)
+    createChart().instance.bind(second)
+  })
+
+  it.each(['table', 'pivotTable'])('retains native %s event APIs', (type) => {
+    const chart = createChart(type)
+    const instance = tableInstance()
+    rstest.mocked(instance.on).mockReturnValue(42)
+    chart.instance.bind(instance)
+    const handler = rstest.fn()
+    const listenerId = chart.instance.on('mouseenter_cell', handler)
+    expect(listenerId).toBe(42)
+    chart.instance.off(listenerId)
+    expect(instance.on).toHaveBeenCalledWith('mouseenter_cell', handler)
+    expect(instance.off).toHaveBeenCalledWith(42)
+    expect(rstest.mocked(instance.on).mock.contexts).toEqual([instance])
+    expect(rstest.mocked(instance.off).mock.contexts).toEqual([instance])
+    expect(chart.instance.get()).toBe(instance)
+  })
+
+  it('requires an instance before proxying native events', () => {
+    const chart = createChart()
+    const handler = rstest.fn()
+    expect(() => chart.instance.on('pointermove', handler)).toThrow('No chart instance is bound')
+    expect(() => chart.instance.off('pointermove', handler)).toThrow('No chart instance is bound')
+    chart.instance.bind(chartInstance()).bind(undefined)
+    expect(() => chart.instance.on('pointermove', handler)).toThrow('No chart instance is bound')
+  })
+
+  it('rejects the wrong renderer without losing the current binding', () => {
+    const chart = createChart()
+    const instance = chartInstance()
+    chart.instance.bind(instance)
+    expect(() => chart.instance.bind(tableInstance())).toThrow('requires a VChart instance')
+    expect(chart.instance.get()).toBe(instance)
+    expect(() => createChart('table').instance.bind(instance)).toThrow('requires a VTable instance')
+    expect(() => createChart('pivotTable').instance.bind(instance)).toThrow('requires a VTable instance')
+  })
+
+  it('enforces one-to-one ownership until the first builder unbinds', () => {
+    const first = createChart()
+    const second = createChart()
+    const shared = chartInstance()
+    const own = chartInstance()
+    first.instance.bind(shared)
+    second.instance.bind(own)
+    expect(() => second.instance.bind(shared)).toThrow('already bound')
+    expect(second.instance.get()).toBe(own)
+    expect(first.instance.get()).toBe(shared)
+    first.instance.bind(undefined)
+    second.instance.bind(shared)
+    expect(second.instance.get()).toBe(shared)
+  })
+
+  it('keeps bindings out of DSL, Yjs updates, and undo history', () => {
+    const chart = createChart()
+    const before = chart.build()
+    const update = chart.encodeStateAsUpdate()
+    chart.instance.bind(chartInstance())
+    expect(chart.build()).toEqual(before)
+    expect(chart.encodeStateAsUpdate()).toEqual(update)
+    expect(chart.undoManager.canUndo()).toBe(false)
+    const copy = createVBI().chart.create(before)
+    expect(copy.instance.get()).toBeUndefined()
+    const remote = createChart()
+    remote.applyUpdate(update)
+    expect(remote.instance.get()).toBeUndefined()
+  })
+
+  it('unbinds on local type changes, undo, remote changes, and document destruction', () => {
+    const chart = createChart()
+    const instance: VBIChartInstance = chartInstance()
+    chart.instance.bind(instance)
+    chart.chartType.changeChartType('line')
+    expect(chart.instance.get()).toBe(instance)
+    chart.chartType.changeChartType('area')
+    expect(chart.instance.get()).toBeUndefined()
+    chart.instance.bind(instance)
+    chart.undoManager.undo()
+    expect(chart.instance.get()).toBeUndefined()
+    chart.instance.bind(instance)
+    const remote = new Y.Doc()
+    Y.applyUpdate(remote, chart.encodeStateAsUpdate())
+    remote.getMap('dsl').set('chartType', 'table')
+    chart.applyUpdate(Y.encodeStateAsUpdate(remote))
+    expect(chart.instance.get()).toBeUndefined()
+    const table = tableInstance()
+    chart.instance.bind(table)
+    chart.doc.destroy()
+    expect(chart.instance.get()).toBeUndefined()
+    expect(table.release).not.toHaveBeenCalled()
+    createChart('table').instance.bind(table)
+    createChart().instance.bind(instance)
+    remote.destroy()
+  })
+})

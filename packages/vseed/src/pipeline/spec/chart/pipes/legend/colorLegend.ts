@@ -11,6 +11,10 @@ export const colorLegend: VChartSpecPipe = (spec, context) => {
     return result
   }
 
+  if (baseConfig.legend.enable === false) {
+    return { ...result, legends: { visible: false } }
+  }
+
   const { legend } = baseConfig
   const {
     enable,

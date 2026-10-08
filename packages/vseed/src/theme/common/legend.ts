@@ -2,6 +2,7 @@ import type { ColorLegend, Legend } from 'src/types'
 
 export const getDefaultLegend = (): Legend => ({
   enable: true,
+  interactive: true,
   border: true,
   maxSize: 1,
   shapeType: 'rectRound',

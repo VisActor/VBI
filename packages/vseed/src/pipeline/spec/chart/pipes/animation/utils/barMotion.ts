@@ -1,13 +1,9 @@
-import { ChartTypeEnum } from 'src/pipeline/utils'
-
-const horizontalTypes = [ChartTypeEnum.Bar, ChartTypeEnum.BarParallel, ChartTypeEnum.BarPercent]
-
 /**
  * @description 判断当前柱图类型是否为横向柱图。
- * @param chartType 图表类型。
+ * @param direction 柱图方向。
  * @returns 是否为横向柱图。
  */
-export const isHorizontalBar = (chartType: string): boolean => horizontalTypes.includes(chartType as any)
+export const isHorizontalBar = (direction: 'horizontal' | 'vertical'): boolean => direction === 'horizontal'
 
 /**
  * @description 生成柱图增长动画的 options，横向按宽度增长，纵向按高度反向增长。
@@ -21,11 +17,11 @@ const getBarGrowOptions = (isHorizontal: boolean) => (_datum: any, _element: any
 
 /**
  * @description 生成柱图增长入场动画配置。
- * @param chartType 图表类型。
+ * @param direction 柱图方向。
  * @returns 柱图增长入场动画配置。
  */
-export const growBar = (chartType: string) => {
-  const isHorizontal = isHorizontalBar(chartType)
+export const growBar = (direction: 'horizontal' | 'vertical') => {
+  const isHorizontal = isHorizontalBar(direction)
   return {
     type: isHorizontal ? 'growWidthIn' : 'growHeightIn',
     oneByOne: false,
@@ -57,40 +53,43 @@ const setRandomDataKey = (spec: any) => {
 
 /**
  * @description 生成柱图移入/移出的方向、位移点和通道配置。
- * @param chartType 图表类型。
+ * @param direction 柱图方向。
  * @param orient 移动方向，in 表示移入，out 表示移出。
  * @returns 柱图移动动画 options。
  */
-const getBarMoveOptions = (chartType: string, orient: 'in' | 'out') => {
-  const direction = isHorizontalBar(chartType) ? 'y' : 'x'
-  const size = direction === 'x' ? 'width' : 'height'
+const getBarMoveOptions = (direction: 'horizontal' | 'vertical', orient: 'in' | 'out') => {
+  const axis = isHorizontalBar(direction) ? 'y' : 'x'
+  const size = axis === 'x' ? 'width' : 'height'
   const offsetSign = orient === 'in' ? 1 : -1
 
   return {
-    direction,
+    direction: axis,
     orient: 'negative',
     point: (_datum: any, element: any, opt: any) => ({
-      [direction]: element.getGraphicAttribute(direction) + offsetSign * opt[size],
+      [axis]: element.getGraphicAttribute(axis) + offsetSign * opt[size],
     }),
   }
 }
 
 /**
  * @description 生成柱图从画布外移入的动画配置。
- * @param chartType 图表类型。
+ * @param direction 柱图方向。
  * @param spec 当前 VChart spec。
  * @param isUpdate 是否为 update 阶段动画。
  * @returns 柱图移入动画配置。
  */
-export const moveInBar = (chartType: string, spec?: any, isUpdate = false) => {
+export const moveInBar = (direction: 'horizontal' | 'vertical', spec?: any, isUpdate = false) => {
   if (!isUpdate && spec) setRandomDataKey(spec)
-  const excludeChannels = isHorizontalBar(chartType) ? ['x'] : ['y']
-  return { type: 'moveIn', options: { ...getBarMoveOptions(chartType, 'in'), excludeChannels } }
+  const excludeChannels = isHorizontalBar(direction) ? ['x'] : ['y']
+  return { type: 'moveIn', options: { ...getBarMoveOptions(direction, 'in'), excludeChannels } }
 }
 
 /**
  * @description 生成柱图移出画布的动画配置。
- * @param chartType 图表类型。
+ * @param direction 柱图方向。
  * @returns 柱图移出动画配置。
  */
-export const moveOutBar = (chartType: string) => ({ type: 'moveOut', options: getBarMoveOptions(chartType, 'out') })
+export const moveOutBar = (direction: 'horizontal' | 'vertical') => ({
+  type: 'moveOut',
+  options: getBarMoveOptions(direction, 'out'),
+})

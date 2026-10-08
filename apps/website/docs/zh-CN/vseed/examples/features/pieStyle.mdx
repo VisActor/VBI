@@ -1,0 +1,134 @@
+# PieStyle
+
+## compactDonut
+
+静态图例仅说明分类，配置悬停降低扇区透明度，中心文本使用主题字号，超长文本按环内宽度省略。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "donut",
+  "dataset": [
+    {
+      "category": "消费者",
+      "share": 62
+    },
+    {
+      "category": "其他客户",
+      "share": 38
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "category",
+      "encoding": "color"
+    }
+  ],
+  "measures": [
+    {
+      "id": "share",
+      "alias": "订单占比",
+      "encoding": "angle",
+      "format": {
+        "type": "number",
+        "suffix": "%",
+        "fractionDigits": 1
+      }
+    }
+  ],
+  "label": {
+    "enable": false
+  },
+  "color": {
+    "colorScheme": [
+      "#56dabb",
+      "#c1f3e6"
+    ]
+  },
+  "legend": {
+    "interactive": false,
+    "position": "bottom",
+    "border": false,
+    "shapeType": "circle",
+    "labelFontSize": 10
+  },
+  "outerRadius": 0.98,
+  "innerRadius": 0.74,
+  "startAngle": -115,
+  "pieStyle": {
+    "pieBorderWidth": 0,
+    "pieHoverEffect": "opacity"
+  },
+  "centerText": {
+    "titleText": "62%",
+    "subTitleText": "消费者"
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## halfPie
+
+半圆饼图保留默认颜色，配置圆角、边框和关闭悬停样式。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "pie",
+  "dataset": [
+    {
+      "category": "消费者",
+      "share": 62
+    },
+    {
+      "category": "其他客户",
+      "share": 38
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "category",
+      "encoding": "color"
+    }
+  ],
+  "measures": [
+    {
+      "id": "share",
+      "alias": "订单占比",
+      "encoding": "angle",
+      "format": {
+        "type": "number",
+        "suffix": "%",
+        "fractionDigits": 1
+      }
+    }
+  ],
+  "label": {
+    "enable": false
+  },
+  "color": {
+    "colorScheme": [
+      "#56dabb",
+      "#c1f3e6"
+    ]
+  },
+  "startAngle": -180,
+  "endAngle": 0,
+  "outerRadius": 0.9,
+  "pieStyle": {
+    "pieCornerRadius": 4,
+    "pieBorderColor": "white",
+    "pieBorderWidth": 2,
+    "pieHoverEffect": "none"
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```

@@ -1,7 +1,7 @@
 import type { PivotChartSpecPipeline, VChartSpecPipeline } from 'src/types'
 import {
   initColumn,
-  animation,
+  columnAnimation,
   datasetXY,
   xBand,
   yLinear,
@@ -20,7 +20,7 @@ import {
   pivotRowDimensions,
   pivotColumnDimensions,
   stackInverse,
-  barStyle,
+  columnStyle,
   annotationPoint,
   annotationVerticalLine,
   annotationHorizontalLine,
@@ -47,7 +47,7 @@ import {
 const column: VChartSpecPipeline = [
   fontFamilyTheme,
   initColumn,
-  animation,
+  columnAnimation,
   regionPadding,
   stackCornerRadius,
   barMaxWidth,
@@ -63,7 +63,7 @@ const column: VChartSpecPipeline = [
   tooltip({ titleEncoding: 'x' }),
   verticalCrosshairRect,
   colorAdapter(discreteLegend, colorLegend),
-  colorBarStyleFill(barStyle),
+  colorBarStyleFill(columnStyle),
   annotationPoint,
   annotationVerticalLine,
   annotationHorizontalLine,
@@ -80,7 +80,7 @@ const pivotColumn: PivotChartSpecPipeline = [
   pivotIndicators([
     fontFamilyTheme,
     initColumn,
-    animation,
+    columnAnimation,
     regionPadding,
     stackCornerRadius,
     barMaxWidth,
@@ -95,7 +95,7 @@ const pivotColumn: PivotChartSpecPipeline = [
     label,
     tooltip({ titleEncoding: 'x' }),
     verticalCrosshairRect,
-    colorBarStyleFill(barStyle),
+    colorBarStyleFill(columnStyle),
     annotationPoint,
     annotationVerticalLine,
     annotationHorizontalLine,

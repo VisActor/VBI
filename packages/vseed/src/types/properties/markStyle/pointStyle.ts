@@ -1,6 +1,4 @@
-import { z } from 'zod'
-import type { ChartDynamicFilter } from '../../dataSelector/selector'
-import { zChartDynamicFilter, zSelector, zSelectors, type Selector, type Selectors } from '../../dataSelector/selector'
+import type { ChartDynamicFilter, Selector, Selectors } from '../../dataSelector/selector'
 
 export type PointStyle = {
   /**
@@ -62,7 +60,7 @@ export type PointStyle = {
   dynamicFilter?: ChartDynamicFilter
 
   /**
-   * @description 点是否可见
+   * @description 点是否默认可见。折线图、面积图（含百分比面积图）、雷达图及双轴图中的折线/面积系列设为 false 时，悬停对应维度仍会显示交互点。无条件设为 false 时不创建普通点图元，数据更新与退出动画也保持隐藏；条件样式仍可按数据控制可见性。
    */
   pointVisible?: boolean
   /**
@@ -99,15 +97,3 @@ export type PointStyle = {
    */
   pointBorderStyle?: 'solid' | 'dashed' | 'dotted'
 }
-
-export const zPointStyle = z.object({
-  selector: z.union([zSelector, zSelectors]).nullish(),
-  dynamicFilter: zChartDynamicFilter.optional(),
-  pointVisible: z.boolean().nullish(),
-  pointSize: z.number().nullish(),
-  pointColor: z.string().nullish(),
-  pointColorOpacity: z.number().nullish(),
-  pointBorderColor: z.string().nullish(),
-  pointBorderWidth: z.number().nullish(),
-  pointBorderStyle: z.union([z.enum(['solid', 'dashed', 'dotted'])]).nullish(),
-})

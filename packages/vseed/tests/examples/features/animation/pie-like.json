@@ -6,12 +6,12 @@
     "animation": {
       "enable": true,
       "params": {
-        "appear": { "enable": true, "effects": ["radial"], "duration": 0.8 },
-        "update": { "enable": true, "effects": ["radial"], "duration": 0.6 },
+        "appear": { "enable": true, "effects": ["radial"], "duration": 800 },
+        "update": { "enable": true, "effects": ["radial"], "duration": 600 },
         "loop": {
           "enable": true,
-          "interval": 1.5,
-          "loop": { "enable": true, "effects": ["enlarge"], "duration": 1 },
+          "interval": 1500,
+          "loop": { "enable": true, "effects": ["enlarge"], "duration": 1000 },
           "atmosphere": { "color": "#59a14f", "ease": "linear" }
         }
       }

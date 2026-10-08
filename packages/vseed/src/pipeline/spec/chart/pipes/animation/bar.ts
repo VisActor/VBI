@@ -1,7 +1,7 @@
 import { StreamLight } from '@visactor/vchart'
 import type { BarLikeAppearConfig, BarLikeLoopConfig, BarLikeUpdateConfig } from './types'
 import { VScreenAnimationType } from './types'
-import { allowAnimation, getPrimaryEffect, toMs } from './utils'
+import { allowAnimation, getPrimaryEffect } from './utils'
 import {
   fadeInBar,
   getGroupCountFromSpec,
@@ -27,16 +27,16 @@ import {
  * 效果：不指定额外动画 type, 交给 VChart 默认入场补间。
  * 编排逻辑：仅保留 easing 和 duration。
  */
-export const barAppear = (config: BarLikeAppearConfig | undefined, chartType: string) => {
+export const barAppear = (config: BarLikeAppearConfig | undefined, direction: 'horizontal' | 'vertical') => {
   if (!allowAnimation(config)) return false
   const effect = getPrimaryEffect(config)
   const configByType =
     effect === VScreenAnimationType.growth
-      ? growBar(chartType)
+      ? growBar(direction)
       : effect === VScreenAnimationType.load
         ? fadeInBar()
         : {}
-  return { bar: { ...configByType, easing: config?.ease, duration: toMs(config?.duration ?? 1) } }
+  return { bar: { ...configByType, easing: config?.ease, duration: config?.duration ?? 1000 } }
 }
 
 /**
@@ -49,11 +49,15 @@ export const barAppear = (config: BarLikeAppearConfig | undefined, chartType: st
  * 效果：使用 VChart 默认更新补间。
  * 编排逻辑：只保留 easing 和 duration, 不影响轴、标签等其他组件。
  */
-export const barUpdate = (config: BarLikeUpdateConfig | undefined, chartType: string, spec?: any) => {
-  if (!allowAnimation(config)) return false
+export const barUpdate = (
+  config: BarLikeUpdateConfig | undefined,
+  direction: 'horizontal' | 'vertical',
+  spec?: any,
+) => {
+  if (!config?.enable) return false
   const effect = getPrimaryEffect(config)
-  const configByType = effect === VScreenAnimationType.moveIn ? moveInBar(chartType, spec, true) : {}
-  return { bar: { ...configByType, easing: config?.ease, duration: toMs(config?.duration ?? 1) } }
+  const configByType = effect === VScreenAnimationType.moveIn ? moveInBar(direction, spec, true) : {}
+  return { bar: { ...configByType, easing: config?.ease, duration: config?.duration ?? 1000 } }
 }
 
 /**
@@ -72,22 +76,22 @@ export const barUpdate = (config: BarLikeUpdateConfig | undefined, chartType: st
 export const barLoop = (
   config: BarLikeLoopConfig | undefined,
   ignoreFirstNormal: boolean,
-  chartType: string,
+  direction: 'horizontal' | 'vertical',
   spec?: any,
 ) => {
   if (!config?.enable) return false
   const interval = config.interval ?? 0
-  const startTime = ignoreFirstNormal ? toMs(interval) : 0
+  const startTime = ignoreFirstNormal ? interval : 0
   const loop = config.loop
   const atmosphere = config.atmosphere
   const loopEffect = getPrimaryEffect(loop)
   const result: any[] = []
-  let loopDuration = loopEffect === VScreenAnimationType.none ? 0 : 1
-  const atmosphereDuration = loopEffect === VScreenAnimationType.none ? 2 : 1
+  let loopDuration = loopEffect === VScreenAnimationType.none ? 0 : 1000
+  const atmosphereDuration = loopEffect === VScreenAnimationType.none ? 2000 : 1000
 
   if (loopEffect === VScreenAnimationType.highLight && loop) {
-    const groupDuration = 0.7
-    const stopDuration = 0.85
+    const groupDuration = 700
+    const stopDuration = 850
     loopDuration = loop.duration ?? groupDuration * getGroupCountFromSpec(spec).groupCount + stopDuration
     result.push(
       ...groupHighLightBar(
@@ -96,17 +100,17 @@ export const barLoop = (
         loopDuration,
         interval,
         atmosphereDuration,
-        isHorizontalBar(chartType),
+        isHorizontalBar(direction),
         spec,
       ),
     )
   } else if (loop) {
     result.push({
-      ...getLoopResult(loopEffect, chartType, spec),
+      ...getLoopResult(loopEffect, direction, spec),
       startTime,
       easing: loop.ease,
-      duration: toMs(loopDuration),
-      delayAfter: toMs(interval + atmosphereDuration),
+      duration: loopDuration,
+      delayAfter: interval + atmosphereDuration,
       loop: true,
       controlOptions: { immediatelyApply: false },
     })
@@ -116,13 +120,13 @@ export const barLoop = (
     result.push({
       loop: true,
       startTime,
-      delay: toMs(loopDuration),
-      delayAfter: toMs(interval),
-      duration: toMs(atmosphereDuration),
+      delay: loopDuration,
+      delayAfter: interval,
+      duration: atmosphereDuration,
       easing: atmosphere.ease,
       custom: StreamLight,
       customParameters: {
-        isHorizontal: isHorizontalBar(chartType),
+        isHorizontal: isHorizontalBar(direction),
         attribute: {
           fill: transform2VChartColor(atmosphere.color),
           blur: 0,
@@ -135,18 +139,9 @@ export const barLoop = (
   return result.length > 0 ? { bar: result } : false
 }
 
-/**
- * 柱图/条形图 离场动画
- * 动画类型:
- * 1. moveIn: 反向移出动画
- * 效果：沿柱图进入方向反向移出画布。
- * 编排逻辑：只有 update 效果为 moveIn 时才补充 moveOut。
- * 2. 其他: 默认离场动画
- * 效果：不配置自定义 exit。
- * 编排逻辑：返回空配置, 由 VChart 默认行为处理。
- */
-export const barExit = (config: BarLikeUpdateConfig | undefined, chartType: string) => {
-  if (!allowAnimation(config)) return false
-  if (getPrimaryEffect(config) !== VScreenAnimationType.moveIn) return {}
-  return { bar: { ...moveOutBar(chartType), duration: 1000 } }
+/** Data exits inherit update timing, with the reverse motion for moveIn. */
+export const barExit = (config: BarLikeUpdateConfig | undefined, direction: 'horizontal' | 'vertical') => {
+  if (!config?.enable) return false
+  const motion = getPrimaryEffect(config) === VScreenAnimationType.moveIn ? moveOutBar(direction) : {}
+  return { bar: { ...motion, duration: config.duration ?? 1000, easing: config.ease } }
 }

@@ -75,6 +75,10 @@ VSeed 将构建过程拆成两段，保证“可序列化中间态”和“不�
 - `VSeed` 是 union 类型，覆盖所有图表/表格 chartType。
 - 入口类型：`packages/vseed/src/types/vseed.ts`
 
+`types/properties/markStyle/` 中的类型与运行时校验按文件分离：
+`barStyle.ts` 等文件只定义 TypeScript 类型，`zBarStyle.ts` 等文件定义 Zod schema；
+`index.ts` 分别通过 `export type *` 与 `export *` 统一导出。
+
 ### 4.2 AdvancedVSeed
 
 `AdvancedVSeed` 是中间态 DSL，字段更丰富，含 encoding、reshape 信息、主题/样式/分析信息：
@@ -179,6 +183,8 @@ VSeed 支持在 DSL 中写动态过滤逻辑（code），在 build 前执行。
 - 功能拆分为“原子 Pipe”，避免大而全的 if/else
 - 组合式 pipeline 构建图表类型
 - 适配器模式（如 pivotAdapter）承接条件分支
+
+`stackCornerRadius` 的裁剪同时限制柱体描边的外扩。即使未配置圆角、使用单系列或条件圆角，也应保留静态柱体的裁剪边界；匹配显式 `barRadius` 时，裁剪圆角不应大于图元圆角，避免把直角裁成圆角。`moveIn` 因图元尚未到达最终位置，使用图元圆角而不使用最终位置裁剪。
 
 详见：
 

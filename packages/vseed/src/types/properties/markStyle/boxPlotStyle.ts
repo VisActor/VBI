@@ -1,5 +1,4 @@
-import { z } from 'zod'
-import { zSelector, zSelectors, type Selector, type Selectors } from '../../dataSelector/selector'
+import type { Selector, Selectors } from '../../dataSelector/selector'
 
 export type BoxPlotStyle = {
   /**
@@ -83,16 +82,3 @@ export type BoxPlotStyle = {
    */
   whiskerBorderColor?: string
 }
-
-export const zBoxPlotStyle = z.object({
-  selector: zSelector.or(zSelectors).nullish(),
-  boxVisible: z.boolean().nullish(),
-  boxColor: z.string().nullish(),
-  boxColorOpacity: z.number().min(0).max(1).nullish(),
-  boxBorderColor: z.string().nullish(),
-  boxBorderWidth: z.number().min(0).nullish(),
-  boxBorderOpacity: z.number().min(0).max(1).nullish(),
-  boxCornerRadius: z.number().nullish(),
-  medianBorderColor: z.string().nullish(),
-  whiskerBorderColor: z.string().nullish(),
-})

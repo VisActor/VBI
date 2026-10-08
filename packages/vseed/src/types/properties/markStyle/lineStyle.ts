@@ -1,6 +1,4 @@
-import { z } from 'zod'
-import type { ChartDynamicFilter } from '../../dataSelector/selector'
-import { zChartDynamicFilter, zSelector, zSelectors, type Selector, type Selectors } from '../../dataSelector/selector'
+import type { ChartDynamicFilter, Selector, Selectors } from '../../dataSelector/selector'
 
 export type LineStyle = {
   /**
@@ -89,14 +87,3 @@ export type LineStyle = {
    */
   lineStyle?: 'solid' | 'dashed' | 'dotted'
 }
-
-export const zLineStyle = z.object({
-  selector: z.union([zSelector, zSelectors]).nullish(),
-  dynamicFilter: zChartDynamicFilter.optional(),
-  lineVisible: z.boolean().nullish(),
-  lineSmooth: z.boolean().nullish(),
-  lineColor: z.string().nullish(),
-  lineColorOpacity: z.number().nullish(),
-  lineWidth: z.number().nullish(),
-  lineStyle: z.union([z.enum(['solid', 'dashed', 'dotted'])]).nullish(),
-})

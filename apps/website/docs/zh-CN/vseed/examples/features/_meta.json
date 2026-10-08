@@ -26,6 +26,11 @@
   },
   {
     "type": "file",
+    "name": "areaStyle",
+    "label": "AreaStyle"
+  },
+  {
+    "type": "file",
     "name": "barStyle",
     "label": "BarStyle"
   },
@@ -38,6 +43,11 @@
     "type": "file",
     "name": "brush",
     "label": "Brush"
+  },
+  {
+    "type": "file",
+    "name": "centerText",
+    "label": "CenterText"
   },
   {
     "type": "file",
@@ -78,6 +88,11 @@
     "type": "file",
     "name": "numFormat",
     "label": "NumFormat"
+  },
+  {
+    "type": "file",
+    "name": "pieStyle",
+    "label": "PieStyle"
   },
   {
     "type": "file",

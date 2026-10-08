@@ -15,10 +15,16 @@ import {
   zBrush,
   zPage,
   zPieLikeAnimation,
+  zPieGeometry,
+  zPieStyle,
+  zCenterText,
 } from '../../properties'
 
 export const zDonut = z.object({
   chartType: z.literal('donut'),
+  ...zPieGeometry.shape,
+  pieStyle: zPieStyle.nullish(),
+  centerText: zCenterText.nullish(),
   dataset: zDataset.nullish(),
   encoding: zEncoding.nullish(),
   dimensions: zDimensions.nullish(),

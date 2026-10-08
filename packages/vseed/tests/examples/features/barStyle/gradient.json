@@ -1,0 +1,60 @@
+{
+  "name": "系列颜色渐变",
+  "description": "柱体继承各系列颜色，支持堆叠与正负值。",
+  "vseed": {
+    "chartType": "column",
+    "dataset": [
+      {
+        "category": "A",
+        "region": "East",
+        "value": 10
+      },
+      {
+        "category": "A",
+        "region": "West",
+        "value": 6
+      },
+      {
+        "category": "B",
+        "region": "East",
+        "value": 18
+      },
+      {
+        "category": "B",
+        "region": "West",
+        "value": 12
+      },
+      {
+        "category": "C",
+        "region": "East",
+        "value": 8
+      },
+      {
+        "category": "C",
+        "region": "West",
+        "value": -5
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "category"
+      },
+      {
+        "id": "region",
+        "encoding": "color"
+      }
+    ],
+    "measures": [
+      {
+        "id": "value"
+      }
+    ],
+    "label": {
+      "enable": false
+    },
+    "barStyle": {
+      "barBorderWidth": 0,
+      "barGradient": true
+    }
+  }
+}

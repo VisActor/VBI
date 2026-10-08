@@ -6,11 +6,11 @@ export type PieLikeLoopEffect = 'enlarge' | 'relocate'
 export interface AnimationEffectConfig {
   /** @description 是否启用当前动画阶段 */
   enable?: boolean
-  /** @description 当前阶段使用的动画效果列表 */
+  /** @description 当前阶段使用的动画效果列表；更新阶段省略时使用默认补间 */
   effects?: string[]
   /** @description 动画缓动函数 */
   ease?: string
-  /** @description 动画时长，单位为毫秒 */
+  /** @description 动画时长，单位为毫秒；数据更新阶段默认 1000 毫秒，0 表示立即完成 */
   duration?: number
   /** @description 动画高亮或氛围颜色 */
   color?: string

@@ -24,7 +24,7 @@ describe('dashboard / DashboardUndo', () => {
       meta: { title: '仪表盘撤销与重做' },
     })
     dashboardBuilder.transact(() => {
-      dashboardBuilder.theme.setTheme('dark')
+      dashboardBuilder.theme.setTheme('dark-default')
       dashboardBuilder.insight.add((widget) =>
         widget
           .setInsightId(insightBuilder)
@@ -78,7 +78,7 @@ describe('dashboard / DashboardUndo', () => {
           "xxl": [],
         },
         "meta": {
-          "theme": "dark",
+          "theme": "dark-default",
           "title": "仪表盘撤销与重做",
         },
         "uuid": "uuid-2",

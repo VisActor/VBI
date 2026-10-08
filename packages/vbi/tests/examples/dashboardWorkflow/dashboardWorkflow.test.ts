@@ -167,7 +167,7 @@ describe('dashboard / DashboardWorkflow', () => {
           "xxl": [],
         },
         "meta": {
-          "theme": "light",
+          "theme": "light-default",
           "title": "经营驾驶舱",
         },
         "uuid": "uuid-3",
@@ -334,7 +334,7 @@ describe('dashboard / DashboardWorkflow', () => {
           "xxl": [],
         },
         "meta": {
-          "theme": "light",
+          "theme": "light-default",
           "title": "商品运营看板",
         },
         "uuid": "uuid-4",

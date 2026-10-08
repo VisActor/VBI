@@ -121,7 +121,7 @@ describe('dashboard / ResourceWorkflow', () => {
           "xxl": [],
         },
         "meta": {
-          "theme": "light",
+          "theme": "light-default",
           "title": "季度经营复盘",
         },
         "uuid": "uuid-4",

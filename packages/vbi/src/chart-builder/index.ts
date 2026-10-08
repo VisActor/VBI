@@ -3,6 +3,7 @@ export {
   MeasuresBuilder,
   DimensionsBuilder,
   ChartTypeBuilder,
+  ChartInstanceBuilder,
   WhereFilterBuilder,
   WhereGroupBuilder,
   HavingFilterBuilder,

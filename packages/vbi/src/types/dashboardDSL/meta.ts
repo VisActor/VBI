@@ -7,7 +7,7 @@ export const zVBIDashboardTheme = z.string().trim().min(1)
 export const zVBIDashboardMeta = z.object({
   title: z.string(),
   description: z.string().optional(),
-  theme: zVBIDashboardTheme.default('light'),
+  theme: zVBIDashboardTheme.default('light-default'),
   /** 文档内的主题配置，随保存、撤销和协同同步传递。 */
   themes: z.record(zVBIDashboardTheme, zVBIDashboardThemeDefinition).optional(),
 })

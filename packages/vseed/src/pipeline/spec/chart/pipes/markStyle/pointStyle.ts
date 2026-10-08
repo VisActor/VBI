@@ -1,26 +1,12 @@
 import type { IAreaChartSpec } from '@visactor/vchart'
-import { selector, selectorWithDynamicFilter } from '../../../../../dataSelector'
+import { selector, selectorWithDynamicFilter } from 'src/dataSelector'
 import type { Datum, PointStyle, VChartSpecPipe } from 'src/types'
-import { isEmpty, isNullish } from 'remeda'
+import { compileMarkStyles } from './compileMarkStyles'
 
-export const pointStyle: VChartSpecPipe = (spec, context) => {
-  const { advancedVSeed } = context
-  const { markStyle } = advancedVSeed
-  const { pointStyle } = markStyle
-  const result = {
-    ...spec,
-    point: {
-      style: {},
-    },
-  } as IAreaChartSpec
-  if (isNullish(pointStyle) || isEmpty(pointStyle)) {
-    return result
-  }
-
-  const pointStyles = (Array.isArray(pointStyle) ? pointStyle : [pointStyle]) as PointStyle[]
-
-  const customMap = pointStyles.reduce<object>((result, style, index) => {
-    const {
+export const pointStyle: VChartSpecPipe = (spec, { advancedVSeed }) => {
+  const point = compileMarkStyles(
+    advancedVSeed.markStyle.pointStyle as PointStyle | PointStyle[] | undefined,
+    ({
       pointBorderColor,
       pointBorderStyle,
       pointBorderWidth = 1,
@@ -28,46 +14,27 @@ export const pointStyle: VChartSpecPipe = (spec, context) => {
       pointColorOpacity,
       pointSize,
       pointVisible = true,
-    } = style
-
-    const lineDash = pointBorderStyle === 'dashed' ? [5, 2] : pointBorderStyle === 'dotted' ? [2, 5] : [0, 0]
-    return {
-      ...result,
-      [`custom${index + 1}`]: {
-        // 优先级: 后者覆盖前者
-        level: index + 1,
-        filter: (datum: Datum) => {
-          const shouldApply = style.dynamicFilter
-            ? selectorWithDynamicFilter(datum, style.dynamicFilter, style.selector)
-            : selector(datum, style.selector)
-          if (shouldApply) {
-            return true
-          }
-          return false
-        },
-        style: {
-          visible: pointVisible,
-          size: pointSize,
-          fill: pointColor,
-          fillOpacity: pointColorOpacity,
-          innerBorder: {
-            stroke: pointBorderColor,
-            lineWidth: pointBorderWidth,
-            distance: (pointBorderWidth || 0) / 2,
-            lineDash: lineDash,
-          },
-        },
+    }) => ({
+      visible: pointVisible,
+      size: pointSize,
+      fill: pointColor,
+      fillOpacity: pointColorOpacity,
+      innerBorder: {
+        stroke: pointBorderColor,
+        lineWidth: pointBorderWidth,
+        distance: pointBorderWidth / 2,
+        lineDash: pointBorderStyle === 'dashed' ? [5, 2] : pointBorderStyle === 'dotted' ? [2, 5] : [0, 0],
       },
-    }
-  }, {})
-
-  return {
-    ...result,
-    point: {
-      ...result.point,
-      state: {
-        ...customMap,
-      },
-    },
+    }),
+    (rule) => (datum: Datum) =>
+      rule.dynamicFilter
+        ? selectorWithDynamicFilter(datum, rule.dynamicFilter, rule.selector)
+        : selector(datum, rule.selector),
+  )
+  // A globally hidden ordinary mark need not be created. Its activePoint retains the style.
+  if (!Object.keys(point.state).length) {
+    const { visible, ...style } = point.style
+    return { ...spec, point: { visible, style, state: point.state } } as IAreaChartSpec
   }
+  return { ...spec, point } as IAreaChartSpec
 }

@@ -4,17 +4,17 @@ import { Builder as VSeedBuilder, registerAll, type TokenThemeDefinition } from 
 import * as Y from 'yjs'
 import { DashboardThemeBuilder } from 'src/dashboard-builder/features/theme/theme-builder'
 
-test('defaults missing metadata to light and observes the first remote theme', () => {
+test('defaults missing metadata to light-default and observes the first remote theme', () => {
   const doc = new Y.Doc()
   const dsl = doc.getMap('dsl')
   const theme = new DashboardThemeBuilder(dsl)
-  expect(theme.getTheme()).toBe('light')
+  expect(theme.getTheme()).toBe('light-default')
   expect(theme.getThemeDefinitions()).toEqual({})
   const changed = rs.fn(() => theme.getTheme())
   const unsubscribe = theme.observe(changed)
-  dsl.set('meta', { title: 'Restored', theme: 'dark' })
+  dsl.set('meta', { title: 'Restored', theme: 'dark-default' })
   expect(changed).toHaveBeenCalledTimes(1)
-  expect(changed).toHaveLastReturnedWith('dark')
+  expect(changed).toHaveLastReturnedWith('dark-default')
   unsubscribe()
   doc.destroy()
 })
@@ -22,11 +22,11 @@ test('defaults missing metadata to light and observes the first remote theme', (
 test('returns an empty palette when the registered built-in theme has no chart colors', () => {
   const vbi = createVBI()
   const builder = vbi.dashboard.create(vbi.dashboard.createEmpty())
-  builder.theme.resolveTheme('light')
+  builder.theme.resolveTheme('light-default')
   const original = VSeedBuilder.getTheme('light')
   try {
     VSeedBuilder.registerTheme('light', {})
-    expect(builder.theme.getThemeOptions().find(({ name }) => name === 'light')?.colors).toEqual([])
+    expect(builder.theme.getThemeOptions().find(({ name }) => name === 'light-default')?.colors).toEqual([])
   } finally {
     VSeedBuilder.registerTheme('light', original)
   }
@@ -58,7 +58,7 @@ test('configures a portable dashboard theme directly through Builder without ren
   const restored = createVBI().dashboard.create(builder.build())
   expect(restored.theme.getThemeConfig()).toEqual(brand)
   expect(builder.undoManager.undo()).toBe(true)
-  expect(builder.theme.getTheme()).toBe('light')
+  expect(builder.theme.getTheme()).toBe('light-default')
   expect(builder.theme.getThemeConfig('emerald')).toBeUndefined()
   expect(builder.undoManager.redo()).toBe(true)
   expect(builder.theme.getThemeConfig()).toEqual(brand)
@@ -70,12 +70,12 @@ test('saves a custom dashboard theme while preserving metadata and supports undo
     ...vbi.dashboard.createEmpty(),
     meta: { title: 'Sales', description: 'Monthly review' },
   })
-  expect(builder.theme.getTheme()).toBe('light')
+  expect(builder.theme.getTheme()).toBe('light-default')
   builder.theme.setTheme('brand-dark')
   expect(builder.build().meta).toEqual({ title: 'Sales', description: 'Monthly review', theme: 'brand-dark' })
   expect(builder.theme.toJSON()).toBe('brand-dark')
   expect(builder.undoManager.undo()).toBe(true)
-  expect(builder.theme.getTheme()).toBe('light')
+  expect(builder.theme.getTheme()).toBe('light-default')
   expect(builder.undoManager.redo()).toBe(true)
   expect(builder.theme.getTheme()).toBe('brand-dark')
 })
@@ -95,10 +95,10 @@ test('observes local and remote theme changes, ignores metadata-only changes and
   replica.theme.setTheme('brand-dark')
   replica.dsl.set('meta', { ...replica.build().meta, title: 'Renamed' })
   expect(changed).toHaveBeenCalledTimes(1)
-  replica.theme.setTheme('light')
+  replica.theme.setTheme('light-default')
   expect(changed).toHaveBeenCalledTimes(2)
   unsubscribe()
-  replica.theme.setTheme('dark')
+  replica.theme.setTheme('dark-default')
   expect(changed).toHaveBeenCalledTimes(2)
 })
 
@@ -126,7 +126,7 @@ test('syncs theme configuration updates and keeps definitions local, copied and 
   replica.theme.observe(changed)
   const input = structuredClone(brand)
   first.theme.registerTheme('emerald', input)
-  expect(first.theme.getTheme()).toBe('light')
+  expect(first.theme.getTheme()).toBe('light-default')
   input.tokens.textPrimary = '#000000'
   expect(first.theme.getThemeConfig('emerald')).toEqual(brand)
   expect(other.theme.getThemeConfig('emerald')).toBeUndefined()
@@ -144,7 +144,7 @@ test('syncs theme configuration updates and keeps definitions local, copied and 
   const copy = replica.theme.getThemeConfig()!
   copy.tokens.colorScheme[0] = '#ffffff'
   expect(replica.theme.getThemeConfig()).toEqual(updated)
-  replica.theme.setTheme('dark')
+  replica.theme.setTheme('dark-default')
   replica.theme.setTheme('emerald')
   expect(replica.theme.getThemeConfig()).toEqual(updated)
 })
@@ -175,7 +175,7 @@ test('observes the theme catalog and undo/redo while ignoring unrelated changes'
   const changed = rs.fn(() => ({ name: builder.theme.getTheme(), definitions: builder.theme.getThemeDefinitions() }))
   const unsubscribe = builder.theme.observe(changed)
   builder.theme.registerTheme('emerald', brand)
-  expect(changed).toHaveLastReturnedWith({ name: 'light', definitions: { emerald: brand } })
+  expect(changed).toHaveLastReturnedWith({ name: 'light-default', definitions: { emerald: brand } })
   builder.theme.setTheme('emerald')
   builder.undoManager.clear()
   const updated = { ...brand, dashboard: { padding: 32, gap: 16 } }
@@ -201,18 +201,36 @@ test('owns preset discovery and VSeed registration without a Dashboard component
   const vbi = createVBI()
   const builder = vbi.dashboard.create(vbi.dashboard.createEmpty())
   const options = builder.theme.getThemeOptions()
-  expect(options).toHaveLength(12)
-  expect(options.find(({ name }) => name === 'clean')?.baseTheme).toBe('light')
-  expect(options.find(({ name }) => name === 'volcanoBlue')?.colors[0]).toBe('#006EFF')
-  builder.theme.setTheme('volcanoBlue')
+  expect(options).toHaveLength(20)
+  for (const { name, baseTheme, colors } of options) {
+    expect(name).toMatch(new RegExp(`^${baseTheme}-[a-z0-9]+(?:-[a-z0-9]+)*$`))
+    builder.theme.setTheme(name)
+    const restored = vbi.dashboard.create(builder.build())
+    const resolved = restored.theme.resolveTheme()
+    expect(resolved).toMatchObject({ name, baseTheme })
+    expect(VSeedBuilder.getTheme(resolved.chartTheme).config?.column?.color?.colorScheme).toEqual(colors)
+  }
+  expect(builder.theme.resolveTheme('light-default')).toMatchObject({
+    name: 'light-default',
+    baseTheme: 'light',
+    chartTheme: 'light',
+  })
+  expect(builder.theme.resolveTheme('dark-default')).toMatchObject({
+    name: 'dark-default',
+    baseTheme: 'dark',
+    chartTheme: 'dark',
+  })
+  expect(options.find(({ name }) => name === 'light-clean')?.baseTheme).toBe('light')
+  expect(options.find(({ name }) => name === 'dark-volcano-blue')?.colors[0]).toBe('#006EFF')
+  builder.theme.setTheme('dark-volcano-blue')
   const resolved = builder.theme.resolveTheme()
-  expect(resolved).toMatchObject({ name: 'volcanoBlue', baseTheme: 'dark' })
+  expect(resolved).toMatchObject({ name: 'dark-volcano-blue', baseTheme: 'dark' })
   expect(VSeedBuilder.getTheme(resolved.chartTheme).config?.column?.color?.colorScheme).toEqual(
-    options.find(({ name }) => name === 'volcanoBlue')?.colors,
+    options.find(({ name }) => name === 'dark-volcano-blue')?.colors,
   )
   const before = builder.build()
   expect(builder.theme.resolveTheme('missing')).toMatchObject({
-    name: 'light',
+    name: 'light-default',
     chartTheme: 'light',
     baseTheme: 'light',
   })
@@ -254,20 +272,20 @@ test('allows document presets to override built-in names without changing other 
   const vbi = createVBI()
   const first = vbi.dashboard.create(vbi.dashboard.createEmpty())
   const second = vbi.dashboard.create(vbi.dashboard.createEmpty())
-  const original = second.theme.resolveTheme('dark')
+  const original = second.theme.resolveTheme('dark-default')
   const defaults = VSeedBuilder.getTheme('dark')
-  first.theme.registerTheme('dark', brand)
-  expect(first.theme.getTheme()).toBe('light')
-  const resolved = first.theme.resolveTheme('dark')
+  first.theme.registerTheme('dark-default', brand)
+  expect(first.theme.getTheme()).toBe('light-default')
+  const resolved = first.theme.resolveTheme('dark-default')
   expect(resolved.definition).toEqual(brand)
   expect(resolved.chartTheme).not.toBe('dark')
   expect(VSeedBuilder.getTheme('dark')).toBe(defaults)
-  expect(second.theme.resolveTheme('dark')).toEqual(original)
-  expect(first.theme.getThemeOptions()).toHaveLength(12)
+  expect(second.theme.resolveTheme('dark-default')).toEqual(original)
+  expect(first.theme.getThemeOptions()).toHaveLength(20)
   resolved.definition!.tokens.textPrimary = '#000000'
-  expect(first.theme.getThemeConfig('dark')).toEqual(brand)
-  first.theme.registerTheme('light', brand)
-  expect(first.theme.resolveTheme('missing')).toEqual(first.theme.resolveTheme('light'))
+  expect(first.theme.getThemeConfig('dark-default')).toEqual(brand)
+  first.theme.registerTheme('light-default', brand)
+  expect(first.theme.resolveTheme('missing')).toEqual(first.theme.resolveTheme('light-default'))
 })
 
 test('applies Builder themes to charts and tables while preserving explicit chart styles', () => {
@@ -293,4 +311,28 @@ test('applies Builder themes to charts and tables while preserving explicit char
   }).buildAdvanced()
   expect(table?.config?.table?.bodyFontColor).toBe(brand.tokens.textPrimary)
   expect(table?.config?.table?.headerBackgroundColor).toBe(brand.tokens.surfaceColor)
+})
+
+test.each([
+  ['light-misty-rose', ['#D8B4B6', '#F7F2EE', '#A78F88']],
+  ['light-sea-salt-blue', ['#AFCBDA', '#F5F7F6', '#C9D2D5']],
+  ['light-forest-mist', ['#7FA69A', '#E6DCC8', '#B5C1B0']],
+  ['light-lavender', ['#B9AFD8', '#D7D1DC', '#F2EEEA']],
+  ['light-apricot-orange', ['#F0C4A8', '#EAD8C4', '#F6E2DB']],
+  ['light-bamboo-moon', ['#89A8A0', '#F1EFE7', '#D7C5A1']],
+  ['light-clear-sky-blue', ['#A8C7E8', '#F3E1A0', '#F8F7F1']],
+  ['light-cedar-rose', ['#EDF0F4', '#E8D0D8', '#BAC3D4', '#B2C7DC']],
+])('preserves the reference colors for %s across Dashboard and VSeed', (name, referenceColors) => {
+  const vbi = createVBI()
+  const builder = vbi.dashboard.create(vbi.dashboard.createEmpty())
+  builder.theme.setTheme(name)
+  const { baseTheme, definition, chartTheme } = builder.theme.resolveTheme()
+  expect(baseTheme).toBe('light')
+  const tokens = definition!.tokens
+  const colors = [...tokens.colorScheme, tokens.surfaceColor, tokens.surfaceBackgroundColor, tokens.borderColor]
+  expect(colors).toEqual(expect.arrayContaining(referenceColors))
+  const config = VSeedBuilder.getTheme(chartTheme).config!
+  expect(config.column?.color?.colorScheme).toEqual(tokens.colorScheme)
+  expect(config.table?.bodyFontColor).toBe(tokens.textPrimary)
+  expect(config.table?.headerBackgroundColor).toBe(tokens.surfaceColor)
 })

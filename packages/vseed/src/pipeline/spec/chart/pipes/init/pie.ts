@@ -8,8 +8,6 @@ export const initPie: VChartSpecPipe = (spec, context) => {
   const { unfoldInfo, foldInfo } = datasetReshapeInfo[0]
 
   result.type = 'pie'
-  result.outerRadius = 0.8
-  result.innerRadius = 0
   result.valueField = foldInfo.measureValue
   result.categoryField = unfoldInfo.encodingColorId
   result.padding = 0

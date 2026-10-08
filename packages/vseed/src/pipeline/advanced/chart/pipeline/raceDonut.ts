@@ -2,6 +2,7 @@ import type { AdvancedPipeline } from 'src/types'
 import {
   initAdvancedVSeed,
   theme,
+  donutGeometryConfig,
   buildMeasures,
   pivotAdapter,
   donutConfig,
@@ -33,6 +34,7 @@ export const raceDonutAdvancedPipeline: AdvancedPipeline = [
   pivotAdapter([reshapeWithEncoding], [pivotReshapeWithEncoding]),
 
   donutConfig,
+  donutGeometryConfig,
   theme,
   annotation,
   rejectUnsupportedAnnotationAreaRange,

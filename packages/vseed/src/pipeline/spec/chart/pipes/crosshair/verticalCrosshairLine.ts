@@ -15,10 +15,10 @@ export const verticalCrosshairLine: VChartSpecPipe = (spec, context) => {
     result.crosshair = {}
   }
 
-  const visible = config.visible || true
+  const visible = config.visible ?? true
   const lineColor = config.lineColor || undefined
   const labelColor = config.labelColor || undefined
-  const labelVisible = config.labelVisible || undefined
+  const labelVisible = config.labelVisible ?? undefined
   const labelBackgroundColor = config.labelBackgroundColor || undefined
 
   const crosshair = result.crosshair as ICartesianCrosshairSpec
@@ -49,7 +49,7 @@ export const verticalCrosshairLine: VChartSpecPipe = (spec, context) => {
   const xAxisConfig = result.axes?.find((v) => v.orient === 'bottom')
   const xAxisFormatter = xAxisConfig?.label?.formatMethod
   if (xAxisFormatter) {
-    ;(crosshair.xField.label!.formatMethod as any) = (text: string | string[]) => xAxisFormatter(text)
+    ;(crosshair.xField.label!.formatMethod as any) = xAxisFormatter
   }
 
   return result

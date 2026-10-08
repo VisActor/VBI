@@ -2,6 +2,8 @@ import { intl } from 'src/i18n'
 import type { Formatter, Locale, TimeFormat, TimeGranularity } from 'src/types'
 
 const DEFAULT_SEPARATOR = '-'
+// TimeFormat has only a granularity; the locale/granularity combinations are finite.
+const formatters = new Map<string, Formatter>()
 
 const parseTimeValue = (value?: number | string): Date | undefined => {
   if (value === undefined || value === null) return undefined
@@ -162,13 +164,16 @@ const formatDefault = (
 
 export const createTimeFormatter = (format?: TimeFormat, fallbackLocale: Locale = intl.getLocale()): Formatter => {
   if (!format) {
-    return (value?: number | string) => String(value)
+    return String
   }
   const { type } = format
   const finalLocale = fallbackLocale
+  const key = `${finalLocale}:${type}`
+  const cached = formatters.get(key)
+  if (cached) return cached
   const intlFormatter = getIntlFormatter(type, finalLocale)
 
-  return (value?: number | string) => {
+  const formatter: Formatter = (value) => {
     const date = parseTimeValue(value)
     if (!date) {
       return String(value)
@@ -177,4 +182,6 @@ export const createTimeFormatter = (format?: TimeFormat, fallbackLocale: Locale 
     const formatted = formatDefault(date, type, intlFormatter, finalLocale, rawText)
     return formatted.replaceAll('/', DEFAULT_SEPARATOR).replaceAll('.', DEFAULT_SEPARATOR)
   }
+  formatters.set(key, formatter)
+  return formatter
 }

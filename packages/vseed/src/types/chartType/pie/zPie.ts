@@ -14,10 +14,14 @@ import {
   zBrush,
   zPage,
   zPieLikeAnimation,
+  zPieGeometry,
+  zPieStyle,
 } from '../../properties'
 
 export const zPie = z.object({
   chartType: z.literal('pie'),
+  ...zPieGeometry.shape,
+  pieStyle: zPieStyle.nullish(),
   dataset: zDataset.nullish(),
   encoding: zEncoding.nullish(),
   dimensions: zDimensions.nullish(),

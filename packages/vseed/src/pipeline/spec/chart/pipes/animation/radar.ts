@@ -1,5 +1,5 @@
 import type { RadarAppearConfig, RadarLoopConfig, RadarUpdateConfig } from './types'
-import { allowAnimation, EFFECT_NONE, getPrimaryEffect, toMs, atmospherePoint } from './utils'
+import { allowAnimation, EFFECT_NONE, getPrimaryEffect, atmospherePoint } from './utils'
 
 /**
  * 雷达图 入场动画
@@ -18,7 +18,7 @@ export const radarAppear = (config: RadarAppearConfig | undefined) => {
   const effect = getPrimaryEffect(config)
   return {
     preset: effect === 'radial' ? 'clipIn' : 'grow',
-    duration: toMs(config?.duration),
+    duration: config?.duration ?? 0,
     easing: config?.ease,
   }
 }
@@ -28,7 +28,7 @@ export const radarAppear = (config: RadarAppearConfig | undefined) => {
  * 动画类型:
  * 1. atmosphere: 点氛围动画
  * 效果：point 执行 breath/reveal/ripple 等氛围效果。
- * 编排逻辑：startTime = appear 存在 ? interval : 0, 持续 1s, 一轮结束后等待 interval。
+ * 编排逻辑：startTime = appear 存在 ? interval : 0, 持续 1000ms, 一轮结束后等待 interval。
  * 2. none: 无循环动画
  * 效果：不配置 normal 动画。
  * 编排逻辑：当 atmosphere.effect 为 none 时返回 false。
@@ -38,7 +38,7 @@ export const radarLoop = (config: RadarLoopConfig | undefined, ignoreFirstNormal
     return false
   }
   const interval = config.interval ?? 0
-  const startTime = ignoreFirstNormal ? toMs(interval) : 0
+  const startTime = ignoreFirstNormal ? interval : 0
   if ((config.atmosphere?.effect ?? EFFECT_NONE) === EFFECT_NONE) {
     return false
   }
@@ -47,7 +47,7 @@ export const radarLoop = (config: RadarLoopConfig | undefined, ignoreFirstNormal
     point: {
       loop: true,
       startTime,
-      delayAfter: toMs(interval),
+      delayAfter: interval,
       duration: 1000,
       easing: config.atmosphere?.ease,
       ...atmospherePoint(config.atmosphere?.effect),
@@ -64,22 +64,8 @@ export const radarLoop = (config: RadarLoopConfig | undefined, ignoreFirstNormal
  * 编排逻辑：只保留 update 的 duration 和 easing。
  */
 export const radarUpdate = (config: RadarUpdateConfig | undefined) => {
-  if (!allowAnimation(config)) {
+  if (!config?.enable) {
     return false
   }
-  return { duration: toMs(config?.duration), easing: config?.ease }
-}
-
-/**
- * 雷达图 离场动画
- * 动画类型:
- * 1. default: 默认离场动画
- * 效果：雷达图使用 VChart 默认补间完成离场。
- * 编排逻辑：共用 exit 的 duration 和 easing, 保持离场节奏和 update 阶段一致。
- */
-export const radarExit = (config: RadarUpdateConfig | undefined) => {
-  if (!allowAnimation(config)) {
-    return false
-  }
-  return { duration: toMs(config?.duration), easing: config?.ease }
+  return { duration: config.duration ?? 1000, easing: config?.ease }
 }

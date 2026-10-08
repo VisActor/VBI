@@ -6,11 +6,11 @@
     "animation": {
       "enable": true,
       "params": {
-        "appear": { "enable": true, "effects": ["scale"], "duration": 0.8 },
-        "update": { "enable": true, "effects": ["growth"], "duration": 0.6 },
+        "appear": { "enable": true, "effects": ["scale"], "duration": 800 },
+        "update": { "enable": true, "effects": ["growth"], "duration": 600 },
         "loop": {
           "enable": true,
-          "interval": 1,
+          "interval": 1000,
           "atmosphere": { "effect": "reveal", "color": "#e15759", "ease": "quadInOut" }
         }
       }

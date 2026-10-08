@@ -100,7 +100,7 @@ export const columnPolynomialRegressionLine: VChartSpecPipe = (spec, context): P
             )
             const N = xValues.length
             const xAxisHelper = s.getXAxisHelper()
-            const halfBandWidth = xAxisHelper ? xAxisHelper.getBandwidth!(0) / 2 : 0
+            const halfBandWidth = (xAxisHelper?.getBandwidth?.(0) ?? 0) / 2
             const lineData = evaluateGrid(N)
             const linePoints = lineData.map((datum: Datum, index: number) => {
               const d = { [fieldX]: xValues[index], [fieldY]: datum.y }

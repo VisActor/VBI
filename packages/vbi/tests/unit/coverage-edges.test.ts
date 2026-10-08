@@ -271,7 +271,7 @@ describe('unit/coverage edges', () => {
     const dashboard = new VBIDashboardBuilder(new Y.Doc())
     expect(dashboard.getUUID()).toBe('uuid-1')
     expect(dashboard.build()).toMatchObject({
-      meta: { title: '', theme: 'light' },
+      meta: { title: '', theme: 'light-default' },
       version: 0,
     })
 
@@ -358,7 +358,7 @@ describe('unit/coverage edges', () => {
       widgets: [{ id: 'w1', type: 'chart', title: 'Chart', description: '', chartId: 'chart-1' }],
       breakpoints: { xxl: 1600, xl: 1200, lg: 996, md: 768, sm: 480, xs: 0 },
       layout: { xxl: [], xl: [], lg: [], md: [], sm: [], xs: [] },
-      meta: { title: 'Dashboard', theme: 'light' },
+      meta: { title: 'Dashboard', theme: 'light-default' },
       version: 0,
     })
     expect(dashboardBuilder.build().widgets).toHaveLength(1)

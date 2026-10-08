@@ -21,7 +21,7 @@ export const createEmptyDashboard = (uuid: string = id.resourceUUID()): VBIDashb
     layout: createEmptyDashboardLayout(),
     meta: {
       title: '',
-      theme: 'light',
+      theme: 'light-default',
     },
     version: 0,
   }

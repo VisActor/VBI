@@ -1,6 +1,7 @@
 export { MeasuresBuilder } from './measures'
 export { DimensionsBuilder } from './dimensions'
 export { ChartTypeBuilder } from './chart-type'
+export { ChartInstanceBuilder } from './instance'
 export { WhereFilterBuilder, WhereGroupBuilder } from './whereFilter'
 export { HavingFilterBuilder } from './havingFilter'
 export { ThemeBuilder } from './theme'

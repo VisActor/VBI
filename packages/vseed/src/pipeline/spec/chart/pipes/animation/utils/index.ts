@@ -4,13 +4,6 @@ export { atmospherePoint, getFinalAttribute } from './pointAtmosphere'
 export const EFFECT_NONE = VScreenAnimationType.none
 
 /**
- * @description 将秒转换为 VChart 动画使用的毫秒。
- * @param seconds 秒数。
- * @returns 毫秒数。
- */
-export const toMs = (seconds?: number): number => (seconds ?? 0) * 1000
-
-/**
  * @description 获取配置中的首个动画效果；未配置时返回 none。
  * @param config 动画效果配置。
  * @returns 首个动画效果。

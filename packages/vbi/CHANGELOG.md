@@ -1,5 +1,42 @@
 # @visactor/vbi
 
+## 0.6.4
+
+### Patch Changes
+
+- Updated dependencies [405483c]
+- Updated dependencies [cdbd9e0]
+  - @visactor/vseed@0.6.4
+
+## 0.6.3
+
+### Patch Changes
+
+- 01aad7a: Use VChart 2.1.7 for native bar geometry across data updates and correct enter/exit animations. Align VBI and component renderer dependencies with this version.
+
+  Compose chart-family animation pipes so `animation.params.update` controls data enter, update, and exit timing without requiring an effect. All durations and loop intervals use milliseconds directly and preserve zero. Custom pipelines should replace the generic `animation` pipe with the corresponding family pipe, such as `columnAnimation` or `lineAreaAnimation`.
+
+  Respect explicit per-bar radii and preserve single-series and moveIn corners. Add serializable `areaStyle.areaGradient` and `barStyle.barGradient`, as boolean switches sharing one fill compiler. Areas fade from transparent at the bottom to their current color at the top; bars fade from zero toward positive or negative values, with direction composed by the chart pipeline. Resolve inherited colors from the encoding so gradients also work in dual-axis series before the color scale is configured.
+
+- Updated dependencies [01aad7a]
+  - @visactor/vseed@0.6.3
+
+## 0.6.2
+
+### Patch Changes
+
+- 82129ac: Expose observe, unobserve, observeDeep, and unobserveDeep on chart builders with the existing Yjs DSL subscription semantics.
+- Updated dependencies [c682743]
+  - @visactor/vseed@0.6.2
+
+## 0.6.1
+
+### Patch Changes
+
+- db5c30a: Add chart builder runtime instance binding and native event forwarding for VChart and VTable, with automatic unbinding when the chart type changes or the document is destroyed.
+- Updated dependencies [db5c30a]
+  - @visactor/vseed@0.6.1
+
 ## 0.6.0
 
 ### Minor Changes

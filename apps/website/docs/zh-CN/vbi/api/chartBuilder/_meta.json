@@ -5,6 +5,11 @@
     "label": "chartBuilder.chartType"
   },
   {
+    "type": "file",
+    "name": "instance",
+    "label": "chartBuilder.instance"
+  },
+  {
     "type": "dir",
     "name": "measures",
     "label": "chartBuilder.measures",

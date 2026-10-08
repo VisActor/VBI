@@ -1,7 +1,7 @@
 # Software Entropy Control
 
 Use for maintainability, refactoring, cleanup, generated-surface control, and
-changes that could expand VBI's long-term maintenance cost.
+changes that could expand the repository's long-term maintenance cost.
 
 ## Entropy Signals
 
@@ -35,15 +35,7 @@ Identify the owner, source of truth, generated surface, deletion impact, and
 validation before changing code. Deletion impact includes imports, calls,
 exports, types, tests, docs, comments, generated references, and old names.
 
-## VBI Boundaries
-
-- VBIChartDSL, VQueryDSL, and VSeedDSL are core sources of truth.
-- Builder owns DSL mutation; consumers should use Builder or public package APIs.
-- Practices stay independent; move reuse into packages or local utilities.
-
 ## Validation
 
-Prove both removal and behavior: use `rg` for deleted symbols and old names, run
-generators before checks when source changes affect generated files, then run
-focused owner checks plus `pnpm run lint:check` and `pnpm run typecheck` when
-available.
+Prove both removal and behavior: use `rg` to check deleted symbols and old names,
+then follow the generation and validation gates in [SKILL.md](../SKILL.md).

@@ -1,0 +1,58 @@
+{
+  "name": "横向条件渐变",
+  "description": "用条件规则配置负值颜色；从零值向正负值末端渐变，方向自动适配。",
+  "vseed": {
+    "chartType": "bar",
+    "dataset": [
+      {
+        "region": "华东",
+        "profit": 40
+      },
+      {
+        "region": "华北",
+        "profit": -16
+      },
+      {
+        "region": "华南",
+        "profit": 28
+      },
+      {
+        "region": "西南",
+        "profit": -10
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "region"
+      }
+    ],
+    "measures": [
+      {
+        "id": "profit"
+      }
+    ],
+    "legend": {
+      "enable": false
+    },
+    "label": {
+      "enable": false
+    },
+    "barStyle": [
+      {
+        "barColor": "#19cba1",
+        "barRadius": 4,
+        "barBorderWidth": 0,
+        "barGradient": true
+      },
+      {
+        "selector": {
+          "field": "profit",
+          "operator": "<",
+          "value": 0
+        },
+        "barColor": "#d47c6a",
+        "barGradient": true
+      }
+    ]
+  }
+}

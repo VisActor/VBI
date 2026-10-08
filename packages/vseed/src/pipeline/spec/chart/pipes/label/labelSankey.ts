@@ -35,6 +35,8 @@ const buildLabel = (
   labelEncodingIds: string[],
   foldInfo: Pick<FoldInfo, 'measureId' | 'measureValue'> & Partial<Pick<FoldInfo, 'statistics'>>,
 ) => {
+  if (label.enable === false) return { visible: false }
+
   const {
     enable,
     wrap,

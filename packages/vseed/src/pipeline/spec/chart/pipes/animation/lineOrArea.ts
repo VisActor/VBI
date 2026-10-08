@@ -21,7 +21,7 @@ export const lineOrAreaAppear = (config: LineAreaAppearConfig | undefined) => {
   }
   const { effects, ease, duration } = config
   const effect = effects?.[0]
-  const durationMs = (duration ?? 1) * 1000
+  const durationMs = duration ?? 1000
 
   let lineOrAreaConfigByType = {}
   let pointConfigByType = {}
@@ -55,7 +55,7 @@ export const lineOrAreaAppear = (config: LineAreaAppearConfig | undefined) => {
  * 动画类型:
  * 1. growth/load: 线面 loop 动画
  * 效果：line/area 执行路径增长或整体裁剪。
- * 编排逻辑：startTime = appear 存在 ? interval : 0, 有 loop 时 loopDuration = 1s, 执行后等待 interval + atmosphereDuration。
+ * 编排逻辑：startTime = appear 存在 ? interval : 0, 有 loop 时 loopDuration = 1000ms, 执行后等待 interval + atmosphereDuration。
  * 2. atmosphere: 线面流光氛围动画
  * 效果：line/area 使用 StreamLight 形成流光。
  * 编排逻辑：延迟 loopDuration 后启动, 持续 atmosphereDuration, 一轮结束后等待 interval。
@@ -67,10 +67,10 @@ export const lineOrAreaLoop = (config: LineAreaLoopConfig | undefined, ignoreFir
   if (!config?.enable) {
     return false
   }
-  const { loop, atmosphere, interval = 5 } = config
-  const totalDuration = 2
+  const { loop, atmosphere, interval = 5000 } = config
+  const totalDuration = 2000
   // const startTime = 0
-  const startTime = ignoreFirstNormal ? interval * 1000 : 0
+  const startTime = ignoreFirstNormal ? interval : 0
   const lineOrAreaResult = []
   const pointResult = []
 
@@ -84,8 +84,8 @@ export const lineOrAreaLoop = (config: LineAreaLoopConfig | undefined, ignoreFir
   const timeLineConfig = {
     startTime,
     easing: loopEase,
-    duration: loopDuration * 1000,
-    delayAfter: (interval + atmosphereDuration) * 1000,
+    duration: loopDuration,
+    delayAfter: interval + atmosphereDuration,
     loop: true,
     controlOptions: {
       immediatelyApply: false,
@@ -110,9 +110,9 @@ export const lineOrAreaLoop = (config: LineAreaLoopConfig | undefined, ignoreFir
   const atmosphereLineOrAreaResult = {
     loop: true,
     startTime,
-    delay: loopDuration * 1000,
-    delayAfter: interval * 1000,
-    duration: atmosphereDuration * 1000,
+    delay: loopDuration,
+    delayAfter: interval,
+    duration: atmosphereDuration,
     easing: atmosphereEase,
     custom: StreamLight,
     customParameters: (...args: any[]) => {
@@ -132,8 +132,8 @@ export const lineOrAreaLoop = (config: LineAreaLoopConfig | undefined, ignoreFir
   const atmospherePointResult = {
     loop: true,
     startTime,
-    delayAfter: (interval + atmosphereDuration) * 1000,
-    duration: atmosphereDuration * 1000,
+    delayAfter: interval + atmosphereDuration,
+    duration: atmosphereDuration,
     easing: atmosphereEase,
     ...atmospherePoint(atmosphereEffect),
   }
@@ -155,11 +155,11 @@ export const lineOrAreaLoop = (config: LineAreaLoopConfig | undefined, ignoreFir
  * 编排逻辑：line、area、point 共用 update 的 easing 和 duration。
  */
 export const lineOrAreaUpdate = (config: LineAreaUpdateConfig | undefined) => {
-  if (!config || !allowLineOrAreaAnimation(config)) {
+  if (!config?.enable) {
     return false
   }
   const { ease, duration } = config
-  const durationMs = (duration ?? 1) * 1000
+  const durationMs = duration ?? 1000
 
   // 用图表库默认的补间效果
   return {
@@ -172,35 +172,6 @@ export const lineOrAreaUpdate = (config: LineAreaUpdateConfig | undefined) => {
       duration: durationMs,
     },
     point: {
-      easing: ease,
-      duration: durationMs,
-    },
-  }
-}
-
-/**
- * 折线图/面积图/百分比面积图 离场动画
- * 动画类型:
- * 1. default: 默认离场动画
- * 效果：使用 VChart 默认补间完成 line、area、point 离场。
- * 编排逻辑：line、area、point 共用 exit 的 easing 和 duration, 保持节奏一致。
- */
-export const lineOrAreaExit = (config: LineAreaUpdateConfig | undefined) => {
-  if (!config || !allowLineOrAreaAnimation(config)) {
-    return false
-  }
-  const { ease, duration } = config
-  const durationMs = (duration ?? 1) * 1000
-  return {
-    line: {
-      easing: ease,
-      duration: durationMs,
-    },
-    point: {
-      easing: ease,
-      duration: durationMs,
-    },
-    area: {
       easing: ease,
       duration: durationMs,
     },

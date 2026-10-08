@@ -1,0 +1,72 @@
+{
+  "name": "pivotDonutCenter",
+  "description": "透视环图的单元格组合相同几何和中心文本 pipe；中心文本固定，不对数据隐式求和。",
+  "vseed": {
+    "chartType": "donut",
+    "dataset": [
+      {
+        "region": "华东",
+        "category": "消费者",
+        "share": 62
+      },
+      {
+        "region": "华东",
+        "category": "其他客户",
+        "share": 38
+      },
+      {
+        "region": "华南",
+        "category": "消费者",
+        "share": 40
+      },
+      {
+        "region": "华南",
+        "category": "其他客户",
+        "share": 60
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "region",
+        "encoding": "column"
+      },
+      {
+        "id": "category",
+        "encoding": "color"
+      }
+    ],
+    "measures": [
+      {
+        "id": "share",
+        "alias": "订单占比",
+        "encoding": "angle",
+        "format": {
+          "type": "number",
+          "suffix": "%",
+          "fractionDigits": 1
+        }
+      }
+    ],
+    "label": {
+      "enable": false
+    },
+    "color": {
+      "colorScheme": ["#56dabb", "#c1f3e6"]
+    },
+    "legend": {
+      "interactive": false,
+      "position": "bottom",
+      "border": false,
+      "shapeType": "circle",
+      "labelFontSize": 10
+    },
+    "outerRadius": 0.9,
+    "innerRadius": 0.6,
+    "centerText": {
+      "titleText": "客户分布"
+    },
+    "pieStyle": {
+      "pieBorderWidth": 0
+    }
+  }
+}

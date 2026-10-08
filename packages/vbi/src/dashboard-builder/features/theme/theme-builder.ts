@@ -27,7 +27,7 @@ export class DashboardThemeBuilder {
       const meta = this.dsl.get('meta')
       if (
         change &&
-        ((change.oldValue?.theme ?? 'light') !== this.getTheme() ||
+        ((change.oldValue?.theme ?? 'light-default') !== this.getTheme() ||
           JSON.stringify(change.oldValue?.themes) !== JSON.stringify(meta?.themes))
       ) {
         callback(event, transaction)
@@ -39,7 +39,7 @@ export class DashboardThemeBuilder {
 
   /**
    * @description 设置主题；传入配置时在同一次变更中保存配置并选中，无需预先注册，不修改引用的图表资源。
-   * @param theme - 非空主题名称
+   * @param theme - 非空主题名称，内置主题使用 light-xxx / dark-xxx 格式
    * @param definition - 可选的完整主题配置，保存于当前 Dashboard
    */
   setTheme(theme: string, definition?: VBIDashboardThemeDefinition): void {
@@ -56,7 +56,7 @@ export class DashboardThemeBuilder {
 
   /**
    * @description 在当前 Dashboard 中注册或更新主题配置，不切换当前主题；配置随文档保存和同步。
-   * @param theme - 非空主题名称
+   * @param theme - 非空主题名称，内置主题使用 light-xxx / dark-xxx 格式
    * @param definition - 完整主题配置
    */
   registerTheme(theme: string, definition: VBIDashboardThemeDefinition): void {
@@ -88,14 +88,14 @@ export class DashboardThemeBuilder {
   /** @description 获取内置与文档主题的名称、明暗模式和色板，文档内同名配置优先。 */
   getThemeOptions(): VBIDashboardThemeOption[] {
     const names = new Set([
-      'light',
-      'dark',
+      'light-default',
+      'dark-default',
       ...Object.keys(presetDashboardThemes),
       ...Object.keys(this.dsl.get('meta')?.themes ?? {}),
     ])
     return [...names].map((name) => {
       const definition = this.getThemeConfig(name)
-      const baseTheme = definition?.tokens.baseTheme ?? (name === 'dark' ? 'dark' : 'light')
+      const baseTheme = definition?.tokens.baseTheme ?? (name === 'dark-default' ? 'dark' : 'light')
       return {
         name,
         baseTheme,
@@ -108,25 +108,25 @@ export class DashboardThemeBuilder {
   }
 
   /**
-   * @description 解析主题并确保 VSeed 主题可用，返回隔离的运行时名称；未知名称回退 light，不修改文档。
+   * @description 解析主题并确保 VSeed 主题可用，返回隔离的运行时名称；未知名称回退 light-default，不修改文档。
    * @param theme - 主题名称，默认当前主题；可用于临时预览其他主题
    */
   resolveTheme(theme: string = this.getTheme()): VBIDashboardResolvedTheme {
     const definition = this.getThemeConfig(theme)
-    if (!definition && theme !== 'light' && theme !== 'dark') return this.resolveTheme('light')
-    const baseTheme = definition?.tokens.baseTheme ?? (theme === 'dark' ? 'dark' : 'light')
+    if (!definition && theme !== 'light-default' && theme !== 'dark-default') return this.resolveTheme('light-default')
+    const baseTheme = definition?.tokens.baseTheme ?? (theme === 'dark-default' ? 'dark' : 'light')
     if (!definition) ensureBuiltinTheme(baseTheme)
     return {
       name: theme,
       baseTheme,
       definition,
-      chartTheme: definition ? registerVSeedTheme(definition.tokens) : theme,
+      chartTheme: definition ? registerVSeedTheme(definition.tokens) : baseTheme,
     }
   }
 
-  /** @description 获取主题名称，默认 light。 */
+  /** @description 获取主题名称，默认 light-default。 */
   getTheme(): string {
-    return this.dsl.get('meta')?.theme ?? 'light'
+    return this.dsl.get('meta')?.theme ?? 'light-default'
   }
 
   /** @description 导出主题名称。 */

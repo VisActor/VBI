@@ -1,5 +1,34 @@
 # @visactor/vseed
 
+## 0.6.4
+
+### Patch Changes
+
+- 405483c: Add static legends and fixed donut center text through composable pipelines. Legend interaction can be disabled without changing existing sizing, spacing or layout. Center titleText/subTitleText fit the inner radius and inherit theme colors. Center text typography, pie geometry and hover, and legend interaction defaults are owned by themes; chart DSLs only need content and explicit overrides. PieStyle follows the existing mark-style naming with pieBorderColor, pieBorderWidth, pieCornerRadius and pieHoverEffect; existing hover enlargement, adaptive borders and chart defaults remain unchanged. Migrate the lightweight dashboard consumer ring to the simplified DSL.
+- cdbd9e0: Restore bar stroke clipping for single-series charts, conditional corner styles, and dual-axis bars without configured stack corners. Preserve default rounding on unmatched bars and explicit per-bar corners on matched bars without expanding the rendered bar bounds. Keep moving bars unclipped during moveIn animations.
+
+## 0.6.3
+
+### Patch Changes
+
+- 01aad7a: Use VChart 2.1.7 for native bar geometry across data updates and correct enter/exit animations. Align VBI and component renderer dependencies with this version.
+
+  Compose chart-family animation pipes so `animation.params.update` controls data enter, update, and exit timing without requiring an effect. All durations and loop intervals use milliseconds directly and preserve zero. Custom pipelines should replace the generic `animation` pipe with the corresponding family pipe, such as `columnAnimation` or `lineAreaAnimation`.
+
+  Respect explicit per-bar radii and preserve single-series and moveIn corners. Add serializable `areaStyle.areaGradient` and `barStyle.barGradient`, as boolean switches sharing one fill compiler. Areas fade from transparent at the bottom to their current color at the top; bars fade from zero toward positive or negative values, with direction composed by the chart pipeline. Resolve inherited colors from the encoding so gradients also work in dual-axis series before the color scale is configured.
+
+## 0.6.2
+
+### Patch Changes
+
+- c682743: Generate minimal disabled component specs, reuse axis and legend formatters, and compile unconditional mark styles into base styles. Preserve conditional rule order and keep hover points available when ordinary points are globally hidden. Compose radar curve strategies in the pipeline.
+
+## 0.6.1
+
+### Patch Changes
+
+- db5c30a: Keep dimension-hover points visible when pointStyle.pointVisible is false for line, area, radar, and line/area series in dual-axis charts.
+
 ## 0.6.0
 
 ## 0.5.7

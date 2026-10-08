@@ -118,7 +118,7 @@ getThemeOptions(): VBIDashboardThemeOption[]
 
 ### resolveTheme
 
-テーマを解決し、独立した実行時名で VSeed に登録します。不明な名前は light にフォールバックし、文書は変更しません。
+テーマを解決し、独立した実行時名で VSeed に登録します。不明な名前は light-default にフォールバックし、文書は変更しません。
 
 **定義**:
 
@@ -136,7 +136,7 @@ resolveTheme(theme?: string): VBIDashboardResolvedTheme
 
 ### getTheme
 
-テーマ名を取得します。既定値は light です。
+テーマ名を取得します。既定値は light-default です。
 
 **定義**:
 

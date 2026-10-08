@@ -1336,6 +1336,15 @@ enable: true
 
 
 
+### interactive
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+离散图例是否允许悬停、选择、聚焦和数据筛选。false 时仅说明分类。
+
+:::
+
 ### border
 
 **Type:** `boolean | undefined`

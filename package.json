@@ -48,6 +48,7 @@
     "node-fetch": "2.6.7",
     "oxfmt": "0.51.0",
     "oxlint": "1.66.0",
+    "ts-morph": "26.0.0",
     "turbo": "2.9.6"
   },
   "packageManager": "pnpm@10.26.1",
@@ -62,13 +63,5 @@
   "author": {
     "name": "VisActor",
     "url": "https://www.visactor.io/"
-  },
-  "pnpm": {
-    "overrides": {
-      "@visactor/vrender-core": "1.0.39",
-      "@visactor/vrender-kits": "1.0.39",
-      "@visactor/vrender-components": "1.0.39",
-      "@visactor/vrender-animate": "1.0.39"
-    }
   }
 }

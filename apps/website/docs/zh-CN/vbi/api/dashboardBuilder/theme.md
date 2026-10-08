@@ -52,7 +52,7 @@ setTheme(theme: string, definition?: VBIDashboardThemeDefinition): void
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `theme` | string | - 非空主题名称 |
+| `theme` | string | - 非空主题名称，内置主题使用 light-xxx / dark-xxx 格式 |
 | `definition?` | VBIDashboardThemeDefinition | - 可选的完整主题配置，保存于当前 Dashboard |
 
 ### registerTheme
@@ -71,7 +71,7 @@ registerTheme(theme: string, definition: VBIDashboardThemeDefinition): void
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `theme` | string | - 非空主题名称 |
+| `theme` | string | - 非空主题名称，内置主题使用 light-xxx / dark-xxx 格式 |
 | `definition` | VBIDashboardThemeDefinition | - 完整主题配置 |
 
 ### getThemeConfig
@@ -118,7 +118,7 @@ getThemeOptions(): VBIDashboardThemeOption[]
 
 ### resolveTheme
 
-解析主题并确保 VSeed 主题可用，返回隔离的运行时名称；未知名称回退 light，不修改文档。
+解析主题并确保 VSeed 主题可用，返回隔离的运行时名称；未知名称回退 light-default，不修改文档。
 
 **定义**:
 
@@ -136,7 +136,7 @@ resolveTheme(theme?: string): VBIDashboardResolvedTheme
 
 ### getTheme
 
-获取主题名称，默认 light。
+获取主题名称，默认 light-default。
 
 **定义**:
 

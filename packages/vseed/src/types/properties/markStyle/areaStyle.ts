@@ -1,5 +1,4 @@
-import type { ChartDynamicFilter } from '../../dataSelector/selector'
-import { type Selector, type Selectors } from '../../dataSelector/selector'
+import type { ChartDynamicFilter, Selector, Selectors } from '../../dataSelector/selector'
 
 export type AreaStyle = {
   /**
@@ -71,6 +70,12 @@ export type AreaStyle = {
    * @description 面积图元的颜色
    */
   areaColor?: string
+  /**
+   * 面积线性渐变
+   * @description 开启后从下方透明渐变到顶部的当前颜色；默认关闭。顶部透明度由 areaColorOpacity 控制。
+   * @example true
+   */
+  areaGradient?: boolean
   /**
    * 面积图元的颜色透明度
    * @description 面积图元的颜色透明度

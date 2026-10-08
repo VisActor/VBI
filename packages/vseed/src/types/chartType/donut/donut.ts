@@ -11,6 +11,8 @@ import type {
   Tooltip,
   Page,
   PieLikeAnimation,
+  PieStyle,
+  CenterText,
 } from '../../properties'
 import type { Brush } from '../../properties'
 
@@ -33,7 +35,7 @@ import type { Brush } from '../../properties'
  * - 所有维度会与指标名称(存在多个指标时)合并, 作为图例项展示.
  * - 所有指标会自动合并为一个指标
  * 默认开启的功能:
- * - 默认开启图例、数据标签、提示信息、占比计算、中心文本
+ * - 默认开启图例、数据标签、提示信息、占比计算；中心文本需显式配置 centerText
  * @recommend
  * - 推荐字段配置: `1`个指标, `2`个维度
  * - 支持数据重塑: 至少`1`个指标, `0`个维度
@@ -46,6 +48,20 @@ export interface Donut {
    * @example 'donut'
    */
   chartType: 'donut'
+
+  /** @description 外半径占可用半径的比例，范围 (0, 1]，默认 0.8。 */
+  outerRadius?: number
+  /** @description 内半径占可用半径的比例，范围 [0, outerRadius)。默认外半径的 80%。 */
+  innerRadius?: number
+  /** @description 起始角度，单位为度，默认 -90。 */
+  startAngle?: number
+  /** @description 结束角度，默认 startAngle + 360；跨度必须在 (0, 360]。 */
+  endAngle?: number
+  /** @description 扇区边框、圆角和悬停效果。 */
+  pieStyle?: PieStyle
+
+  /** @description 固定中心主副文本；配置后默认开启，不随扇区交互变化。 */
+  centerText?: CenterText
 
   /**
    * 数据集

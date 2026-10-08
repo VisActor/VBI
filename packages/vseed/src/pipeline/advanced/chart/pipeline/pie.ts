@@ -2,6 +2,8 @@ import type { AdvancedPipeline } from 'src/types'
 import {
   initAdvancedVSeed,
   theme,
+  pieGeometryConfig,
+  pieStyleConfig,
   pivotAdapter,
   pieConfig,
   annotation,
@@ -33,6 +35,8 @@ export const pieAdvancedPipeline: AdvancedPipeline = [
   pivotAdapter([reshapeWithEncoding], [pivotReshapeWithEncoding]),
 
   pieConfig,
+  pieGeometryConfig,
+  pieStyleConfig,
   theme,
   annotation,
   rejectUnsupportedAnnotationAreaRange,

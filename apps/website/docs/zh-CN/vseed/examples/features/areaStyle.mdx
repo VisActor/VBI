@@ -1,0 +1,180 @@
+# AreaStyle
+
+## Conditional gradient
+
+Apply an explicit gradient to the West series.
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'area',
+    dataset: [
+      {
+        date: '2019',
+        region: 'East',
+        value: 10,
+      },
+      {
+        date: '2020',
+        region: 'East',
+        value: 20,
+      },
+      {
+        date: '2021',
+        region: 'East',
+        value: 14,
+      },
+      {
+        date: '2022',
+        region: 'East',
+        value: 30,
+      },
+      {
+        date: '2019',
+        region: 'West',
+        value: 5,
+      },
+      {
+        date: '2020',
+        region: 'West',
+        value: 10,
+      },
+      {
+        date: '2021',
+        region: 'West',
+        value: 8,
+      },
+      {
+        date: '2022',
+        region: 'West',
+        value: 17,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'date',
+      },
+      {
+        id: 'region',
+        encoding: 'color',
+      },
+    ],
+    measures: [
+      {
+        id: 'value',
+      },
+    ],
+    pointStyle: {
+      pointVisible: false,
+    },
+    lineStyle: {
+      lineSmooth: true,
+    },
+    label: {
+      enable: false,
+    },
+    areaStyle: [
+      {
+        areaColorOpacity: 0.5,
+      },
+      {
+        selector: {
+          region: 'West',
+        },
+        areaColorOpacity: 1,
+        areaGradient: true,
+        areaColor: '#19cba1',
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## Series color gradients
+
+Each area inherits its series color and fades vertically.
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'area',
+    dataset: [
+      {
+        date: '2019',
+        region: 'East',
+        value: 10,
+      },
+      {
+        date: '2020',
+        region: 'East',
+        value: 20,
+      },
+      {
+        date: '2021',
+        region: 'East',
+        value: 14,
+      },
+      {
+        date: '2022',
+        region: 'East',
+        value: 30,
+      },
+      {
+        date: '2019',
+        region: 'West',
+        value: 5,
+      },
+      {
+        date: '2020',
+        region: 'West',
+        value: 10,
+      },
+      {
+        date: '2021',
+        region: 'West',
+        value: 8,
+      },
+      {
+        date: '2022',
+        region: 'West',
+        value: 17,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'date',
+      },
+      {
+        id: 'region',
+        encoding: 'color',
+      },
+    ],
+    measures: [
+      {
+        id: 'value',
+      },
+    ],
+    pointStyle: {
+      pointVisible: false,
+    },
+    lineStyle: {
+      lineSmooth: true,
+    },
+    label: {
+      enable: false,
+    },
+    areaStyle: {
+      areaGradient: true,
+      areaColorOpacity: 0.35,
+    },
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```

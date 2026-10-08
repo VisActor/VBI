@@ -1248,6 +1248,15 @@ enable: true
 
 
 
+### interactive
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+离散图例是否允许悬停、选择、聚焦和数据筛选。false 时仅说明分类。
+
+:::
+
 ### border
 
 **Type:** `boolean | undefined`
@@ -1683,7 +1692,7 @@ brush的类型
 **Type:** `number | undefined`
 
 :::note{title=描述}
-动画时长，单位为毫秒
+动画时长，单位为毫秒；数据更新阶段默认 1000 毫秒，0 表示立即完成
 
 :::
 
@@ -1701,7 +1710,7 @@ brush的类型
 **Type:** `LineAreaUpdateAnimation | undefined`
 
 :::note{title=描述}
-折线/面积图更新动画配置
+折线/面积图数据进入、更新、退出的共同动画配置
 
 :::
 
@@ -1738,7 +1747,7 @@ brush的类型
 **Type:** `number | undefined`
 
 :::note{title=描述}
-动画时长，单位为毫秒
+动画时长，单位为毫秒；数据更新阶段默认 1000 毫秒，0 表示立即完成
 
 :::
 
@@ -1821,7 +1830,7 @@ brush的类型
 **Type:** `number | undefined`
 
 :::note{title=描述}
-动画时长，单位为毫秒
+动画时长，单位为毫秒；数据更新阶段默认 1000 毫秒，0 表示立即完成
 
 :::
 
@@ -3305,7 +3314,7 @@ prepare() 阶段写入，运行时只读
 **Type:** `boolean | undefined`
 
 :::note{title=描述}
-点是否可见
+点是否默认可见。折线图、面积图（含百分比面积图）、雷达图及双轴图中的折线/面积系列设为 false 时，悬停对应维度仍会显示交互点。无条件设为 false 时不创建普通点图元，数据更新与退出动画也保持隐藏；条件样式仍可按数据控制可见性。
 
 :::
 
@@ -4134,6 +4143,24 @@ prepare() 阶段写入，运行时只读
 面积图元的颜色
 
 :::
+
+### areaGradient
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+面积线性渐变
+
+
+
+开启后从下方透明渐变到顶部的当前颜色；默认关闭。顶部透明度由 areaColorOpacity 控制。
+
+:::
+
+**示例**
+true
+
+
 
 ### areaColorOpacity
 

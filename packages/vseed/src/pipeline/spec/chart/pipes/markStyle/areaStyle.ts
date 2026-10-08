@@ -1,73 +1,43 @@
 import type { IAreaChartSpec } from '@visactor/vchart'
-import { selector } from '../../../../../dataSelector'
+import { selector, selectorWithDynamicFilter } from 'src/dataSelector'
 import type { AreaStyle, Datum, LineStyle, VChartSpecPipe } from 'src/types'
-import { groupBy, isEmpty, isNullish } from 'remeda'
-import { getCurveTension, getCurveType } from './curve'
+import { groupBy, pick } from 'remeda'
+import { cartesianCurve, closedCurve } from './curve'
+import { compileMarkStyles } from './compileMarkStyles'
+import { createGradientFill } from './gradientFill'
+import { getColorField } from '../color/colorAdapter'
 
-export const areaStyle: VChartSpecPipe = (spec, context) => {
-  const { advancedVSeed } = context
-  const { markStyle, datasetReshapeInfo, dataset } = advancedVSeed
-  const { areaStyle, lineStyle } = markStyle
-  const { unfoldInfo } = datasetReshapeInfo[0]
-
-  const result = {
-    ...spec,
-    area: {
-      visible: true,
-      style: {},
-    },
-  } as IAreaChartSpec
-
-  if (isNullish(areaStyle) || isEmpty(areaStyle)) {
-    return result
+const createAreaStyle =
+  (curve: typeof cartesianCurve): VChartSpecPipe =>
+  (spec, { advancedVSeed, vseed }) => {
+    const { markStyle, datasetReshapeInfo, dataset } = advancedVSeed
+    const { areaStyle, lineStyle } = markStyle
+    const lineStyles = (Array.isArray(lineStyle) ? lineStyle : [lineStyle]) as (LineStyle | undefined)[]
+    const baseCurve = { ...curve(), ...pick((spec as IAreaChartSpec).line?.style ?? {}, ['curveType', 'curveTension']) }
+    const group = datasetReshapeInfo[0].unfoldInfo.encodingColorId ?? ''
+    const colorField = getColorField(advancedVSeed, vseed)
+    let groups: Record<string, Datum[]> | undefined
+    const area = compileMarkStyles(
+      (areaStyle ?? {}) as AreaStyle | AreaStyle[],
+      (style, index) => ({
+        ...(areaStyle && lineStyles[index] ? curve(lineStyles[index].lineSmooth) : baseCurve),
+        visible: style.areaVisible ?? true,
+        fill: createGradientFill(style.areaColor, style.areaGradient, colorField),
+        fillOpacity: style.areaColorOpacity,
+      }),
+      (rule) => {
+        groups ??= groupBy(dataset, (datum) => datum[group] as string)
+        const areaGroups = groups
+        return (datum: Datum) =>
+          (areaGroups[datum[group] as string] ?? []).some((entry) =>
+            rule.dynamicFilter
+              ? selectorWithDynamicFilter(entry, rule.dynamicFilter, rule.selector)
+              : selector(entry, rule.selector),
+          )
+      },
+    )
+    return { ...spec, area: { visible: true, ...area } } as IAreaChartSpec
   }
 
-  const areaStyles = (Array.isArray(areaStyle) ? areaStyle : [areaStyle]) as AreaStyle[]
-  const lineStyles = (Array.isArray(lineStyle) ? lineStyle : [lineStyle]) as LineStyle[]
-
-  const group = unfoldInfo.encodingColorId
-
-  const areaGroups = groupBy(dataset, (d) => d[group ?? ''] as string)
-
-  const customMap = areaStyles.reduce<object>((result, style, index) => {
-    const { areaColor, areaColorOpacity, areaVisible = true } = style
-
-    const curveType = getCurveType(context.vseed, lineStyles[index]?.lineSmooth)
-    const curveTension = getCurveTension(context.vseed, lineStyles[index]?.lineSmooth)
-
-    return {
-      ...result,
-      [`custom${index + 1}`]: {
-        // 优先级: 后者覆盖前者
-        level: index + 1,
-        filter: (datum: Datum) => {
-          const lineData = areaGroups[datum[group ?? ''] as string]
-          for (const d of lineData) {
-            if (selector(d, style.selector)) {
-              return true
-            }
-          }
-          return false
-        },
-        style: {
-          curveType,
-          curveTension,
-          visible: areaVisible,
-          fill: areaColor,
-          fillOpacity: areaColorOpacity,
-        },
-      },
-    }
-  }, {})
-
-  return {
-    ...result,
-    area: {
-      ...result.area,
-      visible: true,
-      state: {
-        ...customMap,
-      },
-    },
-  }
-}
+export const areaStyle = createAreaStyle(cartesianCurve)
+export const radarAreaStyle = createAreaStyle(closedCurve)

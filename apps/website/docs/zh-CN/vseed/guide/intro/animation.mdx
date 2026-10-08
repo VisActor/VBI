@@ -6,6 +6,26 @@ pageType: doc
 
 VSeed 动画能力支持入场、轮播、氛围、更新与离场等阶段。下面将柱图、折线/面积、饼图、雷达图和散点图的动画示例合并展示，便于对比不同图表类型的配置方式。
 
+## 数据更新动画
+
+`animation.params.update` 统一控制数据的进入、更新和退出。只配置时长与缓动即可使用默认补间，不必指定 `effects`；`appear` 和 `loop` 独立控制首次入场和循环动画。
+
+```ts
+animation: {
+  enable: true,
+  params: {
+    appear: { enable: false },
+    update: { enable: true, duration: 600, ease: 'cubicInOut' },
+  },
+}
+```
+
+`duration` 的单位是**毫秒**，更新阶段省略时默认 1000 毫秒，`0` 表示立即完成。`update.enable: false` 同时关闭数据进入、更新和退出动画；`animation.enable: false` 关闭全部阶段。
+
+柱图的 `moveIn` 更新效果会在退出时使用相反方向，并继承相同的时长与缓动。宿主可读取 `prefers-reduced-motion` 后设置 `animation.enable`，VSeed 本身不依赖浏览器环境。
+
+`animation.params.loop.interval` 的单位是**毫秒**，例如 `interval: 2000` 表示每轮间隔 2000 毫秒，直接用于循环等待。
+
 ## 柱图/条形图动画
 
 所有示例均基于大屏主题（暗色），并提供主题列表用于切换不同的主题。
@@ -189,7 +209,7 @@ export default () => {
     animation: {
       enable: true,
       params: {
-        appear: { enable: true, effects: ['growth'], ease: 'circInOut', duration: 1 },
+        appear: { enable: true, effects: ['growth'], ease: 'circInOut', duration: 1000 },
       },
     },
   }
@@ -350,11 +370,11 @@ export default () => {
     animation: {
       enable: true,
       params: {
-        appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1 },
+        appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1000 },
         loop: {
           enable: true,
-          interval: 3,
-          loop: { enable: true, effects: ['highLight'], ease: 'linear', duration: 1 },
+          interval: 3000,
+          loop: { enable: true, effects: ['highLight'], ease: 'linear', duration: 1000 },
           atmosphere: { effect: 'breath', ease: 'linear', color: '#4A90E2' },
         },
       },
@@ -528,11 +548,11 @@ export default () => {
     animation: {
       enable: true,
       params: {
-        appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1 },
+        appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1000 },
         loop: {
           enable: true,
-          interval: 2,
-          loop: { enable: true, effects: ['growth'], ease: 'linear', duration: 1 },
+          interval: 2000,
+          loop: { enable: true, effects: ['growth'], ease: 'linear', duration: 1000 },
           atmo: { effect: 'breath', ease: 'linear', color: '#4A90E2' },
         },
       },
@@ -706,11 +726,11 @@ export default () => {
     animation: {
       enable: true,
       params: {
-        appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1 },
+        appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1000 },
         loop: {
           enable: true,
-          interval: 2,
-          loop: { enable: true, effects: ['moveIn'], ease: 'linear', duration: 1 },
+          interval: 2000,
+          loop: { enable: true, effects: ['moveIn'], ease: 'linear', duration: 1000 },
           atmo: { effect: 'breath', ease: 'linear', color: '#4A90E2' },
         },
       },
@@ -933,7 +953,7 @@ export default () => {
     label: { enable: false },
     animation: {
       enable: true,
-      params: { appear: { enable: true, effects: ['load'], ease: 'circInOut', duration: 1 } },
+      params: { appear: { enable: true, effects: ['load'], ease: 'circInOut', duration: 1000 } },
     },
   }
   return (
@@ -1099,7 +1119,7 @@ export default () => {
     label: { enable: false },
     animation: {
       enable: true,
-      params: { appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1 } },
+      params: { appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1000 } },
     },
   }
   return (
@@ -1286,11 +1306,11 @@ export default () => {
     animation: {
       enable: true,
       params: {
-        appear: { enable: true, effects: ['load'], ease: 'linear', duration: 1 },
+        appear: { enable: true, effects: ['load'], ease: 'linear', duration: 1000 },
         loop: {
           enable: true,
-          interval: 2,
-          loop: { enable: true, effects: ['load'], ease: 'linear', duration: 1 },
+          interval: 2000,
+          loop: { enable: true, effects: ['load'], ease: 'linear', duration: 1000 },
           atmosphere: { effect: 'breath', ease: 'linear' },
         },
       },
@@ -1476,11 +1496,11 @@ export default () => {
     animation: {
       enable: true,
       params: {
-        appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1 },
+        appear: { enable: true, effects: ['growth'], ease: 'linear', duration: 1000 },
         loop: {
           enable: true,
-          interval: 3,
-          loop: { enable: true, effects: ['load'], ease: 'circInOut', duration: 1 },
+          interval: 3000,
+          loop: { enable: true, effects: ['load'], ease: 'circInOut', duration: 1000 },
           atmosphere: { effect: 'ripple', ease: 'linear' },
         },
       },
@@ -1688,7 +1708,7 @@ export default () => {
     label: { enable: false },
     animation: {
       enable: true,
-      params: { appear: { enable: true, effects: ['radial'], ease: 'circInOut', duration: 1 } },
+      params: { appear: { enable: true, effects: ['radial'], ease: 'circInOut', duration: 1000 } },
     },
   }
   return (
@@ -1839,7 +1859,7 @@ export default () => {
     label: { enable: false },
     animation: {
       enable: true,
-      params: { appear: { enable: true, effects: ['scale'], ease: 'circInOut', duration: 1 } },
+      params: { appear: { enable: true, effects: ['scale'], ease: 'circInOut', duration: 1000 } },
     },
   }
   return (
@@ -2011,8 +2031,12 @@ export default () => {
     animation: {
       enable: true,
       params: {
-        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1 },
-        loop: { enable: true, interval: 2, loop: { enable: true, effects: ['enlarge'], ease: 'linear', duration: 1 } },
+        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1000 },
+        loop: {
+          enable: true,
+          interval: 2000,
+          loop: { enable: true, effects: ['enlarge'], ease: 'linear', duration: 1000 },
+        },
       },
     },
   }
@@ -2181,8 +2205,12 @@ export default () => {
     animation: {
       enable: true,
       params: {
-        appear: { enable: true, effects: ['radial'], ease: 'linear', duration: 1 },
-        loop: { enable: true, interval: 2, loop: { enable: true, effects: ['relocate'], ease: 'linear', duration: 1 } },
+        appear: { enable: true, effects: ['radial'], ease: 'linear', duration: 1000 },
+        loop: {
+          enable: true,
+          interval: 2000,
+          loop: { enable: true, effects: ['relocate'], ease: 'linear', duration: 1000 },
+        },
       },
     },
   }
@@ -2408,7 +2436,7 @@ export default () => {
     label: { enable: false },
     animation: {
       enable: true,
-      params: { appear: { enable: true, effects: ['radial'], ease: 'circInOut', duration: 1 } },
+      params: { appear: { enable: true, effects: ['radial'], ease: 'circInOut', duration: 1000 } },
     },
   }
   return (
@@ -2579,7 +2607,7 @@ export default () => {
     label: { enable: false },
     animation: {
       enable: true,
-      params: { appear: { enable: true, effects: ['scale'], ease: 'circInOut', duration: 1 } },
+      params: { appear: { enable: true, effects: ['scale'], ease: 'circInOut', duration: 1000 } },
     },
   }
   return (
@@ -2771,8 +2799,8 @@ export default () => {
     animation: {
       enable: true,
       params: {
-        appear: { enable: true, effects: ['radial'], ease: 'linear', duration: 1 },
-        loop: { enable: true, interval: 2, atmosphere: { effect: 'ripple', ease: 'linear' } },
+        appear: { enable: true, effects: ['radial'], ease: 'linear', duration: 1000 },
+        loop: { enable: true, interval: 2000, atmosphere: { effect: 'ripple', ease: 'linear' } },
       },
     },
   }
@@ -2961,8 +2989,8 @@ export default () => {
     animation: {
       enable: true,
       params: {
-        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1 },
-        loop: { enable: true, interval: 3, atmosphere: { effect: 'reveal', ease: 'linear' } },
+        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1000 },
+        loop: { enable: true, interval: 3000, atmosphere: { effect: 'reveal', ease: 'linear' } },
       },
     },
   }
@@ -3151,8 +3179,8 @@ export default () => {
     animation: {
       enable: true,
       params: {
-        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1 },
-        loop: { enable: true, interval: 2, atmosphere: { effect: 'breath', ease: 'linear' } },
+        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1000 },
+        loop: { enable: true, interval: 2000, atmosphere: { effect: 'breath', ease: 'linear' } },
       },
     },
   }
@@ -3358,7 +3386,7 @@ export default () => {
     label: { enable: false },
     animation: {
       enable: true,
-      params: { appear: { enable: true, effects: ['scale'], ease: 'circInOut', duration: 1 } },
+      params: { appear: { enable: true, effects: ['scale'], ease: 'circInOut', duration: 1000 } },
     },
   }
   return (
@@ -3509,7 +3537,7 @@ export default () => {
     label: { enable: false },
     animation: {
       enable: true,
-      params: { appear: { enable: true, effects: ['fadeIn'], ease: 'circInOut', duration: 1 } },
+      params: { appear: { enable: true, effects: ['fadeIn'], ease: 'circInOut', duration: 1000 } },
     },
   }
   return (
@@ -3681,8 +3709,8 @@ export default () => {
     animation: {
       enable: true,
       params: {
-        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1 },
-        loop: { enable: true, interval: 2, atmosphere: { effect: 'ripple', ease: 'linear' } },
+        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1000 },
+        loop: { enable: true, interval: 2000, atmosphere: { effect: 'ripple', ease: 'linear' } },
       },
     },
   }
@@ -3851,8 +3879,8 @@ export default () => {
     animation: {
       enable: true,
       params: {
-        appear: { enable: true, effects: ['fadeIn'], ease: 'linear', duration: 1 },
-        loop: { enable: true, interval: 2, atmosphere: { effect: 'breath', ease: 'linear' } },
+        appear: { enable: true, effects: ['fadeIn'], ease: 'linear', duration: 1000 },
+        loop: { enable: true, interval: 2000, atmosphere: { effect: 'breath', ease: 'linear' } },
       },
     },
   }
@@ -4021,8 +4049,8 @@ export default () => {
     animation: {
       enable: true,
       params: {
-        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1 },
-        loop: { enable: true, interval: 3, atmosphere: { effect: 'reveal', ease: 'linear' } },
+        appear: { enable: true, effects: ['scale'], ease: 'linear', duration: 1000 },
+        loop: { enable: true, interval: 3000, atmosphere: { effect: 'reveal', ease: 'linear' } },
       },
     },
   }

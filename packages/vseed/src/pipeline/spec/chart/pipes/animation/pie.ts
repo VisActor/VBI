@@ -1,4 +1,3 @@
-import { ChartTypeEnum } from 'src/pipeline/utils'
 import {
   VScreenAnimationType,
   type PieLikeAppearConfig,
@@ -18,14 +17,14 @@ import { radialPie, scalePie } from './utils/pie'
  * 效果：pie/rose 按半径从内向外展开。
  * 编排逻辑：pie/rose 同步使用 growRadiusIn, 共用 appear 的 easing 和 duration。
  */
-export const pieAppear = (config: PieLikeAppearConfig | undefined, chartType: string) => {
+export const pieAppear = (config: PieLikeAppearConfig | undefined) => {
   if (!config || !allowAnimation(config)) {
     return false
   }
 
   const { effects, ease, duration } = config
   const effect = effects?.[0]
-  const durationMs = (duration ?? 1) * 1000
+  const durationMs = duration ?? 1000
 
   let configByType = {}
   if (effect === VScreenAnimationType.radial) {
@@ -47,10 +46,14 @@ export const pieAppear = (config: PieLikeAppearConfig | undefined, chartType: st
     },
   } as any
 
-  if (chartType === ChartTypeEnum.Rose && effect === VScreenAnimationType.radial) {
-    result.preset = 'growAngle'
-  }
   return result
+}
+
+export const roseAppear = (config: PieLikeAppearConfig | undefined) => {
+  const result = pieAppear(config)
+  return result && getPrimaryEffect(config) === VScreenAnimationType.radial
+    ? { ...result, preset: 'growAngle' }
+    : result
 }
 
 /**
@@ -61,12 +64,12 @@ export const pieAppear = (config: PieLikeAppearConfig | undefined, chartType: st
  * 编排逻辑：不指定角度或半径动画, 避免和 normal 阶段的通道动画冲突。
  */
 export const pieUpdate = (config: PieLikeUpdateConfig | undefined) => {
-  if (!config || !allowAnimation(config)) {
+  if (!config?.enable) {
     return false
   }
 
   const { ease, duration } = config
-  const durationMs = (duration ?? 1) * 1000
+  const durationMs = duration ?? 1000
 
   // 用默认的补间效果即可
   return {
@@ -92,11 +95,11 @@ export const pieUpdate = (config: PieLikeUpdateConfig | undefined) => {
  * 编排逻辑：当 normal 的 loop 效果为 enlarge 时启用, 避免 enter 和 enlarge 同时争用 outerRadius 通道。
  */
 export const pieEnter = (config: PieLikeUpdateConfig | undefined, atmosphereConfig: PieLikeLoopConfig | undefined) => {
-  if (!config || !allowAnimation(config)) {
+  if (!config?.enable) {
     return false
   }
   const { ease, duration } = config
-  const durationMs = (duration ?? 1) * 1000
+  const durationMs = duration ?? 1000
   // 当normal动画存在且为radius时:
   // 玫瑰图enter不能用默认, 这样会和normal动画的radius视觉通道冲突
   let configByType = {}
@@ -137,9 +140,9 @@ export const pieLoop = (config: PieLikeLoopConfig | undefined, ignoreFirstNormal
 
   // 轮播动画
   // const startTime = 0
-  const startTime = ignoreFirstNormal ? interval * 1000 : 0
+  const startTime = ignoreFirstNormal ? interval : 0
   const { effects: loopEffects = [], ease: loopEase } = loop ?? {}
-  const loopDuration = 1
+  const loopDuration = 1000
   const loopEffect = loopEffects[0]
   if (loopEffect === VScreenAnimationType.enlarge) {
     loopResult = [
@@ -155,11 +158,11 @@ export const pieLoop = (config: PieLikeLoopConfig | undefined, ignoreFirstNormal
           },
         },
         startTime,
-        oneByOne: loopDuration * 1000, // true -> loopDuration * 1000, 原理有待考究
-        duration: (loopDuration / 2) * 1000,
+        oneByOne: loopDuration, // true -> loopDuration, 原理有待考究
+        duration: loopDuration / 2,
         loop: true,
         easing: loopEase,
-        delayAfter: (loopDuration / 2) * 1000 + interval * 1000,
+        delayAfter: loopDuration / 2 + interval,
         controlOptions: {
           immediatelyApply: false,
         },
@@ -176,11 +179,11 @@ export const pieLoop = (config: PieLikeLoopConfig | undefined, ignoreFirstNormal
           },
         },
         startTime,
-        oneByOne: loopDuration * 1000, // true -> loopDuration * 1000, 原理有待考究
-        duration: (loopDuration / 2) * 1000,
+        oneByOne: loopDuration, // true -> loopDuration, 原理有待考究
+        duration: loopDuration / 2,
         easing: loopEase,
-        delay: (loopDuration / 2) * 1000,
-        delayAfter: interval * 1000,
+        delay: loopDuration / 2,
+        delayAfter: interval,
         loop: true,
         controlOptions: {
           immediatelyApply: false,
@@ -212,11 +215,11 @@ export const pieLoop = (config: PieLikeLoopConfig | undefined, ignoreFirstNormal
           },
         },
         startTime,
-        oneByOne: loopDuration * 1000, // true -> loopDuration * 1000, 原理有待考究
-        duration: (loopDuration / 2) * 1000,
+        oneByOne: loopDuration, // true -> loopDuration, 原理有待考究
+        duration: loopDuration / 2,
         loop: true,
         easing: loopEase,
-        delayAfter: (loopDuration / 2) * 1000 + interval * 1000,
+        delayAfter: loopDuration / 2 + interval,
         controlOptions: {
           immediatelyApply: false,
         },
@@ -243,11 +246,11 @@ export const pieLoop = (config: PieLikeLoopConfig | undefined, ignoreFirstNormal
           },
         },
         startTime,
-        oneByOne: loopDuration * 1000, // true -> loopDuration * 1000, 原理有待考究
-        duration: (loopDuration / 2) * 1000,
+        oneByOne: loopDuration, // true -> loopDuration, 原理有待考究
+        duration: loopDuration / 2,
         easing: loopEase,
-        delay: (loopDuration / 2) * 1000,
-        delayAfter: interval * 1000,
+        delay: loopDuration / 2,
+        delayAfter: interval,
         loop: true,
         controlOptions: {
           immediatelyApply: false,
@@ -260,15 +263,4 @@ export const pieLoop = (config: PieLikeLoopConfig | undefined, ignoreFirstNormal
     pie: loopResult,
     rose: loopResult,
   }
-}
-
-/**
- * 饼图/环图/玫瑰图 离场动画
- * 动画类型:
- * 1. none: 无离场动画
- * 效果：不配置自定义 exit。
- * 编排逻辑：返回 false, 关闭该阶段动画配置。
- */
-export const pieExit = () => {
-  return false
 }

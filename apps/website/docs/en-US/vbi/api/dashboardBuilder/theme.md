@@ -118,7 +118,7 @@ getThemeOptions(): VBIDashboardThemeOption[]
 
 ### resolveTheme
 
-Resolves a theme and ensures VSeed registration with an isolated runtime name. Unknown names fall back to light without changing the document.
+Resolves a theme and ensures VSeed registration with an isolated runtime name. Unknown names fall back to light-default without changing the document.
 
 **Definition**:
 
@@ -136,7 +136,7 @@ resolveTheme(theme?: string): VBIDashboardResolvedTheme
 
 ### getTheme
 
-Gets the theme name, defaulting to light.
+Gets the theme name, defaulting to light-default.
 
 **Definition**:
 

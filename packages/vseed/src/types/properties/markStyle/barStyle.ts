@@ -1,6 +1,4 @@
-import { z } from 'zod'
-import { zSelector, zSelectors, type Selector, type Selectors } from '../../dataSelector/selector'
-import { zChartDynamicFilter, type ChartDynamicFilter } from '../../dataSelector/selector'
+import type { ChartDynamicFilter, Selector, Selectors } from '../../dataSelector/selector'
 
 export type BarStyle = {
   /**
@@ -71,6 +69,12 @@ export type BarStyle = {
    */
   barColor?: string
   /**
+   * 柱体线性渐变
+   * @description 开启后从零值基线透明渐变到数值末端的当前颜色，自动适配正负值和横纵方向；默认关闭。
+   * @example true
+   */
+  barGradient?: boolean
+  /**
    * @description 柱图元(矩形图元)颜色透明度
    * @type {number}
    */
@@ -104,17 +108,6 @@ export type BarStyle = {
    * @type {number}
    */
   barBorderOpacity?: number
+  /** @description 单根柱体圆角；配置后优先于堆叠外轮廓圆角，支持条件样式。 */
   barRadius?: number | number[]
 }
-
-export const zBarStyle = z.object({
-  selector: z.union([zSelector, zSelectors]).nullish(),
-  dynamicFilter: zChartDynamicFilter.optional(),
-  barVisible: z.boolean().nullish(),
-  barColor: z.string().nullish(),
-  barColorOpacity: z.number().nullish(),
-  barBorderColor: z.string().nullish(),
-  barBorderWidth: z.number().nullish(),
-  barBorderStyle: z.union([z.literal('solid'), z.literal('dashed'), z.literal('dotted')]).nullish(),
-  barRadius: z.union([z.number(), z.array(z.number())]).nullish(),
-})

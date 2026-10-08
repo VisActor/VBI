@@ -155,6 +155,13 @@ const API_SECTIONS = [
         displayName: 'ChartTypeBuilder',
       },
       {
+        type: 'file',
+        name: 'instance',
+        label: 'chartBuilder.instance',
+        file: 'features/instance/instance-builder.ts',
+        displayName: 'ChartInstanceBuilder',
+      },
+      {
         type: 'dir',
         name: 'measures',
         label: 'chartBuilder.measures',

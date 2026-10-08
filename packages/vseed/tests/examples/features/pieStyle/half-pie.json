@@ -1,0 +1,50 @@
+{
+  "name": "halfPie",
+  "description": "半圆饼图保留默认颜色，配置圆角、边框和关闭悬停样式。",
+  "vseed": {
+    "chartType": "pie",
+    "dataset": [
+      {
+        "category": "消费者",
+        "share": 62
+      },
+      {
+        "category": "其他客户",
+        "share": 38
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "category",
+        "encoding": "color"
+      }
+    ],
+    "measures": [
+      {
+        "id": "share",
+        "alias": "订单占比",
+        "encoding": "angle",
+        "format": {
+          "type": "number",
+          "suffix": "%",
+          "fractionDigits": 1
+        }
+      }
+    ],
+    "label": {
+      "enable": false
+    },
+    "color": {
+      "colorScheme": ["#56dabb", "#c1f3e6"]
+    },
+    "startAngle": -180,
+    "endAngle": 0,
+    "outerRadius": 0.9,
+    "pieStyle": {
+      "pieCornerRadius": 4,
+      "pieBorderColor": "white",
+      "pieBorderWidth": 2,
+      "pieHoverEffect": "none"
+    }
+  }
+}

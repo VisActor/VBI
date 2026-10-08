@@ -31,14 +31,14 @@ export function Dashboard({ locale }: Pick<DashboardRendererProps, 'locale'>) {
 
 ## Props
 
-| Prop            | Type                            | Default                           |
-| --------------- | ------------------------------- | --------------------------------- |
-| `builder`       | `VBIDashboardBuilder`           | Required                          |
-| `locale`        | `Locale` from `@visactor/vseed` | `zh-CN`                           |
-| `theme`         | `string`                        | Saved `meta.theme`, then `light`  |
-| `onThemeChange` | `(name: string) => void`        | Optional controlled-theme handler |
-| `mode`          | `'view' \| 'edit'`              | `view`                            |
-| `toolbar`       | `ReactNode`                     | `<DashboardToolbar />`            |
+| Prop            | Type                            | Default                                  |
+| --------------- | ------------------------------- | ---------------------------------------- |
+| `builder`       | `VBIDashboardBuilder`           | Required                                 |
+| `locale`        | `Locale` from `@visactor/vseed` | `zh-CN`                                  |
+| `theme`         | `string`                        | Saved `meta.theme`, then `light-default` |
+| `onThemeChange` | `(name: string) => void`        | Optional controlled-theme handler        |
+| `mode`          | `'view' \| 'edit'`              | `view`                                   |
+| `toolbar`       | `ReactNode`                     | `<DashboardToolbar />`                   |
 
 Supported locales: `zh-CN`, `en-US`, `ja-JP`, `de-DE`, `id-ID`, `fr-FR`, `ko-KR`, `vi-VN`. An explicit host theme overrides the saved Dashboard theme without mutating either the dashboard or chart DSL. Without an override, rendering follows `meta.theme`, including Builder edits, undo and collaborative updates. User-authored titles and insight text are displayed as supplied.
 
@@ -61,7 +61,7 @@ import {
 function ResetThemeButton() {
   const { editing, onThemeChange } = useDashboard()
   return (
-    <button disabled={!editing || !onThemeChange} onClick={() => onThemeChange?.('light')}>
+    <button disabled={!editing || !onThemeChange} onClick={() => onThemeChange?.('light-default')}>
       Reset theme
     </button>
   )
@@ -95,31 +95,54 @@ The default toolbar follows Standard's compact presentation: a flat themed surfa
 
 ## Themes
 
-The Builder owns theme selection and configuration. Use `dashboardBuilder.theme.setTheme('dark')` for a preset or `setTheme(name, definition)` to define and select a custom theme in one change. Names are nonempty strings and default to `light`. The selected name is saved in `meta.theme`; document definitions are saved in `meta.themes`. Both support serialization, undo, redo and Yjs synchronization, sharing the existing metadata value's collaboration granularity.
+The Builder owns theme selection and configuration. Use `dashboardBuilder.theme.setTheme('dark-default')` for a preset or `setTheme(name, definition)` to define and select a custom theme in one change. Names are nonempty strings and default to `light-default`. Built-in IDs use `light-xxx` / `dark-xxx` with kebab-case suffixes; use the same convention for custom themes. The selected name is saved in `meta.theme`; document definitions are saved in `meta.themes`. Both support serialization, undo, redo and Yjs synchronization, sharing the existing metadata value's collaboration granularity.
 
 In edit mode, the toolbar places the editing switch on the left and the theme picker immediately before fullscreen on the right. The picker shows a single circle using the palette's first color. Its compact menu groups themes into Light and Dark sections, pairing the same first-color circle with a continuous chart palette. Hovering a palette or the toolbar circle shows the theme name in a tooltip. Localized names also remain available to screen readers. Choosing a theme updates the Dashboard through its Builder and supports undo, redo and collaboration. Disabling editing disables the selector; view mode stays read-only. An explicit `theme` prop is controlled by the host: provide `onThemeChange` to handle selections, otherwise the selector is disabled. Controlled selections do not change the saved DSL.
 
-The menu includes all twelve built-in themes below and registered brand themes, grouped by their `baseTheme`. The presets use the official [VisActor palettes](https://github.com/VisActor/vchart-theme/tree/develop/packages/vchart-theme/src/v-screen), adapted to VSeed tokens and Dashboard surfaces. The pastel theme uses a warm light canvas and the cyan theme uses a green canvas; other presets use a dark navy canvas.
+The menu includes all twenty built-in themes below and registered brand themes, grouped by their `baseTheme`. The original presets use the official [VisActor palettes](https://github.com/VisActor/vchart-theme/tree/develop/packages/vchart-theme/src/v-screen), adapted to VSeed tokens and Dashboard surfaces. The pastel theme uses a warm light canvas and the cyan theme uses a green canvas; the other original color presets use a dark navy canvas. Eight additional light themes reproduce the supplied reference palettes, reserving near-white colors for surfaces and adding related shades for charts and readable text.
 
-| Name                                | Theme ID          |
-| ----------------------------------- | ----------------- |
-| 默认浅色 / Light                    | `light`           |
-| 默认深色 / Dark                     | `dark`            |
-| 火山蓝 / Volcano blue               | `volcanoBlue`     |
-| 清新蜡笔 / Fresh pastels            | `clean`           |
-| 郊外 / Outskirts                    | `outskirts`       |
-| 汽车蓝橙 / Automotive blue & orange | `blueOrange`      |
-| 金融黄 / Finance yellow             | `financeYellow`   |
-| 文旅青 / Tourism cyan               | `wenLvCyan`       |
-| 电力绿 / Electric green             | `electricGreen`   |
-| 电商紫 / E-commerce purple          | `eCommercePurple` |
-| 红蓝 / Red & blue                   | `redBlue`         |
-| 党建红 / Party red                  | `partyRed`        |
+| Name                                | Theme ID                 |
+| ----------------------------------- | ------------------------ |
+| 默认浅色 / Light                    | `light-default`          |
+| 默认深色 / Dark                     | `dark-default`           |
+| 火山蓝 / Volcano blue               | `dark-volcano-blue`      |
+| 清新蜡笔 / Fresh pastels            | `light-clean`            |
+| 郊外 / Outskirts                    | `dark-outskirts`         |
+| 汽车蓝橙 / Automotive blue & orange | `dark-blue-orange`       |
+| 金融黄 / Finance yellow             | `dark-finance-yellow`    |
+| 文旅青 / Tourism cyan               | `dark-wen-lv-cyan`       |
+| 电力绿 / Electric green             | `dark-electric-green`    |
+| 电商紫 / E-commerce purple          | `dark-e-commerce-purple` |
+| 红蓝 / Red & blue                   | `dark-red-blue`          |
+| 党建红 / Party red                  | `dark-party-red`         |
+| 雾玫粉 / Misty rose                 | `light-misty-rose`       |
+| 海盐蓝 / Sea salt blue              | `light-sea-salt-blue`    |
+| 森雾青 / Forest mist                | `light-forest-mist`      |
+| 薰衣紫 / Lavender                   | `light-lavender`         |
+| 杏桃橘 / Apricot orange             | `light-apricot-orange`   |
+| 竹月青 / Bamboo moon                | `light-bamboo-moon`      |
+| 晴空蓝 / Clear sky blue             | `light-clear-sky-blue`   |
+| 雪松玫瑰 / Cedar rose               | `light-cedar-rose`       |
+
+The reference colors below are preserved in the chart palette, card/canvas backgrounds or borders. Chart palettes add tonal variations; controls use a darker accent so buttons remain readable.
+
+| Theme                  | Reference colors                           |
+| ---------------------- | ------------------------------------------ |
+| `light-misty-rose`     | `#D8B4B6`, `#F7F2EE`, `#A78F88`            |
+| `light-sea-salt-blue`  | `#AFCBDA`, `#F5F7F6`, `#C9D2D5`            |
+| `light-forest-mist`    | `#7FA69A`, `#E6DCC8`, `#B5C1B0`            |
+| `light-lavender`       | `#B9AFD8`, `#D7D1DC`, `#F2EEEA`            |
+| `light-apricot-orange` | `#F0C4A8`, `#EAD8C4`, `#F6E2DB`            |
+| `light-bamboo-moon`    | `#89A8A0`, `#F1EFE7`, `#D7C5A1`            |
+| `light-clear-sky-blue` | `#A8C7E8`, `#F3E1A0`, `#F8F7F1`            |
+| `light-cedar-rose`     | `#EDF0F4`, `#E8D0D8`, `#BAC3D4`, `#B2C7DC` |
+
+Select a preset directly, for example `dashboardBuilder.theme.setTheme('light-misty-rose')`. Every preset works through the headless Builder and is available in the toolbar’s Light group.
 
 Configure a custom theme directly through the Builder, without registering it in a component. One VSeed token definition supplies chart/table colors and fonts as well as Dashboard controls, text and surfaces:
 
 ```tsx
-dashboardBuilder.theme.setTheme('emerald', {
+dashboardBuilder.theme.setTheme('dark-emerald', {
   label: 'Emerald',
   tokens: {
     baseTheme: 'dark',
@@ -158,7 +181,7 @@ unsubscribe()
 
 `observe` notifies subscribers when the selected name or any document theme definition changes, including undo, redo and remote updates. Identical writes and unrelated metadata edits do not notify theme subscribers. `useDashboardTheme` connects this API to React with `useSyncExternalStore` and releases its subscription on unmount or Builder replacement.
 
-Document definitions take precedence over built-in presets and remain isolated across dashboards, even when names match. The Builder assigns cached VSeed runtime names by token content, so a local update cannot overwrite another dashboard's chart theme. Unknown names fall back to `light` for both the page and its charts without changing the saved name. Two dashboards may share the same chart builder and display different themes.
+Document definitions take precedence over built-in presets and remain isolated across dashboards, even when names match. The Builder assigns cached VSeed runtime names by token content, so a local update cannot overwrite another dashboard's chart theme. Unknown names fall back to the `light-default` Dashboard theme and its VSeed `light` chart theme without changing the saved name. Two dashboards may share the same chart builder and display different themes.
 
 All registration goes through `dashboardBuilder.theme.registerTheme(name, definition)` or `setTheme(name, definition)`. To reuse a definition, pass the same definition to each Builder. There is no Dashboard component registry or registration export.
 

@@ -43,9 +43,9 @@ const getSliceDuration = (totalDuration: number) => (_datum: any, _element: any,
  * @description 生成柱图分组高亮循环动画配置。
  * @param startTime 动画开始时间，单位毫秒。
  * @param config 高亮动画配置，包含颜色和缓动。
- * @param duration 分组高亮总时长，单位秒。
- * @param interval 每轮循环间隔，单位秒。
- * @param atmosphereDuration 氛围动画占用时长，单位秒。
+ * @param totalDuration 分组高亮总时长，单位毫秒。
+ * @param interval 每轮循环间隔，单位毫秒。
+ * @param atmosphereDuration 氛围动画占用时长，单位毫秒。
  * @param isHorizontal 是否为横向柱图。
  * @param spec 当前 VChart spec。
  * @returns 柱图分组高亮循环动画配置。
@@ -53,13 +53,12 @@ const getSliceDuration = (totalDuration: number) => (_datum: any, _element: any,
 export const groupHighLightBar = (
   startTime: number,
   config: EffectConfig<any>,
-  duration: number,
+  totalDuration: number,
   interval: number,
   atmosphereDuration: number,
   isHorizontal: boolean,
   spec: any,
 ) => {
-  const totalDuration = duration * 1000
   const color = config.color ?? '#4A90E2'
   const isGradientChart = spec?.bar?.style?.fill?.gradient === 'linear'
   const fillColor = atmosphereColorToFill(color, isGradientChart, isHorizontal)
@@ -89,9 +88,7 @@ export const groupHighLightBar = (
           },
           delayAfter: (datum: any, _element: any, _ctx: any, context: any) => {
             const { count, index } = getGroupInfo(context.vchart, datum)
-            return count === 0
-              ? 0
-              : (interval + atmosphereDuration) * 1000 + ((count - index - 1) * totalDuration) / count
+            return count === 0 ? 0 : interval + atmosphereDuration + ((count - index - 1) * totalDuration) / count
           },
           duration: getSliceDuration(totalDuration),
         },

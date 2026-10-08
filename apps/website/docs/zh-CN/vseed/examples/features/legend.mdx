@@ -450,3 +450,62 @@ export default () => {
 }
 ```
 
+## staticLegend
+
+设置 interactive: false，仅关闭图例悬停、选择、聚焦和筛选；沿用既有布局和标记样式。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "donut",
+  "dataset": [
+    {
+      "category": "消费者",
+      "share": 62
+    },
+    {
+      "category": "其他客户",
+      "share": 38
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "category",
+      "encoding": "color"
+    }
+  ],
+  "measures": [
+    {
+      "id": "share",
+      "alias": "订单占比",
+      "encoding": "angle",
+      "format": {
+        "type": "number",
+        "suffix": "%",
+        "fractionDigits": 1
+      }
+    }
+  ],
+  "label": {
+    "enable": false
+  },
+  "color": {
+    "colorScheme": [
+      "#56dabb",
+      "#c1f3e6"
+    ]
+  },
+  "legend": {
+    "interactive": false,
+    "position": "bottom",
+    "border": false,
+    "shapeType": "circle",
+    "labelFontSize": 10
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```

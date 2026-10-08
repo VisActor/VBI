@@ -38,6 +38,9 @@ jobs:
       - name: Run lint check
         run: pnpm run lint:check
 
+      - name: Validate changeset versioning
+        run: pnpm exec changeset version
+
   typecheck:
     name: Typecheck
     runs-on: ubuntu-latest

@@ -1,0 +1,36 @@
+{
+  "name": "themeDefaults",
+  "description": "只配置中心文本内容。内外半径、悬停、字号、字重和间距使用主题默认值；省略 theme 时使用 light。",
+  "vseed": {
+    "chartType": "donut",
+    "dataset": [
+      {
+        "category": "消费者",
+        "share": 62
+      },
+      {
+        "category": "其他客户",
+        "share": 38
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "category",
+        "encoding": "color"
+      }
+    ],
+    "measures": [
+      {
+        "id": "share",
+        "encoding": "angle"
+      }
+    ],
+    "label": {
+      "enable": false
+    },
+    "centerText": {
+      "titleText": "62%",
+      "subTitleText": "消费者"
+    }
+  }
+}

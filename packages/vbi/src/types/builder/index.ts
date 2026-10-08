@@ -7,6 +7,7 @@ export type {
   VBIChartSeedBuilder,
 } from './adapter'
 export type { BuildVSeedOptions } from './build-vseed'
+export type { VBIChartInstance, VBIChartInstanceOn, VBIChartInstanceOff } from './instance'
 export type {
   VBIDashboardBuilderInterface,
   VBIDashboardBuilderOptions,

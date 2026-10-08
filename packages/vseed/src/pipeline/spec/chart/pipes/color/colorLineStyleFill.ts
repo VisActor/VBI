@@ -12,7 +12,7 @@ export const colorLineStyleFill = (stylePipe: VChartSpecPipe): VChartSpecPipe =>
 
     if (isLinearColor(advancedVSeed, vseed)) {
       if (result?.line?.style) {
-        result.line.style.stroke = {
+        result.line.style.stroke ??= {
           field: unfoldInfo.encodingColor,
           scale: 'color',
         }

@@ -6,7 +6,7 @@ import { DATUM_HIDE_KEY } from 'src/pipeline/utils/constant'
 export const heatmapColorLegend: VChartSpecPipe = (spec, context) => {
   const result = colorLegend(spec, context) as IHeatmapChartSpec
 
-  if (result.legends) {
+  if (result.legends && (result.legends as any).visible !== false) {
     ;(result.legends as any).customFilter = (data: Datum[], range: number[], key: string) => {
       const min = Math.min(range[0], range[1])
       const max = Math.max(range[0], range[1])

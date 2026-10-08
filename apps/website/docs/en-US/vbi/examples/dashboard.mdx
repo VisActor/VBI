@@ -528,7 +528,7 @@ export default () => {
           ...LocalVBI.dashboard.createEmpty(),
           meta: { title: '浅色经营看板', description: '品类表现 / 销售贡献与经营观察' },
         })
-        dashboardBuilder.theme.setTheme('light')
+        dashboardBuilder.theme.setTheme('light-default')
 
         dashboardBuilder.chart.add(widget => widget
           .setChart(chartBuilder)
@@ -590,7 +590,7 @@ export default () => {
           ...LocalVBI.dashboard.createEmpty(),
           meta: { title: '深色经营看板', description: '品类表现 / 销售贡献与经营观察' },
         })
-        dashboardBuilder.theme.setTheme('dark')
+        dashboardBuilder.theme.setTheme('dark-default')
 
         dashboardBuilder.chart.add(widget => widget
           .setChart(chartBuilder)
@@ -652,7 +652,7 @@ export default () => {
           ...LocalVBI.dashboard.createEmpty(),
           meta: { title: '翡翠绿经营看板', description: '品类表现 / 销售贡献与经营观察' },
         })
-        dashboardBuilder.theme.setTheme('retail-emerald', {
+        dashboardBuilder.theme.setTheme('dark-retail-emerald', {
           label: '零售翡翠',
           tokens: {
             baseTheme: 'dark',
@@ -669,6 +669,69 @@ export default () => {
           },
           dashboard: { widgetBorderRadius: 12, toolbarBackground: '#102b22', padding: 20, gap: 16 },
         })
+
+        dashboardBuilder.chart.add(widget => widget
+          .setChart(chartBuilder)
+          .setTitle('品类销售额')
+          .setLayouts({ lg: { x: 0, y: 0, w: 8, h: 5 }, md: { x: 0, y: 0, w: 6, h: 5 } }))
+        dashboardBuilder.insight.add(widget => widget
+          .setInsightId(insightBuilder)
+          .setTitle('经营观察')
+          .setLayouts({ lg: { x: 8, y: 0, w: 4, h: 5 }, md: { x: 0, y: 5, w: 6, h: 3 } }))
+        if (!cancelled) setDashboardBuilder(dashboardBuilder)
+      } catch (err) {
+        if (!cancelled) setError(err instanceof Error ? err.message : String(err))
+      }
+    }
+    void run()
+    return () => { cancelled = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (!dashboardBuilder) return <div role='status'>Loading...</div>
+
+  return <DashboardRenderer builder={dashboardBuilder} mode='edit' locale={locale} />
+}
+```
+
+
+## pastel-dashboard-theme
+
+Start with Misty rose and switch among all eight reference palettes in the Light theme group: Misty rose, Sea salt blue, Forest mist, Lavender, Apricot orange, Bamboo moon, Clear sky blue and Cedar rose. Charts, cards and the editor follow the selected theme.
+
+
+> 标签: `theme`
+
+
+```tsx preview
+import { createVBI, type VBIDashboardBuilder } from '@visactor/vbi'
+import { DashboardRenderer, type DashboardRendererProps } from 'dashboard'
+import { useLang } from '@rspress/core/runtime'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [dashboardBuilder, setDashboardBuilder] = useState<VBIDashboardBuilder | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const locale = useLang() as DashboardRendererProps['locale']
+
+  useEffect(() => {
+    let cancelled = false
+    const run = async () => {
+      try {
+        const LocalVBI = createVBI()
+        const chartBuilder = LocalVBI.chart.create(LocalVBI.chart.createEmpty('demoSupermarket'))
+        chartBuilder.chartType.changeChartType('column')
+        chartBuilder.dimensions.add('product_type', node => node.setAlias('商品品类'))
+        chartBuilder.measures.add('sales', node => node.setAlias('销售额').setAggregate({ func: 'sum' }))
+
+        const insightBuilder = LocalVBI.insight.create(LocalVBI.insight.createEmpty())
+        insightBuilder.setContent('按品类比较销售贡献，结合利润质量制定下一步经营计划。')
+
+        const dashboardBuilder = LocalVBI.dashboard.create({
+          ...LocalVBI.dashboard.createEmpty(),
+          meta: { title: '柔彩经营看板', description: '品类表现 / 销售贡献与经营观察' },
+        })
+        dashboardBuilder.theme.setTheme('light-misty-rose')
 
         dashboardBuilder.chart.add(widget => widget
           .setChart(chartBuilder)
