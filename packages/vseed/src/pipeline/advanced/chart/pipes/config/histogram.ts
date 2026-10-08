@@ -21,6 +21,8 @@ export const histogramConfig: AdvancedPipe = (advancedVSeed, context) => {
     'xAxis',
     'yAxis',
     'crosshairRect',
+    'cornerRadius',
+    'stackCornerRadius',
     'binCount',
     'binStep',
     'binValueType',

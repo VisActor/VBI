@@ -62,7 +62,8 @@
         "returnRatio": 305
       }
     ],
-    "stackCornerRadius": 10,
+    "cornerRadius": 10,
+    "stackCornerRadius": true,
     "dimensions": [
       {
         "id": "date",

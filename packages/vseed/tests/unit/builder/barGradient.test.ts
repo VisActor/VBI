@@ -53,7 +53,7 @@ test.each(['column', 'bar', 'columnParallel', 'barParallel', 'columnPercent', 'b
         { offset: 1, color: 'rgba(255,0,0,0.5)' },
       ],
     })
-    expect(spec.stackCornerRadius).toBeTypeOf('function')
+    expect(spec.stackCornerRadius).toBeUndefined()
   },
 )
 

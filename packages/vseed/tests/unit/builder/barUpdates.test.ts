@@ -4,6 +4,94 @@ import { Builder, registerAll } from 'src/builder'
 beforeAll(registerAll)
 
 describe('bar geometry across spec updates', () => {
+  test('histogram bins retain per-mark corners when the radius changes', async () => {
+    const build = (cornerRadius: number) => ({
+      ...Builder.from({
+        chartType: 'histogram',
+        dataset: [{ value: 10 }, { value: 15 }, { value: 20 }],
+        measures: [{ id: 'value' }],
+        cornerRadius,
+        stackCornerRadius: false,
+        barStyle: { barBorderWidth: 0 },
+      }).build<any>(),
+      width: 480,
+      height: 240,
+      animation: false,
+    })
+    const element = document.createElement('div')
+    document.body.append(element)
+    const chart = new VChart(build(6), { dom: element })
+    try {
+      chart.renderSync()
+      for (const radius of [6, 12, 0, 6]) {
+        await chart.updateSpec(build(radius))
+        const series = chart.getChart()!.getAllSeries()[0]
+        const mark = series.getMarkInName('bar')!
+        expect((mark.getMarkConfig() as any).clip).not.toBe(true)
+        const nonempty = series.getViewData()!.latestData.filter((datum: any) => datum.__MeaValue__ > 0)
+        expect(nonempty.length).toBeGreaterThan(0)
+        for (const datum of nonempty) expect(mark.getAttribute('cornerRadius', datum)).toBe(radius)
+      }
+    } finally {
+      chart.release()
+      element.remove()
+    }
+  })
+
+  test.each(['column', 'bar'] as const)('%s switches between per-mark corners and whole stack clipping', async (chartType) => {
+    const build = (stackCornerRadius?: boolean, cornerRadius: number | number[] = [6, 6, 0, 0]) => ({
+      ...Builder.from({
+        chartType,
+        dataset: [
+          { category: 'A', series: 'East', value: 10 },
+          { category: 'A', series: 'West', value: 20 },
+        ],
+        dimensions: [{ id: 'category' }, { id: 'series' }],
+        measures: [{ id: 'value' }],
+        cornerRadius,
+        stackCornerRadius,
+        barStyle: [{ barBorderWidth: 0 }, { selector: { series: 'West' }, barColor: 'red' }],
+        animation: { enable: false },
+      }).build<any>(),
+      width: 480,
+      height: 240,
+    })
+    const element = document.createElement('div')
+    document.body.append(element)
+    const chart = new VChart(build(), { dom: element })
+    try {
+      chart.renderSync()
+      const series = chart.getChart()!.getAllSeries()[0]
+      const modes: { stackCornerRadius?: boolean; cornerRadius: number | number[] }[] = [
+        { cornerRadius: [6, 6, 0, 0] },
+        { stackCornerRadius: true, cornerRadius: [6, 6, 0, 0] },
+        { stackCornerRadius: true, cornerRadius: 12 },
+        { stackCornerRadius: false, cornerRadius: 8 },
+        { stackCornerRadius: true, cornerRadius: 0 },
+        { cornerRadius: [6, 6, 0, 0] },
+      ]
+      for (const { stackCornerRadius, cornerRadius } of modes) {
+        await chart.updateSpec(build(stackCornerRadius, cornerRadius))
+        const current = chart.getChart()!.getAllSeries()[0]
+        expect(current).toBe(series)
+        const mark = current.getMarkInName('bar')!
+        const config = mark.getMarkConfig() as any
+        expect(config.clip === true).toBe(Boolean(stackCornerRadius))
+        const data = current.getViewData()!.latestData
+        expect(data).toHaveLength(2)
+        for (const datum of data) expect(mark.getAttribute('cornerRadius', datum)).toEqual(stackCornerRadius ? 0 : cornerRadius)
+        if (stackCornerRadius) {
+          // Two stacked segments share one outline, rather than two rounded rectangles.
+          expect(config.clipPath()).toHaveLength(1)
+          expect(config.clipPath()[0].attribute.cornerRadius).toEqual(cornerRadius)
+        }
+      }
+    } finally {
+      chart.release()
+      element.remove()
+    }
+  })
+
   test.each(['column', 'bar'] as const)(
     '%s preserves single-series corners through native updates',
     async (chartType) => {
@@ -13,7 +101,8 @@ describe('bar geometry across spec updates', () => {
           dataset: values.map((value, i) => ({ category: String(i), value })),
           dimensions: [{ id: 'category' }],
           measures: [{ id: 'value' }],
-          stackCornerRadius: [4, 4, 0, 0],
+          cornerRadius: [4, 4, 0, 0],
+          stackCornerRadius: true,
           animation: { enable: false },
         }).build<any>(),
         width: 480,
@@ -81,6 +170,7 @@ describe('bar geometry across spec updates', () => {
           const current = chart.getChart()!.getAllSeries()[0]
           expect(current === series).toBe(true)
           const mark = current.getMarkInName('bar')!
+          expect((mark.getMarkConfig() as any).clip).not.toBe(true)
           for (const datum of current.getViewData()!.latestData) {
             for (const attribute of chartType.startsWith('column')
               ? ['x', 'y', 'y1', 'width']
