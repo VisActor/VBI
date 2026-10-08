@@ -37,7 +37,7 @@
 
 ## registerAll
 
-源码：[packages/vseed/src/builder/register/all.ts](../../../../../packages/vseed/src/builder/register/all.ts)
+源码：[packages/vseed/src/builder/register/all.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/all.ts)
 
 包导出：`registerAll`
 
@@ -52,7 +52,7 @@ const registerAll: () => void
 
 ## updateAdvanced
 
-源码：[packages/vseed/src/builder/register/custom.ts](../../../../../packages/vseed/src/builder/register/custom.ts)
+源码：[packages/vseed/src/builder/register/custom.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/custom.ts)
 
 包导出：`updateAdvanced`
 
@@ -70,7 +70,7 @@ const updateAdvanced: (chartType: ChartType, advancedPipe: AdvancedPipe) => void
 
 ## updateSpec
 
-源码：[packages/vseed/src/builder/register/custom.ts](../../../../../packages/vseed/src/builder/register/custom.ts)
+源码：[packages/vseed/src/builder/register/custom.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/custom.ts)
 
 包导出：`updateSpec`
 
@@ -88,7 +88,7 @@ const updateSpec: (chartType: ChartType, specPipe: SpecPipe) => void
 
 ## registerArea
 
-源码：[packages/vseed/src/builder/register/chartType/area.ts](../../../../../packages/vseed/src/builder/register/chartType/area.ts)
+源码：[packages/vseed/src/builder/register/chartType/area.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/area.ts)
 
 包导出：`registerArea`
 
@@ -102,7 +102,7 @@ const registerArea: () => void
 
 ## registerAreaPercent
 
-源码：[packages/vseed/src/builder/register/chartType/areaPercent.ts](../../../../../packages/vseed/src/builder/register/chartType/areaPercent.ts)
+源码：[packages/vseed/src/builder/register/chartType/areaPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/areaPercent.ts)
 
 包导出：`registerAreaPercent`
 
@@ -116,7 +116,7 @@ const registerAreaPercent: () => void
 
 ## registerBar
 
-源码：[packages/vseed/src/builder/register/chartType/bar.ts](../../../../../packages/vseed/src/builder/register/chartType/bar.ts)
+源码：[packages/vseed/src/builder/register/chartType/bar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/bar.ts)
 
 包导出：`registerBar`
 
@@ -130,7 +130,7 @@ const registerBar: () => void
 
 ## registerBarParallel
 
-源码：[packages/vseed/src/builder/register/chartType/barParallel.ts](../../../../../packages/vseed/src/builder/register/chartType/barParallel.ts)
+源码：[packages/vseed/src/builder/register/chartType/barParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/barParallel.ts)
 
 包导出：`registerBarParallel`
 
@@ -144,7 +144,7 @@ const registerBarParallel: () => void
 
 ## registerBarPercent
 
-源码：[packages/vseed/src/builder/register/chartType/barPercent.ts](../../../../../packages/vseed/src/builder/register/chartType/barPercent.ts)
+源码：[packages/vseed/src/builder/register/chartType/barPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/barPercent.ts)
 
 包导出：`registerBarPercent`
 
@@ -158,7 +158,7 @@ const registerBarPercent: () => void
 
 ## registerBoxPlot
 
-源码：[packages/vseed/src/builder/register/chartType/boxplot.ts](../../../../../packages/vseed/src/builder/register/chartType/boxplot.ts)
+源码：[packages/vseed/src/builder/register/chartType/boxplot.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/boxplot.ts)
 
 包导出：`registerBoxPlot`
 
@@ -172,7 +172,7 @@ const registerBoxPlot: () => void
 
 ## registerColumn
 
-源码：[packages/vseed/src/builder/register/chartType/column.ts](../../../../../packages/vseed/src/builder/register/chartType/column.ts)
+源码：[packages/vseed/src/builder/register/chartType/column.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/column.ts)
 
 包导出：`registerColumn`
 
@@ -186,7 +186,7 @@ const registerColumn: () => void
 
 ## registerColumnParallel
 
-源码：[packages/vseed/src/builder/register/chartType/columnParallel.ts](../../../../../packages/vseed/src/builder/register/chartType/columnParallel.ts)
+源码：[packages/vseed/src/builder/register/chartType/columnParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/columnParallel.ts)
 
 包导出：`registerColumnParallel`
 
@@ -200,7 +200,7 @@ const registerColumnParallel: () => void
 
 ## registerColumnPercent
 
-源码：[packages/vseed/src/builder/register/chartType/columnPercent.ts](../../../../../packages/vseed/src/builder/register/chartType/columnPercent.ts)
+源码：[packages/vseed/src/builder/register/chartType/columnPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/columnPercent.ts)
 
 包导出：`registerColumnPercent`
 
@@ -214,7 +214,7 @@ const registerColumnPercent: () => void
 
 ## registerCustomTheme
 
-源码：[packages/vseed/src/builder/register/theme/custom.ts](../../../../../packages/vseed/src/builder/register/theme/custom.ts)
+源码：[packages/vseed/src/builder/register/theme/custom.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/theme/custom.ts)
 
 包导出：`registerCustomTheme`
 
@@ -241,7 +241,7 @@ const registerCustomTheme: (
 
 ## registerDarkTheme
 
-源码：[packages/vseed/src/builder/register/theme/dark.ts](../../../../../packages/vseed/src/builder/register/theme/dark.ts)
+源码：[packages/vseed/src/builder/register/theme/dark.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/theme/dark.ts)
 
 包导出：`registerDarkTheme`
 
@@ -255,7 +255,7 @@ const registerDarkTheme: () => void
 
 ## registerDonut
 
-源码：[packages/vseed/src/builder/register/chartType/donut.ts](../../../../../packages/vseed/src/builder/register/chartType/donut.ts)
+源码：[packages/vseed/src/builder/register/chartType/donut.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/donut.ts)
 
 包导出：`registerDonut`
 
@@ -269,7 +269,7 @@ const registerDonut: () => void
 
 ## registerDualAxis
 
-源码：[packages/vseed/src/builder/register/chartType/dualAxis.ts](../../../../../packages/vseed/src/builder/register/chartType/dualAxis.ts)
+源码：[packages/vseed/src/builder/register/chartType/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/dualAxis.ts)
 
 包导出：`registerDualAxis`
 
@@ -283,7 +283,7 @@ const registerDualAxis: () => void
 
 ## registerFunnel
 
-源码：[packages/vseed/src/builder/register/chartType/funnel.ts](../../../../../packages/vseed/src/builder/register/chartType/funnel.ts)
+源码：[packages/vseed/src/builder/register/chartType/funnel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/funnel.ts)
 
 包导出：`registerFunnel`
 
@@ -297,7 +297,7 @@ const registerFunnel: () => void
 
 ## registerHeatmap
 
-源码：[packages/vseed/src/builder/register/chartType/heatmap.ts](../../../../../packages/vseed/src/builder/register/chartType/heatmap.ts)
+源码：[packages/vseed/src/builder/register/chartType/heatmap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/heatmap.ts)
 
 包导出：`registerHeatmap`
 
@@ -311,7 +311,7 @@ const registerHeatmap: () => void
 
 ## registerHierarchySankey
 
-源码：[packages/vseed/src/builder/register/chartType/hierarchySankey.ts](../../../../../packages/vseed/src/builder/register/chartType/hierarchySankey.ts)
+源码：[packages/vseed/src/builder/register/chartType/hierarchySankey.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/hierarchySankey.ts)
 
 包导出：`registerHierarchySankey`
 
@@ -324,7 +324,7 @@ const registerHierarchySankey: () => void
 
 ## registerHistogram
 
-源码：[packages/vseed/src/builder/register/chartType/histogram.ts](../../../../../packages/vseed/src/builder/register/chartType/histogram.ts)
+源码：[packages/vseed/src/builder/register/chartType/histogram.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/histogram.ts)
 
 包导出：`registerHistogram`
 
@@ -338,7 +338,7 @@ const registerHistogram: () => void
 
 ## registerLightTheme
 
-源码：[packages/vseed/src/builder/register/theme/light.ts](../../../../../packages/vseed/src/builder/register/theme/light.ts)
+源码：[packages/vseed/src/builder/register/theme/light.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/theme/light.ts)
 
 包导出：`registerLightTheme`
 
@@ -352,7 +352,7 @@ const registerLightTheme: () => void
 
 ## registerLine
 
-源码：[packages/vseed/src/builder/register/chartType/line.ts](../../../../../packages/vseed/src/builder/register/chartType/line.ts)
+源码：[packages/vseed/src/builder/register/chartType/line.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/line.ts)
 
 包导出：`registerLine`
 
@@ -366,7 +366,7 @@ const registerLine: () => void
 
 ## registerPie
 
-源码：[packages/vseed/src/builder/register/chartType/pie.ts](../../../../../packages/vseed/src/builder/register/chartType/pie.ts)
+源码：[packages/vseed/src/builder/register/chartType/pie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/pie.ts)
 
 包导出：`registerPie`
 
@@ -380,7 +380,7 @@ const registerPie: () => void
 
 ## registerPivotTable
 
-源码：[packages/vseed/src/builder/register/chartType/pivotTable.ts](../../../../../packages/vseed/src/builder/register/chartType/pivotTable.ts)
+源码：[packages/vseed/src/builder/register/chartType/pivotTable.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/pivotTable.ts)
 
 包导出：`registerPivotTable`
 
@@ -394,7 +394,7 @@ const registerPivotTable: () => void
 
 ## registerRadar
 
-源码：[packages/vseed/src/builder/register/chartType/radar.ts](../../../../../packages/vseed/src/builder/register/chartType/radar.ts)
+源码：[packages/vseed/src/builder/register/chartType/radar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/radar.ts)
 
 包导出：`registerRadar`
 
@@ -408,7 +408,7 @@ const registerRadar: () => void
 
 ## registerRose
 
-源码：[packages/vseed/src/builder/register/chartType/rose.ts](../../../../../packages/vseed/src/builder/register/chartType/rose.ts)
+源码：[packages/vseed/src/builder/register/chartType/rose.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/rose.ts)
 
 包导出：`registerRose`
 
@@ -422,7 +422,7 @@ const registerRose: () => void
 
 ## registerRoseParallel
 
-源码：[packages/vseed/src/builder/register/chartType/roseParallel.ts](../../../../../packages/vseed/src/builder/register/chartType/roseParallel.ts)
+源码：[packages/vseed/src/builder/register/chartType/roseParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/roseParallel.ts)
 
 包导出：`registerRoseParallel`
 
@@ -436,7 +436,7 @@ const registerRoseParallel: () => void
 
 ## registerSankey
 
-源码：[packages/vseed/src/builder/register/chartType/sankey.ts](../../../../../packages/vseed/src/builder/register/chartType/sankey.ts)
+源码：[packages/vseed/src/builder/register/chartType/sankey.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/sankey.ts)
 
 包导出：`registerSankey`
 
@@ -446,7 +446,7 @@ const registerSankey: () => void
 
 ## registerScatter
 
-源码：[packages/vseed/src/builder/register/chartType/scatter.ts](../../../../../packages/vseed/src/builder/register/chartType/scatter.ts)
+源码：[packages/vseed/src/builder/register/chartType/scatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/scatter.ts)
 
 包导出：`registerScatter`
 
@@ -460,7 +460,7 @@ const registerScatter: () => void
 
 ## registerTable
 
-源码：[packages/vseed/src/builder/register/chartType/table.ts](../../../../../packages/vseed/src/builder/register/chartType/table.ts)
+源码：[packages/vseed/src/builder/register/chartType/table.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/register/chartType/table.ts)
 
 包导出：`registerTable`
 

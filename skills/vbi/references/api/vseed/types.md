@@ -252,7 +252,7 @@ import { z } from 'zod'
 
 ## VSeed
 
-源码：[packages/vseed/src/types/vseed.ts](../../../../../packages/vseed/src/types/vseed.ts)
+源码：[packages/vseed/src/types/vseed.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/vseed.ts)
 
 包导出：`VSeed`
 
@@ -297,7 +297,7 @@ export type VSeed =
 
 ## VSeedDSL
 
-源码：[packages/vseed/src/types/vseed.ts](../../../../../packages/vseed/src/types/vseed.ts)
+源码：[packages/vseed/src/types/vseed.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/vseed.ts)
 
 包导出：`VSeedDSL`
 
@@ -309,7 +309,7 @@ export type VSeedDSL = VSeed
 
 ## AdvancedVSeed
 
-源码：[packages/vseed/src/types/advancedVSeed.ts](../../../../../packages/vseed/src/types/advancedVSeed.ts)
+源码：[packages/vseed/src/types/advancedVSeed.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/advancedVSeed.ts)
 
 包导出：`AdvancedVSeed`
 
@@ -344,7 +344,7 @@ export type AdvancedVSeed = {
 
 ## AnimationEffectConfig
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`AnimationEffectConfig`
 
@@ -365,7 +365,7 @@ export interface AnimationEffectConfig {
 
 ## Annotation
 
-源码：[packages/vseed/src/types/properties/annotation/annotation.ts](../../../../../packages/vseed/src/types/properties/annotation/annotation.ts)
+源码：[packages/vseed/src/types/properties/annotation/annotation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/annotation.ts)
 
 包导出：`Annotation`
 
@@ -377,7 +377,7 @@ export type Annotation = z.infer<typeof zAnnotation>
 
 ## AnnotationArea
 
-源码：[packages/vseed/src/types/properties/annotation/annotationArea.ts](../../../../../packages/vseed/src/types/properties/annotation/annotationArea.ts)
+源码：[packages/vseed/src/types/properties/annotation/annotationArea.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/annotationArea.ts)
 
 包导出：`AnnotationArea`
 
@@ -505,7 +505,7 @@ export type AnnotationArea = {
 
 ## AnnotationAreaConfig
 
-源码：[packages/vseed/src/types/properties/config/annotation/annotation.ts](../../../../../packages/vseed/src/types/properties/config/annotation/annotation.ts)
+源码：[packages/vseed/src/types/properties/config/annotation/annotation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/annotation/annotation.ts)
 
 包导出：`AnnotationAreaConfig`
 
@@ -540,7 +540,7 @@ export type AnnotationAreaConfig = Pick<
 
 ## AnnotationDifferenceLine
 
-源码：[packages/vseed/src/types/properties/annotation/annotationDifferenceLine.ts](../../../../../packages/vseed/src/types/properties/annotation/annotationDifferenceLine.ts)
+源码：[packages/vseed/src/types/properties/annotation/annotationDifferenceLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/annotationDifferenceLine.ts)
 
 包导出：`AnnotationDifferenceLine`
 
@@ -594,7 +594,7 @@ export type AnnotationDifferenceLine = {
 
 ## AnnotationDifferenceLineConfig
 
-源码：[packages/vseed/src/types/properties/config/annotation/annotation.ts](../../../../../packages/vseed/src/types/properties/config/annotation/annotation.ts)
+源码：[packages/vseed/src/types/properties/config/annotation/annotation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/annotation/annotation.ts)
 
 包导出：`AnnotationDifferenceLineConfig`
 
@@ -634,7 +634,7 @@ export type AnnotationDifferenceLineConfig = Pick<
 
 ## AnnotationHorizontalLine
 
-源码：[packages/vseed/src/types/properties/annotation/annotationHorizontalLine.ts](../../../../../packages/vseed/src/types/properties/annotation/annotationHorizontalLine.ts)
+源码：[packages/vseed/src/types/properties/annotation/annotationHorizontalLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/annotationHorizontalLine.ts)
 
 包导出：`AnnotationHorizontalLine`
 
@@ -777,7 +777,7 @@ export type AnnotationHorizontalLine = {
 
 ## AnnotationHorizontalLineConfig
 
-源码：[packages/vseed/src/types/properties/config/annotation/annotation.ts](../../../../../packages/vseed/src/types/properties/config/annotation/annotation.ts)
+源码：[packages/vseed/src/types/properties/config/annotation/annotation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/annotation/annotation.ts)
 
 包导出：`AnnotationHorizontalLineConfig`
 
@@ -881,7 +881,7 @@ export type AnnotationHorizontalLineConfig = Pick<
 
 ## AnnotationPoint
 
-源码：[packages/vseed/src/types/properties/annotation/annotationPoint.ts](../../../../../packages/vseed/src/types/properties/annotation/annotationPoint.ts)
+源码：[packages/vseed/src/types/properties/annotation/annotationPoint.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/annotationPoint.ts)
 
 包导出：`AnnotationPoint`
 
@@ -1006,7 +1006,7 @@ export type AnnotationPoint = {
 
 ## AnnotationPointConfig
 
-源码：[packages/vseed/src/types/properties/config/annotation/annotation.ts](../../../../../packages/vseed/src/types/properties/config/annotation/annotation.ts)
+源码：[packages/vseed/src/types/properties/config/annotation/annotation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/annotation/annotation.ts)
 
 包导出：`AnnotationPointConfig`
 
@@ -1036,7 +1036,7 @@ export type AnnotationPointConfig = Pick<
 
 ## AnnotationVerticalLine
 
-源码：[packages/vseed/src/types/properties/annotation/annotationVerticalLine.ts](../../../../../packages/vseed/src/types/properties/annotation/annotationVerticalLine.ts)
+源码：[packages/vseed/src/types/properties/annotation/annotationVerticalLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/annotationVerticalLine.ts)
 
 包导出：`AnnotationVerticalLine`
 
@@ -1161,7 +1161,7 @@ export type AnnotationVerticalLine = {
 
 ## AnnotationVerticalLineConfig
 
-源码：[packages/vseed/src/types/properties/config/annotation/annotation.ts](../../../../../packages/vseed/src/types/properties/config/annotation/annotation.ts)
+源码：[packages/vseed/src/types/properties/config/annotation/annotation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/annotation/annotation.ts)
 
 包导出：`AnnotationVerticalLineConfig`
 
@@ -1173,7 +1173,7 @@ export type AnnotationVerticalLineConfig = AnnotationHorizontalLineConfig
 
 ## AreaConfig
 
-源码：[packages/vseed/src/types/properties/config/area.ts](../../../../../packages/vseed/src/types/properties/config/area.ts)
+源码：[packages/vseed/src/types/properties/config/area.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/area.ts)
 
 包导出：`AreaConfig`
 
@@ -1185,7 +1185,7 @@ export type AreaConfig = z.infer<typeof zAreaConfig>
 
 ## AreaDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/areaDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/areaDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/areaDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/areaDimension.ts)
 
 包导出：`AreaDimension`
 
@@ -1197,7 +1197,7 @@ export type AreaDimension = ColumnDimension
 
 ## AreaMeasure
 
-源码：[packages/vseed/src/types/properties/measures/areaMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/areaMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/areaMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/areaMeasure.ts)
 
 包导出：`AreaMeasure`
 
@@ -1209,7 +1209,7 @@ export type AreaMeasure = ColumnMeasure
 
 ## AreaPercentConfig
 
-源码：[packages/vseed/src/types/properties/config/area.ts](../../../../../packages/vseed/src/types/properties/config/area.ts)
+源码：[packages/vseed/src/types/properties/config/area.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/area.ts)
 
 包导出：`AreaPercentConfig`
 
@@ -1221,7 +1221,7 @@ export type AreaPercentConfig = z.infer<typeof zAreaPercentConfig>
 
 ## AreaPercentDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/areaDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/areaDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/areaDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/areaDimension.ts)
 
 包导出：`AreaPercentDimension`
 
@@ -1233,7 +1233,7 @@ export type AreaPercentDimension = ColumnDimension
 
 ## AreaSelector
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`AreaSelector`
 
@@ -1245,7 +1245,7 @@ export type AreaSelector = MeasureSelector | DimensionSelector
 
 ## AreaSelectors
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`AreaSelectors`
 
@@ -1257,7 +1257,7 @@ export type AreaSelectors = Array<AreaSelector>
 
 ## AreaStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/areaStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/areaStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/areaStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/areaStyle.ts)
 
 包导出：`AreaStyle`
 
@@ -1347,7 +1347,7 @@ export type AreaStyle = {
 
 ## BackgroundColor
 
-源码：[packages/vseed/src/types/properties/config/backgroundColor/backgroundColor.ts](../../../../../packages/vseed/src/types/properties/config/backgroundColor/backgroundColor.ts)
+源码：[packages/vseed/src/types/properties/config/backgroundColor/backgroundColor.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/backgroundColor/backgroundColor.ts)
 
 包导出：`BackgroundColor`
 
@@ -1362,7 +1362,7 @@ export type BackgroundColor = string | undefined
 
 ## BarConfig
 
-源码：[packages/vseed/src/types/properties/config/bar.ts](../../../../../packages/vseed/src/types/properties/config/bar.ts)
+源码：[packages/vseed/src/types/properties/config/bar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/bar.ts)
 
 包导出：`BarConfig`
 
@@ -1374,7 +1374,7 @@ export type BarConfig = z.infer<typeof zBarConfig>
 
 ## BarDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/barDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/barDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/barDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/barDimension.ts)
 
 包导出：`BarDimension`
 
@@ -1398,7 +1398,7 @@ export type BarDimension = BaseDimension & {
 
 ## BarGapInGroup
 
-源码：[packages/vseed/src/types/properties/config/barWidth/index.ts](../../../../../packages/vseed/src/types/properties/config/barWidth/index.ts)
+源码：[packages/vseed/src/types/properties/config/barWidth/index.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/barWidth/index.ts)
 
 包导出：`BarGapInGroup`
 
@@ -1410,7 +1410,7 @@ export type BarGapInGroup = z.infer<typeof zBarGapInGroup>
 
 ## BarLikeAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](../../../../../packages/vseed/src/types/properties/config/animation/animation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts)
 
 包导出：`BarLikeAnimation`
 
@@ -1427,7 +1427,7 @@ export interface BarLikeAnimation {
 
 ## BarLikeAnimationLoop
 
-源码：[packages/vseed/src/types/properties/config/animation/animationLoop.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationLoop.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationLoop.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationLoop.ts)
 
 包导出：`BarLikeAnimationLoop`
 
@@ -1448,7 +1448,7 @@ export interface BarLikeAnimationLoop {
 
 ## BarLikeAnimationParams
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](../../../../../packages/vseed/src/types/properties/config/animation/animation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts)
 
 包导出：`BarLikeAnimationParams`
 
@@ -1467,7 +1467,7 @@ export interface BarLikeAnimationParams {
 
 ## BarLikeAppearAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`BarLikeAppearAnimation`
 
@@ -1482,7 +1482,7 @@ export interface BarLikeAppearAnimation extends AnimationEffectConfig {
 
 ## BarLikeLoopAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`BarLikeLoopAnimation`
 
@@ -1497,7 +1497,7 @@ export interface BarLikeLoopAnimation extends AnimationEffectConfig {
 
 ## BarLikeLoopEffect
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`BarLikeLoopEffect`
 
@@ -1507,7 +1507,7 @@ export type BarLikeLoopEffect = 'highLight' | 'growth' | 'moveIn' | 'none'
 
 ## BarLikeUpdateAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`BarLikeUpdateAnimation`
 
@@ -1522,7 +1522,7 @@ export interface BarLikeUpdateAnimation extends AnimationEffectConfig {
 
 ## BarMaxWidth
 
-源码：[packages/vseed/src/types/properties/config/barWidth/index.ts](../../../../../packages/vseed/src/types/properties/config/barWidth/index.ts)
+源码：[packages/vseed/src/types/properties/config/barWidth/index.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/barWidth/index.ts)
 
 包导出：`BarMaxWidth`
 
@@ -1534,7 +1534,7 @@ export type BarMaxWidth = z.infer<typeof zBarMaxWidth>
 
 ## BarMeasure
 
-源码：[packages/vseed/src/types/properties/measures/barMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/barMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/barMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/barMeasure.ts)
 
 包导出：`BarMeasure`
 
@@ -1556,7 +1556,7 @@ export type BarMeasure = BaseMeasure & {
 
 ## BarParallelConfig
 
-源码：[packages/vseed/src/types/properties/config/bar.ts](../../../../../packages/vseed/src/types/properties/config/bar.ts)
+源码：[packages/vseed/src/types/properties/config/bar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/bar.ts)
 
 包导出：`BarParallelConfig`
 
@@ -1568,7 +1568,7 @@ export type BarParallelConfig = z.infer<typeof zBarParallelConfig>
 
 ## BarParallelDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/barDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/barDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/barDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/barDimension.ts)
 
 包导出：`BarParallelDimension`
 
@@ -1580,7 +1580,7 @@ export type BarParallelDimension = BarDimension
 
 ## BarParallelMeasure
 
-源码：[packages/vseed/src/types/properties/measures/barMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/barMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/barMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/barMeasure.ts)
 
 包导出：`BarParallelMeasure`
 
@@ -1592,7 +1592,7 @@ export type BarParallelMeasure = BarMeasure
 
 ## BarPercentConfig
 
-源码：[packages/vseed/src/types/properties/config/bar.ts](../../../../../packages/vseed/src/types/properties/config/bar.ts)
+源码：[packages/vseed/src/types/properties/config/bar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/bar.ts)
 
 包导出：`BarPercentConfig`
 
@@ -1604,7 +1604,7 @@ export type BarPercentConfig = z.infer<typeof zBarPercentConfig>
 
 ## BarPercentDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/barDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/barDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/barDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/barDimension.ts)
 
 包导出：`BarPercentDimension`
 
@@ -1616,7 +1616,7 @@ export type BarPercentDimension = BarDimension
 
 ## BarPercentMeasure
 
-源码：[packages/vseed/src/types/properties/measures/barMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/barMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/barMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/barMeasure.ts)
 
 包导出：`BarPercentMeasure`
 
@@ -1628,7 +1628,7 @@ export type BarPercentMeasure = BarMeasure
 
 ## BarStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/barStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/barStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/barStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/barStyle.ts)
 
 包导出：`BarStyle`
 
@@ -1748,7 +1748,7 @@ export type BarStyle = {
 
 ## BaseDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/baseDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/baseDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/baseDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/baseDimension.ts)
 
 包导出：`BaseDimension`
 
@@ -1773,7 +1773,7 @@ export type BaseDimension = {
 
 ## BaseMeasure
 
-源码：[packages/vseed/src/types/properties/measures/baseMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/baseMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/baseMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/baseMeasure.ts)
 
 包导出：`BaseMeasure`
 
@@ -1839,7 +1839,7 @@ export type BaseMeasure = {
 
 ## BodyCellStyle
 
-源码：[packages/vseed/src/types/properties/cellStyle/bodyCellStyle.ts](../../../../../packages/vseed/src/types/properties/cellStyle/bodyCellStyle.ts)
+源码：[packages/vseed/src/types/properties/cellStyle/bodyCellStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/cellStyle/bodyCellStyle.ts)
 
 包导出：`BodyCellStyle`
 
@@ -1976,7 +1976,7 @@ export type BodyCellStyle = {
 
 ## BoxGapInGroup
 
-源码：[packages/vseed/src/types/properties/config/boxWidth/boxWidth.ts](../../../../../packages/vseed/src/types/properties/config/boxWidth/boxWidth.ts)
+源码：[packages/vseed/src/types/properties/config/boxWidth/boxWidth.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/boxWidth/boxWidth.ts)
 
 包导出：`BoxGapInGroup`
 
@@ -1989,7 +1989,7 @@ export type BoxGapInGroup = string | number
 
 ## BoxMaxWidth
 
-源码：[packages/vseed/src/types/properties/config/boxWidth/boxWidth.ts](../../../../../packages/vseed/src/types/properties/config/boxWidth/boxWidth.ts)
+源码：[packages/vseed/src/types/properties/config/boxWidth/boxWidth.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/boxWidth/boxWidth.ts)
 
 包导出：`BoxMaxWidth`
 
@@ -2002,7 +2002,7 @@ export type BoxMaxWidth = string | number
 
 ## BoxPlotDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/boxPlotDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/boxPlotDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/boxPlotDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/boxPlotDimension.ts)
 
 包导出：`BoxPlotDimension`
 
@@ -2025,7 +2025,7 @@ export type BoxPlotDimension = BaseDimension & {
 
 ## BoxPlotMeasure
 
-源码：[packages/vseed/src/types/properties/measures/boxPlotMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/boxPlotMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/boxPlotMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/boxPlotMeasure.ts)
 
 包导出：`BoxPlotMeasure`
 
@@ -2053,7 +2053,7 @@ export type BoxPlotMeasure = BaseMeasure & {
 
 ## BoxPlotStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/boxPlotStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/boxPlotStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/boxPlotStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/boxPlotStyle.ts)
 
 包导出：`BoxPlotStyle`
 
@@ -2145,7 +2145,7 @@ export type BoxPlotStyle = {
 
 ## Brush
 
-源码：[packages/vseed/src/types/properties/brush/brush.ts](../../../../../packages/vseed/src/types/properties/brush/brush.ts)
+源码：[packages/vseed/src/types/properties/brush/brush.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/brush/brush.ts)
 
 包导出：`Brush`
 
@@ -2223,7 +2223,7 @@ export type Brush = {
 
 ## BrushConfig
 
-源码：[packages/vseed/src/types/properties/brush/zBrush.ts](../../../../../packages/vseed/src/types/properties/brush/zBrush.ts)
+源码：[packages/vseed/src/types/properties/brush/zBrush.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/brush/zBrush.ts)
 
 包导出：`BrushConfig`
 
@@ -2235,7 +2235,7 @@ export type BrushConfig = z.infer<typeof zBrushConfig>
 
 ## CenterText
 
-源码：[packages/vseed/src/types/properties/config/centerText.ts](../../../../../packages/vseed/src/types/properties/config/centerText.ts)
+源码：[packages/vseed/src/types/properties/config/centerText.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/centerText.ts)
 
 包导出：`CenterText`
 
@@ -2251,7 +2251,7 @@ export type CenterText = {
 
 ## CenterTextConfig
 
-源码：[packages/vseed/src/types/properties/config/centerText.ts](../../../../../packages/vseed/src/types/properties/config/centerText.ts)
+源码：[packages/vseed/src/types/properties/config/centerText.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/centerText.ts)
 
 包导出：`CenterTextConfig`
 
@@ -2263,7 +2263,7 @@ export type CenterTextConfig = z.infer<typeof zCenterTextConfig>
 
 ## ChartDynamicFilter
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`ChartDynamicFilter`
 
@@ -2344,7 +2344,7 @@ export interface ChartDynamicFilter {
 
 ## ChartType
 
-源码：[packages/vseed/src/types/properties/chartType/chartType.ts](../../../../../packages/vseed/src/types/properties/chartType/chartType.ts)
+源码：[packages/vseed/src/types/properties/chartType/chartType.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/chartType/chartType.ts)
 
 包导出：`ChartType`
 
@@ -2387,7 +2387,7 @@ export type ChartType =
 
 ## CirclePackingConfig
 
-源码：[packages/vseed/src/types/properties/config/circlePacking.ts](../../../../../packages/vseed/src/types/properties/config/circlePacking.ts)
+源码：[packages/vseed/src/types/properties/config/circlePacking.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/circlePacking.ts)
 
 包导出：`CirclePackingConfig`
 
@@ -2399,7 +2399,7 @@ export type CirclePackingConfig = z.infer<typeof zCirclePackingConfig>
 
 ## CodeExecutionOptions
 
-源码：[packages/vseed/src/types/sandbox.ts](../../../../../packages/vseed/src/types/sandbox.ts)
+源码：[packages/vseed/src/types/sandbox.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/sandbox.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -2419,7 +2419,7 @@ export interface CodeExecutionOptions {
 
 ## CodeExecutionResult
 
-源码：[packages/vseed/src/types/sandbox.ts](../../../../../packages/vseed/src/types/sandbox.ts)
+源码：[packages/vseed/src/types/sandbox.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/sandbox.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -2436,7 +2436,7 @@ export interface CodeExecutionResult {
 
 ## Color
 
-源码：[packages/vseed/src/types/properties/config/color/color.ts](../../../../../packages/vseed/src/types/properties/config/color/color.ts)
+源码：[packages/vseed/src/types/properties/config/color/color.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/color/color.ts)
 
 包导出：`Color`
 
@@ -2474,7 +2474,7 @@ export type Color = {
 
 ## ColorLegend
 
-源码：[packages/vseed/src/types/properties/config/legend/legend.ts](../../../../../packages/vseed/src/types/properties/config/legend/legend.ts)
+源码：[packages/vseed/src/types/properties/config/legend/legend.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/legend/legend.ts)
 
 包导出：`ColorLegend`
 
@@ -2492,7 +2492,7 @@ export type ColorLegend = Pick<
 
 ## ColumnConfig
 
-源码：[packages/vseed/src/types/properties/config/column.ts](../../../../../packages/vseed/src/types/properties/config/column.ts)
+源码：[packages/vseed/src/types/properties/config/column.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/column.ts)
 
 包导出：`ColumnConfig`
 
@@ -2504,7 +2504,7 @@ export type ColumnConfig = z.infer<typeof zColumnConfig>
 
 ## ColumnDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/columnDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/columnDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/columnDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/columnDimension.ts)
 
 包导出：`ColumnDimension`
 
@@ -2531,7 +2531,7 @@ export type ColumnDimension = BaseDimension & {
 
 ## ColumnMeasure
 
-源码：[packages/vseed/src/types/properties/measures/columnMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/columnMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/columnMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/columnMeasure.ts)
 
 包导出：`ColumnMeasure`
 
@@ -2553,7 +2553,7 @@ export type ColumnMeasure = BaseMeasure & {
 
 ## ColumnParallelConfig
 
-源码：[packages/vseed/src/types/properties/config/column.ts](../../../../../packages/vseed/src/types/properties/config/column.ts)
+源码：[packages/vseed/src/types/properties/config/column.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/column.ts)
 
 包导出：`ColumnParallelConfig`
 
@@ -2565,7 +2565,7 @@ export type ColumnParallelConfig = z.infer<typeof zColumnParallelConfig>
 
 ## ColumnParallelDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/columnDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/columnDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/columnDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/columnDimension.ts)
 
 包导出：`ColumnParallelDimension`
 
@@ -2577,7 +2577,7 @@ export type ColumnParallelDimension = ColumnDimension
 
 ## ColumnParallelMeasure
 
-源码：[packages/vseed/src/types/properties/measures/columnMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/columnMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/columnMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/columnMeasure.ts)
 
 包导出：`ColumnParallelMeasure`
 
@@ -2589,7 +2589,7 @@ export type ColumnParallelMeasure = ColumnMeasure
 
 ## ColumnPercentConfig
 
-源码：[packages/vseed/src/types/properties/config/column.ts](../../../../../packages/vseed/src/types/properties/config/column.ts)
+源码：[packages/vseed/src/types/properties/config/column.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/column.ts)
 
 包导出：`ColumnPercentConfig`
 
@@ -2601,7 +2601,7 @@ export type ColumnPercentConfig = z.infer<typeof zColumnPercentConfig>
 
 ## ColumnPercentDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/columnDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/columnDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/columnDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/columnDimension.ts)
 
 包导出：`ColumnPercentDimension`
 
@@ -2613,7 +2613,7 @@ export type ColumnPercentDimension = ColumnDimension
 
 ## ColumnPercentMeasure
 
-源码：[packages/vseed/src/types/properties/measures/columnMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/columnMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/columnMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/columnMeasure.ts)
 
 包导出：`ColumnPercentMeasure`
 
@@ -2625,7 +2625,7 @@ export type ColumnPercentMeasure = ColumnMeasure
 
 ## Config
 
-源码：[packages/vseed/src/types/properties/config/config.ts](../../../../../packages/vseed/src/types/properties/config/config.ts)
+源码：[packages/vseed/src/types/properties/config/config.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/config.ts)
 
 包导出：`Config`
 
@@ -2637,7 +2637,7 @@ export type Config = z.infer<typeof zConfig>
 
 ## CornerRadius
 
-源码：[packages/vseed/src/types/properties/config/cornerRadius/cornerRadius.ts](../../../../../packages/vseed/src/types/properties/config/cornerRadius/cornerRadius.ts)
+源码：[packages/vseed/src/types/properties/config/cornerRadius/cornerRadius.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/cornerRadius/cornerRadius.ts)
 
 包导出：`CornerRadius`
 
@@ -2649,7 +2649,7 @@ export type CornerRadius = z.infer<typeof zCornerRadius>
 
 ## CrosshairLine
 
-源码：[packages/vseed/src/types/properties/config/crosshair/crosshair.ts](../../../../../packages/vseed/src/types/properties/config/crosshair/crosshair.ts)
+源码：[packages/vseed/src/types/properties/config/crosshair/crosshair.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/crosshair/crosshair.ts)
 
 包导出：`CrosshairLine`
 
@@ -2683,7 +2683,7 @@ export type CrosshairLine = {
 
 ## CrosshairRect
 
-源码：[packages/vseed/src/types/properties/config/crosshair/crosshair.ts](../../../../../packages/vseed/src/types/properties/config/crosshair/crosshair.ts)
+源码：[packages/vseed/src/types/properties/config/crosshair/crosshair.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/crosshair/crosshair.ts)
 
 包导出：`CrosshairRect`
 
@@ -2717,7 +2717,7 @@ export type CrosshairRect = {
 
 ## CustomTheme
 
-源码：[packages/vseed/src/types/properties/theme/customTheme.ts](../../../../../packages/vseed/src/types/properties/theme/customTheme.ts)
+源码：[packages/vseed/src/types/properties/theme/customTheme.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/theme/customTheme.ts)
 
 包导出：`CustomTheme`
 
@@ -2729,7 +2729,7 @@ export type CustomTheme = z.infer<typeof zCustomTheme>
 
 ## CustomThemeConfig
 
-源码：[packages/vseed/src/types/properties/theme/customTheme.ts](../../../../../packages/vseed/src/types/properties/theme/customTheme.ts)
+源码：[packages/vseed/src/types/properties/theme/customTheme.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/theme/customTheme.ts)
 
 包导出：`CustomThemeConfig`
 
@@ -2741,7 +2741,7 @@ export type CustomThemeConfig = z.infer<typeof zCustomThemeConfig>
 
 ## Dark
 
-源码：[packages/vseed/src/types/properties/theme/theme.ts](../../../../../packages/vseed/src/types/properties/theme/theme.ts)
+源码：[packages/vseed/src/types/properties/theme/theme.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/theme/theme.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -2753,7 +2753,7 @@ type Dark = 'dark' & {
 
 ## Dataset
 
-源码：[packages/vseed/src/types/properties/dataset/dataset.ts](../../../../../packages/vseed/src/types/properties/dataset/dataset.ts)
+源码：[packages/vseed/src/types/properties/dataset/dataset.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dataset/dataset.ts)
 
 包导出：`Dataset`
 
@@ -2765,7 +2765,7 @@ export type Dataset = z.infer<typeof zDataset>
 
 ## DatasetReshapeInfo
 
-源码：[packages/vseed/src/types/properties/datasetReshapeInfo/datasetReshapeInfo.ts](../../../../../packages/vseed/src/types/properties/datasetReshapeInfo/datasetReshapeInfo.ts)
+源码：[packages/vseed/src/types/properties/datasetReshapeInfo/datasetReshapeInfo.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/datasetReshapeInfo/datasetReshapeInfo.ts)
 
 包导出：`DatasetReshapeInfo`
 
@@ -2783,7 +2783,7 @@ export type DatasetReshapeInfo = Array<{
 
 ## Datum
 
-源码：[packages/vseed/src/types/properties/dataset/dataset.ts](../../../../../packages/vseed/src/types/properties/dataset/dataset.ts)
+源码：[packages/vseed/src/types/properties/dataset/dataset.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dataset/dataset.ts)
 
 包导出：`Datum`
 
@@ -2795,7 +2795,7 @@ export type Datum = z.infer<typeof zDatum>
 
 ## DifferenceAnchor
 
-源码：[packages/vseed/src/types/properties/annotation/annotationDifferenceLine.ts](../../../../../packages/vseed/src/types/properties/annotation/annotationDifferenceLine.ts)
+源码：[packages/vseed/src/types/properties/annotation/annotationDifferenceLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/annotationDifferenceLine.ts)
 
 包导出：`DifferenceAnchor`
 
@@ -2817,7 +2817,7 @@ export type DifferenceAnchor = {
 
 ## DifferenceSelector
 
-源码：[packages/vseed/src/types/properties/annotation/annotationDifferenceLine.ts](../../../../../packages/vseed/src/types/properties/annotation/annotationDifferenceLine.ts)
+源码：[packages/vseed/src/types/properties/annotation/annotationDifferenceLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/annotation/annotationDifferenceLine.ts)
 
 包导出：`DifferenceSelector`
 
@@ -2832,7 +2832,7 @@ export type DifferenceSelector = PartialDatumSelector | MeasureSelector | Dimens
 
 ## Dimension
 
-源码：[packages/vseed/src/types/properties/dimensions/baseDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/baseDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/baseDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/baseDimension.ts)
 
 包导出：`Dimension`
 
@@ -2861,7 +2861,7 @@ export type Dimension = BaseDimension & {
 
 ## DimensionEncoding
 
-源码：[packages/vseed/src/types/properties/encoding/dimensionEncoding.ts](../../../../../packages/vseed/src/types/properties/encoding/dimensionEncoding.ts)
+源码：[packages/vseed/src/types/properties/encoding/dimensionEncoding.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/encoding/dimensionEncoding.ts)
 
 包导出：`DimensionEncoding`
 
@@ -2898,7 +2898,7 @@ export type DimensionEncoding =
 
 ## DimensionEncodingEnum
 
-源码：[packages/vseed/src/types/properties/encoding/zDimensionEncoding.ts](../../../../../packages/vseed/src/types/properties/encoding/zDimensionEncoding.ts)
+源码：[packages/vseed/src/types/properties/encoding/zDimensionEncoding.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/encoding/zDimensionEncoding.ts)
 
 包导出：`DimensionEncodingEnum`
 
@@ -2922,7 +2922,7 @@ const DimensionEncodingEnum: {
 
 ## DimensionGroup
 
-源码：[packages/vseed/src/types/properties/dimensions/tableDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/tableDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/tableDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/tableDimension.ts)
 
 包导出：`DimensionGroup`
 
@@ -2941,7 +2941,7 @@ export type DimensionGroup = {
 
 ## DimensionLinkage
 
-源码：[packages/vseed/src/types/properties/config/dimensionLinkage/dimensionLinkage.ts](../../../../../packages/vseed/src/types/properties/config/dimensionLinkage/dimensionLinkage.ts)
+源码：[packages/vseed/src/types/properties/config/dimensionLinkage/dimensionLinkage.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/dimensionLinkage/dimensionLinkage.ts)
 
 包导出：`DimensionLinkage`
 
@@ -2967,7 +2967,7 @@ export type DimensionLinkage = {
 
 ## Dimensions
 
-源码：[packages/vseed/src/types/properties/dimensions/baseDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/baseDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/baseDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/baseDimension.ts)
 
 包导出：`Dimensions`
 
@@ -2979,7 +2979,7 @@ export type Dimensions = Dimension[]
 
 ## DimensionSelector
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`DimensionSelector`
 
@@ -3014,7 +3014,7 @@ export type DimensionSelector = {
 
 ## DimensionTree
 
-源码：[packages/vseed/src/types/properties/dimensions/tableDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/tableDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/tableDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/tableDimension.ts)
 
 包导出：`DimensionTree`
 
@@ -3026,7 +3026,7 @@ export type DimensionTree = (TableDimension | DimensionGroup)[]
 
 ## DonutConfig
 
-源码：[packages/vseed/src/types/properties/config/pie.ts](../../../../../packages/vseed/src/types/properties/config/pie.ts)
+源码：[packages/vseed/src/types/properties/config/pie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/pie.ts)
 
 包导出：`DonutConfig`
 
@@ -3038,7 +3038,7 @@ export type DonutConfig = z.infer<typeof zDonutConfig>
 
 ## DonutDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/donutDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/donutDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/donutDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/donutDimension.ts)
 
 包导出：`DonutDimension`
 
@@ -3050,7 +3050,7 @@ export type DonutDimension = PieDimension
 
 ## DonutMeasure
 
-源码：[packages/vseed/src/types/properties/measures/pieMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/pieMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/pieMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/pieMeasure.ts)
 
 包导出：`DonutMeasure`
 
@@ -3062,7 +3062,7 @@ export type DonutMeasure = PieMeasure
 
 ## DualAxisConfig
 
-源码：[packages/vseed/src/types/properties/config/dualAxis.ts](../../../../../packages/vseed/src/types/properties/config/dualAxis.ts)
+源码：[packages/vseed/src/types/properties/config/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/dualAxis.ts)
 
 包导出：`DualAxisConfig`
 
@@ -3074,7 +3074,7 @@ export type DualAxisConfig = z.infer<typeof zDualAxisConfig>
 
 ## DualAxisDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/dualAxisDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/dualAxisDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/dualAxisDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/dualAxisDimension.ts)
 
 包导出：`DualAxisDimension`
 
@@ -3086,7 +3086,7 @@ export type DualAxisDimension = ColumnDimension
 
 ## DualAxisMeasure
 
-源码：[packages/vseed/src/types/properties/measures/dualAxisMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/dualAxisMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/dualAxisMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/dualAxisMeasure.ts)
 
 包导出：`DualAxisMeasure`
 
@@ -3119,7 +3119,7 @@ export type DualAxisMeasure = BaseMeasure & {
 
 ## DualAxisOptions
 
-源码：[packages/vseed/src/types/properties/config/dualAxis.ts](../../../../../packages/vseed/src/types/properties/config/dualAxis.ts)
+源码：[packages/vseed/src/types/properties/config/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/dualAxis.ts)
 
 包导出：`DualAxisOptions`
 
@@ -3135,7 +3135,7 @@ export type DualAxisOptions = {
 
 ## DynamicFilterExecutionResult
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`DynamicFilterExecutionResult`
 
@@ -3149,7 +3149,7 @@ export type DynamicFilterExecutionResult<T> = {
 
 ## EcdfRegressionLine
 
-源码：[packages/vseed/src/types/properties/regressionLine/ecdfRegressionLine.ts](../../../../../packages/vseed/src/types/properties/regressionLine/ecdfRegressionLine.ts)
+源码：[packages/vseed/src/types/properties/regressionLine/ecdfRegressionLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regressionLine/ecdfRegressionLine.ts)
 
 包导出：`EcdfRegressionLine`
 
@@ -3202,7 +3202,7 @@ export type EcdfRegressionLine = {
 
 ## Encoding
 
-源码：[packages/vseed/src/types/properties/encoding/encoding.ts](../../../../../packages/vseed/src/types/properties/encoding/encoding.ts)
+源码：[packages/vseed/src/types/properties/encoding/encoding.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/encoding/encoding.ts)
 
 包导出：`Encoding`
 
@@ -3315,7 +3315,7 @@ export type Encoding = {
 
 ## EncodingEnum
 
-源码：[packages/vseed/src/types/properties/encoding/zEncoding.ts](../../../../../packages/vseed/src/types/properties/encoding/zEncoding.ts)
+源码：[packages/vseed/src/types/properties/encoding/zEncoding.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/encoding/zEncoding.ts)
 
 包导出：`EncodingEnum`
 
@@ -3344,7 +3344,7 @@ const EncodingEnum: {
 
 ## FieldSelector
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`FieldSelector`
 
@@ -3366,7 +3366,7 @@ export type FieldSelector = {
 
 ## FoldInfo
 
-源码：[packages/vseed/src/types/properties/datasetReshapeInfo/datasetReshapeInfo.ts](../../../../../packages/vseed/src/types/properties/datasetReshapeInfo/datasetReshapeInfo.ts)
+源码：[packages/vseed/src/types/properties/datasetReshapeInfo/datasetReshapeInfo.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/datasetReshapeInfo/datasetReshapeInfo.ts)
 
 包导出：`FoldInfo`
 
@@ -3389,7 +3389,7 @@ export type FoldInfo = {
 
 ## Formatter
 
-源码：[packages/vseed/src/types/properties/format/formatter.ts](../../../../../packages/vseed/src/types/properties/format/formatter.ts)
+源码：[packages/vseed/src/types/properties/format/formatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/format/formatter.ts)
 
 包导出：`Formatter`
 
@@ -3399,7 +3399,7 @@ export type Formatter = (value?: number | string) => string
 
 ## FunnelConfig
 
-源码：[packages/vseed/src/types/properties/config/funnel.ts](../../../../../packages/vseed/src/types/properties/config/funnel.ts)
+源码：[packages/vseed/src/types/properties/config/funnel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/funnel.ts)
 
 包导出：`FunnelConfig`
 
@@ -3411,7 +3411,7 @@ export type FunnelConfig = z.infer<typeof zFunnelConfig>
 
 ## FunnelDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/funnelDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/funnelDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/funnelDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/funnelDimension.ts)
 
 包导出：`FunnelDimension`
 
@@ -3423,7 +3423,7 @@ export type FunnelDimension = PieDimension
 
 ## FunnelMeasure
 
-源码：[packages/vseed/src/types/properties/measures/funnelMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/funnelMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/funnelMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/funnelMeasure.ts)
 
 包导出：`FunnelMeasure`
 
@@ -3444,7 +3444,7 @@ export type FunnelMeasure = BaseMeasure & {
 
 ## FunnelTransformConfig
 
-源码：[packages/vseed/src/types/properties/config/funnelTransform/funnelTransform.ts](../../../../../packages/vseed/src/types/properties/config/funnelTransform/funnelTransform.ts)
+源码：[packages/vseed/src/types/properties/config/funnelTransform/funnelTransform.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/funnelTransform/funnelTransform.ts)
 
 包导出：`FunnelTransformConfig`
 
@@ -3466,7 +3466,7 @@ export interface FunnelTransformConfig {
 
 ## HeatmapConfig
 
-源码：[packages/vseed/src/types/properties/config/heatmap.ts](../../../../../packages/vseed/src/types/properties/config/heatmap.ts)
+源码：[packages/vseed/src/types/properties/config/heatmap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/heatmap.ts)
 
 包导出：`HeatmapConfig`
 
@@ -3478,7 +3478,7 @@ export type HeatmapConfig = z.infer<typeof zHeatmapConfig>
 
 ## HeatmapDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/heatmapDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/heatmapDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/heatmapDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/heatmapDimension.ts)
 
 包导出：`HeatmapDimension`
 
@@ -3501,7 +3501,7 @@ export type HeatmapDimension = BaseDimension & {
 
 ## HeatmapMeasure
 
-源码：[packages/vseed/src/types/properties/measures/heatmapMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/heatmapMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/heatmapMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/heatmapMeasure.ts)
 
 包导出：`HeatmapMeasure`
 
@@ -3521,7 +3521,7 @@ export type HeatmapMeasure = BaseMeasure & {
 
 ## HierarchyDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/hierarchyDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/hierarchyDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/hierarchyDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/hierarchyDimension.ts)
 
 包导出：`HierarchyDimension`
 
@@ -3542,7 +3542,7 @@ export type HierarchyDimension = BaseDimension & {
 
 ## HierarchyMeasure
 
-源码：[packages/vseed/src/types/properties/measures/hierarchyMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/hierarchyMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/hierarchyMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/hierarchyMeasure.ts)
 
 包导出：`HierarchyMeasure`
 
@@ -3562,7 +3562,7 @@ export type HierarchyMeasure = BaseMeasure & {
 
 ## HierarchySankeyConfig
 
-源码：[packages/vseed/src/types/properties/config/hierarchySankey.ts](../../../../../packages/vseed/src/types/properties/config/hierarchySankey.ts)
+源码：[packages/vseed/src/types/properties/config/hierarchySankey.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/hierarchySankey.ts)
 
 包导出：`HierarchySankeyConfig`
 
@@ -3574,7 +3574,7 @@ export type HierarchySankeyConfig = z.infer<typeof zHierarchySankeyConfig>
 
 ## HistogramDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/histogramDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/histogramDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/histogramDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/histogramDimension.ts)
 
 包导出：`HistogramDimension`
 
@@ -3597,7 +3597,7 @@ export type HistogramDimension = BaseDimension & {
 
 ## HistogramMeasure
 
-源码：[packages/vseed/src/types/properties/measures/histogramMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/histogramMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/histogramMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/histogramMeasure.ts)
 
 包导出：`HistogramMeasure`
 
@@ -3620,7 +3620,7 @@ export type HistogramMeasure = BaseMeasure & {
 
 ## KdeRegressionLine
 
-源码：[packages/vseed/src/types/properties/regressionLine/kdeRegressionLine.ts](../../../../../packages/vseed/src/types/properties/regressionLine/kdeRegressionLine.ts)
+源码：[packages/vseed/src/types/properties/regressionLine/kdeRegressionLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regressionLine/kdeRegressionLine.ts)
 
 包导出：`KdeRegressionLine`
 
@@ -3673,7 +3673,7 @@ export type KdeRegressionLine = {
 
 ## Label
 
-源码：[packages/vseed/src/types/properties/config/label/label.ts](../../../../../packages/vseed/src/types/properties/config/label/label.ts)
+源码：[packages/vseed/src/types/properties/config/label/label.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/label/label.ts)
 
 包导出：`Label`
 
@@ -3773,7 +3773,7 @@ export type Label = {
 
 ## Legend
 
-源码：[packages/vseed/src/types/properties/config/legend/legend.ts](../../../../../packages/vseed/src/types/properties/config/legend/legend.ts)
+源码：[packages/vseed/src/types/properties/config/legend/legend.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/legend/legend.ts)
 
 包导出：`Legend`
 
@@ -3893,7 +3893,7 @@ export type Legend = {
 
 ## Light
 
-源码：[packages/vseed/src/types/properties/theme/theme.ts](../../../../../packages/vseed/src/types/properties/theme/theme.ts)
+源码：[packages/vseed/src/types/properties/theme/theme.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/theme/theme.ts)
 
 关联类型：通过公开 API 的签名引用，不是包入口的独立导出。
 
@@ -3905,7 +3905,7 @@ type Light = 'light' & {
 
 ## LineAreaAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](../../../../../packages/vseed/src/types/properties/config/animation/animation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts)
 
 包导出：`LineAreaAnimation`
 
@@ -3922,7 +3922,7 @@ export interface LineAreaAnimation {
 
 ## LineAreaAnimationLoop
 
-源码：[packages/vseed/src/types/properties/config/animation/animationLoop.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationLoop.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationLoop.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationLoop.ts)
 
 包导出：`LineAreaAnimationLoop`
 
@@ -3943,7 +3943,7 @@ export interface LineAreaAnimationLoop {
 
 ## LineAreaAnimationParams
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](../../../../../packages/vseed/src/types/properties/config/animation/animation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts)
 
 包导出：`LineAreaAnimationParams`
 
@@ -3962,7 +3962,7 @@ export interface LineAreaAnimationParams {
 
 ## LineAreaAppearAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`LineAreaAppearAnimation`
 
@@ -3977,7 +3977,7 @@ export interface LineAreaAppearAnimation extends AnimationEffectConfig {
 
 ## LineAreaLoopAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`LineAreaLoopAnimation`
 
@@ -3992,7 +3992,7 @@ export interface LineAreaLoopAnimation extends AnimationEffectConfig {
 
 ## LineAreaLoopEffect
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`LineAreaLoopEffect`
 
@@ -4002,7 +4002,7 @@ export type LineAreaLoopEffect = 'load' | 'growth' | 'none'
 
 ## LineAreaUpdateAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`LineAreaUpdateAnimation`
 
@@ -4017,7 +4017,7 @@ export interface LineAreaUpdateAnimation extends AnimationEffectConfig {
 
 ## LinearRegressionLine
 
-源码：[packages/vseed/src/types/properties/regressionLine/linearRegressionLine.ts](../../../../../packages/vseed/src/types/properties/regressionLine/linearRegressionLine.ts)
+源码：[packages/vseed/src/types/properties/regressionLine/linearRegressionLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regressionLine/linearRegressionLine.ts)
 
 包导出：`LinearRegressionLine`
 
@@ -4108,7 +4108,7 @@ export type LinearRegressionLine = {
 
 ## LineConfig
 
-源码：[packages/vseed/src/types/properties/config/line.ts](../../../../../packages/vseed/src/types/properties/config/line.ts)
+源码：[packages/vseed/src/types/properties/config/line.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/line.ts)
 
 包导出：`LineConfig`
 
@@ -4120,7 +4120,7 @@ export type LineConfig = z.infer<typeof zLineConfig>
 
 ## LineDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/lineDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/lineDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/lineDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/lineDimension.ts)
 
 包导出：`LineDimension`
 
@@ -4132,7 +4132,7 @@ export type LineDimension = ColumnDimension
 
 ## LineMeasure
 
-源码：[packages/vseed/src/types/properties/measures/lineMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/lineMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/lineMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/lineMeasure.ts)
 
 包导出：`LineMeasure`
 
@@ -4144,7 +4144,7 @@ export type LineMeasure = ColumnMeasure
 
 ## LineStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/lineStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/lineStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/lineStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/lineStyle.ts)
 
 包导出：`LineStyle`
 
@@ -4239,7 +4239,7 @@ export type LineStyle = {
 
 ## LogisticRegressionLine
 
-源码：[packages/vseed/src/types/properties/regressionLine/logisticRegressionLine.ts](../../../../../packages/vseed/src/types/properties/regressionLine/logisticRegressionLine.ts)
+源码：[packages/vseed/src/types/properties/regressionLine/logisticRegressionLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regressionLine/logisticRegressionLine.ts)
 
 包导出：`LogisticRegressionLine`
 
@@ -4310,7 +4310,7 @@ export type LogisticRegressionLine = {
 
 ## LowessRegressionLine
 
-源码：[packages/vseed/src/types/properties/regressionLine/lowessRegressionLine.ts](../../../../../packages/vseed/src/types/properties/regressionLine/lowessRegressionLine.ts)
+源码：[packages/vseed/src/types/properties/regressionLine/lowessRegressionLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regressionLine/lowessRegressionLine.ts)
 
 包导出：`LowessRegressionLine`
 
@@ -4381,7 +4381,7 @@ export type LowessRegressionLine = {
 
 ## MarkStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/markStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/markStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/markStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/markStyle.ts)
 
 包导出：`MarkStyle`
 
@@ -4393,7 +4393,7 @@ export type MarkStyle = z.infer<typeof zMarkStyle>
 
 ## Measure
 
-源码：[packages/vseed/src/types/properties/measures/baseMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/baseMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/baseMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/baseMeasure.ts)
 
 包导出：`Measure`
 
@@ -4436,7 +4436,7 @@ export type Measure = BaseMeasure & {
 
 ## MeasureEncoding
 
-源码：[packages/vseed/src/types/properties/encoding/measureEncoding.ts](../../../../../packages/vseed/src/types/properties/encoding/measureEncoding.ts)
+源码：[packages/vseed/src/types/properties/encoding/measureEncoding.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/encoding/measureEncoding.ts)
 
 包导出：`MeasureEncoding`
 
@@ -4467,7 +4467,7 @@ export type MeasureEncoding =
 
 ## MeasureEncodingEnum
 
-源码：[packages/vseed/src/types/properties/encoding/zMeasureEncoding.ts](../../../../../packages/vseed/src/types/properties/encoding/zMeasureEncoding.ts)
+源码：[packages/vseed/src/types/properties/encoding/zMeasureEncoding.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/encoding/zMeasureEncoding.ts)
 
 包导出：`MeasureEncodingEnum`
 
@@ -4490,7 +4490,7 @@ const MeasureEncodingEnum: {
 
 ## MeasureGroup
 
-源码：[packages/vseed/src/types/properties/measures/measureTree.ts](../../../../../packages/vseed/src/types/properties/measures/measureTree.ts)
+源码：[packages/vseed/src/types/properties/measures/measureTree.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/measureTree.ts)
 
 包导出：`MeasureGroup`
 
@@ -4516,7 +4516,7 @@ export type MeasureGroup = {
 
 ## Measures
 
-源码：[packages/vseed/src/types/properties/measures/baseMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/baseMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/baseMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/baseMeasure.ts)
 
 包导出：`Measures`
 
@@ -4528,7 +4528,7 @@ export type Measures = Measure[]
 
 ## MeasureSelector
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`MeasureSelector`
 
@@ -4577,7 +4577,7 @@ export type MeasureSelector = {
 
 ## MeasureTree
 
-源码：[packages/vseed/src/types/properties/measures/measureTree.ts](../../../../../packages/vseed/src/types/properties/measures/measureTree.ts)
+源码：[packages/vseed/src/types/properties/measures/measureTree.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/measureTree.ts)
 
 包导出：`MeasureTree`
 
@@ -4589,7 +4589,7 @@ export type MeasureTree = (TableMeasure | MeasureGroup)[]
 
 ## NoEffectAtmosphereConfig
 
-源码：[packages/vseed/src/types/properties/config/animation/animationAtmosphere.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationAtmosphere.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationAtmosphere.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationAtmosphere.ts)
 
 包导出：`NoEffectAtmosphereConfig`
 
@@ -4604,7 +4604,7 @@ export interface NoEffectAtmosphereConfig {
 
 ## NumFormat
 
-源码：[packages/vseed/src/types/properties/format/numFormat.ts](../../../../../packages/vseed/src/types/properties/format/numFormat.ts)
+源码：[packages/vseed/src/types/properties/format/numFormat.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/format/numFormat.ts)
 
 包导出：`NumFormat`
 
@@ -4700,7 +4700,7 @@ export interface NumFormat {
 
 ## OutlierStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/outlierStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/outlierStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/outlierStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/outlierStyle.ts)
 
 包导出：`OutlierStyle`
 
@@ -4788,7 +4788,7 @@ export type OutlierStyle = {
 
 ## Page
 
-源码：[packages/vseed/src/types/properties/page/page.ts](../../../../../packages/vseed/src/types/properties/page/page.ts)
+源码：[packages/vseed/src/types/properties/page/page.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/page/page.ts)
 
 包导出：`Page`
 
@@ -4808,7 +4808,7 @@ export type Page = {
 
 ## PartialDatumRes
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`PartialDatumRes`
 
@@ -4824,7 +4824,7 @@ export type PartialDatumRes = Datum
 
 ## PartialDatumSelector
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`PartialDatumSelector`
 
@@ -4836,7 +4836,7 @@ export type PartialDatumSelector = Datum
 
 ## PieConfig
 
-源码：[packages/vseed/src/types/properties/config/pie.ts](../../../../../packages/vseed/src/types/properties/config/pie.ts)
+源码：[packages/vseed/src/types/properties/config/pie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/pie.ts)
 
 包导出：`PieConfig`
 
@@ -4848,7 +4848,7 @@ export type PieConfig = z.infer<typeof zPieConfig>
 
 ## PieDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/pieDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/pieDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/pieDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/pieDimension.ts)
 
 包导出：`PieDimension`
 
@@ -4871,7 +4871,7 @@ export type PieDimension = BaseDimension & {
 
 ## PieGeometry
 
-源码：[packages/vseed/src/types/properties/config/pieGeometry.ts](../../../../../packages/vseed/src/types/properties/config/pieGeometry.ts)
+源码：[packages/vseed/src/types/properties/config/pieGeometry.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/pieGeometry.ts)
 
 包导出：`PieGeometry`
 
@@ -4890,7 +4890,7 @@ export type PieGeometry = {
 
 ## PieLabel
 
-源码：[packages/vseed/src/types/properties/config/label/pieLabel.ts](../../../../../packages/vseed/src/types/properties/config/label/pieLabel.ts)
+源码：[packages/vseed/src/types/properties/config/label/pieLabel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/label/pieLabel.ts)
 
 包导出：`PieLabel`
 
@@ -4910,7 +4910,7 @@ export type PieLabel = Label & {
 
 ## PieLikeAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](../../../../../packages/vseed/src/types/properties/config/animation/animation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts)
 
 包导出：`PieLikeAnimation`
 
@@ -4927,7 +4927,7 @@ export interface PieLikeAnimation {
 
 ## PieLikeAnimationLoop
 
-源码：[packages/vseed/src/types/properties/config/animation/animationLoop.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationLoop.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationLoop.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationLoop.ts)
 
 包导出：`PieLikeAnimationLoop`
 
@@ -4948,7 +4948,7 @@ export interface PieLikeAnimationLoop {
 
 ## PieLikeAnimationParams
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](../../../../../packages/vseed/src/types/properties/config/animation/animation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts)
 
 包导出：`PieLikeAnimationParams`
 
@@ -4967,7 +4967,7 @@ export interface PieLikeAnimationParams {
 
 ## PieLikeAppearAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`PieLikeAppearAnimation`
 
@@ -4982,7 +4982,7 @@ export interface PieLikeAppearAnimation extends AnimationEffectConfig {
 
 ## PieLikeLoopAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`PieLikeLoopAnimation`
 
@@ -4997,7 +4997,7 @@ export interface PieLikeLoopAnimation extends AnimationEffectConfig {
 
 ## PieLikeLoopEffect
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`PieLikeLoopEffect`
 
@@ -5007,7 +5007,7 @@ export type PieLikeLoopEffect = 'enlarge' | 'relocate'
 
 ## PieLikeUpdateAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`PieLikeUpdateAnimation`
 
@@ -5022,7 +5022,7 @@ export interface PieLikeUpdateAnimation extends AnimationEffectConfig {
 
 ## PieMeasure
 
-源码：[packages/vseed/src/types/properties/measures/pieMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/pieMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/pieMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/pieMeasure.ts)
 
 包导出：`PieMeasure`
 
@@ -5043,7 +5043,7 @@ export type PieMeasure = BaseMeasure & {
 
 ## PieStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/pieStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/pieStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/pieStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/pieStyle.ts)
 
 包导出：`PieStyle`
 
@@ -5062,7 +5062,7 @@ export type PieStyle = {
 
 ## PivotChartGridConfig
 
-源码：[packages/vseed/src/types/properties/config/pivotGrid/pivotGrid.ts](../../../../../packages/vseed/src/types/properties/config/pivotGrid/pivotGrid.ts)
+源码：[packages/vseed/src/types/properties/config/pivotGrid/pivotGrid.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/pivotGrid/pivotGrid.ts)
 
 包导出：`PivotChartGridConfig`
 
@@ -5074,7 +5074,7 @@ export type PivotChartGridConfig = z.infer<typeof zPivotChartGridConfig>
 
 ## PivotTableConfig
 
-源码：[packages/vseed/src/types/properties/config/pivotTable.ts](../../../../../packages/vseed/src/types/properties/config/pivotTable.ts)
+源码：[packages/vseed/src/types/properties/config/pivotTable.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/pivotTable.ts)
 
 包导出：`PivotTableConfig`
 
@@ -5086,7 +5086,7 @@ export type PivotTableConfig = z.infer<typeof zPivotTableConfig>
 
 ## PivotTableTotals
 
-源码：[packages/vseed/src/types/properties/totals/totals.ts](../../../../../packages/vseed/src/types/properties/totals/totals.ts)
+源码：[packages/vseed/src/types/properties/totals/totals.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/totals/totals.ts)
 
 包导出：`PivotTableTotals`
 
@@ -5110,7 +5110,7 @@ export type PivotTableTotals = {
 
 ## Player
 
-源码：[packages/vseed/src/types/properties/config/player/player.ts](../../../../../packages/vseed/src/types/properties/config/player/player.ts)
+源码：[packages/vseed/src/types/properties/config/player/player.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/player/player.ts)
 
 包导出：`Player`
 
@@ -5185,7 +5185,7 @@ export type Player = {
 
 ## PointAtmosphereConfig
 
-源码：[packages/vseed/src/types/properties/config/animation/animationAtmosphere.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationAtmosphere.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationAtmosphere.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationAtmosphere.ts)
 
 包导出：`PointAtmosphereConfig`
 
@@ -5204,7 +5204,7 @@ export interface PointAtmosphereConfig {
 
 ## PointAtmosphereEffect
 
-源码：[packages/vseed/src/types/properties/config/animation/animationAtmosphere.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationAtmosphere.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationAtmosphere.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationAtmosphere.ts)
 
 包导出：`PointAtmosphereEffect`
 
@@ -5214,7 +5214,7 @@ export type PointAtmosphereEffect = 'ripple' | 'reveal' | 'breath'
 
 ## PointStyle
 
-源码：[packages/vseed/src/types/properties/markStyle/pointStyle.ts](../../../../../packages/vseed/src/types/properties/markStyle/pointStyle.ts)
+源码：[packages/vseed/src/types/properties/markStyle/pointStyle.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/markStyle/pointStyle.ts)
 
 包导出：`PointStyle`
 
@@ -5320,7 +5320,7 @@ export type PointStyle = {
 
 ## PolynomialRegressionLine
 
-源码：[packages/vseed/src/types/properties/regressionLine/polynomialRegressionLine.ts](../../../../../packages/vseed/src/types/properties/regressionLine/polynomialRegressionLine.ts)
+源码：[packages/vseed/src/types/properties/regressionLine/polynomialRegressionLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regressionLine/polynomialRegressionLine.ts)
 
 包导出：`PolynomialRegressionLine`
 
@@ -5395,7 +5395,7 @@ export type PolynomialRegressionLine = {
 
 ## RaceBarDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/raceBarDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/raceBarDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/raceBarDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/raceBarDimension.ts)
 
 包导出：`RaceBarDimension`
 
@@ -5420,7 +5420,7 @@ export type RaceBarDimension = BaseDimension & {
 
 ## RaceBarMeasure
 
-源码：[packages/vseed/src/types/properties/measures/raceBarMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/raceBarMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/raceBarMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/raceBarMeasure.ts)
 
 包导出：`RaceBarMeasure`
 
@@ -5442,7 +5442,7 @@ export type RaceBarMeasure = BaseMeasure & {
 
 ## RaceBarParallelDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/raceBarDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/raceBarDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/raceBarDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/raceBarDimension.ts)
 
 包导出：`RaceBarParallelDimension`
 
@@ -5454,7 +5454,7 @@ export type RaceBarParallelDimension = RaceBarDimension
 
 ## RaceBarPercentDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/raceBarDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/raceBarDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/raceBarDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/raceBarDimension.ts)
 
 包导出：`RaceBarPercentDimension`
 
@@ -5466,7 +5466,7 @@ export type RaceBarPercentDimension = RaceBarDimension
 
 ## RaceColumnDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/raceColumnDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/raceColumnDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/raceColumnDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/raceColumnDimension.ts)
 
 包导出：`RaceColumnDimension`
 
@@ -5494,7 +5494,7 @@ export type RaceColumnDimension = BaseDimension & {
 
 ## RaceColumnParallelDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/raceColumnDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/raceColumnDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/raceColumnDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/raceColumnDimension.ts)
 
 包导出：`RaceColumnParallelDimension`
 
@@ -5506,7 +5506,7 @@ export type RaceColumnParallelDimension = RaceColumnDimension
 
 ## RaceColumnPercentDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/raceColumnDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/raceColumnDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/raceColumnDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/raceColumnDimension.ts)
 
 包导出：`RaceColumnPercentDimension`
 
@@ -5518,7 +5518,7 @@ export type RaceColumnPercentDimension = RaceColumnDimension
 
 ## RaceDonutDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/raceDonutDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/raceDonutDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/raceDonutDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/raceDonutDimension.ts)
 
 包导出：`RaceDonutDimension`
 
@@ -5542,7 +5542,7 @@ export type RaceDonutDimension = Omit<DonutDimension, 'encoding'> & {
 
 ## RaceDonutMeasure
 
-源码：[packages/vseed/src/types/properties/measures/raceDonutMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/raceDonutMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/raceDonutMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/raceDonutMeasure.ts)
 
 包导出：`RaceDonutMeasure`
 
@@ -5554,7 +5554,7 @@ export type RaceDonutMeasure = DonutMeasure
 
 ## RacePieDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/racePieDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/racePieDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/racePieDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/racePieDimension.ts)
 
 包导出：`RacePieDimension`
 
@@ -5578,7 +5578,7 @@ export type RacePieDimension = Omit<PieDimension, 'encoding'> & {
 
 ## RacePieMeasure
 
-源码：[packages/vseed/src/types/properties/measures/racePieMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/racePieMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/racePieMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/racePieMeasure.ts)
 
 包导出：`RacePieMeasure`
 
@@ -5590,7 +5590,7 @@ export type RacePieMeasure = PieMeasure
 
 ## RaceScatterDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/raceScatterDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/raceScatterDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/raceScatterDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/raceScatterDimension.ts)
 
 包导出：`RaceScatterDimension`
 
@@ -5614,7 +5614,7 @@ export type RaceScatterDimension = BaseDimension & {
 
 ## RadarAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](../../../../../packages/vseed/src/types/properties/config/animation/animation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts)
 
 包导出：`RadarAnimation`
 
@@ -5631,7 +5631,7 @@ export interface RadarAnimation {
 
 ## RadarAnimationLoop
 
-源码：[packages/vseed/src/types/properties/config/animation/animationLoop.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationLoop.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationLoop.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationLoop.ts)
 
 包导出：`RadarAnimationLoop`
 
@@ -5650,7 +5650,7 @@ export interface RadarAnimationLoop {
 
 ## RadarAnimationParams
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](../../../../../packages/vseed/src/types/properties/config/animation/animation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts)
 
 包导出：`RadarAnimationParams`
 
@@ -5669,7 +5669,7 @@ export interface RadarAnimationParams {
 
 ## RadarAppearAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`RadarAppearAnimation`
 
@@ -5684,7 +5684,7 @@ export interface RadarAppearAnimation extends AnimationEffectConfig {
 
 ## RadarConfig
 
-源码：[packages/vseed/src/types/properties/config/pie.ts](../../../../../packages/vseed/src/types/properties/config/pie.ts)
+源码：[packages/vseed/src/types/properties/config/pie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/pie.ts)
 
 包导出：`RadarConfig`
 
@@ -5696,7 +5696,7 @@ export type RadarConfig = z.infer<typeof zRadarConfig>
 
 ## RadarDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/radarDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/radarDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/radarDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/radarDimension.ts)
 
 包导出：`RadarDimension`
 
@@ -5720,7 +5720,7 @@ export type RadarDimension = BaseDimension & {
 
 ## RadarMeasure
 
-源码：[packages/vseed/src/types/properties/measures/radarMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/radarMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/radarMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/radarMeasure.ts)
 
 包导出：`RadarMeasure`
 
@@ -5741,7 +5741,7 @@ export type RadarMeasure = BaseMeasure & {
 
 ## RadarUpdateAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`RadarUpdateAnimation`
 
@@ -5756,7 +5756,7 @@ export interface RadarUpdateAnimation extends AnimationEffectConfig {
 
 ## RegionPadding
 
-源码：[packages/vseed/src/types/properties/regionPadding/regionPadding.ts](../../../../../packages/vseed/src/types/properties/regionPadding/regionPadding.ts)
+源码：[packages/vseed/src/types/properties/regionPadding/regionPadding.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regionPadding/regionPadding.ts)
 
 包导出：`RegionPadding`
 
@@ -5773,7 +5773,7 @@ export type RegionPadding =
 
 ## RegressionLineConfig
 
-源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](../../../../../packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
+源码：[packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/regressionLine/zRegressionLine.ts)
 
 包导出：`RegressionLineConfig`
 
@@ -5785,7 +5785,7 @@ export type RegressionLineConfig = z.infer<typeof zRegressionLine>
 
 ## RoseConfig
 
-源码：[packages/vseed/src/types/properties/config/rose.ts](../../../../../packages/vseed/src/types/properties/config/rose.ts)
+源码：[packages/vseed/src/types/properties/config/rose.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/rose.ts)
 
 包导出：`RoseConfig`
 
@@ -5797,7 +5797,7 @@ export type RoseConfig = z.infer<typeof zRoseConfig>
 
 ## RoseDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/roseDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/roseDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/roseDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/roseDimension.ts)
 
 包导出：`RoseDimension`
 
@@ -5809,7 +5809,7 @@ export type RoseDimension = RadarDimension
 
 ## RoseMeasure
 
-源码：[packages/vseed/src/types/properties/measures/radarMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/radarMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/radarMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/radarMeasure.ts)
 
 包导出：`RoseMeasure`
 
@@ -5821,7 +5821,7 @@ export type RoseMeasure = RadarMeasure
 
 ## RoseParallelConfig
 
-源码：[packages/vseed/src/types/properties/config/rose.ts](../../../../../packages/vseed/src/types/properties/config/rose.ts)
+源码：[packages/vseed/src/types/properties/config/rose.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/rose.ts)
 
 包导出：`RoseParallelConfig`
 
@@ -5833,7 +5833,7 @@ export type RoseParallelConfig = z.infer<typeof zRoseParallelConfig>
 
 ## RoseParallelDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/roseDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/roseDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/roseDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/roseDimension.ts)
 
 包导出：`RoseParallelDimension`
 
@@ -5845,7 +5845,7 @@ export type RoseParallelDimension = RadarDimension
 
 ## RoseParallelMeasure
 
-源码：[packages/vseed/src/types/properties/measures/radarMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/radarMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/radarMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/radarMeasure.ts)
 
 包导出：`RoseParallelMeasure`
 
@@ -5857,7 +5857,7 @@ export type RoseParallelMeasure = RadarMeasure
 
 ## RowOrColumnTotalConfig
 
-源码：[packages/vseed/src/types/properties/totals/totals.ts](../../../../../packages/vseed/src/types/properties/totals/totals.ts)
+源码：[packages/vseed/src/types/properties/totals/totals.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/totals/totals.ts)
 
 包导出：`RowOrColumnTotalConfig`
 
@@ -5887,7 +5887,7 @@ export type RowOrColumnTotalConfig = {
 
 ## RowWithFieldRes
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`RowWithFieldRes`
 
@@ -5914,7 +5914,7 @@ export type RowWithFieldRes = {
 
 ## SankeyConfig
 
-源码：[packages/vseed/src/types/properties/config/sankey.ts](../../../../../packages/vseed/src/types/properties/config/sankey.ts)
+源码：[packages/vseed/src/types/properties/config/sankey.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/sankey.ts)
 
 包导出：`SankeyConfig`
 
@@ -5926,7 +5926,7 @@ export type SankeyConfig = z.infer<typeof zSankeyConfig>
 
 ## SankeyDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/sankeyDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/sankeyDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/sankeyDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/sankeyDimension.ts)
 
 包导出：`SankeyDimension`
 
@@ -5951,7 +5951,7 @@ export type SankeyDimension = BaseDimension & {
 
 ## SankeyMeasure
 
-源码：[packages/vseed/src/types/properties/measures/sankeyMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/sankeyMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/sankeyMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/sankeyMeasure.ts)
 
 包导出：`SankeyMeasure`
 
@@ -5972,7 +5972,7 @@ export type SankeyMeasure = BaseMeasure & {
 
 ## ScatterAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](../../../../../packages/vseed/src/types/properties/config/animation/animation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts)
 
 包导出：`ScatterAnimation`
 
@@ -5989,7 +5989,7 @@ export interface ScatterAnimation {
 
 ## ScatterAnimationLoop
 
-源码：[packages/vseed/src/types/properties/config/animation/animationLoop.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationLoop.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationLoop.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationLoop.ts)
 
 包导出：`ScatterAnimationLoop`
 
@@ -6010,7 +6010,7 @@ export interface ScatterAnimationLoop {
 
 ## ScatterAnimationParams
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](../../../../../packages/vseed/src/types/properties/config/animation/animation.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts)
 
 包导出：`ScatterAnimationParams`
 
@@ -6029,7 +6029,7 @@ export interface ScatterAnimationParams {
 
 ## ScatterAppearAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`ScatterAppearAnimation`
 
@@ -6044,7 +6044,7 @@ export interface ScatterAppearAnimation extends AnimationEffectConfig {
 
 ## ScatterConfig
 
-源码：[packages/vseed/src/types/properties/config/scatter.ts](../../../../../packages/vseed/src/types/properties/config/scatter.ts)
+源码：[packages/vseed/src/types/properties/config/scatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/scatter.ts)
 
 包导出：`ScatterConfig`
 
@@ -6056,7 +6056,7 @@ export type ScatterConfig = z.infer<typeof zScatterConfig>
 
 ## ScatterDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/scatterDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/scatterDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/scatterDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/scatterDimension.ts)
 
 包导出：`ScatterDimension`
 
@@ -6079,7 +6079,7 @@ export type ScatterDimension = BaseDimension & {
 
 ## ScatterLoopAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`ScatterLoopAnimation`
 
@@ -6094,7 +6094,7 @@ export interface ScatterLoopAnimation extends AnimationEffectConfig {
 
 ## ScatterLoopEffect
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`ScatterLoopEffect`
 
@@ -6104,7 +6104,7 @@ export type ScatterLoopEffect = 'growth' | 'scale' | 'none'
 
 ## ScatterMeasure
 
-源码：[packages/vseed/src/types/properties/measures/scatterMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/scatterMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/scatterMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/scatterMeasure.ts)
 
 包导出：`ScatterMeasure`
 
@@ -6127,7 +6127,7 @@ export type ScatterMeasure = BaseMeasure & {
 
 ## ScatterUpdateAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](../../../../../packages/vseed/src/types/properties/config/animation/animationEffect.ts)
+源码：[packages/vseed/src/types/properties/config/animation/animationEffect.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animationEffect.ts)
 
 包导出：`ScatterUpdateAnimation`
 
@@ -6142,7 +6142,7 @@ export interface ScatterUpdateAnimation extends AnimationEffectConfig {
 
 ## Selector
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`Selector`
 
@@ -6154,7 +6154,7 @@ export type Selector = ValueSelector | PartialDatumSelector | MeasureSelector | 
 
 ## Selectors
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`Selectors`
 
@@ -6166,7 +6166,7 @@ export type Selectors = Array<Selector>
 
 ## Sort
 
-源码：[packages/vseed/src/types/properties/analysis/sort.ts](../../../../../packages/vseed/src/types/properties/analysis/sort.ts)
+源码：[packages/vseed/src/types/properties/analysis/sort.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/analysis/sort.ts)
 
 包导出：`Sort`
 
@@ -6203,7 +6203,7 @@ export type Sort = {
 
 ## SortLegend
 
-源码：[packages/vseed/src/types/properties/analysis/sortLegend.ts](../../../../../packages/vseed/src/types/properties/analysis/sortLegend.ts)
+源码：[packages/vseed/src/types/properties/analysis/sortLegend.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/analysis/sortLegend.ts)
 
 包导出：`SortLegend`
 
@@ -6241,7 +6241,7 @@ export type SortLegend = {
 
 ## StackCornerRadius
 
-源码：[packages/vseed/src/types/properties/config/stackCornerRadius/stackCornerRadius.ts](../../../../../packages/vseed/src/types/properties/config/stackCornerRadius/stackCornerRadius.ts)
+源码：[packages/vseed/src/types/properties/config/stackCornerRadius/stackCornerRadius.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/stackCornerRadius/stackCornerRadius.ts)
 
 包导出：`StackCornerRadius`
 
@@ -6253,7 +6253,7 @@ export type StackCornerRadius = z.infer<typeof zStackCornerRadius>
 
 ## SunburstConfig
 
-源码：[packages/vseed/src/types/properties/config/sunburst.ts](../../../../../packages/vseed/src/types/properties/config/sunburst.ts)
+源码：[packages/vseed/src/types/properties/config/sunburst.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/sunburst.ts)
 
 包导出：`SunburstConfig`
 
@@ -6265,7 +6265,7 @@ export type SunburstConfig = z.infer<typeof zSunburstConfig>
 
 ## TableConfig
 
-源码：[packages/vseed/src/types/properties/config/table.ts](../../../../../packages/vseed/src/types/properties/config/table.ts)
+源码：[packages/vseed/src/types/properties/config/table.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/table.ts)
 
 包导出：`TableConfig`
 
@@ -6277,7 +6277,7 @@ export type TableConfig = z.infer<typeof zTableConfig>
 
 ## TableDimension
 
-源码：[packages/vseed/src/types/properties/dimensions/tableDimension.ts](../../../../../packages/vseed/src/types/properties/dimensions/tableDimension.ts)
+源码：[packages/vseed/src/types/properties/dimensions/tableDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/tableDimension.ts)
 
 包导出：`TableDimension`
 
@@ -6296,7 +6296,7 @@ export type TableDimension = BaseDimension & {
 
 ## TableDynamicFilter
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`TableDynamicFilter`
 
@@ -6424,7 +6424,7 @@ export interface TableDynamicFilter {
 
 ## TableMeasure
 
-源码：[packages/vseed/src/types/properties/measures/tableMeasure.ts](../../../../../packages/vseed/src/types/properties/measures/tableMeasure.ts)
+源码：[packages/vseed/src/types/properties/measures/tableMeasure.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/measures/tableMeasure.ts)
 
 包导出：`TableMeasure`
 
@@ -6442,7 +6442,7 @@ export type TableMeasure = BaseMeasure & {
 
 ## Theme
 
-源码：[packages/vseed/src/types/properties/theme/theme.ts](../../../../../packages/vseed/src/types/properties/theme/theme.ts)
+源码：[packages/vseed/src/types/properties/theme/theme.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/theme/theme.ts)
 
 包导出：`Theme`
 
@@ -6459,7 +6459,7 @@ export type Theme = Light | Dark | string
 
 ## TimeFormat
 
-源码：[packages/vseed/src/types/properties/format/timeFormat.ts](../../../../../packages/vseed/src/types/properties/format/timeFormat.ts)
+源码：[packages/vseed/src/types/properties/format/timeFormat.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/format/timeFormat.ts)
 
 包导出：`TimeFormat`
 
@@ -6476,7 +6476,7 @@ export interface TimeFormat {
 
 ## TimeGranularity
 
-源码：[packages/vseed/src/types/properties/format/timeFormat.ts](../../../../../packages/vseed/src/types/properties/format/timeFormat.ts)
+源码：[packages/vseed/src/types/properties/format/timeFormat.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/format/timeFormat.ts)
 
 包导出：`TimeGranularity`
 
@@ -6486,7 +6486,7 @@ export type TimeGranularity = 'year' | 'quarter' | 'month' | 'week' | 'day' | 'h
 
 ## Tooltip
 
-源码：[packages/vseed/src/types/properties/config/tooltip/tooltip.ts](../../../../../packages/vseed/src/types/properties/config/tooltip/tooltip.ts)
+源码：[packages/vseed/src/types/properties/config/tooltip/tooltip.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/tooltip/tooltip.ts)
 
 包导出：`Tooltip`
 
@@ -6502,7 +6502,7 @@ export type Tooltip = {
 
 ## TooltipConfig
 
-源码：[packages/vseed/src/types/properties/config/tooltip/tooltip.ts](../../../../../packages/vseed/src/types/properties/config/tooltip/tooltip.ts)
+源码：[packages/vseed/src/types/properties/config/tooltip/tooltip.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/tooltip/tooltip.ts)
 
 包导出：`TooltipConfig`
 
@@ -6514,7 +6514,7 @@ export type TooltipConfig = z.infer<typeof zTooltip>
 
 ## TotalType
 
-源码：[packages/vseed/src/types/properties/aggregation/aggregation.ts](../../../../../packages/vseed/src/types/properties/aggregation/aggregation.ts)
+源码：[packages/vseed/src/types/properties/aggregation/aggregation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/aggregation/aggregation.ts)
 
 包导出：`TotalType`
 
@@ -6532,7 +6532,7 @@ export type TotalType = 'sum' | 'avg' | 'max' | 'min' | 'count'
 
 ## TreeMapConfig
 
-源码：[packages/vseed/src/types/properties/config/treeMap.ts](../../../../../packages/vseed/src/types/properties/config/treeMap.ts)
+源码：[packages/vseed/src/types/properties/config/treeMap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/treeMap.ts)
 
 包导出：`TreeMapConfig`
 
@@ -6544,7 +6544,7 @@ export type TreeMapConfig = z.infer<typeof zTreeMapConfig>
 
 ## UnfoldInfo
 
-源码：[packages/vseed/src/types/properties/datasetReshapeInfo/datasetReshapeInfo.ts](../../../../../packages/vseed/src/types/properties/datasetReshapeInfo/datasetReshapeInfo.ts)
+源码：[packages/vseed/src/types/properties/datasetReshapeInfo/datasetReshapeInfo.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/datasetReshapeInfo/datasetReshapeInfo.ts)
 
 包导出：`UnfoldInfo`
 
@@ -6573,7 +6573,7 @@ export type UnfoldInfo = {
 
 ## ValueDynamicFilter
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`ValueDynamicFilter`
 
@@ -6641,7 +6641,7 @@ export interface ValueDynamicFilter {
 
 ## ValueSelector
 
-源码：[packages/vseed/src/types/dataSelector/selector.ts](../../../../../packages/vseed/src/types/dataSelector/selector.ts)
+源码：[packages/vseed/src/types/dataSelector/selector.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/dataSelector/selector.ts)
 
 包导出：`ValueSelector`
 
@@ -6651,7 +6651,7 @@ export type ValueSelector = string | number
 
 ## WhiskersConfig
 
-源码：[packages/vseed/src/types/properties/config/whiskers/index.ts](../../../../../packages/vseed/src/types/properties/config/whiskers/index.ts)
+源码：[packages/vseed/src/types/properties/config/whiskers/index.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/whiskers/index.ts)
 
 包导出：`WhiskersConfig`
 
@@ -6663,7 +6663,7 @@ export type WhiskersConfig = z.infer<typeof zWhiskersConfig>
 
 ## XBandAxis
 
-源码：[packages/vseed/src/types/properties/config/axes/bandAxis.ts](../../../../../packages/vseed/src/types/properties/config/axes/bandAxis.ts)
+源码：[packages/vseed/src/types/properties/config/axes/bandAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/axes/bandAxis.ts)
 
 包导出：`XBandAxis`
 
@@ -6834,7 +6834,7 @@ export type XBandAxis = {
 
 ## XLinearAxis
 
-源码：[packages/vseed/src/types/properties/config/axes/linearAxis.ts](../../../../../packages/vseed/src/types/properties/config/axes/linearAxis.ts)
+源码：[packages/vseed/src/types/properties/config/axes/linearAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/axes/linearAxis.ts)
 
 包导出：`XLinearAxis`
 
@@ -7009,7 +7009,7 @@ export type XLinearAxis = {
 
 ## YBandAxis
 
-源码：[packages/vseed/src/types/properties/config/axes/bandAxis.ts](../../../../../packages/vseed/src/types/properties/config/axes/bandAxis.ts)
+源码：[packages/vseed/src/types/properties/config/axes/bandAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/axes/bandAxis.ts)
 
 包导出：`YBandAxis`
 
@@ -7180,7 +7180,7 @@ export type YBandAxis = {
 
 ## YLinearAxis
 
-源码：[packages/vseed/src/types/properties/config/axes/linearAxis.ts](../../../../../packages/vseed/src/types/properties/config/axes/linearAxis.ts)
+源码：[packages/vseed/src/types/properties/config/axes/linearAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/axes/linearAxis.ts)
 
 包导出：`YLinearAxis`
 

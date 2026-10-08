@@ -40,7 +40,7 @@
 
 ## Area
 
-源码：[packages/vseed/src/types/chartType/area/area.ts](../../../../../packages/vseed/src/types/chartType/area/area.ts)
+源码：[packages/vseed/src/types/chartType/area/area.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/area/area.ts)
 
 包导出：`Area`
 
@@ -262,7 +262,7 @@ export interface Area {
 
 ## AreaPercent
 
-源码：[packages/vseed/src/types/chartType/areaPercent/areaPercent.ts](../../../../../packages/vseed/src/types/chartType/areaPercent/areaPercent.ts)
+源码：[packages/vseed/src/types/chartType/areaPercent/areaPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/areaPercent/areaPercent.ts)
 
 包导出：`AreaPercent`
 
@@ -475,7 +475,7 @@ export interface AreaPercent {
 
 ## Bar
 
-源码：[packages/vseed/src/types/chartType/bar/bar.ts](../../../../../packages/vseed/src/types/chartType/bar/bar.ts)
+源码：[packages/vseed/src/types/chartType/bar/bar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/bar/bar.ts)
 
 包导出：`Bar`
 
@@ -675,7 +675,7 @@ export interface Bar {
 
 ## BarParallel
 
-源码：[packages/vseed/src/types/chartType/barParallel/barParallel.ts](../../../../../packages/vseed/src/types/chartType/barParallel/barParallel.ts)
+源码：[packages/vseed/src/types/chartType/barParallel/barParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/barParallel/barParallel.ts)
 
 包导出：`BarParallel`
 
@@ -877,7 +877,7 @@ export interface BarParallel {
 
 ## BarPercent
 
-源码：[packages/vseed/src/types/chartType/barPercent/barPercent.ts](../../../../../packages/vseed/src/types/chartType/barPercent/barPercent.ts)
+源码：[packages/vseed/src/types/chartType/barPercent/barPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/barPercent/barPercent.ts)
 
 包导出：`BarPercent`
 
@@ -1080,7 +1080,7 @@ export interface BarPercent {
 
 ## BoxPlot
 
-源码：[packages/vseed/src/types/chartType/boxPlot/boxPlot.ts](../../../../../packages/vseed/src/types/chartType/boxPlot/boxPlot.ts)
+源码：[packages/vseed/src/types/chartType/boxPlot/boxPlot.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/boxPlot/boxPlot.ts)
 
 包导出：`BoxPlot`
 
@@ -1261,7 +1261,7 @@ export interface BoxPlot {
 
 ## CirclePacking
 
-源码：[packages/vseed/src/types/chartType/circlePacking/circlePacking.ts](../../../../../packages/vseed/src/types/chartType/circlePacking/circlePacking.ts)
+源码：[packages/vseed/src/types/chartType/circlePacking/circlePacking.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/circlePacking/circlePacking.ts)
 
 包导出：`CirclePacking`
 
@@ -1355,7 +1355,7 @@ export interface CirclePacking {
 
 ## Column
 
-源码：[packages/vseed/src/types/chartType/column/column.ts](../../../../../packages/vseed/src/types/chartType/column/column.ts)
+源码：[packages/vseed/src/types/chartType/column/column.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/column/column.ts)
 
 包导出：`Column`
 
@@ -1557,7 +1557,7 @@ export interface Column {
 
 ## ColumnParallel
 
-源码：[packages/vseed/src/types/chartType/columnParallel/columnParallel.ts](../../../../../packages/vseed/src/types/chartType/columnParallel/columnParallel.ts)
+源码：[packages/vseed/src/types/chartType/columnParallel/columnParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/columnParallel/columnParallel.ts)
 
 包导出：`ColumnParallel`
 
@@ -1760,7 +1760,7 @@ export interface ColumnParallel {
 
 ## ColumnPercent
 
-源码：[packages/vseed/src/types/chartType/columnPercent/columnPercent.ts](../../../../../packages/vseed/src/types/chartType/columnPercent/columnPercent.ts)
+源码：[packages/vseed/src/types/chartType/columnPercent/columnPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/columnPercent/columnPercent.ts)
 
 包导出：`ColumnPercent`
 
@@ -1957,7 +1957,7 @@ export interface ColumnPercent {
 
 ## Donut
 
-源码：[packages/vseed/src/types/chartType/donut/donut.ts](../../../../../packages/vseed/src/types/chartType/donut/donut.ts)
+源码：[packages/vseed/src/types/chartType/donut/donut.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/donut/donut.ts)
 
 包导出：`Donut`
 
@@ -2087,7 +2087,7 @@ export interface Donut {
 
 ## DualAxis
 
-源码：[packages/vseed/src/types/chartType/dualAxis/dualAxis.ts](../../../../../packages/vseed/src/types/chartType/dualAxis/dualAxis.ts)
+源码：[packages/vseed/src/types/chartType/dualAxis/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/dualAxis/dualAxis.ts)
 
 包导出：`DualAxis`
 
@@ -2317,7 +2317,7 @@ export interface DualAxis {
 
 ## Funnel
 
-源码：[packages/vseed/src/types/chartType/funnel/funnel.ts](../../../../../packages/vseed/src/types/chartType/funnel/funnel.ts)
+源码：[packages/vseed/src/types/chartType/funnel/funnel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/funnel/funnel.ts)
 
 包导出：`Funnel`
 
@@ -2426,7 +2426,7 @@ export interface Funnel {
 
 ## Heatmap
 
-源码：[packages/vseed/src/types/chartType/heatmap/heatmap.ts](../../../../../packages/vseed/src/types/chartType/heatmap/heatmap.ts)
+源码：[packages/vseed/src/types/chartType/heatmap/heatmap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/heatmap/heatmap.ts)
 
 包导出：`Heatmap`
 
@@ -2539,7 +2539,7 @@ export interface Heatmap {
 
 ## HierarchySankey
 
-源码：[packages/vseed/src/types/chartType/hierarchySankey/hierarchySankey.ts](../../../../../packages/vseed/src/types/chartType/hierarchySankey/hierarchySankey.ts)
+源码：[packages/vseed/src/types/chartType/hierarchySankey/hierarchySankey.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/hierarchySankey/hierarchySankey.ts)
 
 包导出：`HierarchySankey`
 
@@ -2640,7 +2640,7 @@ export interface HierarchySankey {
 
 ## Histogram
 
-源码：[packages/vseed/src/types/chartType/histogram/histogram.ts](../../../../../packages/vseed/src/types/chartType/histogram/histogram.ts)
+源码：[packages/vseed/src/types/chartType/histogram/histogram.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/histogram/histogram.ts)
 
 包导出：`Histogram`
 
@@ -2799,7 +2799,7 @@ export interface Histogram {
 
 ## Line
 
-源码：[packages/vseed/src/types/chartType/line/line.ts](../../../../../packages/vseed/src/types/chartType/line/line.ts)
+源码：[packages/vseed/src/types/chartType/line/line.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/line/line.ts)
 
 包导出：`Line`
 
@@ -3002,7 +3002,7 @@ export interface Line {
 
 ## Pie
 
-源码：[packages/vseed/src/types/chartType/pie/pie.ts](../../../../../packages/vseed/src/types/chartType/pie/pie.ts)
+源码：[packages/vseed/src/types/chartType/pie/pie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/pie/pie.ts)
 
 包导出：`Pie`
 
@@ -3130,7 +3130,7 @@ export interface Pie {
 
 ## PivotTable
 
-源码：[packages/vseed/src/types/chartType/pivotTable/pivotTable.ts](../../../../../packages/vseed/src/types/chartType/pivotTable/pivotTable.ts)
+源码：[packages/vseed/src/types/chartType/pivotTable/pivotTable.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/pivotTable/pivotTable.ts)
 
 包导出：`PivotTable`
 
@@ -3272,7 +3272,7 @@ export interface PivotTable {
 
 ## RaceBar
 
-源码：[packages/vseed/src/types/chartType/raceBar/raceBar.ts](../../../../../packages/vseed/src/types/chartType/raceBar/raceBar.ts)
+源码：[packages/vseed/src/types/chartType/raceBar/raceBar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/raceBar/raceBar.ts)
 
 包导出：`RaceBar`
 
@@ -3406,7 +3406,7 @@ export interface RaceBar {
 
 ## RaceColumn
 
-源码：[packages/vseed/src/types/chartType/raceColumn/raceColumn.ts](../../../../../packages/vseed/src/types/chartType/raceColumn/raceColumn.ts)
+源码：[packages/vseed/src/types/chartType/raceColumn/raceColumn.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/raceColumn/raceColumn.ts)
 
 包导出：`RaceColumn`
 
@@ -3557,7 +3557,7 @@ export interface RaceColumn {
 
 ## RaceDonut
 
-源码：[packages/vseed/src/types/chartType/raceDonut/raceDonut.ts](../../../../../packages/vseed/src/types/chartType/raceDonut/raceDonut.ts)
+源码：[packages/vseed/src/types/chartType/raceDonut/raceDonut.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/raceDonut/raceDonut.ts)
 
 包导出：`RaceDonut`
 
@@ -3640,7 +3640,7 @@ export interface RaceDonut {
 
 ## RaceLine
 
-源码：[packages/vseed/src/types/chartType/raceLine/raceLine.ts](../../../../../packages/vseed/src/types/chartType/raceLine/raceLine.ts)
+源码：[packages/vseed/src/types/chartType/raceLine/raceLine.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/raceLine/raceLine.ts)
 
 包导出：`RaceLine`
 
@@ -3771,7 +3771,7 @@ export interface RaceLine {
 
 ## RacePie
 
-源码：[packages/vseed/src/types/chartType/racePie/racePie.ts](../../../../../packages/vseed/src/types/chartType/racePie/racePie.ts)
+源码：[packages/vseed/src/types/chartType/racePie/racePie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/racePie/racePie.ts)
 
 包导出：`RacePie`
 
@@ -3854,7 +3854,7 @@ export interface RacePie {
 
 ## RaceScatter
 
-源码：[packages/vseed/src/types/chartType/raceScatter/raceScatter.ts](../../../../../packages/vseed/src/types/chartType/raceScatter/raceScatter.ts)
+源码：[packages/vseed/src/types/chartType/raceScatter/raceScatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/raceScatter/raceScatter.ts)
 
 包导出：`RaceScatter`
 
@@ -3988,7 +3988,7 @@ export interface RaceScatter {
 
 ## Radar
 
-源码：[packages/vseed/src/types/chartType/radar/radar.ts](../../../../../packages/vseed/src/types/chartType/radar/radar.ts)
+源码：[packages/vseed/src/types/chartType/radar/radar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/radar/radar.ts)
 
 包导出：`Radar`
 
@@ -4130,7 +4130,7 @@ export interface Radar {
 
 ## Rose
 
-源码：[packages/vseed/src/types/chartType/rose/rose.ts](../../../../../packages/vseed/src/types/chartType/rose/rose.ts)
+源码：[packages/vseed/src/types/chartType/rose/rose.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/rose/rose.ts)
 
 包导出：`Rose`
 
@@ -4249,7 +4249,7 @@ export interface Rose {
 
 ## RoseParallel
 
-源码：[packages/vseed/src/types/chartType/roseParallel/roseParallel.ts](../../../../../packages/vseed/src/types/chartType/roseParallel/roseParallel.ts)
+源码：[packages/vseed/src/types/chartType/roseParallel/roseParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/roseParallel/roseParallel.ts)
 
 包导出：`RoseParallel`
 
@@ -4368,7 +4368,7 @@ export interface RoseParallel {
 
 ## Sankey
 
-源码：[packages/vseed/src/types/chartType/sankey/sankey.ts](../../../../../packages/vseed/src/types/chartType/sankey/sankey.ts)
+源码：[packages/vseed/src/types/chartType/sankey/sankey.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/sankey/sankey.ts)
 
 包导出：`Sankey`
 
@@ -4468,7 +4468,7 @@ export interface Sankey {
 
 ## Scatter
 
-源码：[packages/vseed/src/types/chartType/scatter/scatter.ts](../../../../../packages/vseed/src/types/chartType/scatter/scatter.ts)
+源码：[packages/vseed/src/types/chartType/scatter/scatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/scatter/scatter.ts)
 
 包导出：`Scatter`
 
@@ -4674,7 +4674,7 @@ export interface Scatter {
 
 ## Sunburst
 
-源码：[packages/vseed/src/types/chartType/sunburst/sunburst.ts](../../../../../packages/vseed/src/types/chartType/sunburst/sunburst.ts)
+源码：[packages/vseed/src/types/chartType/sunburst/sunburst.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/sunburst/sunburst.ts)
 
 包导出：`Sunburst`
 
@@ -4768,7 +4768,7 @@ export interface Sunburst {
 
 ## Table
 
-源码：[packages/vseed/src/types/chartType/table/table.ts](../../../../../packages/vseed/src/types/chartType/table/table.ts)
+源码：[packages/vseed/src/types/chartType/table/table.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/table/table.ts)
 
 包导出：`Table`
 
@@ -4904,7 +4904,7 @@ export interface Table {
 
 ## TreeMap
 
-源码：[packages/vseed/src/types/chartType/treeMap/treeMap.ts](../../../../../packages/vseed/src/types/chartType/treeMap/treeMap.ts)
+源码：[packages/vseed/src/types/chartType/treeMap/treeMap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/treeMap/treeMap.ts)
 
 包导出：`TreeMap`
 

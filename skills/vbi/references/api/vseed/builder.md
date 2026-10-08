@@ -21,7 +21,7 @@ import type {
 
 ## Builder
 
-源码：[packages/vseed/src/builder/builder/builder.ts](../../../../../packages/vseed/src/builder/builder/builder.ts)
+源码：[packages/vseed/src/builder/builder/builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/builder/builder/builder.ts)
 
 包导出：`Builder`
 
@@ -161,7 +161,7 @@ export declare class Builder<S extends Spec = Spec> implements VSeedBuilder {
 
 ## VSeedBuilder
 
-源码：[packages/vseed/src/types/builder/builder.ts](../../../../../packages/vseed/src/types/builder/builder.ts)
+源码：[packages/vseed/src/types/builder/builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/builder/builder.ts)
 
 包导出：`VSeedBuilder`
 
@@ -200,7 +200,7 @@ export declare abstract class VSeedBuilder {
 
 ## Spec
 
-源码：[packages/vseed/src/types/builder/spec.ts](../../../../../packages/vseed/src/types/builder/spec.ts)
+源码：[packages/vseed/src/types/builder/spec.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/builder/spec.ts)
 
 包导出：`Spec`
 

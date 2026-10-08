@@ -4,6 +4,8 @@
 
 示例入口：[精致散点图](../../examples/charts/polished-chart.html)、[轻量看板](../../examples/dashboard/lightweight-dashboard.html)、[业务大屏](../../examples/screen/large-screen.html)。其中的固定日期、配色、标签偏移和图形组合服务于各自场景，不作为其他页面的默认配置。
 
+创建轻量 Dashboard 时，另读[设计与布局最佳实践](../best-practices/design-and-layout.md)；配置迷你图、指标文本动画与悬停联动时，另读[指标卡最佳实践](../best-practices/metric-card.md)。
+
 下面的片段按场景选用，假定已导入 `VBI`、`VQuery`、VSeed 的 `Builder` / `registerAll` 及 `VChart`，并准备好片段使用的图表 Builder 或 DOM 容器。
 
 ## 1. 固定构建链路，逐层检查结果
