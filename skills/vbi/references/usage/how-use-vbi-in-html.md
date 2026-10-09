@@ -33,12 +33,23 @@ region,channel,sales
 
 | 示例                                                            | 适合学习                                       | 阅读代码时关注                                                     |
 | --------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------ |
+| [模板 1：趋势主导](../../examples/dashboard/template1.html)     | 预期寿命年度趋势；蓝色主辅布局                 | `prepareRows()`、`conditionsFor()`、`buildView()`、`drawPlot()`    |
+| [模板 2：指标先行](../../examples/dashboard/template2.html)     | 心衰记录概览与年龄组比较；紫色指标行           | 同一查询范围的核心指标、事件占比与局部查看                         |
+| [模板 3：分段叙事](../../examples/dashboard/template3.html)     | 餐食、运动、营养及样本构成；暖橙分段布局       | 汇总比率、不同分组的图表与缓存联动                                 |
 | [精简 Dashboard 模板](../../examples/dashboard/template.html)   | 新建轻量看板、内置数据与完整必要交互           | `draw()`、`animateMetric()`、`bindMetricHover()`、`bindCardTilt()` |
 | [精致散点图](../../examples/charts/polished-chart.html)         | 单图编码、图例筛选与精细标注                   | `chartBuilder`、`decorate()`、`render()`                           |
 | [轻量看板](../../examples/dashboard/lightweight-dashboard.html) | 顶部洞察、汇总指标、周期比较、自定义 HTML 卡片 | `summarizePeriod()`、`rowsOf()`、`layoutDashboard()`               |
 | [业务大屏](../../examples/screen/large-screen.html)             | 多图组合、Dashboard / Insight 资源、局部筛选   | `drawSocial()`、`drawIncome()`、`filterChart()`、`layout()`        |
 
-新建轻量看板优先复制精简模板，完整轻量示例用于参考更丰富的配色、图标与业务数据接入。用浏览器直接打开示例 HTML。浏览器需要联网加载 CDN 模块；复制大屏时同时保留 `assets/large-screen-live-preview.png`，模板和散点图可以单独复制 HTML。完整轻量看板当前仍通过网络加载 CSV，复制为独立交付页面时，必须按上文将 CSV 内置，并将数据初始化改为读取内联文本。
+新建看板先按数据与分析任务选择三种模板之一，基础模板用于查阅较小的接入实现。完整轻量示例用于参考更丰富的配色、图标与业务数据接入。浏览器需要联网加载 CDN 模块；复制大屏时同时保留 `assets/large-screen-live-preview.png`，模板和散点图可以单独复制 HTML。完整轻量看板当前仍通过网络加载 CSV，复制为独立交付页面时，必须按上文将 CSV 内置，并将数据初始化改为读取内联文本。
+
+### 三种数据模板的共同机制
+
+三份新模板在 `source-data` 中以原始列名和类型化行数组内嵌完整 CSV，空字符串保留为 `null`，不抽样、不将缺失数值补零。`prepareRows()` 映射查询字段，`conditionsFor()` 定义各查询的筛选范围；Builder 的 `observeDeep()` 合并刷新，查询后经 VSeed 构建 Spec，`drawPlot()` 复用实例调用 `updateSpec()`。`buildView()` 从查询汇总结果计算衍生指标与缓存索引；卡内查看不重新查询，也不改写区间洞察。明细默认展开，国家明细通过分页访问全部结果。
+
+预期寿命模板使用真实年份，展示末年国家等权均值、首尾变化与有效寿命覆盖率；心衰模板只描述样本记录，死亡事件占比不等同于统一随访时点的死亡率；餐食模板以总热效应 / 总热量计算占比，以总热量 / 总食物件数计算单件热量。保留原始数据值及其缺失语义，不把样本分组比较写成因果结论。
+
+图形、衍生公式与悬停显示属于这些独立页面的具体集成。若产品承诺跨宿主恢复整页，除 Dashboard 与资源快照外，还须明确保存或重建这些显示与计算规则，不能声称基础 DSL 已自动保存任意 HTML 计算代码。
 
 ## 精简模板的重要片段
 
