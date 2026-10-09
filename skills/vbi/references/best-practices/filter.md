@@ -1,6 +1,6 @@
 # Filter 筛选器最佳实践
 
-适用于 VBI Dashboard 的地区、周期、类别等筛选组件。**保持简约，少量选项优先平铺，桌面尽量一行完成；用 VBI Builder 修改数据范围，复用图表实例通过 `updateSpec()` 更新，并同步播放指标文本动画。** 参考[完整轻量看板](../../examples/dashboard/lightweight-dashboard.html)的周期按钮、`setPeriod()`、`applyPeriod()`、`requestRender()` 和 `draw()`；地区与周期组合见[精简模板](../../examples/dashboard/template.html)的 `applyFilters()`。
+适用于 VBI Dashboard 的地区、周期、类别等筛选组件。**保持简约，少量选项优先平铺，桌面尽量一行完成；用 VBI Builder 修改数据范围，复用图表实例通过 `updateSpec()` 更新，并同步播放指标文本动画。** 参考[完整轻量看板](../../templates/example.html)的周期按钮、`setPeriod()`、`applyPeriod()`、`requestRender()` 和 `draw()`；地区与周期组合见[精简模板](../../templates/template-business-overview.html)的 `applyFilters()`。
 
 ## 简约控件与一行布局
 

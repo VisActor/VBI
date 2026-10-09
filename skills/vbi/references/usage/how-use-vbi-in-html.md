@@ -31,17 +31,17 @@ region,channel,sales
 
 ## 从参考实现选择起点
 
-| 示例                                                            | 适合学习                                       | 阅读代码时关注                                                     |
-| --------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------ |
-| [模板 1：趋势主导](../../examples/dashboard/template1.html)     | 预期寿命年度趋势；蓝色主辅布局                 | `prepareRows()`、`conditionsFor()`、`buildView()`、`drawPlot()`    |
-| [模板 2：指标先行](../../examples/dashboard/template2.html)     | 心衰记录概览与年龄组比较；紫色指标行           | 同一查询范围的核心指标、事件占比与局部查看                         |
-| [模板 3：分段叙事](../../examples/dashboard/template3.html)     | 餐食、运动、营养及样本构成；暖橙分段布局       | 汇总比率、不同分组的图表与缓存联动                                 |
-| [精简 Dashboard 模板](../../examples/dashboard/template.html)   | 新建轻量看板、内置数据与完整必要交互           | `draw()`、`animateMetric()`、`bindMetricHover()`、`bindCardTilt()` |
-| [精致散点图](../../examples/charts/polished-chart.html)         | 单图编码、图例筛选与精细标注                   | `chartBuilder`、`decorate()`、`render()`                           |
-| [轻量看板](../../examples/dashboard/lightweight-dashboard.html) | 顶部洞察、汇总指标、周期比较、自定义 HTML 卡片 | `summarizePeriod()`、`rowsOf()`、`layoutDashboard()`               |
-| [业务大屏](../../examples/screen/large-screen.html)             | 多图组合、Dashboard / Insight 资源、局部筛选   | `drawSocial()`、`drawIncome()`、`filterChart()`、`layout()`        |
+先看[可视总览](../../templates/index.html)：二十份独立 HTML 内嵌十个行业的完整 CSV，展示不同分析重点、布局、主题与数据口径。按需组合片段，不默认照搬某一页。配置在 `page-config`，完整数据在 `source-data`；每页的来源、字段映射与单位可追溯。
 
-新建看板先按数据与分析任务选择三种模板之一，基础模板用于查阅较小的接入实现。完整轻量示例用于参考更丰富的配色、图标与业务数据接入。浏览器需要联网加载 CDN 模块；复制大屏时同时保留 `assets/large-screen-live-preview.png`，模板和散点图可以单独复制 HTML。完整轻量看板当前仍通过网络加载 CSV，复制为独立交付页面时，必须按上文将 CSV 内置，并将数据初始化改为读取内联文本。
+| 示例                                                                   | 适合学习                                       | 阅读代码时关注                                                     |
+| ---------------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------ |
+| [模板 1：趋势主导](../../templates/template-life-expectancy.html)      | 预期寿命年度趋势；蓝色主辅布局                 | `prepareRows()`、`conditionsFor()`、`buildView()`、`drawPlot()`    |
+| [模板 2：指标先行](../../templates/template-heart-failure.html)        | 心衰记录概览与年龄组比较；紫色指标行           | 同一查询范围的核心指标、事件占比与局部查看                         |
+| [模板 3：分段叙事](../../templates/template-meal-workout.html)         | 餐食、运动、营养及样本构成；暖橙分段布局       | 汇总比率、不同分组的图表与缓存联动                                 |
+| [精简 Dashboard 模板](../../templates/template-business-overview.html) | 新建轻量看板、内置数据与完整必要交互           | `draw()`、`animateMetric()`、`bindMetricHover()`、`bindCardTilt()` |
+| [轻量看板](../../templates/example.html)                               | 顶部洞察、汇总指标、周期比较、自定义 HTML 卡片 | `summarizePeriod()`、`rowsOf()`、`layoutDashboard()`               |
+
+新建看板按数据与分析任务从基准模板、行业参考集中选取片段或重组布局，基础模板用于查阅较小的接入实现。完整轻量示例用于参考更丰富的配色、图标与业务数据接入。`templates/` 中的 24 份模板可以单独复制 HTML，浏览器需要联网加载 CDN 模块。完整轻量看板当前仍通过网络加载 CSV，复制为独立交付页面时，必须按上文将 CSV 内置，并将数据初始化改为读取内联文本。
 
 ### 三种数据模板的共同机制
 
@@ -53,7 +53,7 @@ region,channel,sales
 
 ## 精简模板的重要片段
 
-[template.html](../../examples/dashboard/template.html)保留与完整轻量示例一致的必要功能：固定趋势主导布局、柔和浅蓝（`#A8C7E8`）、顶部核心发现、销售主面积图、增长迷你面积图、订单占比环图、利润迷你柱图；标题右侧集中的地区与周期平铺筛选、600ms 图表与指标过渡、小卡 ≤2° 倾斜、默认展开表格、悬停及键盘联动。模板不提供布局和配色选择，地区筛选只显示“全部地区 / 华东 / 华北”选项，分组名称保留在 `aria-label` 中。精简的是数据规模、图标和显示设置，而必要的图表与卡内交互保持完整，逐项要求见[必要基线](../best-practices/layout.md#轻量看板的功能与视觉基线)。原始数据为内置的 60 天确定性演示数据，共 240 条商品明细、120 个订单，截止日为 2026-09-29；同一订单有两条商品明细，用于验证去重。消费者分类属于演示字段，实际数据无该字段时应更换有意义的分组图形。
+[template-business-overview.html](../../templates/template-business-overview.html)保留与完整轻量示例一致的必要功能：固定趋势主导布局、柔和浅蓝（`#A8C7E8`）、顶部核心发现、销售主面积图、增长迷你面积图、订单占比环图、利润迷你柱图；标题右侧集中的地区与周期平铺筛选、600ms 图表与指标过渡、小卡 ≤2° 倾斜、默认展开表格、悬停及键盘联动。模板不提供布局和配色选择，地区筛选只显示“全部地区 / 华东 / 华北”选项，分组名称保留在 `aria-label` 中。精简的是数据规模、图标和显示设置，而必要的图表与卡内交互保持完整，逐项要求见[必要基线](../best-practices/layout.md#轻量看板的功能与视觉基线)。原始数据为内置的 60 天确定性演示数据，共 240 条商品明细、120 个订单，截止日为 2026-09-29；同一订单有两条商品明细，用于验证去重。消费者分类属于演示字段，实际数据无该字段时应更换有意义的分组图形。
 
 先替换 `rawDataset`、`schema`、`connectorId` 与指标口径，再调整卡片内容和 Dashboard 坐标。模板的固定日期、地区和色系仅服务于这份演示数据。下列片段摘取关键机制，依赖模板已导入的模块、Builder 与 DOM；完整可运行文件以模板为准，依赖加载及 import map 见下方完整 HTML 教程。
 
@@ -163,7 +163,7 @@ const appearance = {
 
 ### 5. 保留主辅视觉比例
 
-复用结构时同时保留字号、卡间留白和绘图区高度。以下是模板中的关键 CSS；卡片位置仍由上面的 Dashboard DSL 提供，窄屏读取 `xs` 坐标重排。
+复用结构时同时保留卡间留白、绘图区高度与主辅字体层级。先引入[数值字号规范](../best-practices/metric-card.md#数值字号规范)的角色 token 和窄屏整组切换规则；以下选择器消费这些 token，避免逐卡或按数字长度缩放。卡片位置仍由上面的 Dashboard DSL 提供，窄屏读取 `xs` 坐标重排。
 
 ```css
 .dashboard {
@@ -173,10 +173,10 @@ const appearance = {
   gap: 18px;
 }
 .hero-value {
-  font-size: clamp(38px, 4.4vw, 59px);
+  font-size: var(--metric-primary-size);
 }
 .small-value {
-  font-size: 29px;
+  font-size: var(--metric-secondary-size);
 }
 .hero-figure {
   position: relative;
@@ -195,7 +195,7 @@ const appearance = {
 }
 ```
 
-这些尺寸服务于轻量风格，可随容器与业务内容调整。核心发现自然撑高，卡内相关指标用分隔线组织；图表 Canvas 不反向撑高网格，长数值不能裁切。单独复制通用接入代码，不会自动获得这些视觉关系。
+图形尺寸可随容器与业务内容调整，指标字号只按已定义的角色与断点切换；单位用独立节点，动画更新数值节点而不改变字号。长数值优先调整单位表达、卡片跨度或 mini 图位置，不按卡宽覆盖字号。核心发现自然撑高，卡内相关指标用分隔线组织；图表 Canvas 不反向撑高网格，长数值不能裁切。单独复制通用接入代码，不会自动获得模板的阅读质量，仍需先查看模板与截图并做最终对照。
 
 ### 6. 平铺选择器与默认展开明细
 
