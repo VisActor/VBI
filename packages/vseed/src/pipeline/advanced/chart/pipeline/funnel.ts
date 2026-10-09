@@ -4,7 +4,6 @@ import {
   theme,
   pivotAdapter,
   annotation,
-  rejectUnsupportedAnnotationAreaRange,
   funnelConfig,
   reshapeWithEncoding,
   pivotReshapeWithEncoding,
@@ -35,5 +34,4 @@ export const funnelAdvancedPipeline: AdvancedPipeline = [
   funnelConfig,
   theme,
   annotation,
-  rejectUnsupportedAnnotationAreaRange,
 ]

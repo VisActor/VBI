@@ -4,7 +4,7 @@ import {
   theme,
   pivotAdapter,
   markStyle,
-  annotation,
+  annotationWithRange,
   rejectPivotAnnotationAreaRange,
   sortLegend,
   pivotReshapeWithBoxplotEncoding,
@@ -42,6 +42,5 @@ export const boxplotAdvancedPipeline: AdvancedPipeline = [
   sortLegend,
   theme,
   markStyle,
-  annotation,
-  pivotAdapter([], [rejectPivotAnnotationAreaRange]),
+  pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange]),
 ]

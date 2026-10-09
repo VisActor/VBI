@@ -3,7 +3,7 @@ import {
   initAdvancedVSeed,
   theme,
   pivotAdapter,
-  annotation,
+  annotationWithRange,
   rejectPivotAnnotationAreaRange,
   markStyle,
   scatterConfig,
@@ -38,7 +38,6 @@ export const scatterAdvancedPipeline: AdvancedPipeline = [
   scatterConfig,
   theme,
   markStyle,
-  annotation,
-  pivotAdapter([], [rejectPivotAnnotationAreaRange]),
+  pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange]),
   regressionLine,
 ]

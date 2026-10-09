@@ -6,7 +6,7 @@ import {
   pivotAdapter,
   barConfig,
   markStyle,
-  annotation,
+  annotationWithRange,
   rejectPivotAnnotationAreaRange,
   sortYBandAxis,
   sortLegend,
@@ -40,6 +40,5 @@ export const barAdvancedPipeline: AdvancedPipeline = [
   barConfig,
   theme,
   markStyle,
-  annotation,
-  pivotAdapter([], [rejectPivotAnnotationAreaRange]),
+  pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange]),
 ]

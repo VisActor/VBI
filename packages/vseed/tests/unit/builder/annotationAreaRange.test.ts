@@ -304,6 +304,41 @@ describe('annotationArea coordinate ranges', () => {
     ).toThrow(/annotationArea.*range.*support/)
   })
 
+  test('rejects a later range in mixed annotations on an unsupported chart', () => {
+    const annotations = [
+      { selector: { field: 'channel', value: ['B'] } },
+      { range: { y: { min: 0, max: 1 } } },
+    ]
+    expect(() => Builder.from({ ...scatter(annotations), chartType: 'pie' } as VSeed).build()).toThrow(
+      /annotationArea\[1\].range.*support/,
+    )
+  })
+
+  test('keeps histogram point annotations alongside an area range', () => {
+    const builder = Builder.from({
+      chartType: 'histogram',
+      dataset: [1, 1, 2, 5, 7, 8, 9, 10].map((value) => ({ value })),
+      measures: [{ id: 'value' }],
+      annotationPoint: { selector: { field: '__BinStart__', op: '>=', value: 0 }, text: '区间' },
+      annotationArea: { range: { x: { min: 3, max: 7 } } },
+    } as VSeed)
+    const advanced = builder.buildAdvanced()!
+    const spec = builder.buildSpec(advanced) as unknown as {
+      xField: string
+      x2Field: string
+      markPoint: Array<{ coordinate: (data: Datum[]) => Datum | undefined }>
+      markArea: unknown[]
+    }
+    const source = advanced.dataset.flat()[0]
+
+    expect(spec.markArea).toHaveLength(1)
+    expect(spec.markPoint.length).toBeGreaterThan(0)
+    expect(spec.markPoint[0].coordinate(advanced.dataset.flat())?.[spec.xField]).toBe(
+      (source[spec.xField] + source[spec.x2Field]) / 2,
+    )
+    expect(spec.markPoint[0].coordinate([])).toBeUndefined()
+  })
+
   test('diagnoses facet ranges before silently repeating them across panels', () => {
     const vseed = scatter({ range: { y: { min: 0, max: 1 } } })
     vseed.dimensions = [{ id: 'channel', encoding: 'row' }]

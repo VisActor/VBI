@@ -7,7 +7,6 @@ import {
   centerTextConfig,
   pivotAdapter,
   annotation,
-  rejectUnsupportedAnnotationAreaRange,
   donutConfig,
   encodingForPie,
   reshapeWithEncoding,
@@ -41,5 +40,4 @@ export const donutAdvancedPipeline: AdvancedPipeline = [
   centerTextConfig,
   theme,
   annotation,
-  rejectUnsupportedAnnotationAreaRange,
 ]

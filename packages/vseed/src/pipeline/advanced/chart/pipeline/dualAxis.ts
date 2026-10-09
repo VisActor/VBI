@@ -4,7 +4,6 @@ import {
   theme,
   pivotAdapter,
   annotation,
-  rejectUnsupportedAnnotationAreaRange,
   markStyle,
   sortXBandAxis,
   sortLegend,
@@ -41,5 +40,4 @@ export const dualAxisAdvancedPipeline: AdvancedPipeline = [
   theme,
   markStyle,
   annotation,
-  rejectUnsupportedAnnotationAreaRange,
 ]

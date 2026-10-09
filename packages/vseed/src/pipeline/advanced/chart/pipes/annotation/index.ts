@@ -1,2 +1,2 @@
-export { annotation } from './annotation'
-export { rejectUnsupportedAnnotationAreaRange, rejectPivotAnnotationAreaRange } from './rejectAnnotationAreaRange'
+export { annotation, annotationWithRange } from './annotation'
+export { rejectPivotAnnotationAreaRange } from './rejectAnnotationAreaRange'

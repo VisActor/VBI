@@ -1,8 +1,9 @@
 import { pick } from 'remeda'
 import type { AdvancedPipe, AdvancedVSeed } from 'src/types'
 import { zAnnotationAreaRange } from 'src/types'
+import { rejectUnsupportedAnnotationAreaRange } from './rejectAnnotationAreaRange'
 
-export const annotation: AdvancedPipe = (advancedVSeed, context) => {
+export const annotationWithRange: AdvancedPipe = (advancedVSeed, context) => {
   const { vseed } = context
   const annotation = pick(vseed, [
     'annotationPoint',
@@ -34,3 +35,6 @@ export const annotation: AdvancedPipe = (advancedVSeed, context) => {
 
   return { ...advancedVSeed, annotation }
 }
+
+export const annotation: AdvancedPipe = (advancedVSeed, context) =>
+  rejectUnsupportedAnnotationAreaRange(annotationWithRange(advancedVSeed, context), context)

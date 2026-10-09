@@ -4,7 +4,7 @@ import {
   theme,
   pivotAdapter,
   lineConfig,
-  annotation,
+  annotationWithRange,
   rejectPivotAnnotationAreaRange,
   markStyle,
   sortXBandAxis,
@@ -40,6 +40,5 @@ export const lineAdvancedPipeline: AdvancedPipeline = [
   lineConfig,
   theme,
   markStyle,
-  annotation,
-  pivotAdapter([], [rejectPivotAnnotationAreaRange]),
+  pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange]),
 ]

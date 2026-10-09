@@ -5,7 +5,7 @@ import {
   pivotAdapter,
   histogramConfig,
   markStyle,
-  annotation,
+  annotationWithRange,
   rejectPivotAnnotationAreaRange,
   sortLegend,
   pivotReshapeWithHistogramEncoding,
@@ -39,7 +39,6 @@ export const histogramAdvancedPipeline: AdvancedPipeline = [
   sortLegend,
   theme,
   markStyle,
-  annotation,
-  pivotAdapter([], [rejectPivotAnnotationAreaRange]),
+  pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange]),
   regressionLine,
 ]

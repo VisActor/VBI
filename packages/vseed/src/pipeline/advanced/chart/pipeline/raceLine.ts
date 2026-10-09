@@ -7,7 +7,6 @@ import {
   lineConfig,
   markStyle,
   annotation,
-  rejectUnsupportedAnnotationAreaRange,
   sortXBandAxis,
   sortLegend,
   reshapeWithEncoding,
@@ -41,5 +40,4 @@ export const raceLineAdvancedPipeline: AdvancedPipeline = [
   theme,
   markStyle,
   annotation,
-  rejectUnsupportedAnnotationAreaRange,
 ]

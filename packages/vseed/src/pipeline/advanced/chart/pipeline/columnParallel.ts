@@ -7,7 +7,7 @@ import {
   pivotReshapeWithEncoding,
   columnParallelConfig,
   markStyle,
-  annotation,
+  annotationWithRange,
   rejectPivotAnnotationAreaRange,
   sortXBandAxis,
   sortLegend,
@@ -40,6 +40,5 @@ export const columnParallelAdvancedPipeline: AdvancedPipeline = [
   columnParallelConfig,
   theme,
   markStyle,
-  annotation,
-  pivotAdapter([], [rejectPivotAnnotationAreaRange]),
+  pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange]),
 ]
