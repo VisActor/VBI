@@ -2,7 +2,7 @@
 
 适用于 Dashboard 顶部“核心发现”与经营结论。**用一句有证据的结论连接核心指标与重要衍生指标，再展示范围、比较基准和逐项依据。** 核心指标描述规模，衍生指标补充结构、效率与质量，不能只罗列原始数值，也不能用未经计算的判断替代证据。版面比例与响应式由[布局最佳实践](./layout.md)负责。
 
-参考[精简模板](../../examples/dashboard/template.html)与[完整轻量看板](../../examples/dashboard/lightweight-dashboard.html)的 `deriveMetrics()`、`pointChange()`、`summarizeKeyFinding()`；完整示例的 `summarizePeriod()` 组织证据，模板在 `renderLoop()` 中写入同一 Insight 资源。
+参考[精简模板](../../templates/template-business-overview.html)与[完整轻量看板](../../templates/example.html)的 `deriveMetrics()`、`pointChange()`、`summarizeKeyFinding()`；完整示例的 `summarizePeriod()` 组织证据，模板在 `renderLoop()` 中写入同一 Insight 资源。
 
 ## 结论、范围与证据
 

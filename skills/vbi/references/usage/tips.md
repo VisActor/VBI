@@ -2,7 +2,7 @@
 
 从三个 HTML 示例提炼的接入与复用技巧，适用于单图、自定义指标卡和仪表盘。先阅读本文确定数据、状态与渲染的分工；浏览器 ESM 入口和完整启动代码见[在 HTML 中使用 VBI](./how-use-vbi-in-html.md)，接口签名见 [API 索引](../api/vbi/index.md)。
 
-示例入口：[精致散点图](../../examples/charts/polished-chart.html)、[轻量看板](../../examples/dashboard/lightweight-dashboard.html)、[业务大屏](../../examples/screen/large-screen.html)。其中的固定日期、配色、标签偏移和图形组合服务于各自场景，不作为其他页面的默认配置。
+参考入口：[模板总览](../../templates/index.html)、[完整轻量看板](../../templates/example.html)。其中的固定日期、配色、标签偏移和图形组合服务于各自场景，不作为其他页面的默认配置。
 
 创建轻量 Dashboard 时，另读[设计与布局最佳实践](../best-practices/layout.md)和[配色与背景最佳实践](../best-practices/design.md)；配置迷你图、指标文本动画与悬停联动时，另读[指标卡最佳实践](../best-practices/metric-card.md)。
 
