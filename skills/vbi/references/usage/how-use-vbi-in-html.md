@@ -29,15 +29,257 @@ region,channel,sales
 
 交付前用 `file://` 直接打开 HTML，检查筛选、聚合和渲染；在 Network 中确认没有 JSON / CSV 数据请求，在 Console 中确认没有数据加载错误。若业务明确需要实时远程数据，应通过 HTTP(S) 部署并正确配置数据服务的 CORS，同时显示加载失败状态；这类页面需要另行验证部署环境。
 
-## 从三个实践示例选择起点
+## 从参考实现选择起点
 
-| 示例                                                            | 适合学习                                       | 阅读代码时关注                                              |
-| --------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------------------- |
-| [精致散点图](../../examples/charts/polished-chart.html)         | 单图编码、图例筛选与精细标注                   | `chartBuilder`、`decorate()`、`render()`                    |
-| [轻量看板](../../examples/dashboard/lightweight-dashboard.html) | 顶部洞察、汇总指标、周期比较、自定义 HTML 卡片 | `summarizePeriod()`、`rowsOf()`、`layoutDashboard()`        |
-| [业务大屏](../../examples/screen/large-screen.html)             | 多图组合、Dashboard / Insight 资源、局部筛选   | `drawSocial()`、`drawIncome()`、`filterChart()`、`layout()` |
+| 示例                                                            | 适合学习                                       | 阅读代码时关注                                                     |
+| --------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------ |
+| [精简 Dashboard 模板](../../examples/dashboard/template.html)   | 新建轻量看板、内置数据与完整必要交互           | `draw()`、`animateMetric()`、`bindMetricHover()`、`bindCardTilt()` |
+| [精致散点图](../../examples/charts/polished-chart.html)         | 单图编码、图例筛选与精细标注                   | `chartBuilder`、`decorate()`、`render()`                           |
+| [轻量看板](../../examples/dashboard/lightweight-dashboard.html) | 顶部洞察、汇总指标、周期比较、自定义 HTML 卡片 | `summarizePeriod()`、`rowsOf()`、`layoutDashboard()`               |
+| [业务大屏](../../examples/screen/large-screen.html)             | 多图组合、Dashboard / Insight 资源、局部筛选   | `drawSocial()`、`drawIncome()`、`filterChart()`、`layout()`        |
 
-用浏览器直接打开示例 HTML。浏览器需要联网加载 CDN 模块；复制大屏时同时保留 `assets/large-screen-live-preview.png`，另外两个示例可以单独复制 HTML。轻量看板当前仍通过网络加载 CSV，复制为独立交付页面时，必须按上文将 CSV 内置，并将数据初始化改为读取内联文本。
+新建轻量看板优先复制精简模板，完整轻量示例用于参考更丰富的配色、图标与业务数据接入。用浏览器直接打开示例 HTML。浏览器需要联网加载 CDN 模块；复制大屏时同时保留 `assets/large-screen-live-preview.png`，模板和散点图可以单独复制 HTML。完整轻量看板当前仍通过网络加载 CSV，复制为独立交付页面时，必须按上文将 CSV 内置，并将数据初始化改为读取内联文本。
+
+## 精简模板的重要片段
+
+[template.html](../../examples/dashboard/template.html)保留与完整轻量示例一致的必要功能：固定趋势主导布局、柔和浅蓝（`#A8C7E8`）、顶部核心发现、销售主面积图、增长迷你面积图、订单占比环图、利润迷你柱图；标题右侧集中的地区与周期平铺筛选、600ms 图表与指标过渡、小卡 ≤2° 倾斜、默认展开表格、悬停及键盘联动。模板不提供布局和配色选择，地区筛选只显示“全部地区 / 华东 / 华北”选项，分组名称保留在 `aria-label` 中。精简的是数据规模、图标和显示设置，而必要的图表与卡内交互保持完整，逐项要求见[必要基线](../best-practices/layout.md#轻量看板的功能与视觉基线)。原始数据为内置的 60 天确定性演示数据，共 240 条商品明细、120 个订单，截止日为 2026-09-29；同一订单有两条商品明细，用于验证去重。消费者分类属于演示字段，实际数据无该字段时应更换有意义的分组图形。
+
+先替换 `rawDataset`、`schema`、`connectorId` 与指标口径，再调整卡片内容和 Dashboard 坐标。模板的固定日期、地区和色系仅服务于这份演示数据。下列片段摘取关键机制，依赖模板已导入的模块、Builder 与 DOM；完整可运行文件以模板为准，依赖加载及 import map 见下方完整 HTML 教程。
+
+首屏加载状态必须写在静态 HTML 中，不能等 CDN 或模块执行后再隐藏未布局的内容。模板用 `data-initialized="false"` 与 `inert` 暂时收起主体，保留标题、禁用筛选和可见的加载反馈；主体仍参与内部布局，让 Builder 设置坐标后能以真实尺寸绘制图表。首次数据、指标、洞察和图表就绪后再展示并播放入场；之后的筛选仅更新现有内容，不重新收起或重播。初始化失败时保留可见错误，减少动态效果只取消动效，不提前展示半成品。
+
+### 1. 内置数据接入 Connector
+
+VQuery 负责执行 Builder 生成的筛选、分组与聚合。刷新时更新已有 IndexedDB 数据集，每次查询都在 `finally` 中断开连接。
+
+```javascript
+const query = new VQuery()
+const source = { type: 'json', rawDataset }
+if (await query.hasDataset(connectorId)) await query.updateDatasetSource(connectorId, schema, source)
+else await query.createDataset(connectorId, schema, source)
+VBI.connectors.register(connectorId, {
+  discoverSchema: async () => schema,
+  query: async ({ queryDSL }) => {
+    const dataset = await query.connectDataset(connectorId)
+    try {
+      return await dataset.query(queryDSL)
+    } finally {
+      await dataset.disconnect()
+    }
+  },
+})
+```
+
+### 2. Builder 查询与自定义指标映射
+
+模板的 `createChart()` 统一创建图表；`totals` 与 `previous` 查询本期和前期汇总，`trend`、`growth` 与 `profit` 查询每日走势，`regions` 查询地区分组结果，`consumers` 查询消费者去重订单，`dailyTotals` 与 `dailyConsumers` 建立联动日期索引。订单使用 `countDistinct`，销售额和利润使用 `sum`；总订单数不累加每日或地区去重数。
+
+```javascript
+const totals = createChart('table', null, ['sales', 'order_id', 'profit'])
+const trend = createChart('area', 'order_date', ['sales'])
+const seed = await totals.buildVSeed()
+function rowsOf(chart, seed) {
+  const { dimensions, measures } = chart.build()
+  return seed.dataset.map((row) =>
+    Object.fromEntries([...dimensions, ...measures].map((field) => [field.field, row[field.id]])),
+  )
+}
+const total = rowsOf(totals, seed)[0]
+// HTML 指标读取业务名；传给 VSeed 的 seed 保留原始字段 ID。
+```
+
+此映射适用于平铺、每个字段只有一种聚合的模板。多个聚合复用同一字段时，应使用度量 ID 或不同业务键，避免覆盖；空结果、零分母和基期为零的展示见模板 `renderLoop()` 与 `comparison()`。
+
+### 3. 资源与布局交给 Dashboard Builder
+
+Chart、Insight、Dashboard 使用同一 VBI 实例。组件布局在集合回调中提交，UI 读取 `dashboard.build().layout[breakpoint]`，同步 DOM 阅读顺序与 CSS Grid；不要再用另一套 CSS 固定模块位置。
+
+```javascript
+dashboard.chart.add((widget) => {
+  widget
+    .setChart(trend)
+    .setTitle('销售总额')
+    .setLayouts({
+      lg: { x: 0, y: 1, w: 8, h: 9 },
+      xs: { x: 0, y: 1, w: 12, h: 9 },
+    })
+  document.querySelector('#hero-slot').dataset.widget = widget.getId()
+})
+insight.setContent([finding, scope, ...evidence].join('\n'))
+// 模板用 insight.dsl.observeDeep(renderInsight) 将资源内容安全写入 DOM。
+```
+
+模板 `layoutDashboard()` 以容器宽度选择断点，主卡数字约 59px、辅助数字约 29px，区域明细默认展开。模板在初始化时通过 Builder 设置固定布局，不保留布局预设、切换控件或相应事件；外层 slot 管布局与入场，内层 card 管倾斜。布局与字号的调整依据见[视觉骨架](../best-practices/layout.md#复用轻量示例的视觉骨架)。核心发现同时展示销售额、订单、利润三项核心指标与利润率、平均客单价两项衍生指标；结论与计算口径见[洞察最佳实践](../best-practices/insight.md)。Insight 内容由真实查询结果生成，没有调用模型服务；需要保存时同时导出 Dashboard DSL 与资源快照，恢复过程见[状态与资源](./tips.md#同时保存-dashboard-和资源)。
+
+### 4. 筛选改 Builder，渲染复用实例
+
+`applyFilters()` 以数据最新日期为截止日，按已保存的条件 ID 更新日期和地区；前期查询使用此前等长区间。控件只调用它，`observeDeep()` 订阅负责刷新。多图同步修改在同一轮微任务合并，`renderLoop()` 串行处理刷新并丢弃过期查询结果，查询期间禁用控件。
+
+```javascript
+const updateDate = (node) => node.setOperator('between').setValue({ min: firstDay, max: lastDay })
+chart.whereFilter.update(dateConditionId, updateDate)
+// dateConditionId 在首次 whereFilter.add() 的回调中通过 node.getId() 保存。
+chart.dsl.observeDeep(requestRender)
+
+const seed = await chart.buildVSeed()
+const spec = buildChartSpec(seed)
+if (instances.has(element)) {
+  if (reducedMotion.matches) instances.get(element).stopAnimation()
+  await instances.get(element).updateSpec(spec)
+} else {
+  const instance = new VChart(spec, { dom: element })
+  instance.renderSync()
+  chart.instance.bind(instance)
+  instances.set(element, instance)
+}
+```
+
+`buildChartSpec()` 定制透明背景、统一强调色、简约坐标与图形样式，不改变查询结果；迷你利润图保留负值，旧版柱图用 `spec.stackCornerRadius = 0` 关闭额外裁剪。平滑线与更新动画是必要配置，不能设置 `animation.enable: false` 后认为已经实现更新动画：
+
+```javascript
+const appearance = {
+  lineStyle: { lineWidth: mini ? 1.5 : 2.5, lineSmooth: true },
+  areaStyle: { areaColorOpacity: 0.27, areaGradient: true },
+  animation: {
+    enable: !reducedMotion.matches,
+    params: { appear: { enable: false }, update: { enable: true, duration: 600, ease: 'cubicInOut' } },
+  },
+}
+// 将 appearance 合入 VBI 返回的 seed，再用 Builder.from(...).build()。
+```
+
+`ResizeObserver` 重新应用布局并调整实例尺寸；页面卸载时解除 Builder 订阅、倾斜与悬停监听、断开观察、取消数值动画帧与待执行任务，并释放实例。
+
+### 5. 保留主辅视觉比例
+
+复用结构时同时保留字号、卡间留白和绘图区高度。以下是模板中的关键 CSS；卡片位置仍由上面的 Dashboard DSL 提供，窄屏读取 `xs` 坐标重排。
+
+```css
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: minmax(44px, auto);
+  gap: 18px;
+}
+.hero-value {
+  font-size: clamp(38px, 4.4vw, 59px);
+}
+.small-value {
+  font-size: 29px;
+}
+.hero-figure {
+  position: relative;
+  flex: 1;
+  min-height: 220px;
+}
+#trend {
+  position: absolute;
+  inset: 0 0 24px;
+  width: 100%;
+}
+.mini {
+  width: 116px;
+  height: 77px;
+  flex-shrink: 0;
+}
+```
+
+这些尺寸服务于轻量风格，可随容器与业务内容调整。核心发现自然撑高，卡内相关指标用分隔线组织；图表 Canvas 不反向撑高网格，长数值不能裁切。单独复制通用接入代码，不会自动获得这些视觉关系。
+
+### 6. 平铺选择器与默认展开明细
+
+少量互斥选项优先平铺，桌面筛选区域尽量一行，避免重复标签和默认原生 HTML `select` / `input` 外观；大量选项与精确输入采用紧凑的定制入口，窄屏允许必要换行。控件显式表达选中状态，保留 `type="button"` 和键盘焦点。控件回调只更新自身条件，不能清除消费者等其他筛选。控件布局、作用范围、条件 ID 维护及图表与文本的同步动画见[Filter 最佳实践](../best-practices/filter.md)。
+
+```html
+<header class="heading">
+  <div>
+    <h1>经营概览</h1>
+    <p class="scope">当前统计范围</p>
+  </div>
+  <fieldset class="filter-row" aria-label="全局筛选">
+    <div class="segment" role="group" aria-label="地区">
+      <button type="button" data-region="" aria-pressed="true">全部地区</button>
+      <button type="button" data-region="华东" aria-pressed="false">华东</button>
+      <button type="button" data-region="华北" aria-pressed="false">华北</button>
+    </div>
+    <div class="segment" role="group" aria-label="统计周期">
+      <button type="button" data-days="7" aria-pressed="false">7 天</button>
+      <button type="button" data-days="14" aria-pressed="false">14 天</button>
+      <button type="button" data-days="30" aria-pressed="true">30 天</button>
+    </div>
+  </fieldset>
+</header>
+<details open>
+  <summary>查看区域明细与数据口径</summary>
+  <table>
+    <tbody id="regions"></tbody>
+  </table>
+</details>
+```
+
+刷新只替换 `tbody`，不重建 `details` 或给 `open` 重新赋值。模板地区与周期按钮合并在“经营概览”标题行最右侧，作用范围均为本看板全局；趋势卡内只保留逐日查看与恢复汇总操作。`.segment` 允许窄屏换行；不默认使用原生 `select`，大量选项再使用搜索或定制下拉。
+
+### 7. 指标文本过渡
+
+使用模板 `animateMetric()` 覆盖全部动态数字。其状态同时保存当前显示值、目标值、格式函数和动画帧；新目标取消旧帧，从当前显示值接续，用 `1 - (1 - progress) ** 3` 在 600ms 内过渡。首次立即显示真实值，不从零开始；空值、无基期与零分母分别显示缺省或说明，减少动态效果模式立即结束动画。
+
+```javascript
+animateMetric('#sales', total.sales, money)
+animateMetric('#orders', total.order_id, (value) => `${Math.round(value)} 单`)
+animateMetric('#profit', total.profit, money)
+animateMetric(
+  '#margin',
+  total.sales ? (total.profit / total.sales) * 100 : undefined,
+  (value) => `${value.toFixed(1)}%`,
+)
+animateMetric('#average', total.order_id ? total.sales / total.order_id : undefined, money)
+// setChange() 也用 animateMetric() 更新变化率，并同步方向色。
+```
+
+详细数值插值代码见[指标文本更新动画](../best-practices/metric-card.md#指标文本更新动画)。动画只改展示文本，计算、Tooltip、导出和洞察始终用真实查询结果。
+
+### 8. 固定命中区域与 ≤2° 小卡倾斜
+
+```html
+<div class="card-slot">
+  <section class="card metric-card"><!-- 指标与 mini 图 --></section>
+</div>
+```
+
+```css
+.metric-card {
+  transform: perspective(800px) rotate3d(var(--tilt-x, 0), var(--tilt-y, 1), 0, var(--tilt-angle, 0deg));
+}
+```
+
+模板 `bindCardTilt()` 在固定外层区域读取鼠标坐标，只变换内层卡片；目标向量归一化后乘 1.5°，弹性插值时按向量长度限制为 2°，不能把两个轴各限制为 2° 后误认为合成角度合规。主趋势与洞察保持平面；移出、取消、滚动、失焦复位，触屏与减少动态效果关闭。模板保留返回的 `dispose()`，卸载时移除监听和帧。完整示例切换布局时还会复位倾斜，叙事布局展开为大图的卡片保持平面。参数与解释见[轻微倾斜](../best-practices/layout.md#按模块关系联动与轻微倾斜)。
+
+### 9. 卡内交互与作用域
+
+```javascript
+const byDate = new Map(rowsOf(dailyTotals, dailySeed).map((row) => [row.order_date, row]))
+// dailyTotals 的查询包含本期第一天的前一天，用于当日比较；不是从 DOM 数值反算。
+hoverSubscriptions.set(trend, bindMetricHover(trend, '#trend', 'all'))
+hoverSubscriptions.set(growth, bindMetricHover(growth, '#growth-trend', 'growth'))
+hoverSubscriptions.set(profit, bindMetricHover(profit, '#profit-trend', 'profit'))
+// 只绑定一次；currentMetrics 在每轮查询后替换为新日期索引与区间汇总。
+```
+
+悬停稳定 75ms 后读取日期缓存并更新文本，VChart Tooltip 即时响应；主图更新全部数字与订单环图，小图只更新所属卡片。离开恢复同作用域汇总，查询开始时暂停悬停并取消旧任务；刷新完成后恢复，局部联动不改 Insight。图表容器还支持左右键和 Esc；主卡的前一天 / 后一天 / 区间汇总按钮便于触屏查看。绑定与解除代码见[与图表联动](../best-practices/metric-card.md#与图表联动)，完整生命周期以模板为准。
+
+### 模板运行核对
+
+直接用 `file://` 打开，等待 `body[data-state="ready"][data-entrance="complete"]` 且四张图实际可见，再检查 30 → 14 → 7 → 30 天和地区筛选、默认展开及手动折叠、刷新后的初始化，以及 1440px 桌面与 390px 窄屏。实际检查 `updateSpec()` 复用与过渡、指标文本中间帧、平滑线、≤2° 倾斜、主图 / 小图联动与恢复、减少动态效果模式。确认模板无布局和配色控件、无重复“地区”标签，默认强调色为柔和浅蓝；三种布局与配色切换仅在完整示例或用户要求的扩展中验收。运行期只请求 CDN 依赖，不请求 JSON / CSV 数据。核心发现、汇总、图形和区域表使用同一筛选范围，明细展开状态不因筛选而重置。最终截图按[截图对照验收](../best-practices/visual-acceptance.md)保存并实际查看；截图无法替代动效与交互检查。
+
+内置数据的核对基准如下，金额取整；选择华东、30 天时应为销售额 ¥74,800、30 单、利润 ¥7,977。全部地区 30 天有 40 个消费者订单，占比约 66.7%，中心文本取整为 67%；不得从重复明细条数计算占比。
+
+| 全部地区周期 | 销售额   | 去重订单数 | 利润    |
+| ------------ | -------- | ---------- | ------- |
+| 30 天        | ¥154,400 | 60         | ¥16,494 |
+| 14 天        | ¥76,960  | 28         | ¥8,890  |
+| 7 天         | ¥39,656  | 14         | ¥4,116  |
+
+## 完整轻量示例的扩展能力
 
 轻量看板直接加载 [Supermarket CSV](https://visactor.github.io/VBI/dataset/supermarket.csv)，以数据中的最新订单日期为截止日，切换最近 7、14、30 个日历日，并与前一个等长周期比较。VQuery 负责解析 CSV；接入层将订单日期规范为 ISO 日期和 UTC 日序号，VBI Builder 配置日期筛选、销售额与利润求和、订单 ID 去重计数。消费者订单占比使用 `customer_type = 消费者` 的去重订单数除以总订单数；区域订单数也各自去重，同一订单可能涉及多个地区，因此不能直接相加。图表将没有订单的日期显示为零，亏损日期用负向利润柱显示。
 
@@ -49,7 +291,9 @@ region,channel,sales
 
 标题旁的三个布局图标按钮将顶部洞察与四个指标组织为趋势主导、指标先行或分段叙事，选中状态通过按钮和当前布局名称表达。三种布局统一使用最大 1140px 的外壳宽度，窄屏自适应；切换只改变内部排列。切换通过 Dashboard Builder 更新 `lg/xs` 坐标，保留图表、洞察资源、配色、统计周期和区域明细的展开状态；UI 按容器宽度读取布局、同步 DOM 顺序并调整图表尺寸。主趋势联动全部指标，迷你图只联动自身。布局原理见[布局最佳实践](../best-practices/layout.md)。
 
-三种布局都在图表前展示“AI 洞察”：先说明销售额、去重订单数、利润共 3 项指标及当前起止日期、比较周期，再用列表逐项列出本期值与环比波动，每项一句，增长用绿色、下跌用红色，同时保留箭头与方向文字。独立示例使用真实汇总结果生成摘要演示，未调用模型服务；指标数量、周期说明和 Markdown 列表统一经 Insight Builder 保存。切换 7、14、30 天会更新周期与所有列表项；布局、配色切换和图表悬停保留区间列表及方向颜色。接入 AI 时，将同一范围的指标清单、本期值、前期值与周期提供给模型，再将返回的逐项结论写入该 Insight 资源。
+区域明细表格默认展开，可点击标题折叠或重新展开；筛选、布局与配色切换保留用户当前的展开状态。
+
+三种布局都在图表前展示“核心发现”，以三项核心指标和利润率、平均客单价两项衍生指标共同支撑一句关键结论；比率变化使用百分点，金额变化使用相对增幅。内容、计算、AI 接入边界和 Insight 保存方式统一见[洞察最佳实践](../best-practices/insight.md)。切换周期后重新计算，布局、配色切换与局部悬停保留区间洞察。首次入场采用 420ms 间隔、1400ms 时长，减少动态效果模式下直接显示。
 
 轻量看板的数据核对基准（当前 CSV 最新订单日期为 2019-12-30，共 9,959 条明细；金额显示取整）：
 
@@ -99,6 +343,35 @@ VChart 的 `build/index.min.js` 和 VTable 的 `dist/vtable.min.js` 通过普通
         flex-wrap: wrap;
         gap: 16px;
       }
+      .choices {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 4px;
+        background: #edf1f4;
+        border-radius: 18px;
+      }
+      button {
+        border: 0;
+        border-radius: 14px;
+        padding: 8px 12px;
+        font: inherit;
+        background: transparent;
+        color: #64717e;
+        cursor: pointer;
+      }
+      button[aria-pressed='true'] {
+        background: white;
+        color: #28333e;
+      }
+      button:focus-visible {
+        outline: 2px solid #81c5ba;
+        outline-offset: 2px;
+      }
+      button:disabled {
+        cursor: wait;
+        opacity: 0.6;
+      }
       #view {
         width: 100%;
         height: 360px;
@@ -115,22 +388,16 @@ VChart 的 `build/index.min.js` 和 VTable 的 `dist/vtable.min.js` 通过普通
     <h1>销售分析</h1>
     <fieldset id="controls" disabled>
       <legend>视图与筛选</legend>
-      <label
-        >视图
-        <select id="type">
-          <option value="column">柱状图</option>
-          <option value="table">普通表</option>
-          <option value="pivotTable">透视表</option>
-        </select>
-      </label>
-      <label
-        >地区
-        <select id="region">
-          <option value="">全部地区</option>
-          <option>华东</option>
-          <option>华北</option>
-        </select>
-      </label>
+      <div class="choices" role="group" aria-label="视图">
+        <button type="button" data-type="column" aria-pressed="true">柱状图</button>
+        <button type="button" data-type="table" aria-pressed="false">普通表</button>
+        <button type="button" data-type="pivotTable" aria-pressed="false">透视表</button>
+      </div>
+      <div class="choices" role="group" aria-label="地区">
+        <button type="button" data-region="" aria-pressed="true">全部地区</button>
+        <button type="button" data-region="华东" aria-pressed="false">华东</button>
+        <button type="button" data-region="华北" aria-pressed="false">华北</button>
+      </div>
     </fieldset>
     <p id="status" role="status">正在加载模块…</p>
     <div id="view"></div>
@@ -223,25 +490,30 @@ VChart 的 `build/index.min.js` 和 VTable 的 `dist/vtable.min.js` 通过普通
           $('#controls').disabled = true
           $('#status').textContent = '正在查询…'
           try {
-            const type = $('#type').value
+            const type = $('[data-type][aria-pressed="true"]').dataset.type
+            const region = $('[data-region][aria-pressed="true"]').dataset.region
             const builder = builders[type]
             // 本页只有地区筛选，因此可清空后重建；多条件页面按条件 ID 更新。
             builder.whereFilter.clear()
-            if ($('#region').value) {
-              builder.whereFilter.add('region', (node) => node.setOperator('eq').setValue($('#region').value))
+            if (region) {
+              builder.whereFilter.add('region', (node) => node.setOperator('eq').setValue(region))
             }
             const seed = await builder.buildVSeed()
             const options = Builder.from(seed).build()
-            instance?.release()
-            instance = undefined
-            activeType = type
-            if (type === 'table') {
-              instance = new ListTable(container, options)
-            } else if (type === 'pivotTable') {
-              instance = new PivotTable(container, options)
+            if (instance && activeType === type) {
+              if (type === 'column') await instance.updateSpec(options)
+              else await instance.updateOption(options)
             } else {
-              instance = new VChart(options, { dom: container })
-              instance.renderSync()
+              // 渲染器类型改变才释放；同一视图的筛选更新复用实例。
+              instance?.release()
+              instance = undefined
+              if (type === 'table') instance = new ListTable(container, options)
+              else if (type === 'pivotTable') instance = new PivotTable(container, options)
+              else {
+                instance = new VChart(options, { dom: container })
+                instance.renderSync()
+              }
+              activeType = type
             }
             $('#output').textContent = JSON.stringify(
               {
@@ -252,7 +524,7 @@ VChart 的 `build/index.min.js` 和 VTable 的 `dist/vtable.min.js` 通过普通
               null,
               2,
             )
-            $('#status').textContent = `已显示 ${seed.dataset.length} 条查询结果 · ${$('#region').value || '全部地区'}`
+            $('#status').textContent = `已显示 ${seed.dataset.length} 条查询结果 · ${region || '全部地区'}`
           } catch (error) {
             $('#status').textContent = `渲染失败：${error.message}`
             console.error(error)
@@ -260,8 +532,15 @@ VChart 的 `build/index.min.js` 和 VTable 的 `dist/vtable.min.js` 通过普通
             $('#controls').disabled = false
           }
         }
-        $('#type').addEventListener('change', render)
-        $('#region').addEventListener('change', render)
+        document.querySelectorAll('[data-type], [data-region]').forEach((button) =>
+          button.addEventListener('click', () => {
+            const attribute = button.hasAttribute('data-type') ? 'data-type' : 'data-region'
+            document
+              .querySelectorAll(`[${attribute}]`)
+              .forEach((item) => item.setAttribute('aria-pressed', String(item === button)))
+            void render()
+          }),
+        )
         const observer = new ResizeObserver(() => {
           if (!instance) return
           if (activeType === 'column') instance.resize(container.clientWidth, container.clientHeight)
