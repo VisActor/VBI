@@ -6,12 +6,12 @@
 <script>{;var defaultLang = "zh-CN", langs = ["zh-CN","en-US","ja-JP","de-DE","id-ID","fr-FR","ko-KR","vi-VN"];if (!/bot|spider|crawl|lighthouse/i.test(window.navigator.userAgent)) {;var firstVisitKey = 'rspress-visited', visited = localStorage.getItem(firstVisitKey);if (!visited) {;localStorage.setItem(firstVisitKey, '1');var targetLang = window.navigator.language.split('-')[0], { pathname, search } = window.location, base = "/VBI", cleanPathname = pathname.startsWith(base) ? pathname.slice(base.length) || '/' : pathname, pathSegments = cleanPathname.split('/').filter(Boolean), currentLang = langs.includes(pathSegments[0]) ? pathSegments[0] : defaultLang;if (langs.includes(targetLang) && targetLang !== currentLang) {;var newPathSegments = pathSegments.slice();if (targetLang === defaultLang) {;newPathSegments.splice(0, 1);} else if (currentLang === defaultLang) {;newPathSegments.splice(0, 0, targetLang);} else {;newPathSegments[0] = targetLang;};;var newPathname = '/' + newPathSegments.join('/'), trailingSlash = newPathname !== '/' && cleanPathname.endsWith('/') ? '/' : '';window.location['replace'](base + newPathname + trailingSlash + search);};};};}</script>
 <script>{;const saved = localStorage.getItem('rspress-theme-appearance');const preferDark = window.matchMedia('(prefers-color-scheme: dark)').matches;const defaultTheme = 'auto';const theme = saved === 'light' || saved === 'dark' || saved === 'auto' ? saved : defaultTheme;const isDark = theme === 'auto' ? preferDark : theme === 'dark';document.documentElement.classList.toggle('dark', isDark);document.documentElement.classList.toggle('rp-dark', isDark);document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';}</script>
 <link href="https://visactor.github.io/VBI/static/css/styles.f3ac4b85ce.css" rel="stylesheet">
-<link rel="preload" href="https://visactor.github.io/VBI/static/js/async/route-b892a867d4ff.bcd84224ed.js" as="script">
+<link rel="preload" href="https://visactor.github.io/VBI/static/js/async/route-b892a867d4ff.53352d7e98.js" as="script">
 <script defer src="https://visactor.github.io/VBI/static/js/styles.ca5eae6b62.js"></script>
 <script defer src="https://visactor.github.io/VBI/static/js/lib-router.d69dce9278.js"></script>
 <script defer src="https://visactor.github.io/VBI/static/js/lib-react.bebb6592e4.js"></script>
 <script defer src="https://visactor.github.io/VBI/static/js/lz8.c0d57dfe41.js"></script>
-<script defer src="https://visactor.github.io/VBI/static/js/index.44dba5fb3f.js"></script>
+<script defer src="https://visactor.github.io/VBI/static/js/index.d87439d5e6.js"></script>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Rspress v2.0.22">
 <link rel="alternate" hreflang="zh-CN" href="/VBI/vquery/examples/orderBy.html">
