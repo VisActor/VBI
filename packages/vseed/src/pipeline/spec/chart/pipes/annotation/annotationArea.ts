@@ -30,6 +30,7 @@ export const annotationArea: VChartSpecPipe = (spec, context) => {
     bottomRight: 'insideBottomRight',
     left: 'insideLeft',
     right: 'insideRight',
+    middle: 'middle',
   }
   const defaultTextPosition = isBarLikeChart(advancedVSeed as VSeed) ? 'right' : 'top'
 
@@ -161,7 +162,7 @@ export const annotationArea: VChartSpecPipe = (spec, context) => {
         return []
       },
       label: {
-        position: (positionMap as any)[textPosition],
+        position: positionMap[textPosition as keyof typeof positionMap],
         visible: true,
         text: text,
         style: {

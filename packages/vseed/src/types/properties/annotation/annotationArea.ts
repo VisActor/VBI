@@ -34,10 +34,10 @@ export type AnnotationAreaStyle = {
    */
   text?: string | string[]
   /**
-   * @description 文本位置
+   * @description 文本在区域内的位置；middle 表示区域中心
    * @example 'top'
    */
-  textPosition?: 'top' | 'topRight' | 'topLeft' | 'bottom' | 'bottomLeft' | 'bottomRight' | 'left' | 'right'
+  textPosition?: 'top' | 'topRight' | 'topLeft' | 'bottom' | 'bottomLeft' | 'bottomRight' | 'left' | 'right' | 'middle'
 
   /**
    * @description 文本颜色
@@ -55,21 +55,13 @@ export type AnnotationAreaStyle = {
    */
   textFontWeight?: number
   /**
-   * @description 文本对齐方式, 一般情况下, 设置为right, 文本显示在标注区域中间, 确保显示在图表的可见区域
-   * 建议设置为'center', 这样可以确保文本在标注区域的中间
-   * right: 文本在标注区域的左侧, 文本的右侧边缘对齐标注区域
-   * left: 文本在标注区域的右侧, 文本的左侧边缘对齐标注区域
-   * center: 文本在标注区域的中心, 文本的中心对齐标注区域
-   * @example 'center' 文本在标注区域的中间
+   * @description 文本相对 textPosition 锚点的水平对齐方式，不改变锚点位置
+   * @example 'center'
    */
   textAlign?: 'left' | 'right' | 'center'
   /**
-   * @description 文本垂直对齐方式, 一般情况下, 设置为top, 文本显示在标注区域底部, 确保显示在图表的可见区域
-   * 建议设置为'top', 这样可以确保文本完整的显示在图表的可见区域
-   * top: 文本在标注区域的底部, 文本的顶部边缘对齐标注区域
-   * middle: 文本在标注区域的中心, 文本的中心对齐标注区域
-   * bottom: 文本在标注区域的顶部, 文本的底部边缘对齐标注区域
-   * @example 'top' 文本在标注区域的底部
+   * @description 文本相对 textPosition 锚点的垂直对齐方式，不改变锚点位置
+   * @example 'middle'
    */
   textBaseline?: 'top' | 'middle' | 'bottom'
   /**

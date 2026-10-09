@@ -2,6 +2,7 @@ import { afterEach, beforeAll, describe, expect, test } from 'vitest'
 import VChart, { type ICartesianSeries, type IScatterChartSpec, type ISpec } from '@visactor/vchart'
 import { Builder, registerAll } from '@visactor/vseed'
 import type { AnnotationArea, Scatter, VSeed } from '@visactor/vseed'
+import fourQuadrants from '../../examples/features/annotationArea/scatter-four-quadrants.json'
 
 const charts: VChart[] = []
 const seed = (annotationArea?: AnnotationArea): Scatter => ({
@@ -38,15 +39,61 @@ const render = (spec: ISpec) => {
   return chart
 }
 
-type RenderedMarker = { _markerComponent: { attribute: { points: Array<{ x: number; y: number }> } } }
-const points = (chart: VChart) =>
-  (chart.getChart().getComponentsByKey('markArea')[0] as unknown as RenderedMarker)._markerComponent.attribute.points
+type RenderedMarker = {
+  _markerComponent: {
+    attribute: { points: Array<{ x: number; y: number }> }
+    getLabel: () => { attribute: { x: number; y: number } }
+  }
+}
+const marker = (chart: VChart, index = 0) =>
+  (chart.getChart().getComponentsByKey('markArea')[index] as unknown as RenderedMarker)._markerComponent
+const points = (chart: VChart, index = 0) =>
+  marker(chart, index).attribute.points
 
 describe('annotationArea rendered coordinate ranges', () => {
   beforeAll(registerAll)
   afterEach(() => {
     charts.splice(0).forEach((chart) => chart.release())
     document.body.replaceChildren()
+  })
+
+  test('renders the four-quadrant example as a complete 2×2 partition', () => {
+    const spec = Builder.from(fourQuadrants.vseed as VSeed).build() as ISpec
+    const chart = render({ ...spec, width: 600, height: 400, autoFit: false, animation: false })
+    const relative = chart.getChart().getAllSeries()[0] as ICartesianSeries
+    const origin = relative.getRegion().getLayoutStartPoint()
+    const xAxis = relative.getXAxisHelper()
+    const yAxis = relative.getYAxisHelper()
+    const xMin = xAxis.dataToPosition([0]) + origin.x
+    const xMiddle = xAxis.dataToPosition([50]) + origin.x
+    const xMax = xAxis.dataToPosition([100]) + origin.x
+    const yMax = yAxis.dataToPosition([100]) + origin.y
+    const yMiddle = yAxis.dataToPosition([50]) + origin.y
+    const yMin = yAxis.dataToPosition([0]) + origin.y
+    const rectangle = (left: number, right: number, top: number, bottom: number) => [
+      { x: left, y: top },
+      { x: right, y: top },
+      { x: right, y: bottom },
+      { x: left, y: bottom },
+    ]
+
+    expect(chart.getChart().getComponentsByKey('markArea')).toHaveLength(4)
+    const areas = [0, 1, 2, 3].map((index) => points(chart, index))
+    expect(areas).toEqual([
+      rectangle(xMin, xMiddle, yMax, yMiddle),
+      rectangle(xMiddle, xMax, yMax, yMiddle),
+      rectangle(xMin, xMiddle, yMiddle, yMin),
+      rectangle(xMiddle, xMax, yMiddle, yMin),
+    ])
+    expect([0, 1, 2, 3].map((index) => {
+      const { x, y } = marker(chart, index).getLabel().attribute
+      return { x, y }
+    })).toEqual(
+      areas.map(([topLeft, , bottomRight]) => ({
+        x: (topLeft.x + bottomRight.x) / 2,
+        y: (topLeft.y + bottomRight.y) / 2,
+      })),
+    )
   })
 
   test('renders exact coordinates and recomputes them on resize', async () => {
@@ -108,7 +155,7 @@ describe('annotationArea rendered coordinate ranges', () => {
       ],
       dimensions: [{ id: 'group', encoding: 'xAxis' }],
       measures: [{ id: 'value', encoding: 'yAxis' }],
-      annotationArea: { range: { y: { min: 10, max: 'axisMax' } } },
+      annotationArea: { range: { y: { min: 10, max: 'axisMax' } }, text: '高风险', textPosition: 'middle' },
     } as VSeed).build() as ISpec
     const chart = render({ ...spec, width: 600, height: 400, autoFit: false, animation: false })
     const relative = chart.getChart().getAllSeries()[0] as ICartesianSeries
@@ -124,6 +171,11 @@ describe('annotationArea rendered coordinate ranges', () => {
       { x: origin.x + width, y: yAxis.dataToPosition([10]) + origin.y },
       { x: origin.x, y: yAxis.dataToPosition([10]) + origin.y },
     ])
+    const { x, y } = marker(chart).getLabel().attribute
+    expect({ x, y }).toEqual({
+      x: (markerPoints[0].x + markerPoints[2].x) / 2,
+      y: (markerPoints[0].y + markerPoints[2].y) / 2,
+    })
   })
 
   test('renders a histogram window against its numeric x axis', () => {

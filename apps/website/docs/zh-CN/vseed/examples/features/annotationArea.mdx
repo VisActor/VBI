@@ -605,6 +605,175 @@ export default () => {
 }
 ```
 
+## 散点图：产品组合四象限
+
+以现有价值和增长潜力各 50 分为界，用四个 annotationArea.range 划分双轴数值域。axisMin / axisMax 指当前坐标轴端点，区域不依赖象限中是否有数据点。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "scatter",
+  "dataset": [
+    {
+      "product": "产品 A",
+      "value": 13,
+      "potential": 88
+    },
+    {
+      "product": "产品 B",
+      "value": 40,
+      "potential": 60
+    },
+    {
+      "product": "产品 C",
+      "value": 60,
+      "potential": 88
+    },
+    {
+      "product": "产品 D",
+      "value": 88,
+      "potential": 60
+    },
+    {
+      "product": "产品 E",
+      "value": 13,
+      "potential": 38
+    },
+    {
+      "product": "产品 F",
+      "value": 40,
+      "potential": 12
+    },
+    {
+      "product": "产品 G",
+      "value": 60,
+      "potential": 40
+    },
+    {
+      "product": "产品 H",
+      "value": 88,
+      "potential": 12
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "product",
+      "alias": "产品"
+    }
+  ],
+  "measures": [
+    {
+      "id": "value",
+      "alias": "现有价值",
+      "encoding": "xAxis"
+    },
+    {
+      "id": "potential",
+      "alias": "增长潜力",
+      "encoding": "yAxis"
+    }
+  ],
+  "xAxis": {
+    "min": 0,
+    "max": 100
+  },
+  "yAxis": {
+    "min": 0,
+    "max": 100
+  },
+  "label": {
+    "enable": false
+  },
+  "pointStyle": {
+    "pointColor": "#1f2937",
+    "pointSize": 12
+  },
+  "annotationArea": [
+    {
+      "range": {
+        "x": {
+          "min": "axisMin",
+          "max": 50
+        },
+        "y": {
+          "min": 50,
+          "max": "axisMax"
+        }
+      },
+      "text": "高潜力",
+      "textPosition": "middle",
+      "textBackgroundColor": "#2563eb",
+      "textBackgroundBorderColor": "#2563eb",
+      "areaColor": "#60a5fa",
+      "areaColorOpacity": 0.12,
+      "areaBorderWidth": 0
+    },
+    {
+      "range": {
+        "x": {
+          "min": 50,
+          "max": "axisMax"
+        },
+        "y": {
+          "min": 50,
+          "max": "axisMax"
+        }
+      },
+      "text": "明星产品",
+      "textPosition": "middle",
+      "textBackgroundColor": "#059669",
+      "textBackgroundBorderColor": "#059669",
+      "areaColor": "#34d399",
+      "areaColorOpacity": 0.12,
+      "areaBorderWidth": 0
+    },
+    {
+      "range": {
+        "x": {
+          "min": "axisMin",
+          "max": 50
+        },
+        "y": {
+          "min": "axisMin",
+          "max": 50
+        }
+      },
+      "text": "待培育",
+      "textPosition": "middle",
+      "textBackgroundColor": "#64748b",
+      "textBackgroundBorderColor": "#64748b",
+      "areaColor": "#94a3b8",
+      "areaColorOpacity": 0.12,
+      "areaBorderWidth": 0
+    },
+    {
+      "range": {
+        "x": {
+          "min": 50,
+          "max": "axisMax"
+        },
+        "y": {
+          "min": "axisMin",
+          "max": 50
+        }
+      },
+      "text": "稳健产品",
+      "textPosition": "middle",
+      "textBackgroundColor": "#d97706",
+      "textBackgroundBorderColor": "#d97706",
+      "areaColor": "#fbbf24",
+      "areaColorOpacity": 0.12,
+      "areaBorderWidth": 0
+    }
+  ]
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
 ## 散点图：无数据点的目标区域
 
 目标矩形内没有数据点也可绘制。axisMax 指当前最终坐标轴上限，此处手动设置为 100%；它不是数据最大值 60%。TypeScript 可从 @visactor/vseed 导入 AxisBoundaryEnum.Min / Max，JSON 使用 axisMin / axisMax。

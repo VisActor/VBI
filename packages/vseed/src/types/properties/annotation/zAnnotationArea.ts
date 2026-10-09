@@ -19,7 +19,7 @@ export const zAnnotationAreaRange = z
 
 export const zAnnotationAreaStyle = z.object({
   textPosition: z
-    .enum(['top', 'topRight', 'topLeft', 'bottom', 'bottomLeft', 'bottomRight', 'left', 'right'])
+    .enum(['top', 'topRight', 'topLeft', 'bottom', 'bottomLeft', 'bottomRight', 'left', 'right', 'middle'])
     .default('top')
     .nullish(),
   text: z.string().or(z.array(z.string())).nullish(),
