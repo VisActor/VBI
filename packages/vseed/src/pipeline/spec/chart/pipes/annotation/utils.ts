@@ -67,6 +67,10 @@ export const ANNOTATION_AREA_TEXT_STYLE_BY_POSITION = {
     textAlign: 'right',
     textBaseline: 'middle',
   },
+  middle: {
+    textAlign: 'center',
+    textBaseline: 'middle',
+  },
 }
 
 /**

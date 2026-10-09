@@ -1,0 +1,20 @@
+{
+  "name": "折线图：高危险区域",
+  "description": "y 从 10 到 axisMax，x 分类轴铺满。指定数值范围与按 selector 选出高风险月份不同：风险区域始终覆盖所有月份，并随最终轴范围更新。",
+  "vseed": {
+    "chartType": "line",
+    "dataset": [
+      { "month": "一月", "value": 5 },
+      { "month": "二月", "value": 15 },
+      { "month": "三月", "value": 20 }
+    ],
+    "dimensions": [{ "id": "month", "encoding": "xAxis" }],
+    "measures": [{ "id": "value", "encoding": "yAxis" }],
+    "annotationArea": {
+      "range": { "y": { "min": 10, "max": "axisMax" } },
+      "text": "高危险区域",
+      "areaColor": "#ef4444",
+      "areaColorOpacity": 0.12
+    }
+  }
+}

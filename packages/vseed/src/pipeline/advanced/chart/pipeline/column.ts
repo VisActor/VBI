@@ -5,7 +5,8 @@ import {
   pivotAdapter,
   columnConfig,
   markStyle,
-  annotation,
+  annotationWithRange,
+  rejectPivotAnnotationAreaRange,
   sortXBandAxis,
   sortLegend,
   encodingForColumn,
@@ -40,6 +41,6 @@ export const columnAdvancedPipeline: AdvancedPipeline = [
   columnConfig,
   theme,
   markStyle,
-  annotation,
+  pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange]),
   regressionLine,
 ]

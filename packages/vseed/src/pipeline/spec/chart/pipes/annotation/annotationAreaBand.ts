@@ -4,6 +4,7 @@ import type { Datum, VChartSpecPipe, VSeed } from 'src/types'
 import { ANNOTATION_AREA_TEXT_STYLE_BY_POSITION, isSubset } from './utils'
 import { ANNOTATION_Z_INDEX } from '../../../../utils/constant'
 import { isBarLikeChart } from 'src/pipeline/utils/chatType'
+import { annotationAreaRangePositions, assertAnnotationAreaRangeAxes } from './annotationAreaRange'
 
 export const annotationAreaBand: VChartSpecPipe = (spec, context) => {
   const { advancedVSeed, vseed } = context
@@ -25,12 +26,14 @@ export const annotationAreaBand: VChartSpecPipe = (spec, context) => {
     bottomRight: 'insideBottomRight',
     left: 'insideLeft',
     right: 'insideRight',
+    middle: 'middle',
   }
   const defaultTextPosition = isBarLikeChart(advancedVSeed as VSeed) ? 'right' : 'top'
 
   const markArea = annotationAreaList.flatMap((annotationArea) => {
     const {
       selector: selectorPoint,
+      range,
       text = '',
       textColor = theme?.textColor ?? '#ffffff',
       textFontSize = theme?.textFontSize ?? 12,
@@ -53,6 +56,7 @@ export const annotationAreaBand: VChartSpecPipe = (spec, context) => {
       outerPadding = theme?.outerPadding ?? 4,
     } = annotationArea
     const textBackgroundOpacity = theme?.textBackgroundOpacity
+    if (range) assertAnnotationAreaRangeAxes(range, spec as ILineChartSpec)
     const textPosition: string = annotationArea.textPosition ?? defaultTextPosition
     const textAlign =
       annotationArea.textAlign ??
@@ -69,29 +73,31 @@ export const annotationAreaBand: VChartSpecPipe = (spec, context) => {
     return {
       zIndex: ANNOTATION_Z_INDEX,
       regionRelative: true,
+      ...(range ? { clip: true } : {}),
       // coordinates: selectedData,
       positions: (data: Datum[], context: ICartesianSeries & { _scaleConfig?: { bandPosition?: number } }) => {
+        if (range) return annotationAreaRangePositions(range, context)
         const positionData = data.filter((item) => selectedData.some((datum) => isSubset(datum, item)))
         const xyList = positionData.map((datum) => context.dataToPosition(datum) as { x: number; y: number })
 
         const bandPosition = context?._scaleConfig?.bandPosition || 0
 
         const yAxisHelper = context.getYAxisHelper() as unknown as {
-          getBandwidth: (depth?: number) => number
+          getBandwidth?: (depth?: number) => number | undefined
           getScale: () => {
             range: () => number[]
           }
         }
         const xAxisHelper = context.getXAxisHelper() as unknown as {
-          getBandwidth: (depth?: number) => number
+          getBandwidth?: (depth?: number) => number | undefined
           getScale: () => {
             range: () => number[]
           }
         }
 
-        if (typeof xAxisHelper?.getBandwidth === 'function') {
-          const depth = context.fieldX.length ?? 0
-          const xBandWidth = xAxisHelper?.getBandwidth?.(depth - 1)
+        // Linear axes may expose getBandwidth but return undefined; only a finite width identifies a band axis.
+        const xBandWidth = xAxisHelper?.getBandwidth?.((context.fieldX.length ?? 0) - 1)
+        if (typeof xBandWidth === 'number' && Number.isFinite(xBandWidth)) {
           const regionRect = context.getRegion().getLayoutRect()
           const startX = Math.min(...xyList.map((item) => item.x)) - (outerPadding || 4)
           const endX = Math.max(...xyList.map((item) => item.x)) + (outerPadding || 4)
@@ -129,9 +135,8 @@ export const annotationAreaBand: VChartSpecPipe = (spec, context) => {
           ]
         }
 
-        if (typeof yAxisHelper?.getBandwidth === 'function') {
-          const depth = context.fieldY.length ?? 0
-          const yBandWidth = yAxisHelper?.getBandwidth?.(depth - 1)
+        const yBandWidth = yAxisHelper?.getBandwidth?.((context.fieldY.length ?? 0) - 1)
+        if (typeof yBandWidth === 'number' && Number.isFinite(yBandWidth)) {
           const regionRect = context.getRegion().getLayoutRect()
 
           const startY = Math.min(...xyList.map((item) => item.y)) - (outerPadding || 4)
@@ -171,7 +176,7 @@ export const annotationAreaBand: VChartSpecPipe = (spec, context) => {
         return []
       },
       label: {
-        position: positionMap[textPosition as 'bottom'],
+        position: positionMap[textPosition as keyof typeof positionMap],
         visible: true,
         text: text,
         style: {

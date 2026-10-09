@@ -2,6 +2,7 @@ export type * from './annotationPoint'
 export type * from './annotationHorizontalLine'
 export type * from './annotationVerticalLine'
 export type * from './annotationArea'
+export * from './annotationAreaRange'
 export type * from './annotationDifferenceLine'
 
 export * from './zAnnotationPoint'

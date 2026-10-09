@@ -1,0 +1,23 @@
+{
+  "name": "面积图：二月到三月分类色带",
+  "description": "已有 selector 正例：选中二月、三月，纵向铺满绘图区。沿 x 的历史边界是选中类别中心加 outerPadding（默认 4px），不是面积曲线下方，也不是完整 band 外沿。",
+  "vseed": {
+    "chartType": "area",
+    "dataset": [
+      { "month": "一月", "region": "华东", "value": 10 },
+      { "month": "一月", "region": "华西", "value": 8 },
+      { "month": "二月", "region": "华东", "value": 15 },
+      { "month": "二月", "region": "华西", "value": 12 },
+      { "month": "三月", "region": "华东", "value": 20 },
+      { "month": "三月", "region": "华西", "value": 18 }
+    ],
+    "dimensions": [
+      { "id": "month", "encoding": "xAxis" },
+      { "id": "region", "encoding": "color" }
+    ],
+    "measures": [{ "id": "value", "encoding": "yAxis" }],
+    "annotationArea": [
+      { "selector": { "field": "month", "operator": "in", "value": ["二月", "三月"] }, "text": "后两月" }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "散点图：成本窗口",
+  "description": "range.x 使用原始数据坐标 0–100；未指定 y 时纵向铺满绘图区。range 与 selector 互斥，指定轴必须同时填写 min/max；范围不会扩大轴域，部分越界裁剪、完全越界不绘制。支持普通折线、面积、柱、条、箱线、直方图、散点图及适用的分组/百分比变体的数值线性轴（含反向轴）；不支持分类/对数轴范围、双轴图、透视组合图、动态竞赛图。",
+  "vseed": {
+    "chartType": "scatter",
+    "dataset": [
+      { "channel": "A", "cost": 10, "conversion": 0.1 },
+      { "channel": "B", "cost": 60, "conversion": 0.3 },
+      { "channel": "C", "cost": 130, "conversion": 0.6 }
+    ],
+    "dimensions": [{ "id": "channel", "encoding": "color" }],
+    "measures": [
+      { "id": "cost", "encoding": "xAxis" },
+      { "id": "conversion", "encoding": "yAxis" }
+    ],
+    "yAxis": { "autoFormat": false, "numFormat": { "type": "percent" } },
+    "annotationArea": {
+      "range": { "x": { "min": 0, "max": 100 } },
+      "text": "成本 0–100",
+      "areaColor": "#3b82f6",
+      "areaColorOpacity": 0.12
+    }
+  }
+}
