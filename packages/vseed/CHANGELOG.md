@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.6.5
+
+### Patch Changes
+
+- dc96091: Add coordinate-range area annotations for scatter, line, area, column, bar, box plot, and histogram charts, with explicit axis-boundary values.
+
 ## 0.6.4
 
 ### Patch Changes
