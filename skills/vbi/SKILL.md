@@ -5,81 +5,63 @@ description: 使用 VBI 的 DSL 和 Builder 构建图表、仪表盘与洞察。
 
 # VBI Dashboard 构建指南
 
-完整 Dashboard 按以下 8 步推进，每步产出作为后续步骤的依据。单图或已有页面的局部修改只执行相关步骤；沿用已确认的数据口径、分析配置和宿主约定。
+## 核心方法论：基于 Dashboard 模板构建
 
-## 阅读资料
+新建 Dashboard 先从[精简模板](examples/dashboard/template.html)复制起步，沿用已验证的视觉骨架、信息密度与交互，再替换数据、指标和业务内容。[完整轻量示例](examples/dashboard/lightweight-dashboard.html)用于查阅扩展实现。已有宿主或用户指定风格时，将模板的模块与交互适配到目标页面；单图和局部修改只执行相关步骤。
 
-随步骤阅读资料。必须阅读的资料在进入对应步骤前阅读；按需阅读的资料在触发条件满足时查阅。
+模板也是验收参照：保留真实图表、平滑趋势、`updateSpec()` 与指标文本动画、≤2° 小卡倾斜、默认展开明细和卡内联动；减少动态效果模式立即展示最终状态。详细约束统一遵循[轻量看板基线](references/best-practices/layout.md#轻量看板的功能与视觉基线)，不能因精简删去必要能力。
 
-| 资料                                                       | 阅读要求 | 对应步骤与阅读时机                                                            | 用途                                               |
-| ---------------------------------------------------------- | -------- | ----------------------------------------------------------------------------- | -------------------------------------------------- |
-| [核心能力](references/usage/capabilities.md)               | 必须阅读 | Step1：确定能力范围前                                                         | DSL、Builder、Connector 与 UI 的职责。             |
-| [实践技巧](references/usage/tips.md)                       | 必须阅读 | Step2：设计数据与状态前；Step5、Step6 按场景回查                              | 查询复用、字段 ID、状态归属、资源关系与配置恢复。  |
-| [设计与布局最佳实践](references/best-practices/layout.md)  | 必须阅读 | Step4：设计布局前                                                             | 阅读路径、响应式坐标、联动方向与卡片动效。         |
-| [配色与背景最佳实践](references/best-practices/design.md)  | 必须阅读 | Step4：设计配色前                                                             | 颜色层级、配色反例、统一变量、背景与图表配色同步。 |
-| [指标卡最佳实践](references/best-practices/metric-card.md) | 必须阅读 | Step3、Step4：涉及指标卡时                                                    | 迷你图、指标文本更新动画与悬停联动。               |
-| [HTML 接入](references/usage/how-use-vbi-in-html.md)       | 必须阅读 | Step5：使用浏览器 HTML / ESM 接入时                                           | 依赖加载、图形与表格渲染、初始化与完整示例。       |
-| [示例](examples)                                           | 按需阅读 | Step4：创建页面或设计新布局、新配色前必须查阅相关示例；其他步骤按实现需要查阅 | 理解示例的布局、颜色层级、响应式行为与交互实现。   |
-| [VBI API 索引](references/api/vbi/index.md)                | 按需阅读 | Step3、Step5、Step6：配置或操作 Builder 时                                    | 核对实例、图表、Dashboard、Insight 的接口与类型。  |
-| [VSeed API 补充](references/api/vseed/index.md)            | 按需阅读 | Step5、Step6：构建 Spec 或定制渲染时                                          | 核对 Builder、注册、主题与数据工具。               |
+按以下 4 个阶段推进，已有结论直接沿用，局部修改只处理相关内容。按资料索引和阶段内链接查阅当前任务需要的内容。
 
-## Step1：明确分析目标与交付范围
+## 资料索引
 
-- 确定看板的使用者、核心分析问题与使用场景，例如经营概览、运营监控或专题复盘。围绕这些问题确定优先展示的结果与证据。
-- 明确数据来源、目标设备、独立页面或嵌入方式，以及用户需要的筛选、保存与恢复能力；结合现有项目确定接入方式。
+| 类别       | 资料                                                                                                                         | 用途与查阅时机                                             |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| 模板与示例 | [精简 Dashboard 模板](examples/dashboard/template.html)                                                                      | 新建看板的起点，包含完整的数据、图表与交互实现。           |
+| 模板与示例 | [完整轻量 Dashboard](examples/dashboard/lightweight-dashboard.html)                                                          | 扩展布局、配色与交互时查阅。                               |
+| 模板与示例 | [参考图 1](examples/dashboard/demo1.png)、[参考图 2](examples/dashboard/demo2.png)、[参考图 3](examples/dashboard/demo3.png) | 选择视觉风格，比较主辅比例、信息层级与密度。               |
+| 模板与示例 | [单图示例](examples/charts/polished-chart.html)、[效果图](examples/charts/polished-chart.png)                                | 构建独立图表时参考。                                       |
+| 模板与示例 | [大屏示例](examples/screen/large-screen.html)、[效果图](examples/screen/large-screen.png)                                    | 交付大屏时参考。                                           |
+| 最佳实践   | [设计与布局](references/best-practices/layout.md)                                                                            | 适配模板骨架、控制密度、配置布局与卡片动效。               |
+| 最佳实践   | [配色与背景](references/best-practices/design.md)                                                                            | 确定页面与图表的颜色层级。                                 |
+| 最佳实践   | [指标卡](references/best-practices/metric-card.md)                                                                           | 实现辅助图形、指标动画与卡内联动。                         |
+| 最佳实践   | [趋势图](references/best-practices/trend.md)                                                                                 | 实现平滑趋势、渐变面积与图内交互。                         |
+| 最佳实践   | [Filter 筛选器](references/best-practices/filter.md)                                                                         | 设计平铺筛选、维护 Builder 条件并联动更新。                |
+| 最佳实践   | [核心发现与指标洞察](references/best-practices/insight.md)                                                                   | 选择衍生指标，组织计算口径、结论与证据。                   |
+| 最佳实践   | [截图对照验收](references/best-practices/visual-acceptance.md)                                                               | 验证桌面、窄屏的视觉效果与必要交互。                       |
+| 接入参考   | [核心能力](references/usage/capabilities.md)                                                                                 | 确认 DSL、Builder、Connector 与 UI 的职责。                |
+| 接入参考   | [实践技巧](references/usage/tips.md)                                                                                         | 配置查询、字段映射、资源关联与保存恢复。                   |
+| 接入参考   | [HTML 接入](references/usage/how-use-vbi-in-html.md)                                                                         | 使用 HTML / ESM 时查阅加载、渲染与模板关键片段。           |
+| API 文档   | [VBI API 索引](references/api/vbi/index.md)                                                                                  | 核对实例、Chart、Dashboard、Insight Builder 的接口与类型。 |
+| API 文档   | [VSeed API 索引](references/api/vseed/index.md)                                                                              | 核对 Spec 构建、图表类型、主题、注册与数据工具。           |
 
-产出：分析问题、功能范围与验收标准。
+## Step1：选定模板与指标
 
-## Step2：确认数据与指标口径
+- 明确核心分析问题、数据来源、交付环境及验收范围；阅读[核心能力](references/usage/capabilities.md)，查看[参考图 1](examples/dashboard/demo1.png)、[参考图 2](examples/dashboard/demo2.png)、[参考图 3](examples/dashboard/demo3.png)，从精简模板起步。
+- 按[实践技巧](references/usage/tips.md)确认字段、粒度、聚合、去重、单位与比较周期，用已知数据核对口径；按[洞察最佳实践](references/best-practices/insight.md)选择核心与衍生指标，明确公式和分母有效性，从同一范围的汇总结果计算。
 
-- 先确定指标清单与数量、统计起止日期及比较周期。变化率属于对应指标的波动描述，避免与原始指标重复计数。
-- 检查字段、类型、日期范围、时间粒度、时区和唯一键。明确演示数据与真实数据的来源、统计截止日及缺失值含义。
-- 为每个指标确定聚合、去重、单位与比较基准。比例用已确认的分子、分母计算；去重总数按完整统计范围计算，避免累加分组去重数。用一组可核对的数据验证口径。
+产出：模板起点、指标口径与预期数值。
 
-产出：指标清单与数量、统计和比较周期、字段映射、指标口径与预期数值。
+## Step2：适配业务与视觉
 
-## Step3：规划分析模块与图表
+- 将分析问题映射到核心发现、主分析区、辅助指标卡和明细。按[布局](references/best-practices/layout.md)、[指标卡](references/best-practices/metric-card.md)与[趋势图](references/best-practices/trend.md)最佳实践突出主次、合并重复信息；图表适配实际数据。核心发现用一句结论连接核心与衍生指标，并提供范围、基准和证据。
+- 沿用模板的外壳、主辅比例、字号和留白，按[配色最佳实践](references/best-practices/design.md)统一页面与图表颜色；默认柔和浅蓝（`#A8C7E8`），布局与配色切换仅在用户要求时添加。
+- 按[Filter 最佳实践](references/best-practices/filter.md)明确筛选与局部交互的作用范围；全局筛选集中在标题最右侧，优先一行平铺，省略重复标签并保留无障碍名称，避免未经设计的原生 `select` / `input`。确定桌面与窄屏布局。
 
-- 将每个分析问题映射到指标卡、趋势、比较、排行、明细或洞察。为每个模块列出图表类型、维度、度量、聚合、编码、排序和筛选；自定义指标卡可用 `table` 类型的 Chart Builder 查询汇总数据。
-- 声明全局筛选、局部筛选与悬停联动的作用范围。识别可复用的查询结果，以及需要独立查询的总览、分组和比较周期。
+产出：业务模块、页面骨架与联动范围。
 
-产出：模块清单、分析配置与交互关系。
+## Step3：接入数据与交互
 
-## Step4：设计布局与视觉方案
+- 替换模板的数据接入与查询，确保 Connector 执行筛选、分组和聚合；沿 Chart Builder → `buildVSeed()` → VSeed Builder → VChart / VTable 渲染，HTML 指标复用查询结果并保留字段 ID。使用 HTML 时阅读[接入指南](references/usage/how-use-vbi-in-html.md)，按需查阅 [VBI API](references/api/vbi/index.md) 与 [VSeed API](references/api/vseed/index.md)。
+- 通过 Builder 维护自身筛选条件，保留其他条件；查询后复用实例调用 `updateSpec()`，同步指标动画与区间洞察。卡内联动复用缓存，防止旧结果覆盖；处理加载、空数据、错误、尺寸变化与资源释放。
+- Dashboard、Chart 与 Insight 使用同一 VBI 实例及资源 ID，组件提供 `layouts.lg`；可保存状态归所属 DSL，由 Builder 操作，UI 管理渲染与临时状态。需要恢复时保存 Dashboard 与引用资源，在新实例先注册资源再恢复，并明确外部数据和衍生公式的恢复方式。
 
-- 设计前先查看[参考示例 1](examples/dashboard/demo1.png)、[参考示例 2](examples/dashboard/demo2.png)和[参考示例 3](examples/dashboard/demo3.png)，参考区域划分、卡片比例、信息层级、留白与配色。
-- 阅读相关示例的实现，再按分析任务选择、组合或设计阅读路径。趋势主导、指标先行与分段叙事可作为起点；结合内容密度、设备与已有风格调整，避免完全照搬布局与颜色。用户指定沿用或复刻时按其要求执行。
-- 确定主次区域、内容宽度及桌面和窄屏的排列。三种参考布局均在顶部用 AI 洞察说明指标数量、统计周期和比较周期，再以列表逐项呈现指标波动，每项一句，增长标绿、下跌标红；内容通过 Insight Builder 保存，并与当前筛选范围一致。用统一颜色变量连接页面与图表，保持强调色、语义色、文字和背景的层级；指标卡和动效按模块需要配置。
+产出：数据与交互完整、按需支持保存恢复的页面。
 
-产出：阅读顺序、各断点布局与配色方案。
+## Step4：验收与交付
 
-## Step5：接入数据并构建 Dashboard
+- 核对汇总、筛选、比较及衍生指标，覆盖相关的空值、零分母和负值；在浏览器实际检查模板基线、筛选动画、卡内联动、连续操作、减少动态效果模式与控制台。承诺保存的配置须做 JSON 往返及新实例恢复，领域能力须可通过 DSL 与 Builder 独立使用。
+- 按[截图对照验收](references/best-practices/visual-acceptance.md)，在图表就绪后以相同视口对照模板的桌面与窄屏截图，修正骨架、密度、控件和图表差异。
+- 交付文件、运行入口、必要数据与接入说明，附最终截图、验证结果及限制；明确未验证范围，与 Step1 的交付范围一致。
 
-- 注册 Connector，提供 `discoverSchema()` 与 `query()`，确保查询执行收到的筛选、分组和聚合。通过公开 Chart Builder API 配置分析，沿 `buildVSeed()` → VSeed Builder → VChart / VTable 完成渲染；自定义 HTML 指标消费同一查询结果，保留或显式映射字段 ID。
-- Dashboard 与其引用的 Chart、Insight 使用同一 VBI 实例。组件通过资源 ID 引用内容，新增组件提供 `layouts.lg`，在集合的 `add` / `update` 回调中提交布局；UI 读取 DSL 映射为网格，并管理渲染实例、尺寸与生命周期。
-- 将需要保存、恢复或跨集成复用的分析与布局状态放入所属 DSL，通过 Builder 操作。派生公式或联动规则若超出现有 DSL 能力，先明确支持范围；扩展 VBI 时在所属 DSL 与 Builder 中建模。
-
-产出：数据与布局由 Builder 驱动的可运行 Dashboard。
-
-## Step6：完成交互与按需保存恢复
-
-- 按 Step3 的作用范围更新相关图表的筛选条件；通过条件 ID 或条件组管理自身筛选，避免清除其他条件。控件从当前配置初始化，查询期间提供反馈，连续操作时防止旧结果覆盖新结果。
-- 按需求接入悬停、布局或配色切换，复用查询结果与渲染实例，并处理加载、空数据和错误状态。容器变化后调整图表尺寸，销毁时释放实例与监听。
-- 需要保存与恢复时，同时保存 Dashboard DSL 和引用资源快照；在新实例中先注册连接器与资源，再恢复 Dashboard。明确外部数据、图片、派生公式与渲染定制的恢复方式。
-
-产出：符合声明作用范围的交互，以及需求所需的配置保存与恢复能力。
-
-## Step7：验证数据、交互与展示
-
-- 对照 Step2 的预期值核对总览、分组、筛选与比较周期；覆盖空数据、缺失值、零分母和负值等与当前指标相关的情况。
-- 在浏览器中验证初次加载、筛选、连续操作及已实现的联动与切换，检查控制台和失败请求。按目标设备检查桌面、窄屏及嵌入容器的溢出、标签、阅读顺序与图表尺寸；启用动效时检查减少动态效果模式。
-- 对承诺保存的配置做 JSON 序列化往返，在新资源实例中恢复并核对查询、资源引用、控件值与布局。验证领域能力可通过 DSL 与 Builder 独立使用。
-
-产出：实际验证结果与尚未验证的范围；发现问题后回到对应步骤修正。
-
-## Step8：交付可运行成果
-
-- 提供页面或项目文件、运行入口，以及所需的数据、资源与接入说明。
-- 说明已实现的分析与交互、实际验证结果和影响使用的限制。交付内容与 Step1 的范围及验收标准一致。
-
-产出：可运行、可检查的 Dashboard 与交付说明。
+产出：可运行、可检查的 Dashboard 与验收证据。

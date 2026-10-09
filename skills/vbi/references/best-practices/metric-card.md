@@ -2,6 +2,8 @@
 
 指标卡由短标题、指标文本和迷你图组成。参考[轻量看板示例](../../examples/dashboard/lightweight-dashboard.html)的主趋势、销售增长与利润卡片；页面宽度、圆角和联动方向遵循[设计与布局最佳实践](./layout.md)，强调色、填充色与正负值颜色见[配色与背景最佳实践](./design.md)。
 
+用于承载最重要指标的大幅趋势卡，使用渐变面积图并展示统计范围，见[趋势图最佳实践](./trend.md)。下方 mini 图配置用于指标旁的小型图，不替代主趋势图。
+
 ## 文本与迷你图配合
 
 | 迷你图      | 适用内容                 | 展示要求                                     |
@@ -66,7 +68,7 @@ function miniBase() {
       enable: !reducedMotion.matches,
       params: {
         appear: { enable: false },
-        update: { enable: true, duration: 350, ease: 'cubicInOut' },
+        update: { enable: true, duration: 600, ease: 'cubicInOut' },
       },
     },
   }
@@ -95,7 +97,7 @@ const miniLineSeed = {
   chartType: 'line',
   crosshairLine: { labelVisible: false },
   pointStyle: { pointVisible: false },
-  lineStyle: { lineWidth: 1.5, lineColor: accent, lineSmooth: false },
+  lineStyle: { lineWidth: 1.5, lineColor: accent, lineSmooth: true },
 }
 ```
 
@@ -107,12 +109,12 @@ const miniAreaSeed = {
   chartType: 'area',
   crosshairLine: { labelVisible: false },
   pointStyle: { pointVisible: false },
-  lineStyle: { lineWidth: 1.5, lineColor: accent, lineSmooth: false },
+  lineStyle: { lineWidth: 1.5, lineColor: accent, lineSmooth: true },
   areaStyle: { areaColor: accent, areaColorOpacity: 0.18, areaGradient: false },
 }
 ```
 
-Mini line 与 Mini area 默认使用直线连接数据点，避免平滑曲线产生数据中不存在的峰谷。若主趋势采用平滑曲线，迷你趋势的选择也应保持一致。
+轻量看板的 Mini line、Mini area 与主趋势默认使用平滑曲线，保持视觉一致。若数据点少、突变明显或曲线产生不存在的峰谷，再改用直线并说明原因；Tooltip 始终显示真实查询点值。
 
 ### 构建与更新实例
 
@@ -150,11 +152,11 @@ reducedMotion.addEventListener('change', onMotionChange)
 
 ## 指标文本更新动画
 
-统计范围切换、日期悬停和恢复汇总时，指标文本应有短暂的数值过渡。建议 250–400ms，文本与图表更新节奏接近；首次显示直接展示真实值，避免从虚构的零值开始。连续更新从当前显示值继续，取消上一次动画，不能等旧动画结束后覆盖新值。
+统计范围切换、日期悬停和恢复汇总时，指标文本必须有数值过渡。轻量看板统一采用约 600ms，与图表更新节奏一致；首次显示直接展示真实值，避免从虚构的零值开始。销售额、订单、利润、增长率、变化率、占比、利润率与客单价都覆盖，不能只让主数字动起来。连续更新从当前显示值继续，取消上一次动画，不能等旧动画结束后覆盖新值。
 
 ```javascript
 const metricAnimations = new Map()
-function updateMetric(element, target, format = String, duration = 350) {
+function updateMetric(element, target, format = String, duration = 600) {
   const previous = metricAnimations.get(element)
   if (previous) cancelAnimationFrame(previous.frame)
   if (!Number.isFinite(target)) {
@@ -193,7 +195,7 @@ updateMetric(document.querySelector('#profit'), total.profit, money)
 
 沿用示例的查询方式：一次刷新得到 `dailyTotals` 和 `dailyConsumers`，建立日期索引，悬停时读取缓存；不要每次鼠标移动都重新查询。把示例 `showMetrics()` 中对数值文本的直接赋值替换为 `updateMetric()`，并保留它的 `scope` 判断与零分母处理。增长率、利润率等目标值先由真实聚合结果计算，再执行文本动画。
 
-以下片段假定已经创建并绑定 `trend`、`growth`、`profit` Builder，`showDate(date, scope)` / `restore(scope)` 读取本次查询的日期索引和汇总，调用上述动画更新相应卡片。每次刷新替换 `currentMetrics`，事件只订阅一次，避免监听器引用旧数据。
+以下片段假定已经创建并绑定 `trend`、`growth`、`profit` Builder，`showDate(date, scope)` / `restore(scope)` 读取本次查询的日期索引和汇总，调用上述动画更新相应卡片。每次刷新替换 `currentMetrics`，事件只订阅一次，避免监听器引用旧数据。[模板](../../examples/dashboard/template.html)还保留消费者占比环图：占比用范围内去重消费者订单数除以去重总订单数，固定分类与字段供 `updateSpec()` 匹配；主图逐日联动时同步更新环图与占比文本，环图 Tooltip 显示真实分类占比。
 
 ```javascript
 let currentMetrics = { showDate, restore }

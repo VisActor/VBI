@@ -352,9 +352,12 @@
         line-height: 1.6;
       }
 
-      .insight-demo {
-        color: #78858d;
-        font-size: 10px;
+      .insight-conclusion {
+        color: var(--ink);
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.65;
+        overflow-wrap: anywhere;
       }
 
       .insight-body {
@@ -1145,10 +1148,10 @@
           <div id="insight-slot" class="card-slot" data-enter="2">
             <article id="insight-card" class="card insight-card" aria-labelledby="insight-title" aria-busy="true">
               <div class="insight-heading">
-                <h2 id="insight-title">AI 洞察</h2>
-                <span class="insight-demo">指标波动 · 摘要演示</span>
+                <h2 id="insight-title">核心发现</h2>
               </div>
               <div class="insight-body" aria-live="polite" aria-atomic="true">
+                <p id="insight-conclusion" class="insight-conclusion" hidden></p>
                 <p id="insight-scope" class="insight-scope">正在分析指标波动…</p>
                 <ul id="insight-list" class="insight-list"></ul>
               </div>
@@ -1276,7 +1279,7 @@
             </article>
           </div>
         </section>
-        <details class="details" id="region-details" data-enter="9">
+        <details class="details" id="region-details" data-enter="9" open>
           <summary>
             <span class="summary-title"
               ><svg class="icon">
@@ -1521,8 +1524,8 @@
               { opacity: 1, transform: 'translateY(0)' },
             ],
             {
-              duration: 1100,
-              delay: Number(element.dataset.enter) * 180,
+              duration: 1400,
+              delay: Number(element.dataset.enter) * 420,
               easing: 'cubic-bezier(.2,.75,.25,1)',
               fill: 'both',
             },
@@ -1872,8 +1875,48 @@
         }
       }
 
-      // 先确定独立指标和周期，再逐项列出本期值与波动；增长率不重复计为指标。
-      // 实际接入 AI 时，将同一统计范围的逐项结论写入 Insight Builder。
+      // 从同一筛选范围的聚合结果计算；不平均逐日比率，不从格式化文本反算。
+      function deriveMetrics(total) {
+        const ratio = (value, base) =>
+          Number.isFinite(value) && Number.isFinite(base) && base > 0 ? value / base : undefined
+        const margin = ratio(total.profit, total.sales)
+        return { margin: margin === undefined ? undefined : margin * 100, average: ratio(total.sales, total.order_id) }
+      }
+      function pointChange(current, previous) {
+        if (!Number.isFinite(current) || !Number.isFinite(previous)) return '暂无可比数据'
+        const delta = current - previous
+        if (Math.abs(delta) < 0.05) return '基本持平'
+        return `${delta > 0 ? '↑ 提升' : '↓ 下降'} ${Math.abs(delta).toFixed(1)} 个百分点`
+      }
+      // 规模与质量一起解释；仅描述数据关系，不推断营销、成本等未提供的原因。
+      function summarizeKeyFinding(total, prior) {
+        if (!Number.isFinite(total.order_id) || total.order_id <= 0)
+          return '当前筛选范围暂无有效订单，暂无法形成比较结论。'
+        const current = deriveMetrics(total)
+        const previous = deriveMetrics(prior)
+        if (
+          !['sales', 'order_id', 'profit'].every(
+            (field) => Number.isFinite(total[field]) && Number.isFinite(prior[field]),
+          ) ||
+          total.sales <= 0 ||
+          prior.sales <= 0 ||
+          prior.order_id <= 0
+        )
+          return '部分指标缺少有效比较基数，请结合下方核心与衍生指标查看本期表现。'
+        const sales = ((total.sales - prior.sales) / prior.sales) * 100
+        const orders = ((total.order_id - prior.order_id) / prior.order_id) * 100
+        const average = ((current.average - previous.average) / previous.average) * 100
+        const margin = current.margin - previous.margin
+        const direction = (delta, up, down) => (Math.abs(delta) < 0.05 ? '基本持平' : delta > 0 ? up : down)
+        const scale =
+          sales >= 0.05 && orders <= -0.05
+            ? '销售增长伴随订单减少'
+            : `销售额${direction(sales, '增长', '下降')}，订单数${direction(orders, '增加', '减少')}`
+        return `${scale}；客单价${direction(average, '提升', '下降')}，利润率${direction(margin, '提升', '回落')}。`
+      }
+
+      // 首行保存周期与核心/衍生数量，第二行保存结论，后续逐项列出依据；变化率不重复计数。
+      // 实际接入 AI 时，将同一统计范围的关键结论与指标依据写入 Insight Builder。
       function summarizePeriod(total, prior, firstDay, lastDay) {
         const days = lastDay - firstDay + 1
         const metrics = [
@@ -1895,15 +1938,32 @@
               : `${percent < 0 ? '↓ 下跌' : '↑ 增长'} ${Math.abs(percent).toFixed(1)}%`
           return `- ${label}：${value}，环比${change}。`
         })
+        const derived = deriveMetrics(total)
+        const priorDerived = deriveMetrics(prior)
+        const averageChange = Number.isFinite(derived.average)
+          ? changeText(derived.average, priorDerived.average)
+          : undefined
+        const averageChangeText = !Number.isFinite(averageChange?.value)
+          ? '暂无可比数据'
+          : Math.abs(averageChange.value) < 0.05
+            ? '基本持平'
+            : `${averageChange.value > 0 ? '↑ 增长' : '↓ 下跌'} ${Math.abs(averageChange.value).toFixed(1)}%`
+        items.push(
+          `- 利润率：${Number.isFinite(derived.margin) ? `${derived.margin.toFixed(1)}%` : '—'}，${pointChange(derived.margin, priorDerived.margin)}。`,
+          `- 平均客单价：${Number.isFinite(derived.average) ? money(derived.average) : '—'}，${averageChangeText}。`,
+        )
         return [
-          `${metrics.length} 项指标 · ${dateKey(firstDay)} — ${dateKey(lastDay)} · 对比前 ${days} 天`,
+          `${metrics.length} 项核心指标 · 2 项衍生指标 · ${dateKey(firstDay)} — ${dateKey(lastDay)} · 对比前 ${days} 天`,
+          summarizeKeyFinding(total, prior),
           ...items,
         ].join('\n')
       }
 
-      // Insight 保存可读的周期说明与 Markdown 列表；UI 只根据箭头标记着色。
+      // Insight 保存周期、关键结论与 Markdown 列表；UI 只根据箭头标记着色。
       function renderInsightContent(content) {
-        const [scope = '', ...lines] = content.split('\n')
+        const [scope = '', conclusion = '', ...lines] = content.split('\n')
+        $('#insight-conclusion').textContent = conclusion
+        $('#insight-conclusion').hidden = !conclusion
         $('#insight-scope').textContent = scope
         const items = lines
           .filter((line) => line.startsWith('- '))
@@ -1917,7 +1977,7 @@
               item.append(label)
               text = text.slice(labelEnd)
             }
-            const match = text.match(/[↑↓]\s*(?:增长|下跌)\s*\d+(?:\.\d+)?%/)
+            const match = text.match(/[↑↓]\s*(?:增长|下跌|提升|下降)\s*\d+(?:\.\d+)?(?:%| 个百分点)/)
             if (match) {
               const change = document.createElement('span')
               change.className = 'insight-change'
@@ -2031,7 +2091,7 @@
         dashboard.insight.add((widget) => {
           widget
             .setInsightId(insight)
-            .setTitle('AI 洞察')
+            .setTitle('核心发现')
             .setLayouts({
               lg: position(layoutPresets.focus.lg.insight),
               xs: position(layoutPresets.focus.xs.insight),
