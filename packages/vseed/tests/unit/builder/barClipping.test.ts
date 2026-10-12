@@ -7,6 +7,27 @@ import dualAxisCase from '../../integrations/dualAxis/combination/columnParallel
 
 beforeAll(registerAll)
 
+test.each([columnCase, barCase, dualAxisCase])('$name renders straight bars without group clipping by default', (fixture) => {
+  const spec = Builder.from({ ...fixture.vseed, barStyle: undefined } as VSeed).build<any>()
+  const element = document.createElement('div')
+  document.body.append(element)
+  const chart = new VChart({ ...spec, width: 500, height: 500 }, { dom: element, animation: false })
+  try {
+    chart.renderSync()
+    for (const series of chart.getChart()!.getAllSeries()) {
+      const mark = series.getMarkInName('bar')
+      if (!mark) continue
+      expect(series.getSpec().stackCornerRadius).toBeUndefined()
+      for (const datum of series.getViewData()!.latestData) {
+        expect(mark.getAttribute('cornerRadius', datum)).toBe(0)
+      }
+    }
+  } finally {
+    chart.release()
+    element.remove()
+  }
+})
+
 test.each([columnCase, barCase, dualAxisCase])('$name explicitly clips strokes to the requested group outline', (fixture) => {
   const spec = Builder.from({ ...fixture.vseed, cornerRadius: 4, stackCornerRadius: true } as VSeed).build<any>()
   const element = document.createElement('div')

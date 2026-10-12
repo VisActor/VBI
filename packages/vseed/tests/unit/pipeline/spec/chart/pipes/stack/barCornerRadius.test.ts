@@ -1,4 +1,5 @@
 import { barCornerRadius } from 'src/pipeline/spec/chart/pipes/stack/barCornerRadius'
+import { theme as applyTheme } from 'src/pipeline/advanced/chart/pipes/theme/theme'
 import { createBarCornerRadius, createStackCornerRadius } from 'src/pipeline/spec/chart/pipes/stack/stackCornerRadiusUtils'
 import { Builder, registerAll, registerCustomTheme } from 'src/builder'
 import { zVSeed } from 'src/types/zVseed'
@@ -32,6 +33,22 @@ describe('bar corner modes', () => {
     expect(native.bar.style.cornerRadius({ __MeaId__: 'value', value: 10 })).toBe(12)
     const stack = Builder.from(seed({ theme: 'boolean-stack-radius', cornerRadius: [6, 7, 0, 0] })).build<any>()
     expect(stack.stackCornerRadius(null, { __MeaId__: 'value', value: 10 })).toEqual([6, 7, 0, 0])
+
+    registerCustomTheme('array-corner-radius', ({ lightTheme }) => ({
+      ...lightTheme,
+      config: { ...lightTheme.config, column: { ...lightTheme.config?.column, cornerRadius: [8, 9, 0, 0] } },
+    }))
+    const themed = Builder.from(seed({ theme: 'array-corner-radius' })).build<any>()
+    expect(themed.bar.style.cornerRadius({ __MeaId__: 'value', value: 10 })).toEqual([8, 9, 0, 0])
+    const straight = Builder.from(seed({ theme: 'array-corner-radius', cornerRadius: 0 })).build<any>()
+    expect(straight.bar.style.cornerRadius({ __MeaId__: 'value', value: 10 })).toBe(0)
+    const empty = Builder.from(seed({ theme: 'array-corner-radius', cornerRadius: [] })).build<any>()
+    expect(empty.bar.style.cornerRadius({ __MeaId__: 'value', value: 10 })).toEqual([])
+    const initial = applyTheme({} as AdvancedVSeed, {
+      vseed: seed({ theme: 'array-corner-radius' }),
+      customTheme: Builder.getThemeMap(),
+    } as any)
+    expect(initial.config?.column?.cornerRadius).toEqual([8, 9, 0, 0])
   })
 
   test('selecting a corner mode preserves existing mark attributes from preceding pipes', () => {
@@ -53,9 +70,9 @@ describe('bar corner modes', () => {
     }
   })
 
-  test('stack mode uses the themed radius when no explicit value is provided', () => {
+  test('stack mode keeps straight corners when no explicit value is provided', () => {
     const spec = Builder.from(seed({ stackCornerRadius: true })).build<any>()
-    expect(spec.stackCornerRadius(null, { __VCHART_STACK_START: 0, __VCHART_STACK_END: 10 })).toEqual([4, 4, 0, 0])
+    expect(spec.stackCornerRadius(null, { __VCHART_STACK_START: 0, __VCHART_STACK_END: 10 })).toBe(0)
     expect(spec.bar.style.cornerRadius).toBe(0)
   })
 
@@ -111,15 +128,15 @@ describe('bar corner modes', () => {
     expect(spec.stackCornerRadius(null, { __VCHART_STACK_START: 0, __VCHART_STACK_END: 30 })).toEqual([7, 7, 0, 0])
   })
 
-  test.each(families)('%s defaults to per-mark corners in both themes', (chartType) => {
+  test.each(families)('%s defaults to straight corners in both themes', (chartType) => {
     for (const theme of ['light', 'dark']) {
       const dsl = seed({ chartType, theme })
       expect(zVSeed.parse(dsl).stackCornerRadius).toBeUndefined()
       expect(Builder.from(dsl).buildAdvanced()?.config?.[chartType]?.stackCornerRadius).toBe(false)
       const spec = Builder.from(dsl).build<any>()
-      const radius = chartType.startsWith('bar') || chartType === 'raceBar' ? [0, 4, 4, 0] : [4, 4, 0, 0]
       expect(spec.stackCornerRadius).toBeUndefined()
-      expect(spec.bar.style.cornerRadius({ __MeaId__: 'value', value: 10 })).toEqual(radius)
+      expect(spec.bar.style.cornerRadius({ __MeaId__: 'value', value: 10 })).toBe(0)
+      expect(spec.bar.style.cornerRadius({ __MeaId__: 'value', value: -10 })).toBe(0)
     }
   })
 

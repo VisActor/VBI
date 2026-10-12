@@ -40,7 +40,7 @@ export const getBarTheme = () => {
     xAxis: linearAxis,
     yAxis: barBandAxis,
     crosshairRect: crosshairRect,
-    cornerRadius: [0, 4, 4, 0],
+    cornerRadius: 0,
     stackCornerRadius: false,
     pivotGrid: getDarkPivotChartGridConfig(),
     annotation: getDarkAnnotation(),

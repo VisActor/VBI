@@ -62,7 +62,7 @@ export const getRaceBarTheme = () => {
     crosshairRect,
     player,
 
-    cornerRadius: [0, 4, 4, 0],
+    cornerRadius: 0,
     stackCornerRadius: false,
     pivotGrid: getLightPivotChartGridConfig(),
     annotation: getLightAnnotation(),
@@ -108,7 +108,7 @@ export const getRaceColumnTheme = () => {
     crosshairRect,
     player,
 
-    cornerRadius: [4, 4, 0, 0],
+    cornerRadius: 0,
     stackCornerRadius: false,
     pivotGrid: getLightPivotChartGridConfig(),
     annotation: getLightAnnotation(),

@@ -26,7 +26,7 @@ export const getDualAxisTheme = () => {
 
   return {
     ...baseConfig,
-    cornerRadius: [4, 4, 0, 0],
+    cornerRadius: 0,
     stackCornerRadius: false,
     xAxis: bandAxis,
     primaryYAxis: linearAxis,

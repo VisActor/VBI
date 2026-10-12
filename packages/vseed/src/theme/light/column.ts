@@ -31,7 +31,7 @@ export const getColumnTheme = () => {
     yAxis: linearAxis,
     crosshairRect,
 
-    cornerRadius: [4, 4, 0, 0],
+    cornerRadius: 0,
     stackCornerRadius: false,
     pivotGrid: getLightPivotChartGridConfig(),
     annotation: getLightAnnotation(),
@@ -60,7 +60,7 @@ export const getColumnParallelTheme = () => {
     yAxis: linearAxis,
     crosshairRect,
 
-    cornerRadius: [4, 4, 0, 0],
+    cornerRadius: 0,
     stackCornerRadius: false,
     pivotGrid: getLightPivotChartGridConfig(),
     annotation: getLightAnnotation(),
