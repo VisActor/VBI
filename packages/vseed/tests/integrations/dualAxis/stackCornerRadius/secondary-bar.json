@@ -38,7 +38,8 @@
       }
     ],
     "chartType": "dualAxis",
-    "stackCornerRadius": 16,
+    "cornerRadius": 16,
+    "stackCornerRadius": true,
     "barMaxWidth": 20,
     "dataset": [
       {

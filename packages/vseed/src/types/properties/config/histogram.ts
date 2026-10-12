@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zXBandAxis, zYLinearAxis } from './axes'
 import { zCrosshairRect } from './crosshair'
+import { zCornerRadius } from './cornerRadius'
 import { zStackCornerRadius } from './stackCornerRadius/stackCornerRadius'
 import { zBackgroundColor } from './backgroundColor/backgroundColor'
 import { zColor } from './color/color'
@@ -24,6 +25,7 @@ export const zHistogramConfig = z.object({
   xAxis: zXBandAxis.nullish(),
   yAxis: zYLinearAxis.nullish(),
   crosshairRect: zCrosshairRect.nullish(),
+  cornerRadius: zCornerRadius.nullish(),
   stackCornerRadius: zStackCornerRadius.nullish(),
   pivotGrid: zPivotChartGridConfig.nullish(),
   annotation: zAnnotationConfig.nullish(),

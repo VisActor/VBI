@@ -329,7 +329,7 @@ const withAxesAndExtras = (
 export const createTokenThemeConfig = (tokens: TokenThemeDefinition): CustomThemeConfig => {
   const baseTheme = tokens.baseTheme === 'dark' ? darkTheme() : lightTheme()
   const baseConfig = (baseTheme.config || {}) as ThemeConfigMap
-  const nextConfig = {} as ThemeConfigMap
+  const nextConfig: Partial<Record<ThemeConfigKey, ThemeConfigMap[ThemeConfigKey]>> = {}
 
   for (const chartType of Object.keys(baseConfig) as ThemeConfigKey[]) {
     const chartConfig = baseConfig[chartType]

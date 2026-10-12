@@ -38,7 +38,7 @@ import {
   annotationAreaBand,
   barMaxWidth,
   barGapInGroup,
-  stackCornerRadius,
+  barCornerRadius,
   pivotTitle,
   pivotAxisStyle,
   dimensionLinkage,
@@ -67,7 +67,7 @@ const dualAxis: VChartSpecPipeline = [
 
       barMaxWidth,
       barGapInGroup,
-      barStyleFilter(stackCornerRadius),
+      barStyleFilter(barCornerRadius),
 
       barStyleFilter(colorBarStyleFill(columnStyle)),
       pointStyleFilter(colorPointStyleFill(pointStyle)),
@@ -110,7 +110,7 @@ const pivotDualAxis: PivotChartSpecPipeline = [
 
         barMaxWidth,
         barGapInGroup,
-        barStyleFilter(stackCornerRadius),
+        barStyleFilter(barCornerRadius),
 
         barStyleFilter(colorBarStyleFill(columnStyle)),
         pointStyleFilter(colorPointStyleFill(pointStyle)),

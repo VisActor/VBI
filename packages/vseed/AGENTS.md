@@ -184,7 +184,7 @@ VSeed 支持在 DSL 中写动态过滤逻辑（code），在 build 前执行。
 - 组合式 pipeline 构建图表类型
 - 适配器模式（如 pivotAdapter）承接条件分支
 
-`stackCornerRadius` 的裁剪同时限制柱体描边的外扩。即使未配置圆角、使用单系列或条件圆角，也应保留静态柱体的裁剪边界；匹配显式 `barRadius` 时，裁剪圆角不应大于图元圆角，避免把直角裁成圆角。`moveIn` 因图元尚未到达最终位置，使用图元圆角而不使用最终位置裁剪。
+柱图圆角值统一由 `cornerRadius` 设置，`stackCornerRadius` 是布尔开关，默认 `false`，此时每个图元独立绘制圆角且不得生成整组 clip 回调。显式设置 `stackCornerRadius: true` 时，交由 VChart 使用 `cornerRadius` 裁剪整组堆叠柱体，并优先于 `barStyle.barRadius`（包括条件样式）；`cornerRadius: 0` 对应整组直角裁剪。整组 clip 与更新动画不同步，会引起更新动画重叠的 bug，依赖 VChart 修复；不得通过隐式动画降级改变显式配置的模式。
 
 详见：
 

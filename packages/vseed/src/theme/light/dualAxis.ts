@@ -26,6 +26,8 @@ export const getDualAxisTheme = () => {
 
   return {
     ...baseConfig,
+    cornerRadius: 0,
+    stackCornerRadius: false,
     xAxis: bandAxis,
     primaryYAxis: linearAxis,
     secondaryYAxis: { ...linearAxis, grid: { visible: false } },

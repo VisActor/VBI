@@ -1,9 +1,9 @@
 import { FoldMeasureId } from 'src/dataReshape/constant'
-import type { Datum, StackCornerRadius } from 'src/types'
+import type { Datum, CornerRadius } from 'src/types'
 
-export type StackCornerRadiusCallback = (_: unknown, datum: Datum) => StackCornerRadius | 0
+export type StackCornerRadiusCallback = (_: unknown, datum: Datum) => CornerRadius | 0
 
-const reverseStackCornerRadius = (cornerRadius: StackCornerRadius): StackCornerRadius => {
+const reverseStackCornerRadius = (cornerRadius: CornerRadius): CornerRadius => {
   if (!Array.isArray(cornerRadius)) {
     return cornerRadius
   }
@@ -13,7 +13,7 @@ const reverseStackCornerRadius = (cornerRadius: StackCornerRadius): StackCornerR
   return [bottomRight, bottomLeft, topLeft, topRight]
 }
 
-const mergeStackCornerRadius = (cornerRadius: StackCornerRadius): StackCornerRadius => {
+const mergeStackCornerRadius = (cornerRadius: CornerRadius): CornerRadius => {
   if (!Array.isArray(cornerRadius)) {
     return cornerRadius
   }
@@ -28,10 +28,7 @@ const mergeStackCornerRadius = (cornerRadius: StackCornerRadius): StackCornerRad
   ]
 }
 
-const getStackRangeCornerRadius = (
-  cornerRadius: StackCornerRadius,
-  datum: Datum,
-): StackCornerRadius | 0 | undefined => {
+const getStackRangeCornerRadius = (cornerRadius: CornerRadius, datum: Datum): CornerRadius | 0 | undefined => {
   const stackStart = datum?.['__VCHART_STACK_START']
   const stackEnd = datum?.['__VCHART_STACK_END']
 
@@ -58,13 +55,13 @@ const getStackRangeCornerRadius = (
 }
 
 type CornerRadiusCallbacks = {
-  bar: (datum: Datum) => StackCornerRadius | 0
+  bar: (datum: Datum) => CornerRadius | 0
   stack: StackCornerRadiusCallback
 }
 
 const callbacks = new Map<string, CornerRadiusCallbacks>()
 
-const createCornerRadius = (radius: StackCornerRadius): CornerRadiusCallbacks => {
+const createCornerRadius = (radius: CornerRadius): CornerRadiusCallbacks => {
   const key = JSON.stringify(radius)
   const cached = callbacks.get(key)
   if (cached) return cached
@@ -94,26 +91,8 @@ const createCornerRadius = (radius: StackCornerRadius): CornerRadiusCallbacks =>
   return result
 }
 
-export const createStackCornerRadius = (radius: StackCornerRadius): StackCornerRadiusCallback =>
+export const createStackCornerRadius = (radius: CornerRadius): StackCornerRadiusCallback =>
   createCornerRadius(radius).stack
 
-export const createBarCornerRadius = (radius: StackCornerRadius): CornerRadiusCallbacks['bar'] =>
+export const createBarCornerRadius = (radius: CornerRadius): CornerRadiusCallbacks['bar'] =>
   createCornerRadius(radius).bar
-
-export const hasMoveInAnimation = (animation: unknown): boolean => {
-  if (!animation) {
-    return false
-  }
-
-  if (Array.isArray(animation)) {
-    return animation.some(hasMoveInAnimation)
-  }
-
-  if (typeof animation !== 'object') {
-    return false
-  }
-
-  const animationRecord = animation as Record<string, unknown>
-
-  return animationRecord.type === 'moveIn' || Object.values(animationRecord).some(hasMoveInAnimation)
-}

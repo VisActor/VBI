@@ -27,7 +27,7 @@ const createBarStyle =
         visible: barVisible,
         fill: createGradientFill(barColor, barGradient, colorField, gradientDirection),
         fillOpacity: barColorOpacity,
-        cornerRadius: barRadius,
+        ...(barRadius == null ? {} : { cornerRadius: (spec as IBarChartSpec).stackCornerRadius ? 0 : barRadius }),
         lineWidth: barBorderWidth,
         stroke: barBorderColor,
         strokeOpacity: barBorderOpacity,

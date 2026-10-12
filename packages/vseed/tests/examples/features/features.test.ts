@@ -53,77 +53,79 @@ import config_49 from './centerText/empty.json'
 import config_50 from './centerText/pivot.json'
 import config_51 from './color/colormapping.json'
 import config_52 from './color/colorscheme.json'
-import config_53 from './dataset/单指标-单维度.json'
-import config_54 from './dataset/单指标-多维度.json'
-import config_55 from './dataset/单指标-零维度.json'
-import config_56 from './dataset/多指标-单维度.json'
-import config_57 from './dataset/多指标-多维度.json'
-import config_58 from './dataset/多指标-零维度.json'
-import config_59 from './dataset/数据维度与指标配置.json'
-import config_60 from './dataset/自动选择.json'
-import config_61 from './dimensions/列维度.json'
-import config_62 from './dimensions/普通维度.json'
-import config_63 from './dimensions/行维度.json'
-import config_64 from './dimensions/透视维度.json'
-import config_65 from './dynamicFilter/annotation-horizontal-line.json'
-import config_66 from './dynamicFilter/annotation-point.json'
-import config_67 from './dynamicFilter/annotation-vertical-line.json'
-import config_68 from './dynamicFilter/area-line-point-style.json'
-import config_69 from './dynamicFilter/column-bar-style.json'
-import config_70 from './dynamicFilter/pivot-table-cell-style.json'
-import config_71 from './dynamicFilter/table-dynamic-cell-style.json'
-import config_72 from './formatter/base-dim-formatter-bar.json'
-import config_73 from './formatter/base-dim-formatter-dualAxis.json'
-import config_74 from './formatter/base-dim-formatter-heatmap.json'
-import config_75 from './formatter/base-dim-formatter-pie.json'
-import config_76 from './formatter/base-dim-formatter-pivotChart.json'
-import config_77 from './formatter/base-dim-formatter-pivotTable.json'
-import config_78 from './formatter/base-dim-formatter-radar.json'
-import config_79 from './formatter/base-dim-formatter-scatter.json'
-import config_80 from './formatter/base-dim-formatter-table.json'
-import config_81 from './formatter/base-dim-formatter-treemap.json'
-import config_82 from './i18n/en-us.json'
-import config_83 from './i18n/zh-cn.json'
-import config_84 from './label/enable.json'
-import config_85 from './legend/border.json'
-import config_86 from './legend/enable.json'
-import config_87 from './legend/labelcolor.json'
-import config_88 from './legend/labelfontsize.json'
-import config_89 from './legend/labelfontweight.json'
-import config_90 from './legend/maxsize.json'
-import config_91 from './legend/position.json'
-import config_92 from './legend/static.json'
-import config_93 from './measures/指标组.json'
-import config_94 from './numFormat/autoformat.json'
-import config_95 from './numFormat/fractiondigits.json'
-import config_96 from './numFormat/ratio-&-symbol.json'
-import config_97 from './numFormat/roundingmode.json'
-import config_98 from './numFormat/roundingpriority.json'
-import config_99 from './numFormat/significantdigits.json'
-import config_100 from './numFormat/suffix-&-prefix.json'
-import config_101 from './numFormat/thousandseparator.json'
-import config_102 from './numFormat/type.json'
-import config_103 from './pieStyle/compact-donut.json'
-import config_104 from './pieStyle/half-pie.json'
-import config_105 from './pointStyle/active-point.json'
-import config_106 from './pointStyle/dimension-condition.json'
-import config_107 from './pointStyle/measure-condition.json'
-import config_108 from './pointStyle/partial-datum.json'
-import config_109 from './pointStyle/point-array.json'
-import config_110 from './pointStyle/value.json'
-import config_111 from './polynomial/column-示例.json'
-import config_112 from './polynomial/scatter-示例.json'
-import config_113 from './sort/图例自身排序.json'
-import config_114 from './sort/指标排序-1.json'
-import config_115 from './sort/指标排序.json'
-import config_116 from './sort/维度排序-1.json'
-import config_117 from './sort/维度排序.json'
-import config_118 from './sort/自定义排序(图例id).json'
-import config_119 from './sort/自定义排序(图例名称).json'
-import config_120 from './sort/自定义排序.json'
-import config_121 from './totals/columnTotal.json'
-import config_122 from './totals/rowTotal.json'
-import config_123 from './totals/singleIndicator.json'
+import config_53 from './cornerRadius/per-mark.json'
+import config_54 from './cornerRadius/stack-group.json'
+import config_55 from './dataset/单指标-单维度.json'
+import config_56 from './dataset/单指标-多维度.json'
+import config_57 from './dataset/单指标-零维度.json'
+import config_58 from './dataset/多指标-单维度.json'
+import config_59 from './dataset/多指标-多维度.json'
+import config_60 from './dataset/多指标-零维度.json'
+import config_61 from './dataset/数据维度与指标配置.json'
+import config_62 from './dataset/自动选择.json'
+import config_63 from './dimensions/列维度.json'
+import config_64 from './dimensions/普通维度.json'
+import config_65 from './dimensions/行维度.json'
+import config_66 from './dimensions/透视维度.json'
+import config_67 from './dynamicFilter/annotation-horizontal-line.json'
+import config_68 from './dynamicFilter/annotation-point.json'
+import config_69 from './dynamicFilter/annotation-vertical-line.json'
+import config_70 from './dynamicFilter/area-line-point-style.json'
+import config_71 from './dynamicFilter/column-bar-style.json'
+import config_72 from './dynamicFilter/pivot-table-cell-style.json'
+import config_73 from './dynamicFilter/table-dynamic-cell-style.json'
+import config_74 from './formatter/base-dim-formatter-bar.json'
+import config_75 from './formatter/base-dim-formatter-dualAxis.json'
+import config_76 from './formatter/base-dim-formatter-heatmap.json'
+import config_77 from './formatter/base-dim-formatter-pie.json'
+import config_78 from './formatter/base-dim-formatter-pivotChart.json'
+import config_79 from './formatter/base-dim-formatter-pivotTable.json'
+import config_80 from './formatter/base-dim-formatter-radar.json'
+import config_81 from './formatter/base-dim-formatter-scatter.json'
+import config_82 from './formatter/base-dim-formatter-table.json'
+import config_83 from './formatter/base-dim-formatter-treemap.json'
+import config_84 from './i18n/en-us.json'
+import config_85 from './i18n/zh-cn.json'
+import config_86 from './label/enable.json'
+import config_87 from './legend/border.json'
+import config_88 from './legend/enable.json'
+import config_89 from './legend/labelcolor.json'
+import config_90 from './legend/labelfontsize.json'
+import config_91 from './legend/labelfontweight.json'
+import config_92 from './legend/maxsize.json'
+import config_93 from './legend/position.json'
+import config_94 from './legend/static.json'
+import config_95 from './measures/指标组.json'
+import config_96 from './numFormat/autoformat.json'
+import config_97 from './numFormat/fractiondigits.json'
+import config_98 from './numFormat/ratio-&-symbol.json'
+import config_99 from './numFormat/roundingmode.json'
+import config_100 from './numFormat/roundingpriority.json'
+import config_101 from './numFormat/significantdigits.json'
+import config_102 from './numFormat/suffix-&-prefix.json'
+import config_103 from './numFormat/thousandseparator.json'
+import config_104 from './numFormat/type.json'
+import config_105 from './pieStyle/compact-donut.json'
+import config_106 from './pieStyle/half-pie.json'
+import config_107 from './pointStyle/active-point.json'
+import config_108 from './pointStyle/dimension-condition.json'
+import config_109 from './pointStyle/measure-condition.json'
+import config_110 from './pointStyle/partial-datum.json'
+import config_111 from './pointStyle/point-array.json'
+import config_112 from './pointStyle/value.json'
+import config_113 from './polynomial/column-示例.json'
+import config_114 from './polynomial/scatter-示例.json'
+import config_115 from './sort/图例自身排序.json'
+import config_116 from './sort/指标排序-1.json'
+import config_117 from './sort/指标排序.json'
+import config_118 from './sort/维度排序-1.json'
+import config_119 from './sort/维度排序.json'
+import config_120 from './sort/自定义排序(图例id).json'
+import config_121 from './sort/自定义排序(图例名称).json'
+import config_122 from './sort/自定义排序.json'
+import config_123 from './totals/columnTotal.json'
+import config_124 from './totals/rowTotal.json'
+import config_125 from './totals/singleIndicator.json'
 
 const cases = [
   { name: 'animation/bar-like', vseed: config_0 },
@@ -179,77 +181,79 @@ const cases = [
   { name: 'centerText/pivot', vseed: config_50 },
   { name: 'color/colormapping', vseed: config_51 },
   { name: 'color/colorscheme', vseed: config_52 },
-  { name: 'dataset/单指标-单维度', vseed: config_53 },
-  { name: 'dataset/单指标-多维度', vseed: config_54 },
-  { name: 'dataset/单指标-零维度', vseed: config_55 },
-  { name: 'dataset/多指标-单维度', vseed: config_56 },
-  { name: 'dataset/多指标-多维度', vseed: config_57 },
-  { name: 'dataset/多指标-零维度', vseed: config_58 },
-  { name: 'dataset/数据维度与指标配置', vseed: config_59 },
-  { name: 'dataset/自动选择', vseed: config_60 },
-  { name: 'dimensions/列维度', vseed: config_61 },
-  { name: 'dimensions/普通维度', vseed: config_62 },
-  { name: 'dimensions/行维度', vseed: config_63 },
-  { name: 'dimensions/透视维度', vseed: config_64 },
-  { name: 'dynamicFilter/annotation-horizontal-line', vseed: config_65 },
-  { name: 'dynamicFilter/annotation-point', vseed: config_66 },
-  { name: 'dynamicFilter/annotation-vertical-line', vseed: config_67 },
-  { name: 'dynamicFilter/area-line-point-style', vseed: config_68 },
-  { name: 'dynamicFilter/column-bar-style', vseed: config_69 },
-  { name: 'dynamicFilter/pivot-table-cell-style', vseed: config_70 },
-  { name: 'dynamicFilter/table-dynamic-cell-style', vseed: config_71 },
-  { name: 'formatter/base-dim-formatter-bar', vseed: config_72 },
-  { name: 'formatter/base-dim-formatter-dualAxis', vseed: config_73 },
-  { name: 'formatter/base-dim-formatter-heatmap', vseed: config_74 },
-  { name: 'formatter/base-dim-formatter-pie', vseed: config_75 },
-  { name: 'formatter/base-dim-formatter-pivotChart', vseed: config_76 },
-  { name: 'formatter/base-dim-formatter-pivotTable', vseed: config_77 },
-  { name: 'formatter/base-dim-formatter-radar', vseed: config_78 },
-  { name: 'formatter/base-dim-formatter-scatter', vseed: config_79 },
-  { name: 'formatter/base-dim-formatter-table', vseed: config_80 },
-  { name: 'formatter/base-dim-formatter-treemap', vseed: config_81 },
-  { name: 'i18n/en-us', vseed: config_82 },
-  { name: 'i18n/zh-cn', vseed: config_83 },
-  { name: 'label/enable', vseed: config_84 },
-  { name: 'legend/border', vseed: config_85 },
-  { name: 'legend/enable', vseed: config_86 },
-  { name: 'legend/labelcolor', vseed: config_87 },
-  { name: 'legend/labelfontsize', vseed: config_88 },
-  { name: 'legend/labelfontweight', vseed: config_89 },
-  { name: 'legend/maxsize', vseed: config_90 },
-  { name: 'legend/position', vseed: config_91 },
-  { name: 'legend/static', vseed: config_92 },
-  { name: 'measures/指标组', vseed: config_93 },
-  { name: 'numFormat/autoformat', vseed: config_94 },
-  { name: 'numFormat/fractiondigits', vseed: config_95 },
-  { name: 'numFormat/ratio-&-symbol', vseed: config_96 },
-  { name: 'numFormat/roundingmode', vseed: config_97 },
-  { name: 'numFormat/roundingpriority', vseed: config_98 },
-  { name: 'numFormat/significantdigits', vseed: config_99 },
-  { name: 'numFormat/suffix-&-prefix', vseed: config_100 },
-  { name: 'numFormat/thousandseparator', vseed: config_101 },
-  { name: 'numFormat/type', vseed: config_102 },
-  { name: 'pieStyle/compact-donut', vseed: config_103 },
-  { name: 'pieStyle/half-pie', vseed: config_104 },
-  { name: 'pointStyle/active-point', vseed: config_105 },
-  { name: 'pointStyle/dimension-condition', vseed: config_106 },
-  { name: 'pointStyle/measure-condition', vseed: config_107 },
-  { name: 'pointStyle/partial-datum', vseed: config_108 },
-  { name: 'pointStyle/point-array', vseed: config_109 },
-  { name: 'pointStyle/value', vseed: config_110 },
-  { name: 'polynomial/column-示例', vseed: config_111 },
-  { name: 'polynomial/scatter-示例', vseed: config_112 },
-  { name: 'sort/图例自身排序', vseed: config_113 },
-  { name: 'sort/指标排序-1', vseed: config_114 },
-  { name: 'sort/指标排序', vseed: config_115 },
-  { name: 'sort/维度排序-1', vseed: config_116 },
-  { name: 'sort/维度排序', vseed: config_117 },
-  { name: 'sort/自定义排序(图例id)', vseed: config_118 },
-  { name: 'sort/自定义排序(图例名称)', vseed: config_119 },
-  { name: 'sort/自定义排序', vseed: config_120 },
-  { name: 'totals/columnTotal', vseed: config_121 },
-  { name: 'totals/rowTotal', vseed: config_122 },
-  { name: 'totals/singleIndicator', vseed: config_123 }
+  { name: 'cornerRadius/per-mark', vseed: config_53 },
+  { name: 'cornerRadius/stack-group', vseed: config_54 },
+  { name: 'dataset/单指标-单维度', vseed: config_55 },
+  { name: 'dataset/单指标-多维度', vseed: config_56 },
+  { name: 'dataset/单指标-零维度', vseed: config_57 },
+  { name: 'dataset/多指标-单维度', vseed: config_58 },
+  { name: 'dataset/多指标-多维度', vseed: config_59 },
+  { name: 'dataset/多指标-零维度', vseed: config_60 },
+  { name: 'dataset/数据维度与指标配置', vseed: config_61 },
+  { name: 'dataset/自动选择', vseed: config_62 },
+  { name: 'dimensions/列维度', vseed: config_63 },
+  { name: 'dimensions/普通维度', vseed: config_64 },
+  { name: 'dimensions/行维度', vseed: config_65 },
+  { name: 'dimensions/透视维度', vseed: config_66 },
+  { name: 'dynamicFilter/annotation-horizontal-line', vseed: config_67 },
+  { name: 'dynamicFilter/annotation-point', vseed: config_68 },
+  { name: 'dynamicFilter/annotation-vertical-line', vseed: config_69 },
+  { name: 'dynamicFilter/area-line-point-style', vseed: config_70 },
+  { name: 'dynamicFilter/column-bar-style', vseed: config_71 },
+  { name: 'dynamicFilter/pivot-table-cell-style', vseed: config_72 },
+  { name: 'dynamicFilter/table-dynamic-cell-style', vseed: config_73 },
+  { name: 'formatter/base-dim-formatter-bar', vseed: config_74 },
+  { name: 'formatter/base-dim-formatter-dualAxis', vseed: config_75 },
+  { name: 'formatter/base-dim-formatter-heatmap', vseed: config_76 },
+  { name: 'formatter/base-dim-formatter-pie', vseed: config_77 },
+  { name: 'formatter/base-dim-formatter-pivotChart', vseed: config_78 },
+  { name: 'formatter/base-dim-formatter-pivotTable', vseed: config_79 },
+  { name: 'formatter/base-dim-formatter-radar', vseed: config_80 },
+  { name: 'formatter/base-dim-formatter-scatter', vseed: config_81 },
+  { name: 'formatter/base-dim-formatter-table', vseed: config_82 },
+  { name: 'formatter/base-dim-formatter-treemap', vseed: config_83 },
+  { name: 'i18n/en-us', vseed: config_84 },
+  { name: 'i18n/zh-cn', vseed: config_85 },
+  { name: 'label/enable', vseed: config_86 },
+  { name: 'legend/border', vseed: config_87 },
+  { name: 'legend/enable', vseed: config_88 },
+  { name: 'legend/labelcolor', vseed: config_89 },
+  { name: 'legend/labelfontsize', vseed: config_90 },
+  { name: 'legend/labelfontweight', vseed: config_91 },
+  { name: 'legend/maxsize', vseed: config_92 },
+  { name: 'legend/position', vseed: config_93 },
+  { name: 'legend/static', vseed: config_94 },
+  { name: 'measures/指标组', vseed: config_95 },
+  { name: 'numFormat/autoformat', vseed: config_96 },
+  { name: 'numFormat/fractiondigits', vseed: config_97 },
+  { name: 'numFormat/ratio-&-symbol', vseed: config_98 },
+  { name: 'numFormat/roundingmode', vseed: config_99 },
+  { name: 'numFormat/roundingpriority', vseed: config_100 },
+  { name: 'numFormat/significantdigits', vseed: config_101 },
+  { name: 'numFormat/suffix-&-prefix', vseed: config_102 },
+  { name: 'numFormat/thousandseparator', vseed: config_103 },
+  { name: 'numFormat/type', vseed: config_104 },
+  { name: 'pieStyle/compact-donut', vseed: config_105 },
+  { name: 'pieStyle/half-pie', vseed: config_106 },
+  { name: 'pointStyle/active-point', vseed: config_107 },
+  { name: 'pointStyle/dimension-condition', vseed: config_108 },
+  { name: 'pointStyle/measure-condition', vseed: config_109 },
+  { name: 'pointStyle/partial-datum', vseed: config_110 },
+  { name: 'pointStyle/point-array', vseed: config_111 },
+  { name: 'pointStyle/value', vseed: config_112 },
+  { name: 'polynomial/column-示例', vseed: config_113 },
+  { name: 'polynomial/scatter-示例', vseed: config_114 },
+  { name: 'sort/图例自身排序', vseed: config_115 },
+  { name: 'sort/指标排序-1', vseed: config_116 },
+  { name: 'sort/指标排序', vseed: config_117 },
+  { name: 'sort/维度排序-1', vseed: config_118 },
+  { name: 'sort/维度排序', vseed: config_119 },
+  { name: 'sort/自定义排序(图例id)', vseed: config_120 },
+  { name: 'sort/自定义排序(图例名称)', vseed: config_121 },
+  { name: 'sort/自定义排序', vseed: config_122 },
+  { name: 'totals/columnTotal', vseed: config_123 },
+  { name: 'totals/rowTotal', vseed: config_124 },
+  { name: 'totals/singleIndicator', vseed: config_125 }
 ]
 
 describe('features', () => {
