@@ -1,9 +1,9 @@
 ---
-name: vbi
-description: 使用 VBI 的 DSL 和 Builder 构建图表、仪表盘与洞察。适用于 VBI 数据接入、分析配置、渲染集成及配置保存与恢复。
+name: light-dashboard
+description: 建小而美、低信息密度的交互式仪表盘。适用于经营概览、指标监测、趋势分析与专题数据看板，强调关键指标、清晰主次、充足留白、精致配色与必要交互。Powered By Visactor VBI
 ---
 
-# VBI Dashboard 构建指南
+# 轻量仪表盘构建指南
 
 ## 核心方法论：基于 Dashboard 模板构建
 
