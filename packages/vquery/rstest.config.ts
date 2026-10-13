@@ -4,7 +4,7 @@ export default defineConfig({
   globals: true,
   testEnvironment: 'node',
   includeSource: ['src/**/*.{js,ts}'],
-  exclude: ['src/browser.ts', 'src/vquery-browser.ts'],
+  exclude: ['src/browser.ts'],
   setupFiles: ['./tests/setup.ts'],
   coverage: {
     enabled: true,
@@ -12,9 +12,8 @@ export default defineConfig({
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
-      // rstest can't run browser entrypoints.
+      // Export barrels have no runtime logic; both entrypoints are exercised by unit tests.
       'src/browser.ts',
-      'src/vquery-browser.ts',
     ],
     include: ['src/**'],
     reporters: ['html', ['text', { skipFull: true }], 'json', 'json-summary'],
