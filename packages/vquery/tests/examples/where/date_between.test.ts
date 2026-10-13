@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { convertDSLToSQL, VQuery } from '@visactor/vquery'
+import { convertDSLToDuckDB, VQuery } from '@visactor/vquery'
 import vqueryConfig from './date_between.json'
 
 describe('Where with DATE field BETWEEN filter', () => {
@@ -17,10 +17,10 @@ describe('Where with DATE field BETWEEN filter', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "id", "area", "sales", strftime(CAST("order_date" AS TIMESTAMP), '%Y-%m-%d') as "order_day" from "where-date-between" where ("order_date" between '2024-01-01' and '2024-01-31') order by "order_day" asc"`,
+      `"select "id", "area", "sales", strftime(CAST("order_date" AS TIMESTAMP), '%Y-%m-%d') as "order_day" from "where-date-between" where ("order_date" between '2024-01-01' and '2024-01-31') order by "order_day" asc nulls last"`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

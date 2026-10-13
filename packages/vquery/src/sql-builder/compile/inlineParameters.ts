@@ -1,20 +1,14 @@
 import { escapeValue } from '../utils'
+import type { QueryDialect } from '../types'
 
-export const inlineParameters = (sql: string, params: readonly unknown[]): string => {
+export const inlineParameters = (sql: string, params: readonly unknown[], dialect: QueryDialect = 'duckdb'): string => {
   if (params.length === 0) return sql
-  if (sql.includes('?')) {
-    let out = sql
-    for (const p of params) {
-      out = out.replace(/\?/, escapeValue(p))
-    }
-    return out
-  }
-  if (/\$\d+/.test(sql)) {
-    return sql.replace(/\$(\d+)/g, (_, idx) => {
-      const i = Number(idx) - 1
-      const v = params[i]
-      return escapeValue(v)
-    })
-  }
-  return sql
+  let index = 0
+  // Match quoted SQL first, and substitute each placeholder only once. Parameter
+  // values containing '?' or '$1' must never become new placeholders.
+  return sql.replace(/("(?:[^"]|"")*"|'(?:[^']|'')*'|`(?:[^`]|``)*`)|\$(\d+)|\?/g, (match, quoted, numbered) => {
+    if (quoted) return match
+    const value = params[numbered ? Number(numbered) - 1 : index++]
+    return escapeValue(dialect === 'mysql' && typeof value === 'string' ? value.replaceAll('\\', '\\\\') : value)
+  })
 }

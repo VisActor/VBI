@@ -1,4 +1,5 @@
-export { convertDSLToSQL, Dataset } from './dataset'
+export { Dataset } from './dataset'
+export * from './sql-builder'
 export { DatasetSourceBuilder } from './data-source-builder/dataSourceBuilder'
 export * from './utils'
 export * from './types'

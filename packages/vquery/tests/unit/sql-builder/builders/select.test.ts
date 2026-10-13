@@ -1,4 +1,4 @@
-import { convertDSLToSQL } from '@visactor/vquery'
+import { convertDSLToDuckDB } from '@visactor/vquery'
 
 describe('select', () => {
   it('simple', () => {
@@ -10,7 +10,7 @@ describe('select', () => {
       active: number
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: ['id'],
       },
@@ -25,7 +25,7 @@ describe('select', () => {
       profit: number
     }
 
-    const sql = convertDSLToSQL<USER, 'demoDataset'>(
+    const sql = convertDSLToDuckDB<USER, 'demoDataset'>(
       {
         select: [
           {
@@ -57,7 +57,7 @@ describe('select', () => {
       active: number
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: [
           'department',
@@ -79,7 +79,7 @@ describe('select', () => {
       'orders',
     )
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", "name", avg("age") as "AGE" from "orders" group by "department", "name" order by "age" desc"`,
+      `"select "department", "name", avg("age") as "AGE" from "orders" group by "department", "name" order by "age" desc nulls last"`,
     )
   })
 
@@ -92,7 +92,7 @@ describe('select', () => {
       active: number
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: [
           'department',
@@ -117,7 +117,7 @@ describe('select', () => {
       'orders',
     )
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", "name" as "NAME", avg("age") as "AGE" from "orders" group by "department", "name" order by "age" desc"`,
+      `"select "department", "name" as "NAME", avg("age") as "AGE" from "orders" group by "department", "name" order by "age" desc nulls last"`,
     )
   })
 
@@ -130,7 +130,7 @@ describe('select', () => {
       active: number
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: [
           {
@@ -157,7 +157,7 @@ describe('select', () => {
       'orders',
     )
     expect(sql).toMatchInlineSnapshot(
-      `"select "department" as "department", "name" as "NAME", avg("age") as "AGE" from "orders" group by "department", "name" order by "age" desc"`,
+      `"select "department" as "department", "name" as "NAME", avg("age") as "AGE" from "orders" group by "department", "name" order by "age" desc nulls last"`,
     )
   })
 
@@ -170,7 +170,7 @@ describe('select', () => {
       active: number
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: [
           { field: 'age', aggr: { func: 'sum' }, alias: 'SUM' },
@@ -182,7 +182,7 @@ describe('select', () => {
       'orders',
     )
     expect(sql).toMatchInlineSnapshot(
-      `"select sum("age") as "SUM", min("age") as "MIN", max("age") as "MAX", CAST(count("id") AS INTEGER) as "CNT" from "orders""`,
+      `"select sum("age") as "SUM", min("age") as "MIN", max("age") as "MAX", count("id") as "CNT" from "orders""`,
     )
   })
 
@@ -195,7 +195,7 @@ describe('select', () => {
       active: number
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: [],
         groupBy: ['department', 'name'],
@@ -208,7 +208,9 @@ describe('select', () => {
       },
       'orders',
     )
-    expect(sql).toMatchInlineSnapshot(`"select * from "orders" group by "department", "name" order by "age" desc"`)
+    expect(sql).toMatchInlineSnapshot(
+      `"select * from "orders" group by "department", "name" order by "age" desc nulls last"`,
+    )
   })
 
   it('aggregate without alias falls back to field name', () => {
@@ -216,7 +218,7 @@ describe('select', () => {
       id: number
       age: number
     }
-    const sql = convertDSLToSQL<USER, 'orders'>({ select: [{ field: 'age', aggr: { func: 'avg' } }] }, 'orders')
+    const sql = convertDSLToDuckDB<USER, 'orders'>({ select: [{ field: 'age', aggr: { func: 'avg' } }] }, 'orders')
     expect(sql).toMatchInlineSnapshot(`"select avg("age") as "age" from "orders""`)
   })
 
@@ -225,7 +227,10 @@ describe('select', () => {
       value: number
     }
 
-    const sql = convertDSLToSQL<ORDER, 'orders'>({ select: [{ field: 'value', aggr: { func: 'quantile' } }] }, 'orders')
-    expect(sql).toMatchInlineSnapshot(`"select quantile("value", 0.5) as "value" from "orders""`)
+    const sql = convertDSLToDuckDB<ORDER, 'orders'>(
+      { select: [{ field: 'value', aggr: { func: 'quantile' } }] },
+      'orders',
+    )
+    expect(sql).toMatchInlineSnapshot(`"select quantile("value", CAST(0.5 AS DOUBLE)) as "value" from "orders""`)
   })
 })

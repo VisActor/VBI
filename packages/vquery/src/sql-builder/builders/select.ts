@@ -2,64 +2,20 @@ import type { SelectItem } from '../../types/dsl/Select'
 import { isSelectItem } from '../utils'
 import { sql } from 'kysely'
 import type { SelectQueryBuilder } from 'kysely'
-
-const DATE_FORMAT_MAP: Record<string, string> = {
-  year: '%Y',
-  month: '%Y-%m',
-  day: '%Y-%m-%d',
-  week: '%Y-W%W',
-  hour: '%Y-%m-%d %H',
-  minute: '%Y-%m-%d %H:%M',
-  second: '%Y-%m-%d %H:%M:%S',
-}
+import type { SQLStrategy } from '../types'
 
 export const applySelect = <DB, TB extends keyof DB & string, O, T>(
   qb: SelectQueryBuilder<DB, TB, O>,
-  select?: Array<keyof T | SelectItem<T>>,
+  select: Array<keyof T | SelectItem<T>>,
+  strategy: SQLStrategy,
 ) => {
-  if (select && select.length > 0) {
-    return qb.select((eb) =>
-      select.map((item) => {
-        if (isSelectItem(item)) {
-          const field = item.field as Extract<keyof T, string>
-          const expression = eb.ref(field as any)
-          // 优先使用用户提供的 alias，其次使用 field，保证唯一性
-          const alias = item.alias ?? field
-
-          if (item.aggr) {
-            const { func } = item.aggr
-            if (['avg', 'sum', 'min', 'max', 'variance', 'variance_pop', 'stddev', 'median'].includes(func)) {
-              if (func === 'variance') {
-                return sql`var_samp(${expression})`.as(alias)
-              }
-              if (func === 'variance_pop') {
-                return sql`var_pop(${expression})`.as(alias)
-              }
-              return sql`${sql.raw(func)}(${expression})`.as(alias)
-            } else if (func === 'count') {
-              return sql`CAST(count(${expression}) AS INTEGER)`.as(alias)
-            } else if (func === 'quantile') {
-              const q = item.aggr.quantile ?? 0.5
-              return sql`quantile(${expression}, ${q})`.as(alias)
-            } else if (func === 'count_distinct') {
-              return sql`CAST(count(distinct ${expression}) AS INTEGER)`.as(alias)
-            }
-            const dateTrunc = func.replace('to_', '')
-            const format = DATE_FORMAT_MAP[dateTrunc]
-            if (format) {
-              return sql`strftime(CAST(${expression} AS TIMESTAMP), ${format})`.as(alias)
-            }
-            return sql`strftime(CAST(${expression} AS TIMESTAMP), '%Y') || '-Q' || date_part('quarter', CAST(${expression} AS TIMESTAMP))`.as(
-              alias,
-            )
-          }
-          // 优先使用用户提供的 alias，其次使用 field
-          return expression.as(alias)
-        }
-        return item as any
-      }),
-    )
-  } else {
-    return qb.selectAll()
-  }
+  if (select.length === 0) return qb.selectAll()
+  return qb.select(() =>
+    select.map((item) => {
+      if (!isSelectItem(item)) return item as any
+      const field = item.field as string
+      const expression = sql.ref(field)
+      return (item.aggr ? strategy.aggregate(field, item.aggr) : expression).as(item.alias ?? field)
+    }),
+  )
 }

@@ -1,4 +1,4 @@
-import { convertDSLToSQL } from '@visactor/vquery'
+import { convertDSLToDuckDB } from '@visactor/vquery'
 
 describe('limit', () => {
   it('simple', () => {
@@ -10,7 +10,7 @@ describe('limit', () => {
       active: number
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: ['id'],
         limit: 100,

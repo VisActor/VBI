@@ -1,4 +1,4 @@
-import { convertDSLToSQL } from '@visactor/vquery'
+import { convertDSLToDuckDB } from '@visactor/vquery'
 
 describe('having', () => {
   it('empty', () => {
@@ -8,7 +8,7 @@ describe('having', () => {
       department: string
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: ['department', { field: 'age', aggr: { func: 'sum' }, alias: 'TOTAL_AGE' }],
         groupBy: ['department'],
@@ -28,7 +28,7 @@ describe('having', () => {
       department: string
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: [
           'department',
@@ -54,7 +54,7 @@ describe('having', () => {
     )
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", sum("age") as "SUM_AGE", avg("age") as "AVG_AGE", CAST(count("id") AS INTEGER) as "CNT", min("age") as "MIN_AGE", max("age") as "MAX_AGE" from "orders" group by "department" having (sum("age") = 100 and avg("age") = 20 and count("id") = 2 and min("age") = 10 and max("age") = 80)"`,
+      `"select "department", sum("age") as "SUM_AGE", avg("age") as "AVG_AGE", count("id") as "CNT", min("age") as "MIN_AGE", max("age") as "MAX_AGE" from "orders" group by "department" having (sum("age") = 100 and avg("age") = 20 and count("id") = 2 and min("age") = 10 and max("age") = 80)"`,
     )
   })
 
@@ -65,7 +65,7 @@ describe('having', () => {
       department: string
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: [
           'department',
@@ -89,7 +89,7 @@ describe('having', () => {
     )
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", CAST(count(distinct "id") AS INTEGER) as "DISTINCT_ID", var_samp("age") as "VAR_AGE", var_pop("age") as "VAR_POP_AGE", quantile("age", 0.9) as "Q90_AGE" from "orders" group by "department" having (count(distinct "id") > 1 and var_samp("age") >= 2 and var_pop("age") >= 1 and quantile("age", 0.5) > 20)"`,
+      `"select "department", count(distinct "id") as "DISTINCT_ID", var_samp("age") as "VAR_AGE", var_pop("age") as "VAR_POP_AGE", quantile("age", CAST(0.9 AS DOUBLE)) as "Q90_AGE" from "orders" group by "department" having (count(distinct "id") > 1 and var_samp("age") >= 2 and var_pop("age") >= 1 and quantile("age", CAST(0.5 AS DOUBLE)) > 20)"`,
     )
   })
 
@@ -101,7 +101,7 @@ describe('having', () => {
       province: string
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: [
           { field: 'province', alias: 'province', aggr: { func: 'count_distinct' } },
@@ -119,7 +119,7 @@ describe('having', () => {
     )
 
     expect(sql).toMatchInlineSnapshot(
-      `"select CAST(count(distinct "province") AS INTEGER) as "province", sum("profit") as "profit", "area" as "area" from "orders" group by "area" having (sum("sales") > 5) limit 1000"`,
+      `"select count(distinct "province") as "province", sum("profit") as "profit", "area" as "area" from "orders" group by "area" having (sum("sales") > 5) limit 1000"`,
     )
   })
 
@@ -130,7 +130,7 @@ describe('having', () => {
       department: string
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: ['department', { field: 'age', aggr: { func: 'avg' }, alias: 'AVG_AGE' }],
         groupBy: ['department'],
@@ -163,7 +163,7 @@ describe('having', () => {
       department: string | null
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: ['department', { field: 'age', aggr: { func: 'sum' }, alias: 'TOTAL_AGE' }],
         groupBy: ['department'],
@@ -190,7 +190,7 @@ describe('having', () => {
       department: string
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: ['department', { field: 'age', aggr: { func: 'avg' }, alias: 'AVG_AGE' }],
         groupBy: ['department'],
@@ -217,7 +217,7 @@ describe('having', () => {
       department: string
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: ['department', { field: 'age', aggr: { func: 'sum' }, alias: 'TOTAL_AGE' }],
         groupBy: ['department'],
@@ -244,7 +244,7 @@ describe('having', () => {
     }
 
     expect(() =>
-      convertDSLToSQL<USER, 'orders'>(
+      convertDSLToDuckDB<USER, 'orders'>(
         {
           select: ['department', { field: 'age', aggr: { func: 'sum' }, alias: 'TOTAL_AGE' }],
           groupBy: ['department'],
