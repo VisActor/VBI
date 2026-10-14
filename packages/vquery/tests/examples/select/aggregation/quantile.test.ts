@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { convertDSLToSQL, VQuery } from '@visactor/vquery'
+import { convertDSLToDuckDB, VQuery } from '@visactor/vquery'
 import vqueryConfig from './quantile.json'
 
 describe('Select Quantile Example', () => {
@@ -17,10 +17,10 @@ describe('Select Quantile Example', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
-      `"select quantile("salary", 0.9) as "salary_quantile" from "select-aggregation-quantile""`,
+      `"select quantile("salary", CAST(0.9 AS DOUBLE)) as "salary_quantile" from "select-aggregation-quantile""`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

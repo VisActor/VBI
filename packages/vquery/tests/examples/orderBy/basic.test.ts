@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { convertDSLToSQL, VQuery } from '@visactor/vquery'
+import { convertDSLToDuckDB, VQuery } from '@visactor/vquery'
 import vqueryConfig from './basic.json'
 
 describe('Basic OrderBy Example', () => {
@@ -17,9 +17,11 @@ describe('Basic OrderBy Example', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
-    expect(sql).toMatchInlineSnapshot(`"select "name", "salary" from "orderBy-basic" order by "salary" desc"`)
+    expect(sql).toMatchInlineSnapshot(
+      `"select "name", "salary" from "orderBy-basic" order by "salary" desc nulls last"`,
+    )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)
 

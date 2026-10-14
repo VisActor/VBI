@@ -1,19 +1,16 @@
 import type { SelectQueryBuilder } from 'kysely'
-
-type OrderByItem = {
-  field: string
-  order?: 'asc' | 'desc'
-}
+import type { OrderBy } from '../../types'
+import type { SQLStrategy } from '../types'
 
 export const applyOrder = <DB, TB extends keyof DB & string, O>(
   qb: SelectQueryBuilder<DB, TB, O>,
-  orderBy?: Array<OrderByItem>,
+  orderBy: OrderBy<any> | undefined,
+  strategy: SQLStrategy,
 ) => {
-  if (orderBy && orderBy.length > 0) {
-    orderBy.forEach((o) => {
-      // @ts-expect-error - Kysely orderBy type complexity
-      qb = qb.orderBy(o.field, o.order ?? 'asc')
-    })
+  for (const item of orderBy ?? []) {
+    for (const expression of strategy.order(item.field as string, item.order ?? 'asc', item.nulls ?? 'last')) {
+      qb = qb.orderBy(expression)
+    }
   }
   return qb
 }

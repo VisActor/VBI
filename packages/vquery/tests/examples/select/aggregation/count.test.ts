@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { convertDSLToSQL, VQuery } from '@visactor/vquery'
+import { convertDSLToDuckDB, VQuery } from '@visactor/vquery'
 import vqueryConfig from './count.json'
 
 describe('Select Count Example', () => {
@@ -17,11 +17,9 @@ describe('Select Count Example', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
-    expect(sql).toMatchInlineSnapshot(
-      `"select CAST(count("id") AS INTEGER) as "total_count" from "select-aggregation-count""`,
-    )
+    expect(sql).toMatchInlineSnapshot(`"select count("id") as "total_count" from "select-aggregation-count""`)
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)
 

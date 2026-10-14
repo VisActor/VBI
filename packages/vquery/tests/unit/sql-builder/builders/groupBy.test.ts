@@ -1,4 +1,4 @@
-import { convertDSLToSQL } from '@visactor/vquery'
+import { convertDSLToDuckDB } from '@visactor/vquery'
 
 describe('groupBy', () => {
   it('simple', () => {
@@ -10,7 +10,7 @@ describe('groupBy', () => {
       active: number
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: ['id', 'department'],
         limit: 100,

@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { convertDSLToSQL, VQuery } from '@visactor/vquery'
+import { convertDSLToDuckDB, VQuery } from '@visactor/vquery'
 import vqueryConfig from './null_check.json'
 
 describe('Where with IS NULL / IS NOT NULL', () => {
@@ -17,7 +17,7 @@ describe('Where with IS NULL / IS NOT NULL', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
       `"select "id", "name", "age", "gender" from "where-null-check" where (("age" >= 18 and "gender" is null) or ("age" < 18 and "gender" is not null))"`,

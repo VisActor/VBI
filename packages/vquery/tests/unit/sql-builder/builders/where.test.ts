@@ -1,4 +1,4 @@
-import { convertDSLToSQL } from '@visactor/vquery'
+import { convertDSLToDuckDB } from '@visactor/vquery'
 
 describe('where', () => {
   it('simple', () => {
@@ -11,7 +11,7 @@ describe('where', () => {
       gender: 'male' | 'female'
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: ['id'],
         where: {
@@ -67,7 +67,7 @@ describe('where', () => {
       gender: 'male' | 'female'
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: ['id'],
       },
@@ -86,7 +86,7 @@ describe('where', () => {
       gender: 'male' | 'female'
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: ['id'],
         where: {
@@ -140,7 +140,7 @@ describe('where', () => {
       gender: 'male' | 'female'
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: ['id'],
         where: {
@@ -196,7 +196,7 @@ describe('where', () => {
       gender: 'male' | 'female'
     }
 
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       {
         select: ['id'],
         where: {
@@ -247,7 +247,7 @@ describe('where', () => {
       id: number
       gender: 'male' | 'female'
     }
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       { select: ['id'], where: { op: 'and', conditions: [{ field: 'gender', op: 'in', value: 'male' }] } },
       'orders',
     )
@@ -259,7 +259,7 @@ describe('where', () => {
       id: number
       gender: 'male' | 'female'
     }
-    const sql = convertDSLToSQL<USER, 'orders'>(
+    const sql = convertDSLToDuckDB<USER, 'orders'>(
       { select: ['id'], where: { op: 'and', conditions: [{ field: 'gender', op: 'not in', value: 'female' }] } },
       'orders',
     )
@@ -272,7 +272,7 @@ describe('where', () => {
       order_date: string
     }
 
-    const sql = convertDSLToSQL<ORDER, 'orders'>(
+    const sql = convertDSLToDuckDB<ORDER, 'orders'>(
       {
         select: ['id'],
         where: {
@@ -310,7 +310,7 @@ describe('where', () => {
       order_date: string
     }
 
-    const sql = convertDSLToSQL<ORDER, 'orders'>(
+    const sql = convertDSLToDuckDB<ORDER, 'orders'>(
       {
         select: ['id'],
         where: {
@@ -341,7 +341,7 @@ describe('where', () => {
 
     const createdAt = new Date('2024-01-01T00:00:00.000Z')
     const updatedAt = new Date('2024-02-01T12:30:00.000Z')
-    const sql = convertDSLToSQL<EVENT, 'orders'>(
+    const sql = convertDSLToDuckDB<EVENT, 'orders'>(
       {
         select: ['id'],
         where: {
@@ -364,7 +364,7 @@ describe('where', () => {
     )
 
     expect(sql).toBe(
-      `select "id" from "orders" where ("created_at" >= '${createdAt.toString()}' and "updated_at" <= '${updatedAt.toString()}')`,
+      `select "id" from "orders" where ("created_at" >= '${createdAt.toISOString().slice(0, 23).replace('T', ' ')}' and "updated_at" <= '${updatedAt.toISOString().slice(0, 23).replace('T', ' ')}')`,
     )
   })
 
@@ -376,7 +376,7 @@ describe('where', () => {
 
     const start = new Date('2024-01-01T00:00:00.000Z')
     const end = new Date('2024-01-31T23:59:59.000Z')
-    const sql = convertDSLToSQL<EVENT, 'orders'>(
+    const sql = convertDSLToDuckDB<EVENT, 'orders'>(
       {
         select: ['id'],
         where: {
@@ -394,7 +394,7 @@ describe('where', () => {
     )
 
     expect(sql).toBe(
-      `select "id" from "orders" where ("created_at" between '${start.toString()}' and '${end.toString()}')`,
+      `select "id" from "orders" where ("created_at" between '${start.toISOString().slice(0, 23).replace('T', ' ')}' and '${end.toISOString().slice(0, 23).replace('T', ' ')}')`,
     )
   })
 })

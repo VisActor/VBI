@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { convertDSLToSQL, VQuery } from '@visactor/vquery'
+import { convertDSLToDuckDB, VQuery } from '@visactor/vquery'
 import vqueryConfig from './basic.json'
 
 describe('Basic Limit Example', () => {
@@ -17,7 +17,7 @@ describe('Basic Limit Example', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(`"select "name" from "limit-basic" limit 2"`)
 

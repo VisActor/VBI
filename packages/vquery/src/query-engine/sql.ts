@@ -29,7 +29,7 @@ type Predicate =
   | { type: 'truthy'; value: Expression }
 
 type SelectItem = { expression: Expression; alias?: string }
-type OrderItem = { expression: Expression; direction: 'asc' | 'desc' }
+type OrderItem = { expression: Expression; direction: 'asc' | 'desc'; nulls: 'first' | 'last' }
 
 export type SelectQuery = {
   table?: string
@@ -263,7 +263,12 @@ class Parser {
     if (this.match('like') || this.match('ilike')) {
       const matchedOperator = this.tokens[this.index - 1].value.toLowerCase() as 'like' | 'ilike'
       const operator: LikeOperator = negated ? `not ${matchedOperator}` : matchedOperator
-      return { type: 'comparison', operator, left, right: this.scalar() }
+      const right = this.scalar()
+      if (this.match('escape')) {
+        const escape = this.scalar()
+        if (escape.type !== 'literal' || escape.value !== '') throw new Error('Only empty LIKE escape is supported')
+      }
+      return { type: 'comparison', operator, left, right }
     }
     if (negated) throw new Error('Expected IN, BETWEEN, LIKE, or ILIKE after NOT')
     const token = this.current()
@@ -299,7 +304,12 @@ class Parser {
         do {
           const expression = this.scalar()
           const direction = this.match('desc') ? 'desc' : (this.match('asc'), 'asc')
-          result.orderBy.push({ expression, direction })
+          let nulls: 'first' | 'last' = 'last'
+          if (this.match('nulls')) {
+            if (this.match('first')) nulls = 'first'
+            else this.expect('last')
+          }
+          result.orderBy.push({ expression, direction, nulls })
         } while (this.match(','))
       } else if (this.match('limit')) {
         const token = this.current()
@@ -358,10 +368,8 @@ const compareText = (left: string, right: string): number => {
   return leftCodePoints.length - rightCodePoints.length
 }
 
-const compare = (left: unknown, right: unknown): number => {
+const compareNonNull = (left: unknown, right: unknown): number => {
   if (left === right) return 0
-  if (left === null || left === undefined) return 1
-  if (right === null || right === undefined) return -1
   if (typeof left === 'number' && typeof right === 'number') return left - right
   return compareText(String(left), String(right))
 }
@@ -411,8 +419,10 @@ const aggregate = (expression: Extract<Expression, { type: 'call' }>, rows: Data
     const numbers = numericValues(argument, rows)
     return numbers.length ? numbers.reduce((sum, value) => sum + value, 0) / numbers.length : null
   }
-  if (expression.name === 'min') return values.length ? values.reduce((a, b) => (compare(a, b) <= 0 ? a : b)) : null
-  if (expression.name === 'max') return values.length ? values.reduce((a, b) => (compare(a, b) >= 0 ? a : b)) : null
+  if (expression.name === 'min')
+    return values.length ? values.reduce((a, b) => (compareNonNull(a, b) <= 0 ? a : b)) : null
+  if (expression.name === 'max')
+    return values.length ? values.reduce((a, b) => (compareNonNull(a, b) >= 0 ? a : b)) : null
   const numbers = numericValues(argument, rows).sort((a, b) => a - b)
   if (!numbers.length) return null
   if (expression.name === 'median') {
@@ -426,10 +436,8 @@ const aggregate = (expression: Extract<Expression, { type: 'call' }>, rows: Data
     if (value === null || value === undefined || !Number.isFinite(quantile) || quantile < -1 || quantile > 1) {
       throw new Error('QUANTILE parameter must be a number in the range [-1, 1]')
     }
-    const index =
-      quantile < 0
-        ? Math.min(numbers.length + Math.floor(quantile * numbers.length), numbers.length - 1)
-        : Math.max(Math.ceil(quantile * numbers.length) - 1, 0)
+    const position = Math.max(numbers.length - Math.floor(numbers.length - numbers.length * Math.abs(quantile)), 1)
+    const index = quantile < 0 ? numbers.length - position : position - 1
     return numbers[index]
   }
   const average = numbers.reduce((sum, value) => sum + value, 0) / numbers.length
@@ -513,7 +521,7 @@ const evaluatePredicate = (predicate: Predicate, row: DataRow, rows: DataRow[]):
   if (predicate.operator === 'in' || predicate.operator === 'not in') {
     const values = predicate.values.map((value) => evaluate(value, row, rows))
     if (left === null || left === undefined) return null
-    const found = values.some((value) => value !== null && value !== undefined && compare(left, value) === 0)
+    const found = values.some((value) => value !== null && value !== undefined && compareNonNull(left, value) === 0)
     if (found) return predicate.operator === 'in'
     if (values.some((value) => value === null || value === undefined)) return null
     return predicate.operator === 'not in'
@@ -522,7 +530,7 @@ const evaluatePredicate = (predicate: Predicate, row: DataRow, rows: DataRow[]):
     const values = predicate.values.map((value) => evaluate(value, row, rows))
     if (left === null || left === undefined || values.some((value) => value === null || value === undefined))
       return null
-    const found = compare(left, values[0]) >= 0 && compare(left, values[1]) <= 0
+    const found = compareNonNull(left, values[0]) >= 0 && compareNonNull(left, values[1]) <= 0
     return predicate.operator === 'between' ? found : !found
   }
   const operator = predicate.operator
@@ -533,7 +541,7 @@ const evaluatePredicate = (predicate: Predicate, row: DataRow, rows: DataRow[]):
     return operator.startsWith('not ') ? !result : result
   }
   if (left === null || left === undefined || right === null || right === undefined) return null
-  const comparison = compare(left, right)
+  const comparison = compareNonNull(left, right)
   if (operator === '=') return comparison === 0
   if (operator === '!=' || operator === '<>') return comparison !== 0
   if (operator === '>') return comparison > 0
@@ -607,7 +615,13 @@ export const executeSQL = (query: SelectQuery, tableRows: DataRow[]): DataRow[] 
         fieldName && Object.hasOwn(right.output, fieldName)
           ? right.output[fieldName]
           : evaluate(order.expression, right.row, right.rows)
-      const result = compare(leftValue, rightValue)
+      const leftNull = leftValue === null || leftValue === undefined
+      const rightNull = rightValue === null || rightValue === undefined
+      if (leftNull || rightNull) {
+        if (leftNull !== rightNull) return (leftNull ? 1 : -1) * (order.nulls === 'first' ? -1 : 1)
+        continue
+      }
+      const result = compareNonNull(leftValue, rightValue)
       if (result !== 0) return order.direction === 'desc' ? -result : result
     }
     if (!query.groupBy.length || !query.orderBy.length) return 0

@@ -1,29 +1,16 @@
-import { convertDSLToSQL } from '@visactor/vquery'
+import { convertDSLToDuckDB } from '@visactor/vquery'
 
-describe('escapeValue paths', () => {
-  it('boolean and object values', () => {
-    interface T {
-      id: number
-      flag: boolean
-      meta: Record<string, unknown>
-    }
-
-    const sql = convertDSLToSQL<T, 'orders'>(
-      {
-        select: ['id'],
-        where: {
-          op: 'and',
-          conditions: [
-            { field: 'flag', op: '=', value: true },
-            { field: 'meta', op: '=', value: { a: 1 } },
-          ],
-        },
-      },
+it('renders booleans and rejects object filter values', () => {
+  expect(
+    convertDSLToDuckDB(
+      { select: ['id'], where: { op: 'and', conditions: [{ field: 'flag', op: '=', value: true }] } },
       'orders',
-    )
-
-    expect(sql).toMatchInlineSnapshot(
-      `"select "id" from "orders" where ("flag" = TRUE and "meta" = '[object Object]')"`,
-    )
-  })
+    ),
+  ).toBe('select "id" from "orders" where ("flag" = TRUE)')
+  expect(() =>
+    convertDSLToDuckDB(
+      { select: ['id'], where: { op: 'and', conditions: [{ field: 'meta', op: '=', value: { a: 1 } }] } },
+      'orders',
+    ),
+  ).toThrow('Invalid filter value')
 })

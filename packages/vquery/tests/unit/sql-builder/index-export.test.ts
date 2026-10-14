@@ -1,7 +1,7 @@
 import * as convert from '../../../src/sql-builder'
 
 describe('convert index export', () => {
-  it('has convertDSLToSQL function', () => {
-    expect(typeof convert.convertDSLToSQL).toBe('function')
+  it('has convertDSLToDuckDB function', () => {
+    expect(typeof convert.convertDSLToDuckDB).toBe('function')
   })
 })

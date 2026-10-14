@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { convertDSLToSQL, VQuery } from '@visactor/vquery'
+import { convertDSLToDuckDB, VQuery } from '@visactor/vquery'
 import vqueryConfig from './single_value_in.json'
 
 describe('Where with Single Value IN / NOT IN', () => {
@@ -17,7 +17,7 @@ describe('Where with Single Value IN / NOT IN', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
       `"select "id", "name", "age", "gender" from "where-single-value-in" where ("gender" in ('male') or not "gender" in ('female'))"`,

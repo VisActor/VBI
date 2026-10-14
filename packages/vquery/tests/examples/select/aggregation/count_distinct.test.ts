@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { convertDSLToSQL, VQuery } from '@visactor/vquery'
+import { convertDSLToDuckDB, VQuery } from '@visactor/vquery'
 import vqueryConfig from './count_distinct.json'
 
 describe('Select Count Distinct Example', () => {
@@ -17,10 +17,10 @@ describe('Select Count Distinct Example', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
-      `"select CAST(count(distinct "department") AS INTEGER) as "distinct_departments" from "select-aggregation-count-distinct""`,
+      `"select count(distinct "department") as "distinct_departments" from "select-aggregation-count-distinct""`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { convertDSLToSQL, VQuery } from '@visactor/vquery'
+import { convertDSLToDuckDB, VQuery } from '@visactor/vquery'
 import vqueryConfig from './in_operator.json'
 
 describe('Where with IN / NOT IN Operator', () => {
@@ -17,7 +17,7 @@ describe('Where with IN / NOT IN Operator', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
       `"select "id", "name", "age", "gender" from "where-in-operator" where (("age" >= 18 and "gender" in ('male', 'female')) or ("age" < 18 and not "gender" in ('male', 'female')))"`,

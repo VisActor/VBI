@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { convertDSLToSQL, VQuery } from '@visactor/vquery'
+import { convertDSLToDuckDB, VQuery } from '@visactor/vquery'
 import vqueryConfig from './toMonth_with_date_filter.json'
 
 describe('toMonth with DATE range filter', () => {
@@ -17,10 +17,10 @@ describe('toMonth with DATE range filter', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "area", sum("sales") as "Sum(sales)", strftime(CAST("date" AS TIMESTAMP), '%Y-%m') as "month" from "select-date-toMonth-with-filter" where ("date" between '2025-01-01' and '2025-01-31') group by "month", "area" order by "Sum(sales)" desc limit 100"`,
+      `"select "area", sum("sales") as "Sum(sales)", strftime(CAST("date" AS TIMESTAMP), '%Y-%m') as "month" from "select-date-toMonth-with-filter" where ("date" between '2025-01-01' and '2025-01-31') group by "month", "area" order by "Sum(sales)" desc nulls last limit 100"`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

@@ -171,7 +171,7 @@ class SQLLogicTestDatabase {
     if (quantileTable) {
       const [, name, rangeColumn, randomAlias, countText, values] = quantileTable
       const randomColumn = randomAlias ?? 'random()'
-      const rows = Array.from({ length: Number(countText) }, (_, value) => ({
+      const rows: DataRow[] = Array.from({ length: Number(countText) }, (_, value) => ({
         [rangeColumn]: value,
         [randomColumn]: Math.random(),
       }))

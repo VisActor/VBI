@@ -1,5 +1,5 @@
 import type { DatasetColumn, DatasetSource, QueryDSL, QueryAdapter, StorageAdapter, VQueryDSL } from '../types'
-import { convertDSLToSQL } from '../sql-builder'
+import { convertDSLToDuckDB } from '../sql-builder'
 
 export class Dataset {
   private queryAdapter: QueryAdapter
@@ -38,7 +38,7 @@ export class Dataset {
   }
 
   public async query<T extends Record<string, number | string>>(queryDSL: QueryDSL<T> | VQueryDSL<T>) {
-    const sql = convertDSLToSQL(queryDSL, this.datasetId)
+    const sql = convertDSLToDuckDB(queryDSL, this.datasetId)
     return this.queryBySQL(sql)
   }
 

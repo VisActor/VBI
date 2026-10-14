@@ -1,1 +1,2 @@
-export { PostgresDialect } from './postgresDialect'
+export { mysqlStrategy } from './mysql'
+export { duckdbStrategy } from './duckdb'
