@@ -6,4 +6,4 @@ Expose parameterized `compileQuery` with MySQL as the default dialect and explic
 
 Align MySQL and DuckDB aggregation, date grouping, string matching, NULL ordering, and median/quantile behavior. Add a shared real-schema DSL catalog that snapshots both dialects without database test dependencies.
 
-Default browser and Node dataset storage to memory. Share the same constructor options across both entrypoints, and enable IndexedDB persistence only with `new VQuery({ enableIndexedDB: true })`.
+Default browser and Node dataset storage to memory. Keep separate Node and browser strategy entrypoints with shared constructor option types, and enable IndexedDB persistence only with `new VQuery({ enableIndexedDB: true })`.
