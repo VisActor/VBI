@@ -1,0 +1,2984 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="data:," />
+    <title>全球地震观测</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.6.2/dist/maplibre-gl.css" />
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        font-size: clamp(14px, 0.84vw, 16px);
+        font-weight: 400;
+        font-synthesis: none;
+        color: #dde0e7;
+        --muted: #939baa;
+        --update-duration: 600ms;
+        --update-easing: cubic-bezier(0.22, 1, 0.36, 1);
+        --gutter: clamp(16px, 1.35vw, 28px);
+        --sidebar: clamp(286px, 22vw, 348px);
+        --dock: clamp(202px, 24vh, 254px);
+        --map-left: calc(var(--gutter) + var(--sidebar) + 20px);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #080d16;
+        -webkit-font-smoothing: antialiased;
+        overflow: hidden;
+      }
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+      button {
+        font: inherit;
+        font-weight: 400;
+        color: inherit;
+        border: 0;
+        background: none;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.45;
+        cursor: default;
+      }
+      .screen[aria-busy='true'] [data-window]:disabled,
+      .screen[aria-busy='true'] [data-magnitude]:disabled,
+      .screen[aria-busy='true'] [data-sort]:disabled,
+      .screen[aria-busy='true'] .refresh-button:disabled {
+        opacity: 1;
+        cursor: progress;
+      }
+      .refresh-button[aria-busy='true'] .icon {
+        animation: refresh-turn 1.2s linear infinite;
+      }
+      @keyframes refresh-turn {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      button:focus-visible,
+      a:focus-visible {
+        outline: 1px solid #c4cfe4;
+        outline-offset: 3px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      figure {
+        margin: 0;
+      }
+      a {
+        color: #b9c4da;
+        text-decoration: none;
+      }
+      a:hover {
+        color: #e3e7f0;
+      }
+      .viewport,
+      .screen {
+        width: 100%;
+        height: 100dvh;
+        overflow: hidden;
+        position: relative;
+      }
+      .screen {
+        isolation: isolate;
+      }
+      #map {
+        position: absolute;
+        inset: 0;
+        background: #0b111e;
+        z-index: -3;
+      }
+      .terrain-shade {
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        pointer-events: none;
+        background:
+          radial-gradient(ellipse at 62% 42%, #30507b24, transparent 65%),
+          linear-gradient(90deg, #070e1b80, #09152624 28%, transparent 50%),
+          linear-gradient(180deg, #070f1bb3, #0c1b2d14 25%, #0c1b2d14 66%, #070e1b66), #0a315333;
+        box-shadow: inset 0 0 160px #04070d66;
+      }
+      .map-effects {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .event-ripple {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 0.8;
+        vector-effect: non-scaling-stroke;
+        opacity: 0;
+        animation: seismic-ripple 5.6s cubic-bezier(0.18, 0.5, 0.4, 1) infinite;
+        animation-delay: var(--delay);
+      }
+      .event-ripple.echo {
+        animation-delay: calc(var(--delay) - 2.8s);
+      }
+      .flight-rail,
+      .flight-tail,
+      .flight-head {
+        animation-name: flight-head-flow;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        vector-effect: non-scaling-stroke;
+      }
+      .flight-rail {
+        stroke-width: 0.65;
+        opacity: 0.18;
+      }
+      .flight-tail,
+      .flight-head {
+        animation: flight-flow var(--duration) linear infinite;
+        animation-delay: var(--delay);
+      }
+      .flight-tail {
+        stroke-width: 1.1;
+        stroke-dasharray: 9 91;
+        opacity: 0.48;
+      }
+      .flight-head {
+        stroke: #e5eeff;
+        stroke-width: 1.8;
+        stroke-dasharray: 0.7 99.3;
+        filter: drop-shadow(0 0 3px #accbff9c);
+        opacity: 0.9;
+      }
+      .map-effects.is-paused * {
+        animation-play-state: paused;
+      }
+      @keyframes seismic-ripple {
+        0% {
+          transform: scale(0.18);
+          opacity: 0;
+        }
+        12% {
+          opacity: 0.65;
+        }
+        85%,
+        100% {
+          transform: scale(1.5);
+          opacity: 0;
+        }
+      }
+      @keyframes flight-flow {
+        from {
+          stroke-dashoffset: 100;
+        }
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+      @keyframes flight-head-flow {
+        from {
+          stroke-dashoffset: 91;
+        }
+        to {
+          stroke-dashoffset: -9;
+        }
+      }
+      .topbar {
+        position: absolute;
+        top: 20px;
+        left: var(--gutter);
+        right: var(--gutter);
+        height: 38px;
+        display: grid;
+        grid-template-columns: var(--sidebar) 1fr auto;
+        align-items: center;
+        gap: 20px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+      }
+      .brand-mark.icon {
+        width: 30px;
+        height: 30px;
+        stroke-width: 0.85;
+        color: #bcc4d5;
+      }
+      .brand strong {
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: 0.14em;
+      }
+      .brand small {
+        display: block;
+        color: #8d94a3;
+        font-size: 9px;
+        white-space: nowrap;
+        letter-spacing: 0.16em;
+        margin-top: 5px;
+      }
+      .icon {
+        width: 16px;
+        height: 16px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .top-nav {
+        display: flex;
+        justify-self: center;
+        padding: 4px;
+        border-radius: 10px;
+        gap: 4px;
+        background: linear-gradient(160deg, #e8efff19, #23355040);
+        border: 1px solid #dae5fc24;
+        box-shadow:
+          inset 0 1px 1px #f3f7ff14,
+          0 4px 16px #03091420;
+        backdrop-filter: blur(18px);
+      }
+      .top-nav button {
+        padding: 8px 19px;
+        border-radius: 7px;
+        font-size: 12px;
+        color: #a1a7b3;
+        white-space: nowrap;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      .top-nav button[aria-pressed='true'] {
+        color: #e3e6ed;
+        background: linear-gradient(160deg, #e2eafa29, #b9cae410);
+        box-shadow:
+          inset 0 1px #f6f8fc0a,
+          0 2px 7px #0000000a;
+      }
+      .top-nav button[aria-pressed='true']::before {
+        content: '';
+        display: inline-block;
+        width: 4px;
+        height: 4px;
+        background: #efa383;
+        border-radius: 50%;
+        margin-right: 8px;
+        vertical-align: 2px;
+        box-shadow: 0 0 8px #efa38340;
+      }
+      .refresh-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        color: #acb2be;
+        background: #a3afc708;
+        border: 1px solid #d7dfee09;
+        border-radius: 9px;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .refresh-button:hover {
+        background: #d1d9e912;
+      }
+      .map-heading {
+        position: absolute;
+        left: calc(var(--map-left) + 8px);
+        top: 96px;
+        pointer-events: none;
+      }
+      .eyebrow {
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        color: #8c99b3;
+        margin-bottom: 9px;
+      }
+      .map-heading h1 {
+        font-size: clamp(23px, 1.7vw, 30px);
+        font-weight: 300;
+        letter-spacing: 0.06em;
+        color: #e8eaef;
+        text-shadow: 0 2px 14px #0008;
+      }
+      .heading-caption {
+        margin-top: 9px;
+        font-size: 11px;
+        color: #939eb3;
+        font-variant-numeric: tabular-nums;
+      }
+      .region-switch {
+        display: flex;
+        gap: 5px;
+        margin-top: 17px;
+        pointer-events: auto;
+      }
+      .region-switch button {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 11px;
+        border: 1px solid transparent;
+        border-radius: 7px;
+        color: #98a1b2;
+        font-size: 11px;
+        background: #161f3073;
+        backdrop-filter: blur(10px);
+      }
+      .region-switch button[aria-pressed='true'] {
+        color: #dee3ed;
+        background: #8b9bbb20;
+        border-color: #b2bed526;
+      }
+      .region-switch i {
+        width: 4px;
+        height: 4px;
+        background: var(--dot, #b0c4e8);
+        border-radius: 50%;
+      }
+      /* Translucent parent glass and inset surfaces share one silver-blue material. */
+      .glass {
+        position: relative;
+        background:
+          radial-gradient(ellipse at 0 0, #e3edff24, transparent 65%),
+          radial-gradient(ellipse at 100% 100%, #abbcd51a, transparent 62%),
+          linear-gradient(155deg, #d9e5f510, #17253b38 48%, #9caac218);
+        background-color: #12345126;
+        border: 0;
+        border-radius: 20px;
+        box-shadow:
+          0 16px 40px #02091640,
+          0 4px 12px #02091624,
+          inset 0 2px 12px #f5f8ff0a,
+          inset 0 -8px 20px #0916291a;
+        backdrop-filter: blur(18px) saturate(0.55) brightness(1.2);
+        -webkit-backdrop-filter: blur(18px) saturate(0.55) brightness(1.2);
+      }
+      .sidebar {
+        position: absolute;
+        left: var(--gutter);
+        top: 82px;
+        bottom: 30px;
+        width: var(--sidebar);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        overflow-y: auto;
+        scrollbar-width: none;
+        border-radius: 16px;
+      }
+      .observation-panel {
+        padding: 16px;
+        flex-shrink: 0;
+      }
+      .group-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 13px;
+        gap: 8px;
+      }
+      .section-title {
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: 0.04em;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .section-title .icon {
+        width: 14px;
+        height: 14px;
+        color: #9ea9c0;
+      }
+      .section-caption {
+        color: #848ea3;
+        font-size: 10px;
+        letter-spacing: 0.1em;
+      }
+      .overview-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+      }
+      .overview-grid > div {
+        background: linear-gradient(150deg, #e7efff12, #e4ecff05);
+        border: 0;
+        box-shadow:
+          0 3px 10px #02091612,
+          inset 0 1px 6px #f4f7ff0b;
+        border-radius: 11px;
+        padding: 10px 9px;
+        min-width: 0;
+      }
+      .overview-grid > div:first-child {
+        background: linear-gradient(135deg, #e4ecff24, #bdcfe80b);
+      }
+      .metric-label {
+        color: #9ca3b2;
+        font-size: 11px;
+        line-height: 1.5;
+        white-space: nowrap;
+      }
+      .metric-number {
+        transition: font-size var(--update-duration) var(--update-easing);
+        font-size: 28px;
+        font-weight: 300;
+        font-variant-numeric: tabular-nums lining-nums;
+        letter-spacing: -0.035em;
+        color: #e2e5ec;
+        line-height: 1.15;
+        margin-top: 6px;
+        white-space: nowrap;
+      }
+      .metric-number small,
+      .sub-number small,
+      .event-value small {
+        font-size: 10px;
+        font-weight: 400;
+        color: #969eaf;
+        letter-spacing: 0;
+        margin-left: 4px;
+      }
+      .metric-number[data-compact='true'] {
+        font-size: 21px;
+      }
+      .metric-number[data-digits='5'] {
+        font-size: 20px;
+      }
+      .overview-grid .metric-number small {
+        font-size: 9px;
+        margin-left: 2px;
+      }
+      .source-section {
+        margin-top: 16px;
+        padding-top: 15px;
+        border-top: 1px solid #d2dae90b;
+      }
+      .source-section > .section-title {
+        font-size: 12px;
+        color: #bfc5d2;
+        margin-bottom: 11px;
+      }
+      .progress-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr 1fr;
+        grid-template-rows: 56px 39px;
+        gap: 6px;
+      }
+      .progress-grid > div {
+        position: relative;
+        min-width: 0;
+        background: linear-gradient(150deg, #c6d4ef0c, #0a16262b);
+        border: 0;
+        box-shadow: inset 0 2px 8px #02091612;
+        border-radius: 8px;
+        padding: 8px 9px;
+        overflow: hidden;
+      }
+      .progress-grid .progress-main {
+        grid-row: span 2;
+        background: linear-gradient(155deg, #d1def522, #13263c10);
+      }
+      .progress-main .metric-number {
+        font-size: 34px;
+        margin-top: 9px;
+      }
+      .mini-pill {
+        display: inline-block;
+        margin-top: 5px;
+        color: #838fa8;
+        font-size: 10px;
+      }
+      .sub-number {
+        font-size: clamp(18px, 1.1vw, 21px);
+        font-weight: 300;
+        letter-spacing: -0.03em;
+        line-height: 1.2;
+        margin-top: 2px;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+      }
+      .completion {
+        grid-column: span 2;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .completion > .metric-label {
+        font-size: 10px;
+      }
+      .completion-body {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        gap: 7px;
+      }
+      .completion-body strong {
+        font-size: 18px;
+        font-weight: 300;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+      }
+      .completion-body small {
+        font-size: 10px;
+        margin-left: 2px;
+        color: #929caf;
+      }
+      .review-track {
+        flex: 1;
+        height: 3px;
+        background: #b1b9ca0f;
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .review-track span {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: #a2adc4;
+        transition: width var(--update-duration) var(--update-easing);
+      }
+      .events-panel {
+        padding: 14px;
+        display: flex;
+        flex: 1;
+        min-height: 344px;
+        flex-direction: column;
+      }
+      .events-panel .group-head {
+        flex-shrink: 0;
+        margin-bottom: 10px;
+      }
+      .event-stack {
+        display: grid;
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        flex: 1;
+        min-height: 0;
+      }
+      .event-card {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr;
+        align-content: space-between;
+        width: 100%;
+        min-height: 0;
+        text-align: left;
+        padding: 12px;
+        border: 0;
+        border-radius: 13px;
+        background: linear-gradient(150deg, #d5e0f315, #b1c6e408 55%, #d6e4f513);
+        box-shadow:
+          0 4px 12px #0209161c,
+          inset 0 2px 8px #eff5ff0b;
+        transition:
+          background 0.2s,
+          box-shadow 0.2s;
+        overflow: hidden;
+      }
+      .event-card:first-child {
+        background:
+          radial-gradient(ellipse at 100% 100%, #e6a08520, transparent 75%),
+          linear-gradient(140deg, #dce7f726, #a6bbd710 60%);
+      }
+      .event-card:hover,
+      .event-card[aria-pressed='true'] {
+        background-color: #b8c5e013;
+        box-shadow:
+          0 5px 14px #02091628,
+          inset 0 2px 10px #eff5ff12;
+      }
+      .event-card h3 {
+        font-size: 11px;
+        font-weight: 400;
+        color: #949db0;
+        letter-spacing: 0.02em;
+        padding-right: 22px;
+      }
+      .event-arrow {
+        position: absolute;
+        top: 9px;
+        right: 11px;
+        color: #a7b0c2;
+        font-size: 16px;
+        font-weight: 300;
+      }
+      .event-depth small {
+        font: inherit;
+        color: inherit;
+        margin-left: 3px;
+      }
+      .bar-plot,
+      #depth-chart {
+        transition: opacity 240ms ease;
+      }
+      [data-empty='true'] {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .event-place {
+        font-size: 12px;
+        line-height: 1.45;
+        min-height: 1.45em;
+        font-weight: 400;
+        color: #d3d8e1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 6px;
+      }
+      .event-focus-body {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        margin-top: 8px;
+      }
+      .event-value {
+        font-size: 32px;
+        font-weight: 300;
+        letter-spacing: -0.04em;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+      }
+      .event-depth {
+        font-size: 13px;
+        font-weight: 300;
+        margin-top: 2px;
+        font-variant-numeric: tabular-nums;
+      }
+      .event-focus-body .metric-label {
+        font-size: 10px;
+      }
+      .event-time {
+        font-size: 11px;
+        color: #929cb1;
+        margin-top: 9px;
+        font-variant-numeric: tabular-nums;
+      }
+      .event-coordinates {
+        font-size: 10px;
+        color: #828da4;
+        margin-top: 3px;
+        font-variant-numeric: tabular-nums;
+      }
+      /* One continuous analytical dock, with inset panels sharing padding and rhythm. */
+      .bottom {
+        position: absolute;
+        left: var(--map-left);
+        right: var(--gutter);
+        bottom: 30px;
+        height: var(--dock);
+        display: grid;
+        grid-template-columns: 1fr 1.06fr 1.35fr;
+        gap: 8px;
+        padding: 10px;
+        border-radius: 20px;
+      }
+      .analysis-card {
+        min-width: 0;
+        min-height: 0;
+        padding: 14px;
+        border-radius: 13px;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(150deg, #ccd9ef0d, #0a192728);
+        border: 0;
+        box-shadow:
+          0 4px 12px #02091614,
+          inset 0 2px 8px #e7efff08;
+      }
+      .panel-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .panel-title {
+        font-size: 13px;
+        font-weight: 400;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+      }
+      .panel-subtitle {
+        font-size: 10px;
+        color: #7d889f;
+      }
+      .small-controls {
+        display: flex;
+        gap: 2px;
+        padding: 2px;
+        background: #070c1526;
+        border-radius: 5px;
+      }
+      .small-controls button {
+        font-size: 10px;
+        padding: 3px 5px;
+        color: #7c889f;
+        border-radius: 4px;
+        white-space: nowrap;
+      }
+      .small-controls button[aria-pressed='true'] {
+        color: #c5cddc;
+        background: #c2cee510;
+      }
+      .bars-body {
+        position: relative;
+        flex: 1;
+        min-height: 0;
+        margin-top: 13px;
+      }
+      .bar-plot {
+        width: 100%;
+        height: 100%;
+      }
+      .bar-labels {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        pointer-events: none;
+      }
+      .bar-labels > div {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: calc(100% / 6);
+        color: #9ea9be;
+        font-size: 10px;
+        font-variant-numeric: tabular-nums;
+      }
+      .bar-labels > div::before {
+        content: '';
+        position: absolute;
+        left: 88px;
+        right: 28px;
+        top: 50%;
+        height: 3px;
+        margin-top: -1.5px;
+        border-radius: 3px;
+        background: #b9c6e10b;
+      }
+      .ring-body {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        margin-top: 10px;
+      }
+      .ring-wrap {
+        position: relative;
+        width: clamp(90px, 7.4vw, 136px);
+        height: clamp(90px, 7.4vw, 136px);
+        flex-shrink: 0;
+      }
+      .ring-chart {
+        width: 100%;
+        height: 100%;
+      }
+      .ring-center {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+        pointer-events: none;
+      }
+      .ring-center small {
+        font-size: 10px;
+        color: #8a97b1;
+      }
+      .ring-center b {
+        font-size: 28px;
+        font-weight: 300;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.04em;
+      }
+      .legend {
+        flex: 1;
+        min-width: 0;
+        display: grid;
+        gap: 14px;
+        color: #8d99b0;
+        font-size: 10px;
+      }
+      .legend > div {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        gap: 6px;
+      }
+      .legend i {
+        width: 3px;
+        height: 3px;
+        flex-shrink: 0;
+        border-radius: 1px;
+        background: var(--color);
+      }
+      .legend b {
+        font-size: 11px;
+        font-weight: 400;
+        color: #bdc6d7;
+        margin-left: auto;
+        font-variant-numeric: tabular-nums;
+      }
+      .event-list {
+        margin-top: 10px;
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #b0bace22 transparent;
+        overscroll-behavior: contain;
+      }
+      .list-controls {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .motion-toggle {
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+        border: 1px solid #d6e4ff18;
+        border-radius: 6px;
+        color: #b7c9e7;
+        background: #c2d4f30c;
+      }
+      .motion-toggle:hover {
+        background: #c2d4f31c;
+      }
+      .motion-toggle .icon {
+        width: 12px;
+        height: 12px;
+      }
+      .motion-toggle[aria-pressed='true'] .play-icon,
+      .motion-toggle[aria-pressed='false'] .pause-icon {
+        display: none;
+      }
+      .event-list-count {
+        font-size: 10px;
+        color: #848fa5;
+        margin-bottom: 8px;
+      }
+      .event-row {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 46px minmax(0, 1fr);
+        gap: 9px;
+        align-items: center;
+        text-align: left;
+        padding: 9px 2px;
+        border-top: 1px solid #cdd4e30a;
+      }
+      .event-row:hover {
+        background: #c9d5ec07;
+      }
+      .event-magnitude {
+        font-size: 17px;
+        font-weight: 300;
+        color: var(--event-color);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      .event-row-place {
+        display: block;
+        font-size: 11px;
+        color: #b8bfce;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      .event-row-meta {
+        display: block;
+        font-size: 10px;
+        color: #7f8ca5;
+        margin-top: 4px;
+        font-variant-numeric: tabular-nums;
+      }
+      .map-controls {
+        position: absolute;
+        left: calc(var(--map-left) + 4px);
+        bottom: calc(var(--dock) + 46px);
+        display: flex;
+        gap: 4px;
+        padding: 4px;
+        background: linear-gradient(145deg, #c6d7f21c, #13233a70);
+        border: 1px solid #d5e2fa36;
+        box-shadow: inset 0 1px 1px #eaf2ff20;
+        border-radius: 9px;
+        backdrop-filter: blur(14px);
+      }
+      .map-controls button {
+        width: 29px;
+        height: 29px;
+        display: grid;
+        place-items: center;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: 300;
+        color: #b0bacf;
+      }
+      .map-controls button:hover {
+        background: #cbd6eb0d;
+      }
+      .map-controls .icon {
+        width: 14px;
+        height: 14px;
+      }
+      .map-note {
+        position: absolute;
+        right: calc(var(--gutter) + 8px);
+        bottom: calc(var(--dock) + 57px);
+        font-size: 10px;
+        color: #74819b;
+        letter-spacing: 0.02em;
+        pointer-events: none;
+        padding: 5px 8px;
+        background: #090f1a54;
+        border-radius: 4px;
+      }
+      .page-status {
+        position: absolute;
+        left: var(--gutter);
+        bottom: 8px;
+        max-width: calc(100% - 370px);
+        font-size: 10px;
+        color: #7c88a0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      body[data-state='error'] .page-status {
+        color: #cba39a;
+      }
+      body[data-state='stale'] .page-status {
+        color: #c4b68b;
+      }
+      .source-links {
+        position: absolute;
+        bottom: 8px;
+        right: var(--gutter);
+        display: flex;
+        gap: 5px;
+        font-size: 10px;
+        color: #677289;
+      }
+      .source-links a {
+        color: #7c88a0;
+      }
+      .empty {
+        color: #909bb1;
+        font-size: 11px;
+        display: grid;
+        place-items: center;
+        height: 100%;
+      }
+      .maplibregl-canvas:focus-visible {
+        outline: 1px solid #a9b6d0;
+        outline-offset: -2px;
+      }
+      .maplibregl-popup {
+        z-index: 5;
+      }
+      .maplibregl-popup-content {
+        background: linear-gradient(140deg, #8293ae70, #152a439c);
+        border: 0;
+        border-radius: 12px;
+        color: #dee2eb;
+        box-shadow:
+          0 8px 30px #0004,
+          inset 0 2px 10px #f1f6ff0d;
+        padding: 16px;
+        backdrop-filter: blur(18px);
+      }
+      .maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+        border-top-color: #1c2435;
+      }
+      .maplibregl-popup-close-button {
+        color: #9da8bd;
+        right: 6px;
+        top: 5px;
+        font-size: 18px;
+        padding: 0 4px;
+      }
+      .earthquake-popup {
+        font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+        font-size: 11px;
+        line-height: 1.8;
+      }
+      .earthquake-popup h3 {
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1.5;
+        padding-right: 10px;
+        margin-bottom: 8px;
+      }
+      .earthquake-popup p {
+        color: #a1abbf;
+      }
+      .earthquake-popup a {
+        display: inline-block;
+        margin-top: 8px;
+      }
+      .map-signal {
+        position: relative;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        border: 0;
+        border-radius: 10px;
+        padding: 10px 13px;
+        background: linear-gradient(135deg, #b1c2db40, #20334c70);
+        backdrop-filter: blur(14px);
+        box-shadow:
+          0 6px 24px #0003,
+          inset 0 2px 10px #f1f6ff0d;
+        text-align: left;
+      }
+      .map-signal::before {
+        content: '';
+        position: absolute;
+        height: 22px;
+        width: 1px;
+        background: #bdc7da6b;
+        left: var(--signal-leader, 50%);
+        top: 100%;
+      }
+      .map-signal > strong {
+        font-size: 26px;
+        font-weight: 300;
+        color: #d8bbb4;
+        letter-spacing: -0.04em;
+      }
+      .map-signal small {
+        display: block;
+        font-size: 10px;
+        color: #a9b2c3;
+      }
+      .map-signal span {
+        display: block;
+        font-size: 11px;
+        color: #d3d8e3;
+        margin-top: 5px;
+      }
+      @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        .glass {
+          background: #1c2332ed;
+        }
+      }
+      @media (min-width: 1600px) and (min-height: 850px) {
+        .sidebar {
+          top: 92px;
+          gap: 16px;
+        }
+        .observation-panel {
+          padding: 20px;
+        }
+        .overview-grid {
+          gap: 8px;
+        }
+        .overview-grid > div {
+          padding: 13px 12px;
+        }
+        .metric-number {
+          font-size: 32px;
+        }
+        .progress-grid {
+          grid-template-rows: 63px 43px;
+        }
+        .progress-grid > div {
+          padding: 10px 12px;
+        }
+        .events-panel {
+          padding: 18px;
+        }
+        .event-card {
+          padding: 16px;
+        }
+        .event-place {
+          font-size: 13px;
+        }
+        .event-value {
+          font-size: 36px;
+        }
+        .event-focus-body {
+          margin-top: 12px;
+        }
+        .analysis-card {
+          padding: 18px;
+        }
+      }
+      @media (max-height: 780px) and (min-width: 1001px) {
+        .observation-panel {
+          padding: 12px;
+        }
+        .group-head {
+          margin-bottom: 10px;
+        }
+        .overview-grid > div {
+          padding: 7px 8px;
+        }
+        .metric-number {
+          font-size: 25px;
+          margin-top: 4px;
+        }
+        .source-section {
+          margin-top: 11px;
+          padding-top: 10px;
+        }
+        .source-section > .section-title {
+          margin-bottom: 8px;
+        }
+        .progress-grid {
+          grid-template-rows: 50px 33px;
+        }
+        .progress-grid > div {
+          padding: 6px 8px;
+        }
+        .progress-main .metric-number {
+          font-size: 30px;
+          margin-top: 5px;
+        }
+        .events-panel {
+          padding: 12px;
+          min-height: 268px;
+        }
+        .event-card {
+          padding: 8px 10px;
+          grid-template-rows: 14px 18px 28px 13px;
+          row-gap: 3px;
+        }
+        .event-card h3 {
+          line-height: 14px;
+        }
+        .event-place,
+        .event-focus-body,
+        .event-time {
+          margin-top: 0;
+        }
+        .event-focus-body .metric-label {
+          line-height: 12px;
+        }
+        .event-depth {
+          line-height: 14px;
+          margin-top: 1px;
+        }
+        .event-value {
+          font-size: 28px;
+        }
+        .event-time {
+          line-height: 13px;
+        }
+        .event-coordinates {
+          display: none;
+        }
+        .analysis-card {
+          padding: 11px;
+        }
+        .ring-body {
+          gap: 9px;
+        }
+      }
+      @media (max-width: 1250px) {
+        .ring-wrap {
+          width: 84px;
+          height: 84px;
+        }
+        .ring-center b {
+          font-size: 24px;
+        }
+        .ring-body {
+          gap: 8px;
+        }
+        .legend {
+          gap: 11px;
+        }
+        .panel-head {
+          flex-wrap: wrap;
+        }
+        .panel-subtitle {
+          display: none;
+        }
+      }
+      @media (max-width: 1000px) {
+        :root {
+          --sidebar: 268px;
+          --gutter: 16px;
+          --dock: 220px;
+        }
+        .topbar {
+          grid-template-columns: 160px 1fr auto;
+          gap: 10px;
+        }
+        .brand strong {
+          font-size: 14px;
+        }
+        .brand small {
+          font-size: 8px;
+        }
+        .top-nav button {
+          padding: 8px 11px;
+          font-size: 11px;
+        }
+        .refresh-button {
+          font-size: 11px;
+        }
+        .sidebar {
+          bottom: calc(var(--dock) + 42px);
+          overflow-y: auto;
+          scrollbar-width: none;
+          border-radius: 16px;
+        }
+        .observation-panel {
+          padding: 12px;
+        }
+        .overview-grid > div {
+          padding: 8px;
+        }
+        .metric-number {
+          font-size: 25px;
+        }
+        .metric-number[data-compact='true'] {
+          font-size: 18px;
+        }
+        .source-section {
+          margin-top: 11px;
+          padding-top: 11px;
+        }
+        .events-panel {
+          flex: none;
+          padding: 12px;
+        }
+        .event-stack {
+          grid-template-rows: auto auto;
+        }
+        .event-card {
+          padding: 11px;
+        }
+        .event-coordinates {
+          display: none;
+        }
+        .event-value {
+          font-size: 28px;
+        }
+        .bottom {
+          left: var(--gutter);
+          grid-template-columns: 0.96fr 1fr 1.2fr;
+        }
+        .analysis-card {
+          padding: 12px;
+        }
+        .ring-body {
+          gap: 8px;
+        }
+        .ring-wrap {
+          width: 84px;
+          height: 84px;
+        }
+        .map-heading {
+          left: calc(var(--map-left) - 4px);
+          top: 95px;
+        }
+        .map-heading h1 {
+          font-size: 23px;
+        }
+        .heading-caption {
+          max-width: 310px;
+          line-height: 1.6;
+        }
+        .map-note {
+          max-width: 240px;
+          line-height: 1.5;
+          text-align: right;
+          bottom: calc(var(--dock) + 53px);
+        }
+        .page-status {
+          max-width: calc(100% - 315px);
+        }
+      }
+      @media (max-width: 720px) {
+        .metric-number[data-compact='true'] {
+          font-size: 14px;
+        }
+        .topbar {
+          grid-template-columns: 1fr auto;
+        }
+        .top-nav {
+          grid-column: 1 / -1;
+          grid-row: 2;
+          justify-self: start;
+          margin-top: 7px;
+          max-width: 100%;
+          overflow-x: auto;
+          scrollbar-width: none;
+        }
+        .sidebar {
+          top: 122px;
+          width: 236px;
+        }
+        :root {
+          --sidebar: 236px;
+        }
+        .map-heading {
+          top: 125px;
+        }
+        .map-heading h1 {
+          font-size: 19px;
+        }
+        .eyebrow {
+          display: none;
+        }
+        .region-switch {
+          flex-wrap: wrap;
+        }
+        .region-switch button {
+          font-size: 10px;
+          padding: 7px 8px;
+        }
+        .bottom {
+          overflow-x: auto;
+          grid-template-columns: 240px 250px 310px;
+          scrollbar-width: thin;
+        }
+        .map-note {
+          display: none;
+        }
+        .source-links {
+          font-size: 9px;
+        }
+        .page-status {
+          max-width: calc(100% - 285px);
+          font-size: 9px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          transition: none !important;
+          animation: none !important;
+        }
+        .event-ripple,
+        .flight-tail,
+        .flight-head {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body data-state="loading">
+    <svg width="0" height="0" aria-hidden="true" style="position: absolute">
+      <defs>
+        <symbol id="globe" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9" />
+          <ellipse cx="12" cy="12" rx="4" ry="9" />
+          <path d="M3 12h18M5 6.5h14M5 17.5h14" />
+        </symbol>
+        <symbol id="pulse" viewBox="0 0 24 24"><path d="M2 12h5l3-7 4 14 3-7h5" /></symbol>
+        <symbol id="target" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="7" />
+          <circle cx="12" cy="12" r="2" />
+          <path d="M12 1v4m0 14v4M1 12h4m14 0h4" />
+        </symbol>
+        <symbol id="refresh" viewBox="0 0 24 24"><path d="M20 8a8 8 0 1 0 0 8M20 3v5h-5" /></symbol>
+        <symbol id="pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" /></symbol>
+        <symbol id="play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z" /></symbol>
+      </defs>
+    </svg>
+    <div class="viewport">
+      <main class="screen" aria-label="全球地震观测大屏">
+        <div id="map" aria-label="真实二维地形地图，可拖动缩放并查看地震记录"></div>
+        <div class="terrain-shade"></div>
+        <svg id="map-effects" class="map-effects" aria-hidden="true">
+          <g id="flight-effects"></g>
+          <g id="ripple-effects"></g>
+        </svg>
+        <header class="topbar">
+          <div class="brand">
+            <svg class="brand-mark icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#globe" /></svg>
+            <div><strong>地震观测</strong><small>SEISMIC OBSERVATORY</small></div>
+          </div>
+          <nav class="top-nav" aria-label="观测时间范围">
+            <button data-window="1" aria-pressed="false" disabled>最近 1 小时</button>
+            <button data-window="24" aria-pressed="false" disabled>最近 24 小时</button>
+            <button data-window="168" aria-pressed="false" disabled>最近 7 天</button>
+            <button data-window="720" aria-pressed="true" disabled>最近 30 天</button>
+            <button data-window="2160" aria-pressed="false" disabled>最近 90 天</button>
+          </nav>
+          <button id="refresh-data" class="refresh-button" aria-label="刷新公开数据" disabled>
+            <svg class="icon" aria-hidden="true"><use href="#refresh" /></svg>刷新数据
+          </button>
+        </header>
+        <section class="map-heading">
+          <p class="eyebrow">GLOBAL SEISMIC ACTIVITY</p>
+          <h1>全球地震动态</h1>
+          <p class="heading-caption" id="time-range">正在读取 USGS 公开目录</p>
+          <div class="region-switch" role="group" aria-label="最低震级">
+            <button data-magnitude="all" aria-pressed="true" disabled><i></i>全部震级</button>
+            <button data-magnitude="2.5" aria-pressed="false" disabled><i style="--dot: #c4c9d8"></i>M ≥ 2.5</button>
+            <button data-magnitude="4.5" aria-pressed="false" disabled><i style="--dot: #efa383"></i>M ≥ 4.5</button>
+          </div>
+        </section>
+        <aside class="sidebar" aria-label="当前范围地震统计">
+          <div class="glass observation-panel">
+            <section>
+              <div class="group-head">
+                <h2 class="section-title">
+                  <svg class="icon" aria-hidden="true"><use href="#pulse" /></svg>观测概况
+                </h2>
+                <span class="section-caption">CATALOG</span>
+              </div>
+              <div class="overview-grid">
+                <div>
+                  <p class="metric-label">记录事件</p>
+                  <p class="metric-number" id="event-count">—<small>次</small></p>
+                </div>
+                <div>
+                  <p class="metric-label">M ≥ 4.5</p>
+                  <p class="metric-number" id="strong-count">—<small>次</small></p>
+                </div>
+                <div>
+                  <p class="metric-label">有感报告</p>
+                  <p class="metric-number" id="felt-count">—<small>事件</small></p>
+                </div>
+                <div>
+                  <p class="metric-label">自动定位</p>
+                  <p class="metric-number" id="automatic-count">—<small>次</small></p>
+                </div>
+                <div class="wide">
+                  <div>
+                    <p class="metric-label">其中近 1 小时</p>
+                  </div>
+                  <p class="metric-number" id="recent-count">—<small>次</small></p>
+                </div>
+                <div class="wide">
+                  <div>
+                    <p class="metric-label">报告网络</p>
+                  </div>
+                  <p class="metric-number" id="network-count">—<small>个</small></p>
+                </div>
+              </div>
+            </section>
+            <section class="source-section">
+              <h2 class="section-title">震源与目录</h2>
+              <div class="progress-grid">
+                <div class="progress-main">
+                  <p class="metric-label">最大震级</p>
+                  <p class="metric-number" id="max-magnitude">—<small>M</small></p>
+                  <span class="mini-pill">当前筛选范围</span>
+                </div>
+                <div>
+                  <p class="metric-label">平均深度</p>
+                  <p class="sub-number" id="average-depth">—<small>km</small></p>
+                </div>
+                <div>
+                  <p class="metric-label">最大深度</p>
+                  <p class="sub-number" id="maximum-depth">—<small>km</small></p>
+                </div>
+                <div class="completion">
+                  <p class="metric-label">已人工审核</p>
+                  <div class="completion-body">
+                    <strong id="reviewed-percent">—<small>%</small></strong>
+                    <div class="review-track" aria-hidden="true"><span id="reviewed-fill"></span></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <section class="glass events-panel" aria-label="重点地震事件">
+            <div class="group-head">
+              <h2 class="section-title">重点事件</h2>
+              <span class="section-caption">EVENTS</span>
+            </div>
+            <div class="event-stack">
+              <button class="event-card event-focus" id="strongest-event" aria-label="定位当前范围最强地震" disabled>
+                <h3>范围内最强事件</h3>
+                <span class="event-arrow">↗</span>
+                <p class="event-place">等待公开数据</p>
+                <div class="event-focus-body">
+                  <p class="event-value">—<small>M</small></p>
+                  <div>
+                    <p class="metric-label">震源深度</p>
+                    <p class="event-depth">— km</p>
+                  </div>
+                </div>
+                <p class="caption event-time">— UTC</p>
+                <p class="event-coordinates">点击卡片定位震中</p>
+              </button>
+              <button class="event-card event-focus" id="latest-event" aria-label="定位当前范围最新地震" disabled>
+                <h3>最近发生事件</h3>
+                <span class="event-arrow">↗</span>
+                <p class="event-place">等待公开数据</p>
+                <div class="event-focus-body">
+                  <p class="event-value">—<small>M</small></p>
+                  <div>
+                    <p class="metric-label">震源深度</p>
+                    <p class="event-depth">— km</p>
+                  </div>
+                </div>
+                <p class="caption event-time">— UTC</p>
+                <p class="event-coordinates">点击卡片定位震中</p>
+              </button>
+            </div>
+          </section>
+        </aside>
+        <div class="map-controls" role="group" aria-label="地图控制">
+          <button id="zoom-out" aria-label="缩小地图">−</button>
+          <button id="reset-map" aria-label="恢复全球视图">
+            <svg class="icon" aria-hidden="true"><use href="#target" /></svg>
+          </button>
+          <button id="zoom-in" aria-label="放大地图">+</button>
+          <button
+            id="toggle-map-motion"
+            class="motion-toggle"
+            aria-label="地图动效"
+            aria-pressed="true"
+            title="暂停地图动效"
+          >
+            <svg class="icon pause-icon" aria-hidden="true"><use href="#pause" /></svg>
+            <svg class="icon play-icon" aria-hidden="true"><use href="#play" /></svg>
+          </button>
+        </div>
+        <div class="map-note" id="map-message">圆点大小表示震级 · 点击查看来源记录</div>
+        <section class="bottom glass" aria-label="地震目录分析">
+          <article class="analysis-card">
+            <div class="panel-head">
+              <h2 class="panel-title">震级分布</h2>
+              <span class="panel-subtitle">事件数</span>
+            </div>
+            <div class="bars-body">
+              <figure id="magnitude-chart" class="bar-plot" aria-label="各震级区间事件数">
+                <span class="empty">正在加载公开数据…</span>
+              </figure>
+              <div class="bar-labels" id="bar-labels"></div>
+            </div>
+          </article>
+          <article class="analysis-card">
+            <div class="panel-head">
+              <h2 class="panel-title">震源深度分布</h2>
+              <span class="panel-subtitle">km</span>
+            </div>
+            <div class="ring-body">
+              <figure class="ring-wrap" aria-label="按震源深度划分的事件数量">
+                <div class="ring-chart" id="depth-chart"></div>
+                <div class="ring-center"><small>事件总数</small><b id="depth-total">—</b></div>
+              </figure>
+              <div class="legend">
+                <div><i style="--color: #9db8e4"></i>浅源 &lt; 70<b id="depth-shallow">—</b></div>
+                <div><i style="--color: #c4c9d8"></i>中源 70–<300<b id="depth-intermediate">—</b></div>
+                <div><i style="--color: #efa383"></i>深源 ≥ 300<b id="depth-deep">—</b></div>
+                <div><i style="--color: #8994aa"></i>深度未知<b id="depth-unknown">—</b></div>
+              </div>
+            </div>
+          </article>
+          <article class="analysis-card event-panel">
+            <div class="panel-head">
+              <h2 class="panel-title">事件明细</h2>
+              <div class="list-controls">
+                <div class="small-controls" role="group" aria-label="事件排序">
+                  <button data-sort="magnitude" aria-pressed="true" disabled>按震级</button
+                  ><button data-sort="time" aria-pressed="false" disabled>按时间</button>
+                </div>
+                <button
+                  id="toggle-list-motion"
+                  class="motion-toggle"
+                  aria-label="列表自动滚动"
+                  aria-pressed="true"
+                  title="暂停自动滚动 · 悬停可临时暂停"
+                >
+                  <svg class="icon pause-icon" aria-hidden="true"><use href="#pause" /></svg>
+                  <svg class="icon play-icon" aria-hidden="true"><use href="#play" /></svg>
+                </button>
+              </div>
+            </div>
+            <div class="event-list" id="event-list" aria-label="当前范围事件记录">
+              <p class="empty">正在加载公开数据…</p>
+            </div>
+          </article>
+        </section>
+        <p class="page-status" role="status" id="status">正在连接公开数据源…</p>
+        <footer class="source-links">
+          <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap</a
+          ><span>·</span><a href="https://openfreemap.org/" target="_blank" rel="noopener noreferrer">OpenFreeMap</a
+          ><span>·</span
+          ><a
+            href="https://earthdata.nasa.gov/technology/global-imagery-browse-services-gibs"
+            target="_blank"
+            rel="noopener noreferrer"
+            >NASA</a
+          ><span>·</span
+          ><a
+            href="https://earthquake.usgs.gov/fdsnws/event/1/"
+            title="USGS 综合地震目录；各地区微震收录密度因监测网络而异"
+            target="_blank"
+            rel="noopener noreferrer"
+            >USGS ComCat</a
+          >
+        </footer>
+      </main>
+    </div>
+    <noscript>请启用 JavaScript 以加载二维地图和公开地震数据。</noscript>
+    <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.6.2/dist/maplibre-gl.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@visactor/vchart@2.1.7/build/index.min.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "https://cdn.jsdelivr.net/npm/@visactor/vchart@2.1.7/+esm": "data:text/javascript,export default globalThis.VChart.default;export const StreamLight=globalThis.VChart.StreamLight;"
+        }
+      }
+    </script>
+    <script type="module">
+      const $ = (selector) => document.querySelector(selector)
+      const FEED_URL = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson'
+      const CATALOG_URL = 'https://earthquake.usgs.gov/fdsnws/event/1/query'
+      const MONTH_HOURS = 720
+      const CATALOG_PAGE_SIZE = 20000
+      const SOURCE_ID = 'map-dashboard-earthquakes'
+      const REFRESH_MS = 300000
+      const magnitudeBands = ['M < 1', '1 ≤ M < 2.5', '2.5 ≤ M < 4.5', '4.5 ≤ M < 6', 'M ≥ 6', '未知']
+      const depthBands = ['浅源', '中源', '深源', '未知']
+      const depthColors = ['#9db8e4', '#c4c9d8', '#efa383', '#8994aa']
+      const motion = matchMedia('(prefers-reduced-motion: reduce)')
+      const chartInstances = new Map()
+      const metricStates = new Map()
+      const contentAnimations = new Map()
+      const UPDATE_MS = 600
+      let metricFrame = 0
+      const effects = $('#map-effects')
+      const eventList = $('#event-list')
+      let rippleNodes = [],
+        flightNodes = []
+      let mapMotionEnabled = true,
+        listMotionEnabled = true
+      let listFrame = 0,
+        listResumeTimer = 0,
+        listLastFrame = 0,
+        listPosition = 0
+      let listDirection = 1,
+        listHoldUntil = 0,
+        listPointerDown = false
+      let mapLoaded = false,
+        popup,
+        signalMarker
+      let map, observer, timer, request
+      let disposed = false,
+        busy = false,
+        ready = false,
+        overviewMode = true
+      let hours = MONTH_HOURS,
+        loadedHours = 0,
+        minimumMagnitude = 'all',
+        sortBy = 'magnitude'
+      let generatedAt = 0,
+        sourceCount = 0,
+        events = [],
+        listEvents = [],
+        effectEvents = [],
+        strongestEvent = null,
+        latestEvent = null,
+        selectedEvent = null
+      let refreshFailed = false
+      const utc = (time) => new Date(time).toISOString().slice(5, 16).replace('T', ' ') + ' UTC'
+      const number = (value, digits = 1) =>
+        value == null || !Number.isFinite(Number(value)) ? '—' : Number(value).toFixed(digits)
+      const element = (tag, className, text) => {
+        const node = document.createElement(tag)
+        if (className) node.className = className
+        if (text != null) node.textContent = text
+        return node
+      }
+      function settleMetrics() {
+        cancelAnimationFrame(metricFrame)
+        metricFrame = 0
+        for (const [node, state] of metricStates) {
+          state.value = state.target
+          state.text.data = state.format(state.target)
+          node.dataset.animating = 'false'
+        }
+      }
+      function animateMetrics(now) {
+        metricFrame = 0
+        let active = false
+        for (const [node, state] of metricStates) {
+          if (node.dataset.animating !== 'true') continue
+          const progress =
+            motion.matches || document.hidden ? 1 : Math.max(0, Math.min(1, (now - state.started) / UPDATE_MS))
+          const eased = 1 - (1 - progress) ** 3
+          state.value = progress === 1 ? state.target : state.from + (state.target - state.from) * eased
+          state.text.data = state.format(state.value)
+          node.dataset.animating = String(progress < 1)
+          active ||= progress < 1
+        }
+        if (active) metricFrame = requestAnimationFrame(animateMetrics)
+      }
+      function metric(selector, value, unit = '') {
+        const node = typeof selector === 'string' ? $(selector) : selector
+        const label = value == null ? '—' : String(value)
+        const target = value != null && label.trim() && Number.isFinite(Number(value)) ? Number(value) : null
+        const previous = metricStates.get(node)
+        if (previous?.label === label && previous?.unit === unit) return
+        let text = previous?.text
+        if (!text) {
+          text = document.createTextNode(label)
+          node.replaceChildren(text, ...(unit ? [element('small', '', unit)] : []))
+        }
+        let unitNode = node.querySelector('small')
+        if (unit) {
+          if (!unitNode) {
+            unitNode = element('small')
+            node.append(unitNode)
+          }
+          unitNode.textContent = unit
+        } else unitNode?.remove()
+        const digits = label.includes('.') ? label.split('.')[1].length : 0
+        const format = (next) => (next == null ? '—' : Number(next).toFixed(digits))
+        const from = previous?.value
+        const animate = !motion.matches && !document.hidden && target != null && from != null && from !== target
+        const state = {
+          text,
+          label,
+          unit,
+          value: animate ? from : target,
+          from,
+          target,
+          format,
+          started: performance.now(),
+        }
+        metricStates.set(node, state)
+        node.dataset.compact = String(label.length + unit.length >= 5)
+        node.dataset.digits = String(label.length)
+        node.dataset.metricValue = label
+        node.dataset.animating = String(animate)
+        node.setAttribute('aria-label', `${label}${unit}`)
+        text.data = format(state.value)
+        if (animate && !metricFrame) metricFrame = requestAnimationFrame(animateMetrics)
+      }
+      function softenChange(node) {
+        if (!ready || motion.matches || document.hidden) return
+        contentAnimations.get(node)?.cancel()
+        const animation = node.animate([{ opacity: 0.7 }, { opacity: 1 }], {
+          duration: UPDATE_MS,
+          easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        })
+        contentAnimations.set(node, animation)
+        const clear = () => {
+          if (contentAnimations.get(node) === animation) contentAnimations.delete(node)
+        }
+        animation.finished.then(clear, clear)
+      }
+      function updateText(node, text) {
+        if (node.textContent === text) return
+        node.textContent = text
+        softenChange(node)
+      }
+      function setBusy(value) {
+        busy = value
+        $('.screen').setAttribute('aria-busy', String(value))
+        document
+          .querySelectorAll('[data-window],[data-magnitude],[data-sort]')
+          .forEach((b) => (b.disabled = value || !ready))
+        $('#refresh-data').disabled = value
+        $('#refresh-data').setAttribute('aria-busy', String(value))
+      }
+      function status(message) {
+        $('#status').textContent = message
+        $('#status').title = message
+      }
+      function updateStatus() {
+        const old = Date.now() - generatedAt > 15 * 60000
+        document.body.dataset.state = refreshFailed || old ? 'stale' : 'ready'
+        status(
+          `${refreshFailed ? '刷新失败，保留上次数据 · ' : old ? '目录更新延迟 · ' : ''}USGS ComCat · 已载入近 ${loadedHours / 24} 天 ${sourceCount.toLocaleString('en-US')} 条 · 截至 ${utc(generatedAt)} · 每 5 分钟刷新`,
+        )
+      }
+      async function fetchFeed(url, signal) {
+        const response = await fetch(url, { signal })
+        if (response.status === 204)
+          return { type: 'FeatureCollection', metadata: { generated: Date.now() }, features: [] }
+        if (!response.ok) throw new Error(`USGS HTTP ${response.status}`)
+        const feed = await response.json()
+        if (
+          feed.type !== 'FeatureCollection' ||
+          !Array.isArray(feed.features) ||
+          !Number.isFinite(feed.metadata?.generated)
+        )
+          throw new Error('USGS 返回的数据格式不正确')
+        return feed
+      }
+      async function fetchCatalog(start, end, signal) {
+        const features = []
+        // Bound each search by time and page it explicitly; never silently truncate at the service limit.
+        for (let offset = 1; ; offset += CATALOG_PAGE_SIZE) {
+          const url = new URL(CATALOG_URL)
+          url.search = new URLSearchParams({
+            format: 'geojson',
+            eventtype: 'earthquake',
+            starttime: new Date(start).toISOString(),
+            endtime: new Date(end).toISOString(),
+            orderby: 'time-asc',
+            limit: String(CATALOG_PAGE_SIZE),
+            offset: String(offset),
+          })
+          const page = await fetchFeed(url, signal)
+          features.push(...page.features)
+          if (page.features.length < CATALOG_PAGE_SIZE) return features
+        }
+      }
+      async function loadFeed(windowHours, signal) {
+        // USGS recommends the cached real-time feed for recent data; use ComCat for older history.
+        const feed = await fetchFeed(FEED_URL, signal)
+        if (windowHours <= MONTH_HOURS) return feed
+        const month = MONTH_HOURS * 3600000
+        const start = feed.metadata.generated - windowHours * 3600000
+        const ranges = []
+        for (let end = feed.metadata.generated - month; end > start; end -= month)
+          ranges.push([Math.max(start, end - month), end])
+        status(`正在加载近 ${windowHours / 24} 天 USGS ComCat 历史目录，当前画面保留…`)
+        const archives = await Promise.all(ranges.map(([from, to]) => fetchCatalog(from, to, signal)))
+        return { ...feed, features: [...feed.features, ...archives.flat()] }
+      }
+      function sourceLink(url) {
+        try {
+          const parsed = new URL(url)
+          return parsed.protocol === 'https:' && parsed.hostname === 'earthquake.usgs.gov' ? parsed.href : null
+        } catch {
+          return null
+        }
+      }
+      // Source-boundary adapter: validate GeoJSON, normalize fields, and deduplicate revisions.
+      // Components never receive this payload; they consume VBI query results below.
+      function normalize(feed) {
+        if (
+          feed.type !== 'FeatureCollection' ||
+          !Array.isArray(feed.features) ||
+          !Number.isFinite(feed.metadata?.generated)
+        ) {
+          throw new Error('USGS 返回的数据格式不正确')
+        }
+        const unique = new Map()
+        for (const feature of feed.features) {
+          const p = feature.properties
+          const coords = feature.geometry?.coordinates
+          if (p?.type !== 'earthquake' || !feature.id || feature.geometry?.type !== 'Point' || !Array.isArray(coords))
+            continue
+          const [longitude, latitude, rawDepth] = coords
+          if (
+            !Number.isFinite(p.time) ||
+            !Number.isFinite(longitude) ||
+            !Number.isFinite(latitude) ||
+            Math.abs(latitude) > 90 ||
+            Math.abs(longitude) > 180
+          )
+            continue
+          const magnitude = Number.isFinite(p.mag) ? p.mag : null
+          const depth = Number.isFinite(rawDepth) ? rawDepth : null
+          const magnitudeBand =
+            magnitude == null
+              ? 5
+              : magnitude < 1
+                ? 0
+                : magnitude < 2.5
+                  ? 1
+                  : magnitude < 4.5
+                    ? 2
+                    : magnitude < 6
+                      ? 3
+                      : 4
+          const depthBand = depth == null ? 3 : depth < 70 ? 0 : depth < 300 ? 1 : 2
+          const row = {
+            event_id: String(feature.id),
+            place: p.place || '位置描述暂缺',
+            url: sourceLink(p.url) || '',
+            network: p.net || null,
+            status: p.status || 'unknown',
+            time: p.time,
+            longitude,
+            latitude,
+            magnitude,
+            depth,
+            magnitude_band: magnitudeBands[magnitudeBand],
+            depth_band: depthBands[depthBand],
+            event_count: 1,
+            is_strong: magnitude != null && magnitude >= 4.5 ? 1 : 0,
+            has_felt: Number.isFinite(p.felt) && p.felt > 0 ? 1 : 0,
+            is_automatic: p.status === 'automatic' ? 1 : 0,
+            is_reviewed: p.status === 'reviewed' ? 1 : 0,
+            is_recent: p.time >= feed.metadata.generated - 3600000 && p.time <= feed.metadata.generated ? 1 : 0,
+          }
+          const previous = unique.get(row.event_id)
+          if (!previous || (p.updated || 0) >= previous.updated)
+            unique.set(row.event_id, { row, updated: p.updated || 0 })
+        }
+        return [...unique.values()].map(({ row }) => row)
+      }
+      function mapPadding() {
+        const side = $('.sidebar').getBoundingClientRect()
+        const dock = $('.bottom').getBoundingClientRect()
+        return { left: side.right + 26, right: 30, top: 170, bottom: innerHeight - dock.top + 36 }
+      }
+      function resetMap() {
+        if (!map) return
+        overviewMode = true
+        selectedEvent = null
+        popup?.remove()
+        const zoom = Math.max(1.15, Math.min(2.3, Math.log2(innerWidth / 430)))
+        map.jumpTo({ center: [180, 12], zoom, padding: mapPadding() })
+        renderMap()
+      }
+      function wrappedCoordinates(event) {
+        const longitude = event.longitude + 360 * Math.round((map.getCenter().lng - event.longitude) / 360)
+        return [longitude, event.latitude]
+      }
+      const svgElement = (tag, attributes = {}) => {
+        const node = document.createElementNS('http://www.w3.org/2000/svg', tag)
+        for (const [name, value] of Object.entries(attributes)) node.setAttribute(name, value)
+        return node
+      }
+      function renderMapEffects() {
+        const previousRipples = new Map(rippleNodes.map((node) => [`${node.event.event_id}:${node.copy}`, node]))
+        const previousFlights = new Map(
+          flightNodes.map((node) => [`${node.from.event_id}:${node.to.event_id}:${node.copy}`, node]),
+        )
+        rippleNodes = []
+        flightNodes = []
+        // Query results arrive newest first; reverse only for drawing chronological links.
+        const recent = [...effectEvents].reverse()
+        const strongest = strongestEvent
+        const selected = events.find((event) => event.event_id === selectedEvent)
+        const highlighted = [
+          ...new Map([...recent, strongest, selected].filter(Boolean).map((event) => [event.event_id, event])).values(),
+        ]
+        for (const [index, event] of highlighted.entries()) {
+          for (const copy of [-1, 0, 1]) {
+            const key = `${event.event_id}:${copy}`
+            let node = previousRipples.get(key)
+            if (!node) {
+              const group = svgElement('g', { 'data-event-id': event.event_id })
+              group.style.setProperty('--delay', `${-index * 0.73}s`)
+              group.append(
+                svgElement('circle', { class: 'event-ripple' }),
+                svgElement('circle', { class: 'event-ripple echo' }),
+              )
+              $('#ripple-effects').append(group)
+              node = { event, copy, group }
+              softenChange(group)
+            }
+            previousRipples.delete(key)
+            node.event = event
+            node.group.style.color = eventColor(event.magnitude)
+            for (const circle of node.group.children)
+              circle.setAttribute('r', event.event_id === strongest?.event_id ? 32 : 23)
+            rippleNodes.push(node)
+          }
+        }
+        // Chronological links are illustrative; they do not model seismic wave propagation.
+        for (let index = 1; index < recent.length; index++) {
+          for (const copy of [-1, 0, 1]) {
+            const from = recent[index - 1],
+              to = recent[index]
+            const key = `${from.event_id}:${to.event_id}:${copy}`
+            let node = previousFlights.get(key)
+            if (!node) {
+              const group = svgElement('g')
+              group.style.color = '#acc5eb'
+              group.style.setProperty('--duration', `${7 + index * 0.6}s`)
+              group.style.setProperty('--delay', `${-index * 1.8}s`)
+              const paths = ['flight-rail', 'flight-tail', 'flight-head'].map((className) =>
+                svgElement('path', { class: className, pathLength: 100 }),
+              )
+              group.append(...paths)
+              $('#flight-effects').append(group)
+              node = { from, to, copy, group, paths }
+              softenChange(group)
+            }
+            previousFlights.delete(key)
+            node.from = from
+            node.to = to
+            flightNodes.push(node)
+          }
+        }
+        for (const { group } of [...previousRipples.values(), ...previousFlights.values()]) {
+          contentAnimations.get(group)?.cancel()
+          group.remove()
+        }
+        positionMapEffects()
+        syncMotion()
+      }
+      function positionMapEffects() {
+        if (!mapLoaded) return
+        const width = map.getContainer().clientWidth,
+          height = map.getContainer().clientHeight
+        effects.setAttribute('viewBox', `0 0 ${width} ${height}`)
+        const worldWidth = 512 * 2 ** map.getZoom()
+        for (const { event, copy, group } of rippleNodes) {
+          const point = map.project(wrappedCoordinates(event))
+          const x = point.x + copy * worldWidth,
+            y = point.y
+          group.setAttribute('transform', `translate(${x} ${y})`)
+          group.style.display = x < -60 || x > width + 60 || y < -60 || y > height + 60 ? 'none' : ''
+        }
+        for (const { from, to, copy, group, paths } of flightNodes) {
+          const origin = wrappedCoordinates(from)
+          // Unwrap each pair across the antimeridian before projecting its visible world copies.
+          const longitude = to.longitude + 360 * Math.round((origin[0] - to.longitude) / 360)
+          const a = map.project(origin),
+            b = map.project([longitude, to.latitude])
+          a.x += copy * worldWidth
+          b.x += copy * worldWidth
+          const dx = b.x - a.x,
+            dy = b.y - a.y,
+            distance = Math.hypot(dx, dy)
+          const bend = Math.min(130, distance * 0.23)
+          const cx = (a.x + b.x) / 2 + (dy / (distance || 1)) * bend
+          const cy = (a.y + b.y) / 2 - (Math.abs(dx) / (distance || 1)) * bend
+          const visible =
+            distance > 36 &&
+            Math.max(a.x, b.x, cx) >= 0 &&
+            Math.min(a.x, b.x, cx) <= width &&
+            Math.max(a.y, b.y, cy) >= 0 &&
+            Math.min(a.y, b.y, cy) <= height
+          group.style.display = visible ? '' : 'none'
+          const path = `M${a.x},${a.y} Q${cx},${cy} ${b.x},${b.y}`
+          for (const node of paths) node.setAttribute('d', path)
+        }
+      }
+      function syncListMotion() {
+        cancelAnimationFrame(listFrame)
+        clearTimeout(listResumeTimer)
+        const overflow = eventList.scrollHeight - eventList.clientHeight > 1
+        const button = $('#toggle-list-motion')
+        button.disabled = !overflow || motion.matches
+        button.setAttribute('aria-pressed', String(listMotionEnabled && !motion.matches))
+        button.title = motion.matches
+          ? '跟随系统减少动态效果设置'
+          : listMotionEnabled
+            ? '暂停自动滚动 · 悬停可临时暂停'
+            : '开启自动滚动'
+        if (
+          disposed ||
+          document.hidden ||
+          motion.matches ||
+          !listMotionEnabled ||
+          !overflow ||
+          listPointerDown ||
+          eventList.matches(':hover, :focus-within')
+        )
+          return
+        const delay = listHoldUntil - performance.now()
+        if (delay > 0) {
+          listResumeTimer = setTimeout(syncListMotion, delay)
+          return
+        }
+        listPosition = eventList.scrollTop
+        listLastFrame = 0
+        listFrame = requestAnimationFrame(scrollListFrame)
+      }
+      function scrollListFrame(now) {
+        const elapsed = listLastFrame ? Math.min(now - listLastFrame, 50) : 0
+        listLastFrame = now
+        const maximum = eventList.scrollHeight - eventList.clientHeight
+        listPosition = Math.max(0, Math.min(maximum, listPosition + listDirection * elapsed * 0.022))
+        eventList.scrollTop = listPosition
+        if ((listDirection > 0 && listPosition >= maximum) || (listDirection < 0 && listPosition <= 0)) {
+          listDirection *= -1
+          listHoldUntil = now + 2200
+          syncListMotion()
+        } else listFrame = requestAnimationFrame(scrollListFrame)
+      }
+      function syncMotion() {
+        if (motion.matches || document.hidden) {
+          settleMetrics()
+          for (const animation of contentAnimations.values()) animation.finish()
+        }
+        effects.classList.toggle('is-paused', document.hidden || motion.matches || !mapMotionEnabled)
+        const button = $('#toggle-map-motion')
+        button.setAttribute('aria-pressed', String(mapMotionEnabled && !motion.matches))
+        button.disabled = !mapLoaded || motion.matches
+        button.title = motion.matches ? '跟随系统减少动态效果设置' : mapMotionEnabled ? '暂停地图动效' : '开启地图动效'
+        syncListMotion()
+      }
+      function onMotionChange() {
+        syncMotion()
+        chartInstances.forEach((instance) => {
+          if (motion.matches) instance.stopAnimation()
+          instance.updateSpecSync({ ...instance.getSpec(), animation: !motion.matches })
+        })
+      }
+      function holdListMotion(duration = 2000) {
+        listHoldUntil = Math.max(listHoldUntil, performance.now() + duration)
+        syncListMotion()
+      }
+      $('#toggle-map-motion').onclick = () => {
+        mapMotionEnabled = !mapMotionEnabled
+        syncMotion()
+      }
+      $('#toggle-list-motion').onclick = () => {
+        listMotionEnabled = !listMotionEnabled
+        syncListMotion()
+      }
+      eventList.addEventListener('pointerenter', syncListMotion)
+      eventList.addEventListener('pointerleave', () => holdListMotion())
+      eventList.addEventListener('focusin', syncListMotion)
+      eventList.addEventListener('focusout', () => queueMicrotask(() => holdListMotion()))
+      eventList.addEventListener('wheel', () => holdListMotion(8000), { passive: true })
+      eventList.addEventListener('keydown', () => holdListMotion(8000))
+      eventList.addEventListener('pointerdown', () => {
+        listPointerDown = true
+        syncListMotion()
+      })
+      const releaseListPointer = () => {
+        if (!listPointerDown) return
+        listPointerDown = false
+        holdListMotion(8000)
+      }
+      window.addEventListener('pointerup', releaseListPointer)
+      window.addEventListener('pointercancel', releaseListPointer)
+      document.addEventListener('visibilitychange', syncMotion)
+      motion.addEventListener('change', onMotionChange)
+      syncMotion()
+      function locate(event) {
+        if (!event || !map || !mapLoaded) return
+        overviewMode = false
+        selectedEvent = event.event_id
+        signalMarker?.remove()
+        const coordinates = wrappedCoordinates(event)
+        map.easeTo({ center: coordinates, zoom: 4.2, padding: mapPadding(), duration: motion.matches ? 0 : 650 })
+        showPopup(event, coordinates)
+        updateSelectedMarker()
+        document
+          .querySelectorAll('.event-focus')
+          .forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.eventId === selectedEvent)))
+      }
+      function eventColor(magnitude) {
+        return magnitude == null ? '#8994aa' : magnitude >= 4.5 ? '#efa383' : magnitude >= 2.5 ? '#c4c9d8' : '#9db8e4'
+      }
+      function showPopup(event, coordinates = wrappedCoordinates(event)) {
+        popup?.remove()
+        const content = element('div', 'earthquake-popup')
+        content.append(
+          element('h3', '', `M ${number(event.magnitude)} · ${event.place}`),
+          element('p', '', `震源深度 ${number(event.depth)} km`),
+          element('p', '', utc(event.time)),
+          element('p', '', `${number(event.latitude, 3)}°, ${number(event.longitude, 3)}° · ${event.event_id}`),
+        )
+        const url = sourceLink(event.url)
+        if (url) {
+          const link = element('a', '', '查看 USGS 原始记录 ↗')
+          Object.assign(link, { href: url, target: '_blank', rel: 'noopener noreferrer' })
+          content.append(link)
+        }
+        popup = new maplibregl.Popup({ maxWidth: '300px', offset: 16, focusAfterOpen: false })
+          .setLngLat(coordinates)
+          .setDOMContent(content)
+          .addTo(map)
+      }
+      function updateSelectedMarker() {
+        if (!mapLoaded) return
+        const featured = selectedEvent || strongestEvent?.event_id || ''
+        map.setFilter('event-focus-ring', ['==', ['get', 'event_id'], featured])
+        map.setFilter('event-focus-halo', ['==', ['get', 'event_id'], featured])
+        renderMapEffects()
+      }
+      function renderMap() {
+        if (!mapLoaded) return
+        map.getSource('earthquakes').setData({
+          type: 'FeatureCollection',
+          features: events.map((event) => ({
+            type: 'Feature',
+            id: event.event_id,
+            geometry: { type: 'Point', coordinates: [event.longitude, event.latitude] },
+            properties: {
+              event_id: event.event_id,
+              magnitude: event.magnitude ?? 0,
+              color: eventColor(event.magnitude),
+            },
+          })),
+        })
+        if (selectedEvent && !events.some((e) => e.event_id === selectedEvent)) {
+          selectedEvent = null
+          popup?.remove()
+        }
+        updateSelectedMarker()
+        if (overviewMode) {
+          const strongest = strongestEvent
+          if (strongest) {
+            const coordinates = wrappedCoordinates(strongest)
+            const x = map.project(coordinates).x
+            const anchor =
+              x > innerWidth - 130 ? 'bottom-right' : x < mapPadding().left + 130 ? 'bottom-left' : 'bottom'
+            const offsetX =
+              anchor === 'bottom-right'
+                ? Math.min(0, innerWidth - 16 - x)
+                : anchor === 'bottom-left'
+                  ? Math.max(0, mapPadding().left - x)
+                  : 0
+            let signal = signalMarker?.getElement()
+            if (!signal || signal.dataset.anchor !== anchor) {
+              signalMarker?.remove()
+              signal = element('button', 'map-signal')
+              signal.dataset.anchor = anchor
+              const label = element('div')
+              label.append(element('small', '', '本时段最大震级'), element('span'))
+              signal.append(element('strong'), label)
+              signalMarker = new maplibregl.Marker({ element: signal, anchor }).setLngLat(coordinates).addTo(map)
+            }
+            signal.setAttribute('aria-label', `定位最强事件 M ${number(strongest.magnitude)}`)
+            updateText(signal.querySelector('strong'), `M ${number(strongest.magnitude)}`)
+            updateText(signal.querySelector('span'), utc(strongest.time))
+            signal.onclick = () => locate(strongest)
+            signal.style.setProperty(
+              '--signal-leader',
+              anchor === 'bottom-right'
+                ? `calc(100% - ${offsetX}px)`
+                : anchor === 'bottom-left'
+                  ? `calc(0% - ${offsetX}px)`
+                  : '50%',
+            )
+            signalMarker.setOffset([offsetX, -27]).setLngLat(coordinates)
+          }
+        }
+        if (!overviewMode || !strongestEvent) {
+          signalMarker?.remove()
+          signalMarker = null
+        }
+      }
+      function initializeMap() {
+        const graticule = { type: 'FeatureCollection', features: [] }
+        for (let longitude = -180; longitude < 180; longitude += 30)
+          graticule.features.push({
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'LineString',
+              coordinates: [
+                [longitude, -75],
+                [longitude, 80],
+              ],
+            },
+          })
+        for (let latitude = -60; latitude <= 60; latitude += 30)
+          graticule.features.push({
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'LineString',
+              coordinates: [
+                [-180, latitude],
+                [0, latitude],
+                [180, latitude],
+              ],
+            },
+          })
+        // NASA's static Blue Marble imagery supplies real relief and bathymetry. OSM supplies vector boundaries and place labels.
+        map = new maplibregl.Map({
+          container: 'map',
+          attributionControl: false,
+          center: [180, 12],
+          zoom: 1.7,
+          minZoom: 0.5,
+          maxZoom: 10,
+          pitch: 0,
+          maxPitch: 0,
+          dragRotate: false,
+          touchZoomRotate: true,
+          style: {
+            version: 8,
+            glyphs: 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',
+            sources: {
+              relief: {
+                type: 'raster',
+                tileSize: 256,
+                maxzoom: 8,
+                tiles: [
+                  'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg',
+                ],
+              },
+              geography: { type: 'vector', url: 'https://tiles.openfreemap.org/planet' },
+              graticule: { type: 'geojson', data: graticule },
+              earthquakes: { type: 'geojson', data: { type: 'FeatureCollection', features: [] } },
+            },
+            layers: [
+              { id: 'background', type: 'background', paint: { 'background-color': '#0a101d' } },
+              {
+                id: 'relief',
+                type: 'raster',
+                source: 'relief',
+                paint: {
+                  'raster-saturation': -1,
+                  'raster-contrast': 0.1,
+                  'raster-brightness-min': 0.015,
+                  'raster-brightness-max': 0.7,
+                  'raster-opacity': 0.68,
+                  'raster-fade-duration': 300,
+                },
+              },
+              {
+                id: 'graticule',
+                type: 'line',
+                source: 'graticule',
+                paint: { 'line-color': '#a8b5d0', 'line-width': 0.5, 'line-opacity': 0.075 },
+              },
+              {
+                id: 'boundaries',
+                type: 'line',
+                source: 'geography',
+                'source-layer': 'boundary',
+                filter: ['==', ['get', 'admin_level'], 2],
+                paint: { 'line-color': '#8b98b3', 'line-width': 0.6, 'line-opacity': 0.24 },
+              },
+              {
+                id: 'roads',
+                type: 'line',
+                source: 'geography',
+                'source-layer': 'transportation',
+                minzoom: 6,
+                paint: {
+                  'line-color': '#8794ad',
+                  'line-width': ['interpolate', ['linear'], ['zoom'], 6, 0.35, 10, 0.8],
+                  'line-opacity': 0.25,
+                },
+              },
+              {
+                id: 'country-labels',
+                type: 'symbol',
+                source: 'geography',
+                'source-layer': 'place',
+                filter: ['==', ['get', 'class'], 'country'],
+                minzoom: 1.5,
+                maxzoom: 6,
+                layout: {
+                  'text-field': ['coalesce', ['get', 'name:en'], ['get', 'name']],
+                  'text-font': ['Noto Sans Regular'],
+                  'text-size': 10,
+                  'text-letter-spacing': 0.12,
+                  'text-transform': 'uppercase',
+                  'text-max-width': 12,
+                },
+                paint: {
+                  'text-color': '#9da6b7',
+                  'text-opacity': 0.58,
+                  'text-halo-color': '#0d1423',
+                  'text-halo-width': 1.2,
+                },
+              },
+              {
+                id: 'city-labels',
+                type: 'symbol',
+                source: 'geography',
+                'source-layer': 'place',
+                filter: ['match', ['get', 'class'], ['city', 'town'], true, false],
+                minzoom: 4.5,
+                layout: {
+                  'text-field': ['coalesce', ['get', 'name:en'], ['get', 'name']],
+                  'text-font': ['Noto Sans Regular'],
+                  'text-size': 11,
+                  'text-max-width': 12,
+                },
+                paint: {
+                  'text-color': '#afb5c2',
+                  'text-opacity': 0.8,
+                  'text-halo-color': '#0d1423',
+                  'text-halo-width': 1.2,
+                },
+              },
+              {
+                id: 'event-halos',
+                type: 'circle',
+                source: 'earthquakes',
+                paint: {
+                  'circle-color': ['get', 'color'],
+                  'circle-radius': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 4, 4.5, 10, 8, 20],
+                  'circle-blur': 0.85,
+                  'circle-opacity': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 0.05, 4, 0.14, 8, 0.28],
+                },
+              },
+              {
+                id: 'event-points',
+                type: 'circle',
+                source: 'earthquakes',
+                paint: {
+                  'circle-color': ['get', 'color'],
+                  'circle-radius': ['interpolate', ['linear'], ['get', 'magnitude'], 0, 1.5, 4.5, 3, 8, 5.5],
+                  'circle-opacity': 0.9,
+                  'circle-stroke-width': 0.65,
+                  'circle-stroke-color': '#d6dbe5',
+                  'circle-stroke-opacity': 0.35,
+                },
+              },
+              {
+                id: 'event-focus-halo',
+                type: 'circle',
+                source: 'earthquakes',
+                filter: ['==', ['get', 'event_id'], ''],
+                paint: { 'circle-radius': 25, 'circle-color': '#e7ab94', 'circle-opacity': 0.16, 'circle-blur': 0.7 },
+              },
+              {
+                id: 'event-focus-ring',
+                type: 'circle',
+                source: 'earthquakes',
+                filter: ['==', ['get', 'event_id'], ''],
+                paint: {
+                  'circle-radius': 10,
+                  'circle-opacity': 0,
+                  'circle-stroke-color': '#d5b4a3',
+                  'circle-stroke-width': 0.8,
+                  'circle-stroke-opacity': 0.8,
+                },
+              },
+              {
+                id: 'event-hit-area',
+                type: 'circle',
+                source: 'earthquakes',
+                paint: { 'circle-radius': 10, 'circle-opacity': 0 },
+              },
+            ],
+          },
+        })
+        map.touchZoomRotate.disableRotation()
+        map.on('move', positionMapEffects)
+        map.on('resize', positionMapEffects)
+        map.on('error', () => {
+          $('#map-message').textContent = '部分地图资源暂不可用 · 可缩放重试'
+        })
+        map.on('load', () => {
+          mapLoaded = true
+          $('#map').dataset.loaded = 'true'
+          renderMap()
+        })
+        map.on('idle', () => {
+          if (map.areTilesLoaded()) {
+            $('#map-message').textContent = '2D 观测 · 涟漪标记事件 · 飞线为时序示意'
+            $('#map-message').title = '飞线连接近期事件，仅示意时间先后，不表示地震传播或因果关系。'
+          }
+        })
+        map.on('dragstart', () => {
+          overviewMode = false
+          signalMarker?.remove()
+        })
+        map.on('zoomend', () => {
+          $('#zoom-out').disabled = map.getZoom() <= map.getMinZoom() + 0.01
+          $('#zoom-in').disabled = map.getZoom() >= map.getMaxZoom() - 0.01
+        })
+        map.on('click', 'event-hit-area', (e) => {
+          const event = events.find((row) => row.event_id === e.features?.[0]?.properties.event_id)
+          if (!event) return
+          selectedEvent = event.event_id
+          overviewMode = false
+          signalMarker?.remove()
+          const coordinates = [
+            event.longitude + 360 * Math.round((e.lngLat.lng - event.longitude) / 360),
+            event.latitude,
+          ]
+          showPopup(event, coordinates)
+          updateSelectedMarker()
+          document
+            .querySelectorAll('.event-focus')
+            .forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.eventId === selectedEvent)))
+        })
+        map.on('mouseenter', 'event-hit-area', () => {
+          map.getCanvas().style.cursor = 'pointer'
+        })
+        map.on('mouseleave', 'event-hit-area', () => {
+          map.getCanvas().style.cursor = ''
+        })
+        $('#zoom-in').onclick = () => {
+          overviewMode = false
+          map.zoomIn({ duration: motion.matches ? 0 : 300 })
+        }
+        $('#zoom-out').onclick = () => {
+          overviewMode = false
+          map.zoomOut({ duration: motion.matches ? 0 : 300 })
+        }
+        $('#reset-map').onclick = () => {
+          resetMap()
+          document.querySelectorAll('.event-focus').forEach((b) => b.setAttribute('aria-pressed', 'false'))
+        }
+        resetMap()
+      }
+
+      function updateFocus(selector, event) {
+        const card = $(selector)
+        card.disabled = !event
+        card.dataset.eventId = event?.event_id || ''
+        card.setAttribute('aria-pressed', String(!!event && selectedEvent === event.event_id))
+        updateText(card.querySelector('.event-place'), event?.place || '当前范围内暂无事件')
+        card.querySelector('.event-place').title = event?.place || ''
+        metric(card.querySelector('.event-value'), number(event?.magnitude), 'M')
+        metric(card.querySelector('.event-depth'), number(event?.depth), 'km')
+        updateText(card.querySelector('.event-time'), event ? utc(event.time) : '— UTC')
+        updateText(
+          card.querySelector('.event-coordinates'),
+          event
+            ? `${number(event.latitude, 3)}°, ${number(event.longitude, 3)}° · 点击定位`
+            : '可扩大时间范围或降低最低震级',
+        )
+        card.onclick = () => locate(event)
+      }
+      function renderList() {
+        const list = $('#event-list')
+        const previousTop = list.scrollTop
+        const existing = new Map([...list.querySelectorAll('.event-row')].map((node) => [node.dataset.eventId, node]))
+        let count = list.querySelector('.event-list-count')
+        if (!count) {
+          list.querySelectorAll('.empty').forEach((node) => node.remove())
+          count = element('p', 'event-list-count')
+          list.prepend(count)
+        }
+        updateText(
+          count,
+          !events.length
+            ? '当前筛选范围内暂无事件'
+            : events.length > listEvents.length
+              ? `共 ${events.length} 条 · 显示排序前 ${listEvents.length} 条`
+              : `共 ${events.length} 条`,
+        )
+        let cursor = count.nextSibling
+        for (const event of listEvents) {
+          let button = existing.get(event.event_id)
+          const isNew = !button
+          if (isNew) {
+            button = element('button', 'event-row')
+            button.dataset.eventId = event.event_id
+            const content = element('span')
+            content.append(element('span', 'event-row-place'), element('span', 'event-row-meta'))
+            button.append(element('span', 'event-magnitude'), content)
+          }
+          existing.delete(event.event_id)
+          button.style.setProperty('--event-color', eventColor(event.magnitude))
+          button.setAttribute('aria-label', `定位 M ${number(event.magnitude)} ${event.place}`)
+          const place = button.querySelector('.event-row-place')
+          place.textContent = event.place
+          place.title = event.place
+          button.querySelector('.event-row-meta').textContent = `${utc(event.time)} · ${number(event.depth)} km`
+          button.querySelector('.event-magnitude').textContent = `M ${number(event.magnitude)}`
+          button.onclick = () => locate(event)
+          if (button !== cursor) list.insertBefore(button, cursor)
+          cursor = button.nextSibling
+          if (isNew) softenChange(button)
+        }
+        for (const node of existing.values()) {
+          contentAnimations.get(node)?.cancel()
+          node.remove()
+        }
+        list.scrollTop = previousTop
+        listPosition = list.scrollTop
+        holdListMotion(3200)
+      }
+      function fail(error) {
+        console.error(error)
+        if (disposed) return
+        if (ready) {
+          refreshFailed = true
+          updateStatus()
+        } else {
+          document.body.dataset.state = 'error'
+          status('公开数据暂时无法加载，请检查网络后点击“刷新数据”重试。')
+          $('#time-range').textContent = '数据连接未完成'
+          document.querySelectorAll('.empty').forEach((el) => (el.textContent = '数据暂不可用'))
+          document.querySelectorAll('.event-place').forEach((el) => (el.textContent = '等待重新连接公开目录'))
+        }
+      }
+      try {
+        try {
+          initializeMap()
+        } catch (error) {
+          console.error(error)
+          $('#map-message').textContent = '地图初始化失败，请使用支持 WebGL 的浏览器'
+          document.querySelectorAll('.map-controls button').forEach((button) => (button.disabled = true))
+        }
+        const [{ VBI }, { VQuery }, { Builder, registerAll }] = await Promise.all([
+          import('https://cdn.jsdelivr.net/npm/@visactor/vbi@0.6.4/+esm'),
+          import('https://cdn.jsdelivr.net/npm/@visactor/vquery@0.6.4/dist/browser/esm/browser.js/+esm'),
+          import('https://cdn.jsdelivr.net/npm/@visactor/vseed@0.6.4/+esm'),
+        ])
+        registerAll()
+        const query = new VQuery()
+        let activeSource, queryDataset
+        const strings = ['event_id', 'place', 'url', 'network', 'status', 'magnitude_band', 'depth_band']
+        const numeric = [
+          'time',
+          'longitude',
+          'latitude',
+          'magnitude',
+          'depth',
+          'event_count',
+          'is_strong',
+          'has_felt',
+          'is_automatic',
+          'is_reviewed',
+          'is_recent',
+        ]
+        const schema = [
+          ...strings.map((name) => ({ name, type: 'string' })),
+          ...numeric.map((name) => ({ name, type: 'number' })),
+        ]
+        VBI.connectors.register(SOURCE_ID, {
+          discoverSchema: async () => schema,
+          query: async ({ queryDSL }) => {
+            // Browser storage is shared by same-origin tabs. Query this page's payload consistently.
+            // A dashboard query batch shares one loaded snapshot across all builders.
+            if (queryDataset) return queryDataset.query(queryDSL)
+            const dataset = await query.connectDataset(SOURCE_ID, schema, activeSource)
+            try {
+              return await dataset.query(queryDSL)
+            } finally {
+              await dataset.disconnect()
+            }
+          },
+        })
+        function chart(type, dimensions, measures) {
+          const builder = VBI.chart.create(VBI.chart.createEmpty(SOURCE_ID))
+          builder.chartType.changeChartType(type)
+          builder.limit.setLimit(10000)
+          for (const [field, encoding] of dimensions)
+            builder.dimensions.add(field, (n) => n.setAlias(field).setEncoding(encoding))
+          for (const [field, alias, func = 'sum'] of measures)
+            builder.measures.add(field, (n) => n.setAlias(alias).setAggregate({ func }))
+          return builder
+        }
+        const summary = chart(
+          'table',
+          [],
+          [
+            ['event_count', 'total'],
+            ['is_strong', 'strong'],
+            ['has_felt', 'felt'],
+            ['is_automatic', 'automatic'],
+            ['is_recent', 'recent'],
+            ['is_reviewed', 'reviewed'],
+            ['network', 'networks', 'countDistinct'],
+            ['magnitude', 'maxMagnitude', 'max'],
+            ['depth', 'avgDepth', 'avg'],
+            ['depth', 'maxDepth', 'max'],
+          ],
+        )
+        const magnitudeChart = chart('bar', [['magnitude_band', 'yAxis']], [['event_count', 'count']])
+        const depthChart = chart('donut', [['depth_band', 'color']], [['event_count', 'count']])
+        // A table is also a headless row query: no VTable or chart renderer is required.
+        // Project numeric fields as dimensions to preserve raw values, including nulls.
+        const eventFields = [
+          'event_id',
+          'place',
+          'url',
+          'network',
+          'status',
+          'time',
+          'longitude',
+          'latitude',
+          'magnitude',
+          'depth',
+        ]
+        function eventTable(order = [], limit = 50) {
+          const fields = [...order, ...eventFields.filter((field) => !order.includes(field))]
+          const builder = chart(
+            'table',
+            fields.map((field) => [field, 'column']),
+            [],
+          )
+          for (const field of order)
+            builder.dimensions.find((node) => node.getField() === field).setSort({ order: 'desc' })
+          builder.limit.setLimit(limit)
+          return builder
+        }
+        const details = eventTable()
+        const strongest = eventTable(['magnitude', 'time', 'event_id'], 1)
+        const recent = eventTable(['time', 'event_id'], 8)
+        const significant = eventTable(['time', 'event_id'], 8)
+        const lists = {
+          magnitude: eventTable(['magnitude', 'time', 'event_id']),
+          time: eventTable(['time', 'event_id']),
+        }
+        function applyRange(builder) {
+          builder.whereFilter.clear()
+          builder.whereFilter.add('time', (node) => node.setOperator('gte').setValue(generatedAt - hours * 3600000))
+          builder.whereFilter.add('time', (node) => node.setOperator('lte').setValue(generatedAt))
+          if (minimumMagnitude !== 'all')
+            builder.whereFilter.add('magnitude', (node) => node.setOperator('gte').setValue(Number(minimumMagnitude)))
+        }
+        async function queryBuilders(builders) {
+          if (!sourceCount) return builders.map(() => null)
+          // Keep this page's source explicit: IndexedDB is shared with other same-origin tabs.
+          const dataset = await query.connectDataset(SOURCE_ID, schema, activeSource)
+          queryDataset = dataset
+          try {
+            const results = await Promise.allSettled(builders.map((builder) => builder.buildVSeed()))
+            const failure = results.find((result) => result.status === 'rejected')
+            if (failure) throw failure.reason
+            return results.map((result) => result.value)
+          } finally {
+            queryDataset = null
+            await dataset.disconnect()
+          }
+        }
+        function rows(builder, seed) {
+          const { dimensions, measures } = builder.build()
+          return seed.dataset.map((row) =>
+            Object.fromEntries([...dimensions, ...measures].map((f) => [f.alias || f.field, row[f.id]])),
+          )
+        }
+        function completeBins(builder, seed, bands) {
+          const dimension = builder.build().dimensions[0].id
+          const measure = builder.build().measures[0].id
+          const counts = new Map(seed.dataset.map((row) => [row[dimension], row[measure]]))
+          return { ...seed, dataset: bands.map((band) => ({ [dimension]: band, [measure]: counts.get(band) ?? 0 })) }
+        }
+        function chartLayout(selector) {
+          return {
+            padding: selector === '#depth-chart' ? 0 : { left: 88, right: 28, top: 0, bottom: 0 },
+            barMaxWidth: 3,
+          }
+        }
+        async function draw(selector, seed) {
+          const donut = seed.chartType === 'donut'
+          const spec = Builder.from({
+            ...seed,
+            theme: 'dark',
+            backgroundColor: 'transparent',
+            color: { colorScheme: donut ? depthColors : ['#b0c4e8'] },
+            label: { enable: false },
+            legend: { enable: false },
+            xAxis: { visible: false, zero: true },
+            yAxis: { visible: false, inverse: true },
+            barStyle: { barRadius: 3, barGradient: false },
+            startAngle: -90,
+            innerRadius: 0.82,
+            outerRadius: 0.96,
+            pieStyle: { pieBorderWidth: 0, pieHoverEffect: 'opacity' },
+            tooltip: { enable: false },
+            animation: {
+              enable: !motion.matches,
+              params: { appear: { enable: false }, update: { enable: true, duration: UPDATE_MS } },
+            },
+          }).build()
+          Object.assign(spec, chartLayout(selector))
+          const existing = chartInstances.get(selector)
+          if (existing) await existing.updateSpec(spec)
+          else {
+            $(selector).replaceChildren()
+            const instance = new window.VChart.default(spec, { dom: $(selector) })
+            instance.renderSync()
+            chartInstances.set(selector, instance)
+          }
+        }
+        async function render() {
+          details.limit.setLimit(Math.max(1, sourceCount))
+          const list = lists[sortBy]
+          const builders = [summary, magnitudeChart, depthChart, details, strongest, recent, significant, list]
+          builders.forEach(applyRange)
+          strongest.whereFilter.add('magnitude', (node) => node.setOperator('is not null'))
+          significant.whereFilter.add('magnitude', (node) => node.setOperator('gte').setValue(2.5))
+          const seeds = await queryBuilders(builders)
+          if (disposed) return
+          const totals = seeds[0] ? rows(summary, seeds[0])[0] || {} : {}
+          events = seeds[3] ? rows(details, seeds[3]) : []
+          strongestEvent = seeds[4] ? rows(strongest, seeds[4])[0] : null
+          const recentEvents = seeds[5] ? rows(recent, seeds[5]) : []
+          const significantEvents = seeds[6] ? rows(significant, seeds[6]) : []
+          latestEvent = recentEvents[0]
+          effectEvents = significantEvents.length >= 2 ? significantEvents : recentEvents
+          listEvents = seeds[7] ? rows(list, seeds[7]) : []
+          const total = Number(totals.total || 0)
+          for (const [id, key, unit] of [
+            ['event-count', 'total', '次'],
+            ['strong-count', 'strong', '次'],
+            ['felt-count', 'felt', '事件'],
+            ['automatic-count', 'automatic', '次'],
+            ['recent-count', 'recent', '次'],
+            ['network-count', 'networks', '个'],
+          ])
+            metric(`#${id}`, totals[key] || 0, unit)
+          metric('#max-magnitude', total ? number(totals.maxMagnitude) : '—', 'M')
+          metric('#average-depth', total ? number(totals.avgDepth) : '—', 'km')
+          metric('#maximum-depth', total ? number(totals.maxDepth) : '—', 'km')
+          const reviewed = total ? Math.round((Number(totals.reviewed || 0) / total) * 100) : 0
+          metric('#reviewed-percent', total ? reviewed : '—', '%')
+          $('#reviewed-fill').style.width = `${reviewed}%`
+          metric('#depth-total', total)
+          const magnitudeSeed = seeds[1] ? completeBins(magnitudeChart, seeds[1], magnitudeBands) : null
+          const depthSeed = seeds[2] ? completeBins(depthChart, seeds[2], depthBands) : null
+          const magnitudeRows = magnitudeSeed
+            ? rows(magnitudeChart, magnitudeSeed)
+            : magnitudeBands.map((magnitude_band) => ({ magnitude_band, count: 0 }))
+          const labels = $('#bar-labels')
+          for (const [index, row] of magnitudeRows.entries()) {
+            let label = labels.children[index]
+            if (!label) {
+              label = element('div')
+              label.append(element('span', '', row.magnitude_band), element('span'))
+              labels.append(label)
+            }
+            metric(label.lastElementChild, row.count)
+          }
+          $('#magnitude-chart').setAttribute(
+            'aria-label',
+            magnitudeRows.map((r) => `${r.magnitude_band}: ${r.count} 次`).join('，'),
+          )
+          const depthRows = depthSeed
+            ? rows(depthChart, depthSeed)
+            : depthBands.map((depth_band) => ({ depth_band, count: 0 }))
+          depthRows.forEach((row, i) =>
+            metric(`#depth-${['shallow', 'intermediate', 'deep', 'unknown'][i]}`, row.count),
+          )
+          // Submit both charts in this commit; neither canvas is cleared during a range change.
+          $('#magnitude-chart').dataset.empty = String(!magnitudeSeed)
+          $('#depth-chart').dataset.empty = String(!depthSeed)
+          const chartUpdates =
+            magnitudeSeed && depthSeed
+              ? Promise.all([draw('#magnitude-chart', magnitudeSeed), draw('#depth-chart', depthSeed)])
+              : Promise.resolve()
+          updateFocus('#strongest-event', strongestEvent)
+          updateFocus('#latest-event', latestEvent)
+          $('#time-range').textContent =
+            `${utc(generatedAt - hours * 3600000).replace(' UTC', '')} — ${utc(generatedAt)}`
+          renderList()
+          renderMap()
+          document
+            .querySelectorAll('[data-window]')
+            .forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.window) === hours)))
+          document
+            .querySelectorAll('[data-magnitude]')
+            .forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.magnitude === minimumMagnitude)))
+          ready = true
+          updateStatus()
+          await chartUpdates
+        }
+        async function refresh(targetHours = hours) {
+          if (busy || disposed) return
+          setBusy(true)
+          status('正在更新 USGS 公开地震目录…')
+          request = new AbortController()
+          const windowHours = Math.max(MONTH_HOURS, targetHours)
+          const timeout = setTimeout(() => request.abort(), windowHours > MONTH_HOURS ? 90000 : 30000)
+          try {
+            const feed = await loadFeed(windowHours, request.signal)
+            const rawDataset = normalize(feed)
+            const source = { type: 'json', rawDataset }
+            if (rawDataset.length) {
+              if (await query.hasDataset(SOURCE_ID)) await query.updateDatasetSource(SOURCE_ID, schema, source)
+              else await query.createDataset(SOURCE_ID, schema, source)
+            }
+            generatedAt = feed.metadata.generated
+            sourceCount = rawDataset.length
+            activeSource = source
+            loadedHours = windowHours
+            hours = targetHours
+            refreshFailed = false
+            await render()
+          } catch (error) {
+            request.abort()
+            fail(error)
+          } finally {
+            clearTimeout(timeout)
+            setBusy(false)
+          }
+        }
+        async function filter(button, kind) {
+          if (busy || !ready) return
+          if (kind === 'window' && Number(button.dataset.window) > loadedHours) {
+            await refresh(Number(button.dataset.window))
+            return
+          }
+          setBusy(true)
+          const previous = { hours, minimumMagnitude }
+          if (kind === 'window') hours = Number(button.dataset.window)
+          else minimumMagnitude = button.dataset.magnitude
+          try {
+            await render()
+          } catch (error) {
+            hours = previous.hours
+            minimumMagnitude = previous.minimumMagnitude
+            fail(error)
+          } finally {
+            setBusy(false)
+          }
+        }
+        document
+          .querySelectorAll('[data-window]')
+          .forEach((button) => (button.onclick = () => filter(button, 'window')))
+        document
+          .querySelectorAll('[data-magnitude]')
+          .forEach((button) => (button.onclick = () => filter(button, 'magnitude')))
+        document.querySelectorAll('[data-sort]').forEach(
+          (button) =>
+            (button.onclick = async () => {
+              if (busy || !ready || sortBy === button.dataset.sort) return
+              setBusy(true)
+              try {
+                const list = lists[button.dataset.sort]
+                applyRange(list)
+                const [seed] = await queryBuilders([list])
+                if (disposed) return
+                listEvents = seed ? rows(list, seed) : []
+                sortBy = button.dataset.sort
+                document
+                  .querySelectorAll('[data-sort]')
+                  .forEach((b) => b.setAttribute('aria-pressed', String(b === button)))
+                renderList()
+              } catch (error) {
+                fail(error)
+              } finally {
+                setBusy(false)
+              }
+            }),
+        )
+        $('#refresh-data').onclick = () => refresh()
+        observer = new ResizeObserver(() => {
+          map?.resize()
+          if (map && overviewMode) resetMap()
+          chartInstances.forEach((instance, selector) => {
+            instance.updateSpecSync({ ...instance.getSpec(), ...chartLayout(selector) })
+            instance.resize($(selector).clientWidth, $(selector).clientHeight)
+          })
+          syncListMotion()
+        })
+        observer.observe($('.screen'))
+        await refresh()
+        timer = setInterval(() => {
+          if (!document.hidden) void refresh()
+        }, REFRESH_MS)
+      } catch (error) {
+        fail(error)
+        $('#refresh-data').disabled = false
+        $('#refresh-data').onclick = () => location.reload()
+      }
+      window.addEventListener('pagehide', (event) => {
+        if (event.persisted) return
+        disposed = true
+        cancelAnimationFrame(listFrame)
+        cancelAnimationFrame(metricFrame)
+        metricStates.clear()
+        for (const animation of contentAnimations.values()) animation.cancel()
+        contentAnimations.clear()
+        clearTimeout(listResumeTimer)
+        document.removeEventListener('visibilitychange', syncMotion)
+        motion.removeEventListener('change', onMotionChange)
+        request?.abort()
+        clearInterval(timer)
+        observer?.disconnect()
+        chartInstances.forEach((instance) => instance.release())
+        popup?.remove()
+        signalMarker?.remove()
+        map?.remove()
+      })
+    </script>
+  </body>
+</html>
