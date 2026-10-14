@@ -1,0 +1,52 @@
+# 人工维护。路径相对于 vbi/；供顶层 SKILL.md 选读，不负责注册 Skill。
+capabilities:
+  - id: visual-query
+    path: references/visual-query/SKILL.md
+    when:
+      - 完成单图、指标卡、表格与普通分析页面的查询和呈现
+      - light-dashboard 或 map-dashboard 的通用查询、渲染、页面组合与联动
+      - 查询复用、刷新调度、资源关系及状态恢复
+  - id: vbi
+    path: references/vbi/SKILL.md
+    when:
+      - Chart、Dashboard 或 Insight DSL 与 Builder 操作
+      - Connector、资源关联、保存恢复、撤销与协同
+  - id: vquery
+    path: references/vquery/SKILL.md
+    when:
+      - 数据集接入、查询 DSL、筛选聚合与查询适配器
+      - MySQL 或 DuckDB SQL 编译、参数绑定与 schema 校验
+  - id: vseed
+    path: references/vseed/SKILL.md
+    when:
+      - VSeed DSL 转 VChart 或 VTable Spec
+      - 图表类型、主题、数据编码与 Pipeline 扩展
+  - id: server-runtime
+    path: references/server-runtime/SKILL.md
+    when:
+      - 在服务端连接本地或远程数据库、本地 JSON/CSV 与 HTTP 数据源
+      - 为 light-dashboard 或 map-dashboard 提供本地同源查询接口
+      - 管理服务端凭据、数据源适配器、启动与关闭
+dashboards:
+  default: light-dashboard
+  routes:
+    - id: light-dashboard
+      path: references/light-dashboard/SKILL.md
+      when:
+        - 用户明确指定 light dashboard 或轻量仪表盘
+        - 低信息密度的经营概览、指标监测、趋势分析或专题看板
+        - 修改现有轻量看板
+    - id: map-dashboard
+      path: references/map-dashboard/SKILL.md
+      when:
+        - 用户明确指定 map dashboard、地图看板或数据大屏
+        - 地图主屏、悬浮指标或高信息密度的实时大屏
+        - 修改现有大屏
+selection:
+  - 用户明确选择优先；修改现有产物沿用其所属场景
+  - 按职责选择能力子技能；跨层任务只补读涉及的能力与 API
+  - 单图、指标卡和普通分析页面读取 visual-query，不加载 Dashboard 场景指南
+  - light-dashboard 和 map-dashboard 共同读取 visual-query，再按需补读能力 API
+  - 独立数据查询或 API 问题直接读取对应能力子技能
+  - 未指定类型的新建看板使用 dashboards.default
+  - 数据来源与展示场景分开选择，两种 Dashboard 均可补读 vquery 与 server-runtime
