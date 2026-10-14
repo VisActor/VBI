@@ -1,5 +1,13 @@
 # @visactor/vseed
 
+## 0.7.0
+
+### Minor Changes
+
+- 6e22a80: Add `cornerRadius` to bar, column, histogram, dual-axis, and racing charts, with per-mark rounding enabled by default to support smooth updates.
+
+  `stackCornerRadius` is now a boolean switch for whole-stack clipping. Move numeric or array values previously assigned to `stackCornerRadius` into `cornerRadius`, and set `stackCornerRadius: true` when whole-stack rounding is required. In that mode, `cornerRadius` takes precedence over `barStyle.barRadius`.
+
 ## 0.6.5
 
 ### Patch Changes
