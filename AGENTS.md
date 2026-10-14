@@ -21,10 +21,5 @@ Acceptance criterion: if all UI components were removed, would the VBI capabilit
 
 ## Development Guidelines
 
-Repository-level development guidelines are maintained in
-`.agents/skills/development/SKILL.md`.
-
-Coding, refactoring, software entropy control, generated artifact handling, source
-of truth decisions, and validation gates all follow the development skill. Local
-`AGENTS.md` files only provide directory-specific additions and do not override the
-development skill.
+Use `.agents/skills/development/SKILL.md` for code, test, build, or dependency changes.
+Skip it for changes limited to skills, prompts, or agent instructions.

@@ -7,7 +7,20 @@ description: 为轻量看板和数据大屏提供本地同源 HTTP 服务，在�
 
 由 [Dashboard 看板入口](../../SKILL.md)按需加载，供 [light-dashboard](../light-dashboard/SKILL.md) 和 [map-dashboard](../map-dashboard/SKILL.md)共用。运行程序位于 `scripts/runtime/`；页面查询、渲染、组合与联动按 [visual-query](../visual-query/SKILL.md)执行，业务指标、视觉和地图实践由对应场景维护。
 
+## 数据接入判断
+
+按以下顺序判断，命中后采用对应方式：
+
+1. 已有可用的接入方式，优先复用。
+2. 数据独立、规模小、容易内嵌，且无需实时刷新时，直接[内嵌到 HTML](../visual-query/references/html-integration.md#静态独立-html-的数据内置)。
+3. 需要实时刷新时，使用 server-runtime。
+4. 数据规模大、不适合内嵌时，使用 server-runtime，在服务端查询和聚合。
+5. 页面运行时需要请求 HTTP 接口时，通过 server-runtime 取数，避免浏览器跨域。
+6. 其余场景，根据数据来源和运行环境自行判断。
+
 ## 选择数据源
+
+确定使用 server-runtime 后，按数据来源选择运行方式。
 
 | 来源                 | 运行方式与资料                                                                                                                       |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
@@ -16,7 +29,7 @@ description: 为轻量看板和数据大屏提供本地同源 HTTP 服务，在�
 | HTTP / HTTPS 接口    | `VBI_SOURCE_TYPE=http`；服务端取数，支持方法、请求头、请求体和 JSON 行路径，见 [HTTP 数据源](references/data-sources.md#http-接口)。 |
 | 其他数据库或接口协议 | `VBI_SOURCE_TYPE=module`；使用本地适配器实现相同的数据源契约，见 [自定义适配器](references/data-sources.md#自定义适配器)。           |
 
-先核对用户的数据位置、字段 schema、认证方式、数据规模和刷新需求。文件与 HTTP 模式适合完整响应不超过 8 MiB 的 JSON/CSV 数据；分页、嵌套记录转换、数据库驱动查询等通过自定义适配器完成，不把一页响应冒充完整数据。
+先核对用户的数据位置、字段 schema、认证方式、数据规模和刷新需求。默认文件与 HTTP 模式会完整读取数据，限制 8 MiB；大规模数据应使用数据库查询或自定义适配器。分页、嵌套记录转换、其他数据库驱动查询等通过自定义适配器完成，不把一页响应冒充完整数据。
 
 ## 启动与页面接入
 

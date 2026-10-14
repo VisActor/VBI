@@ -24,6 +24,7 @@ capabilities:
   - id: server-runtime
     path: references/server-runtime/SKILL.md
     when:
+      - 判断数据内嵌或服务端接入，优先复用已有数据接入
       - 在服务端连接本地或远程数据库、本地 JSON/CSV 与 HTTP 数据源
       - 为 light-dashboard 或 map-dashboard 提供本地同源查询接口
       - 管理服务端凭据、数据源适配器、启动与关闭
@@ -33,20 +34,21 @@ dashboards:
     - id: light-dashboard
       path: references/light-dashboard/SKILL.md
       when:
-        - 用户明确指定 light dashboard 或轻量仪表盘
-        - 低信息密度的经营概览、指标监测、趋势分析或专题看板
-        - 修改现有轻量看板
+        - 用户明确指定 light dashboard、轻量看板或轻量仪表盘
+        - 不需要地图的经营概览、指标监测、趋势或专题分析
+        - 修改现有轻量看板，且本次没有地图需求
     - id: map-dashboard
       path: references/map-dashboard/SKILL.md
       when:
-        - 用户明确指定 map dashboard、地图看板或数据大屏
-        - 地图主屏、悬浮指标或高信息密度的实时大屏
-        - 修改现有大屏
+        - 用户明确指定 map dashboard 或地图看板
+        - 用户需要地图，包括查看地理分布、位置关系或地域下钻
+        - 修改现有地图看板
 selection:
-  - 用户明确选择优先；修改现有产物沿用其所属场景
+  - 用户明确指定类型时，按用户要求选择
+  - 用户需要地图时使用 map-dashboard，其余看板需求使用 light-dashboard
+  - 修改已有页面时优先复用已有内容
   - 按职责选择能力子技能；跨层任务只补读涉及的能力与 API
   - 单图、指标卡和普通分析页面读取 visual-query，不加载 Dashboard 场景指南
   - light-dashboard 和 map-dashboard 共同读取 visual-query，再按需补读能力 API
   - 独立数据查询或 API 问题直接读取对应能力子技能
-  - 未指定类型的新建看板使用 dashboards.default
-  - 数据来源与展示场景分开选择，两种 Dashboard 均可补读 vquery 与 server-runtime
+  - 数据接入按 server-runtime 的判断规则选择，两种看板共用这些规则
