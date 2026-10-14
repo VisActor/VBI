@@ -1,12 +1,28 @@
 ---
 name: development
 description: >
-  Use for VBI monorepo development, refactoring, and maintenance: software
-  entropy control and task completion with generation, documentation and test
-  updates, full package tests, fresh coverage, and website acceptance testing.
+  Use when implementing, fixing, or refactoring VBI monorepo code, tests,
+  build tooling, or dependencies, including related generation, documentation,
+  coverage, and website acceptance. Do not use for tasks limited to authoring
+  or maintaining skills, prompts, or agent instructions.
+metadata:
+  internal: true
 ---
 
 # Development
+
+## When to Use
+
+- Apply this skill when the task changes application or package code, tests,
+  repository build tooling, or dependencies. Select it by the work being changed,
+  not merely because the task takes place in the VBI repository.
+- Tasks limited to skill authoring or maintenance, including skill references,
+  templates, and helper scripts under `skills/` or `.agents/skills/`, do not
+  trigger this skill. Neither do prompt-only or agent-instruction-only edits
+  such as updating `AGENTS.md`. Use the relevant skill-authoring workflow instead.
+- For mixed tasks, apply this skill to the code, tests, tooling, or dependency
+  changes and their affected consumers. Skill-only edits do not independently
+  require package generation, coverage, or website acceptance.
 
 Read [Software Entropy Control](references/software-entropy.md) for shared
 ownership, source-of-truth, refactoring, and deletion rules. Module conventions
