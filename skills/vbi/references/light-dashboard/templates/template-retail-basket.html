@@ -13,8 +13,6 @@
       :root {
         --ink: #28333e;
         --muted: #64717e;
-        --accent: #a8c7e8;
-        --background-start: #dce5f1;
         --up: #12815e;
         --down: #c64a3f;
       }
@@ -23,7 +21,6 @@
         margin: 0;
         min-height: 100svh;
         color: var(--ink);
-        background: #f0f2f5;
         font-family: Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif;
         -webkit-font-smoothing: antialiased;
       }
@@ -33,10 +30,6 @@
         inset: 0;
         z-index: -1;
         pointer-events: none;
-        background:
-          radial-gradient(ellipse at 12% 20%, var(--background-start), transparent 65%),
-          radial-gradient(ellipse at 90% 80%, #ddd6ed90, transparent 65%),
-          linear-gradient(135deg, transparent 25%, #ffffff90 48%, transparent 65%);
       }
       h1,
       h2,
@@ -45,15 +38,12 @@
         margin: 0;
       }
       .shell {
-        max-width: 1140px;
         margin: auto;
-        padding: 32px 28px;
       }
       .topbar {
         display: flex;
         justify-content: space-between;
         gap: 16px;
-        margin-bottom: 40px;
         font-size: 13px;
         align-items: center;
         flex-wrap: wrap;
@@ -72,17 +62,14 @@
       .heading {
         display: flex;
         justify-content: space-between;
-        align-items: start;
         flex-wrap: wrap;
         gap: 20px;
         margin-bottom: 24px;
       }
       #filters {
         margin-left: auto;
-        gap: 12px;
       }
       h1 {
-        font-size: 27px;
         font-weight: 650;
         letter-spacing: -0.035em;
       }
@@ -112,7 +99,6 @@
         gap: 3px;
         padding: 3px;
         border-radius: 20px;
-        background: #edf1f4;
       }
       .segment button {
         padding: 7px 12px;
@@ -124,7 +110,6 @@
       .segment button[aria-pressed='true'] {
         background: #fff;
         color: var(--ink);
-        box-shadow: 0 2px 5px #2436440a;
       }
       .segment button:hover {
         color: var(--ink);
@@ -148,9 +133,6 @@
       .card {
         min-width: 0;
         padding: 24px;
-        border-radius: 26px;
-        background: #fbfdff;
-        box-shadow: 0 18px 38px -22px #28394826;
         height: 100%;
       }
       .card-slot {
@@ -186,19 +168,13 @@
       .insight {
         display: grid;
         gap: 8px;
-        padding: 20px 24px;
-      }
-      .insight h2 {
-        color: #6c8eb5;
       }
       #conclusion {
-        font-size: 15px;
         font-weight: 600;
         line-height: 1.6;
       }
       #evidence {
         display: grid;
-        gap: 4px;
         margin: 0;
         padding-left: 20px;
         font-size: 13px;
@@ -207,14 +183,11 @@
       .hero {
         display: flex;
         flex-direction: column;
-        padding: 26px 28px;
-        min-height: 540px;
       }
       .small-body {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 12px;
       }
       .metric {
         display: block;
@@ -225,12 +198,10 @@
       }
       .hero-value {
         margin: 18px 0 10px;
-        font-size: clamp(38px, 4.4vw, 59px);
         overflow-wrap: anywhere;
       }
       .small-value {
         margin: 18px 0 10px;
-        font-size: 29px;
         overflow-wrap: anywhere;
       }
       .change[data-direction='up'] {
@@ -242,12 +213,9 @@
       .hero-figure {
         margin-top: 24px;
         flex: 1;
-        min-height: 220px;
         position: relative;
       }
       #main-plot {
-        position: absolute;
-        inset: 0 0 24px;
         width: 100%;
       }
       #main-plot-empty {
@@ -267,24 +235,19 @@
       .hero-bottom {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 24px;
         border-top: 1px solid #e9eef2;
         padding-top: 24px;
         margin-top: 24px;
       }
       .hero-bottom > div + div {
-        padding-left: 24px;
         border-left: 1px solid #e9eef2;
       }
       .hero-bottom strong {
         display: block;
         margin-top: 6px;
-        font-size: 24px;
         font-weight: 600;
       }
       .mini {
-        width: 116px;
-        height: 77px;
         flex-shrink: 0;
       }
       .small-card {
@@ -297,9 +260,6 @@
       }
       .ring {
         position: relative;
-        width: 90px;
-        height: 90px;
-        flex-shrink: 0;
       }
       #ring-plot {
         width: 100%;
@@ -313,7 +273,6 @@
         text-align: center;
         pointer-events: none;
         font-variant-numeric: tabular-nums;
-        font-size: 18px;
       }
       #ring-value::after {
         content: attr(data-caption);
@@ -339,14 +298,8 @@
         background: #edf1f4;
         font-size: 11px;
       }
-      .small-note {
-        margin-top: 24px;
-      }
       details {
-        margin-top: 20px;
         padding: 20px 24px;
-        border-radius: 24px;
-        background: #ffffff80;
       }
       summary {
         cursor: pointer;
@@ -416,7 +369,6 @@
       }
 
       :root {
-        --accent-ink: #557b9f;
         --surface: #fbfdff;
         --border: #e5eaee;
       }
@@ -446,11 +398,7 @@
         opacity: 0.45;
       }
       .card {
-        background: var(--surface);
         border: 1px solid #ffffffb0;
-      }
-      .insight h2 {
-        color: var(--accent-ink);
       }
       #filters {
         align-self: center;
@@ -466,22 +414,9 @@
         font-weight: 500;
         color: var(--muted);
       }
-      .hero-bottom strong {
-        font-size: 24px;
-      }
-      .small-card {
-        min-height: 160px;
-      }
       .small-note {
         margin-top: 6px;
         min-height: 20px;
-      }
-      .small-body {
-        flex: 1;
-      }
-      .ring {
-        width: 96px;
-        height: 96px;
       }
       #ring-value {
         font-size: 19px;
@@ -489,9 +424,6 @@
       }
       .chapter {
         display: none;
-      }
-      .hero-figure {
-        min-height: 240px;
       }
       #main-plot {
         inset: 0 0 24px;
@@ -595,35 +527,8 @@
           font-size: 14px;
         }
       }
-
-      :root {
-        --accent: #b4a6d5;
-        --accent-ink: #806a9d;
-        --background-start: #eae5f1;
-      }
-
-      body {
-        background: #f2f0f5;
-      }
-      body::before {
-        background:
-          radial-gradient(ellipse at 90% 15%, #e8e2f0, transparent 60%), linear-gradient(150deg, #f6f5f8, #edeaf2);
-      }
-      .card {
-        border-radius: 24px;
-        box-shadow: 0 16px 32px -22px #56486b24;
-      }
-      .hero {
-        min-height: 500px;
-      }
       .hero-figure {
         min-height: 220px;
-      }
-      .small-value {
-        font-size: 27px;
-      }
-      .hero-value {
-        font-size: 58px;
       }
       /* Shared authoring styles; each output has independent theme and DSL layout. */
       :root {
@@ -898,6 +803,448 @@
         }
         #conclusion {
           font-size: 15px;
+        }
+      }
+    </style>
+    <style id="metric-analysis-style">
+      /* 指标入口保持轻量；分析内容仅在用户打开后呈现。 */
+      .ma-entry,
+      .ma-card {
+        cursor: pointer;
+      }
+      .ma-entry:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 5px;
+        border-radius: 3px;
+      }
+      .ma-entry[role='button'] {
+        text-decoration: none;
+      }
+      .ma-entry[role='button']::after {
+        content: '';
+        display: inline-block;
+        width: 0.78em;
+        height: 0.78em;
+        margin-left: 0.45em;
+        vertical-align: 0.03em;
+        background: currentColor;
+        opacity: 0.65;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 12 12 4M4 4h8v8' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+          center / contain no-repeat;
+      }
+      .ma-entry[role='button']:hover::after,
+      .ma-entry[role='button']:focus-visible::after {
+        opacity: 1;
+      }
+      .ma-dialog {
+        color: #28333e;
+        background: #fff;
+        border: 1px solid #e4e9ef;
+        border-radius: 20px;
+        padding: 0;
+        width: min(1120px, calc(100vw - 48px));
+        max-width: none;
+        height: min(780px, calc(100dvh - 48px));
+        max-height: calc(100dvh - 48px);
+        overflow: hidden;
+        box-shadow: 0 24px 100px #15203030;
+      }
+      .ma-dialog::backdrop {
+        background: #17243655;
+        backdrop-filter: blur(5px);
+      }
+      .ma-dialog .ma-shell {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        max-height: calc(100dvh - 50px);
+      }
+      .ma-dialog .ma-header {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 22px 28px 18px;
+        border-bottom: 1px solid #edf0f4;
+        flex: none;
+      }
+      .ma-dialog .ma-header > div {
+        min-width: 0;
+      }
+      .ma-dialog h2 {
+        font-size: 21px;
+        line-height: 1.4;
+        margin: 0 0 6px;
+        letter-spacing: -0.02em;
+      }
+      .ma-dialog h3 {
+        font-size: 13px;
+        margin: 0;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+      .ma-dialog p {
+        margin: 0;
+      }
+      .ma-dialog button {
+        font: inherit;
+        font-size: 12px;
+        line-height: 1.4;
+        border: 1px solid #e2e7ed;
+        background: #fff;
+        color: #526173;
+        border-radius: 7px;
+        padding: 7px 10px;
+        cursor: pointer;
+        box-shadow: none;
+        transform: none;
+      }
+      .ma-dialog button:hover {
+        background: #f3f6f9;
+      }
+      .ma-dialog button:focus-visible,
+      .ma-dialog summary:focus-visible {
+        outline: 2px solid var(--ma-accent);
+        outline-offset: 3px;
+      }
+      .ma-dialog button:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
+      .ma-dialog button[aria-pressed='true'] {
+        border-color: var(--ma-accent);
+        background: color-mix(in srgb, var(--ma-accent) 14%, white);
+        color: #28333e;
+      }
+      .ma-dialog button.ma-close {
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 32px;
+        height: 32px;
+        font-size: 24px;
+        line-height: 1;
+        padding: 0;
+        border: 0;
+        color: #718092;
+      }
+      .ma-dialog .ma-body {
+        position: relative;
+        flex: 1;
+        scrollbar-gutter: stable;
+        overflow-anchor: none;
+        padding: 20px 28px 22px;
+        overflow: auto;
+        min-height: 0;
+        overscroll-behavior: contain;
+      }
+      .ma-dialog .ma-eyebrow {
+        font-size: 11px;
+        color: #748092;
+        line-height: 1.6;
+      }
+      .ma-dialog .ma-scope,
+      .ma-dialog .ma-hint {
+        color: #7b8795;
+        font-size: 11px;
+        line-height: 1.6;
+      }
+      .ma-dialog .ma-toolbar {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 220px) auto;
+        align-items: center;
+        gap: 12px;
+      }
+      .ma-dialog .ma-modes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .ma-dialog .ma-selection {
+        min-width: 0;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 12px;
+        color: #445569;
+      }
+      .ma-dialog .ma-selection button {
+        border: 0;
+        padding: 5px 6px;
+        color: #748092;
+      }
+      .ma-dialog .ma-feedback {
+        position: absolute;
+        top: 1px;
+        left: 28px;
+        right: 28px;
+        font-size: 11px;
+        color: #718092;
+        line-height: 1.7;
+      }
+      .ma-dialog .ma-feedback:empty {
+        display: none;
+      }
+      .ma-dialog .ma-selection > span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .ma-dialog .ma-selection button {
+        flex: none;
+      }
+      .ma-dialog .ma-content {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+        gap: 18px;
+        align-items: stretch;
+      }
+      .ma-dialog .ma-content[aria-busy='true'] .ma-chart-panel {
+        pointer-events: none;
+      }
+      .ma-dialog .ma-summary {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: minmax(0, 240px) minmax(0, 1fr);
+        align-items: center;
+        gap: 28px;
+        height: 80px;
+      }
+      .ma-dialog .ma-value {
+        display: block;
+        font-size: 32px;
+        line-height: 1.35;
+        margin-top: 2px;
+        font-variant-numeric: tabular-nums;
+        overflow-wrap: anywhere;
+      }
+      .ma-dialog .ma-summary > div {
+        min-width: 0;
+      }
+      .ma-dialog .ma-summary .ma-eyebrow {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .ma-dialog .ma-finding {
+        font-size: 12px;
+        line-height: 1.8;
+        color: #5a6778;
+        max-height: 80px;
+        overflow: auto;
+      }
+      .ma-dialog .ma-chart-panel,
+      .ma-dialog .ma-table-panel {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        padding: 16px;
+        border: 1px solid #e8edf2;
+        border-radius: 12px;
+      }
+      .ma-dialog .ma-panel-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        height: 34px;
+        flex: none;
+      }
+      .ma-dialog .ma-chart-panel > .ma-hint,
+      .ma-dialog .ma-table-panel > .ma-hint {
+        height: 20px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .ma-dialog .ma-chart,
+      .ma-dialog .ma-table {
+        flex: none;
+        height: 300px;
+        width: 100%;
+        margin-top: 10px;
+      }
+      .ma-dialog .ma-pagination {
+        display: flex;
+        align-items: center;
+        min-height: 30px;
+        margin-top: 12px;
+      }
+      .ma-dialog .ma-picker {
+        position: relative;
+        margin: 0 0 0 auto;
+        padding: 0;
+        border: 0;
+        box-shadow: none;
+        background: transparent;
+        min-width: 0;
+      }
+      .ma-dialog .ma-picker > summary {
+        list-style: none;
+        font-size: 12px;
+        color: #526173;
+        cursor: pointer;
+        padding: 7px 10px;
+        line-height: 1.4;
+        border: 1px solid #e2e7ed;
+        border-radius: 7px;
+      }
+      .ma-dialog .ma-picker > summary::-webkit-details-marker {
+        display: none;
+      }
+      .ma-dialog .ma-picker > summary::after {
+        content: '⌄';
+        margin-left: 8px;
+      }
+      .ma-dialog .ma-groups {
+        position: absolute;
+        top: calc(100% + 6px);
+        right: 0;
+        z-index: 2;
+        display: grid;
+        gap: 4px;
+        width: 280px;
+        max-width: calc(100vw - 88px);
+        max-height: 280px;
+        overflow: auto;
+        padding: 6px;
+        background: #fff;
+        border: 1px solid #e2e7ed;
+        border-radius: 10px;
+        box-shadow: 0 8px 30px #1520301a;
+      }
+      .ma-dialog .ma-groups button {
+        text-align: left;
+        border-color: transparent;
+      }
+      .ma-dialog .ma-definition {
+        grid-column: 1 / -1;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
+        font-size: 11px;
+        line-height: 1.8;
+        color: #718092;
+      }
+      .ma-dialog .ma-definition summary {
+        cursor: pointer;
+        width: fit-content;
+      }
+      .ma-dialog .ma-definition p {
+        margin-top: 8px;
+      }
+      .ma-dialog .ma-pagination {
+        gap: 6px;
+        justify-content: space-between;
+        font-size: 11px;
+        color: #718092;
+        font-variant-numeric: tabular-nums;
+      }
+      .ma-dialog .ma-pagination button {
+        padding: 5px 8px;
+      }
+      .ma-dialog [hidden] {
+        display: none !important;
+      }
+      /* 保留筛选标签的布局位置，加载和清除选择时不推移内容。 */
+      .ma-dialog .ma-selection[hidden] {
+        display: flex !important;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .ma-dialog .ma-chart[data-empty='true'] {
+        display: grid;
+        place-items: center;
+      }
+      .ma-dialog .ma-chart[data-empty='true']::after {
+        content: '暂无可展示数据';
+        color: #8b96a4;
+        font-size: 12px;
+      }
+      .ma-dialog.ma-expanded .ma-table-panel {
+        grid-column: 1 / -1;
+      }
+      .ma-dialog.ma-expanded .ma-chart-panel {
+        display: none;
+      }
+      .ma-dialog.ma-expanded .ma-table {
+        height: min(50dvh, 520px);
+      }
+      @media (max-width: 800px) {
+        .ma-dialog {
+          width: calc(100vw - 16px);
+          height: calc(100dvh - 16px);
+          max-height: calc(100dvh - 16px);
+          border-radius: 16px;
+        }
+        .ma-dialog .ma-shell {
+          max-height: calc(100dvh - 18px);
+        }
+        .ma-dialog .ma-header {
+          padding: 18px 18px 14px;
+          gap: 12px;
+        }
+        .ma-dialog .ma-body {
+          position: relative;
+          flex: 1;
+          scrollbar-gutter: stable;
+          overflow-anchor: none;
+          padding: 16px 18px 18px;
+        }
+        .ma-dialog .ma-content {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 14px;
+        }
+        .ma-dialog .ma-summary {
+          grid-template-columns: minmax(0, 1fr);
+          align-content: start;
+          height: 138px;
+          gap: 6px;
+        }
+        .ma-dialog .ma-summary > div {
+          max-width: 100%;
+        }
+        .ma-dialog .ma-finding {
+          width: 100%;
+          height: 72px;
+          max-height: 72px;
+        }
+        .ma-dialog .ma-chart-panel,
+        .ma-dialog .ma-table-panel {
+          padding: 12px;
+        }
+        .ma-dialog .ma-value {
+          font-size: 28px;
+        }
+        .ma-dialog .ma-chart {
+          height: 220px;
+        }
+        .ma-dialog .ma-table {
+          height: 260px;
+        }
+        .ma-dialog .ma-toolbar {
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: 8px;
+        }
+        .ma-dialog .ma-picker {
+          grid-column: 2;
+          grid-row: 1;
+        }
+        .ma-dialog .ma-selection {
+          grid-column: 1 / -1;
+          grid-row: 2;
+          width: 100%;
+        }
+        .ma-dialog .ma-pagination {
+          gap: 4px;
+        }
+        .ma-dialog .ma-pagination button {
+          padding: 6px;
         }
       }
     </style>
@@ -1240,23 +1587,20 @@
           targetY = (px / length) * 1.5
           start()
         }
-        document.addEventListener('pointermove', move, { capture: true, passive: true })
-        slot.addEventListener('pointerleave', reset)
-        document.addEventListener('pointercancel', reset, true)
-        window.addEventListener('blur', reset)
-        window.addEventListener('scroll', reset, { capture: true, passive: true })
-        reducedMotion.addEventListener('change', reset)
-        finePointer.addEventListener('change', reset)
+        const events = [
+          [document, 'pointermove', move, { capture: true, passive: true }],
+          [slot, 'pointerleave', reset],
+          [document, 'pointercancel', reset, true],
+          [window, 'blur', reset],
+          [window, 'scroll', reset, { capture: true, passive: true }],
+          [reducedMotion, 'change', reset],
+          [finePointer, 'change', reset],
+        ]
+        events.forEach(([target, type, handler, options]) => target.addEventListener(type, handler, options))
         return {
           reset,
           dispose() {
-            document.removeEventListener('pointermove', move, true)
-            slot.removeEventListener('pointerleave', reset)
-            document.removeEventListener('pointercancel', reset, true)
-            window.removeEventListener('blur', reset)
-            window.removeEventListener('scroll', reset, true)
-            reducedMotion.removeEventListener('change', reset)
-            finePointer.removeEventListener('change', reset)
+            events.forEach(([target, type, handler, options]) => target.removeEventListener(type, handler, options))
             cancelAnimationFrame(frame)
           },
         }
@@ -1268,8 +1612,6 @@
       function prepareRows(source) {
         const N = (r, key) => (r[key] === null || r[key] === '' ? null : Number(r[key]))
         const T = (r, key) => String(r[key] ?? '')
-        const reported = (r, key) => (N(r, key) === 0 ? null : N(r, key))
-        const band = (value, limits, labels) => labels[limits.findIndex((limit) => value <= limit)] ?? labels.at(-1)
         return source.rows.map((values, index) => {
           const r = Object.fromEntries(source.columns.map((key, i) => [key, values[i]]))
           return {
@@ -1945,6 +2287,25 @@
         }
         reducedMotion.addEventListener('change', onMotionChange)
         subscriptions.push(() => reducedMotion.removeEventListener('change', onMotionChange))
+        // metric-analysis: 指标卡入口与独立详情，不修改主页状态。
+        subscriptions.push(
+          bindMetricAnalysis({
+            vbi,
+            Builder,
+            VChart,
+            accent: PAGE.accent,
+            ready: () => !rendering && !!view && ['ready', 'empty'].includes(document.body.dataset.state),
+            getContext: metricAnalysisContext,
+            entries: [
+              { value: '#primary', heading: '#primary-title', card: true },
+              { value: '#metric-one', heading: '#title-one', card: true },
+              { value: '#metric-two', heading: '#title-two', card: true },
+              { value: '#metric-three', heading: '#title-three', card: true },
+              { value: '#aux-one' },
+              { value: '#aux-two' },
+            ],
+          }),
+        )
         applyFilters()
         requestRender()
       } catch (error) {
@@ -1965,6 +2326,683 @@
         },
         { once: true },
       )
+
+      function metricAnalysisContext(index) {
+        const snapshot = { ...state }
+        const format = (value, i) => (Number.isFinite(value) ? formats[i](value) : '—')
+        const base = conditionsFor('totals', snapshot)
+        let metric,
+          dimensions,
+          detailDimensions,
+          detailScope,
+          grain = '每行一条来源记录',
+          scope = view.scope
+        const ratioValue =
+          (field, denominator, factor = 1) =>
+          (row) =>
+            Number.isFinite(row[field]) && Number.isFinite(row[denominator]) && row[denominator] > 0
+              ? (factor * row[field]) / row[denominator]
+              : undefined
+        const avgDefinition = (title) => `${title}按当前范围的有效原始记录计算，缺失值不补零，不平均分组均值。`
+
+        const definition =
+          index === 1
+            ? { field: 'flag', denominator: 'id', factor: 100, aggregate: 'sum' }
+            : index === 4
+              ? { field: 'id', aggregate: 'countDistinct' }
+              : PAGE.metrics[index === 0 ? 0 : index === 5 ? 3 : index - 1]
+        const title = index < 4 ? PAGE.labels[index] : index === 4 ? '所选记录数' : PAGE.auxiliaryTitle
+        const required = new Set(['id', definition.field, definition.denominator].filter(Boolean))
+        const measures = PAGE.queries.totals.measures.filter(([field]) => required.has(field)).map((item) => [...item])
+        if (definition.denominator && index !== 1) {
+          const numerator = measures.find((item) => item[0] === definition.field)
+          numerator[1] = `${title}分子（汇总前原值）`
+        }
+        metric = {
+          title,
+          measures,
+          conditions: base,
+          format: (value) => format(value, index),
+          digits: PAGE.formats[index][0],
+          scale: PAGE.formats[index][2],
+          unit: PAGE.formats[index][1],
+          value: definition.denominator
+            ? ratioValue(definition.field, definition.denominator, definition.factor || 1)
+            : (row) => row[definition.field],
+          definition:
+            index === 1
+              ? `${PAGE.hit}记录数 ÷ 同范围记录总数 × 100%；选择分组后分母为该分组的记录总数。`
+              : definition.denominator
+                ? `${title} = 同范围${definition.field === 'm0' ? '分子总量' : '总量'} ÷ ${definition.denominator === 'id' ? '去重记录数' : '分母总量'}；先汇总再相除。`
+                : definition.aggregate === 'avg'
+                  ? avgDefinition(title)
+                  : `${title}按当前范围${definition.aggregate === 'countDistinct' ? '唯一记录标识去重计数' : '有效原始记录求和'}。`,
+          evidence: (row) =>
+            definition.denominator
+              ? `分子 ${numberForAnalysis(row[definition.field])}；分母 ${numberForAnalysis(row[definition.denominator])}。${PAGE.derivedNote}`
+              : PAGE.derivedNote,
+        }
+        dimensions = [
+          ['g', PAGE.groupTitle, PAGE.temporal],
+          [
+            's',
+            PAGE.secondaryTitle,
+            preparedRows.some((row) => row.s) && preparedRows.every((row) => /^\d{4}(-\d{2})?$/.test(row.s)),
+          ],
+        ]
+        if (index === 0 || index === 5) dimensions.reverse()
+        detailDimensions = [
+          ['id', '来源记录 ID'],
+          ['g', PAGE.groupTitle],
+          ['s', PAGE.secondaryTitle],
+        ]
+
+        return {
+          connectorId: PAGE.connectorId,
+          rowLimit: sourceData.rows.length,
+          dimensions,
+          detailDimensions,
+          grain,
+          detailScope,
+          scope,
+          metric,
+        }
+      }
+      function numberForAnalysis(value) {
+        return Number.isFinite(value) ? value.toLocaleString('zh-CN', { maximumFractionDigits: 3 }) : '—'
+      }
+
+      // 指标分析独立于主页查询与 hover；此片段内联以保持模板可单文件复制。
+      function bindMetricAnalysis({ vbi, Builder, VChart, accent, entries, getContext, ready }) {
+        let dialog, context, active, dimension, selection, chart, table, observer, controller
+        let version = 0,
+          tableLibrary,
+          records = [],
+          page = 0,
+          opener,
+          previousOverflow,
+          loadingTimer,
+          chartSize = '',
+          tableSize = '',
+          renderQueue = Promise.resolve()
+        const pageSize = 50
+        const listeners = []
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+        const tableAnimation = () => (reducedMotion.matches ? false : { duration: 220, delay: 0, type: 'all' })
+        const resizeChart = () => {
+          const node = dialog && find('chart'),
+            size = node && `${node.clientWidth}:${node.clientHeight}`
+          if (chart && node.clientWidth && node.clientHeight && size !== chartSize) {
+            chartSize = size
+            chart.resize(node.clientWidth, node.clientHeight)
+          }
+        }
+        const resizeTable = () => {
+          const node = dialog && find('table'),
+            size = node && `${node.clientWidth}:${node.clientHeight}`
+          if (table && node.clientWidth && node.clientHeight && size !== tableSize) {
+            tableSize = size
+            table.resize()
+          }
+        }
+        const animateReading = (node) => {
+          node.getAnimations().forEach((animation) => animation.cancel())
+          if (!reducedMotion.matches)
+            node.animate([{ opacity: 0.45 }, { opacity: 1 }], { duration: 180, easing: 'ease-out' })
+        }
+        const number = (value, digits = 1) =>
+          Number.isFinite(value) ? value.toLocaleString('zh-CN', { maximumFractionDigits: digits }) : '—'
+        const element = (tag, className, text) => {
+          const node = document.createElement(tag)
+          if (className) node.className = className
+          if (text !== undefined) node.textContent = text
+          return node
+        }
+        const find = (name) => dialog.querySelector(`[data-ma="${name}"]`)
+        const button = (label, action, className = '') => {
+          const node = element('button', className, label)
+          node.type = 'button'
+          node.addEventListener('click', action)
+          return node
+        }
+        function loadTable() {
+          if (window.VTable?.ListTable) return Promise.resolve(window.VTable)
+          if (!tableLibrary)
+            tableLibrary = new Promise((resolve, reject) => {
+              const script = document.createElement('script')
+              const timer = setTimeout(() => fail(), 30000)
+              const fail = () => {
+                clearTimeout(timer)
+                script.remove()
+                tableLibrary = undefined
+                reject(new Error('明细模块加载失败，请重试'))
+              }
+              script.src = 'https://cdn.jsdelivr.net/npm/@visactor/vtable@1.23.1/dist/vtable.min.js'
+              script.onload = () => {
+                clearTimeout(timer)
+                window.VTable?.ListTable ? resolve(window.VTable) : fail()
+              }
+              script.onerror = fail
+              document.head.append(script)
+            })
+          return tableLibrary
+        }
+        function createDialog() {
+          if (dialog) return
+          dialog = element('dialog', 'ma-dialog')
+          dialog.setAttribute('aria-labelledby', 'ma-title')
+          dialog.style.setProperty('--ma-accent', accent)
+          dialog.innerHTML = `<div class="ma-shell">
+      <header class="ma-header"><div><h2 id="ma-title"></h2><p class="ma-scope" data-ma="scope"></p></div><button type="button" class="ma-close" aria-label="关闭指标分析" data-ma="close">×</button></header>
+      <div class="ma-body">
+      <p class="ma-feedback" data-ma="feedback" role="status"></p><button type="button" data-ma="retry" hidden>重新加载</button>
+      <div class="ma-content" data-ma="content" hidden>
+        <section class="ma-summary"><div><p class="ma-eyebrow" data-ma="value-label"></p><strong class="ma-value" data-ma="value"></strong></div><p class="ma-finding" data-ma="finding"></p></section>
+        <div class="ma-toolbar"><nav class="ma-modes" aria-label="分析维度" data-ma="modes"></nav><div class="ma-selection" data-ma="selection" hidden><span data-ma="selected"></span><button type="button" data-ma="reset" aria-label="清除分组筛选">清除 ×</button></div><details class="ma-picker" data-ma="picker"><summary data-ma="picker-label">选择分组</summary><div class="ma-groups" data-ma="groups" role="group" aria-label="选择分组查看记录"></div></details></div>
+        <section class="ma-chart-panel"><div class="ma-panel-heading"><h3 data-ma="chart-title"></h3></div><p class="ma-hint" data-ma="chart-hint"></p><div class="ma-chart" data-ma="chart" role="img"></div></section>
+        <section class="ma-table-panel"><div class="ma-panel-heading"><h3>关联明细</h3><button type="button" data-ma="expand" aria-expanded="false">展开表格</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="分析明细表" tabindex="0"></div><nav class="ma-pagination" aria-label="分析明细分页"><button type="button" data-ma="previous">上一页</button><span data-ma="page"></span><button type="button" data-ma="next">下一页</button></nav></section>
+        <details class="ma-definition"><summary>统计口径与依据</summary><p data-ma="definition"></p><p data-ma="evidence"></p><p data-ma="grain"></p></details>
+      </div></div></div>`
+          document.body.append(dialog)
+          find('close').addEventListener('click', closeDialog)
+          find('reset').addEventListener('click', () => {
+            selection = undefined
+            find('picker-label').focus({ preventScroll: true })
+            void refresh(false)
+          })
+          find('retry').addEventListener('click', () => void refresh(true))
+          find('previous').addEventListener('click', () => {
+            page--
+            showTable()
+          })
+          find('next').addEventListener('click', () => {
+            page++
+            showTable()
+          })
+          find('expand').addEventListener('click', () => {
+            const expanded = dialog.classList.toggle('ma-expanded')
+            find('expand').setAttribute('aria-expanded', String(expanded))
+            find('expand').textContent = expanded ? '返回分析布局' : '展开表格'
+            resizeTable()
+            resizeChart()
+          })
+          dialog.addEventListener('cancel', (event) => {
+            event.preventDefault()
+            closeDialog()
+          })
+          dialog.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && find('picker').open) {
+              event.preventDefault()
+              event.stopPropagation()
+              find('picker').open = false
+              find('picker-label').focus()
+            }
+          })
+          dialog.addEventListener('click', (event) => {
+            if (!find('picker').contains(event.target)) find('picker').open = false
+          })
+          dialog.addEventListener('close', () => {
+            if (!dialog.open && context) cleanup()
+          })
+          observer = new ResizeObserver(() => {
+            if (dialog.open) {
+              resizeChart()
+              resizeTable()
+            }
+          })
+          observer.observe(find('chart'))
+          observer.observe(find('table'))
+        }
+        function selectGroup(key) {
+          selection = selection === key ? undefined : key
+          if (find('picker').open) {
+            find('picker').open = false
+            find('picker-label').focus({ preventScroll: true })
+          }
+          void refresh(false)
+        }
+        function selectDimension(event) {
+          if (!dialog?.open || find('groups').inert) return
+          // 与原生 crosshair 使用同一维度命中，不要求鼠标或手指落在线条上。
+          const datum = event.dimensionInfo
+            ?.flatMap((info) => info.data || [])
+            .flatMap((data) => data.datum || [])
+            .find((row) => row.key !== undefined)
+          if (datum && groupRows?.some((row) => String(row[dimension[0]]) === String(datum.key)))
+            selectGroup(String(datum.key))
+        }
+        function closeDialog() {
+          if (!dialog?.open) return
+          dialog.close()
+          cleanup()
+        }
+        function cleanup() {
+          version++
+          renderQueue = Promise.resolve()
+          controller?.abort()
+          clearTimeout(loadingTimer)
+          dialog?.getAnimations({ subtree: true }).forEach((animation) => animation.cancel())
+          chart?.release()
+          chart = undefined
+          table?.release()
+          table = undefined
+          chartSize = tableSize = ''
+          records = []
+          context = undefined
+          if (previousOverflow !== undefined) {
+            document.body.style.overflow = previousOverflow
+            previousOverflow = undefined
+          }
+          opener?.focus({ preventScroll: true })
+        }
+        async function query(dimensions, conditions, measures, signal) {
+          const builder = vbi.chart.create(vbi.chart.createEmpty(context.connectorId))
+          builder.chartType.changeChartType('table')
+          builder.limit.setLimit(context.rowLimit)
+          for (const [field, label] of dimensions)
+            builder.dimensions.add(field, (node) => node.setAlias(label).setSort({ order: 'asc' }))
+          for (const [field, label, func] of measures)
+            builder.measures.add(field, (node) => node.setAlias(label).setAggregate({ func }))
+          for (const condition of conditions)
+            builder.whereFilter.add(condition.field, (node) =>
+              node.setOperator(condition.operator || 'eq').setValue(condition.value),
+            )
+          try {
+            const seed = await builder.buildVSeed({ signal })
+            const fields = [...builder.build().dimensions, ...builder.build().measures]
+            return seed.dataset.map((row) => Object.fromEntries(fields.map((field) => [field.field, row[field.id]])))
+          } finally {
+            vbi.resources.chart.unregister(builder.getUUID())
+            builder.undoManager?.destroy()
+            builder.doc.destroy()
+          }
+        }
+        function showTable(updateRecords = true) {
+          if (!table) return
+          const count = Math.max(1, Math.ceil(records.length / pageSize))
+          page = Math.max(0, Math.min(page, count - 1))
+          if (updateRecords) {
+            table.options.animationAppear = tableAnimation()
+            table.setRecords(records.slice(page * pageSize, (page + 1) * pageSize))
+          }
+          find('page').textContent = `${page + 1} / ${count} · 共 ${number(records.length, 0)} 条`
+          find('previous').disabled = page === 0
+          find('next').disabled = page + 1 >= count
+        }
+        function buildAnalysisSpec(group, metric, chartRows, chartTitle, selected) {
+          const spec = Builder.from({
+            chartType: group[2] ? 'line' : 'bar',
+            dataset: chartRows.map((row) => ({ ...row, value: row.value / (metric.scale || 1) })),
+            dimensions: [{ id: 'key', alias: group[1], encoding: group[2] ? 'xAxis' : 'yAxis' }],
+            measures: [
+              {
+                id: 'value',
+                alias: chartTitle,
+                encoding: group[2] ? 'yAxis' : 'xAxis',
+                format: { type: 'number', fractionDigits: metric.digits ?? 1, suffix: metric.unit || '' },
+              },
+            ],
+            backgroundColor: 'transparent',
+            color: { colorScheme: [accent] },
+            legend: { enable: false },
+            label: { enable: false },
+            tooltip: { enable: false },
+            xAxis: { visible: true, zero: !group[2] },
+            yAxis: { visible: true, zero: !group[2] },
+            pointStyle: { pointVisible: true },
+            lineStyle: { lineSmooth: false },
+            animation: {
+              enable: !reducedMotion.matches,
+              params: { appear: { duration: 220 }, update: { duration: 220, ease: 'cubicOut' } },
+            },
+            barStyle: { barRadius: 3, barGradient: false },
+          }).build()
+          spec.padding = { top: 12, right: 20, bottom: 10, left: 4 }
+          spec.stackCornerRadius = 0
+          const mark = group[2] ? 'point' : 'bar'
+          spec[mark] = {
+            ...spec[mark],
+            style: {
+              ...spec[mark]?.style,
+              fillOpacity: (datum) => (selected === undefined || String(datum.key) === selected ? 1 : 0.24),
+              strokeOpacity: (datum) => (selected === undefined || String(datum.key) === selected ? 1 : 0.24),
+              ...(group[2]
+                ? { size: (datum) => (String(datum.key) === selected ? 10 : 6), stroke: '#fff', lineWidth: 2 }
+                : {}),
+            },
+          }
+          return spec
+        }
+        function buildTableOptions(detailDimensions, detailMeasures, records) {
+          const dimensions = detailDimensions.map(([id, alias]) => ({ id, alias, encoding: 'column' }))
+          const measures = detailMeasures.map(([id, alias]) => ({
+            id,
+            alias,
+            encoding: 'column',
+            format: { type: 'number', fractionDigits: 3 },
+          }))
+          const options = records.length
+            ? Builder.from({
+                chartType: 'table',
+                dataset: records.slice(0, pageSize),
+                dimensions,
+                measures,
+                theme: 'light',
+              }).build()
+            : {
+                columns: [...dimensions, ...measures].map(({ id, alias }) => ({ field: id, title: alias })),
+                records: [],
+              }
+          options.widthMode = 'standard'
+          options.autoFillWidth = true
+          options.animationAppear = tableAnimation()
+          options.columns = options.columns.map((column) => ({
+            ...column,
+            width:
+              { country: 156, year: 64, id: 96 }[column.field] ||
+              Math.max(96, Math.min(160, String(column.title || '').length * 12 + 24)),
+          }))
+          options.tooltip = { ...options.tooltip, parentElement: dialog, confine: true }
+          options.heightMode = 'standard'
+          options.defaultColWidth = 130
+          options.defaultRowHeight = 34
+          options.theme = {
+            ...options.theme,
+            headerStyle: {
+              ...options.theme?.headerStyle,
+              bgColor: '#f3f5f8',
+              color: '#364152',
+              fontSize: 12,
+              borderColor: '#e2e7ee',
+            },
+            bodyStyle: { ...options.theme?.bodyStyle, color: '#364152', fontSize: 12, borderColor: '#e7ecf2' },
+          }
+          return options
+        }
+        let groupRows, totalRow, priorRow
+        async function refresh(reload) {
+          const ticket = ++version
+          controller?.abort()
+          controller = new AbortController()
+          const signal = controller.signal
+          dialog.dataset.state = 'loading'
+          const model = context,
+            metric = active,
+            group = dimension,
+            selected = selection
+          clearTimeout(loadingTimer)
+          find('feedback').textContent = ''
+          loadingTimer = setTimeout(() => {
+            if (ticket === version && dialog.open) find('feedback').textContent = '正在更新…'
+          }, 160)
+          find('retry').hidden = true
+          find('content').setAttribute('aria-busy', 'true')
+          find('groups').inert = true
+          find('previous').disabled = find('next').disabled = true
+          find('selection').hidden = selected === undefined
+          find('selected').textContent = selected === undefined ? '' : `${group[1]}：${selected}`
+          const extra =
+            selected === undefined
+              ? []
+              : [{ field: group[0], value: group[3] === 'number' ? Number(selected) : selected }]
+          try {
+            const base = metric.conditions
+            const selectedConditions =
+              selected !== undefined && metric.selectionConditions
+                ? metric.selectionConditions(group, selected)
+                : [...base, ...extra]
+            const previousConditions =
+              selected !== undefined && metric.previousSelectionConditions
+                ? metric.previousSelectionConditions(group, selected)
+                : [...(metric.previous || []), ...extra]
+            const detailDimensions = model.detailDimensions.filter(([field]) => !metric.detailExclude?.includes(field))
+            const detailMeasures = metric.measures.filter(([field]) => !detailDimensions.some(([key]) => field === key))
+            const jobs = [loadTable(), query(detailDimensions, selectedConditions, detailMeasures, signal)]
+            if (reload)
+              jobs.push(
+                query(
+                  [group],
+                  typeof metric.groupConditions === 'function'
+                    ? metric.groupConditions(group)
+                    : metric.groupConditions || base,
+                  metric.measures,
+                  signal,
+                ),
+                query([], base, metric.measures, signal),
+                metric.previous ? query([], metric.previous, metric.measures, signal) : undefined,
+              )
+            else jobs.push(undefined, undefined, undefined)
+            jobs.push(selected !== undefined ? query([], selectedConditions, metric.measures, signal) : undefined)
+            jobs.push(
+              selected !== undefined && metric.previous
+                ? query([], previousConditions, metric.measures, signal)
+                : undefined,
+            )
+            const [library, details, groups, total, prior, selectedTotal, selectedPrior] = await Promise.all(jobs)
+            if (!dialog.open || ticket !== version) return
+            if (reload) {
+              groupRows = groups
+              totalRow = total[0] || {}
+              priorRow = prior?.[0] || {}
+            }
+            const current = selectedTotal?.[0] || totalRow
+            const baseline = selectedPrior?.[0] || priorRow
+            const value = metric.value(current, baseline)
+            const overall = metric.value(totalRow, priorRow)
+            const plotRows = groupRows
+              .map((row) => ({
+                key: String(row[group[0]]),
+                value: metric.groupValue ? metric.groupValue(row, priorRow) : metric.value(row, priorRow),
+              }))
+              .filter((row) => Number.isFinite(row.value))
+            if (!group[2])
+              plotRows.sort((a, b) => b.value - a.value || a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
+            else plotRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
+            records = details.map((row) => ({ ...row }))
+            page = 0
+            find('content').hidden = false
+            find('value-label').textContent =
+              selected === undefined
+                ? metric.previous
+                  ? '当前比较范围'
+                  : model.detailScope || '当前范围'
+                : `${group[1]}：${selected}`
+            find('value-label').title = find('value-label').textContent
+            find('value').textContent = metric.format(value)
+            find('value').dataset.value = Number.isFinite(value) ? String(value) : ''
+            const ranked = [...plotRows].sort((a, b) => b.value - a.value)
+            find('finding').textContent =
+              selected !== undefined
+                ? `总体 ${metric.format(overall)}`
+                : metric.finding
+                  ? metric.finding(current, baseline, plotRows)
+                  : ranked.length > 1 && ranked.every((row) => row.value === ranked[0].value)
+                    ? `各${group[1]}的${metric.title}均为 ${metric.format(ranked[0].value)}。`
+                    : ranked.length
+                      ? `${ranked[0].key}的${metric.title}最高（${metric.format(ranked[0].value)}）${ranked.length > 1 ? `，${ranked.at(-1).key}最低（${metric.format(ranked.at(-1).value)}）` : ''}。`
+                      : '当前范围没有可分析的有效值。可返回看板调整筛选。'
+            for (const name of ['value', 'finding']) animateReading(find(name))
+            find('definition').textContent = metric.definition
+            find('evidence').textContent = metric.evidence
+              ? metric.evidence(current, baseline)
+              : '汇总由当前范围内的完整记录计算；表格分页不改变汇总值。'
+            find('grain').textContent =
+              `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 分页可访问全部结果`
+            const detailScope = selected === undefined ? model.detailScope || '当前范围' : `${group[1]}：${selected}`
+            find('table-scope').textContent = `${detailScope} · ${number(records.length, 0)} 条记录`
+            find('table-scope').title = find('table-scope').textContent
+            find('table').setAttribute('aria-label', `关联明细，${detailScope}，${records.length} 条记录`)
+            const chartTitle = metric.groupTitle || metric.title
+            find('chart-title').textContent = metric.groupTitle || (group[2] ? `${group[1]}趋势` : `${group[1]}比较`)
+            find('chart-hint').textContent = !group[2] && plotRows.length > 12 ? '前 12 组' : ''
+            find('picker-label').textContent = `选择${group[1]}`
+            find('picker').hidden = !plotRows.length
+            find('groups').replaceChildren(
+              ...plotRows.map((row) => {
+                const choice = button(`${row.key} · ${(metric.groupFormat || metric.format)(row.value)}`, () =>
+                  selectGroup(row.key),
+                )
+                choice.setAttribute('aria-pressed', String(selected === row.key))
+                return choice
+              }),
+            )
+            const chartRows = group[2] ? plotRows : plotRows.slice(0, 12)
+            // 菜单可选择 Top N 以外的分组；选中项仍须能在图中定位。
+            if (selected !== undefined && !chartRows.some((row) => row.key === selected)) {
+              const row = plotRows.find((row) => row.key === selected)
+              if (row) {
+                chartRows.splice(Math.max(0, chartRows.length - 1), 1, row)
+                find('chart-hint').textContent = '前 11 组及已选项'
+              }
+            }
+            // 提交串行化，切换或关闭后的旧查询与旧渲染都不能覆盖当前结果。
+            renderQueue = renderQueue
+              .catch(() => {})
+              .then(async () => {
+                if (!dialog.open || ticket !== version) return
+                find('chart').dataset.empty = String(!chartRows.length)
+                if (!chartRows.length) {
+                  chart?.release()
+                  chart = undefined
+                  chartSize = ''
+                }
+                if (chartRows.length) {
+                  const spec = buildAnalysisSpec(group, metric, chartRows, chartTitle, selected)
+                  if (chart) await chart.updateSpec(spec)
+                  else {
+                    chart = new VChart(spec, { dom: find('chart') })
+                    chart.renderSync()
+                    chartSize = ''
+                  }
+                  if (!dialog.open || ticket !== version) return
+                  // 切换图型后重新绑定到当前坐标系；同一次点击只走维度事件，避免二次切换。
+                  chart.off('dimensionClick', selectDimension)
+                  chart.on('dimensionClick', selectDimension)
+                }
+                find('chart').setAttribute(
+                  'aria-label',
+                  `${chartTitle}，${selected === undefined ? '未选择分组' : `已选择${selected}`}，也可通过选择${group[1]}菜单联动明细`,
+                )
+                // 同一指标的表结构不变：筛选和翻页仅替换记录，避免重建表头及重算列宽。
+                const existingTable = !!table
+                if (!table) {
+                  const options = buildTableOptions(detailDimensions, detailMeasures, records)
+                  table = new library.ListTable(find('table'), options)
+                  tableSize = `${find('table').clientWidth}:${find('table').clientHeight}`
+                }
+                if (!dialog.open || ticket !== version) return
+                showTable(existingTable)
+                resizeChart()
+                find('feedback').textContent = records.length ? '' : '当前范围暂无明细记录。'
+                dialog.dataset.state = records.length ? 'ready' : 'empty'
+              })
+            await renderQueue
+          } catch (error) {
+            if (ticket !== version || !dialog.open) return
+            find('feedback').textContent = `分析未完成：${error.message}`
+            find('retry').hidden = false
+            find('content').hidden = true
+            dialog.dataset.state = 'error'
+          } finally {
+            if (ticket === version && dialog.open) {
+              clearTimeout(loadingTimer)
+              find('content').setAttribute('aria-busy', 'false')
+              find('groups').inert = false
+            }
+          }
+        }
+        function open(index, trigger) {
+          if (!ready()) return
+          createDialog()
+          context = getContext(index)
+          active = context.metric
+          dimension = context.dimensions[0]
+          selection = undefined
+          groupRows = undefined
+          opener = trigger
+          dialog.classList.remove('ma-expanded')
+          find('expand').textContent = '展开表格'
+          find('expand').setAttribute('aria-expanded', 'false')
+          find('content').hidden = true
+          dialog.querySelector('.ma-definition').open = false
+          find('picker').open = false
+          dialog.querySelector('#ma-title').textContent = active.title
+          find('scope').textContent = context.scope
+          find('modes').replaceChildren(
+            ...context.dimensions.map((group) => {
+              const choice = button(group[1], () => {
+                dimension = group
+                selection = undefined
+                for (const sibling of find('modes').children)
+                  sibling.setAttribute('aria-pressed', String(sibling === choice))
+                void refresh(true)
+              })
+              choice.setAttribute('aria-pressed', String(group === dimension))
+              return choice
+            }),
+          )
+          previousOverflow = document.body.style.overflow
+          document.body.style.overflow = 'hidden'
+          dialog.showModal()
+          dialog.querySelector('.ma-body').scrollTop = 0
+          find('close').focus()
+          dialog.dataset.state = 'loading'
+          void refresh(true)
+        }
+        const cards = new Set()
+        entries.forEach((entry, index) => {
+          const value = document.querySelector(entry.value)
+          if (!value) return
+          const heading = entry.heading ? document.querySelector(entry.heading) : value.previousElementSibling
+          for (const trigger of [heading, value].filter(Boolean)) {
+            trigger.classList.add('ma-entry')
+            trigger.dataset.maEntry = String(index)
+            trigger.title = '查看指标分析'
+            if (trigger === heading) {
+              trigger.tabIndex = 0
+              trigger.setAttribute('role', 'button')
+              trigger.setAttribute('aria-haspopup', 'dialog')
+              const key = (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault()
+                  event.stopPropagation()
+                  open(index, trigger)
+                }
+              }
+              trigger.addEventListener('keydown', key)
+              listeners.push(() => trigger.removeEventListener('keydown', key))
+            }
+            const click = (event) => {
+              event.stopPropagation()
+              open(index, heading || trigger)
+            }
+            trigger.addEventListener('click', click)
+            listeners.push(() => trigger.removeEventListener('click', click))
+          }
+          if (entry.card) {
+            const card = value.closest('section')
+            if (!card || cards.has(card)) return
+            cards.add(card)
+            card.classList.add('ma-card')
+            const click = (event) => {
+              if (
+                event.target.closest('button, a, input, [data-ma-entry], .plot, .mini, figure, fieldset, [role="img"]')
+              )
+                return
+              open(index, heading)
+            }
+            card.addEventListener('click', click)
+            listeners.push(() => card.removeEventListener('click', click))
+          }
+        })
+        return () => {
+          if (dialog?.open) closeDialog()
+          cleanup()
+          observer?.disconnect()
+          dialog?.remove()
+          listeners.forEach((dispose) => dispose())
+        }
+      }
     </script>
   </body>
 </html>

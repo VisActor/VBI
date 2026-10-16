@@ -1,5 +1,11 @@
 # 人工维护。路径相对于 vbi/；供顶层 SKILL.md 选读，不负责注册 Skill。
 capabilities:
+  - id: metric-analysis
+    path: references/metric-analysis/SKILL.md
+    when:
+      - 用户要求围绕某个指标深入分析，或为看板配置指标分析入口
+      - 组织指标详情中的趋势、比较、结构、下钻与 VTable 明细动线
+      - 保持主页简约，用户主动探索后逐步展开有依据的分析
   - id: visual-query
     path: references/visual-query/SKILL.md
     when:
@@ -50,5 +56,6 @@ selection:
   - 按职责选择能力子技能；跨层任务只补读涉及的能力与 API
   - 单图、指标卡和普通分析页面读取 visual-query，不加载 Dashboard 场景指南
   - light-dashboard 和 map-dashboard 共同读取 visual-query，再按需补读能力 API
+  - 为指标设计主动探索入口时补读 metric-analysis；普通悬停、样式修改或单纯表格展示不触发
   - 独立数据查询或 API 问题直接读取对应能力子技能
   - 数据接入按 server-runtime 的判断规则选择，两种看板共用这些规则
