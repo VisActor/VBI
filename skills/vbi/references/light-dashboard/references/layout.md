@@ -629,7 +629,9 @@ const disposeTilts = [...document.querySelectorAll('.sub-card')].map((card) => b
 
 ## 卡片按顺序延时入场
 
-卡片按当前阅读顺序依次入场，同一行从左到右。少量卡片可采用间隔 **380–480ms**、单卡时长 **1200–1500ms**；下面采用首张延时 **120ms**、卡片间隔 **420ms**、单卡时长 **1400ms**，结合透明度和 10px 上移形成缓和的出现效果，让相邻卡片的启动时刻有清楚可感知的间隔。轻量看板的 Header 与卡片沿用 420ms 间隔、1400ms 时长。模块较多或长叙事按可见行或章节分批播放，避免后续内容累积过长等待；开放式分区无需套用卡片动效。
+卡片按当前阅读顺序依次入场，同一行从左到右。24 份模板统一采用首张延时 **480ms**、卡片间隔 **560ms**、单卡时长 **1600ms**，结合透明度和 10px 上移，让相邻模块的启动时刻有清楚可感知的间隔。首张延时从首次数据与图表就绪后计算，给视线一个停顿；间隔决定下一张何时出现，时长决定淡入速度，不能只拉长时长、仍用 120ms 的紧密间隔。
+
+模板的 `data-enter` 从 1 开始，因此延时为 `initialDelay + (order - 1) * stagger`。当前六个入场模块分别在 480、1040、1600、2160、2720、3280ms 启动，最后一个在 4880ms 完成。标题和加载反馈保持可见，卡内文字与图表随父模块一起出现，不再叠加逐元素等待。模块较多或长叙事按可见行或章节分批，每批重新计时；不要按全页索引无限累加。开放式分区无需套用卡片动效。
 
 动画施加到外层 `.card-slot`，内层 `.sub-card` 保留独立的轻微倾斜。页面首次数据与图表就绪后统一入场；过滤、悬停和响应式重排只更新内容及位置，不重复播放整页入场。HTML 默认保持可见，初始化进入等待状态后才隐藏卡片，加载失败时立即恢复可见并展示错误反馈。
 
@@ -648,6 +650,7 @@ const disposeTilts = [...document.querySelectorAll('.sub-card')].map((card) => b
 
 ```javascript
 const entranceMotion = matchMedia('(prefers-reduced-motion: reduce)')
+const entranceTiming = { initialDelay: 480, stagger: 560, duration: 1600 }
 let entranceAnimations = []
 let entranceStarted = false
 function finishCardEntrance() {
@@ -675,7 +678,12 @@ function revealCards() {
         { opacity: 0, transform: 'translateY(10px)' },
         { opacity: 1, transform: 'translateY(0)' },
       ],
-      { delay: 120 + index * 420, duration: 1400, easing: 'cubic-bezier(.2,.75,.25,1)', fill: 'both' },
+      {
+        delay: entranceTiming.initialDelay + index * entranceTiming.stagger,
+        duration: entranceTiming.duration,
+        easing: 'cubic-bezier(.2,.75,.25,1)',
+        fill: 'both',
+      },
     )
   })
   Promise.all(entranceAnimations.map((animation) => animation.finished.catch(() => {}))).then(finishCardEntrance)
@@ -689,7 +697,7 @@ entranceMotion.addEventListener('change', onEntranceMotionChange)
 // 销毁时移除 onEntranceMotionChange 监听，并调用 finishCardEntrance() 取消剩余动画。
 ```
 
-减少动态效果模式下所有卡片直接可见，立即取消剩余入场动画。数值过渡与图表数据更新另按[指标卡最佳实践](./metric-card.md)处理。
+减少动态效果模式下所有卡片直接可见，立即取消剩余入场动画。这组时序仅用于首次入场；筛选后的图表与数值更新、悬停联动和分析详情保持各自的短过渡，不复用入场延迟。数值过渡与图表数据更新另按[指标卡最佳实践](./metric-card.md)处理。
 
 ## 示例参考与验收
 

@@ -1256,6 +1256,7 @@
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
       const finePointer = matchMedia('(hover: hover) and (pointer: fine)')
       const metricAnimations = new Map()
+      const entranceTiming = { initialDelay: 480, stagger: 560, duration: 1600 }
       let entrances = [],
         hasEntered = false
       function finishEntrance() {
@@ -1275,8 +1276,8 @@
               { opacity: 1, transform: 'translateY(0)' },
             ],
             {
-              duration: 1400,
-              delay: Number(element.dataset.enter) * 420,
+              duration: entranceTiming.duration,
+              delay: entranceTiming.initialDelay + (Number(element.dataset.enter) - 1) * entranceTiming.stagger,
               easing: 'cubic-bezier(.2,.75,.25,1)',
               fill: 'both',
             },
