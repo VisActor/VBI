@@ -7,8 +7,8 @@ hero:
   tagline: Intelligent BI system.
   actions:
     - theme: brand
-      text: Schnellstart
-      link: /de-DE/vseed/guide/quickStart
+      text: Beispiele ansehen
+      link: /de-DE/examples/light-dashboard/
     - theme: alt
       text: Github
       link: https://github.com/visactor/vbi

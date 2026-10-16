@@ -1,0 +1,12 @@
+[
+  {
+    "type": "file",
+    "name": "hospitality-bookings",
+    "label": "酒店预订节奏"
+  },
+  {
+    "type": "file",
+    "name": "hospitality-guests",
+    "label": "旅客与入住计划"
+  }
+]

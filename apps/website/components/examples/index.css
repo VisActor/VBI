@@ -1,0 +1,45 @@
+.rp-doc-layout__container:has(.dashboard-examples) .rp-doc-layout__doc {
+  width: 100%;
+  max-width: none;
+}
+
+.rp-doc-layout__container:has(.dashboard-examples) .rp-doc-layout__doc-container {
+  min-width: 0;
+  padding-right: 32px;
+  padding-left: 32px;
+}
+
+.dashboard-examples__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.dashboard-examples__frame {
+  display: block;
+  width: 100%;
+  height: 2200px;
+  border: 1px solid var(--rp-c-divider-light);
+  border-radius: 12px;
+  background: var(--rp-c-bg);
+}
+
+@media (max-width: 1200px) {
+  .dashboard-examples__frame {
+    height: 2700px;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-examples__frame {
+    height: 3000px;
+  }
+
+  .rp-doc-layout__container:has(.dashboard-examples) .rp-doc-layout__doc-container {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+}

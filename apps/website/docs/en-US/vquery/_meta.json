@@ -1,5 +1,5 @@
 [
-  "index",
+  { "type": "file", "name": "index", "label": "Introduction" },
   { "type": "dir", "name": "examples", "label": "Examples", "collapsed": true },
   { "type": "dir", "name": "development", "label": "Contribution Guide", "collapsed": true },
   "playground"

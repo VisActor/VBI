@@ -1,0 +1,12 @@
+[
+  {
+    "type": "file",
+    "name": "banking-outreach",
+    "label": "银行触达观察"
+  },
+  {
+    "type": "file",
+    "name": "banking-response",
+    "label": "营销响应结构"
+  }
+]

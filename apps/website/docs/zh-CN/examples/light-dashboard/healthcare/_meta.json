@@ -1,0 +1,12 @@
+[
+  {
+    "type": "file",
+    "name": "healthcare-charges",
+    "label": "医疗费用样本"
+  },
+  {
+    "type": "file",
+    "name": "healthcare-regions",
+    "label": "地区费用画像"
+  }
+]
