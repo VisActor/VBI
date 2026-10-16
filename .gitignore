@@ -31,3 +31,5 @@ tools/llm_test/new-type
 
 # Git
 .worktrees
+
+practices/mysql-order-simulator

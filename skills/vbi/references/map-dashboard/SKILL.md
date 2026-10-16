@@ -29,6 +29,7 @@ description: 基于已有模板构建交互式地图看板。用户需要地图�
 1. **选型与运行。** 确认分析目标、来源、地域范围和展示终端。优先复用已有数据接入，其余情况按[数据接入判断](../server-runtime/SKILL.md#数据接入判断)选择。按 [模板接入](references/template-integration.md)选定起点、检查依赖、定位要改的模块；先验证页面能加载及最小查询能返回。
 2. **分析与口径。** 按 [数据分析流程](references/data-analysis.md)建立字段映射、指标定义和查询清单；按 [地图指南](references/map-guide.md)处理地域身份与坐标。先核对整体、一个地域和一个时间范围的结果，再组织页面。
 3. **页面与交互。** 沿用模板模块，按 [布局](references/layout.md)、[UI 设计](references/design.md)、[指标卡](references/metric-card.md)和 [趋势图](references/trend.md)适配主次；按 [筛选与下钻](references/interaction.md)连接控件、图表、地图与明细。一次调整一个模块，并核对主路径。
+   指标深入分析按 [metric-analysis](../metric-analysis/SKILL.md)选择内容与动线，复用宿主分析面板；保持地图主屏简约，用户主动进入后再逐步展开。
 4. **验收与交付。** 按 [验收清单](references/visual-acceptance.md)完成数据核对、连续筛选、下钻返回、刷新及桌面／窄屏检查。交付可运行的页面或项目目录、必要资源和数据源配置说明。
 
 ## 按需查阅
@@ -41,6 +42,7 @@ description: 基于已有模板构建交互式地图看板。用户需要地图�
 | [数据分析流程](references/data-analysis.md)    | 事实粒度、指标口径、查询拆分、二次分析与数据核对。   |
 | [筛选与下钻](references/interaction.md)        | 全局和局部范围、地图导航、分析下钻、返回与刷新。     |
 | [指标卡](references/metric-card.md)            | 主辅层级、比率与比较、数字更新及卡片分析入口。       |
+| [指标深入分析](../metric-analysis/SKILL.md)    | 用户主动探索后的分析内容、VTable 核对与返回动线。    |
 | [趋势图](references/trend.md)                  | 时间粒度、缺失值、同比环比、指标切换与悬停。         |
 | [地图指南](references/map-guide.md)            | 地域层级、坐标、相机、图元与事件动效。               |
 | [验收清单](references/visual-acceptance.md)    | 核心功能闭环、视觉质量与运行交付。                   |
