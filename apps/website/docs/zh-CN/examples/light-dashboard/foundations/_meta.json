@@ -1,0 +1,22 @@
+[
+  {
+    "type": "file",
+    "name": "life-expectancy",
+    "label": "全球寿命观察"
+  },
+  {
+    "type": "file",
+    "name": "heart-failure",
+    "label": "心衰样本观察"
+  },
+  {
+    "type": "file",
+    "name": "meal-workout",
+    "label": "餐食与运动画像"
+  },
+  {
+    "type": "file",
+    "name": "business-overview",
+    "label": "经营概览"
+  }
+]

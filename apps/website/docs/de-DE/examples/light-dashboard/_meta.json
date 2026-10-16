@@ -1,0 +1,68 @@
+[
+  {
+    "type": "dir",
+    "name": "foundations",
+    "label": "Foundations",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "agriculture",
+    "label": "Agriculture",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "banking",
+    "label": "Banking",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "education",
+    "label": "Education",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "energy",
+    "label": "Energy",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "healthcare",
+    "label": "Healthcare",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "hospitality",
+    "label": "Hospitality",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "housing",
+    "label": "Housing",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "logistics",
+    "label": "Logistics",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "manufacturing",
+    "label": "Manufacturing",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "retail",
+    "label": "Retail",
+    "collapsed": true
+  }
+]

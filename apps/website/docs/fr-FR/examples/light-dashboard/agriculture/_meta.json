@@ -1,0 +1,12 @@
+[
+  {
+    "type": "file",
+    "name": "agriculture-climate",
+    "label": "Crop environment samples"
+  },
+  {
+    "type": "file",
+    "name": "agriculture-nutrients",
+    "label": "Soil nutrients"
+  }
+]

@@ -1,0 +1,36 @@
+.skill-install {
+  width: 100%;
+  max-width: 460px;
+  min-width: 0;
+  text-align: left;
+}
+
+.skill-install .rp-codeblock {
+  margin: 0;
+}
+
+.skill-install code {
+  padding: 16px 56px 16px 18px;
+  font-size: clamp(12px, 2.8vw, 15px);
+}
+
+.skill-install .rp-code-button-group {
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+}
+
+.skill-install .rp-code-copy-button {
+  opacity: 1;
+  padding: 6px;
+}
+
+.skill-install .rp-code-wrap-button {
+  display: none;
+}
+
+.skill-install .rp-code-copy-button:focus-visible {
+  outline: 2px solid var(--rp-c-brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

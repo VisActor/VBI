@@ -1,0 +1,12 @@
+[
+  {
+    "type": "file",
+    "name": "hospitality-bookings",
+    "label": "Hotel booking patterns"
+  },
+  {
+    "type": "file",
+    "name": "hospitality-guests",
+    "label": "Guests and stay plans"
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "type": "file",
+    "name": "agriculture-climate",
+    "label": "作物环境样本"
+  },
+  {
+    "type": "file",
+    "name": "agriculture-nutrients",
+    "label": "土壤养分分组"
+  }
+]

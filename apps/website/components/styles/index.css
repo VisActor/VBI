@@ -1,3 +1,6 @@
+@import '../../theme/index.css';
+@import '../examples/index.css';
+
 .rp-playground {
   margin: 0 !important;
 }
