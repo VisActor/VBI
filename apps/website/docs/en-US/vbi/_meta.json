@@ -1,5 +1,5 @@
 [
-  "index",
+  { "type": "file", "name": "index", "label": "Introduction" },
   {
     "type": "dir",
     "name": "practices",

@@ -1,0 +1,156 @@
+---
+pageType: doc
+title: VBI 介绍
+---
+
+import { PackageManagerTabs, Steps } from '@rspress/core/theme'
+
+# VBI
+
+**用 DSL 表达分析意图，用 Builder 组织图表、仪表盘与洞察。**
+
+VBI 是面向分析应用的无界面核心库。它将图表类型、维度、指标、筛选和布局保存在 DSL 中，通过公开 Builder 完成配置与构建，让同一份分析能力可以用于不同的界面和集成。
+
+[快速开始](#快速开始) · [图表示例](./examples/chart/) · [在线体验](./playground)
+
+## 功能概览
+
+| 能力 | 说明 |
+| --- | --- |
+| Chart Builder | 配置图表类型、维度、指标、聚合、筛选、排序、主题与语言。 |
+| Dashboard Builder | 组织图表和 Insight，管理仪表盘布局、主题与资源引用。 |
+| Insight Builder | 组织洞察内容和布局，作为独立资源或嵌入仪表盘。 |
+| 数据连接器 | 通过 `discoverSchema` 和 `query` 接入数据，默认串联 VQuery 与 VSeed。 |
+| 状态管理 | 保存和恢复 DSL，通过 Yjs 更新同步状态，并支持图表、仪表盘的撤销与重做。 |
+
+## 快速开始
+
+下面构建一张按区域汇总销售额的柱形图，使用 VQuery 在内存中查询数据，再生成 VSeed DSL。代码按顺序放在同一个支持顶层 `await` 的模块中执行。
+
+<Steps>
+
+### 安装
+
+安装 VBI，以及本例使用的查询和可视化依赖。
+
+<PackageManagerTabs command="install @visactor/vbi @visactor/vquery @visactor/vseed @visactor/vchart" />
+
+### 接入数据
+
+连接器提供字段信息和查询方法。这里使用内置 JSON 数据；业务应用可在连接器中调用自己的数据服务。
+
+```ts title="chart.ts"
+import { createVBI } from '@visactor/vbi'
+import { VQuery, type DatasetColumn, type VQueryDSL } from '@visactor/vquery'
+
+const vbi = createVBI()
+const vquery = new VQuery()
+const columns: DatasetColumn[] = [
+  { name: 'region', type: 'string' },
+  { name: 'sales', type: 'number' },
+]
+
+await vquery.createDataset('intro-sales', columns, {
+  type: 'json',
+  rawDataset: [
+    { region: 'East', sales: 120 },
+    { region: 'West', sales: 80 },
+    { region: 'East', sales: 180 },
+  ],
+})
+
+const dataset = await vquery.connectDataset('intro-sales')
+
+vbi.connectors.register('intro-sales', {
+  discoverSchema: async () => columns,
+  query: async ({ queryDSL }) => {
+    const result = await dataset.query(
+      queryDSL as VQueryDSL<Record<string, string | number>>,
+    )
+    return { dataset: result.dataset }
+  },
+})
+```
+
+### 配置图表
+
+从空图表 DSL 创建 Builder，然后添加区域维度和销售额度量。
+
+```ts
+const chart = vbi.chart.create(vbi.chart.createEmpty('intro-sales'))
+
+chart.chartType.changeChartType('column')
+chart.dimensions.add('region', (node) => node.setAlias('区域'))
+chart.measures.add('sales', (node) =>
+  node.setAlias('销售额').setAggregate({ func: 'sum' }),
+)
+
+const chartDSL = chart.build() // 可保存的分析配置
+const queryDSL = chart.buildVQuery() // 生成的查询配置
+const vseed = await chart.buildVSeed() // 查询数据并生成 VSeed DSL
+```
+
+### 渲染
+
+在页面中准备一个 `<div id="chart"></div>` 容器，再将 VSeed DSL 转换为 VChart Spec。
+
+```ts
+import VChart from '@visactor/vchart'
+import { Builder, registerAll } from '@visactor/vseed'
+
+registerAll()
+
+const renderer = new VChart(Builder.from(vseed).build(), { dom: 'chart' })
+await renderer.renderAsync()
+
+// 页面卸载时调用
+async function dispose() {
+  renderer.release()
+  chart.doc.destroy()
+  vbi.connectors.unregister('intro-sales')
+  await dataset.disconnect()
+  await vquery.close()
+}
+```
+
+VBI 核心配置与构建不依赖 DOM；上面的渲染步骤在浏览器中执行。表格和透视图可使用 VTable，详见 [VSeed 快速开始](../vseed/guide/quickStart)。
+
+</Steps>
+
+## 核心概念
+
+### DSL：可保存的分析状态
+
+Chart、Dashboard 和 Insight 各自拥有 DSL，保存其配置与内容。`chart.build()` 返回当前图表 DSL，恢复时重新创建 Builder，并确保相应连接器已经注册。
+
+```ts
+const saved = JSON.stringify(chart.build())
+const restored = vbi.chart.create(JSON.parse(saved))
+```
+
+### Builder：通过操作维护配置
+
+Builder 提供维度、指标、筛选等领域操作，并维护 DSL 的一致性。界面只需调用公开 API，再使用构建结果完成渲染。图表可通过 `observeDeep()` 订阅配置变化，通过 `undoManager` 撤销与重做。
+
+### Connector：分析与数据的连接点
+
+`discoverSchema()` 返回字段信息，`query()` 执行查询并返回数据。连接器负责对接数据源；默认图表适配器负责把 VBI 配置转换为 VQuery 和 VSeed DSL。
+
+## 从单图到仪表盘
+
+使用 `vbi.dashboard` 组织多张图表、Insight 与布局；使用 `vbi.resources` 注册可复用的图表和洞察资源。分析配置由核心库管理，React 或其他界面负责交互和具体渲染。
+
+| 你希望实现 | 从这里开始 |
+| --- | --- |
+| 编辑单张图表的维度、指标与筛选 | [Chart Builder API](./api/chartBuilder/) |
+| 组合多个图表与洞察 | [Dashboard 示例](./examples/dashboard) |
+| 组织洞察内容 | [Insight 示例](./examples/insight/) |
+| 接入自己的数据源 | [连接器 API](./api/vbiInstance/connectors) |
+
+## 下一步
+
+- [图表示例](./examples/chart/)：查看图表切换、筛选、主题等完整配置。
+- [标准实践](./practices/standard)：体验基于 Builder 的分析界面。
+- [Playground](./playground)：在线修改配置并查看结果。
+- [API 文档](./api/)：查阅实例、Builder 和资源管理接口。
+- [VQuery 介绍](../vquery/)：了解底层数据查询能力。

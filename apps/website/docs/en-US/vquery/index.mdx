@@ -1,0 +1,148 @@
+---
+pageType: doc
+title: Introducing VQuery
+---
+
+import { PackageManagerTabs, Steps } from '@rspress/core/theme'
+
+# VQuery
+
+**Turn raw data into analytical results with a consistent query DSL.**
+
+VQuery is a query engine for analytics. It provides dataset management, declarative queries, and SQL compilation in browsers and Node.js. It can also serve as the query layer of a VBI connector.
+
+[Quick start](#quick-start) · [Query examples](./examples/select) · [Try it online](./playground)
+
+## Features
+
+| Capability | Description |
+| --- | --- |
+| Dataset management | Load JSON or CSV data, define field schemas, and manage datasets per instance. |
+| Declarative queries | Combine `select`, `where`, `groupBy`, `having`, `orderBy`, and `limit` to describe your analysis. |
+| Aggregation | Calculate sums, averages, distinct counts, and more; group dates by year, quarter, month, and other intervals. |
+| SQL compilation | Compile the same query DSL into MySQL or DuckDB SQL with parameters. |
+| Storage options | Use in-memory storage by default, or explicitly enable IndexedDB to persist data across sessions. |
+
+## Quick start
+
+This example creates a dataset, queries total sales by region, and releases resources. Run the code blocks in order in a single module that supports top-level `await`.
+
+<Steps>
+
+### Install
+
+<PackageManagerTabs command="install @visactor/vquery" />
+
+### Create a dataset
+
+Provide a stable ID, field types, and source data. This example uses a JSON array and requires no database service.
+
+```ts title="query.ts"
+import { VQuery, type VQueryDSL } from '@visactor/vquery'
+
+const vquery = new VQuery()
+
+await vquery.createDataset(
+  'sales',
+  [
+    { name: 'region', type: 'string' },
+    { name: 'sales', type: 'number' },
+  ],
+  {
+    type: 'json',
+    rawDataset: [
+      { region: 'East', sales: 120 },
+      { region: 'West', sales: 80 },
+      { region: 'East', sales: 180 },
+    ],
+  },
+)
+```
+
+### Describe the query
+
+Select the region, sum its sales, and sort by total sales in descending order.
+
+```ts
+const query: VQueryDSL<{ region: string; sales: number }> = {
+  select: [
+    'region',
+    { field: 'sales', alias: 'totalSales', aggr: { func: 'sum' } },
+  ],
+  groupBy: ['region'],
+  orderBy: [{ field: 'totalSales', order: 'desc' }],
+}
+```
+
+### Run the query
+
+Connect to the dataset and execute the query. The returned `dataset` can be used in a table or passed to a visualization.
+
+```ts
+const dataset = await vquery.connectDataset('sales')
+
+try {
+  const result = await dataset.query(query)
+  console.table(result.dataset)
+  // [{ region: 'East', totalSales: 300 },
+  //  { region: 'West', totalSales: 80 }]
+} finally {
+  await dataset.disconnect()
+  await vquery.close()
+}
+```
+
+</Steps>
+
+## Core concepts
+
+### Datasets and schemas
+
+A dataset combines an ID, field definitions, and a data source. `createDataset()` registers data, `connectDataset()` provides a query entry point, and `disconnect()` releases its query resources. Use `dropDataset()` to remove a registered dataset.
+
+### Query DSL
+
+`VQueryDSL` describes the data you need. `where` filters rows before aggregation, `groupBy` defines groups, and `having` filters aggregated results. Save query configurations as JSON to reuse them in subsequent analyses.
+
+### SQL compilation
+
+For data stored in a database, use `compileQuery()` independently. The compiler returns SQL and parameters; your application manages the database connection and execution.
+
+```ts
+import { compileQuery } from '@visactor/vquery'
+
+const { sql, parameters } = compileQuery(query, {
+  table: 'sales',
+  dialect: 'mysql', // Also supports 'duckdb'
+  columns: [
+    { name: 'region', type: 'string' },
+    { name: 'sales', type: 'number' },
+  ],
+})
+```
+
+## Storage and runtime
+
+Node.js and browser entrypoints use in-memory query and storage adapters by default. No IndexedDB API is required. Each instance owns its datasets; closing the instance or reloading the page discards data in the default storage.
+
+Explicitly enable `enableIndexedDB` to persist dataset schemas and sources across sessions:
+
+```ts
+const persistentQuery = new VQuery({ enableIndexedDB: true })
+```
+
+:::info IndexedDB only changes storage
+The runtime must support IndexedDB. Queries still run through the in-memory query adapter. Omitting the option, passing empty options, or setting it to `false` uses in-memory storage.
+:::
+
+## Working with VBI and VSeed
+
+**VBI** manages analysis configurations and requests data through connectors. **VQuery** executes filters and aggregations. **VSeed** turns query results and chart semantics into VChart / VTable specs. You can also use VQuery independently to supply data to existing tables, charts, or APIs.
+
+## Next steps
+
+- [Field selection and aggregation](./examples/select): choose output fields and calculations.
+- [Filters](./examples/where): combine business conditions to narrow your analysis.
+- [Grouping](./examples/groupBy): summarize data by dimension.
+- [Playground](./playground): edit query configurations and inspect results.
+- [Introducing VBI](../vbi/): connect queries to charts and dashboards.

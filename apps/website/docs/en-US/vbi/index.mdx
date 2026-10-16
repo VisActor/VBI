@@ -1,0 +1,156 @@
+---
+pageType: doc
+title: Introducing VBI
+---
+
+import { PackageManagerTabs, Steps } from '@rspress/core/theme'
+
+# VBI
+
+**Express analytical intent with DSLs. Build charts, dashboards, and insights through Builders.**
+
+VBI is a headless core library for analytics applications. It stores chart types, dimensions, measures, filters, and layouts in DSLs, and exposes public Builders for configuring and building them. The same analytical capabilities can serve different interfaces and integrations.
+
+[Quick start](#quick-start) · [Chart examples](./examples/chart/) · [Try it online](./playground)
+
+## Features
+
+| Capability | Description |
+| --- | --- |
+| Chart Builder | Configure chart types, dimensions, measures, aggregations, filters, sorting, themes, and locales. |
+| Dashboard Builder | Organize charts and Insights, including dashboard layouts, themes, and resource references. |
+| Insight Builder | Organize insight content and layouts as standalone resources or dashboard content. |
+| Data connectors | Connect data through `discoverSchema` and `query`, using VQuery and VSeed with the default adapters. |
+| State management | Save and restore DSLs, synchronize state through Yjs updates, and undo or redo chart and dashboard edits. |
+
+## Quick start
+
+Build a column chart of total sales by region, using VQuery to query in-memory data and then generating a VSeed DSL. Run the code blocks in order in a single module that supports top-level `await`.
+
+<Steps>
+
+### Install
+
+Install VBI and the query and visualization dependencies used in this example.
+
+<PackageManagerTabs command="install @visactor/vbi @visactor/vquery @visactor/vseed @visactor/vchart" />
+
+### Connect data
+
+A connector provides field information and a query method. This example uses inline JSON data; your application can call its own data service inside the connector.
+
+```ts title="chart.ts"
+import { createVBI } from '@visactor/vbi'
+import { VQuery, type DatasetColumn, type VQueryDSL } from '@visactor/vquery'
+
+const vbi = createVBI()
+const vquery = new VQuery()
+const columns: DatasetColumn[] = [
+  { name: 'region', type: 'string' },
+  { name: 'sales', type: 'number' },
+]
+
+await vquery.createDataset('intro-sales', columns, {
+  type: 'json',
+  rawDataset: [
+    { region: 'East', sales: 120 },
+    { region: 'West', sales: 80 },
+    { region: 'East', sales: 180 },
+  ],
+})
+
+const dataset = await vquery.connectDataset('intro-sales')
+
+vbi.connectors.register('intro-sales', {
+  discoverSchema: async () => columns,
+  query: async ({ queryDSL }) => {
+    const result = await dataset.query(
+      queryDSL as VQueryDSL<Record<string, string | number>>,
+    )
+    return { dataset: result.dataset }
+  },
+})
+```
+
+### Configure a chart
+
+Create a Builder from an empty chart DSL, then add the region dimension and the sales measure.
+
+```ts
+const chart = vbi.chart.create(vbi.chart.createEmpty('intro-sales'))
+
+chart.chartType.changeChartType('column')
+chart.dimensions.add('region', (node) => node.setAlias('Region'))
+chart.measures.add('sales', (node) =>
+  node.setAlias('Sales').setAggregate({ func: 'sum' }),
+)
+
+const chartDSL = chart.build() // Analysis configuration to save
+const queryDSL = chart.buildVQuery() // Generated query configuration
+const vseed = await chart.buildVSeed() // Query data and generate a VSeed DSL
+```
+
+### Render
+
+Add a `<div id="chart"></div>` container to the page, then convert the VSeed DSL into a VChart spec.
+
+```ts
+import VChart from '@visactor/vchart'
+import { Builder, registerAll } from '@visactor/vseed'
+
+registerAll()
+
+const renderer = new VChart(Builder.from(vseed).build(), { dom: 'chart' })
+await renderer.renderAsync()
+
+// Call when the page unmounts
+async function dispose() {
+  renderer.release()
+  chart.doc.destroy()
+  vbi.connectors.unregister('intro-sales')
+  await dataset.disconnect()
+  await vquery.close()
+}
+```
+
+VBI configuration and building do not depend on the DOM; the rendering step above runs in a browser. Tables and pivot charts can use VTable; see the [VSeed quick start](../vseed/guide/quickStart).
+
+</Steps>
+
+## Core concepts
+
+### DSLs: analysis state you can save
+
+Charts, Dashboards, and Insights each have a DSL for their configuration and content. `chart.build()` returns the current chart DSL. To restore it, create another Builder and ensure its connector is registered.
+
+```ts
+const saved = JSON.stringify(chart.build())
+const restored = vbi.chart.create(JSON.parse(saved))
+```
+
+### Builders: operations that maintain configurations
+
+Builders expose domain operations for dimensions, measures, filters, and more, while maintaining DSL consistency. Interfaces call public APIs and render the resulting configurations. Subscribe to chart configuration changes with `observeDeep()` and undo or redo edits through `undoManager`.
+
+### Connectors: linking analysis to data
+
+`discoverSchema()` returns field information, and `query()` executes a query and returns data. Connectors integrate data sources; the default chart adapters translate VBI configurations into VQuery and VSeed DSLs.
+
+## From a chart to a dashboard
+
+Use `vbi.dashboard` to organize multiple charts, Insights, and layouts. Register reusable chart and insight resources through `vbi.resources`. The core library manages analysis configurations, while React or another interface handles interaction and rendering.
+
+| What you want to build | Start here |
+| --- | --- |
+| Edit a chart's dimensions, measures, and filters | [Chart Builder API](./api/chartBuilder/) |
+| Combine charts and insights | [Dashboard example](./examples/dashboard) |
+| Organize insight content | [Insight examples](./examples/insight/) |
+| Connect your own data source | [Connector API](./api/vbiInstance/connectors) |
+
+## Next steps
+
+- [Chart examples](./examples/chart/): explore chart switching, filters, themes, and more.
+- [Standard practice](./practices/standard): try an analytics interface built with Builders.
+- [Playground](./playground): edit configurations and inspect results online.
+- [API reference](./api/): browse instances, Builders, and resource management APIs.
+- [Introducing VQuery](../vquery/): learn about the data query layer.

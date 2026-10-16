@@ -1,0 +1,148 @@
+---
+pageType: doc
+title: VQuery 介绍
+---
+
+import { PackageManagerTabs, Steps } from '@rspress/core/theme'
+
+# VQuery
+
+**用统一的查询 DSL，完成从原始数据到分析结果的转换。**
+
+VQuery 是面向数据分析的查询引擎。它提供数据集管理、声明式查询和 SQL 编译能力，可以在浏览器和 Node.js 中使用，也可以作为 VBI 连接器的查询层。
+
+[快速开始](#快速开始) · [查询示例](./examples/select) · [在线体验](./playground)
+
+## 功能概览
+
+| 能力 | 说明 |
+| --- | --- |
+| 数据集管理 | 加载 JSON、CSV 数据，定义字段 schema，并按实例管理数据集。 |
+| 声明式查询 | 使用 `select`、`where`、`groupBy`、`having`、`orderBy` 和 `limit` 组合分析需求。 |
+| 聚合分析 | 支持求和、平均值、去重计数等聚合，以及按年、季度、月等日期粒度分组。 |
+| SQL 编译 | 将同一份查询 DSL 编译为 MySQL 或 DuckDB SQL，返回 SQL 与参数。 |
+| 存储选择 | 默认使用内存存储；需要跨会话保留数据时，可显式启用 IndexedDB。 |
+
+## 快速开始
+
+下面以“按区域汇总销售额”为例，完成数据集创建、查询和资源释放。代码按顺序放在同一个支持顶层 `await` 的模块中执行。
+
+<Steps>
+
+### 安装
+
+<PackageManagerTabs command="install @visactor/vquery" />
+
+### 创建数据集
+
+为数据提供稳定的 ID、字段类型和原始数据。这里直接使用 JSON 数组，无需数据库服务。
+
+```ts title="query.ts"
+import { VQuery, type VQueryDSL } from '@visactor/vquery'
+
+const vquery = new VQuery()
+
+await vquery.createDataset(
+  'sales',
+  [
+    { name: 'region', type: 'string' },
+    { name: 'sales', type: 'number' },
+  ],
+  {
+    type: 'json',
+    rawDataset: [
+      { region: 'East', sales: 120 },
+      { region: 'West', sales: 80 },
+      { region: 'East', sales: 180 },
+    ],
+  },
+)
+```
+
+### 描述查询
+
+通过 DSL 选择区域、汇总销售额，再按总销售额降序排列。
+
+```ts
+const query: VQueryDSL<{ region: string; sales: number }> = {
+  select: [
+    'region',
+    { field: 'sales', alias: 'totalSales', aggr: { func: 'sum' } },
+  ],
+  groupBy: ['region'],
+  orderBy: [{ field: 'totalSales', order: 'desc' }],
+}
+```
+
+### 执行查询
+
+连接数据集后执行查询，结果中的 `dataset` 可直接用于表格或后续可视化。
+
+```ts
+const dataset = await vquery.connectDataset('sales')
+
+try {
+  const result = await dataset.query(query)
+  console.table(result.dataset)
+  // [{ region: 'East', totalSales: 300 },
+  //  { region: 'West', totalSales: 80 }]
+} finally {
+  await dataset.disconnect()
+  await vquery.close()
+}
+```
+
+</Steps>
+
+## 核心概念
+
+### 数据集与 schema
+
+数据集由 ID、字段定义和数据源组成。`createDataset()` 注册数据，`connectDataset()` 获得查询入口，`disconnect()` 释放该数据集的查询资源；需要删除已注册的数据时使用 `dropDataset()`。
+
+### 查询 DSL
+
+`VQueryDSL` 描述“需要什么数据”。`where` 在聚合前过滤明细，`groupBy` 定义分组，`having` 在聚合后过滤结果。查询配置可保存为 JSON，并在后续分析中复用。
+
+### SQL 编译
+
+当数据在数据库中时，可单独使用 `compileQuery()`。编译器返回 SQL 与参数，数据库连接与执行由应用负责。
+
+```ts
+import { compileQuery } from '@visactor/vquery'
+
+const { sql, parameters } = compileQuery(query, {
+  table: 'sales',
+  dialect: 'mysql', // 也支持 'duckdb'
+  columns: [
+    { name: 'region', type: 'string' },
+    { name: 'sales', type: 'number' },
+  ],
+})
+```
+
+## 存储与运行环境
+
+Node.js 和浏览器默认都使用内存查询与存储 adapter，无需 IndexedDB。每个实例独立管理自己的数据集；关闭实例或刷新页面后，默认存储中的数据不保留。
+
+需要跨会话保存数据集 schema 和数据源时，显式开启 `enableIndexedDB`：
+
+```ts
+const persistentQuery = new VQuery({ enableIndexedDB: true })
+```
+
+:::info IndexedDB 只改变存储方式
+运行环境必须支持 IndexedDB；查询仍通过内存查询 adapter 执行。省略选项、传入空 options 或设置为 `false` 时，均使用内存存储。
+:::
+
+## 与 VBI、VSeed 配合
+
+**VBI** 管理分析配置，并通过连接器请求数据；**VQuery** 执行筛选与聚合；**VSeed** 把查询结果和图表语义转换为 VChart / VTable Spec。你也可以单独使用 VQuery，为已有的表格、图表或接口提供数据。
+
+## 下一步
+
+- [字段选择与聚合](./examples/select)：了解查询结果的字段与计算方式。
+- [筛选条件](./examples/where)：组合业务条件，缩小分析范围。
+- [分组分析](./examples/groupBy)：按维度汇总数据。
+- [Playground](./playground)：修改查询配置，查看结果。
+- [VBI 介绍](../vbi/)：将查询能力接入图表与仪表盘。
