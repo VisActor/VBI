@@ -1,0 +1,3 @@
+interface:
+  display_name: 'VisActor Dashboard'
+  short_description: '创建经营指标与地图看板，支持数据接入、筛选联动、指标分析和状态恢复。'
