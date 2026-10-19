@@ -7,11 +7,16 @@
     <meta name="vbi-session" content="__VBI_SESSION_TOKEN__" />
     <link rel="icon" href="data:," />
     <title>此刻 · 超市经营观测</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin />
+    <link rel="preconnect" href="https://gibs.earthdata.nasa.gov" crossorigin />
     <link
+      id="map-styles"
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.6.2/dist/maplibre-gl.css"
       media="print"
       onload="this.media = 'all'"
+      onerror="this.dataset.failed = 'true'"
     />
     <style>
       /* Theme and shared controls */
@@ -526,7 +531,6 @@
         background: #1c1e21;
         opacity: 0;
         visibility: hidden;
-        transition: opacity 800ms ease;
       }
       body[data-state='ready'][data-map-ready='true'] #map {
         opacity: 1;
@@ -971,16 +975,43 @@
       }
       body[data-state='ready'] header,
       body[data-state='ready'] footer,
-      body[data-state='ready'] .map-stage > *,
-      body[data-state='ready'] .panel {
+      body[data-state='ready'] .map-stage > * {
         animation: appear 700ms cubic-bezier(0.22, 0.68, 0, 1) both;
-        animation-delay: var(--reveal-delay, 0ms);
+      }
+      /* One flip sequence; direction varies by card position. */
+      body[data-state='ready'] .panel {
+        --reveal-duration: 1600ms;
+        --reveal-from: rotateX(82deg);
+        transform-origin: center bottom;
+        animation: card-flip var(--reveal-duration) cubic-bezier(0.2, 0.65, 0.25, 1) backwards;
+        /* Start after loading fades, then wait for each preceding card. */
+        animation-delay: calc(380ms + var(--reveal-order, 0) * var(--reveal-duration));
+      }
+      body[data-state='ready'] .hero {
+        --reveal-from: rotateY(-82deg);
+        transform-origin: left center;
+      }
+      .grid > .panel {
+        --reveal-order: 1;
       }
       .grid > :nth-child(2) {
-        --reveal-delay: 100ms;
+        --reveal-order: 2;
       }
       .grid > :nth-child(3) {
-        --reveal-delay: 140ms;
+        --reveal-order: 3;
+      }
+      @keyframes card-flip {
+        from {
+          opacity: 0;
+          transform: perspective(1400px) var(--reveal-from);
+        }
+        15% {
+          opacity: 1;
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
       }
       @keyframes appear {
         from {
@@ -1593,11 +1624,12 @@
       // Runs before CDN scripts: a dependency outage must leave a usable retry state.
       document.body.dataset.loadingStarted = performance.now()
       const showBootError = (message) => {
-        if (document.body.dataset.state === 'ready') return
+        if (document.body.dataset.state !== 'loading') return
         document.body.dataset.state = 'error'
         document.querySelector('#loading-title').textContent = '暂时无法打开经营现场'
         document.querySelector('#loading-message').textContent = message
         document.querySelector('#loading-retry').hidden = false
+        window.dispatchEvent(new Event('dashboard-error'))
       }
       const bootDeadline = setTimeout(() => showBootError('加载时间较长，请检查本地服务与网络后重试。'), 25000)
       window.addEventListener('dashboard-ready', () => clearTimeout(bootDeadline), { once: true })
@@ -1931,8 +1963,12 @@
     <script type="module">
       const $ = (s) => document.querySelector(s),
         motion = matchMedia('(prefers-reduced-motion: reduce)')
-      const fmt = (n, d = 0) =>
-        Number(n).toLocaleString('zh-CN', { minimumFractionDigits: d, maximumFractionDigits: d })
+      const numberFormats = new Map()
+      const fmt = (n, d = 0) => {
+        if (!numberFormats.has(d))
+          numberFormats.set(d, new Intl.NumberFormat('zh-CN', { minimumFractionDigits: d, maximumFractionDigits: d }))
+        return numberFormats.get(d).format(Number(n))
+      }
       const moneyDigits = (n) => (Math.abs(Number(n)) > 0 && Math.abs(Number(n)) < 0.01 ? 3 : 2)
       const money = (n) => '¥' + fmt(n, moneyDigits(n))
       const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()
@@ -1978,7 +2014,9 @@
         detailsProductName = '',
         lossOnly = false
       let trendCache,
-        cachedProducts = []
+        cachedProducts = [],
+        trendRenderKey,
+        productsRenderKey
 
       // Request lifecycle. A pending refresh supersedes the in-flight response.
       let paused = false,
@@ -1993,13 +2031,16 @@
       let disposed = false,
         sceneReady = false
       let observer, liveTable, analysisTable, analysisController
+      async function waitForMinimum(started, duration) {
+        const remaining = duration - (performance.now() - started)
+        if (remaining > 0) await new Promise((resolve) => setTimeout(resolve, remaining))
+      }
       const loadingStage = (message) => {
         if (document.body.dataset.state === 'loading') $('#loading-message').textContent = message
       }
       const fail = (message) => {
         if (!sceneReady) {
           showBootError(message.replace('；已保留上次结果。', '。').replace('已保留上次结果；', ''))
-          window.dispatchEvent(new Event('dashboard-error'))
         } else {
           $('#notice').hidden = false
           $('#notice').textContent = message
@@ -2115,6 +2156,10 @@
         新疆: [87.62, 43.79],
       }
       const cityLocations = JSON.parse($('#map-locations').textContent)
+      const overviewBounds = [
+        [77, 18],
+        [135, 53],
+      ]
       let map,
         mapLoaded = false,
         mapLevel = '',
@@ -2241,10 +2286,7 @@
               [Math.min(...points.map((p) => p[0])), Math.min(...points.map((p) => p[1]))],
               [Math.max(...points.map((p) => p[0])), Math.max(...points.map((p) => p[1]))],
             ]
-          : [
-              [77, 18],
-              [135, 53],
-            ]
+          : overviewBounds
         map.fitBounds(bounds, {
           padding: mapPadding(),
           duration: sceneReady && !motion.matches ? 600 : 0,
@@ -2362,8 +2404,7 @@
 
       function initializeMap() {
         if (!window.maplibregl) {
-          $('#map-status').textContent = '底图加载失败'
-          return
+          throw Error('底图组件加载失败，请检查网络后重新加载。')
         }
         const graticule = { type: 'FeatureCollection', features: [] }
         for (let lng = 60; lng <= 150; lng += 10)
@@ -2390,11 +2431,13 @@
               ],
             },
           })
+        // Start at the actual overview, avoiding downloads for a throwaway camera.
+        syncMapLayout()
         map = new maplibregl.Map({
           container: 'map',
           attributionControl: false,
-          center: [108, 35],
-          zoom: 3.3,
+          bounds: overviewBounds,
+          fitBoundsOptions: { padding: mapPadding(), maxZoom: 4.4, duration: 0 },
           minZoom: 1.5,
           maxZoom: 10,
           pitch: 0,
@@ -2501,12 +2544,10 @@
         map.on('zoom', () => {
           if (supermarketMapLevel(map.getZoom(), province) !== mapLevel) renderMapMarkers()
         })
-        map.on('idle', () => {
-          if (mapLoaded && observer) document.body.dataset.mapReady = 'true'
-        })
         map.on('error', () => {
           $('#map-status').hidden = false
           $('#map-status').textContent = '底图加载失败'
+          if (!sceneReady) fail('底图加载失败，请检查网络后重新加载。')
         })
         $('#map-home').onclick = () => mapReset($('#map-home'))
         $('#map-in').onclick = () => map.zoomIn({ duration: motion.matches ? 0 : 300 })
@@ -2517,25 +2558,88 @@
           $('#map-motion').setAttribute('aria-pressed', String(mapMotion))
         }
       }
+      window.addEventListener('pagehide', () => {
+        disposed = true
+        clearTimeout(timer)
+        controller?.abort()
+        observer?.disconnect()
+        clearMapFlights()
+        map?.remove()
+        instances.forEach((c) => c.release())
+        analysisTable?.release()
+        liveTable?.release()
+        analysisController?.abort()
+        animations.forEach((a) => a.cancel())
+      })
       try {
         initializeMap()
-      } catch {
+      } catch (error) {
         $('#map-status').textContent = '地图不可用'
+        fail(error.message)
+      }
+
+      function waitForInitialMap() {
+        return new Promise((resolve, reject) => {
+          const styles = $('#map-styles')
+          const events = new AbortController()
+          const finish = (error) => {
+            map?.off('idle', check)
+            events.abort()
+            if (error) reject(error)
+            else resolve()
+          }
+          const bootError = () => finish(Error($('#loading-message').textContent))
+          const styleError = () => finish(Error('地图样式加载失败，请检查网络后重新加载。'))
+          const leave = () => {
+            disposed = true
+            finish(new DOMException('页面已关闭', 'AbortError'))
+          }
+          const check = () => {
+            // idle follows the final viewport's tiles, glyphs and render transitions.
+            if (styles.sheet && styles.media === 'all' && mapLoaded && map.loaded() && map.areTilesLoaded()) {
+              finish()
+            }
+          }
+          const fit = () => {
+            mapFit()
+            // Request a fresh idle even when the map was already cached and idle.
+            map.triggerRepaint()
+          }
+          if (document.body.dataset.state === 'error') return bootError()
+          if (styles.dataset.failed === 'true') return styleError()
+          if (!map) return finish(Error('地图不可用，请重新加载。'))
+          map.on('idle', check)
+          const options = { signal: events.signal }
+          styles.addEventListener('load', fit, options)
+          styles.addEventListener('error', styleError, options)
+          window.addEventListener('dashboard-error', bootError, options)
+          window.addEventListener('pagehide', leave, options)
+          try {
+            fit()
+          } catch (error) {
+            finish(error)
+          }
+        })
       }
 
       try {
+        if (document.body.dataset.state === 'error') throw Error($('#loading-message').textContent)
         if (location.protocol === 'file:') throw Error('请通过本地服务打开实时大屏。')
         loadingStage('连接数据…')
         controller = new AbortController()
         const timeout = setTimeout(() => controller.abort(), 20000)
-        const context = await api('/api/context').finally(() => clearTimeout(timeout))
-        clientOffset = new Date(context.now.slice(0, 23).replace(' ', 'T') + '+08:00').valueOf() - Date.now()
-        loadingStage('准备视图…')
-        const [{ VBI }, { Builder, registerAll }, { VQuery }] = await Promise.all([
+        const [context, { VBI }, { Builder, registerAll }, { VQuery }] = await Promise.all([
+          api('/api/context')
+            .then((value) => {
+              clientOffset = new Date(value.now.slice(0, 23).replace(' ', 'T') + '+08:00').valueOf() - Date.now()
+              return value
+            })
+            .finally(() => clearTimeout(timeout)),
           import('https://cdn.jsdelivr.net/npm/@visactor/vbi@0.6.4/+esm'),
           import('https://cdn.jsdelivr.net/npm/@visactor/vseed@0.6.4/+esm'),
           import('https://cdn.jsdelivr.net/npm/@visactor/vquery@0.6.4/dist/browser/esm/browser.js/+esm'),
         ])
+        loadingStage('准备视图…')
         registerAll()
         const batches = new Map()
         VBI.connectors.register(context.sourceId, {
@@ -2688,17 +2792,17 @@
 
         // CSS owns the layout. One observer keeps native renderers in sync with their containers.
         observer = new ResizeObserver((entries) => {
+          let mapLayoutChanged = false
           for (const { target } of entries) {
             if (target.matches('.plot')) {
               if (target.clientWidth && target.clientHeight)
                 instances.get(`#${target.id}`)?.resize(target.clientWidth, target.clientHeight)
             } else if (target.id === 'analysis-table') analysisTable?.resize()
             else if (target.id === 'live-table') liveTable?.resize()
-            else {
-              syncMapLayout()
-              // Preserve the user's explored map viewport during card / toolbar resizing.
-            }
+            else mapLayoutChanged = true
           }
+          // Read map geometry once per batch; preserve the user's explored viewport.
+          if (mapLayoutChanged) syncMapLayout()
         })
         document
           .querySelectorAll('.stage, .map-top, .map-bottom, header, .plot, #analysis-table, #live-table')
@@ -2772,7 +2876,11 @@
           const seed = comparativeTrendSeed()
           $('#trend-chart').hidden = !seed.dataset.length
           $('#trend-empty').hidden = seed.dataset.length > 0
-          if (seed.dataset.length) await renderChart('#trend-chart', trendSpec(seed))
+          const key = JSON.stringify([trendMetric, seed.dataset, seed.measures])
+          if (seed.dataset.length && key !== trendRenderKey) {
+            await renderChart('#trend-chart', trendSpec(seed))
+            trendRenderKey = key
+          }
           const peak = trendCache.peaks[trendMetric]
           animate('#peak-value', peak[trendMetric] ?? 0, 2, { prefix: '¥' })
           $('#peak-time').textContent = peak[trendCache.ranges.grain] || '暂无成交'
@@ -2898,16 +3006,29 @@
         }
 
         async function renderProducts(seed) {
-          const { product_id: key, profit, name, sales, units } = queryFieldIds(products)
-          const dataset = seed.dataset
-          const names = new Map(dataset.map((row) => [row[key], row[name]]))
+          const { product_id: key, name } = queryFieldIds(products)
+          const { dataset } = seed
+          const renderKey = JSON.stringify([productMode, dataset])
           $('#products-chart').hidden = !dataset.length
           $('#products-empty').hidden = dataset.length > 0
           $('#products-empty').textContent = productMode === 'loss' ? '暂无净亏损商品' : '暂无盈利商品'
-          if (!dataset.length) {
-            chartActions('#product-actions', [], '查看商品明细 ', detailsProduct, showProduct)
-            return
-          }
+          if (dataset.length && renderKey !== productsRenderKey)
+            await renderChart('#products-chart', productsSpec(seed), (event) => {
+              if (event.datum?.[key]) showProduct(event.datum[key])
+            })
+          productsRenderKey = renderKey
+          chartActions(
+            '#product-actions',
+            dataset.map((row) => [row[key], row[name]]),
+            '查看商品明细 ',
+            detailsProduct,
+            showProduct,
+          )
+        }
+        function productsSpec(seed) {
+          const { product_id: key, profit, name, sales, units } = queryFieldIds(products)
+          const { dataset } = seed
+          const names = new Map(dataset.map((row) => [row[key], row[name]]))
           const tone = productMode === 'loss' ? '#ff786d' : accentColor
           const spec = chartSpec({
             ...seed,
@@ -2953,34 +3074,25 @@
               ],
             },
           }
-          await renderChart('#products-chart', spec, (event) => {
-            if (event.datum?.[key]) showProduct(event.datum[key])
-          })
-          chartActions(
-            '#product-actions',
-            dataset.map((row) => [row[key], row[name]]),
-            '查看商品明细 ',
-            detailsProduct,
-            showProduct,
-          )
+          return spec
         }
-        let liveScope
+        const liveColumns = ['order_date', 'province', 'product_name', 'sales', 'profit']
+        let liveScope, liveRenderKey
         async function renderDetails(seed, scope) {
-          const options = tableOptions(
-            details,
-            seed,
-            ['order_date', 'province', 'product_name', 'sales', 'profit'],
-            true,
-          )
-          const top = liveTable?.scrollTop || 0
-          const left = liveTable?.scrollLeft || 0
-          if (liveTable) await liveTable.updateOption(options)
-          else liveTable = new window.VTable.ListTable($('#live-table'), options)
-          if (liveScope === scope) {
-            liveTable.scrollTop = top
-            liveTable.scrollLeft = left
-          }
+          const renderKey = JSON.stringify([scope, seed.dataset])
+          if (renderKey === liveRenderKey) return
+          const top = liveScope === scope ? liveTable?.scrollTop || 0 : 0
+          const left = liveScope === scope ? liveTable?.scrollLeft || 0 : 0
+          if (liveTable) {
+            const ids = queryFieldIds(details)
+            // Columns and theme are stable; update records without rebuilding the table configuration.
+            liveTable.setRecords(tableRecords(seed.dataset, ids, liveColumns))
+          } else
+            liveTable = new window.VTable.ListTable($('#live-table'), tableOptions(details, seed, liveColumns, true))
+          liveTable.scrollTop = top
+          liveTable.scrollLeft = left
           liveScope = scope
+          liveRenderKey = renderKey
         }
         function displaySummary(stats, discountStats, comparisonStats, ranges) {
           const values = {
@@ -3020,36 +3132,42 @@
         }
         async function revealDashboard() {
           if (sceneReady) return
-          loadingStage('已就绪')
-          mapFit()
+          loadingStage('调整布局…')
+          await document.fonts.ready
           // Keep hidden elements measurable; reveal only after layout and chart sizes settle.
           await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
           instances.forEach((chart, id) => chart.resize($(id).clientWidth, $(id).clientHeight))
-          const remaining = 450 - (performance.now() - Number(document.body.dataset.loadingStarted))
-          if (remaining > 0) await new Promise((resolve) => setTimeout(resolve, remaining))
+          await waitForMinimum(Number(document.body.dataset.loadingStarted), 450)
           await new Promise(requestAnimationFrame)
           if (disposed) return
+          loadingStage('加载底图与地名…')
+          await waitForInitialMap()
+          if (disposed || document.body.dataset.state === 'error') return
+          loadingStage('已就绪')
           sceneReady = true
           $('main').inert = false
           $('main').setAttribute('aria-busy', 'false')
+          document.body.dataset.mapReady = 'true'
           document.body.dataset.state = 'ready'
           window.dispatchEvent(new Event('dashboard-ready'))
         }
         // Configure Builders first, then query, then commit a complete response to the view.
         function configureQueries(ranges) {
           const range = ranges.current
-          Object.values(builders).forEach((c) =>
-            applyFilters(c, {
+          for (const builder of Object.values(builders)) {
+            const allRegions = builder === geography || builder === cityGeography
+            applyFilters(builder, {
               range,
-              province: [geography, cityGeography].includes(c) ? '' : province,
-              city: [geography, cityGeography].includes(c) ? '' : city,
-              product: c === details ? detailsProduct : '',
-              lossOnly: c === details && lossOnly,
-              discounted: c === discounted,
-            }),
-          )
-          for (const [period, group] of Object.entries(comparisons))
-            for (const c of Object.values(group)) applyFilters(c, { range: ranges[period], province, city })
+              province: allRegions ? '' : province,
+              city: allRegions ? '' : city,
+              product: builder === details ? detailsProduct : '',
+              lossOnly: builder === details && lossOnly,
+              discounted: builder === discounted,
+            })
+          }
+          for (const [comparison, group] of Object.entries(comparisons))
+            for (const builder of Object.values(group))
+              applyFilters(builder, { range: ranges[comparison], province, city })
           products.measures
             .find((n) => n.getField() === 'profit')
             .setSort({ order: productMode === 'loss' ? 'asc' : 'desc' })
@@ -3060,12 +3178,12 @@
               .setOperator(productMode === 'loss' ? 'lt' : 'gt')
               .setValue(0),
           )
-          Object.values(peaks).forEach((c) => applyFilters(c, { range, province, city }))
-          for (const c of [trend, previousTrend, yearTrend, ...Object.values(peaks)]) {
-            const dimension = c.build().dimensions[0]
+          Object.values(peaks).forEach((builder) => applyFilters(builder, { range, province, city }))
+          for (const builder of [trend, previousTrend, yearTrend, ...Object.values(peaks)]) {
+            const dimension = builder.build().dimensions[0]
             if (dimension.alias !== ranges.grain) {
-              c.dimensions.remove(dimension.id)
-              addDimension(c, ranges.grain, 'xAxis')
+              builder.dimensions.remove(dimension.id)
+              addDimension(builder, ranges.grain, 'xAxis')
             }
           }
         }
@@ -3116,7 +3234,7 @@
           $('#notice').hidden = true
         }
         async function refresh() {
-          if (disposed) return
+          if (disposed || (sceneReady && document.hidden && !manualQuery)) return
           if (busy) {
             pending = true
             return
@@ -3141,32 +3259,40 @@
               controller.signal,
             )
             if (disposed || pending) return
+            clearTimeout(timeout)
             await renderDashboard(seeds, historical, ranges)
             await revealDashboard()
             setControls(false)
           } catch (error) {
             if (!disposed) {
-              fail(error.name === 'AbortError' ? '查询超时，已保留上次结果；将自动重试。' : error.message)
+              fail(
+                error.name === 'AbortError'
+                  ? sceneReady
+                    ? '查询超时，已保留上次结果；将自动重试。'
+                    : '查询超时，请重新加载。'
+                  : error.message,
+              )
               $('#live-label').textContent = '等待重连'
               setControls(false)
             }
           } finally {
             clearTimeout(timeout)
-            if (manualQuery) {
-              const remaining = 240 - (performance.now() - manualStarted)
-              if (remaining > 0) await new Promise((resolve) => setTimeout(resolve, remaining))
-            }
+            if (manualQuery) await waitForMinimum(manualStarted, 240)
             busy = false
             if (!pending) {
               $('#refresh').setAttribute('aria-busy', 'false')
               finishFeedback()
             }
-            if (!disposed) {
+            if (!disposed && sceneReady) {
               if (pending) queueMicrotask(refresh)
-              else if (!paused) timer = setTimeout(refresh, 4000)
+              else if (!paused && !document.hidden) timer = setTimeout(refresh, 4000)
             }
           }
         }
+        document.addEventListener('visibilitychange', () => {
+          clearTimeout(timer)
+          if (!document.hidden && sceneReady && !paused) refresh()
+        })
         // Dashboard controls.
         function tabs(selector, select) {
           const buttons = document.querySelectorAll(selector)
@@ -3200,48 +3326,30 @@
           else refresh()
         }
         $('#refresh').onclick = () => requestRefresh($('#refresh'))
-        mapSelect = (row, trigger) => {
+        function selectRegion(nextProvince, nextCity, trigger) {
           if (manualQuery) return
-          const same = province === row.province && city === (row.city || '')
-          province = same && !row.city ? '' : row.province
-          city = same ? '' : row.city || ''
-          detailsProduct = ''
-          detailsProductName = ''
+          province = nextProvince
+          city = nextCity
+          detailsProduct = detailsProductName = ''
           lossOnly = false
-          mapPopup?.remove()
           requestRefresh(trigger)
           mapFit(province, city)
         }
-        mapReset = (trigger) => {
+        mapSelect = (row, trigger) => {
           if (manualQuery) return
-          province = ''
-          city = ''
-          detailsProduct = ''
-          detailsProductName = ''
-          lossOnly = false
-          requestRefresh(trigger)
-          mapFit()
+          const same = province === row.province && city === (row.city || '')
+          mapPopup?.remove()
+          selectRegion(same && !row.city ? '' : row.province, same ? '' : row.city || '', trigger)
         }
+        mapReset = (trigger) => selectRegion('', '', trigger)
         $('#clear').onclick = () => mapReset($('#clear'))
-        $('#map-up').onclick = () => {
-          if (manualQuery) return
-          city = ''
-          detailsProduct = ''
-          detailsProductName = ''
-          lossOnly = false
-          requestRefresh($('#map-up'))
-          mapFit(province)
-        }
-        $('#detail-all').onclick = () => {
-          if (manualQuery) return
-          lossOnly = false
-          requestRefresh($('#detail-all'))
-        }
-        $('#detail-loss').onclick = () => {
-          if (manualQuery) return
-          lossOnly = true
-          requestRefresh($('#detail-loss'))
-        }
+        $('#map-up').onclick = () => selectRegion(province, '', $('#map-up'))
+        for (const id of ['#detail-all', '#detail-loss'])
+          $(id).onclick = () => {
+            if (manualQuery) return
+            lossOnly = id === '#detail-loss'
+            requestRefresh($(id))
+          }
         $('#clear-product').onclick = () => {
           if (manualQuery) return
           detailsProduct = ''
@@ -3343,11 +3451,13 @@
           pivot: {
             title: '交叉透视',
             description: '大区 / 品类 × 客户类型 · 销售与利润',
+            tableOnly: true,
             dimensions: ['area', 'customer_type', 'product_type'],
           },
           details: {
             title: '交易明细',
             description: '10,000 条 · 连续滚动',
+            tableOnly: true,
             columns: [
               'order_date',
               'product_name',
@@ -3419,6 +3529,18 @@
           analysisData,
           analysisBusy = false
         const analysisDialog = $('#analysis-dialog')
+        function tableRecords(dataset, ids, columns, totalSales = 0) {
+          const calculated = {
+            margin: (row) => (Number(row[ids.sales]) > 0 ? Number(row[ids.profit]) / Number(row[ids.sales]) : null),
+            average: (row) => (Number(row[ids.orders]) > 0 ? Number(row[ids.sales]) / Number(row[ids.orders]) : null),
+            share: (row) => (totalSales > 0 ? Number(row[ids.sales]) / totalSales : null),
+          }
+          const fields = columns.map((name) => ({ id: ids[name], calculate: calculated[name] }))
+          // Project once, computing ratios only when the table displays them.
+          return dataset.map((row) =>
+            Object.fromEntries(fields.map(({ id, calculate }) => [id, calculate ? calculate(row) : row[id]])),
+          )
+        }
         function tableOptions(builder, seed, columns, compact = false, totalSales = 0) {
           const ids = queryFieldIds(builder)
           const types = queryFieldTypes(builder, context.schema)
@@ -3427,12 +3549,6 @@
             ids[field] = uuid + '_' + field
             types[field] = 'number'
           }
-          const dataset = seed.dataset.map((row) => ({
-            ...row,
-            [ids.margin]: Number(row[ids.sales]) > 0 ? Number(row[ids.profit]) / Number(row[ids.sales]) : null,
-            [ids.average]: Number(row[ids.orders]) > 0 ? Number(row[ids.sales]) / Number(row[ids.orders]) : null,
-            [ids.share]: totalSales > 0 ? Number(row[ids.sales]) / totalSales : null,
-          }))
           const dimensions = [],
             measures = []
           const visibleColumns = new Map()
@@ -3445,7 +3561,7 @@
           })
           const options = Builder.from({
             chartType: 'table',
-            dataset: dataset.map((row) => Object.fromEntries([...visibleColumns.keys()].map((id) => [id, row[id]]))),
+            dataset: tableRecords(seed.dataset, ids, columns, totalSales),
             dimensions,
             measures,
             theme: 'dark',
@@ -3481,27 +3597,30 @@
             }
           options.theme.bodyStyle.bgColor = ({ row }) => (row % 2 ? '#e6e9ed03' : 'transparent')
           options.columns.sort((a, b) => visibleColumns.get(a.field).index - visibleColumns.get(b.field).index)
-          for (const column of options.columns) {
-            const { name } = visibleColumns.get(column.field)
-            const { width, compactWidth, format } = columnPresentation[name]
-            const numeric = types[name] === 'number' && format !== String
-            column.width = compact ? compactWidth : width
-            column.sort = !compact
-            column.style = {
-              ...column.style,
-              fontWeight: 400,
-              textAlign: numeric ? 'right' : 'left',
-              color: ({ dataValue }) => (name === 'profit' && Number(dataValue) < 0 ? '#ff786d' : '#d9dbdd'),
-            }
-            column.headerStyle = { ...column.headerStyle, fontWeight: 400, textAlign: numeric ? 'right' : 'left' }
-            column.fieldFormat = (row) => {
-              const value = row[ids[name]]
-              if (value === null || value === undefined) return '—'
-              if (compact && name === 'order_date') return String(value).slice(11, 19)
-              return (format || (numeric ? fmt : String))(value)
-            }
-          }
+          for (const column of options.columns)
+            styleTableColumn(column, visibleColumns.get(column.field).name, types, compact)
           return options
+        }
+        function styleTableColumn(column, name, types, compact) {
+          const { field } = column
+          const { width, compactWidth, format } = columnPresentation[name]
+          const numeric = types[name] === 'number' && format !== String
+          const textAlign = numeric ? 'right' : 'left'
+          column.width = compact ? compactWidth : width
+          column.sort = !compact
+          column.style = {
+            ...column.style,
+            fontWeight: 400,
+            textAlign,
+            color: ({ dataValue }) => (name === 'profit' && Number(dataValue) < 0 ? '#ff786d' : '#d9dbdd'),
+          }
+          column.headerStyle = { ...column.headerStyle, fontWeight: 400, textAlign }
+          column.fieldFormat = (row) => {
+            const value = row[field]
+            if (value === null || value === undefined) return '—'
+            if (compact && name === 'order_date') return String(value).slice(11, 19)
+            return (format || (numeric ? fmt : String))(value)
+          }
         }
         function analysisMenu(container, compact) {
           for (const [key, config] of Object.entries(analysisModules)) {
@@ -3564,12 +3683,13 @@
           analysisKey = key
           analysisData = null
           clearAnalysis()
-          $('#analysis-title').textContent = analysisModules[key].title
+          const config = analysisModules[key]
+          $('#analysis-title').textContent = config.title
           $('#analysis-scope').textContent = scopeText(analysisScope)
           $('#analysis-metrics').replaceChildren()
           $('#analysis-count').textContent = ''
-          $('#analysis-visual').hidden = ['details', 'pivot'].includes(key)
-          $('#analysis-body').dataset.full = String(['details', 'pivot'].includes(key))
+          $('#analysis-visual').hidden = Boolean(config.tableOnly)
+          $('#analysis-body').dataset.full = String(Boolean(config.tableOnly))
           document
             .querySelectorAll('[data-analysis]')
             .forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.analysis === key)))
@@ -3590,11 +3710,11 @@
           $('#analysis-retry').hidden = true
           analysisDialog.querySelectorAll('button:not(#close-analysis)').forEach((element) => (element.disabled = true))
           try {
-            const c = analysisModules[analysisKey].builder
-            for (const builder of [c, analysisTotals, analysisLoss])
+            const analysisBuilder = analysisModules[analysisKey].builder
+            for (const builder of [analysisBuilder, analysisTotals, analysisLoss])
               applyFilters(builder, { ...analysisScope, lossOnly: builder === analysisLoss || analysisScope.lossOnly })
             const { seed, totals, losses } = await buildQueries(
-              { seed: c, totals: analysisTotals, losses: analysisLoss },
+              { seed: analysisBuilder, totals: analysisTotals, losses: analysisLoss },
               request.signal,
             )
             if (request.signal.aborted || !analysisDialog.open) return
@@ -3602,7 +3722,7 @@
               VBI,
               VQuery,
               analysisKey,
-              queryRows(c, seed),
+              queryRows(analysisBuilder, seed),
               seed.dataset.length < 10000,
               request.signal,
             )
@@ -3622,8 +3742,7 @@
             }
           } finally {
             clearTimeout(timeout)
-            const remaining = 240 - (performance.now() - started)
-            if (remaining > 0) await new Promise((resolve) => setTimeout(resolve, remaining))
+            await waitForMinimum(started, 240)
             if (analysisController === request) {
               analysisBusy = false
               analysisDialog.setAttribute('aria-busy', 'false')
@@ -3652,39 +3771,40 @@
           container.replaceChildren(...cards.map(({ card }) => card))
           cards.forEach(({ card, value, digits }) => metric(card.querySelector('strong'), value, digits))
         }
-        async function renderAnalysis() {
-          if (!analysisData || !analysisDialog.open) return
-          const config = analysisModules[analysisKey],
-            c = config.builder,
-            ids = queryFieldIds(c)
-          const { seed, totals, loss: losses, grouped } = analysisData
-          const capped = seed.dataset.length >= 10000
-          const insights = supermarketAnalysisMetrics(totals, losses, grouped)
-          const dataset = seed.dataset
-          let cards = [
-            ['销售额', insights.sales, '元', 2],
-            ['利润', insights.profit, '元', 2],
-            ['利润率', insights.margin, '%', 1],
-            ['成交订单', insights.orders, '笔'],
-          ]
-          if (analysisKey === 'customer') {
-            cards = [
+        function analysisMetricCards(key, totals, insights) {
+          if (key === 'customer')
+            return [
               ['成交客户', Number(totals.customers), '人'],
               ['期内复购率', insights.repeatRate, '%', 1, '期内至少 2 笔去重订单的客户 / 成交客户；不代表历史留存率'],
               ['户均消费', insights.perCustomer, '元', 2],
               ['TOP 10 客户贡献', insights.topCustomerShare, '%', 1],
             ]
-          }
-          if (analysisKey === 'profit')
-            cards = [
+          if (key === 'profit')
+            return [
               ['净利润', insights.profit, '元', 2],
               ['盈利明细利润', insights.positiveProfit, '元', 2, '只汇总利润为正的交易明细'],
               ['亏损明细损失', insights.lossAmount, '元', 2, '亏损明细绝对额，已计入净利润'],
               ['净亏损商品', insights.lossProducts, '种', 0, '按商品汇总后净利润为负，与亏损明细口径不同'],
             ]
-          if (analysisKey === 'geography') cards[3] = ['成交城市', insights.cities, '个']
-          if (analysisKey === 'category') cards[3] = ['动销商品', Number(totals.products), '种']
-          showAnalysisMetrics(cards)
+          const cards = [
+            ['销售额', insights.sales, '元', 2],
+            ['利润', insights.profit, '元', 2],
+            ['利润率', insights.margin, '%', 1],
+            ['成交订单', insights.orders, '笔'],
+          ]
+          if (key === 'geography') cards[3] = ['成交城市', insights.cities, '个']
+          if (key === 'category') cards[3] = ['动销商品', Number(totals.products), '种']
+          return cards
+        }
+        async function renderAnalysis() {
+          if (!analysisData || !analysisDialog.open) return
+          const config = analysisModules[analysisKey]
+          const ids = queryFieldIds(config.builder)
+          const { seed, totals, loss: losses, grouped } = analysisData
+          const capped = seed.dataset.length >= 10000
+          const insights = supermarketAnalysisMetrics(totals, losses, grouped)
+          const dataset = seed.dataset
+          showAnalysisMetrics(analysisMetricCards(analysisKey, totals, insights))
           $('#analysis-message').textContent = capped
             ? '已达 10,000 条上限，请缩小筛选范围；汇总指标仍按完整范围计算。'
             : dataset.length
@@ -3695,7 +3815,7 @@
               ? `${fmt(dataset.length)} / ${fmt(totals.lines)} 条明细`
               : `${fmt(dataset.length)} 组`
           const pivot = analysisKey === 'pivot'
-          $('#analysis-visual').hidden = ['details', 'pivot'].includes(analysisKey) || !dataset.length
+          $('#analysis-visual').hidden = Boolean(config.tableOnly) || !dataset.length
           $('#analysis-body').dataset.full = String($('#analysis-visual').hidden)
           $('#analysis-table').dataset.empty = String(!dataset.length)
           if (!dataset.length) {
@@ -3704,12 +3824,12 @@
           }
           const options = pivot
             ? pivotOptions(ids, dataset)
-            : tableOptions(c, { ...seed, dataset }, config.columns, false, insights.sales)
+            : tableOptions(config.builder, seed, config.columns, false, insights.sales)
           analysisTable?.release()
           const Constructor = pivot ? window.VTable.PivotTable : window.VTable.ListTable
           analysisTable = new Constructor($('#analysis-table'), options)
           analysisTable.resize()
-          if (!['pivot', 'details'].includes(analysisKey)) {
+          if (!config.tableOnly) {
             const table = analysisTable
             table.on('click_cell', ({ col, row }) => {
               if (row < 1 || analysisBusy) return
@@ -3918,6 +4038,7 @@
         $('#refresh').onclick = () => location.reload()
       }
       motion.addEventListener('change', () => {
+        trendRenderKey = productsRenderKey = undefined
         renderMapMarkers()
         if (!motion.matches) return
         mapMarkers.forEach(({ el }) => el.classList.remove('is-leaving'))
@@ -3926,19 +4047,6 @@
           instance.stopAnimation()
           instance.updateSpecSync({ ...instance.getSpec(), animation: false })
         })
-      })
-      window.addEventListener('pagehide', () => {
-        disposed = true
-        clearTimeout(timer)
-        controller?.abort()
-        observer?.disconnect()
-        clearMapFlights()
-        map?.remove()
-        instances.forEach((c) => c.release())
-        analysisTable?.release()
-        liveTable?.release()
-        analysisController?.abort()
-        animations.forEach((a) => a.cancel())
       })
     </script>
   </body>
