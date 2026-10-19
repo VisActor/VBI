@@ -83,6 +83,10 @@ function fixture(t) {
     write(repoRoot, `packages/${name}/src/index.ts`, 'export const initialApi = true')
     write(repoRoot, `scripts/skill-api/${name}.md`, '[Index](index.md) · [Root](../../SKILL.md)\n')
   }
+  fs.appendFileSync(
+    path.join(repoRoot, 'packages/vseed/src/index.ts'),
+    '\nexport const zChart = { parse: (value: string) => value }\n',
+  )
   for (const name of ['visual-query', 'server-runtime']) {
     write(source, `references/${name}/SKILL.md`, `[Root](../../SKILL.md) · [API](../../api/vbi/SKILL.md)\n`)
   }
@@ -160,6 +164,8 @@ test('builds self-contained scene archives with rewritten references and unchang
     assert.ok(resources.has('references/server-runtime/scripts/runtime/.env.example'))
     assert.ok(resources.has('references/server-runtime/scripts/runtime/server.mjs'))
     assert.ok(resources.has('references/metric-analysis/SKILL.md'))
+    assert.equal(resources.has('api/vseed/schemas.md'), false)
+    assert.doesNotMatch(resources.get('api/vseed/index.md').toString(), /schemas\.md|zChart/)
     assert.equal(fs.existsSync(path.join(root, 'references/light-dashboard')), false)
     assert.equal(fs.existsSync(path.join(root, 'references/map-dashboard')), false)
     assert.deepEqual(resources.get('templates/preview.png'), Buffer.from([0, 1, 127, 255]))

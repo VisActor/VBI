@@ -130,7 +130,11 @@ function fixture(t) {
     'packages/vquery/src/adapters/storage.ts',
     'export class InMemoryAdapter {}\nexport class IndexedDBAdapter {}',
   )
-  write(root, 'packages/vquery/src/types/query.ts', 'export interface QueryDSL { select: string[] }')
+  write(
+    root,
+    'packages/vquery/src/types/query.ts',
+    'export interface QueryDSL { select: string[] }; export const zQuery = true',
+  )
   write(
     root,
     'packages/vquery/src/sql-builder/compile.ts',
@@ -142,7 +146,7 @@ function fixture(t) {
     'builder/builder.ts': 'export class Builder { build() { return { chart: true } } }',
     'builder/register/all.ts': 'export const registerAll = () => true',
     'types/chartType/line.ts': "export interface Line { chartType: 'line' }",
-    'types/schema.ts': 'export const zLine = { parse: (value: string) => value }',
+    'types/schema.ts': 'export const zLine = { parse: (value: string) => value }; export type SchemaInput = string',
     'dataReshape/data.ts': 'export const reshape = (values: number[]) => values',
     'pipeline/pipe.ts': 'export const utility = (value: string) => value',
     'theme/theme.ts': "export const theme = { name: 'light' }",
@@ -156,6 +160,10 @@ function fixture(t) {
     Object.keys(vseedFiles)
       .map((name) => `export * from './${name.slice(0, -3)}'`)
       .join('\n'),
+  )
+  fs.appendFileSync(
+    path.join(root, 'packages/vseed/src/index.ts'),
+    "\nexport { zLine as LineSchema } from './types/schema'\n",
   )
   return root
 }
@@ -186,9 +194,15 @@ test('documents public declarations, aliases, overloads, defaults and workspace 
   assert.match(types, /enum Status/)
   assert.match(types, /packages\/vseed\/src\/pipeline\/pipe.ts/)
   assert.match(fs.readFileSync(path.join(api, 'vbi/index.md'), 'utf8'), /sharedUtility/)
-  for (const group of ['builder', 'register', 'chart-types', 'schemas', 'data', 'pipeline', 'theme', 'i18n', 'types']) {
+  for (const group of ['builder', 'register', 'chart-types', 'data', 'pipeline', 'theme', 'i18n', 'types']) {
     assert.ok(fs.existsSync(path.join(api, 'vseed', `${group}.md`)), `${group} is documented`)
   }
+  assert.equal(fs.existsSync(path.join(api, 'vseed/schemas.md')), false)
+  for (const content of snapshot(path.join(api, 'vseed')).values()) {
+    assert.doesNotMatch(content, /schemas\.md|zLine|LineSchema/)
+  }
+  assert.match(fs.readFileSync(path.join(api, 'vseed/types.md'), 'utf8'), /SchemaInput/)
+  assert.match(fs.readFileSync(path.join(api, 'vquery/index.md'), 'utf8'), /zQuery/)
 })
 
 test('keeps conditional exports distinct and documents inherited public members', async (t) => {
@@ -225,6 +239,7 @@ test('updates the canonical API, removes stale content and preserves manual skil
     write(root, `skills/${skill}/api/vbi/obsolete.md`, 'Stale page without a marker.\n')
     write(root, `skills/${skill}/api/vbi/old/data.json`, '{"stale":true}\n')
     write(root, `skills/${skill}/api/vquery/SKILL.md`, 'Diverged workflow copy.\n')
+    write(root, `skills/${skill}/api/vseed/schemas.md`, 'Obsolete schema declarations.\n')
   }
   write(root, 'packages/vbi/src/index.ts', 'export const nextApi = true')
   write(root, 'scripts/skill-api/vquery.md', '# Updated query workflow\n')
@@ -236,6 +251,7 @@ test('updates the canonical API, removes stale content and preserves manual skil
     assert.equal(fs.existsSync(path.join(api, 'vbi/chart-builder.md')), false)
     assert.equal(fs.existsSync(path.join(api, 'vbi/obsolete.md')), false)
     assert.equal(fs.existsSync(path.join(api, 'vbi/old')), false)
+    assert.equal(fs.existsSync(path.join(api, 'vseed/schemas.md')), false)
     assert.match(fs.readFileSync(path.join(api, 'vbi/index.md'), 'utf8'), /nextApi/)
     assert.match(fs.readFileSync(path.join(api, 'vquery/SKILL.md'), 'utf8'), /Updated query workflow/)
     for (const name of packageNames) {

@@ -26,6 +26,7 @@ pnpm build:skills
 公共能力在 `skills/visactor-dashboard/references/` 中维护。API 工作流说明的源文件是
 `scripts/skill-api/`；声明和 JSDoc 来自对应包源码。API 生成由构建脚本内部调用，
 统一使用 `pnpm build:skills`。API 生成失败时停止打包，保留已有 ZIP。
+VSeed 仅收录使用所需的 DSL、Builder 与类型等 API，跳过体积庞大的运行时 schema 声明（`z*`）及 `schemas.md`，重建时清除旧文件和索引引用。
 
 构建脚本的测试命令为：
 

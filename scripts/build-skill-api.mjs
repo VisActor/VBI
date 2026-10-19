@@ -31,7 +31,7 @@ function entrypoints(exports, conditions = []) {
   )
 }
 
-function groupFor(packageName, source, name) {
+function groupFor(packageName, source) {
   if (packageName === 'vbi') {
     return (
       ['chart-builder', 'dashboard-builder', 'insight-builder'].find((group) => source.startsWith(`${group}/`)) ??
@@ -45,7 +45,6 @@ function groupFor(packageName, source, name) {
     if (source.startsWith('utils/')) return 'utils'
     return source.startsWith('vquery-') || source === 'VQuery.ts' ? 'runtime' : 'dataset'
   }
-  if (name.startsWith('z')) return 'schemas'
   if (source.startsWith('types/chartType/')) return 'chart-types'
   if (source.startsWith('builder/register/')) return 'register'
   if (source.startsWith('builder/')) return 'builder'
@@ -190,6 +189,9 @@ function generatePackage(repoRoot, packageName, projects) {
     if (!exports.size) throw new Error(`No public exports in ${entry.source}`)
     for (const [name, declarations] of exports) {
       for (const declaration of declarations) {
+        // VSeed's z-prefixed runtime schemas are too large for skill documentation.
+        // Check the declaration name so renamed re-exports are excluded as well.
+        if (packageName === 'vseed' && declaration.getName().startsWith('z')) continue
         const record = recordFor(declaration)
         record.exports.add(name)
         record.entries.add(entry.name)
@@ -223,7 +225,7 @@ function generatePackage(repoRoot, packageName, projects) {
 
   const groups = new Map()
   for (const record of records.values()) {
-    record.group = groupFor(packageName, record.source, record.name)
+    record.group = groupFor(packageName, record.source)
     const group = groups.get(record.group) ?? []
     group.push(record)
     groups.set(record.group, group)

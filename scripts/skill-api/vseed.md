@@ -29,7 +29,6 @@ description: 使用 VSeed DSL 和 Builder 生成 VChart / VTable Spec，配置�
 | 图表类型、主题及 Pipeline 注册 | [register](register.md)                                                         |
 | 图表 / 表格 DSL                | [chart-types](chart-types.md)                                                   |
 | 公共配置、编码与类型           | [types](types.md)                                                               |
-| 运行时 schema                  | [schemas](schemas.md)                                                           |
 | 构建管线、数据重塑、主题与语言 | [pipeline](pipeline.md) · [data](data.md) · [theme](theme.md) · [i18n](i18n.md) |
 
 验收实际图表、空数据、更新与尺寸变化；扩展共享 Pipe 时覆盖受影响的图表类型。查询与页面组合通过 [visual-query](../../references/visual-query/SKILL.md)串联；布局、视觉与场景交互质量另按所选 Dashboard 指南验收。
