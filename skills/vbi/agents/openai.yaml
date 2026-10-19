@@ -1,3 +1,0 @@
-interface:
-  display_name: 'Dashboard 看板'
-  short_description: '把业务数据做成交互式看板，支持经营概览、指标监测、筛选联动和实时大屏。'

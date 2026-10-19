@@ -12,7 +12,7 @@
     "dev": "pnpm --filter=website run dev",
     "build": "turbo build --filter=!website",
     "build:website": "pnpm --filter=website run build",
-    "build:skill-api": "node scripts/build-skill-api.mjs",
+    "build:skills": "node scripts/build-skills.mjs",
     "build:graph": "pnpm run build:packages:graph",
     "build:packages:graph": "turbo build --filter=./packages/* --graph=.turbo/packages.mermaid",
     "format": "oxfmt .",

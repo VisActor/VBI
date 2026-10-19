@@ -5,6 +5,9 @@ import path from 'node:path'
 import { test } from 'node:test'
 import { buildSkillApi } from './build-skill-api.mjs'
 
+const skillNames = ['visactor-dashboard']
+const packageNames = ['vbi', 'vquery', 'vseed']
+
 function write(root, name, content) {
   const file = path.join(root, name)
   fs.mkdirSync(path.dirname(file), { recursive: true })
@@ -48,11 +51,13 @@ function fixture(t) {
         include: ['src'],
       }),
     )
-    write(root, `skills/vbi/references/${name}/SKILL.md`, `Manually maintained ${name} guidance.\n`)
+    write(root, `scripts/skill-api/${name}.md`, `# ${name} workflow\n\nMaintained once, distributed to every skill.\n`)
   }
-  write(root, 'skills/vbi/SKILL.md', 'Manual root skill.\n')
-  write(root, 'skills/vbi/references/activation-map.yaml', 'manual: true\n')
-  write(root, 'skills/vbi/references/light-dashboard/template.html', '<p>Manual template</p>\n')
+  for (const name of skillNames) {
+    write(root, `skills/${name}/SKILL.md`, 'Manual root skill.\n')
+    write(root, `skills/${name}/references/activation-map.yaml`, 'manual: true\n')
+    write(root, `skills/${name}/templates/example.html`, '<p>Manual template</p>\n')
+  }
   write(
     root,
     'packages/vbi/src/index.ts',
@@ -167,29 +172,29 @@ function snapshot(root) {
 test('documents public declarations, aliases, overloads, defaults and workspace re-exports from source', async (t) => {
   const root = fixture(t)
   await buildSkillApi({ repoRoot: root })
-  const api = path.join(root, 'skills/vbi/references')
-  const client = fs.readFileSync(path.join(api, 'vbi/api/chart-builder.md'), 'utf8')
+  const api = path.join(root, 'skills/visactor-dashboard/api')
+  const client = fs.readFileSync(path.join(api, 'vbi/chart-builder.md'), 'utf8')
   assert.match(client, /Public client documentation/)
   assert.match(client, /readonly model: Model/)
   assert.match(client, /limit = 10/)
   assert.match(client, /make\(input: string\): string/)
   assert.match(client, /make\(input: number\): number/)
   assert.doesNotMatch(client, /secret|cache|#internal|return input|hidden implementation|modules must never execute/)
-  const types = fs.readFileSync(path.join(api, 'vbi/api/types.md'), 'utf8')
+  const types = fs.readFileSync(path.join(api, 'vbi/types.md'), 'utf8')
   assert.match(types, /PublicModel/)
   assert.match(types, /type Detail/)
   assert.match(types, /enum Status/)
   assert.match(types, /packages\/vseed\/src\/pipeline\/pipe.ts/)
-  assert.match(fs.readFileSync(path.join(api, 'vbi/api/index.md'), 'utf8'), /sharedUtility/)
+  assert.match(fs.readFileSync(path.join(api, 'vbi/index.md'), 'utf8'), /sharedUtility/)
   for (const group of ['builder', 'register', 'chart-types', 'schemas', 'data', 'pipeline', 'theme', 'i18n', 'types']) {
-    assert.ok(fs.existsSync(path.join(api, 'vseed/api', `${group}.md`)), `${group} is documented`)
+    assert.ok(fs.existsSync(path.join(api, 'vseed', `${group}.md`)), `${group} is documented`)
   }
 })
 
 test('keeps conditional exports distinct and documents inherited public members', async (t) => {
   const root = fixture(t)
   await buildSkillApi({ repoRoot: root })
-  const api = path.join(root, 'skills/vbi/references/vquery/api')
+  const api = path.join(root, 'skills/visactor-dashboard/api/vquery')
   const index = fs.readFileSync(path.join(api, 'index.md'), 'utf8')
   const exportConditions = (name) =>
     index
@@ -206,31 +211,120 @@ test('keeps conditional exports distinct and documents inherited public members'
   assert.match(runtime, /runtime.md#vquery-vqueryts/)
 })
 
-test('updates only API files, stays deterministic and prunes obsolete generated pages', async (t) => {
+test('updates the canonical API, removes stale content and preserves manual skills', async (t) => {
   const root = fixture(t)
-  const skillRoot = path.join(root, 'skills/vbi')
-  write(root, 'skills/vbi/references/vbi/api/notes.md', 'Manual API notes.\n')
-  write(root, 'skills/vbi/references/vbi/api/data.json', '{"manual":true}\n')
-  const manual = snapshot(skillRoot)
+  const skillsRoot = path.join(root, 'skills')
+  const manual = snapshot(skillsRoot)
   await buildSkillApi({ repoRoot: root })
-  for (const [name, content] of manual) assert.equal(fs.readFileSync(path.join(skillRoot, name), 'utf8'), content)
-  const first = snapshot(skillRoot)
+  for (const [name, content] of manual) assert.equal(fs.readFileSync(path.join(skillsRoot, name), 'utf8'), content)
+  const first = snapshot(skillsRoot)
   await buildSkillApi({ repoRoot: root })
-  assert.deepEqual(snapshot(skillRoot), first)
+  assert.deepEqual(snapshot(skillsRoot), first)
+
+  for (const skill of skillNames) {
+    write(root, `skills/${skill}/api/vbi/obsolete.md`, 'Stale page without a marker.\n')
+    write(root, `skills/${skill}/api/vbi/old/data.json`, '{"stale":true}\n')
+    write(root, `skills/${skill}/api/vquery/SKILL.md`, 'Diverged workflow copy.\n')
+  }
   write(root, 'packages/vbi/src/index.ts', 'export const nextApi = true')
+  write(root, 'scripts/skill-api/vquery.md', '# Updated query workflow\n')
   await buildSkillApi({ repoRoot: root })
-  assert.equal(fs.existsSync(path.join(skillRoot, 'references/vbi/api/chart-builder.md')), false)
-  assert.match(fs.readFileSync(path.join(skillRoot, 'references/vbi/api/index.md'), 'utf8'), /nextApi/)
-  for (const [name, content] of manual) assert.equal(fs.readFileSync(path.join(skillRoot, name), 'utf8'), content)
+  const canonical = snapshot(path.join(skillsRoot, 'visactor-dashboard/api'))
+  for (const skill of skillNames) {
+    const api = path.join(skillsRoot, skill, 'api')
+    assert.deepEqual(snapshot(api), canonical)
+    assert.equal(fs.existsSync(path.join(api, 'vbi/chart-builder.md')), false)
+    assert.equal(fs.existsSync(path.join(api, 'vbi/obsolete.md')), false)
+    assert.equal(fs.existsSync(path.join(api, 'vbi/old')), false)
+    assert.match(fs.readFileSync(path.join(api, 'vbi/index.md'), 'utf8'), /nextApi/)
+    assert.match(fs.readFileSync(path.join(api, 'vquery/SKILL.md'), 'utf8'), /Updated query workflow/)
+    for (const name of packageNames) {
+      assert.ok(fs.existsSync(path.join(api, name, 'SKILL.md')))
+      assert.ok(fs.existsSync(path.join(api, name, 'index.md')))
+      assert.equal(fs.existsSync(path.join(api, name, 'api')), false)
+      assert.equal(fs.existsSync(path.join(skillsRoot, skill, 'references', name)), false)
+    }
+  }
+  for (const [name, content] of manual) assert.equal(fs.readFileSync(path.join(skillsRoot, name), 'utf8'), content)
 })
 
-test('does not partially replace API documents when a package entrypoint cannot be read', async (t) => {
+test('does not partially replace the canonical skill when a package entrypoint cannot be read', async (t) => {
   const root = fixture(t)
   await buildSkillApi({ repoRoot: root })
-  const skillRoot = path.join(root, 'skills/vbi')
-  const previous = snapshot(skillRoot)
+  const skillsRoot = path.join(root, 'skills')
+  const previous = snapshot(skillsRoot)
   write(root, 'packages/vbi/src/index.ts', 'export const changedApi = true')
   fs.unlinkSync(path.join(root, 'packages/vquery/src/node.ts'))
   await assert.rejects(buildSkillApi({ repoRoot: root }), /File not found/)
-  assert.deepEqual(snapshot(skillRoot), previous)
+  assert.deepEqual(snapshot(skillsRoot), previous)
+})
+
+test('does not partially replace the canonical skill when shared workflow source is missing', async (t) => {
+  const root = fixture(t)
+  await buildSkillApi({ repoRoot: root })
+  const skillsRoot = path.join(root, 'skills')
+  const previous = snapshot(skillsRoot)
+  write(root, 'scripts/skill-api/vbi.md', '# Changed workflow\n')
+  fs.unlinkSync(path.join(root, 'scripts/skill-api/vseed.md'))
+  await assert.rejects(buildSkillApi({ repoRoot: root }), /ENOENT/)
+  assert.deepEqual(snapshot(skillsRoot), previous)
+})
+
+test('requires the canonical skill before replacing API files', async (t) => {
+  const root = fixture(t)
+  await buildSkillApi({ repoRoot: root })
+  const skillsRoot = path.join(root, 'skills')
+  fs.unlinkSync(path.join(skillsRoot, 'visactor-dashboard/SKILL.md'))
+  const previous = snapshot(skillsRoot)
+  await assert.rejects(buildSkillApi({ repoRoot: root }), /ENOENT/)
+  assert.deepEqual(snapshot(skillsRoot), previous)
+})
+
+test('rejects packages without source entrypoints or public exports before writing', async (t) => {
+  const root = fixture(t)
+  const skillsRoot = path.join(root, 'skills')
+  const previous = snapshot(skillsRoot)
+  const metadataPath = path.join(root, 'packages/vbi/package.json')
+  const metadata = fs.readFileSync(metadataPath, 'utf8')
+  write(root, 'packages/vbi/package.json', JSON.stringify({ name: '@visactor/vbi', exports: { '.': {} } }))
+  await assert.rejects(buildSkillApi({ repoRoot: root }), /no source entrypoint/)
+  fs.writeFileSync(metadataPath, metadata)
+  write(root, 'packages/vbi/src/index.ts', 'export {}')
+  await assert.rejects(buildSkillApi({ repoRoot: root }), /No public exports/)
+  assert.deepEqual(snapshot(skillsRoot), previous)
+})
+
+test('published API guides work in standalone downloads without repository maintenance instructions', async (t) => {
+  const root = fixture(t)
+  for (const name of packageNames) {
+    write(
+      root,
+      `scripts/skill-api/${name}.md`,
+      fs.readFileSync(new URL(`./skill-api/${name}.md`, import.meta.url), 'utf8'),
+    )
+  }
+  // Exercise the real guide links against representative public API groups.
+  write(root, 'packages/vbi/src/vbi.ts', 'export const createVBI = () => ({})')
+  fs.appendFileSync(path.join(root, 'packages/vbi/src/index.ts'), "\nexport * from './vbi'\n")
+  for (const skill of skillNames) {
+    for (const reference of ['visual-query', 'server-runtime']) {
+      write(root, `skills/${skill}/references/${reference}/SKILL.md`, `# ${reference}\n`)
+    }
+  }
+  await buildSkillApi({ repoRoot: root })
+  const downloads = fs.mkdtempSync(path.join(os.tmpdir(), 'standalone-skill-api-'))
+  t.after(() => fs.rmSync(downloads, { recursive: true, force: true }))
+  for (const skill of skillNames) {
+    const standalone = path.join(downloads, skill)
+    fs.cpSync(path.join(root, 'skills', skill), standalone, { recursive: true })
+    for (const [name, content] of snapshot(path.join(standalone, 'api'))) {
+      assert.doesNotMatch(content, /pnpm build:skill-api|scripts\/skill-api|cd skills\//, name)
+      for (const [, href] of content.matchAll(/\]\(([^)\s]+)\)/g)) {
+        if (href.startsWith('#') || href.includes(':')) continue
+        const target = path.resolve(standalone, 'api', path.dirname(name), href.split('#')[0])
+        assert.ok(target.startsWith(standalone + path.sep), `${name}: ${href} escapes the download`)
+        assert.ok(fs.existsSync(target), `${name}: ${href} is missing from the download`)
+      }
+    }
+  }
 })
