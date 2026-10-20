@@ -1960,7 +1960,7 @@
           `- 平均客单价：${Number.isFinite(derived.average) ? money(derived.average) : '—'}，${averageChangeText}。`,
         )
         return [
-          `${metrics.length} 项核心指标 · 2 项衍生指标 · ${dateKey(firstDay)} — ${dateKey(lastDay)} · 对比前 ${days} 天`,
+          `${dateKey(firstDay)} — ${dateKey(lastDay)} · 对比前 ${days} 天`,
           summarizeKeyFinding(total, prior),
           ...items,
         ].join('\n')

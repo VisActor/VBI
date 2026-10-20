@@ -136,7 +136,7 @@ function createPalette(color) {
 
 ## 大面积模糊渐变与柔白斜光
 
-选择玻璃渐变背景时，可用两种协调的低饱和色大面积模糊、自然融合；以下示例的柔白光从左上斜穿至右下，边缘柔化并带轻微散射。两种背景色按所选色系搭配，此例为淡蓝与淡紫，不固定使用薄荷绿背景，不再叠加大面积暖黄等第三种色块。光束保持柔白，不随强调色染色。纸面、近白或细边线方案不必添加渐变与光束；不要让所有主题都继承同一蓝紫底色。
+选择玻璃渐变背景时，可用两种协调的低饱和色大面积模糊、自然融合；以下示例的柔白光从左上斜穿至右下，边缘柔化并带轻微散射。两种背景色按所选色系搭配，此例为淡蓝与淡紫，不固定使用薄荷绿背景，避免叠加大面积暖黄等第三种色块。光束保持柔白，不随强调色染色。纸面、近白或细边线方案不必添加渐变与光束；不要让所有主题都继承同一蓝紫底色。
 
 使用 `body::before` 绘制底层渐变，`body::after` 绘制白色斜光。以下样式与颜色变量组合使用：
 
@@ -189,6 +189,13 @@ body::after {
 
 ## 图表配色与页面同步
 
+在页面内集中定义绘图表面与文字样式，并对所有图表复用：
+
+- 卡片提供稳定底面，图表画布透明或与底面同色；VSeed 使用 `backgroundColor: 'transparent'`。检查最终 Spec 和渲染结果，手写配置或替换图形后也要保留，避免出现矩形白底。
+- 图表字体沿用页面字体；标签不带意外描边、阴影或背景块。柱尾标签使用一致的位置策略，为最长数值留空间；无法统一放置时重排，不依赖默认避让造成忽内忽外。
+- 轴与网格只保留阅读所需部分。条形比较保留类别名称和零基线；已有精确值标签时可弱化数值轴与网格，不机械套用趋势图的全隐藏规则。
+- 色彩表达类别、风险或主次；主题不能覆盖业务语义。无标签 mini 的适用范围见[指标卡](metric-card.md#文本与迷你图配合)。
+
 在 VBI 的 `buildVSeed()` 返回结果上补充视觉属性，再经 VSeed `Builder` 构建 Spec。保持查询结果、字段 ID、统计周期和实例绑定，按图表类型消费同一个 `palette`：
 
 | 图形       | VSeed 配置                                                  | 颜色来源                                              |
@@ -224,71 +231,10 @@ await instance.updateSpec(spec)
 
 ## 简洁的颜色选择器
 
-使用一排小色点，选中项显示外圈与中心标记，旁边或下方显示色名和色号。桌面可放在标题旁，窄屏换到标题下方。保留可见的键盘焦点；每个按钮提供 `aria-label`，选中状态使用 `aria-pressed`，同一时刻只有一个预设处于选中状态。
+仅在用户需要时提供，复用[完整示例](../templates/example.html)的 `.color-picker` 与 `selectPalette()`，不为普通成品增加配色预览工具。色点有名称、色号、选中态和键盘焦点；初始主题按上下文选择。
 
-下面以晴空蓝与雾玫粉展示两个预设的结构；完整八色按钮及 `.color-picker` 样式见轻量看板示例。初始选中项按上下文设置，不沿用示例的默认绿色，也不将此处蓝色固定为默认。色号与名称由按钮数据提供，事件读取这些值，不另外维护一份选项映射。
+切换只重绘缓存结果，复用实例，不改变日期、指标、环图分类或明细范围；下降和亏损保留语义色。通过既有刷新队列处理，避免旧查询覆盖新配色；加载反馈覆盖全部相关控件。
 
-```html
-<fieldset class="color-picker" aria-label="选择页面配色">
-  <button
-    type="button"
-    data-color="#A8C7E8"
-    data-name="晴空蓝"
-    style="--swatch: #a8c7e8"
-    aria-label="晴空蓝 #A8C7E8"
-    title="晴空蓝 #A8C7E8"
-    aria-pressed="true"
-  ></button>
-  <button
-    type="button"
-    data-color="#D8B4B6"
-    data-name="雾玫粉"
-    style="--swatch: #d8b4b6"
-    aria-label="雾玫粉 #D8B4B6"
-    title="雾玫粉 #D8B4B6"
-    aria-pressed="false"
-  ></button>
-</fieldset>
-<output id="palette-label" aria-live="polite">晴空蓝 · #A8C7E8</output>
-```
+## 验收
 
-沿用示例的 `requestRender()` 刷新队列，避免切换配色与统计周期时出现旧结果覆盖。初始化先应用选中预设，再构建图表；点击已选中的颜色无需重复刷新。
-
-```javascript
-const picker = document.querySelector('.color-picker')
-const paletteLabel = document.querySelector('#palette-label')
-let palette
-function selectPalette(button) {
-  palette = createPalette(button.dataset.color)
-  for (const [name, value] of Object.entries(palette.tokens)) {
-    document.documentElement.style.setProperty(name, value)
-  }
-  picker.querySelectorAll('[data-color]').forEach((option) => {
-    option.setAttribute('aria-pressed', String(option === button))
-  })
-  paletteLabel.textContent = `${button.dataset.name} · ${button.dataset.color}`
-}
-selectPalette(picker.querySelector('[aria-pressed="true"]'))
-picker.querySelectorAll('[data-color]').forEach((button) => {
-  button.addEventListener('click', () => {
-    if (button.getAttribute('aria-pressed') === 'true') return
-    selectPalette(button)
-    requestRender()
-  })
-})
-```
-
-页面使用多个 `fieldset` 时，加载和恢复控件状态应覆盖全部相关控件，不依赖 `querySelector('fieldset')` 恰好命中统计周期。配色刷新不修改日期筛选、汇总算法、环图分类含义或区域明细口径。
-
-## 可复用 Prompt 与验收
-
-> 优化仪表盘配色与背景：先依据用户要求、已有品牌、界面风格与业务场景选择色系，使用一个统一强调色。没有明确需要时优先考虑适合当前场景的蓝、紫、粉、暖橙等非绿色系，降低绿色、薄荷绿及偏绿青色的选择优先级；只有上下文明确需要时才使用绿色，不照搬示例的默认配色，也不固定使用某一种替代色。以近白或浅灰底色为主，两种协调的低饱和色做大面积、低对比的柔和模糊渐变，主要从内容外围与留白处透出；一束柔白光从左上穿至右下，像阳光透过毛玻璃。指标、图表和表格保持稳定的白色或近白色阅读面，不逐层透明叠色，不给卡片和表格行分别铺青、紫、粉渐变，不添加发光白边。让指标与趋势先于背景吸引注意，保持次要文字和图形清晰。用简洁色点同步切换背景、图标和图表，显示色名与色号，保留现有布局、统计口径与交互。
-
-- 主色系符合当前上下文；没有明确绿色需求时，不使用绿色、薄荷绿或偏绿青色作为主强调色及大面积背景的主色。色板首项、示例当前选中项和“清爽”等泛化描述不作为选绿理由。
-- 逐一切换八种预设，色名、色号、背景、图标、系列色和环图同时对应当前选择；配色动画结束后检查最终颜色。
-- 相同统计周期下切换配色，销售额、订单数、利润、环图占比与区域明细保持一致；再切换 30 → 14 → 7 → 30 天核对数据范围。
-- 仅一项选中，Tab 能到达色点，Enter / Space 可选择；焦点可见，加载结束后全部相关控件恢复可用。
-- 检查 375px / 390px 窄屏与桌面，选择器不横向溢出，不挤压标题和卡片；文字、细线与选中状态可辨认。
-- 柔白光从左上到右下，只有背景被模糊；装饰层不遮挡点击、Tooltip、悬停联动或卡片倾斜。
-- 第一眼能找到核心指标、趋势与选中状态；背景色块和卡片边缘不会比内容更突出，也不会形成多个装饰强调中心。
-- 在渐变最深处、最亮处及不同预设下检查合成后的阅读面，标题、日期、单位、表格与图表轮廓都清楚；关闭背景装饰后，信息层级仍然成立。
+按[同视口视觉对照](acceptance.md#页面布局与视觉对照)检查内容底面、图形轮廓、次要文字与标签。背景最深和最亮处都应清晰，装饰层不拦截点击或 Tooltip。确有配色切换时，再检查各主题下的数据、选中态和语义色一致。

@@ -16,7 +16,7 @@
 | [template-heart-failure.html](../templates/template-heart-failure.html)     | `demo2`：紫色；先看三项指标，再看全宽主分析区     | 299 条心衰记录；适合样本与分组比较，随访天数不当作日历时间。       |
 | [template-meal-workout.html](../templates/template-meal-workout.html)       | `demo3`：暖橙色；主结果、双列辅助区、全宽样本构成 | 8,000 条餐食记录；适合分段解释，使用套餐与运动方式比较。           |
 
-[基础模板](../templates/template-business-overview.html)仍用于查阅最小机制和销售示例，关键片段见[HTML 接入](template-integration.md#精简模板的重要片段)。它的蓝色趋势布局是一个示例；实际任务先选择匹配的阅读路径，再决定图形与配色。没有时间字段时使用分组比较，不编造趋势。
+[基础模板](../templates/template-business-overview.html)仍用于查阅最小机制和销售示例，复用入口见[模板接入](template-integration.md)。它的蓝色趋势布局是一个示例；实际任务先选择匹配的阅读路径，再决定图形与配色。没有时间字段时使用分组比较，不编造趋势。
 
 以下角色对应[示例 HTML](../templates/example.html)的实际选择器，便于有选择地读取和复用；尺寸是当前示例的桌面起点，源码是实现依据，窄屏、长数字与嵌入容器按内容调整。
 
@@ -25,7 +25,7 @@
 | 页面外壳与标题 | `.shell`、`.topbar`、`.heading`                         | 最大宽度 1140px，左右内边距 28px；品牌、标题、业务内容之间有分层留白，控件不挤占标题。                          |
 | 核心发现       | `.insight-card`、`.insight-conclusion`、`.insight-list` | 一句结论在前，周期和依据在后；文字区自然撑高，与主卡保持清楚间距。                                              |
 | 主区域         | `.hero`、`.hero-top`、`.hero-value`、`.hero-figure`     | 数字与图形组成同一分析单元；主、辅、衍生指标按[统一字号 token](metric-card.md#数值字号规范)分级，不能逐卡缩放。 |
-| 卡内辅助指标   | `.hero-bottom`、`.submetric`                            | 相关指标用轻分隔线和留白组织，不再拆成一排独立边框卡。                                                          |
+| 卡内辅助指标   | `.hero-bottom`、`.submetric`                            | 相关指标用轻分隔线和留白组织，保持一个完整内容区。                                                              |
 | 辅助区域       | `.small-card`、`.small-body`、`.mini-plot`              | 短标题、数字与紧凑图形并排；图形支持数字，不与主图争夺面积和注意力。                                            |
 | 网格与阅读面   | `.dashboard`、`.card`、`layoutPresets`                  | 桌面网格间距 18px，主卡内边距约 26–28px，卡片圆角 26px；稳定的近白阅读面承载内容，柔和背景从外围露出。          |
 | 明细与说明     | `details`、`summary`                                    | 经营明细默认展开并可折叠，筛选与视图变化保留展开状态；低频长说明另按需展开。                                    |
@@ -34,23 +34,26 @@
 
 视觉骨架表达的是主辅关系，不绑定销售业务或时间趋势。没有有效时间字段时，可以用核心指标与重点排行、分组比较构成主区域；不生成虚构趋势或无意义的周期按钮。复用 HTML/CSS 时替换资源 ID、字段映射、统计口径与事件作用域，继续通过 DSL 与 Builder 管理可恢复状态。
 
-下方 `Header + Content` 代码演示接入和网格映射，省略了完整示例的品牌区、卡内辅助指标与明细结构。需要轻量示例的完整视觉效果时，组合上表对应结构；不能只复制简化代码并认为已经保留了示例风格。
+复用时保留结构、样式与事件的对应关系；只复制通用查询代码或重新拼几张卡片，不会自动继承模板的阅读质量。
 
 ## 轻量看板的功能与视觉基线
 
-以下是采用轻量示例风格时的必要交付项。模板通过内置小数据集和固定布局、配色缩短代码，不能通过删除图表、动效或卡内交互来“精简”。用户明确选择的其他风格与宿主规范优先；数据不支持某种图形时替换为有业务意义的图形，并说明调整。
+复用模板的结构和交互实现，按业务替换图形与数据；函数入口见[模板接入](template-integration.md)。具体要求分别由[指标卡](metric-card.md)、[筛选器](filter.md)和[验收标准](acceptance.md)维护，不把销售示例的图形组合、日期按钮或指标数量当作所有页面的必选项。
 
-| 必要项         | 参数与行为                                                                                                                                                                                                         | 模板入口                                               |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------ |
-| 真实图形       | 主面积图、增长 mini area、订单占比 donut、利润 mini column；负利润保留负值与语义色。                                                                                                                               | `buildChartSpec()`、`buildRingSpec()`、`draw()`        |
-| 更新动效       | 复用实例，筛选变化调用 `updateSpec()`，按需增加配色切换时同样复用实例；约 600ms、`cubicInOut`，首次不从虚构零值播放。                                                                                              | `updateAnimation()`、`draw()`                          |
-| 平铺控件       | 模板将地区与周期分段按钮集中在“经营概览”标题行最右侧，桌面同排，地区不重复显示“地区”标签，保留 `aria-label`；明确 `aria-pressed`、焦点与禁用状态，窄屏换行。布局、配色切换仅按需添加；选项多时再用搜索或定制下拉。 | `.segment`、`[data-region]`、`[data-days]`             |
-| 小卡倾斜       | 固定外层命中，内层 `perspective(800px) rotate3d(...)`；目标约 1.5°，合成旋转始终 ≤2°，离开、滚动、失焦复位。主图、洞察与展开大图保持平面。                                                                         | `.card-slot`、`.metric-card`、`bindCardTilt()`         |
-| 明细展开       | `<details open>`，默认可见；不在刷新中重建 details 或覆盖 `open`。                                                                                                                                                 | `details`、`#regions`                                  |
-| 平滑与数字过渡 | 面积图使用 `lineSmooth: true` 与渐变填充；指标、比较变化、占比及辅助数值约 600ms 缓和过渡，连续操作取消旧帧并从当前显示值接续。                                                                                    | `buildChartSpec()`、`animateMetric()`                  |
-| 卡内交互       | 主趋势联动全部指标，增长和利润小图只联动自身；悬停稳定 75ms 后显示当日值、比较前一天，移出恢复区间汇总。Tooltip 即时响应，区间洞察保持不变。                                                                       | `bindMetricHover()`、`showMetrics()`、`currentMetrics` |
+## 排版与尺寸 token
 
-全局地区与周期筛选集中在页面标题右侧，逐日查看入口保留在图卡内，两者应可发现、可用键盘或触屏操作。模板支持图表左右键逐日查看、Esc 恢复，以及主卡前一天 / 后一天 / 区间汇总按钮。查询后建立日期索引，联动不重新查询；加载、刷新、离开与销毁取消待执行任务，避免旧事件覆盖新值。所有动效支持减少动态效果模式，且释放监听、定时器与动画帧。详见[指标卡](metric-card.md)、[趋势](trend.md)与[验收标准](acceptance.md#功能交互)。
+修改模板时先保留整套排版，再按内容和宿主整组调整。除了数字字号，还需集中定义以下角色；数值是桌面起点，不是所有设备的硬限制。
+
+| 角色                 | 默认关系与检查点                                                                                                                                                  |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 外壳与阅读面         | 寿命模板 `.shell` 使用 border-box，最大外宽 1140px、左右 padding 各 28px，实际内容最大 1084px。不要把 1140px 直接当作卡片区宽度；其他布局明确自己的外宽和内边距。 |
+| 页面标题             | 约 24–26px，领先于卡片标题与控件；长标题优先换行。                                                                                                                |
+| 卡片标题、说明与证据 | 通常 12–14px，说明用次级色和约 1.5–1.7 行高；核心结论约 15–16px、适度加粗。不要把所有辅助文字整体放大成同一层级。                                                 |
+| 数值与单位           | 使用[数值字号 token](metric-card.md#数值字号规范)，同角色整组切换；单位独立分级。                                                                                 |
+| 控件                 | 桌面可见高度约 30–36px、字号 12–14px；触屏命中高度至少约 44px，通过外围留白或内层视觉面实现，命中区不能重叠，见[筛选器](filter.md#视觉标准)。                     |
+| 卡片与间距           | 间距约 18px、主卡内边距 26–28px、圆角 24–26px；窄屏整组减小，保证长标签和读数完整。                                                                               |
+| 主卡空间             | 数字区、绘图区、辅助区形成连续阅读路径；图形按类别数量或趋势跨度分配空间，不让侧栏增高制造大片空白。                                                              |
+| 绘图表面             | 统一背景、字体、轴线、网格与标签样式；图形融入卡片，细节见[图表配色与页面同步](design.md#图表配色与页面同步)。                                                    |
 
 ## 信息密度与模块取舍
 
@@ -67,7 +70,7 @@
 
 首屏应能识别最重要的问题、主要结果和当前筛选范围。不要通过缩小文字、压扁图形或取消卡片留白强塞全部模块；核心发现较长或窄屏空间不足时允许自然滚动。长分析页面按章节延续阅读，不要求整个 Dashboard 塞进一屏。
 
-布局方案记录：参照布局、主区域及强调方式、辅助模块、默认展开内容、按需展开内容。对关键结构的调整给出业务理由，例如“HR 数据没有时间字段，因此主区域采用离职率与岗位比较”。首次生成时按[验收标准](acceptance.md#页面布局)检查。
+布局方案记录：参照布局、主区域及强调方式、辅助模块、默认展开内容、按需展开内容。对关键结构的调整给出业务理由，例如“HR 数据没有时间字段，因此主区域采用离职率与岗位比较”。首次生成时按[验收标准](acceptance.md#页面布局与视觉对照)检查。
 
 ## 共同原则与可调参数
 
@@ -170,7 +173,7 @@ KPI 的排序体现业务优先级，行数与宽度根据标签、单位和数�
 
 ### 三种布局的坐标配方
 
-下面以 12 列为基准，元组依次表示 `[角色, x, y, w, h]`。`positions()` 转成 Builder 接受的位置对象，`stack()` 按给定的阅读顺序生成窄屏单列。以下布局配方为 `insight` 留出桌面 3 行、窄屏 4 行，容纳周期说明和逐项列表。坐标是起点，行高、跨度和断点按内容调整；`h` 是网格行数，不是固定像素高度。下方渲染采用可增长的网格行，指标数量增加或文本换行时自动撑高对应行并顺延后续模块；调整模块的业务位置与最小跨度时仍通过 Builder 更新布局。
+下面以 12 列为基准，元组依次表示 `[角色, x, y, w, h]`。`positions()` 转成 Builder 接受的位置对象，`stack()` 按给定的阅读顺序生成窄屏单列。以下布局配方为 `insight` 留出桌面 3 行、窄屏 4 行，容纳周期说明和逐项列表。坐标是起点，行高、跨度和断点按内容调整；`h` 是网格行数，不是固定像素高度。模板渲染采用可增长的网格行，指标数量增加或文本换行时自动撑高对应行并顺延后续模块；调整模块的业务位置与最小跨度时仍通过 Builder 更新布局。
 
 ```javascript
 const positions = (items) => Object.fromEntries(items.map(([role, x, y, w, h]) => [role, { x, y, w, h }]))
@@ -242,7 +245,7 @@ const layoutPresets = {
 
 ### 将配方绑定到资源
 
-下面假定已按[HTML 接入文档](../../visual-query/references/html-integration.md)导入 `VBI`，并创建 `trend`、`growth`、`totals`、`profit` 四个 Chart Builder。`insightContent` 的首行说明指标数量与周期，第二行保存一句重要结论，后续每行以 `- ` 开头保存一个指标的波动依据；`renderInsightContent()` 沿用轻量看板的渲染函数。以趋势主导模式演示绑定，其他两种模式复用这些资源，仅替换坐标配方：
+下面假定已按[HTML 接入文档](../../visual-query/references/html-integration.md)导入 `VBI`，并创建 `trend`、`growth`、`totals`、`profit` 四个 Chart Builder。`insightContent` 沿用完整示例的文本协议：首行保存统计范围，第二行保存主要结论，后续可选行以 `- ` 开头保存必要证据；`renderInsightContent()` 沿用轻量看板的渲染函数。以趋势主导模式演示绑定，其他两种模式复用这些资源，仅替换坐标配方：
 
 ```javascript
 const dashboard = VBI.dashboard.create(VBI.dashboard.createEmpty())
@@ -297,292 +300,11 @@ for (const { role, chart, title, slot } of widgets) {
 
 `setLayouts()` 在 `dashboard.chart` 或 `dashboard.insight` 集合的 `add()` / `update()` 回调中提交，新增组件必须提供 `lg`。角色名只用于组装，不新增 DSL 字段；保存与恢复使用真实的 widget ID 和坐标。已有资源只改布局时，按 widget ID 调用对应集合的 `update()` 中的 `setLayouts()`，保留资源身份与分析配置。上述三种配方使用相同的五个资源，先匹配角色，再调整布局。保存时同时导出 Dashboard 和资源快照，确保洞察文本随资源恢复。
 
-## Header + Content 示例
+## 从 DSL 布局到页面
 
-下面继续演示趋势主导模式，其他模式按角色与阅读顺序调整 Content 结构，共用 Header 和 DSL 到网格的映射。下方的数据说明与署名展示一种排布方式，按实际页面要求调整。样式中的颜色变量由[配色与背景最佳实践](design.md#统一颜色变量)初始化；此处只定义布局与控件结构。过滤器的选中值应由当前分析配置初始化，点击只修改相关 Builder；具体刷新与指标绘制沿用轻量看板的 `applyPeriod()`、`requestRender()` 和 `draw()`。
+直接复用所选模板的 `layoutDashboard()`与 ResizeObserver，完整入口见[模板接入](template-integration.md)。UI 读取当前容器对应的布局，按 `y`、`x` 排序映射 CSS Grid，并同步 DOM 阅读顺序；仅移动位置变化的节点，保留焦点。容器变化后调用图表 `resize()`，销毁时断开 observer。
 
-```html
-<div class="dashboard-view">
-  <header class="dashboard-header">
-    <h1>经营概览</h1>
-    <fieldset class="filters" aria-label="统计周期">
-      <button data-days="7" aria-pressed="false">7 天</button>
-      <button data-days="14" aria-pressed="false">14 天</button>
-      <button data-days="30" aria-pressed="true">30 天</button>
-    </fieldset>
-  </header>
-  <main class="dashboard-grid" aria-label="经营指标">
-    <div id="insight-slot" class="card-slot">
-      <section class="card insight-card" aria-labelledby="insight-title">
-        <h2 id="insight-title">核心发现</h2>
-        <div class="insight-body" aria-live="polite" aria-atomic="true">
-          <p id="insight-conclusion" class="insight-conclusion" hidden></p>
-          <p id="insight-scope" class="insight-scope"></p>
-          <ul id="insight-list" class="insight-list"></ul>
-        </div>
-      </section>
-    </div>
-    <div id="main-slot" class="card-slot">
-      <section class="card main-card" aria-labelledby="sales-title">
-        <h2 id="sales-title">销售总额</h2>
-        <strong id="sales" class="metric-value">—</strong>
-        <div id="trend" class="main-plot" role="img" aria-label="每日销售额趋势"></div>
-      </section>
-    </div>
-    <div id="growth-slot" class="card-slot">
-      <section class="card sub-card" aria-labelledby="growth-title">
-        <h2 id="growth-title">销售增长</h2>
-        <div class="metric-body">
-          <strong id="growth" class="metric-value">—</strong>
-          <div id="growth-trend" class="mini-plot" role="img" aria-label="销售额走势"></div>
-        </div>
-      </section>
-    </div>
-    <div id="orders-slot" class="card-slot">
-      <section class="card sub-card" aria-labelledby="orders-title">
-        <h2 id="orders-title">订单总数</h2>
-        <strong id="orders" class="metric-value">—</strong>
-      </section>
-    </div>
-    <div id="profit-slot" class="card-slot">
-      <section class="card sub-card" aria-labelledby="profit-title">
-        <h2 id="profit-title">利润</h2>
-        <div class="metric-body">
-          <strong id="profit" class="metric-value">—</strong>
-          <div id="profit-trend" class="mini-plot" role="img" aria-label="每日利润"></div>
-        </div>
-      </section>
-    </div>
-  </main>
-  <p class="dashboard-attribution">
-    <span id="data-scope">数据口径：当前筛选范围内销售额与利润求和，订单数去重；环比前一等长周期。</span>
-  </p>
-</div>
-```
-
-下方接入示例使用 24px 圆角，窄屏降为 16px。先引入[数值字号规范](metric-card.md#数值字号规范)的容器与 token，将其容器查询中的 `.dashboard` 映射为本例 `.dashboard-grid`；以下代码仅按主辅角色消费字号。紧凑卡片可统一调整圆角，字号只按角色与断点整组切换，不逐卡覆盖。
-
-```css
-* {
-  box-sizing: border-box;
-}
-body {
-  margin: 0;
-  background: var(--background-base);
-  color: var(--ink);
-  font-family: Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-}
-.dashboard-view {
-  width: min(var(--content-width, 1140px), calc(100% - 32px));
-  margin: 32px auto;
-}
-.dashboard-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-h1 {
-  margin: 0;
-  font-size: 24px;
-}
-h2 {
-  margin: 0 0 12px;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 500;
-}
-.filters {
-  display: flex;
-  gap: 4px;
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-.filters button {
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface);
-  color: var(--ink);
-  font: inherit;
-  cursor: pointer;
-}
-.filters button[aria-pressed='true'] {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-.filters button:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-auto-rows: minmax(44px, auto);
-  gap: 16px;
-}
-.dashboard-attribution {
-  display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 4px 12px;
-  margin: 16px 0 0;
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.5;
-  text-align: right;
-  overflow-wrap: anywhere;
-}
-.card-slot {
-  min-width: 0;
-  min-height: min-content;
-  display: flex;
-  flex-direction: column;
-}
-.card {
-  flex: 1;
-  min-height: min-content;
-  height: auto;
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius, 24px);
-  background: var(--surface);
-}
-.insight-card {
-  padding: 12px 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-}
-.insight-card h2 {
-  margin: 0;
-  color: var(--accent-ink);
-}
-.insight-body {
-  display: grid;
-  gap: 8px;
-}
-.insight-conclusion {
-  color: var(--ink);
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.65;
-  overflow-wrap: anywhere;
-}
-.insight-scope {
-  margin: 0;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.6;
-}
-.insight-list {
-  display: grid;
-  gap: 6px;
-  margin: 0;
-  padding-left: 20px;
-  font-size: 14px;
-  line-height: 1.65;
-  overflow-wrap: anywhere;
-}
-.insight-change {
-  font-weight: 600;
-  white-space: nowrap;
-}
-.insight-change[data-direction='up'] {
-  color: var(--insight-up, #12815e);
-}
-.insight-change[data-direction='down'] {
-  color: var(--insight-down, #c64a3f);
-}
-.main-card {
-  display: flex;
-  flex-direction: column;
-  transform: none;
-}
-.main-plot {
-  flex: 1;
-  min-height: 150px;
-  contain: size;
-  margin-top: 16px;
-}
-.sub-card {
-  transform: perspective(800px) rotate3d(var(--tilt-x, 0), var(--tilt-y, 1), 0, var(--tilt-angle, 0deg));
-}
-.metric-value {
-  font-size: var(--metric-secondary-size);
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1.12;
-}
-.main-card > .metric-value {
-  font-size: var(--metric-primary-size);
-}
-.metric-body {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.mini-plot {
-  width: clamp(72px, 28vw, 132px);
-  height: 72px;
-  flex-shrink: 0;
-  contain: size;
-}
-@media (max-width: 991px) {
-  .dashboard-header {
-    align-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-@media (max-width: 540px) {
-  .dashboard-view {
-    margin: 20px auto;
-  }
-  .card {
-    --card-radius: 16px;
-    padding: 16px;
-  }
-}
-@media (prefers-reduced-motion: reduce), (hover: none) {
-  .sub-card {
-    transform: none;
-  }
-}
-```
-
-从 DSL 读取位置，布局应用后再调整 VChart 尺寸。`renderedCharts` 是沿用示例的 `Map<DOM容器, VChart实例>`；初次绘图后也调用一次布局函数。
-
-`minmax(44px, auto)` 将行高设为最小值，卡片按内容撑高；同一行的并列模块共享行高，下方模块自然顺延，不需把浏览器测得的像素高度写回 DSL。图表容器使用 `contain: size` 与明确尺寸或 `min-height`，避免 Canvas 内部尺寸反过来撑高网格，造成反复扩张；只对图表绘图区使用尺寸包含，不对洞察和文本容器使用。内容更新、字体加载或窄屏换行后的容器变化仍需触发图表 `resize()`。
-
-```javascript
-const grid = document.querySelector('.dashboard-grid')
-function layoutDashboard() {
-  const dsl = dashboard.build()
-  const breakpoint = grid.clientWidth >= dsl.breakpoints.lg ? 'lg' : 'xs'
-  const ordered = [...dsl.layout[breakpoint]].sort((a, b) => a.y - b.y || a.x - b.x)
-  for (const [index, item] of ordered.entries()) {
-    const slot = grid.querySelector(`[data-widget="${item.widgetId}"]`)
-    if (grid.children[index] !== slot) grid.insertBefore(slot, grid.children[index] ?? null)
-    slot.style.gridColumn = `${item.x + 1} / span ${item.w}`
-    slot.style.gridRow = `${item.y + 1} / span ${item.h}`
-  }
-  renderedCharts.forEach((instance, element) => instance.resize(element.clientWidth, element.clientHeight))
-}
-const resizeObserver = new ResizeObserver(layoutDashboard)
-resizeObserver.observe(grid)
-layoutDashboard()
-// 页面销毁时执行 resizeObserver.disconnect()，并释放图表实例。
-```
-
-这里以内容容器宽度选择断点，适用于看板嵌入侧栏或其他宿主。布局按 `y`、`x` 排序，再按该顺序移动容器，确保视觉、键盘与读屏顺序一致。CSS 的媒体查询调整 Header、内边距与圆角，不覆盖 DSL 中的卡片位置。示例三种布局共享最大 1140px 的外壳；新页面可通过 `.dashboard-view` 的 `--content-width` 按图表标签与宿主空间调整内容宽度。
-
-最大内容宽度与 DSL 断点要配套设置。叙事页面若最大 960px，却仍使用默认 `lg: 992`，就始终只能选中窄屏布局；可根据并列模块的最小宽度，在创建 Dashboard 时把 `breakpoints.lg` 改为 800 等适合的阈值。重排时只移动位置确实变化的容器；若容器中存在已聚焦控件，保留并恢复焦点，避免键盘操作被响应式重排打断。
+最大内容宽度与 DSL 断点配套设置。最大宽度为 960px 的内容区若仍使用 `lg: 992`，就永远不会进入宽屏布局；断点应由并列模块所需空间决定。CSS 调整排版、内边距和圆角，不另行覆盖 DSL 中的模块位置。
 
 ## 按模块关系联动与轻微倾斜
 
@@ -590,130 +312,16 @@ layoutDashboard()
 
 倾斜绑定到固定外层 `.card-slot`，仅变换内层 `.sub-card`，避免图表 Canvas 或卡片自身的变换改变命中边界。透视与倾斜都放在内层卡片的 `transform` 中，外层不设置 `perspective`，内容保持在同一卡片平面上，避免父容器拦截图表悬停。下面使用单个 `rotate3d()` 角度，整体旋转被限制为 2°，避免两个轴各 2° 时合成倾斜超过上限。
 
-```javascript
-function bindSubCardTilt(slot) {
-  const card = slot.querySelector('.sub-card')
-  const motion = matchMedia('(prefers-reduced-motion: reduce)')
-  const mouse = matchMedia('(hover: hover) and (pointer: fine)')
-  const reset = () => card.style.setProperty('--tilt-angle', '0deg')
-  function move(event) {
-    if (motion.matches || !mouse.matches || event.pointerType !== 'mouse') return reset()
-    const rect = slot.getBoundingClientRect()
-    const x = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2))
-    const y = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - 0.5) * 2))
-    card.style.setProperty('--tilt-x', String(-y))
-    card.style.setProperty('--tilt-y', String(x))
-    card.style.setProperty('--tilt-angle', `${Math.min(1, Math.hypot(x, y)) * 2}deg`)
-  }
-  slot.addEventListener('pointermove', move, { capture: true, passive: true })
-  slot.addEventListener('pointerleave', reset)
-  slot.addEventListener('pointercancel', reset)
-  window.addEventListener('blur', reset)
-  window.addEventListener('scroll', reset, { capture: true, passive: true })
-  motion.addEventListener('change', reset)
-  mouse.addEventListener('change', reset)
-  return () => {
-    slot.removeEventListener('pointermove', move, true)
-    slot.removeEventListener('pointerleave', reset)
-    slot.removeEventListener('pointercancel', reset)
-    window.removeEventListener('blur', reset)
-    window.removeEventListener('scroll', reset, true)
-    motion.removeEventListener('change', reset)
-    mouse.removeEventListener('change', reset)
-    reset()
-  }
-}
-const disposeTilts = [...document.querySelectorAll('.sub-card')].map((card) => bindSubCardTilt(card.parentElement))
-// 页面销毁时执行 disposeTilts.forEach((dispose) => dispose())。
-```
+复用模板的 `bindCardTilt()`，不另写一套简化事件处理。主图、洞察与展开大图保持平面；离开、滚动、失焦复位，触屏和减少动态效果关闭倾斜，卸载时执行返回的清理函数。
 
 ## 卡片按顺序延时入场
 
-卡片按当前阅读顺序依次入场，同一行从左到右。24 份模板统一采用首张延时 **480ms**、卡片间隔 **560ms**、单卡时长 **1600ms**，结合透明度和 10px 上移，让相邻模块的启动时刻有清楚可感知的间隔。首张延时从首次数据与图表就绪后计算，给视线一个停顿；间隔决定下一张何时出现，时长决定淡入速度，不能只拉长时长、仍用 120ms 的紧密间隔。
+复用模板的 `entranceTiming` 与入场函数：首次数据和图表就绪后，首张延时 **480ms**、相邻模块间隔 **560ms**、单卡时长 **1600ms**，结合透明度与 10px 上移。时序按当前布局的阅读顺序计算；长页面按可见行或章节分批，不将延迟累加到整页末尾。
 
-模板的 `data-enter` 从 1 开始，因此延时为 `initialDelay + (order - 1) * stagger`。当前六个入场模块分别在 480、1040、1600、2160、2720、3280ms 启动，最后一个在 4880ms 完成。标题和加载反馈保持可见，卡内文字与图表随父模块一起出现，不再叠加逐元素等待。模块较多或长叙事按可见行或章节分批，每批重新计时；不要按全页索引无限累加。开放式分区无需套用卡片动效。
+外层 `.card-slot` 承载入场，内层卡片承载倾斜。加载状态写在静态 HTML 中，标题与加载反馈始终可见；主体保留可测量尺寸以便布局和绘图，就绪后展示，失败时显示可操作的错误反馈。减少动态效果直接呈现最终状态，并能在播放中结束剩余动画。
 
-动画施加到外层 `.card-slot`，内层 `.sub-card` 保留独立的轻微倾斜。页面首次数据与图表就绪后统一入场；过滤、悬停和响应式重排只更新内容及位置，不重复播放整页入场。HTML 默认保持可见，初始化进入等待状态后才隐藏卡片，加载失败时立即恢复可见并展示错误反馈。
-
-```css
-.dashboard-grid[data-entrance='pending'] .card-slot {
-  opacity: 0;
-}
-@media (prefers-reduced-motion: reduce) {
-  .dashboard-grid[data-entrance='pending'] .card-slot {
-    opacity: 1;
-  }
-}
-```
-
-使用上述 `grid`、`dashboard` 和布局断点，按 DSL 位置计算入场顺序。不要仅依赖 DOM 顺序，以免移动端重排后动画顺序与实际位置不一致。
-
-```javascript
-const entranceMotion = matchMedia('(prefers-reduced-motion: reduce)')
-const entranceTiming = { initialDelay: 480, stagger: 560, duration: 1600 }
-let entranceAnimations = []
-let entranceStarted = false
-function finishCardEntrance() {
-  entranceStarted = true
-  grid.dataset.entrance = 'complete'
-  entranceAnimations.forEach((animation) => animation.cancel())
-  entranceAnimations = []
-}
-function prepareCardEntrance() {
-  if (entranceMotion.matches) finishCardEntrance()
-  else grid.dataset.entrance = 'pending'
-}
-function revealCards() {
-  if (entranceStarted) return
-  entranceStarted = true
-  if (entranceMotion.matches) return finishCardEntrance()
-  const dsl = dashboard.build()
-  const breakpoint = grid.clientWidth >= dsl.breakpoints.lg ? 'lg' : 'xs'
-  const ordered = [...dsl.layout[breakpoint]].sort((a, b) => a.y - b.y || a.x - b.x)
-  grid.dataset.entrance = 'playing'
-  entranceAnimations = ordered.map((item, index) => {
-    const slot = grid.querySelector(`[data-widget="${item.widgetId}"]`)
-    return slot.animate(
-      [
-        { opacity: 0, transform: 'translateY(10px)' },
-        { opacity: 1, transform: 'translateY(0)' },
-      ],
-      {
-        delay: entranceTiming.initialDelay + index * entranceTiming.stagger,
-        duration: entranceTiming.duration,
-        easing: 'cubic-bezier(.2,.75,.25,1)',
-        fill: 'both',
-      },
-    )
-  })
-  Promise.all(entranceAnimations.map((animation) => animation.finished.catch(() => {}))).then(finishCardEntrance)
-}
-const onEntranceMotionChange = () => {
-  if (entranceMotion.matches) finishCardEntrance()
-}
-entranceMotion.addEventListener('change', onEntranceMotionChange)
-// 初始化、异步加载前调用 prepareCardEntrance()；首次布局和绘图完成后调用 revealCards()。
-// 加载失败时调用 finishCardEntrance()。
-// 销毁时移除 onEntranceMotionChange 监听，并调用 finishCardEntrance() 取消剩余动画。
-```
-
-减少动态效果模式下所有卡片直接可见，立即取消剩余入场动画。这组时序仅用于首次入场；筛选后的图表与数值更新、悬停联动和分析详情保持各自的短过渡，不复用入场延迟。数值过渡与图表数据更新另按[指标卡最佳实践](metric-card.md)处理。
+筛选、悬停和响应式重排不重播入场；图表与数值更新使用各自的短过渡。销毁时取消动画与监听。完整实现和就绪标记以所选模板为准，避免从简化片段拼出另一套生命周期。
 
 ## 示例参考与验收
 
-轻量看板提供三种布局的 `layoutPresets`、`bindWidget()`、`layoutDashboard()`、`bindMetricHover()` 与实例更新的完整参考。三种布局共享最大 1140px 的外壳，复用相同指标与顶部洞察资源，支持数值更新动画与最大 2° 的轻微倾斜。洞察保持平面，文本随周期筛选更新。
-
-验收覆盖移动端 375px / 390px、桌面 1440px、大屏 1920px，以及窄于窗口的嵌入容器：
-
-首次生成时按[验收标准](acceptance.md)检查，以下项目用于核对布局细节。
-
-- 布局与分析任务匹配；内容宽度、列数和高度适合标签、指标与图表，没有横向溢出或大片无意义留白。
-- 增加洞察条目、延长文本、放大字号及切换窄屏后，卡片自动撑高，后续模块顺延，无裁切、重叠或内部纵向滚动条；内容缩短后高度回落，图表尺寸稳定，无持续扩张。
-- 三种布局在桌面与窄屏都先呈现“核心发现”，核心与衍生证据完整可读；内容与联动按[洞察验收](insight.md#验收)检查。
-- 圆角与卡片尺寸、留白相称；宽松布局可参考 24–26px，窄屏、小容器和小卡片适当减小，不挤压文字或图表。
-- 数据口径说明准确并随筛选更新，窄屏不溢出，不遮挡图表与控件。
-- 同一断点中所有模块坐标不越界、不重叠；桌面与窄屏角色完整，DOM、键盘与读屏顺序符合当前阅读路径。
-- 趋势主导突出主趋势；指标先行先展示核心指标；分段叙事的章节与证据顺序清楚。卡片或开放分区按内容选用。
-- 联动按声明的模块关系发生，独立模块不意外更新其他区域，移出时恢复对应范围的汇总。
-- 大型交互图表保持平面；启用倾斜的小卡片始终不超过 2°。入场不会因模块较多造成长时间等待，筛选时不重复播放；减少动态效果模式下关闭倾斜与入场。
-- 保存恢复后资源身份、分析配置与各断点坐标一致。具体方法见[共享资源保存与恢复](../../visual-query/references/composition.md#同时保存-dashboard-和资源)。
+按[验收标准](acceptance.md)做同视口视觉对照和功能检查。布局变化时额外检查 DSL 与实际位置、DOM 阅读顺序、焦点、图表尺寸、资源引用和明细展开状态是否一致。
