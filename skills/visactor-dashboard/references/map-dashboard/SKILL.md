@@ -15,7 +15,14 @@ description: 创建富有空间感的交互式地图 Dashboard，联动地域、
 
 新建地图 Dashboard 统一从 [template.html](templates/template.html) 起步。模板以地震观测为示例，内嵌所需模块；时间筛选、事件定位、近期动效与原始记录按实际业务适配，刷新不等于新增事件。通用复用边界与修改入口见[适配指南](references/template-adaptation.md)。
 
-[超市经营示例](templates/supermarket/README.md)用于参考地域经营与层级分析；需要复用该项目时，按[超市指南](templates/supermarket/GUIDE.md)复制完整项目。
+### 主题预览
+
+| 主题 | 桌面                                   | 移动端                                     |
+| ---- | -------------------------------------- | ------------------------------------------ |
+| 冰蓝 | [预览](templates/template-ice-pc.png)  | [预览](templates/template-ice-mobile.png)  |
+| 暖玉 | [预览](templates/template-jade-pc.png) | [预览](templates/template-jade-mobile.png) |
+| 深蓝 | [预览](templates/template-dark-pc.png) | [预览](templates/template-dark-mobile.png) |
+| 黑金 | [预览](templates/template-gold-pc.png) | [预览](templates/template-gold-mobile.png) |
 
 ## Step1：确定指标、范围与模板
 

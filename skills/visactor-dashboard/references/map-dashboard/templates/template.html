@@ -340,6 +340,7 @@
       }
       .map-heading {
         pointer-events: none;
+        align-self: stretch;
       }
       .eyebrow {
         font-size: 10px;
@@ -408,9 +409,11 @@
       }
       .analysis-card {
         border-radius: 13px;
-        background: var(--glass-inset);
-        border: 0;
-        box-shadow: var(--glass-tile-shadow);
+        min-width: 0;
+        min-height: 0;
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
       }
       .observation-panel {
         padding: 0;
@@ -712,13 +715,6 @@
         gap: 8px;
         padding: 10px;
         border-radius: 20px;
-      }
-      .analysis-card {
-        min-width: 0;
-        min-height: 0;
-        padding: 14px;
-        display: flex;
-        flex-direction: column;
       }
       .panel-head {
         display: flex;
@@ -1438,9 +1434,6 @@
       .region-switch.control-group {
         gap: 2px;
       }
-      .map-heading {
-        align-self: stretch;
-      }
     </style>
     <style id="map-ui-styles">
       /* Complete theme tokens; data-mode is derived from the selected theme. */
@@ -1849,7 +1842,6 @@
         border-radius: 9px;
         background: var(--control-surface);
         box-shadow: none;
-        backdrop-filter: blur(14px);
       }
       .control-button,
       .control-group button {
@@ -1888,20 +1880,21 @@
       .control-group button::before {
         content: none;
       }
-      :is(.topbar .refresh-button, .control-icon) {
+      :is(.topbar .refresh-button, .control-icon, .map-settings .settings-trigger) {
         display: grid;
         place-items: center;
-        flex: 0 0 32px;
         width: 32px;
         height: 32px;
-        min-height: 0;
         padding: 0;
         border: 0;
         border-radius: 9px;
         background: var(--control-surface);
         box-shadow: none;
         color: var(--control-ink);
-        backdrop-filter: blur(14px);
+      }
+      :is(.topbar .refresh-button, .control-icon) {
+        flex: 0 0 32px;
+        min-height: 0;
       }
       :is(.topbar .refresh-button, .control-icon):hover {
         color: var(--strong);
@@ -1931,19 +1924,6 @@
         flex: 0 0 32px;
         pointer-events: auto;
       }
-      .map-settings .settings-trigger {
-        width: 32px;
-        height: 32px;
-        border: 0;
-        border-radius: 9px;
-        padding: 0;
-        display: grid;
-        place-items: center;
-        background: var(--control-surface);
-        color: var(--control-ink);
-        box-shadow: none;
-        cursor: pointer;
-      }
       .settings-trigger svg,
       .settings-close svg {
         width: 15px;
@@ -1951,7 +1931,6 @@
       }
       .settings-trigger[aria-expanded='true'] {
         color: var(--strong);
-        background: var(--control-surface);
       }
       .settings-panel {
         position: fixed;
@@ -2200,6 +2179,7 @@
         width: min(100%, 328px);
         padding: 30px 28px 26px;
         text-align: center;
+        font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
       }
       .loading-orbit {
         width: 36px;
@@ -2269,9 +2249,6 @@
       body[data-scene-ready='false'] [data-dashboard-scene] {
         visibility: hidden;
       }
-      .loading-card {
-        font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-      }
       .loading-card h2,
       .loading-card p {
         padding: 0;
@@ -2340,6 +2317,12 @@
             /[&<>"']/g,
             (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c],
           )
+        const element = (tag, className, text) => {
+          const node = document.createElement(tag)
+          if (className) node.className = className
+          if (text != null) node.textContent = text
+          return node
+        }
         // Own selection, attribution and controls together; leave map rendering to the host.
         function createAppearance({
           mount,
@@ -2679,6 +2662,7 @@
           window.scheduler?.yield ? window.scheduler.yield() : new Promise((resolve) => setTimeout(resolve, 0))
         window.MapUI = {
           theme,
+          element,
           createAppearance,
           createLoading,
           yieldToBrowser,
@@ -23010,7 +22994,7 @@
         cursor: pointer;
       }
       .ma-entry:focus-visible {
-        outline: 2px solid var(--accent);
+        outline: 2px solid var(--focus);
         outline-offset: 5px;
         border-radius: 3px;
       }
@@ -23028,6 +23012,9 @@
         opacity: 0.65;
         mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 12 12 4M4 4h8v8' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
           center / contain no-repeat;
+        transition:
+          opacity 180ms ease,
+          transform 180ms ease;
       }
       .ma-dialog {
         color: var(--ink);
@@ -23084,11 +23071,7 @@
         min-height: 0;
         overscroll-behavior: contain;
       }
-      .ma-dialog .ma-eyebrow {
-        font-size: 11px;
-        color: var(--muted);
-        line-height: 1.6;
-      }
+      .ma-dialog .ma-eyebrow,
       .ma-dialog .ma-scope,
       .ma-dialog .ma-hint {
         color: var(--muted);
@@ -23101,6 +23084,8 @@
         grid-template-columns: minmax(0, 1fr) minmax(0, 220px) auto;
         align-items: center;
         gap: 12px;
+        position: relative;
+        z-index: 2;
       }
       .ma-dialog .ma-modes {
         justify-content: flex-start;
@@ -23118,6 +23103,7 @@
       .ma-dialog .ma-selection button {
         height: 28px;
         padding: 0 8px;
+        flex: none;
       }
       .ma-dialog .ma-feedback {
         position: absolute;
@@ -23135,9 +23121,6 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-      }
-      .ma-dialog .ma-selection button {
-        flex: none;
       }
       .ma-dialog .ma-content {
         display: grid;
@@ -23219,6 +23202,11 @@
         align-items: center;
         min-height: 30px;
         margin-top: 12px;
+        gap: 6px;
+        justify-content: space-between;
+        font-size: 11px;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
       }
       .ma-dialog .ma-picker {
         position: relative;
@@ -23266,13 +23254,6 @@
       .ma-dialog .ma-definition p {
         margin-top: 8px;
       }
-      .ma-dialog .ma-pagination {
-        gap: 6px;
-        justify-content: space-between;
-        font-size: 11px;
-        color: var(--muted);
-        font-variant-numeric: tabular-nums;
-      }
       .ma-dialog [hidden] {
         display: none !important;
       }
@@ -23315,10 +23296,6 @@
           gap: 12px;
         }
         .ma-dialog .ma-body {
-          position: relative;
-          flex: 1;
-          scrollbar-gutter: stable;
-          overflow-anchor: none;
           padding: 16px 18px 18px;
         }
         .ma-dialog .ma-content {
@@ -23374,11 +23351,6 @@
         cursor: pointer;
         transition: color 180ms ease;
       }
-      .ma-title-icon::after {
-        transition:
-          opacity 180ms ease,
-          transform 180ms ease;
-      }
       @media (hover: hover) and (pointer: fine) {
         .ma-card:hover .ma-title-icon,
         .ma-title-icon.ma-card:hover {
@@ -23400,15 +23372,8 @@
       .ma-title-icon:focus-visible::after {
         opacity: 1;
       }
-      .ma-entry:focus-visible {
-        outline-color: var(--focus);
-      }
       .ma-dialog [data-ma='retry'] {
         margin: 18px 0;
-      }
-      .ma-dialog .ma-toolbar {
-        position: relative;
-        z-index: 2;
       }
       .ma-dialog .ma-header h2 {
         font-weight: 500;
@@ -23501,7 +23466,7 @@
     <script id="metric-analysis">
       // Map analysis presentation. Queries use public VBI Builders.
       window.bindMapMetricAnalysis = function ({ vbi, Builder, VChart, entries, getContext, ready }) {
-        let dialog, context, active, dimension, selection, chart, table, observer, controller
+        let dialog, context, dimension, selection, chart, table, observer, controller
         let version = 0,
           tableLibrary,
           records = [],
@@ -23514,7 +23479,8 @@
           tableTheme = '',
           renderQueue = Promise.resolve()
         const pageSize = 50
-        const listeners = []
+        const lifetime = new AbortController()
+        const listen = (node, type, handler) => node.addEventListener(type, handler, { signal: lifetime.signal })
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
         const tableAnimation = () => (reducedMotion.matches ? false : { duration: 220, delay: 0, type: 'all' })
         const resizeChart = () => {
@@ -23540,12 +23506,7 @@
         }
         const number = (value, digits = 1) =>
           Number.isFinite(value) ? value.toLocaleString('zh-CN', { maximumFractionDigits: digits }) : '—'
-        const element = (tag, className, text) => {
-          const node = document.createElement(tag)
-          if (className) node.className = className
-          if (text !== undefined) node.textContent = text
-          return node
-        }
+        const { element } = MapUI
         const find = (name) => dialog.querySelector(`[data-ma="${name}"]`)
         const button = (label, action, className = '') => {
           const node = element('button', className, label)
@@ -23592,33 +23553,33 @@
   <details class="ma-definition"><summary>统计口径与依据</summary><p data-ma="definition"></p><p data-ma="evidence"></p><p data-ma="grain"></p></details>
 </div></div></div>`
           document.body.append(dialog)
-          find('close').addEventListener('click', closeDialog)
-          find('reset').addEventListener('click', () => {
+          listen(find('close'), 'click', closeDialog)
+          listen(find('reset'), 'click', () => {
             selection = undefined
             find('picker-label').focus({ preventScroll: true })
             void refresh(false)
           })
-          find('retry').addEventListener('click', () => void refresh(true))
-          find('previous').addEventListener('click', () => {
-            page--
-            showTable()
-          })
-          find('next').addEventListener('click', () => {
-            page++
-            showTable()
-          })
-          find('expand').addEventListener('click', () => {
+          listen(find('retry'), 'click', () => void refresh(true))
+          for (const [name, delta] of [
+            ['previous', -1],
+            ['next', 1],
+          ])
+            listen(find(name), 'click', () => {
+              page += delta
+              showTable()
+            })
+          listen(find('expand'), 'click', () => {
             const expanded = dialog.classList.toggle('ma-expanded')
             find('expand').setAttribute('aria-expanded', String(expanded))
             find('expand').textContent = expanded ? '返回分析布局' : '展开表格'
             resizeTable()
             resizeChart()
           })
-          dialog.addEventListener('cancel', (event) => {
+          listen(dialog, 'cancel', (event) => {
             event.preventDefault()
             closeDialog()
           })
-          dialog.addEventListener('keydown', (event) => {
+          listen(dialog, 'keydown', (event) => {
             if (event.key === 'Escape' && find('picker').open) {
               event.preventDefault()
               event.stopPropagation()
@@ -23626,10 +23587,10 @@
               find('picker-label').focus()
             }
           })
-          dialog.addEventListener('click', (event) => {
+          listen(dialog, 'click', (event) => {
             if (!find('picker').contains(event.target)) find('picker').open = false
           })
-          dialog.addEventListener('close', () => {
+          listen(dialog, 'close', () => {
             if (!dialog.open && context) cleanup()
           })
           observer = new ResizeObserver(() => {
@@ -23702,14 +23663,12 @@
             MapQueries.release(vbi, builder)
           }
         }
-        function showTable(updateRecords = true) {
+        function showTable() {
           if (!table) return
           const count = Math.max(1, Math.ceil(records.length / pageSize))
           page = Math.max(0, Math.min(page, count - 1))
-          if (updateRecords) {
-            table.options.animationAppear = tableAnimation()
-            table.setRecords(records.slice(page * pageSize, (page + 1) * pageSize))
-          }
+          table.options.animationAppear = tableAnimation()
+          table.setRecords(records.slice(page * pageSize, (page + 1) * pageSize))
           find('page').textContent = `${page + 1} / ${count} · 共 ${number(records.length, 0)} 条`
           find('previous').disabled = page === 0
           find('next').disabled = page + 1 >= count
@@ -23838,7 +23797,7 @@
           const signal = controller.signal
           dialog.dataset.state = 'loading'
           const model = context,
-            metric = active,
+            metric = context.metric,
             group = dimension,
             selected = selection
           clearTimeout(loadingTimer)
@@ -23866,12 +23825,13 @@
             const base = metric.conditions
             const selectedConditions = [...base, ...extra]
             const detailDimensions = model.detailDimensions
-            const jobs = [loadTable(), query(detailDimensions, selectedConditions, [], signal)]
-            if (reload) {
-              jobs.push(query([group], base, metric.measures, signal), query([], base, metric.measures, signal))
-            } else jobs.push(undefined, undefined)
-            jobs.push(selected !== undefined ? query([], selectedConditions, metric.measures, signal) : undefined)
-            const [library, details, groups, total, selectedTotal] = await Promise.all(jobs)
+            const [library, details, groups, total, selectedTotal] = await Promise.all([
+              loadTable(),
+              query(detailDimensions, selectedConditions, [], signal),
+              reload ? query([group], base, metric.measures, signal) : undefined,
+              reload ? query([], base, metric.measures, signal) : undefined,
+              selected !== undefined ? query([], selectedConditions, metric.measures, signal) : undefined,
+            ])
             if (!dialog.open || ticket !== version) return
             if (reload) {
               groupRows = groups
@@ -23889,7 +23849,7 @@
             if (!group[2])
               plotRows.sort((a, b) => b.value - a.value || a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
             else plotRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
-            records = details.map((row) => ({ ...row }))
+            records = details
             page = preservePage ? previousPage : 0
             find('content').hidden = false
             const detailScope = selected === undefined ? '当前范围' : `${group[1]}：${selected}`
@@ -24007,7 +23967,6 @@
           if (!ready() || dialog?.open) return
           createDialog()
           context = getContext(index)
-          active = context.metric
           dimension = context.dimensions[0]
           selection = undefined
           groupRows = undefined
@@ -24018,7 +23977,7 @@
           find('content').hidden = true
           dialog.querySelector('.ma-definition').open = false
           find('picker').open = false
-          dialog.querySelector('#ma-title').textContent = active.title
+          dialog.querySelector('#ma-title').textContent = context.metric.title
           find('scope').textContent = context.scope
           find('modes').replaceChildren(
             ...context.dimensions.map((group) => {
@@ -24077,12 +24036,8 @@
           }
           const hit = card || trigger
           hit.classList.add('ma-card')
-          hit.addEventListener('click', click)
-          if (!nativeButton) trigger.addEventListener('keydown', key)
-          listeners.push(() => {
-            hit.removeEventListener('click', click)
-            trigger.removeEventListener('keydown', key)
-          })
+          listen(hit, 'click', click)
+          if (!nativeButton) listen(trigger, 'keydown', key)
         })
         const onMotionChange = () => {
           if (!dialog?.open) return
@@ -24095,16 +24050,14 @@
         const onThemeChange = () => {
           if (dialog?.open) void refresh(!groupRows, { preservePage: true })
         }
-        document.addEventListener('map-theme-change', onThemeChange)
-        reducedMotion.addEventListener('change', onMotionChange)
+        listen(document, 'map-theme-change', onThemeChange)
+        listen(reducedMotion, 'change', onMotionChange)
         return () => {
           if (dialog?.open) closeDialog()
           cleanup()
-          reducedMotion.removeEventListener('change', onMotionChange)
-          document.removeEventListener('map-theme-change', onThemeChange)
+          lifetime.abort()
           observer?.disconnect()
           dialog?.remove()
-          listeners.forEach((dispose) => dispose())
         }
       }
     </script>
@@ -25327,12 +25280,7 @@
       const utc = (time) => new Date(time).toISOString().slice(5, 16).replace('T', ' ') + ' UTC'
       const number = (value, digits = 1) =>
         value == null || !Number.isFinite(Number(value)) ? '—' : Number(value).toFixed(digits)
-      const element = (tag, className, text) => {
-        const node = document.createElement(tag)
-        if (className) node.className = className
-        if (text != null) node.textContent = text
-        return node
-      }
+      const { element } = MapUI
       const metric = metrics.set
       function softenChange(node) {
         if (!ready || motion.matches || document.hidden) return
