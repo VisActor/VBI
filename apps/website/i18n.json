@@ -1,302 +1,122 @@
 {
   "outlineTitle": {
     "zh-CN": "大纲",
-    "en-US": "On This Page",
-    "ja-JP": "このページ",
-    "de-DE": "Auf dieser Seite",
-    "id-ID": "Di Halaman Ini",
-    "fr-FR": "Sur cette page",
-    "ko-KR": "이 페이지",
-    "vi-VN": "Trên trang này"
+    "en-US": "On This Page"
   },
   "languagesText": {
     "zh-CN": "语言",
-    "en-US": "Languages",
-    "ja-JP": "言語",
-    "de-DE": "Sprachen",
-    "id-ID": "Bahasa",
-    "fr-FR": "Langues",
-    "ko-KR": "언어",
-    "vi-VN": "Ngôn ngữ"
+    "en-US": "Languages"
   },
   "themeText": {
     "zh-CN": "主题",
-    "en-US": "Theme",
-    "ja-JP": "テーマ",
-    "de-DE": "Theme",
-    "id-ID": "Tema",
-    "fr-FR": "Thème",
-    "ko-KR": "테마",
-    "vi-VN": "Giao diện"
+    "en-US": "Theme"
   },
   "versionsText": {
     "zh-CN": "版本",
-    "en-US": "Versions",
-    "ja-JP": "バージョン",
-    "de-DE": "Versionen",
-    "id-ID": "Versi",
-    "fr-FR": "Versions",
-    "ko-KR": "버전",
-    "vi-VN": "Phiên bản"
+    "en-US": "Versions"
   },
   "menuTitle": {
     "zh-CN": "菜单",
-    "en-US": "Menu",
-    "ja-JP": "メニュー",
-    "de-DE": "Menü",
-    "id-ID": "Menu",
-    "fr-FR": "Menu",
-    "ko-KR": "메뉴",
-    "vi-VN": "Menu"
+    "en-US": "Menu"
   },
   "scrollToTopText": {
     "zh-CN": "回到顶部",
-    "en-US": "Scroll to top",
-    "ja-JP": "ページ上部へ",
-    "de-DE": "Nach oben",
-    "id-ID": "Gulir ke atas",
-    "fr-FR": "Retour en haut",
-    "ko-KR": "맨 위로",
-    "vi-VN": "Cuộn lên đầu"
+    "en-US": "Scroll to top"
   },
   "lastUpdatedText": {
     "zh-CN": "最后更新于",
-    "en-US": "Last updated",
-    "ja-JP": "最終更新",
-    "de-DE": "Zuletzt aktualisiert",
-    "id-ID": "Terakhir diperbarui",
-    "fr-FR": "Dernière mise à jour",
-    "ko-KR": "마지막 업데이트",
-    "vi-VN": "Cập nhật lần cuối"
+    "en-US": "Last updated"
   },
   "prevPageText": {
     "zh-CN": "上一页",
-    "en-US": "Previous page",
-    "ja-JP": "前のページ",
-    "de-DE": "Vorherige Seite",
-    "id-ID": "Halaman sebelumnya",
-    "fr-FR": "Page précédente",
-    "ko-KR": "이전 페이지",
-    "vi-VN": "Trang trước"
+    "en-US": "Previous page"
   },
   "nextPageText": {
     "zh-CN": "下一页",
-    "en-US": "Next page",
-    "ja-JP": "次のページ",
-    "de-DE": "Nächste Seite",
-    "id-ID": "Halaman berikutnya",
-    "fr-FR": "Page suivante",
-    "ko-KR": "다음 페이지",
-    "vi-VN": "Trang tiếp theo"
+    "en-US": "Next page"
   },
   "sourceCodeText": {
     "zh-CN": "源代码",
-    "en-US": "Source code",
-    "ja-JP": "ソースコード",
-    "de-DE": "Quellcode",
-    "id-ID": "Kode sumber",
-    "fr-FR": "Code source",
-    "ko-KR": "소스 코드",
-    "vi-VN": "Mã nguồn"
+    "en-US": "Source code"
   },
   "searchPlaceholderText": {
     "zh-CN": "搜索",
-    "en-US": "Search",
-    "ja-JP": "検索",
-    "de-DE": "Suchen",
-    "id-ID": "Cari",
-    "fr-FR": "Rechercher",
-    "ko-KR": "검색",
-    "vi-VN": "Tìm kiếm"
+    "en-US": "Search"
   },
   "searchPanelCancelText": {
     "zh-CN": "取消",
-    "en-US": "Cancel",
-    "ja-JP": "キャンセル",
-    "de-DE": "Abbrechen",
-    "id-ID": "Batal",
-    "fr-FR": "Annuler",
-    "ko-KR": "취소",
-    "vi-VN": "Hủy"
+    "en-US": "Cancel"
   },
   "searchNoResultsText": {
     "zh-CN": "无搜索结果",
-    "en-US": "No results",
-    "ja-JP": "結果がありません",
-    "de-DE": "Keine Ergebnisse",
-    "id-ID": "Tidak ada hasil",
-    "fr-FR": "Aucun résultat",
-    "ko-KR": "결과 없음",
-    "vi-VN": "Không có kết quả"
+    "en-US": "No results"
   },
   "searchSuggestedQueryText": {
     "zh-CN": "建议查询",
-    "en-US": "Suggested query",
-    "ja-JP": "検索候補",
-    "de-DE": "Vorgeschlagene Suche",
-    "id-ID": "Kueri yang disarankan",
-    "fr-FR": "Recherche suggérée",
-    "ko-KR": "추천 검색어",
-    "vi-VN": "Truy vấn gợi ý"
+    "en-US": "Suggested query"
   },
   "overview.filterNameText": {
     "zh-CN": "按名称筛选",
-    "en-US": "Filter by name",
-    "ja-JP": "名前で絞り込み",
-    "de-DE": "Nach Name filtern",
-    "id-ID": "Filter berdasarkan nama",
-    "fr-FR": "Filtrer par nom",
-    "ko-KR": "이름으로 필터링",
-    "vi-VN": "Lọc theo tên"
+    "en-US": "Filter by name"
   },
   "overview.filterPlaceholderText": {
     "zh-CN": "筛选...",
-    "en-US": "Filter...",
-    "ja-JP": "絞り込み...",
-    "de-DE": "Filtern...",
-    "id-ID": "Filter...",
-    "fr-FR": "Filtrer...",
-    "ko-KR": "필터...",
-    "vi-VN": "Lọc..."
+    "en-US": "Filter..."
   },
   "overview.filterNoResultText": {
     "zh-CN": "未找到结果",
-    "en-US": "No results found",
-    "ja-JP": "結果が見つかりません",
-    "de-DE": "Keine Ergebnisse gefunden",
-    "id-ID": "Tidak ada hasil ditemukan",
-    "fr-FR": "Aucun résultat trouvé",
-    "ko-KR": "결과를 찾을 수 없습니다",
-    "vi-VN": "Không tìm thấy kết quả"
+    "en-US": "No results found"
   },
   "openInText": {
     "zh-CN": "打开方式",
-    "en-US": "Open in",
-    "ja-JP": "開く",
-    "de-DE": "Öffnen in",
-    "id-ID": "Buka di",
-    "fr-FR": "Ouvrir dans",
-    "ko-KR": "열기",
-    "vi-VN": "Mở trong"
+    "en-US": "Open in"
   },
   "copyMarkdownText": {
     "zh-CN": "复制 Markdown",
-    "en-US": "Copy Markdown",
-    "ja-JP": "Markdownをコピー",
-    "de-DE": "Markdown kopieren",
-    "id-ID": "Salin Markdown",
-    "fr-FR": "Copier le Markdown",
-    "ko-KR": "Markdown 복사",
-    "vi-VN": "Sao chép Markdown"
+    "en-US": "Copy Markdown"
   },
   "copyMarkdownLinkText": {
     "zh-CN": "复制链接",
-    "en-US": "Copy Link",
-    "ja-JP": "リンクをコピー",
-    "de-DE": "Link kopieren",
-    "id-ID": "Salin Tautan",
-    "fr-FR": "Copier le lien",
-    "ko-KR": "링크 복사",
-    "vi-VN": "Sao chép liên kết"
+    "en-US": "Copy Link"
   },
   "editLinkText": {
     "zh-CN": "编辑此页",
-    "en-US": "Edit this page",
-    "ja-JP": "このページを編集",
-    "de-DE": "Diese Seite bearbeiten",
-    "id-ID": "Edit halaman ini",
-    "fr-FR": "Modifier cette page",
-    "ko-KR": "이 페이지 편집",
-    "vi-VN": "Chỉnh sửa trang này"
+    "en-US": "Edit this page"
   },
   "codeButtonGroupCopyButtonText": {
     "zh-CN": "复制",
-    "en-US": "Copy",
-    "ja-JP": "コピー",
-    "de-DE": "Kopieren",
-    "id-ID": "Salin",
-    "fr-FR": "Copier",
-    "ko-KR": "복사",
-    "vi-VN": "Sao chép"
+    "en-US": "Copy"
   },
   "notFoundText": {
     "zh-CN": "页面未找到",
-    "en-US": "Page not found",
-    "ja-JP": "ページが見つかりません",
-    "de-DE": "Seite nicht gefunden",
-    "id-ID": "Halaman tidak ditemukan",
-    "fr-FR": "Page introuvable",
-    "ko-KR": "페이지를 찾을 수 없습니다",
-    "vi-VN": "Không tìm thấy trang"
+    "en-US": "Page not found"
   },
   "takeMeHomeText": {
     "zh-CN": "返回首页",
-    "en-US": "Take me home",
-    "ja-JP": "ホームへ戻る",
-    "de-DE": "Zur Startseite",
-    "id-ID": "Kembali ke beranda",
-    "fr-FR": "Retour à l'accueil",
-    "ko-KR": "홈으로 돌아가기",
-    "vi-VN": "Về trang chủ"
+    "en-US": "Take me home"
   },
   "promptCopyText": {
     "zh-CN": "复制 Prompt",
-    "en-US": "Copy Prompt",
-    "ja-JP": "Promptをコピー",
-    "de-DE": "Prompt kopieren",
-    "id-ID": "Salin Prompt",
-    "fr-FR": "Copier le prompt",
-    "ko-KR": "프롬프트 복사",
-    "vi-VN": "Sao chép prompt"
+    "en-US": "Copy Prompt"
   },
   "promptCopiedText": {
     "zh-CN": "已复制",
-    "en-US": "Copied",
-    "ja-JP": "コピーしました",
-    "de-DE": "Kopiert",
-    "id-ID": "Disalin",
-    "fr-FR": "Copié",
-    "ko-KR": "복사됨",
-    "vi-VN": "Đã sao chép"
+    "en-US": "Copied"
   },
   "promptExpandText": {
     "zh-CN": "展开",
-    "en-US": "Expand",
-    "ja-JP": "展開",
-    "de-DE": "Erweitern",
-    "id-ID": "Perluas",
-    "fr-FR": "Développer",
-    "ko-KR": "펼치기",
-    "vi-VN": "Mở rộng"
+    "en-US": "Expand"
   },
   "promptCollapseText": {
     "zh-CN": "折叠",
-    "en-US": "Collapse",
-    "ja-JP": "折りたたむ",
-    "de-DE": "Einklappen",
-    "id-ID": "Ciutkan",
-    "fr-FR": "Réduire",
-    "ko-KR": "접기",
-    "vi-VN": "Thu gọn"
+    "en-US": "Collapse"
   },
   "lastUpdatedAuthorText": {
     "zh-CN": "最后更新者：",
-    "en-US": "Last updated by:",
-    "ja-JP": "最終更新者：",
-    "de-DE": "Zuletzt aktualisiert von:",
-    "id-ID": "Terakhir diperbarui oleh:",
-    "fr-FR": "Dernière mise à jour par :",
-    "ko-KR": "마지막 업데이트 작성자:",
-    "vi-VN": "Cập nhật lần cuối bởi:"
+    "en-US": "Last updated by:"
   },
   "codeButtonGroupWrapButtonText": {
     "zh-CN": "切换代码自动换行",
-    "en-US": "Toggle code wrapping",
-    "ja-JP": "コードの折り返しを切り替え",
-    "de-DE": "Zeilenumbruch umschalten",
-    "id-ID": "Alihkan pembungkusan kode",
-    "fr-FR": "Activer ou désactiver le retour à la ligne",
-    "ko-KR": "코드 줄 바꿈 전환",
-    "vi-VN": "Bật/tắt xuống dòng mã"
+    "en-US": "Toggle code wrapping"
   }
 }

@@ -9,7 +9,8 @@
   metric-analysis: analysis dialog, its query lifecycle and resources.
   map-dashboard / map-detail-styles: shared controls, navigation, recovery and record details.
   Final application script: source data, business filters, map overlays and page lifecycle.
-  Maintain modules directly in this HTML; no companion source files or generation step.
+  Maintain map modules directly in this HTML. Shared table tokens/runtime are synchronized
+  from references/visual-query/assets/ by scripts/sync-template-tables.mjs.
   Maintain this standard template; do not edit embedded vendor bundles.
 -->
 <html lang="zh-CN" data-theme="dark" data-mode="dark">
@@ -66,7 +67,8 @@
     />
     <style>
       :root {
-        font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        --dashboard-font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        font-family: var(--font-ui);
         font-size: clamp(14px, 0.84vw, 16px);
         font-weight: 400;
         font-synthesis: none;
@@ -23197,17 +23199,6 @@
         overflow: hidden;
         border-radius: 8px;
       }
-      .ma-dialog .ma-pagination {
-        display: flex;
-        align-items: center;
-        min-height: 30px;
-        margin-top: 12px;
-        gap: 6px;
-        justify-content: space-between;
-        font-size: 11px;
-        color: var(--muted);
-        font-variant-numeric: tabular-nums;
-      }
       .ma-dialog .ma-picker {
         position: relative;
         margin: 0 0 0 auto;
@@ -23342,9 +23333,6 @@
           grid-row: 2;
           width: 100%;
         }
-        .ma-dialog .ma-pagination {
-          gap: 4px;
-        }
       }
       /* Keep the glass surface still; feedback belongs to the analysis label and arrow. */
       .ma-title-icon {
@@ -23468,9 +23456,7 @@
       window.bindMapMetricAnalysis = function ({ vbi, Builder, VChart, entries, getContext, ready }) {
         let dialog, context, dimension, selection, chart, table, observer, controller
         let version = 0,
-          tableLibrary,
           records = [],
-          page = 0,
           opener,
           previousOverflow,
           loadingTimer,
@@ -23478,11 +23464,9 @@
           tableSize = '',
           tableTheme = '',
           renderQueue = Promise.resolve()
-        const pageSize = 50
         const lifetime = new AbortController()
         const listen = (node, type, handler) => node.addEventListener(type, handler, { signal: lifetime.signal })
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-        const tableAnimation = () => (reducedMotion.matches ? false : { duration: 220, delay: 0, type: 'all' })
         const resizeChart = () => {
           const node = dialog && find('chart'),
             size = node && `${node.clientWidth}:${node.clientHeight}`
@@ -23514,29 +23498,7 @@
           node.addEventListener('click', action)
           return node
         }
-        function loadTable() {
-          if (window.VTable?.ListTable) return Promise.resolve(window.VTable)
-          if (!tableLibrary)
-            tableLibrary = new Promise((resolve, reject) => {
-              const script = document.createElement('script')
-              const timer = setTimeout(() => fail(), 30000)
-              const fail = () => {
-                clearTimeout(timer)
-                script.remove()
-                tableLibrary = undefined
-                reject(new Error('明细模块加载失败，请重试'))
-              }
-              script.src = 'https://cdn.jsdelivr.net/npm/@visactor/vtable@1.23.1/dist/vtable.min.js'
-              script.onload = () => {
-                clearTimeout(timer)
-                if (window.VTable?.ListTable) resolve(window.VTable)
-                else fail()
-              }
-              script.onerror = fail
-              document.head.append(script)
-            })
-          return tableLibrary
-        }
+        const loadTable = DashboardTable.load
         function createDialog() {
           if (dialog) return
           dialog = element('dialog', 'ma-dialog')
@@ -23549,7 +23511,7 @@
   <section class="ma-summary"><div><p class="ma-eyebrow" data-ma="value-label"></p><strong class="ma-value" data-ma="value"></strong></div><p class="ma-finding" data-ma="finding"></p></section>
   <div class="ma-toolbar"><nav class="ma-modes control-group" aria-label="分析维度" data-ma="modes"></nav><div class="ma-selection" data-ma="selection" hidden><span data-ma="selected"></span><button type="button" class="control-button" data-ma="reset" aria-label="清除分组筛选">清除 ×</button></div><details class="ma-picker" data-ma="picker"><summary class="control-select" data-ma="picker-label">选择分组</summary><div class="ma-groups control-menu" data-ma="groups" role="group" aria-label="选择分组查看记录"></div></details></div>
   <section class="ma-chart-panel l-card"><div class="ma-panel-heading"><h3 class="panel-title" data-ma="chart-title"></h3></div><p class="ma-hint" data-ma="chart-hint"></p><div class="ma-chart" data-ma="chart" role="img"></div></section>
-  <section class="ma-table-panel l-card"><div class="ma-panel-heading"><h3 class="panel-title">关联明细</h3><button type="button" class="control-button" data-ma="expand" aria-expanded="false">展开表格</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="分析明细表" tabindex="0"></div><nav class="ma-pagination" aria-label="分析明细分页"><button type="button" class="control-button" data-ma="previous">上一页</button><span data-ma="page"></span><button type="button" class="control-button" data-ma="next">下一页</button></nav></section>
+  <section class="ma-table-panel l-card"><div class="ma-panel-heading"><h3 class="panel-title">关联明细</h3><button type="button" class="control-button" data-ma="expand" aria-expanded="false">展开表格</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="分析明细表" tabindex="0"></div></section>
   <details class="ma-definition"><summary>统计口径与依据</summary><p data-ma="definition"></p><p data-ma="evidence"></p><p data-ma="grain"></p></details>
 </div></div></div>`
           document.body.append(dialog)
@@ -23560,14 +23522,6 @@
             void refresh(false)
           })
           listen(find('retry'), 'click', () => void refresh(true))
-          for (const [name, delta] of [
-            ['previous', -1],
-            ['next', 1],
-          ])
-            listen(find(name), 'click', () => {
-              page += delta
-              showTable()
-            })
           listen(find('expand'), 'click', () => {
             const expanded = dialog.classList.toggle('ma-expanded')
             find('expand').setAttribute('aria-expanded', String(expanded))
@@ -23663,16 +23617,6 @@
             MapQueries.release(vbi, builder)
           }
         }
-        function showTable() {
-          if (!table) return
-          const count = Math.max(1, Math.ceil(records.length / pageSize))
-          page = Math.max(0, Math.min(page, count - 1))
-          table.options.animationAppear = tableAnimation()
-          table.setRecords(records.slice(page * pageSize, (page + 1) * pageSize))
-          find('page').textContent = `${page + 1} / ${count} · 共 ${number(records.length, 0)} 条`
-          find('previous').disabled = page === 0
-          find('next').disabled = page + 1 >= count
-        }
         function buildAnalysisSpec(group, metric, chartRows, chartTitle, selected) {
           const spec = Builder.from({
             theme: MapUI.theme().mode,
@@ -23724,73 +23668,28 @@
           return spec
         }
         function buildTableOptions(detailDimensions, records) {
-          const token = MapUI.token
-          Builder.registerTheme('map-analysis-table', {
-            config: {
-              table: {
-                backgroundColor: 'transparent',
-                bodyBackgroundColor: 'transparent',
-                bodyFontColor: token('--ink'),
-                headerFontColor: token('--strong'),
-                headerBackgroundColor: token('--accent-soft'),
-                bodyFontSize: 12,
-                headerFontSize: 11,
-                borderColor: token('--line'),
-                hoverBodyBackgroundColor: token('--interaction-fill'),
-                hoverBodyInlineBackgroundColor: token('--interaction-fill'),
-                hoverHeaderBackgroundColor: token('--interaction-fill'),
-                hoverHeaderInlineBackgroundColor: token('--interaction-fill'),
-                selectedBorderColor: token('--focus'),
-                selectedBackgroundColor: token('--interaction-fill'),
-              },
-            },
-          })
-          const options = Builder.from({
-            chartType: 'table',
-            dataset: records.slice(0, pageSize),
-            dimensions: detailDimensions.map(([id, alias]) => ({ id, alias, encoding: 'column' })),
-            measures: [],
-            theme: 'map-analysis-table',
-          }).build()
-          // Explicit evidence columns omit VSeed's auxiliary fields; formats remain owned by the host.
+          const options = records.length
+            ? Builder.from({
+                chartType: 'table',
+                dataset: records,
+                dimensions: detailDimensions.map(([id, alias]) => ({ id, alias, encoding: 'column' })),
+                measures: [],
+                theme: MapUI.theme().mode,
+              }).build()
+            : { records: [], columns: [] }
           options.columns = detailDimensions.map(([id, title, width = 100, textAlign = 'left']) => ({
             ...options.columns.find((column) => column.field === id),
             field: id,
             title,
             width,
             style: { textAlign },
-            ...(context.detailFormats?.[id] && {
-              fieldFormat: (record) => context.detailFormats[id](record[id]),
-            }),
+            ...(context.detailFormats?.[id] && { fieldFormat: (record) => context.detailFormats[id](record[id]) }),
           }))
-          options.heightMode = 'standard'
-          options.autoFillWidth = true
-          options.autoWrapText = false
-          options.defaultRowHeight = 38
-          options.defaultHeaderRowHeight = 36
-          options.animationAppear = tableAnimation()
           options.tooltip = { ...options.tooltip, parentElement: dialog, confine: true }
-          // Canvas-specific finish: quiet row dividers and an unobtrusive scrollbar.
-          for (const style of [options.theme.bodyStyle, options.theme.headerStyle]) {
-            style.borderLineWidth = [0, 0, 1, 0]
-            style.fontFamily = getComputedStyle(document.body).fontFamily
-          }
-          options.theme.headerStyle.textAlign = 'left'
-          options.theme.headerStyle.fontWeight = 500
-          options.theme.selectionStyle.cellBorderLineWidth = 1
-          options.theme.frameStyle = { borderLineWidth: 0 }
-          options.theme.scrollStyle = {
-            visible: 'scrolling',
-            hoverOn: true,
-            width: 5,
-            scrollSliderColor: token('--muted'),
-            scrollRailColor: 'transparent',
-          }
-          return options
+          return DashboardTable.options(options, find('table'))
         }
         let groupRows, totalRow
-        async function refresh(reload, { preservePage = false } = {}) {
-          const previousPage = page
+        async function refresh(reload) {
           const ticket = ++version
           controller?.abort()
           controller = new AbortController()
@@ -23808,7 +23707,6 @@
           find('retry').hidden = true
           find('content').setAttribute('aria-busy', 'true')
           find('groups').inert = true
-          find('previous').disabled = find('next').disabled = true
           find('selection').hidden = selected === undefined
           find('selected').textContent = selected === undefined ? '' : `${group[1]}：${selected}`
           const extra =
@@ -23850,7 +23748,6 @@
               plotRows.sort((a, b) => b.value - a.value || a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
             else plotRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
             records = details
-            page = preservePage ? previousPage : 0
             find('content').hidden = false
             const detailScope = selected === undefined ? '当前范围' : `${group[1]}：${selected}`
             find('value-label').textContent = detailScope
@@ -23871,9 +23768,9 @@
                       : '当前范围没有可分析的有效值。可返回看板调整筛选。'
             for (const name of ['value', 'finding']) animateReading(find(name))
             find('definition').textContent = metric.definition
-            find('evidence').textContent = '汇总由当前范围内的完整记录计算；表格分页不改变汇总值。'
+            find('evidence').textContent = '汇总由当前范围内的完整记录计算；表格滚动不改变汇总值。'
             find('grain').textContent =
-              `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 分页可访问全部结果`
+              `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 表格包含当前范围的完整结果`
             find('table-scope').textContent = `${detailScope} · ${number(records.length, 0)} 条记录`
             find('table-scope').title = find('table-scope').textContent
             find('table').setAttribute('aria-label', `关联明细，${detailScope}，${records.length} 条记录`)
@@ -23932,9 +23829,10 @@
                 )
                 // 同一指标的表结构不变：筛选和翻页仅替换记录，避免重建表头及重算列宽。
                 const themeId = document.documentElement.dataset.theme
+                const existingTable = !!table
                 if (table && tableTheme !== themeId) {
-                  table.release()
-                  table = undefined
+                  table.updateTheme(DashboardTable.options(table.options, find('table')).theme)
+                  tableTheme = themeId
                 }
                 if (!table) {
                   tableTheme = themeId
@@ -23943,7 +23841,7 @@
                   tableSize = `${find('table').clientWidth}:${find('table').clientHeight}`
                 }
                 if (!dialog.open || ticket !== version) return
-                showTable()
+                if (existingTable) DashboardTable.setRecords(table, records)
                 resizeChart()
                 find('feedback').textContent = records.length ? '' : '当前范围暂无明细记录。'
                 dialog.dataset.state = records.length ? 'ready' : 'empty'
@@ -24048,7 +23946,7 @@
           void refresh(false)
         }
         const onThemeChange = () => {
-          if (dialog?.open) void refresh(!groupRows, { preservePage: true })
+          if (dialog?.open) void refresh(!groupRows)
         }
         listen(document, 'map-theme-change', onThemeChange)
         listen(reducedMotion, 'change', onMotionChange)
@@ -24817,6 +24715,251 @@
           bounds,
           name: (code) => shortNames[code] || byCode.get(code)?.properties.name || '全球',
         }
+      })()
+    </script>
+    <style id="dashboard-table-tokens">
+      /* Shared semantic tokens. Theme palettes supply --ink, --muted and --accent. */
+      :root {
+        --font-ui: var(--dashboard-font-family, Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif);
+        --text-primary: var(--ink);
+        --text-strong: var(--strong, var(--ink));
+        --text-secondary: var(--muted);
+        --text-faint: color-mix(in srgb, var(--muted) 88%, transparent);
+        --focus-ring: color-mix(in srgb, var(--accent) 68%, var(--ink));
+        --table-canvas: transparent;
+        --table-body: rgb(255 255 255 / 6%);
+        --table-stripe: rgb(255 255 255 / 18%);
+        --table-header: color-mix(in srgb, var(--ink) 3%, rgb(255 255 255 / 66%));
+        --table-text: var(--text-primary);
+        --table-header-text: var(--text-strong);
+        --table-divider: color-mix(in srgb, var(--ink) 8%, transparent);
+        --table-frame: color-mix(in srgb, var(--ink) 10%, transparent);
+        --table-hover: color-mix(in srgb, var(--accent) 15%, transparent);
+        --table-hover-row: color-mix(in srgb, var(--accent) 8%, transparent);
+        --table-selected: color-mix(in srgb, var(--accent) 25%, transparent);
+        --table-selected-row: color-mix(in srgb, var(--accent) 9%, transparent);
+        --table-selected-border: color-mix(in srgb, var(--accent) 70%, var(--ink));
+        --table-scroll-thumb: color-mix(in srgb, var(--muted) 38%, transparent);
+        --table-scroll-rail: transparent;
+        --table-font-size: 12px;
+        --table-header-font-size: 11px;
+        --table-row-height: 40px;
+        --table-header-height: 38px;
+        --table-selection-width: 1px;
+        --table-radius: 10px;
+        --table-overview-max-height: 398px;
+      }
+      :root[data-mode='dark'] {
+        --table-body: transparent;
+        --table-stripe: color-mix(in srgb, var(--ink) 3%, transparent);
+        --table-header: color-mix(in srgb, var(--ink) 6%, transparent);
+        --table-divider: color-mix(in srgb, var(--ink) 9%, transparent);
+        --table-frame: color-mix(in srgb, var(--ink) 12%, transparent);
+      }
+      .dashboard-table,
+      .ma-dialog .ma-table {
+        border-radius: var(--table-radius);
+        overflow: hidden;
+        outline: none;
+      }
+      .dashboard-table:focus-visible,
+      .ma-dialog .ma-table:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 3px;
+      }
+      .dashboard-table {
+        position: relative;
+        width: 100%;
+        height: var(--table-overview-max-height);
+        margin-top: 14px;
+      }
+      .dashboard-table[data-empty='true']::after {
+        content: '当前筛选暂无数据';
+        position: absolute;
+        inset: 45% 0 auto;
+        text-align: center;
+        color: var(--text-secondary);
+        font: 12px var(--font-ui);
+        pointer-events: none;
+      }
+      .dashboard-table-caption {
+        margin: 16px 0 0;
+        color: var(--text-secondary);
+        font-size: 12px;
+        line-height: 1.85;
+      }
+      .dashboard-table-count {
+        margin-left: 10px;
+        color: var(--text-faint);
+        font-size: 11px;
+        font-weight: 400;
+      }
+    </style>
+    <script id="dashboard-table-runtime">
+      /* CSS is the palette authority; this adapter resolves its tokens for Canvas. */
+      window.DashboardTable = (() => {
+        let library
+        function load() {
+          if (window.VTable?.ListTable) return Promise.resolve(window.VTable)
+          if (!library)
+            library = new Promise((resolve, reject) => {
+              const script = document.createElement('script')
+              const fail = () => {
+                clearTimeout(timer)
+                script.remove()
+                library = undefined
+                reject(new Error('明细模块加载失败，请重试'))
+              }
+              const timer = setTimeout(fail, 30000)
+              script.src = 'https://cdn.jsdelivr.net/npm/@visactor/vtable@1.23.1/dist/vtable.min.js'
+              script.onload = () => {
+                clearTimeout(timer)
+                if (window.VTable?.ListTable) resolve(window.VTable)
+                else fail()
+              }
+              script.onerror = fail
+              document.head.append(script)
+            })
+          return library
+        }
+        function readTokens(host) {
+          const style = getComputedStyle(host)
+          const probe = document.createElement('span')
+          probe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none'
+          host.append(probe)
+          const canvas = document.createElement('canvas')
+          canvas.width = canvas.height = 1
+          const context = canvas.getContext('2d', { willReadFrequently: true })
+          const color = (name) => {
+            // Resolve var()/color-mix() in the host, then normalize to VRender-compatible RGBA.
+            probe.style.color = `var(${name})`
+            context.clearRect(0, 0, 1, 1)
+            context.fillStyle = getComputedStyle(probe).color
+            context.fillRect(0, 0, 1, 1)
+            const [r, g, b, a] = context.getImageData(0, 0, 1, 1).data
+            return `rgba(${r}, ${g}, ${b}, ${a / 255})`
+          }
+          try {
+            return {
+              color,
+              number: (name) => parseFloat(style.getPropertyValue(name)),
+              fontFamily: style.getPropertyValue('--font-ui').trim(),
+              dispose: () => probe.remove(),
+            }
+          } catch (error) {
+            probe.remove()
+            throw error
+          }
+        }
+        const animation = () =>
+          matchMedia('(prefers-reduced-motion: reduce)').matches ? false : { type: 'all', duration: 220, delay: 0 }
+        function options(base, host) {
+          const tokens = readTokens(host)
+          try {
+            const color = tokens.color
+            const normal = color('--table-body')
+            const stripe = color('--table-stripe')
+            const divider = color('--table-divider')
+            const hover = {
+              cellBgColor: color('--table-hover'),
+              inlineRowBgColor: color('--table-hover-row'),
+              inlineColumnBgColor: color('--table-canvas'),
+            }
+            const common = {
+              fontFamily: tokens.fontFamily,
+              fontSize: tokens.number('--table-font-size'),
+              color: color('--table-text'),
+              padding: [10, 12, 10, 12],
+              borderColor: divider,
+              borderLineWidth: [0, 0, 1, 0],
+            }
+            return {
+              ...base,
+              columns: base.columns.map((column) => ({
+                ...column,
+                headerStyle: { ...column.headerStyle, textAlign: column.style?.textAlign || 'left' },
+              })),
+              autoFillWidth: true,
+              autoWrapText: false,
+              heightMode: 'standard',
+              defaultRowHeight: tokens.number('--table-row-height'),
+              defaultHeaderRowHeight: tokens.number('--table-header-height'),
+              hover: { highlightMode: 'row' },
+              select: { highlightMode: 'row', headerSelectMode: 'cell' },
+              animationAppear: animation(),
+              theme: {
+                underlayBackgroundColor: color('--table-canvas'),
+                defaultStyle: common,
+                bodyStyle: {
+                  ...common,
+                  bgColor: ({ row, table }) => ((row - table.columnHeaderLevelCount) % 2 ? stripe : normal),
+                  hover,
+                },
+                headerStyle: {
+                  ...common,
+                  fontSize: tokens.number('--table-header-font-size'),
+                  fontWeight: 600,
+                  color: color('--table-header-text'),
+                  bgColor: color('--table-header'),
+                  hover,
+                },
+                selectionStyle: {
+                  cellBorderLineWidth: tokens.number('--table-selection-width'),
+                  cellBorderColor: color('--table-selected-border'),
+                  cellBgColor: color('--table-selected'),
+                  inlineRowBgColor: color('--table-selected-row'),
+                  inlineColumnBgColor: color('--table-canvas'),
+                  selectionFillMode: 'overlay',
+                },
+                frameStyle: {
+                  borderColor: color('--table-frame'),
+                  borderLineWidth: 1,
+                  cornerRadius: tokens.number('--table-radius'),
+                },
+                scrollStyle: {
+                  visible: 'scrolling',
+                  hoverOn: true,
+                  width: 5,
+                  scrollSliderCornerRadius: 3,
+                  scrollSliderColor: color('--table-scroll-thumb'),
+                  scrollRailColor: color('--table-scroll-rail'),
+                },
+                columnResize: { lineColor: color('--table-selected-border'), lineWidth: 1 },
+              },
+            }
+          } finally {
+            tokens.dispose()
+          }
+        }
+        function overview(Builder, columns, rows, host) {
+          const records = rows.map((values) =>
+            Object.fromEntries(values.map((value, index) => [`c${index}`, value ?? '—'])),
+          )
+          const dimensions = columns.map((alias, index) => ({ id: `c${index}`, alias, encoding: 'column' }))
+          const base = records.length
+            ? Builder.from({ chartType: 'table', dataset: records, dimensions, measures: [] }).build()
+            : { records, columns: dimensions.map(({ id, alias }) => ({ field: id, title: alias })) }
+          base.columns = columns.map((title, index) => ({
+            ...base.columns.find((column) => column.field === `c${index}`),
+            field: `c${index}`,
+            title,
+            width: index === 0 ? 170 : Math.max(130, Math.min(210, title.length * 12 + 24)),
+            style: { textAlign: index === 0 ? 'left' : 'right' },
+          }))
+          base.widthMode = 'standard'
+          const resolved = options(base, host)
+          host.style.height = `${Math.min(
+            parseFloat(getComputedStyle(host).getPropertyValue('--table-overview-max-height')),
+            resolved.defaultHeaderRowHeight + Math.max(1, rows.length) * resolved.defaultRowHeight + 2,
+          )}px`
+          return resolved
+        }
+        function setRecords(table, records) {
+          table.clearSelected()
+          table.options.animationAppear = animation()
+          table.setRecords(records)
+        }
+        return { load, options, overview, setRecords }
       })()
     </script>
   </head>

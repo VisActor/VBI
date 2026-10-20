@@ -14,7 +14,7 @@ This is a complex process, but generally involves three things:
 3. Write code to ensure new inputs produce the expected outputs
 
 :::tip
-The `playground` (`apps/website/docs/en-US/playground/index.mdx`) can be used for debugging and development.
+The `playground` (`apps/website/docs/en-US/vseed/playground.mdx`) can be used for debugging and development.
 :::
 
 ## Create New Test Cases

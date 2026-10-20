@@ -1,7 +1,12 @@
 ---
 title: Playground
-playgroundDirection: vertical
+pageType: doc-wide
+outline: false
+footer: false
+playgroundDirection: horizontal
 ---
+
+<div className="playground-page">
 
 ```tsx playground
 import { VQuery } from '@visactor/vquery'
@@ -121,7 +126,6 @@ import {
   isVChart,
   isPivotTable,
   isTable,
-  zVSeed,
   ColorIdEncoding,
 } from '@visactor/vseed'
 
@@ -188,7 +192,7 @@ const SimpleVSeedRender = (props: { vseed: VSeed }) => {
   return (
     <div
       ref={ref}
-      style={{ height: 300, width: '100%' }}
+      style={{ height: '100%', width: '100%' }}
       onClick={() => {
         console.group(`selected ${vseed.chartType}`)
         console.log('builder', builderRef.current)
@@ -205,3 +209,5 @@ const SimpleVSeedRender = (props: { vseed: VSeed }) => {
 
 export default Demo
 ```
+
+</div>

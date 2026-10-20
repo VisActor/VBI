@@ -1,9 +1,0 @@
-[
-  "quickStart",
-  {
-    "type": "dir",
-    "name": "intro",
-    "label": "Vue d'ensemble des fonctionnalités",
-    "collapsed": false
-  }
-]

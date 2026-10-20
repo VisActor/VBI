@@ -28,8 +28,8 @@ description: 创建小而美的交互式 Dashboard，以指标、趋势、排行
 2. 沿用整套[排版与尺寸 token](references/layout.md#排版与尺寸-token)，同层级指标字号一致；长数值通过调整单位和空间完整展示。图表统一应用[背景、轴线与标签样式](references/design.md#图表配色与页面同步)。
 3. 筛选器放在标题右侧，按[筛选器标准实践](references/filter.md)选择胶囊平铺或定制 Select：少量短选项平铺，选项多或较长时收进下拉；统一选中态、焦点、弹层与响应式行为。布局和配色切换控件按用户要求添加。
 4. 同时适配 PC 和移动端。小卡片添加不超过 2° 的倾斜效果，大图和核心发现保持平面。
-5. 明细默认展开，筛选后保留展开状态。
-6. 复用模板的首次入场与清理机制，时序和分批规则见[布局动效规范](references/layout.md#卡片按顺序延时入场)。
+5. 明细默认展开，筛选后保留展开状态。主页与分析明细复用[统一表格 token 与适配器](../visual-query/references/table-theme.md)，将完整查询结果交给 VTable 虚拟滚动，不加手工分页器；底部明细容器比上方指标卡更透明。
+6. 复用模板的[玻璃阅读面](references/design.md#玻璃阅读面)、首次入场与清理机制；主页时序见[卡片入场](references/layout.md#卡片按顺序延时入场)，分析弹窗整体展开与内容逐项出现见[弹窗入场](references/layout.md#弹窗与内容分批入场)。
 
 ## Step3：接入数据与交互
 
@@ -47,16 +47,17 @@ description: 创建小而美的交互式 Dashboard，以指标、趋势、排行
 
 ## 参考资料
 
-| 要做什么              | 看哪里                                                                                                              |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| 选择模板              | [模板列表](references/templates.md) · [可视总览](templates/index.html)                                              |
-| 调整布局和动效        | [设计与布局](references/layout.md)                                                                                  |
-| 调整配色和背景        | [配色与背景](references/design.md)                                                                                  |
-| 编写核心发现          | [核心发现与指标洞察](references/insight.md)                                                                         |
-| 制作指标卡            | [指标卡](references/metric-card.md)                                                                                 |
-| 设计指标深入分析      | [分析内容与用户动线](../metric-analysis/SKILL.md)                                                                   |
-| 制作趋势图            | [趋势图](references/trend.md)                                                                                       |
-| 制作平铺筛选与 Select | [筛选器标准实践](references/filter.md) · [Select 实现](references/filter-select.md)                                 |
-| 查看模板实现          | [基础模板](templates/template-business-overview.html) · [完整示例](templates/example.html)                          |
-| 在 HTML 中接入图表    | [HTML 接入](../visual-query/references/html-integration.md)                                                         |
-| 查 API                | [分析配置](../../api/vbi/SKILL.md) · [数据查询](../../api/vquery/SKILL.md) · [可视化配置](../../api/vseed/SKILL.md) |
+| 要做什么               | 看哪里                                                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| 选择模板               | [模板列表](references/templates.md) · [可视总览](templates/index.html)                                              |
+| 调整布局和动效         | [设计与布局](references/layout.md)                                                                                  |
+| 调整配色和背景         | [配色与背景](references/design.md)                                                                                  |
+| 编写核心发现           | [核心发现与指标洞察](references/insight.md)                                                                         |
+| 制作指标卡             | [指标卡](references/metric-card.md)                                                                                 |
+| 设计指标深入分析       | [分析内容与用户动线](../metric-analysis/SKILL.md)                                                                   |
+| 制作趋势图             | [趋势图](references/trend.md)                                                                                       |
+| 制作平铺筛选与 Select  | [筛选器标准实践](references/filter.md) · [Select 实现](references/filter-select.md)                                 |
+| 查看模板实现与维护入口 | [模板接入](references/template-integration.md) · [经营概览模板](templates/template-business-overview.html)          |
+| 调整表格主题与选中态   | [表格 token 与适配器](../visual-query/references/table-theme.md)                                                    |
+| 在 HTML 中接入图表     | [HTML 接入](../visual-query/references/html-integration.md)                                                         |
+| 查 API                 | [分析配置](../../api/vbi/SKILL.md) · [数据查询](../../api/vquery/SKILL.md) · [可视化配置](../../api/vseed/SKILL.md) |

@@ -14,7 +14,7 @@ pnpm install && pnpm dev
 3. 编写代码, 确保新的输入有符合预期的输出
 
 :::tip
-`playground(apps/website/docs/zh-CN/playground/index.mdx)`, 可以进行调试与开发.
+`playground(apps/website/docs/zh-CN/vseed/playground.mdx)`, 可以进行调试与开发.
 
 :::
 

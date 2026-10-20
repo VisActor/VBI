@@ -1,5 +1,5 @@
 import { n as __esmMin, o as __toESM, r as __exportAll } from "./rolldown-runtime.js";
-import { $ as d$6, $n as init_runtime, $t as normalizePadding, A as init_yjs, An as StreamLight, At as m$8, B as date, Bn as transformTag, Bt as PivotTableAll, Cn as isArray, Ct as D$4, D as YMap, Dn as isNil, Dt as i$9, E as YArray, Et as r$11, F as _enum, Fn as forceUpdate, Ft as C$6, G as number, Gn as entry_preview_argtypes_exports, Gt as boxplot, Hn as preview_exports$1, Ht as ListTableAll, I as any, In as getRenderingRef, J as string, Jn as setCustomElementsManifest, K as object, Kn as init_entry_preview_argtypes, L as array$1, Ln as h$5, Lt as init_es$2, Mn as H$4, N as v4, Nn as Host, Nt as i$7, O as applyUpdate, On as esm_default, P as init_zod, Pn as createEvent, Q as init_dist$1, Qn as init_preload_helper, R as boolean, Rn as init_client, Rt as PivotChart, S as Kysely, St as y$10, T as UndoManager$1, Tn as isUndefined, U as lazy, Un as entry_preview_docs_exports, V as discriminatedUnion, Vn as init_preview$1, W as literal, Wn as init_entry_preview_docs, Wt as init_es$1, X as union, Xn as init_entry_preview, Y as tuple, Yn as entry_preview_exports, Yt as chartModule, Z as require_tinycolor, Zn as __vitePreload, Zt as init_es, an as kde, ct as n$11, dn as regressionLogistic, dt as e$8, en as Color, er as setup, f as init_dist$3, g as PostgresQueryCompiler, gn as array, gt as t$14, j as init_dist$2, jt as T$4, k as encodeStateAsUpdate, kn as init_esm$1, ln as regressionLowess, m as PostgresAdapter, mn as clamper, mt as n$10, nn as ecdf, nt as k$7, ot as o$9, p as init_esm$2, pn as regressionLinear, q as record, qt as bin, rt as i$10, sn as regressionPolynomial, ut as o$10, v as DummyDriver, vt as t$13, w as Doc, x as sql, xn as merge, yn as pickWithout, yt as i$8, z as custom, zn as proxyCustomElement } from "./vendor.js";
+import { $ as string, $n as init_entry_preview, A as YArray, An as isNil, B as any, Bn as h$5, Bt as C$6, Ct as t$13, Dt as y$10, E as Kysely, En as isArray, F as init_dist$2, Fn as H$4, Ft as m$8, G as discriminatedUnion, Gn as preview_exports$1, Gt as PivotTableAll, H as boolean, Hn as proxyCustomElement, Ht as init_es$2, In as Host, It as T$4, J as literal, Jn as entry_preview_argtypes_exports, Kn as entry_preview_docs_exports, L as v4, Ln as createEvent, M as applyUpdate, Mn as init_esm$1, Mt as i$9, N as encodeStateAsUpdate, Nn as StreamLight, O as Doc, On as isUndefined, Ot as D$4, P as init_yjs, Q as record, Qn as entry_preview_exports, Qt as bin, R as init_zod, Rn as forceUpdate, Rt as i$7, S as DummyDriver, Sn as pickWithout, T as sql, U as custom, Un as transformTag, Ut as PivotChart, V as array, Vn as init_client, W as date, Wn as init_preview$1, X as number, Xt as boxplot, Y as never, Yn as init_entry_preview_argtypes, Yt as init_es$1, Z as object$1, Zn as setCustomElementsManifest, _n as clamper, an as ecdf, b as PostgresQueryCompiler, cn as kde, ct as i$10, dt as o$9, en as chartModule, er as __vitePreload, et as tuple, f as init_dist$3, fn as regressionLowess, g as MysqlQueryCompiler, gn as regressionLinear, gt as e$8, ht as o$10, it as d$6, j as YMap, jn as esm_default, jt as r$11, k as UndoManager$1, m as MysqlAdapter, mn as regressionLogistic, nn as init_es, nr as init_runtime, nt as require_tinycolor, p as init_esm$2, pt as n$11, q as lazy, qn as init_entry_preview_docs, qt as ListTableAll, rn as Color, rr as setup, rt as init_dist$1, st as k$7, tr as init_preload_helper, tt as union, un as regressionPolynomial, v as PostgresAdapter, wn as merge, wt as i$8, xt as t$14, yn as array$1, yt as n$10, z as _enum, zn as getRenderingRef } from "./vendor.js";
 //#region iframe.html?html-proxy&inline-css&index=0.css
 var init_iframe_html_html_proxy_inline_css_index_0 = __esmMin((() => {}));
 //#endregion
@@ -156,7 +156,7 @@ function i$6(n, e) {
 		return e;
 	}));
 }
-var init_dataset$2 = __esmMin((() => {}));
+var init_dataset$3 = __esmMin((() => {}));
 //#endregion
 //#region dist/components/fieldRole.js
 var e$5, t$9, a$6;
@@ -8132,7 +8132,7 @@ var init_datasetPivotSankey = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/dataset/index.js
-var init_dataset$1 = __esmMin((() => {
+var init_dataset$2 = __esmMin((() => {
 	init_datasetYX();
 	init_datasetXY();
 	init_datasetPivot();
@@ -8316,15 +8316,13 @@ var init_columnParallel$4 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/init/pie.js
 var initPie;
-var init_pie$11 = __esmMin((() => {
+var init_pie$12 = __esmMin((() => {
 	initPie = (spec, context) => {
 		const result = { ...spec };
 		const { advancedVSeed } = context;
 		const { datasetReshapeInfo } = advancedVSeed;
 		const { unfoldInfo, foldInfo } = datasetReshapeInfo[0];
 		result.type = "pie";
-		result.outerRadius = .8;
-		result.innerRadius = 0;
 		result.valueField = foldInfo.measureValue;
 		result.categoryField = unfoldInfo.encodingColorId;
 		result.padding = 0;
@@ -8343,8 +8341,6 @@ var init_donut$4 = __esmMin((() => {
 		const { datasetReshapeInfo } = advancedVSeed;
 		const { foldInfo, unfoldInfo } = datasetReshapeInfo[0];
 		result.type = "pie";
-		result.outerRadius = .8;
-		result.innerRadius = .8 * result.outerRadius;
 		result.valueField = foldInfo.measureValue;
 		result.categoryField = unfoldInfo.encodingColorId;
 		result.padding = 0;
@@ -8732,7 +8728,7 @@ var init_init$2 = __esmMin((() => {
 	init_area$7();
 	init_line$9();
 	init_columnParallel$4();
-	init_pie$11();
+	init_pie$12();
 	init_donut$4();
 	init_rose$8();
 	init_roseParallel$4();
@@ -9397,197 +9393,8 @@ var init_stack$1 = __esmMin((() => {
 	};
 }));
 //#endregion
-//#region ../vseed/dist/esm/dataSelector/selector.js
-function nearlyEqual(a, b, epsilon = 1e-8) {
-	if (Number.isNaN(a) || Number.isNaN(b)) return false;
-	if (a === b) return true;
-	return Math.abs(a - b) <= epsilon;
-}
-var selector_selector, isValueSelector, isPartialDatumSelector, isFieldSelector, isMeasureSelector, isDimensionSelector, selectByMeasure, selectByDmension, selectByField, matchesFieldSelector, selectByPartial, selectByValue, matchesCellSelector, matchesDatum, isDynamicFilterLike, isRowWithFieldDynamicFilter, isValueDynamicFilter, isDynamicFilter, validateFilterResult, executeDynamicFilter, matchDynamicFilterResult, selectorWithDynamicFilter;
-var init_selector$1 = __esmMin((() => {
-	init_dist$1();
-	init_sandbox();
-	init_dataReshape();
-	selector_selector = (vchartDatum, selector, selectorMode = "And") => {
-		if (!selector) return true;
-		const datum = y$10(vchartDatum, Object.keys(vchartDatum).filter((k) => k.toLocaleLowerCase().startsWith("__vchart")));
-		return (Array.isArray(selector) ? selector : [selector])["And" === selectorMode ? "every" : "some"]((selector) => {
-			if (isValueSelector(selector)) return selectByValue(selector, datum);
-			else if (isFieldSelector(selector)) return selectByField(selector, datum);
-			else if (isMeasureSelector(selector)) return selectByMeasure(selector, datum);
-			else if (isDimensionSelector(selector)) return selectByDmension(selector, datum);
-			else if (isPartialDatumSelector(selector)) return selectByPartial(selector, datum);
-			return false;
-		});
-	};
-	isValueSelector = (selector) => "string" == typeof selector || "number" == typeof selector;
-	isPartialDatumSelector = (selector) => "object" == typeof selector && null !== selector;
-	isFieldSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && !("operator" in selector) && !("op" in selector) && !("value" in selector);
-	isMeasureSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && ("operator" in selector || "op" in selector) && "value" in selector && ([
-		"=",
-		"==",
-		"!=",
-		">",
-		"<",
-		">=",
-		"<=",
-		"between"
-	].includes(selector.operator) || [
-		"=",
-		"==",
-		"!=",
-		">",
-		"<",
-		">=",
-		"<=",
-		"between"
-	].includes(selector.op));
-	isDimensionSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && ("operator" in selector || "op" in selector) && "value" in selector && (["in", "not in"].includes(selector.operator) || ["in", "not in"].includes(selector.op));
-	selectByMeasure = (selector, datum) => {
-		const op = selector.operator || selector.op;
-		const selectorValueArr = Array.isArray(selector.value) ? selector.value : [selector.value];
-		switch (op) {
-			case "=":
-				if (String(datum[selector.field]) === String(selectorValueArr[0]) || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case "==":
-				if (datum[selector.field] === selectorValueArr[0]) return true;
-				break;
-			case "!=":
-				if (datum[selector.field] !== selectorValueArr[0]) return true;
-				break;
-			case ">":
-				if (datum[selector.field] > selectorValueArr[0] && !nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case "<":
-				if (datum[selector.field] < selectorValueArr[0] && !nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case ">=":
-				if (datum[selector.field] >= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case "<=":
-				if (datum[selector.field] <= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
-				break;
-			case "between":
-				if (Array.isArray(selector.value) && (datum[selector.field] >= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) && (datum[selector.field] <= selectorValueArr[1] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[1])))) return true;
-				break;
-		}
-		return false;
-	};
-	selectByDmension = (selector, datum) => {
-		const op = selector.operator || selector.op;
-		const selectorValueArr = Array.isArray(selector.value) ? selector.value : [selector.value];
-		switch (op) {
-			case "in":
-				if (selectorValueArr.includes(datum[selector.field])) return true;
-				break;
-			case "not in":
-				if (!selectorValueArr.includes(datum[selector.field])) return true;
-				break;
-		}
-		return false;
-	};
-	selectByField = (selector, datum) => {
-		const fields = Array.isArray(selector.field) ? selector.field : [selector.field];
-		const datumKeys = Object.keys(datum);
-		return fields.some((field) => datumKeys.includes(field));
-	};
-	matchesFieldSelector = (field, fieldSelector) => {
-		return (Array.isArray(fieldSelector.field) ? fieldSelector.field : [fieldSelector.field]).includes(field);
-	};
-	selectByPartial = (selector, datum) => Object.keys(selector).every((key) => datum[key] === selector[key]);
-	selectByValue = (selector, datum) => Object.values(datum).some((v) => v === selector);
-	matchesCellSelector = (cell, filterRes) => {
-		if (filterRes["__row_index"] !== cell["__row_index"]) return false;
-		return "*" === filterRes.field || Object.keys(cell).includes(filterRes.field);
-	};
-	matchesDatum = (target, candidate) => Object.keys(candidate).every((key) => target[key] === candidate[key]);
-	isDynamicFilterLike = (selector, expectedTypes) => "object" == typeof selector && null !== selector && "type" in selector && expectedTypes.includes(selector.type) && "code" in selector && "string" == typeof selector.code;
-	isRowWithFieldDynamicFilter = (selector) => isDynamicFilterLike(selector, ["row-with-field"]);
-	isValueDynamicFilter = (selector) => isDynamicFilterLike(selector, ["value"]);
-	isDynamicFilter = (selector) => isDynamicFilterLike(selector, ["row-with-field", "value"]);
-	validateFilterResult = (result, filter) => {
-		if (isValueDynamicFilter(filter)) {
-			if ("number" != typeof result && "string" != typeof result) throw new TypeError(`ValueDynamicFilter must return a number or string, but got: ${typeof result}. Code: "${filter.code}"`);
-			return;
-		}
-		if (!Array.isArray(result)) throw new TypeError(`${isRowWithFieldDynamicFilter(filter) ? "TableDynamicFilter" : "ChartDynamicFilter"} must return an array, but got: ${typeof result}. Code: "${filter.code}"`);
-		if (isRowWithFieldDynamicFilter(filter)) for (let i = 0; i < result.length; i++) {
-			const item = result[i];
-			if ("object" != typeof item || null === item) throw new TypeError(`TableDynamicFilter array element at index ${i} must be an object, got: ${typeof item}`);
-			if (!("__row_index" in item) && "__row_index" in item === false) throw new TypeError(`TableDynamicFilter array element at index ${i} must contain __row_index or InnerRowIndex field`);
-			if (!("field" in item)) throw new TypeError(`TableDynamicFilter array element at index ${i} must contain 'field' field`);
-		}
-	};
-	executeDynamicFilter = async (filter, allData) => {
-		try {
-			const { success, data, error } = await executeFilterCode({
-				code: filter.code,
-				data: allData
-			});
-			if (!success) {
-				console.warn("[vseed] Dynamic filter execution failed:", error);
-				return {
-					success: false,
-					data: isRowWithFieldDynamicFilter(filter) ? [] : "",
-					error
-				};
-			}
-			try {
-				validateFilterResult(data, filter);
-			} catch (validationError) {
-				console.error("[vseed] Dynamic filter result validation failed:", validationError);
-				return {
-					success: false,
-					data: isRowWithFieldDynamicFilter(filter) ? [] : "",
-					error: validationError instanceof Error ? validationError.message : String(validationError)
-				};
-			}
-			return {
-				success,
-				data
-			};
-		} catch (error) {
-			const errorMessage = error instanceof Error ? error.message : String(error);
-			console.error("[vseed] Dynamic filter execution threw exception:", errorMessage);
-			return {
-				success: false,
-				data: isRowWithFieldDynamicFilter(filter) ? [] : "",
-				error: errorMessage
-			};
-		}
-	};
-	matchDynamicFilterResult = (result, datum, selectorType = "table") => {
-		if ("number" == typeof result || "string" == typeof result) throw new Error("matchDynamicFilterResult does not support ValueDynamicFilter results");
-		if ("table" === selectorType) return result.some((item) => matchesCellSelector(datum, item));
-		return result.some((item) => matchesDatum(datum, item));
-	};
-	selectorWithDynamicFilter = (vchartDatum, selectorConfig, defaultSelector) => {
-		if (!selectorConfig) return true;
-		if (isValueDynamicFilter(selectorConfig)) {
-			if (selectorConfig.fallback) {
-				const fallbackSelector = Array.isArray(selectorConfig.fallback) ? selectorConfig.fallback : [selectorConfig.fallback];
-				return selector_selector(vchartDatum, fallbackSelector);
-			}
-			return defaultSelector ? selector_selector(vchartDatum, defaultSelector) : false;
-		}
-		const selectorType = isRowWithFieldDynamicFilter(selectorConfig) ? "table" : "chart";
-		if (selectorConfig.result?.success && selectorConfig.result.data) return matchDynamicFilterResult(selectorConfig.result.data, vchartDatum, selectorType);
-		if (selectorConfig.fallback) {
-			const fallbackSelector = Array.isArray(selectorConfig.fallback) ? selectorConfig.fallback : [selectorConfig.fallback];
-			return selector_selector(vchartDatum, fallbackSelector);
-		}
-		return defaultSelector ? selector_selector(vchartDatum, defaultSelector) : false;
-	};
-}));
-//#endregion
-//#region ../vseed/dist/esm/dataSelector/index.js
-var init_dataSelector$1 = __esmMin((() => {
-	init_selector$1();
-}));
-//#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/stack/stackCornerRadiusUtils.js
-var reverseStackCornerRadius, mergeStackCornerRadius, getStackRangeCornerRadius, callbacks, createCornerRadius, createStackCornerRadius, createBarCornerRadius, hasMoveInAnimation;
+var reverseStackCornerRadius, mergeStackCornerRadius, getStackRangeCornerRadius, callbacks, createCornerRadius, createStackCornerRadius, createBarCornerRadius;
 var init_stackCornerRadiusUtils = __esmMin((() => {
 	init_constant();
 	reverseStackCornerRadius = (cornerRadius) => {
@@ -9645,54 +9452,24 @@ var init_stackCornerRadiusUtils = __esmMin((() => {
 	};
 	createStackCornerRadius = (radius) => createCornerRadius(radius).stack;
 	createBarCornerRadius = (radius) => createCornerRadius(radius).bar;
-	hasMoveInAnimation = (animation) => {
-		if (!animation) return false;
-		if (Array.isArray(animation)) return animation.some(hasMoveInAnimation);
-		if ("object" != typeof animation) return false;
-		const animationRecord = animation;
-		return "moveIn" === animationRecord.type || Object.values(animationRecord).some(hasMoveInAnimation);
-	};
 }));
 //#endregion
-//#region ../vseed/dist/esm/pipeline/spec/chart/pipes/stack/stackCornerRadius.js
-var hasBarMoveInAnimation, stackCornerRadius_stackCornerRadius;
-var init_stackCornerRadius$2 = __esmMin((() => {
-	init_es();
-	init_dataSelector$1();
+//#region ../vseed/dist/esm/pipeline/spec/chart/pipes/stack/barCornerRadius.js
+var barCornerRadius;
+var init_barCornerRadius = __esmMin((() => {
 	init_stackCornerRadiusUtils();
-	hasBarMoveInAnimation = (spec) => [
-		spec.animationAppear,
-		spec.animationNormal,
-		spec.animationEnter,
-		spec.animationUpdate
-	].some(hasMoveInAnimation);
-	stackCornerRadius_stackCornerRadius = (spec, context) => {
-		const { advancedVSeed, vseed } = context;
-		const { chartType } = vseed;
-		const stackCornerRadius = advancedVSeed.config?.[chartType]?.stackCornerRadius ?? 0;
-		if (!hasBarMoveInAnimation(spec)) {
-			const styles = advancedVSeed.markStyle?.barStyle;
-			const rules = (Array.isArray(styles) ? styles : styles ? [styles] : []).filter((rule) => null != rule.barRadius).reverse();
-			const defaultRadius = createStackCornerRadius(stackCornerRadius);
-			const clipRadius = rules.length ? (attributes, datum) => {
-				const radius = defaultRadius(attributes, datum);
-				const rule = rules.find((rule) => rule.dynamicFilter ? selectorWithDynamicFilter(datum, rule.dynamicFilter, rule.selector) : selector_selector(datum, rule.selector));
-				if (!rule) return radius;
-				const barRadius = normalizePadding(rule.barRadius);
-				return normalizePadding(radius).map((corner, index) => Math.min(corner, barRadius[index]));
-			} : defaultRadius;
-			return {
-				...spec,
-				stackCornerRadius: clipRadius
-			};
-		}
+	barCornerRadius = (spec, { advancedVSeed, vseed }) => {
+		const config = advancedVSeed.config?.[vseed.chartType];
+		const radius = config?.cornerRadius ?? 0;
+		const useStackRadius = config?.stackCornerRadius ?? false;
 		return {
 			...spec,
+			stackCornerRadius: useStackRadius ? createStackCornerRadius(radius) : void 0,
 			bar: {
 				...spec.bar,
 				style: {
 					...spec.bar?.style,
-					cornerRadius: createBarCornerRadius(stackCornerRadius)
+					cornerRadius: useStackRadius ? 0 : createBarCornerRadius(radius)
 				}
 			}
 		};
@@ -9702,7 +9479,7 @@ var init_stackCornerRadius$2 = __esmMin((() => {
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/stack/index.js
 var init_stack = __esmMin((() => {
 	init_stack$1();
-	init_stackCornerRadius$2();
+	init_barCornerRadius();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/backgroundColor/background.js
@@ -10693,6 +10470,195 @@ var init_tooltip$3 = __esmMin((() => {
 	init_tooltipSankey();
 }));
 //#endregion
+//#region ../vseed/dist/esm/dataSelector/selector.js
+function nearlyEqual(a, b, epsilon = 1e-8) {
+	if (Number.isNaN(a) || Number.isNaN(b)) return false;
+	if (a === b) return true;
+	return Math.abs(a - b) <= epsilon;
+}
+var selector_selector, isValueSelector, isPartialDatumSelector, isFieldSelector, isMeasureSelector, isDimensionSelector, selectByMeasure, selectByDmension, selectByField, matchesFieldSelector, selectByPartial, selectByValue, matchesCellSelector, matchesDatum, isDynamicFilterLike, isRowWithFieldDynamicFilter, isValueDynamicFilter, isDynamicFilter, validateFilterResult, executeDynamicFilter, matchDynamicFilterResult, selectorWithDynamicFilter;
+var init_selector$1 = __esmMin((() => {
+	init_dist$1();
+	init_sandbox();
+	init_dataReshape();
+	selector_selector = (vchartDatum, selector, selectorMode = "And") => {
+		if (!selector) return true;
+		const datum = y$10(vchartDatum, Object.keys(vchartDatum).filter((k) => k.toLocaleLowerCase().startsWith("__vchart")));
+		return (Array.isArray(selector) ? selector : [selector])["And" === selectorMode ? "every" : "some"]((selector) => {
+			if (isValueSelector(selector)) return selectByValue(selector, datum);
+			else if (isFieldSelector(selector)) return selectByField(selector, datum);
+			else if (isMeasureSelector(selector)) return selectByMeasure(selector, datum);
+			else if (isDimensionSelector(selector)) return selectByDmension(selector, datum);
+			else if (isPartialDatumSelector(selector)) return selectByPartial(selector, datum);
+			return false;
+		});
+	};
+	isValueSelector = (selector) => "string" == typeof selector || "number" == typeof selector;
+	isPartialDatumSelector = (selector) => "object" == typeof selector && null !== selector;
+	isFieldSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && !("operator" in selector) && !("op" in selector) && !("value" in selector);
+	isMeasureSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && ("operator" in selector || "op" in selector) && "value" in selector && ([
+		"=",
+		"==",
+		"!=",
+		">",
+		"<",
+		">=",
+		"<=",
+		"between"
+	].includes(selector.operator) || [
+		"=",
+		"==",
+		"!=",
+		">",
+		"<",
+		">=",
+		"<=",
+		"between"
+	].includes(selector.op));
+	isDimensionSelector = (selector) => "object" == typeof selector && null !== selector && "field" in selector && ("operator" in selector || "op" in selector) && "value" in selector && (["in", "not in"].includes(selector.operator) || ["in", "not in"].includes(selector.op));
+	selectByMeasure = (selector, datum) => {
+		const op = selector.operator || selector.op;
+		const selectorValueArr = Array.isArray(selector.value) ? selector.value : [selector.value];
+		switch (op) {
+			case "=":
+				if (String(datum[selector.field]) === String(selectorValueArr[0]) || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case "==":
+				if (datum[selector.field] === selectorValueArr[0]) return true;
+				break;
+			case "!=":
+				if (datum[selector.field] !== selectorValueArr[0]) return true;
+				break;
+			case ">":
+				if (datum[selector.field] > selectorValueArr[0] && !nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case "<":
+				if (datum[selector.field] < selectorValueArr[0] && !nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case ">=":
+				if (datum[selector.field] >= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case "<=":
+				if (datum[selector.field] <= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) return true;
+				break;
+			case "between":
+				if (Array.isArray(selector.value) && (datum[selector.field] >= selectorValueArr[0] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[0]))) && (datum[selector.field] <= selectorValueArr[1] || nearlyEqual(Number(datum[selector.field]), Number(selectorValueArr[1])))) return true;
+				break;
+		}
+		return false;
+	};
+	selectByDmension = (selector, datum) => {
+		const op = selector.operator || selector.op;
+		const selectorValueArr = Array.isArray(selector.value) ? selector.value : [selector.value];
+		switch (op) {
+			case "in":
+				if (selectorValueArr.includes(datum[selector.field])) return true;
+				break;
+			case "not in":
+				if (!selectorValueArr.includes(datum[selector.field])) return true;
+				break;
+		}
+		return false;
+	};
+	selectByField = (selector, datum) => {
+		const fields = Array.isArray(selector.field) ? selector.field : [selector.field];
+		const datumKeys = Object.keys(datum);
+		return fields.some((field) => datumKeys.includes(field));
+	};
+	matchesFieldSelector = (field, fieldSelector) => {
+		return (Array.isArray(fieldSelector.field) ? fieldSelector.field : [fieldSelector.field]).includes(field);
+	};
+	selectByPartial = (selector, datum) => Object.keys(selector).every((key) => datum[key] === selector[key]);
+	selectByValue = (selector, datum) => Object.values(datum).some((v) => v === selector);
+	matchesCellSelector = (cell, filterRes) => {
+		if (filterRes["__row_index"] !== cell["__row_index"]) return false;
+		return "*" === filterRes.field || Object.keys(cell).includes(filterRes.field);
+	};
+	matchesDatum = (target, candidate) => Object.keys(candidate).every((key) => target[key] === candidate[key]);
+	isDynamicFilterLike = (selector, expectedTypes) => "object" == typeof selector && null !== selector && "type" in selector && expectedTypes.includes(selector.type) && "code" in selector && "string" == typeof selector.code;
+	isRowWithFieldDynamicFilter = (selector) => isDynamicFilterLike(selector, ["row-with-field"]);
+	isValueDynamicFilter = (selector) => isDynamicFilterLike(selector, ["value"]);
+	isDynamicFilter = (selector) => isDynamicFilterLike(selector, ["row-with-field", "value"]);
+	validateFilterResult = (result, filter) => {
+		if (isValueDynamicFilter(filter)) {
+			if ("number" != typeof result && "string" != typeof result) throw new TypeError(`ValueDynamicFilter must return a number or string, but got: ${typeof result}. Code: "${filter.code}"`);
+			return;
+		}
+		if (!Array.isArray(result)) throw new TypeError(`${isRowWithFieldDynamicFilter(filter) ? "TableDynamicFilter" : "ChartDynamicFilter"} must return an array, but got: ${typeof result}. Code: "${filter.code}"`);
+		if (isRowWithFieldDynamicFilter(filter)) for (let i = 0; i < result.length; i++) {
+			const item = result[i];
+			if ("object" != typeof item || null === item) throw new TypeError(`TableDynamicFilter array element at index ${i} must be an object, got: ${typeof item}`);
+			if (!("__row_index" in item) && "__row_index" in item === false) throw new TypeError(`TableDynamicFilter array element at index ${i} must contain __row_index or InnerRowIndex field`);
+			if (!("field" in item)) throw new TypeError(`TableDynamicFilter array element at index ${i} must contain 'field' field`);
+		}
+	};
+	executeDynamicFilter = async (filter, allData) => {
+		try {
+			const { success, data, error } = await executeFilterCode({
+				code: filter.code,
+				data: allData
+			});
+			if (!success) {
+				console.warn("[vseed] Dynamic filter execution failed:", error);
+				return {
+					success: false,
+					data: isRowWithFieldDynamicFilter(filter) ? [] : "",
+					error
+				};
+			}
+			try {
+				validateFilterResult(data, filter);
+			} catch (validationError) {
+				console.error("[vseed] Dynamic filter result validation failed:", validationError);
+				return {
+					success: false,
+					data: isRowWithFieldDynamicFilter(filter) ? [] : "",
+					error: validationError instanceof Error ? validationError.message : String(validationError)
+				};
+			}
+			return {
+				success,
+				data
+			};
+		} catch (error) {
+			const errorMessage = error instanceof Error ? error.message : String(error);
+			console.error("[vseed] Dynamic filter execution threw exception:", errorMessage);
+			return {
+				success: false,
+				data: isRowWithFieldDynamicFilter(filter) ? [] : "",
+				error: errorMessage
+			};
+		}
+	};
+	matchDynamicFilterResult = (result, datum, selectorType = "table") => {
+		if ("number" == typeof result || "string" == typeof result) throw new Error("matchDynamicFilterResult does not support ValueDynamicFilter results");
+		if ("table" === selectorType) return result.some((item) => matchesCellSelector(datum, item));
+		return result.some((item) => matchesDatum(datum, item));
+	};
+	selectorWithDynamicFilter = (vchartDatum, selectorConfig, defaultSelector) => {
+		if (!selectorConfig) return true;
+		if (isValueDynamicFilter(selectorConfig)) {
+			if (selectorConfig.fallback) {
+				const fallbackSelector = Array.isArray(selectorConfig.fallback) ? selectorConfig.fallback : [selectorConfig.fallback];
+				return selector_selector(vchartDatum, fallbackSelector);
+			}
+			return defaultSelector ? selector_selector(vchartDatum, defaultSelector) : false;
+		}
+		const selectorType = isRowWithFieldDynamicFilter(selectorConfig) ? "table" : "chart";
+		if (selectorConfig.result?.success && selectorConfig.result.data) return matchDynamicFilterResult(selectorConfig.result.data, vchartDatum, selectorType);
+		if (selectorConfig.fallback) {
+			const fallbackSelector = Array.isArray(selectorConfig.fallback) ? selectorConfig.fallback : [selectorConfig.fallback];
+			return selector_selector(vchartDatum, fallbackSelector);
+		}
+		return defaultSelector ? selector_selector(vchartDatum, defaultSelector) : false;
+	};
+}));
+//#endregion
+//#region ../vseed/dist/esm/dataSelector/index.js
+var init_dataSelector$1 = __esmMin((() => {
+	init_selector$1();
+}));
+//#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/label/label.js
 var label_label, generateMeasureValue, generateMeasurePercent, buildLabel$2;
 var init_label$3 = __esmMin((() => {
@@ -11230,7 +11196,7 @@ var init_discreteLegend = __esmMin((() => {
 			legends: { visible: false }
 		};
 		const { legend } = baseConfig;
-		const { enable, position = "bottom", labelFontColor, labelColor, labelFontSize = 12, pagerIconColor, pagerIconDisableColor, labelFontWeight, maxSize = 1, border, shapeType = "rectRound" } = legend || {};
+		const { enable, interactive = true, position = "bottom", labelFontColor, labelColor, labelFontSize = 12, pagerIconColor, pagerIconDisableColor, labelFontWeight, maxSize = 1, border, shapeType = "rectRound" } = legend || {};
 		const orient = [
 			"bottom",
 			"bottomLeft",
@@ -11272,6 +11238,11 @@ var init_discreteLegend = __esmMin((() => {
 		const labelTextColor = labelColor || labelFontColor;
 		result.legends = {
 			type: "discrete",
+			...false === interactive ? {
+				interactive: false,
+				select: false,
+				hover: false
+			} : {},
 			visible: enable,
 			maxCol: Math.max(1, maxSize),
 			maxRow: Math.max(1, maxSize),
@@ -11279,7 +11250,7 @@ var init_discreteLegend = __esmMin((() => {
 			orient,
 			position: legendPosition,
 			item: {
-				focus: true,
+				focus: interactive,
 				maxWidth: "30%",
 				focusIconStyle: {
 					size: labelFontSize + 2,
@@ -11414,49 +11385,56 @@ var init_pivotDiscreteLegend = __esmMin((() => {
 		const { legend, color } = baseConfig;
 		const { colorScheme, colorMapping } = color;
 		const colorSpecified = createSpecifiedForColorMapping(colorMapping, colorIdMap, colorItems);
-		const { enable, position = "bottom", labelFontColor, labelColor, labelFontSize = 12, labelFontWeight = 400, maxSize = 1, border, shapeType = "rectRound" } = legend || {};
+		const { enable, interactive = true, position = "bottom", labelFontColor, labelColor, labelFontSize = 12, labelFontWeight = 400, maxSize = 1, border, shapeType = "rectRound" } = legend || {};
+		const orient = [
+			"bottom",
+			"bottomLeft",
+			"bottomRight",
+			"bl",
+			"br"
+		].includes(position) ? "bottom" : [
+			"top",
+			"topLeft",
+			"topRight",
+			"tl",
+			"tr"
+		].includes(position) ? "top" : [
+			"left",
+			"leftTop",
+			"leftBottom",
+			"lt",
+			"lb"
+		].includes(position) ? "left" : "right";
+		const legendPosition = [
+			"topLeft",
+			"bottomLeft",
+			"leftTop",
+			"rightTop",
+			"lt",
+			"rt",
+			"tl",
+			"bl"
+		].includes(position) ? "start" : [
+			"topRight",
+			"bottomRight",
+			"leftBottom",
+			"rightBottom",
+			"lb",
+			"rb",
+			"rt",
+			"br"
+		].includes(position) ? "end" : "middle";
 		const legends = {
 			padding: 0,
 			visible: enable,
 			type: "discrete",
-			orient: [
-				"bottom",
-				"bottomLeft",
-				"bottomRight",
-				"bl",
-				"br"
-			].includes(position) ? "bottom" : [
-				"top",
-				"topLeft",
-				"topRight",
-				"tl",
-				"tr"
-			].includes(position) ? "top" : [
-				"left",
-				"leftTop",
-				"leftBottom",
-				"lt",
-				"lb"
-			].includes(position) ? "left" : "right",
-			position: [
-				"topLeft",
-				"bottomLeft",
-				"leftTop",
-				"rightTop",
-				"lt",
-				"rt",
-				"tl",
-				"bl"
-			].includes(position) ? "start" : [
-				"topRight",
-				"bottomRight",
-				"leftBottom",
-				"rightBottom",
-				"lb",
-				"rb",
-				"rt",
-				"br"
-			].includes(position) ? "end" : "middle",
+			...false === interactive ? {
+				interactive: false,
+				select: false,
+				hover: false
+			} : {},
+			orient,
+			position: legendPosition,
 			maxCol: Math.max(1, maxSize),
 			maxRow: Math.max(1, maxSize),
 			data: colorItems.map((d, index) => {
@@ -11474,7 +11452,7 @@ var init_pivotDiscreteLegend = __esmMin((() => {
 				};
 			}),
 			item: {
-				focus: true,
+				focus: interactive,
 				maxWidth: "30%",
 				focusIconStyle: {
 					size: labelFontSize + 2,
@@ -12603,7 +12581,7 @@ var init_barStyle = __esmMin((() => {
 			visible: barVisible,
 			fill: createGradientFill(barColor, barGradient, colorField, gradientDirection),
 			fillOpacity: barColorOpacity,
-			cornerRadius: barRadius,
+			...null == barRadius ? {} : { cornerRadius: spec.stackCornerRadius ? 0 : barRadius },
 			lineWidth: barBorderWidth,
 			stroke: barBorderColor,
 			strokeOpacity: barBorderOpacity,
@@ -12807,19 +12785,67 @@ var init_pieStyle = __esmMin((() => {
 	pieStyle = (spec, context) => {
 		const { advancedVSeed, vseed } = context;
 		const { chartType } = vseed;
-		const { dataset } = advancedVSeed;
-		const showStroke = dataset.length <= 30;
 		const config = advancedVSeed.config?.[chartType];
 		const result = {
 			...spec,
 			pie: { style: {
-				stroke: config?.backgroundColor ?? "#ffffff",
-				lineWidth: showStroke ? 1 : 0
+				stroke: config?.pieStyle?.pieBorderColor ?? config?.backgroundColor ?? "#ffffff",
+				lineWidth: config?.pieStyle?.pieBorderWidth ?? (advancedVSeed.dataset.length <= 30 ? 1 : 0)
 			} }
 		};
-		if (spec.outerRadius) result.pie.state = { hover: { outerRadius: 1.1 * spec.outerRadius } };
-		if (config?.cornerRadius) result.pie.style.cornerRadius = config.cornerRadius;
+		const cornerRadius = config?.pieStyle?.pieCornerRadius ?? (config?.cornerRadius || void 0);
+		if (null != cornerRadius) result.pie.style.cornerRadius = cornerRadius;
 		return result;
+	};
+}));
+//#endregion
+//#region ../vseed/dist/esm/theme/common/pie.js
+var getDefaultPieGeometry, getDefaultDonutGeometry, getDefaultPieAngles, getDefaultPieStyle, getDefaultCenterText;
+var init_pie$11 = __esmMin((() => {
+	getDefaultPieGeometry = () => ({
+		outerRadius: .8,
+		innerRadius: 0
+	});
+	getDefaultDonutGeometry = () => {
+		const geometry = getDefaultPieGeometry();
+		return {
+			...geometry,
+			innerRadius: .8 * geometry.outerRadius
+		};
+	};
+	getDefaultPieAngles = () => ({
+		startAngle: -90,
+		endAngle: 270
+	});
+	getDefaultPieStyle = () => ({ pieHoverEffect: "enlarge" });
+	getDefaultCenterText = () => ({
+		titleFontSize: 18,
+		titleFontWeight: 600,
+		subTitleFontSize: 12,
+		subTitleOpacity: .75,
+		gap: 2
+	});
+}));
+//#endregion
+//#region ../vseed/dist/esm/pipeline/spec/chart/pipes/markStyle/pieHover.js
+var pieHover;
+var init_pieHover = __esmMin((() => {
+	init_pie$11();
+	pieHover = (spec, { advancedVSeed }) => {
+		const effect = advancedVSeed.config[advancedVSeed.chartType]?.pieStyle?.pieHoverEffect ?? getDefaultPieStyle().pieHoverEffect;
+		const result = spec;
+		if ("enlarge" === effect && !result.outerRadius) return spec;
+		const style = "none" === effect ? {} : "opacity" === effect ? { fillOpacity: .75 } : { outerRadius: 1.1 * result.outerRadius };
+		return {
+			...result,
+			pie: {
+				...result.pie,
+				state: {
+					...result.pie?.state,
+					hover: style
+				}
+			}
+		};
 	};
 }));
 //#endregion
@@ -13013,6 +13039,7 @@ var init_markStyle$3 = __esmMin((() => {
 	init_cellStyle$4();
 	init_funnelStyle();
 	init_pieStyle();
+	init_pieHover();
 	init_roseStyle();
 	init_funnelTransformStyle();
 	init_boxPlotStyle();
@@ -13066,6 +13093,10 @@ var init_utils$3 = __esmMin((() => {
 		},
 		right: {
 			textAlign: "right",
+			textBaseline: "middle"
+		},
+		middle: {
+			textAlign: "center",
 			textBaseline: "middle"
 		}
 	};
@@ -13987,6 +14018,1025 @@ var init_annotationDifferenceLine = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region ../vseed/dist/esm/types/properties/chartType/index.js
+var init_chartType$2 = __esmMin((() => {})), zDatum;
+var init_dataset$1 = __esmMin((() => {
+	init_zod();
+	zDatum = record(string().or(number()), any());
+	array(zDatum);
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/dataset/index.js
+var init_dataset = __esmMin((() => {
+	init_dataset$1();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/encoding/zDimensionEncoding.js
+var zDimensionEncoding;
+var init_zDimensionEncoding = __esmMin((() => {
+	init_zod();
+	zDimensionEncoding = _enum([
+		"xAxis",
+		"yAxis",
+		"angle",
+		"color",
+		"detail",
+		"tooltip",
+		"label",
+		"row",
+		"column",
+		"player",
+		"hierarchy",
+		"source",
+		"target"
+	]);
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/encoding/index.js
+var init_encoding$2 = __esmMin((() => {
+	init_zDimensionEncoding();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/format/numFormat.js
+var zNumFormat;
+var init_numFormat = __esmMin((() => {
+	init_zod();
+	zNumFormat = object$1({
+		type: _enum([
+			"number",
+			"percent",
+			"permille",
+			"scientific"
+		]).default("number").optional(),
+		ratio: number().default(1).optional(),
+		symbol: string().default("").optional(),
+		thousandSeparator: boolean().default(false).optional(),
+		prefix: string().default("").optional(),
+		suffix: string().default("").optional(),
+		fractionDigits: number().default(2).optional(),
+		significantDigits: number().default(0).optional(),
+		roundingPriority: _enum(["morePrecision", "lessPrecision"]).default("morePrecision").optional(),
+		roundingMode: _enum([
+			"floor",
+			"ceil",
+			"halfEven",
+			"expand",
+			"trunc",
+			"halfFloor",
+			"halfCeil",
+			"halfExpand",
+			"halfTrunc"
+		]).default("halfCeil").optional()
+	}).optional();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/format/timeFormat.js
+var init_timeFormat = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/format/index.js
+var init_format = __esmMin((() => {
+	init_numFormat();
+	init_timeFormat();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/dimensions/zDimensions.js
+var init_zDimensions = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/dimensions/index.js
+var init_dimensions$1 = __esmMin((() => {
+	init_zDimensions();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/measures/zMeasures.js
+var init_zMeasures = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/measures/zDualMeasures.js
+var init_zDualMeasures = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/measures/index.js
+var init_measures$1 = __esmMin((() => {
+	init_zMeasures();
+	init_zDualMeasures();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/datasetReshapeInfo/index.js
+var init_datasetReshapeInfo = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/backgroundColor/backgroundColor.js
+var init_backgroundColor$1 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/table.js
+var init_table$9 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/axes/zLinearAxis.js
+var init_zLinearAxis = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/axes/zBandAxis.js
+var init_zBandAxis = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/axes/index.js
+var init_axes$1 = __esmMin((() => {
+	init_zLinearAxis();
+	init_zBandAxis();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/crosshair/zCrosshair.js
+var init_zCrosshair = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/crosshair/index.js
+var init_crosshair$2 = __esmMin((() => {
+	init_zCrosshair();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/color/color.js
+var init_color$3 = __esmMin((() => {})), zPartialSelector, zFieldSelector, zMeasureSelector, zDimensionSelector, zSelector, zSelectors, zAreaSelector, zAreaSelectors, zCellSelector, zTableDynamicFilter, zChartDynamicFilter;
+var init_selector = __esmMin((() => {
+	init_zod();
+	init_dataset$1();
+	zPartialSelector = zDatum;
+	zFieldSelector = object$1({ field: union([string(), array(string())]) });
+	zMeasureSelector = object$1({
+		field: string(),
+		operator: _enum([
+			"=",
+			"==",
+			"!=",
+			">",
+			"<",
+			">=",
+			"<=",
+			"between"
+		]).nullish(),
+		op: _enum([
+			"=",
+			"==",
+			"!=",
+			">",
+			"<",
+			">=",
+			"<=",
+			"between"
+		]).nullish(),
+		value: union([
+			string(),
+			number(),
+			array(union([string(), number()]))
+		])
+	});
+	zDimensionSelector = object$1({
+		field: string(),
+		operator: _enum(["in", "not in"]).nullish(),
+		op: _enum(["in", "not in"]).nullish(),
+		value: union([
+			string(),
+			number(),
+			array(union([string(), number()]))
+		])
+	});
+	zSelector = union([
+		string(),
+		number(),
+		zFieldSelector,
+		zMeasureSelector,
+		zDimensionSelector,
+		zPartialSelector
+	]);
+	zSelectors = array(zSelector);
+	zAreaSelector = union([
+		zFieldSelector,
+		zMeasureSelector,
+		zDimensionSelector
+	]);
+	zAreaSelectors = array(zAreaSelector);
+	zCellSelector = object$1({
+		__row_index: number(),
+		field: union([string(), literal("*")])
+	});
+	zTableDynamicFilter = object$1({
+		type: literal("row-with-field"),
+		description: string().optional(),
+		code: string(),
+		fallback: union([zSelector, zSelectors]).optional(),
+		result: object$1({
+			success: boolean(),
+			data: array(zCellSelector).optional()
+		}).optional()
+	});
+	zChartDynamicFilter = object$1({
+		type: literal("row-with-field"),
+		description: string().optional(),
+		code: string(),
+		fallback: union([zSelector, zSelectors]).optional(),
+		result: object$1({
+			success: boolean(),
+			data: array(zCellSelector).optional()
+		}).optional()
+	});
+	object$1({
+		type: literal("value"),
+		description: string().optional(),
+		code: string(),
+		fallback: union([string(), number()]).optional(),
+		result: object$1({
+			success: boolean(),
+			data: union([number(), string()]).optional()
+		}).optional()
+	});
+	union([zTableDynamicFilter, zChartDynamicFilter]);
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/dataSelector/index.js
+var init_dataSelector = __esmMin((() => {
+	init_selector();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/label/zLabel.js
+var init_zLabel = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/label/zPieLabel.js
+var init_zPieLabel = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/label/index.js
+var init_label$1 = __esmMin((() => {
+	init_zLabel();
+	init_zPieLabel();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/legend/legend.js
+var init_legend$2 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/tooltip/tooltip.js
+var init_tooltip$2 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/annotation/zAnnotationPoint.js
+var init_zAnnotationPoint = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/annotation/zAnnotationDifferenceLine.js
+var init_zAnnotationDifferenceLine = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/annotation/zAnnotationHorizontalLine.js
+var init_zAnnotationHorizontalLine = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/annotation/annotationAreaRange.js
+var AxisBoundaryEnum;
+var init_annotationAreaRange$1 = __esmMin((() => {
+	AxisBoundaryEnum = {
+		Min: "axisMin",
+		Max: "axisMax"
+	};
+})), zAnnotationAxisRange, zAnnotationAreaRange, zAnnotationAreaStyle;
+var init_zAnnotationArea = __esmMin((() => {
+	init_selector();
+	init_zod();
+	init_annotationAreaRange$1();
+	zAnnotationAxisRange = object$1({
+		min: number().finite().or(literal(AxisBoundaryEnum.Min)),
+		max: number().finite().or(literal(AxisBoundaryEnum.Max))
+	}).strict().refine(({ min, max }) => "number" != typeof min || "number" != typeof max || min < max, { message: "min must be less than max" });
+	zAnnotationAreaRange = object$1({
+		x: zAnnotationAxisRange.optional(),
+		y: zAnnotationAxisRange.optional()
+	}).strict().refine(({ x, y }) => void 0 !== x || void 0 !== y, { message: "range requires x or y" });
+	zAnnotationAreaStyle = object$1({
+		textPosition: _enum([
+			"top",
+			"topRight",
+			"topLeft",
+			"bottom",
+			"bottomLeft",
+			"bottomRight",
+			"left",
+			"right",
+			"middle"
+		]).default("top").nullish(),
+		text: string().or(array(string())).nullish(),
+		textColor: string().default("#ffffff").nullish(),
+		textFontSize: number().default(12).nullish(),
+		textFontWeight: number().default(400).nullish(),
+		textAlign: _enum([
+			"left",
+			"right",
+			"center"
+		]).default("center").nullish(),
+		textBaseline: _enum([
+			"top",
+			"middle",
+			"bottom"
+		]).default("top").nullish(),
+		textBackgroundVisible: boolean().default(true).nullish(),
+		textBackgroundColor: string().default("#191d24").nullish(),
+		textBackgroundBorderColor: string().default("#191d24").nullish(),
+		textBackgroundBorderWidth: number().default(1).nullish(),
+		textBackgroundBorderRadius: number().default(4).nullish(),
+		textBackgroundPadding: number().default(4).nullish(),
+		areaColor: string().default("#888888").nullish(),
+		areaColorOpacity: number().default(.15).nullish(),
+		areaBorderColor: string().default("#888888").nullish(),
+		areaBorderWidth: number().default(1).nullish(),
+		areaBorderRadius: number().default(4).nullish(),
+		areaLineDash: array(number()).nullish(),
+		outerPadding: number().default(4).nullish()
+	});
+	union([zAnnotationAreaStyle.extend({
+		selector: union([zAreaSelector, zAreaSelectors]),
+		range: never().optional()
+	}), zAnnotationAreaStyle.extend({
+		selector: never().optional(),
+		range: zAnnotationAreaRange
+	})]);
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/annotation/zAnnotation.js
+var init_zAnnotation = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/pivotGrid/index.js
+var init_pivotGrid = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/dimensionLinkage/dimensionLinkage.js
+var init_dimensionLinkage$1 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/dimensionLinkage/index.js
+var init_dimensionLinkage = __esmMin((() => {
+	init_dimensionLinkage$1();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/regionPadding/zRegionPadding.js
+var init_zRegionPadding = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/regionPadding/index.js
+var init_regionPadding$1 = __esmMin((() => {
+	init_zRegionPadding();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/animation/zAnimation.js
+var init_zAnimation = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/animation/index.js
+var init_animation$2 = __esmMin((() => {
+	init_zAnimation();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/line.js
+var init_line$8 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/cornerRadius/cornerRadius.js
+var init_cornerRadius$1 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/cornerRadius/index.js
+var init_cornerRadius = __esmMin((() => {
+	init_cornerRadius$1();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/stackCornerRadius/stackCornerRadius.js
+var init_stackCornerRadius$1 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/barWidth/index.js
+var init_barWidth$1 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/regressionLine/zRegressionLine.js
+var init_zRegressionLine = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/regressionLine/index.js
+var init_regressionLine$4 = __esmMin((() => {
+	init_zRegressionLine();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/column.js
+var init_column$8 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/bar.js
+var init_bar$9 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/area.js
+var init_area$6 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/scatter.js
+var init_scatter$10 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/stackCornerRadius/index.js
+var init_stackCornerRadius = __esmMin((() => {
+	init_stackCornerRadius$1();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/dualAxis.js
+var init_dualAxis$8 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/pieGeometry.js
+var init_pieGeometry$2 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/markStyle/zPieStyle.js
+var init_zPieStyle = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/centerText.js
+var init_centerText$1 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/pie.js
+var init_pie$10 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/rose.js
+var init_rose$7 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/funnelTransform/zFunnelTransform.js
+var init_zFunnelTransform = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/funnel.js
+var init_funnel$7 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/heatmap.js
+var init_heatmap$9 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/pivotTable.js
+var init_pivotTable$6 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/whiskers/index.js
+var init_whiskers = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/markStyle/zBarStyle.js
+var init_zBarStyle = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/markStyle/zPointStyle.js
+var init_zPointStyle = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/markStyle/zLineStyle.js
+var init_zLineStyle = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/markStyle/zAreaStyle.js
+var init_zAreaStyle = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/markStyle/zBoxPlotStyle.js
+var init_zBoxPlotStyle = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/markStyle/zOutlierStyle.js
+var init_zOutlierStyle = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/markStyle/zMarkStyle.js
+var init_zMarkStyle = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/markStyle/index.js
+var init_markStyle$2 = __esmMin((() => {
+	init_zBarStyle();
+	init_zPointStyle();
+	init_zLineStyle();
+	init_zAreaStyle();
+	init_zPieStyle();
+	init_zBoxPlotStyle();
+	init_zOutlierStyle();
+	init_zMarkStyle();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/boxWidth/zBoxWidth.js
+var init_zBoxWidth = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/boxWidth/index.js
+var init_boxWidth$1 = __esmMin((() => {
+	init_zBoxWidth();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/player/index.js
+var init_player$2 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/treeMap.js
+var init_treeMap$5 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/sunburst.js
+var init_sunburst$5 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/circlePacking.js
+var init_circlePacking$5 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/hierarchySankey.js
+var init_hierarchySankey$5 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/sankey.js
+var init_sankey$6 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/config.js
+var init_config$3 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/annotation/index.js
+var init_annotation$5 = __esmMin((() => {
+	init_zAnnotation();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/backgroundColor/index.js
+var init_backgroundColor = __esmMin((() => {
+	init_backgroundColor$1();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/color/index.js
+var init_color$2 = __esmMin((() => {
+	init_color$3();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/funnelTransform/index.js
+var init_funnelTransform$1 = __esmMin((() => {
+	init_zFunnelTransform();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/legend/index.js
+var init_legend$1 = __esmMin((() => {
+	init_legend$2();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/tooltip/index.js
+var init_tooltip$1 = __esmMin((() => {
+	init_tooltip$2();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/config/index.js
+var init_config$2 = __esmMin((() => {
+	init_config$3();
+	init_annotation$5();
+	init_axes$1();
+	init_backgroundColor();
+	init_color$2();
+	init_crosshair$2();
+	init_funnelTransform$1();
+	init_label$1();
+	init_legend$1();
+	init_pivotGrid();
+	init_cornerRadius();
+	init_stackCornerRadius();
+	init_barWidth$1();
+	init_tooltip$1();
+	init_whiskers();
+	init_area$6();
+	init_bar$9();
+	init_column$8();
+	init_dualAxis$8();
+	init_funnel$7();
+	init_heatmap$9();
+	init_line$8();
+	init_pie$10();
+	init_pieGeometry$2();
+	init_centerText$1();
+	init_rose$7();
+	init_scatter$10();
+	init_table$9();
+	init_pivotTable$6();
+	init_dimensionLinkage();
+	init_treeMap$5();
+	init_sunburst$5();
+	init_circlePacking$5();
+	init_hierarchySankey$5();
+	init_sankey$6();
+	init_boxWidth$1();
+	init_animation$2();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/theme/index.js
+var init_theme$5 = __esmMin((() => {
+	init_config$2();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/annotation/zAnnotationVerticalLine.js
+var init_zAnnotationVerticalLine = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/annotation/annotation.js
+var init_annotation$4 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/annotation/index.js
+var init_annotation$3 = __esmMin((() => {
+	init_annotationAreaRange$1();
+	init_zAnnotationPoint();
+	init_zAnnotationVerticalLine();
+	init_zAnnotationHorizontalLine();
+	init_zAnnotationArea();
+	init_zAnnotationDifferenceLine();
+	init_annotation$4();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/analysis/sort.js
+var init_sort = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/analysis/sortLegend.js
+var init_sortLegend$1 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/analysis/analysis.js
+var init_analysis$2 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/analysis/index.js
+var init_analysis$1 = __esmMin((() => {
+	init_sort();
+	init_sortLegend$1();
+	init_analysis$2();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/cellStyle/bodyCellStyle.js
+var init_bodyCellStyle = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/cellStyle/index.js
+var init_cellStyle$3 = __esmMin((() => {
+	init_bodyCellStyle();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/brush/index.js
+var init_brush$3 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/page/index.js
+var init_page$4 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/totals/index.js
+var init_totals = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/aggregation/index.js
+var init_aggregation = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/properties/index.js
+var init_properties = __esmMin((() => {
+	init_chartType$2();
+	init_dataset();
+	init_dimensions$1();
+	init_measures$1();
+	init_datasetReshapeInfo();
+	init_encoding$2();
+	init_config$2();
+	init_theme$5();
+	init_markStyle$2();
+	init_annotation$3();
+	init_analysis$1();
+	init_format();
+	init_regressionLine$4();
+	init_cellStyle$3();
+	init_brush$3();
+	init_page$4();
+	init_regionPadding$1();
+	init_player$2();
+	init_totals();
+	init_aggregation();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/i18n/i18n.js
+var init_i18n$1 = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/i18n/index.js
+var init_i18n = __esmMin((() => {
+	init_i18n$1();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/table/zTable.js
+var init_zTable = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/table/index.js
+var init_table$8 = __esmMin((() => {
+	init_zTable();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/pivotTable/zPivotTable.js
+var init_zPivotTable = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/pivotTable/index.js
+var init_pivotTable$5 = __esmMin((() => {
+	init_zPivotTable();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/line/zLine.js
+var init_zLine = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/line/index.js
+var init_line$7 = __esmMin((() => {
+	init_zLine();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/column/zColumn.js
+var init_zColumn = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/column/index.js
+var init_column$7 = __esmMin((() => {
+	init_zColumn();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/columnParallel/zColumnParallel.js
+var init_zColumnParallel = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/columnParallel/index.js
+var init_columnParallel$3 = __esmMin((() => {
+	init_zColumnParallel();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/columnPercent/zColumnPercent.js
+var init_zColumnPercent = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/columnPercent/index.js
+var init_columnPercent$3 = __esmMin((() => {
+	init_zColumnPercent();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/bar/zBar.js
+var init_zBar = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/bar/index.js
+var init_bar$8 = __esmMin((() => {
+	init_zBar();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/raceBar/zRaceBar.js
+var init_zRaceBar = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/raceBar/index.js
+var init_raceBar$4 = __esmMin((() => {
+	init_zRaceBar();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/raceColumn/zRaceColumn.js
+var init_zRaceColumn = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/raceColumn/index.js
+var init_raceColumn$4 = __esmMin((() => {
+	init_zRaceColumn();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/raceScatter/zRaceScatter.js
+var init_zRaceScatter = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/raceScatter/index.js
+var init_raceScatter$4 = __esmMin((() => {
+	init_zRaceScatter();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/raceLine/zRaceLine.js
+var init_zRaceLine = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/raceLine/index.js
+var init_raceLine$6 = __esmMin((() => {
+	init_zRaceLine();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/barParallel/zBarParallel.js
+var init_zBarParallel = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/barParallel/index.js
+var init_barParallel$3 = __esmMin((() => {
+	init_zBarParallel();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/barPercent/zBarPercent.js
+var init_zBarPercent = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/barPercent/index.js
+var init_barPercent$3 = __esmMin((() => {
+	init_zBarPercent();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/area/index.js
+var init_area$5 = __esmMin((() => {
+	init_i18n();
+	init_properties();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/areaPercent/index.js
+var init_areaPercent$3 = __esmMin((() => {
+	init_i18n();
+	init_properties();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/scatter/zScatter.js
+var init_zScatter = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/scatter/index.js
+var init_scatter$9 = __esmMin((() => {
+	init_zScatter();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/dualAxis/index.js
+var init_dualAxis$7 = __esmMin((() => {
+	init_i18n();
+	init_properties();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/histogram/zHistogram.js
+var init_zHistogram = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/histogram/index.js
+var init_histogram$7 = __esmMin((() => {
+	init_zHistogram();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/rose/zRose.js
+var init_zRose = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/rose/index.js
+var init_rose$6 = __esmMin((() => {
+	init_zRose();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/roseParallel/zRoseParallel.js
+var init_zRoseParallel = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/roseParallel/index.js
+var init_roseParallel$3 = __esmMin((() => {
+	init_zRoseParallel();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/pie/zPie.js
+var init_zPie = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/pie/index.js
+var init_pie$9 = __esmMin((() => {
+	init_zPie();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/donut/zDonut.js
+var init_zDonut = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/donut/index.js
+var init_donut$3 = __esmMin((() => {
+	init_zDonut();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/radar/zRadar.js
+var init_zRadar = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/radar/index.js
+var init_radar$7 = __esmMin((() => {
+	init_zRadar();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/treeMap/zTreeMap.js
+var init_zTreeMap = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/treeMap/index.js
+var init_treeMap$4 = __esmMin((() => {
+	init_zTreeMap();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/sunburst/zSunburst.js
+var init_zSunburst = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/sunburst/index.js
+var init_sunburst$4 = __esmMin((() => {
+	init_zSunburst();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/circlePacking/zCirclePacking.js
+var init_zCirclePacking = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/circlePacking/index.js
+var init_circlePacking$4 = __esmMin((() => {
+	init_zCirclePacking();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/hierarchySankey/zHierarchySankey.js
+var init_zHierarchySankey = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/hierarchySankey/index.js
+var init_hierarchySankey$4 = __esmMin((() => {
+	init_zHierarchySankey();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/sankey/zSankey.js
+var init_zSankey = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/sankey/index.js
+var init_sankey$5 = __esmMin((() => {
+	init_zSankey();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/racePie/zRacePie.js
+var init_zRacePie = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/racePie/index.js
+var init_racePie$6 = __esmMin((() => {
+	init_zRacePie();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/raceDonut/zRaceDonut.js
+var init_zRaceDonut = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/raceDonut/index.js
+var init_raceDonut$4 = __esmMin((() => {
+	init_zRaceDonut();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/funnel/zFunnel.js
+var init_zFunnel = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/funnel/index.js
+var init_funnel$6 = __esmMin((() => {
+	init_zFunnel();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/heatmap/zHeatmap.js
+var init_zHeatmap = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/heatmap/index.js
+var init_heatmap$8 = __esmMin((() => {
+	init_zHeatmap();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/boxPlot/zBoxPlot.js
+var init_zBoxPlot = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/boxPlot/index.js
+var init_boxPlot$3 = __esmMin((() => {
+	init_zBoxPlot();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/chartType/index.js
+var init_chartType$1 = __esmMin((() => {
+	init_table$8();
+	init_pivotTable$5();
+	init_line$7();
+	init_column$7();
+	init_columnParallel$3();
+	init_columnPercent$3();
+	init_bar$8();
+	init_raceBar$4();
+	init_raceColumn$4();
+	init_raceScatter$4();
+	init_raceLine$6();
+	init_barParallel$3();
+	init_barPercent$3();
+	init_area$5();
+	init_areaPercent$3();
+	init_scatter$9();
+	init_dualAxis$7();
+	init_histogram$7();
+	init_rose$6();
+	init_roseParallel$3();
+	init_pie$9();
+	init_donut$3();
+	init_radar$7();
+	init_treeMap$4();
+	init_sunburst$4();
+	init_circlePacking$4();
+	init_hierarchySankey$4();
+	init_sankey$5();
+	init_racePie$6();
+	init_raceDonut$4();
+	init_funnel$6();
+	init_heatmap$8();
+	init_boxPlot$3();
+}));
+//#endregion
+//#region ../vseed/dist/esm/types/zVseed.js
+var init_zVseed = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/advancedVSeed.js
+var init_advancedVSeed = __esmMin((() => {}));
+//#endregion
+//#region ../vseed/dist/esm/types/index.js
+var init_types$1 = __esmMin((() => {
+	init_properties();
+	init_chartType$1();
+	init_zVseed();
+	init_advancedVSeed();
+	init_i18n();
+	init_dataSelector();
+}));
+//#endregion
+//#region ../vseed/dist/esm/pipeline/spec/chart/pipes/annotation/annotationAreaRange.js
+var assertAnnotationAreaRangeAxes, axisBounds, annotationAreaRangePositions;
+var init_annotationAreaRange = __esmMin((() => {
+	init_types$1();
+	assertAnnotationAreaRangeAxes = (range, spec) => {
+		for (const axis of ["x", "y"]) {
+			if (!range[axis]) continue;
+			const orient = "x" === axis ? "bottom" : "left";
+			if ((spec.axes?.find((item) => item.orient === orient))?.type !== "linear") throw new Error(`annotationArea.range.${axis} requires a linear numeric axis`);
+		}
+	};
+	axisBounds = (range, helper, size) => {
+		if (!range) return [0, size];
+		const domain = helper.getScale?.(0).domain();
+		if (!domain?.length || !domain.every((value) => "number" == typeof value && Number.isFinite(value))) return [];
+		const axisMin = Math.min(...domain);
+		const axisMax = Math.max(...domain);
+		const min = Math.max(axisMin, range.min === AxisBoundaryEnum.Min ? axisMin : range.min);
+		const max = Math.min(axisMax, range.max === AxisBoundaryEnum.Max ? axisMax : range.max);
+		if (min >= max) return [];
+		const start = helper.dataToPosition([min]);
+		const end = helper.dataToPosition([max]);
+		if (!Number.isFinite(start) || !Number.isFinite(end)) return [];
+		return [Math.max(0, Math.min(start, end)), Math.min(size, Math.max(start, end))];
+	};
+	annotationAreaRangePositions = (range, series) => {
+		const { width, height } = series.getRegion().getLayoutRect();
+		if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) return [];
+		const [left, right] = axisBounds(range.x, series.getXAxisHelper(), width);
+		const [top, bottom] = axisBounds(range.y, series.getYAxisHelper(), height);
+		if (void 0 === left || void 0 === top || left >= right || top >= bottom) return [];
+		return [
+			{
+				x: left,
+				y: top
+			},
+			{
+				x: right,
+				y: top
+			},
+			{
+				x: right,
+				y: bottom
+			},
+			{
+				x: left,
+				y: bottom
+			}
+		];
+	};
+}));
+//#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/annotation/annotationArea.js
 var annotationArea_annotationArea;
 var init_annotationArea = __esmMin((() => {
@@ -13994,6 +15044,7 @@ var init_annotationArea = __esmMin((() => {
 	init_utils$3();
 	init_constant$1();
 	init_chatType();
+	init_annotationAreaRange();
 	annotationArea_annotationArea = (spec, context) => {
 		const { advancedVSeed, vseed } = context;
 		const { annotation, config } = advancedVSeed;
@@ -14009,12 +15060,14 @@ var init_annotationArea = __esmMin((() => {
 			bottomLeft: "insideBottomLeft",
 			bottomRight: "insideBottomRight",
 			left: "insideLeft",
-			right: "insideRight"
+			right: "insideRight",
+			middle: "middle"
 		};
 		const defaultTextPosition = isBarLikeChart(advancedVSeed) ? "right" : "top";
 		const markArea = annotationAreaList.flatMap((annotationArea) => {
-			const { selector: selectorPoint, text = "", textColor = theme?.textColor ?? "#ffffff", textFontSize = theme?.textFontSize ?? 12, textFontWeight = theme?.textFontWeight ?? 400, textBackgroundVisible = theme?.textBackgroundVisible ?? true, textBackgroundColor = theme?.textBackgroundColor ?? "#191d24", textBackgroundBorderColor = theme?.textBackgroundBorderColor ?? "#191d24", textBackgroundBorderWidth = theme?.textBackgroundBorderWidth ?? 1, textBackgroundBorderRadius = theme?.textBackgroundBorderRadius ?? 4, textBackgroundPadding = theme?.textBackgroundPadding ?? 4, areaColor = theme?.areaColor ?? "#888888", areaColorOpacity = theme?.areaColorOpacity ?? .15, areaBorderColor = theme?.areaBorderColor ?? "#888888", areaBorderRadius = theme?.areaBorderRadius ?? 4, areaBorderWidth = theme?.areaBorderWidth ?? 1, areaLineDash = theme?.areaLineDash, outerPadding = theme?.outerPadding ?? 4 } = annotationArea;
+			const { selector: selectorPoint, range, text = "", textColor = theme?.textColor ?? "#ffffff", textFontSize = theme?.textFontSize ?? 12, textFontWeight = theme?.textFontWeight ?? 400, textBackgroundVisible = theme?.textBackgroundVisible ?? true, textBackgroundColor = theme?.textBackgroundColor ?? "#191d24", textBackgroundBorderColor = theme?.textBackgroundBorderColor ?? "#191d24", textBackgroundBorderWidth = theme?.textBackgroundBorderWidth ?? 1, textBackgroundBorderRadius = theme?.textBackgroundBorderRadius ?? 4, textBackgroundPadding = theme?.textBackgroundPadding ?? 4, areaColor = theme?.areaColor ?? "#888888", areaColorOpacity = theme?.areaColorOpacity ?? .15, areaBorderColor = theme?.areaBorderColor ?? "#888888", areaBorderRadius = theme?.areaBorderRadius ?? 4, areaBorderWidth = theme?.areaBorderWidth ?? 1, areaLineDash = theme?.areaLineDash, outerPadding = theme?.outerPadding ?? 4 } = annotationArea;
 			const textBackgroundOpacity = theme?.textBackgroundOpacity;
+			if (range) assertAnnotationAreaRangeAxes(range, spec);
 			const dataset = advancedVSeed.dataset.flat();
 			const selectedData = selectorPoint ? dataset.filter((datum) => selector_selector(datum, selectorPoint)) : [];
 			const textPosition = annotationArea.textPosition ?? defaultTextPosition;
@@ -14023,7 +15076,9 @@ var init_annotationArea = __esmMin((() => {
 			return {
 				zIndex: ANNOTATION_Z_INDEX,
 				regionRelative: true,
+				...range ? { clip: true } : {},
 				positions: (data, context) => {
+					if (range) return annotationAreaRangePositions(range, context);
 					const xyList = data.filter((item) => selectedData.some((datum) => isSubset(datum, item))).map((datum) => context.dataToPosition(datum));
 					const yAxisHelper = context.getYAxisHelper();
 					if ("function" == typeof context.getXAxisHelper()?.getBandwidth) {
@@ -14129,6 +15184,7 @@ var init_annotationAreaBand = __esmMin((() => {
 	init_utils$3();
 	init_constant$1();
 	init_chatType();
+	init_annotationAreaRange();
 	annotationAreaBand = (spec, context) => {
 		const { advancedVSeed, vseed } = context;
 		const { annotation, config } = advancedVSeed;
@@ -14144,12 +15200,14 @@ var init_annotationAreaBand = __esmMin((() => {
 			bottomLeft: "insideBottomLeft",
 			bottomRight: "insideBottomRight",
 			left: "insideLeft",
-			right: "insideRight"
+			right: "insideRight",
+			middle: "middle"
 		};
 		const defaultTextPosition = isBarLikeChart(advancedVSeed) ? "right" : "top";
 		const markArea = annotationAreaList.flatMap((annotationArea) => {
-			const { selector: selectorPoint, text = "", textColor = theme?.textColor ?? "#ffffff", textFontSize = theme?.textFontSize ?? 12, textFontWeight = theme?.textFontWeight ?? 400, textBackgroundVisible = theme?.textBackgroundVisible ?? true, textBackgroundColor = theme?.textBackgroundColor ?? "#191d24", textBackgroundBorderColor = theme?.textBackgroundBorderColor ?? "#191d24", textBackgroundBorderWidth = theme?.textBackgroundBorderWidth ?? 1, textBackgroundBorderRadius = theme?.textBackgroundBorderRadius ?? 4, textBackgroundPadding = theme?.textBackgroundPadding ?? 4, areaColor = theme?.areaColor ?? "#888888", areaColorOpacity = theme?.areaColorOpacity ?? .15, areaBorderColor = theme?.areaBorderColor ?? "#888888", areaBorderRadius = theme?.areaBorderRadius ?? 4, areaBorderWidth = theme?.areaBorderWidth ?? 1, areaLineDash = theme?.areaLineDash, outerPadding = theme?.outerPadding ?? 4 } = annotationArea;
+			const { selector: selectorPoint, range, text = "", textColor = theme?.textColor ?? "#ffffff", textFontSize = theme?.textFontSize ?? 12, textFontWeight = theme?.textFontWeight ?? 400, textBackgroundVisible = theme?.textBackgroundVisible ?? true, textBackgroundColor = theme?.textBackgroundColor ?? "#191d24", textBackgroundBorderColor = theme?.textBackgroundBorderColor ?? "#191d24", textBackgroundBorderWidth = theme?.textBackgroundBorderWidth ?? 1, textBackgroundBorderRadius = theme?.textBackgroundBorderRadius ?? 4, textBackgroundPadding = theme?.textBackgroundPadding ?? 4, areaColor = theme?.areaColor ?? "#888888", areaColorOpacity = theme?.areaColorOpacity ?? .15, areaBorderColor = theme?.areaBorderColor ?? "#888888", areaBorderRadius = theme?.areaBorderRadius ?? 4, areaBorderWidth = theme?.areaBorderWidth ?? 1, areaLineDash = theme?.areaLineDash, outerPadding = theme?.outerPadding ?? 4 } = annotationArea;
 			const textBackgroundOpacity = theme?.textBackgroundOpacity;
+			if (range) assertAnnotationAreaRangeAxes(range, spec);
 			const textPosition = annotationArea.textPosition ?? defaultTextPosition;
 			const textAlign = annotationArea.textAlign ?? ANNOTATION_AREA_TEXT_STYLE_BY_POSITION[textPosition].textAlign;
 			const textBaseline = annotationArea.textBaseline ?? ANNOTATION_AREA_TEXT_STYLE_BY_POSITION[textPosition].textBaseline;
@@ -14158,14 +15216,14 @@ var init_annotationAreaBand = __esmMin((() => {
 			return {
 				zIndex: ANNOTATION_Z_INDEX,
 				regionRelative: true,
+				...range ? { clip: true } : {},
 				positions: (data, context) => {
+					if (range) return annotationAreaRangePositions(range, context);
 					const xyList = data.filter((item) => selectedData.some((datum) => isSubset(datum, item))).map((datum) => context.dataToPosition(datum));
 					const bandPosition = context?._scaleConfig?.bandPosition || 0;
 					const yAxisHelper = context.getYAxisHelper();
-					const xAxisHelper = context.getXAxisHelper();
-					if ("function" == typeof xAxisHelper?.getBandwidth) {
-						const depth = context.fieldX.length ?? 0;
-						const xBandWidth = xAxisHelper?.getBandwidth?.(depth - 1);
+					const xBandWidth = context.getXAxisHelper()?.getBandwidth?.((context.fieldX.length ?? 0) - 1);
+					if ("number" == typeof xBandWidth && Number.isFinite(xBandWidth)) {
 						const regionRect = context.getRegion().getLayoutRect();
 						const startX = Math.min(...xyList.map((item) => item.x)) - (outerPadding || 4);
 						const endX = Math.max(...xyList.map((item) => item.x)) + (outerPadding || 4);
@@ -14194,9 +15252,8 @@ var init_annotationAreaBand = __esmMin((() => {
 							}
 						];
 					}
-					if ("function" == typeof yAxisHelper?.getBandwidth) {
-						const depth = context.fieldY.length ?? 0;
-						const yBandWidth = yAxisHelper?.getBandwidth?.(depth - 1);
+					const yBandWidth = yAxisHelper?.getBandwidth?.((context.fieldY.length ?? 0) - 1);
+					if ("number" == typeof yBandWidth && Number.isFinite(yBandWidth)) {
 						const regionRect = context.getRegion().getLayoutRect();
 						const startY = Math.min(...xyList.map((item) => item.y)) - (outerPadding || 4);
 						const endY = Math.max(...xyList.map((item) => item.y)) + (outerPadding || 4);
@@ -14295,7 +15352,7 @@ var init_splitLine = __esmMin((() => {
 		const { annotation, chartType, datasetReshapeInfo } = advancedVSeed;
 		if (!annotation || !annotation.annotationHorizontalLine) return spec;
 		const baseConfig = advancedVSeed.config[chartType];
-		const splitLineConfig = array(annotation.annotationHorizontalLine).find((item) => !!item.splitLine);
+		const splitLineConfig = array$1(annotation.annotationHorizontalLine).find((item) => !!item.splitLine);
 		const splitValue = +splitLineConfig?.yValue;
 		if (Number.isNaN(splitValue) || !e$8(splitValue)) return spec;
 		const result = { ...spec };
@@ -14470,7 +15527,7 @@ var init_annotationPointOfHistogram = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/annotation/index.js
-var init_annotation$5 = __esmMin((() => {
+var init_annotation$2 = __esmMin((() => {
 	init_annotationPointOfDualAxis();
 	init_annotationPoint();
 	init_annotationVerticalLine();
@@ -14678,7 +15735,7 @@ var init_histogramCrosshair = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/crosshair/index.js
-var init_crosshair$2 = __esmMin((() => {
+var init_crosshair$1 = __esmMin((() => {
 	init_verticalCrosshairLine();
 	init_verticalCrosshairRect();
 	init_horizontalCrosshairRect();
@@ -14688,7 +15745,7 @@ var init_crosshair$2 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/brush/brush.js
 var brush_brush;
-var init_brush$3 = __esmMin((() => {
+var init_brush$2 = __esmMin((() => {
 	brush_brush = (spec, context) => {
 		const result = { ...spec };
 		const { advancedVSeed, vseed } = context;
@@ -14721,8 +15778,8 @@ var init_brush$3 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/brush/index.js
-var init_brush$2 = __esmMin((() => {
-	init_brush$3();
+var init_brush$1 = __esmMin((() => {
+	init_brush$2();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/series/series.js
@@ -14920,7 +15977,7 @@ var init_barGapInGroup = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/barWidth/index.js
-var init_barWidth$1 = __esmMin((() => {
+var init_barWidth = __esmMin((() => {
 	init_barMaxWidth();
 	init_barGapInGroup();
 }));
@@ -14958,7 +16015,7 @@ var init_boxGapInGroup = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/boxWidth/index.js
-var init_boxWidth$1 = __esmMin((() => {
+var init_boxWidth = __esmMin((() => {
 	init_boxMaxWidth();
 	init_boxGapInGroup();
 }));
@@ -15003,7 +16060,7 @@ var init_kdeRegressionLine = __esmMin((() => {
 		const binValueType = advancedVSeed.config[chartType]?.binValueType;
 		if (!regressionLine || !regressionLine.kdeRegressionLine) return result;
 		const rowColumnFields = T$4(dimensions.filter((dim) => "row" === dim.encoding || "column" === dim.encoding), (item) => item.id);
-		const lineList = array(regressionLine.kdeRegressionLine).filter((kdeLine) => false !== kdeLine.enable);
+		const lineList = array$1(regressionLine.kdeRegressionLine).filter((kdeLine) => false !== kdeLine.enable);
 		if (!result.extensionMark) result.extensionMark = [];
 		lineList.forEach((line, lineIndex) => {
 			if (false === line.enable) return;
@@ -15098,7 +16155,7 @@ var init_ecdfRegressionLine = __esmMin((() => {
 		const lineTheme = advancedVSeed.config[chartType]?.regressionLine;
 		if (!regressionLine || !regressionLine.ecdfRegressionLine) return result;
 		const rowColumnFields = T$4(dimensions.filter((dim) => "row" === dim.encoding || "column" === dim.encoding), (item) => item.id);
-		const lineList = array(regressionLine.ecdfRegressionLine).filter((ecdfLine) => false !== ecdfLine.enable);
+		const lineList = array$1(regressionLine.ecdfRegressionLine).filter((ecdfLine) => false !== ecdfLine.enable);
 		if (!result.extensionMark) result.extensionMark = [];
 		lineList.forEach((line, lineIndex) => {
 			if (false === line.enable) return;
@@ -15214,7 +16271,7 @@ var init_linearRegressionLine = __esmMin((() => {
 		const { chartType, regressionLine } = advancedVSeed;
 		const lineTheme = advancedVSeed.config[chartType]?.regressionLine;
 		if (!regressionLine || !regressionLine[type]) return result;
-		const lineList = array(regressionLine[type]);
+		const lineList = array$1(regressionLine[type]);
 		if (!result.extensionMark) result.extensionMark = [];
 		lineList.forEach((line, lineIndex) => {
 			if (false === line.enable) return;
@@ -15410,7 +16467,7 @@ var init_columnRegressionLine = __esmMin((() => {
 		const { chartType, regressionLine } = advancedVSeed;
 		const lineTheme = advancedVSeed.config[chartType]?.regressionLine;
 		if (!regressionLine || !regressionLine.polynomialRegressionLine) return result;
-		const lineList = array(regressionLine.polynomialRegressionLine);
+		const lineList = array$1(regressionLine.polynomialRegressionLine);
 		if (!result.extensionMark) result.extensionMark = [];
 		lineList.forEach((line, lineIndex) => {
 			if (false === line.enable) return;
@@ -15549,7 +16606,7 @@ var init_columnRegressionLine = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/regressionLine/index.js
-var init_regressionLine$4 = __esmMin((() => {
+var init_regressionLine$3 = __esmMin((() => {
 	init_kdeRegressionLine();
 	init_ecdfRegressionLine();
 	init_linearRegressionLine();
@@ -15568,7 +16625,7 @@ var init_addRegionPadding = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/region/regionPadding.js
 var regionPadding;
-var init_regionPadding$1 = __esmMin((() => {
+var init_regionPadding = __esmMin((() => {
 	regionPadding = (spec, context) => {
 		const padding = (context.advancedVSeed.config?.[context.vseed.chartType])?.regionPadding;
 		if (null == padding || !Array.isArray(spec.region)) return spec;
@@ -15587,7 +16644,7 @@ var init_regionPadding$1 = __esmMin((() => {
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/region/index.js
 var init_region = __esmMin((() => {
 	init_addRegionPadding();
-	init_regionPadding$1();
+	init_regionPadding();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/pipeFilter/barStyleFilter.js
@@ -15652,7 +16709,7 @@ var init_isPlayer = __esmMin((() => {
 var playerBar;
 var init_playerBar = __esmMin((() => {
 	init_dist$1();
-	init_dataset$1();
+	init_dataset$2();
 	playerBar = (spec, context) => {
 		const { advancedVSeed } = context;
 		const { dimensions = [], datasetReshapeInfo, chartType, encoding } = advancedVSeed;
@@ -15687,7 +16744,6 @@ var init_playerBar = __esmMin((() => {
 		return {
 			...result,
 			dataKey,
-			stackCornerRadius: void 0,
 			animationUpdate: { bar: [{
 				type: "update",
 				options: { excludeChannels: ["y"] },
@@ -15805,7 +16861,7 @@ var init_playerBar = __esmMin((() => {
 var playerColumn;
 var init_playerColumn = __esmMin((() => {
 	init_dist$1();
-	init_dataset$1();
+	init_dataset$2();
 	playerColumn = (spec, context) => {
 		const { advancedVSeed } = context;
 		const { dimensions = [], datasetReshapeInfo, chartType, encoding } = advancedVSeed;
@@ -15840,7 +16896,6 @@ var init_playerColumn = __esmMin((() => {
 		return {
 			...result,
 			dataKey,
-			stackCornerRadius: void 0,
 			animationUpdate: {
 				bar: [{
 					type: "update",
@@ -15976,7 +17031,7 @@ var init_playerColumn = __esmMin((() => {
 var playerScatter;
 var init_playerScatter = __esmMin((() => {
 	init_dist$1();
-	init_dataset$1();
+	init_dataset$2();
 	playerScatter = (spec, context) => {
 		const { advancedVSeed } = context;
 		const { datasetReshapeInfo, dimensions = [], chartType, encoding } = advancedVSeed;
@@ -16122,7 +17177,7 @@ var init_playerScatter = __esmMin((() => {
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/player/playerLine.js
 var playerLine;
 var init_playerLine = __esmMin((() => {
-	init_dataset$1();
+	init_dataset$2();
 	playerLine = (spec, context) => {
 		const { advancedVSeed } = context;
 		const { datasetReshapeInfo, chartType } = advancedVSeed;
@@ -16247,7 +17302,7 @@ var init_playerLine = __esmMin((() => {
 var playerPie;
 var init_playerPie = __esmMin((() => {
 	init_dist$1();
-	init_dataset$1();
+	init_dataset$2();
 	playerPie = (spec, context) => {
 		const { advancedVSeed } = context;
 		const { dimensions = [], datasetReshapeInfo, chartType, encoding } = advancedVSeed;
@@ -16392,7 +17447,7 @@ var init_playerPie = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/player/index.js
-var init_player$2 = __esmMin((() => {
+var init_player$1 = __esmMin((() => {
 	init_isPlayer();
 	init_playerBar();
 	init_playerColumn();
@@ -16432,13 +17487,13 @@ var init_fontFamily = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/theme/index.js
-var init_theme$5 = __esmMin((() => {
+var init_theme$4 = __esmMin((() => {
 	init_fontFamily();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/types.js
 var VScreenAnimationType;
-var init_types$1 = __esmMin((() => {
+var init_types = __esmMin((() => {
 	VScreenAnimationType = {
 		growth: "growth",
 		load: "load",
@@ -16460,7 +17515,7 @@ var init_types$1 = __esmMin((() => {
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/utils/pointAtmosphere.js
 var EFFECT_NONE$1, atmospherePoint;
 var init_pointAtmosphere = __esmMin((() => {
-	init_types$1();
+	init_types();
 	EFFECT_NONE$1 = VScreenAnimationType.none;
 	atmospherePoint = (effect) => {
 		if (effect === EFFECT_NONE$1) return {};
@@ -16511,7 +17566,7 @@ var init_pointAtmosphere = __esmMin((() => {
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/utils/index.js
 var EFFECT_NONE, getPrimaryEffect, allowAnimation, allowLineOrAreaAnimation;
 var init_utils$2 = __esmMin((() => {
-	init_types$1();
+	init_types();
 	init_pointAtmosphere();
 	EFFECT_NONE = VScreenAnimationType.none;
 	getPrimaryEffect = (config) => config?.effects?.[0] ?? EFFECT_NONE;
@@ -16664,7 +17719,7 @@ var init_barGroup = __esmMin((() => {
 	init_es();
 	init_barColor();
 	getGroupCountFromSpec = (spec) => {
-		const field = "horizontal" === spec.direction ? array(spec.yField)[0] : array(spec.xField)[0];
+		const field = "horizontal" === spec.direction ? array$1(spec.yField)[0] : array$1(spec.xField)[0];
 		return { groupCount: new Set((spec.data?.[0]?.values ?? []).map((row) => row[field])).size };
 	};
 	getGroupInfo = (chartInstance, datum) => {
@@ -16729,8 +17784,8 @@ var init_barGroup = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/utils/bar.js
 var getLoopResult;
-var init_bar$9 = __esmMin((() => {
-	init_types$1();
+var init_bar$7 = __esmMin((() => {
+	init_types();
 	init_barMotion();
 	init_barColor();
 	init_barGroup();
@@ -16744,11 +17799,11 @@ var init_bar$9 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/bar.js
 var barAppear, barUpdate, barLoop, barExit;
-var init_bar$8 = __esmMin((() => {
+var init_bar$6 = __esmMin((() => {
 	init_esm$1();
-	init_types$1();
+	init_types();
 	init_utils$2();
-	init_bar$9();
+	init_bar$7();
 	barAppear = (config, direction) => {
 		if (!allowAnimation(config)) return false;
 		const effect = getPrimaryEffect(config);
@@ -16840,9 +17895,9 @@ var init_lineOrArea$1 = __esmMin((() => {
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/lineOrArea.js
 var lineOrAreaAppear, lineOrAreaLoop, lineOrAreaUpdate;
 var init_lineOrArea = __esmMin((() => {
-	init_types$1();
+	init_types();
 	init_utils$2();
-	init_bar$9();
+	init_bar$7();
 	init_lineOrArea$1();
 	init_esm$1();
 	lineOrAreaAppear = (config) => {
@@ -16958,17 +18013,17 @@ var init_lineOrArea = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/utils/pie.js
 var radialPie, scalePie;
-var init_pie$10 = __esmMin((() => {
+var init_pie$8 = __esmMin((() => {
 	radialPie = () => ({ type: "growAngleIn" });
 	scalePie = () => ({ type: "growRadiusIn" });
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/pie.js
 var pieAppear, roseAppear, pieUpdate, pieEnter, pieLoop;
-var init_pie$9 = __esmMin((() => {
-	init_types$1();
+var init_pie$7 = __esmMin((() => {
+	init_types();
 	init_utils$2();
-	init_pie$10();
+	init_pie$8();
 	pieAppear = (config) => {
 		if (!config || !allowAnimation(config)) return false;
 		const { effects, ease, duration } = config;
@@ -17126,7 +18181,7 @@ var init_pie$9 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/radar.js
 var radarAppear, radarLoop, radarUpdate;
-var init_radar$7 = __esmMin((() => {
+var init_radar$6 = __esmMin((() => {
 	init_utils$2();
 	radarAppear = (config) => {
 		if (!allowAnimation(config)) return false;
@@ -17162,7 +18217,7 @@ var init_radar$7 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/utils/scatter.js
 var flyInScatter, scaleInScatter;
-var init_scatter$10 = __esmMin((() => {
+var init_scatter$8 = __esmMin((() => {
 	flyInScatter = (duration, easing, loop = false, startTime = 0, delayAfter = 0) => {
 		const half = duration / 2;
 		return [{
@@ -17206,9 +18261,9 @@ var init_scatter$10 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/scatter.js
 var scatterAppear, scatterLoop, scatterUpdate;
-var init_scatter$9 = __esmMin((() => {
+var init_scatter$7 = __esmMin((() => {
 	init_utils$2();
-	init_scatter$10();
+	init_scatter$8();
 	scatterAppear = (config) => {
 		if (!allowAnimation(config)) return false;
 		const effect = getPrimaryEffect(config);
@@ -17247,13 +18302,13 @@ var init_scatter$9 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/animation.js
 var createBarAnimation, barAnimation, columnAnimation, lineAreaAnimation, pieStages, pieAnimation, roseAnimation, scatterAnimation, radarAnimation;
-var init_animation$2 = __esmMin((() => {
+var init_animation$1 = __esmMin((() => {
 	init_createAnimationPipe();
-	init_bar$8();
+	init_bar$6();
 	init_lineOrArea();
-	init_pie$9();
-	init_radar$7();
-	init_scatter$9();
+	init_pie$7();
+	init_radar$6();
+	init_scatter$7();
 	createBarAnimation = (direction) => createAnimationPipe({
 		appear: (config) => barAppear(config, direction),
 		loop: (config, afterAppear, spec) => barLoop(config, afterAppear, direction, spec),
@@ -17295,14 +18350,67 @@ var init_animation$2 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/index.js
-var init_animation$1 = __esmMin((() => {
-	init_animation$2();
-	init_types$1();
+var init_animation = __esmMin((() => {
+	init_animation$1();
+	init_types();
+}));
+//#endregion
+//#region ../vseed/dist/esm/pipeline/spec/chart/pipes/geometry/pieGeometry.js
+var pieGeometry;
+var init_pieGeometry$1 = __esmMin((() => {
+	init_dist$1();
+	pieGeometry = (spec, { advancedVSeed }) => ({
+		...spec,
+		...i$9(advancedVSeed.config[advancedVSeed.chartType], [
+			"outerRadius",
+			"innerRadius",
+			"startAngle",
+			"endAngle"
+		])
+	});
+}));
+//#endregion
+//#region ../vseed/dist/esm/pipeline/spec/chart/pipes/indicator/centerText.js
+var textItem, centerText;
+var init_centerText = __esmMin((() => {
+	textItem = (text, style) => ({
+		visible: null != text,
+		autoLimit: true,
+		style: {
+			...style,
+			text: text ?? ""
+		}
+	});
+	centerText = (spec, { advancedVSeed }) => {
+		const config = advancedVSeed.config[advancedVSeed.chartType];
+		const text = config?.centerText;
+		if (text?.titleText == null && text?.subTitleText == null) return spec;
+		return {
+			...spec,
+			indicator: {
+				visible: true,
+				fixed: true,
+				trigger: "none",
+				limitRatio: spec.innerRadius,
+				title: textItem(text.titleText, {
+					fill: config.label?.labelColor ?? config.legend?.labelColor,
+					fontSize: text.titleFontSize,
+					fontWeight: text.titleFontWeight
+				}),
+				content: textItem(text.subTitleText, {
+					fill: config.legend?.labelColor,
+					fillOpacity: text.subTitleOpacity,
+					fontSize: text.subTitleFontSize
+				}),
+				gap: text.gap ?? void 0
+			}
+		};
+	};
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/index.js
 var init_pipes$3 = __esmMin((() => {
-	init_dataset$1();
+	init_dataset$2();
 	init_init$2();
 	init_axes$2();
 	init_percent();
@@ -17314,21 +18422,23 @@ var init_pipes$3 = __esmMin((() => {
 	init_color$4();
 	init_pivotChart();
 	init_markStyle$3();
-	init_annotation$5();
-	init_crosshair$2();
-	init_brush$2();
+	init_annotation$2();
+	init_crosshair$1();
+	init_brush$1();
 	init_series();
 	init_dual();
 	init_size();
-	init_barWidth$1();
-	init_boxWidth$1();
-	init_regressionLine$4();
+	init_barWidth();
+	init_boxWidth();
+	init_regressionLine$3();
 	init_region();
 	init_pipeFilter();
-	init_player$2();
+	init_player$1();
 	init_hierarchy$3();
-	init_theme$5();
-	init_animation$1();
+	init_theme$4();
+	init_animation();
+	init_pieGeometry$1();
+	init_centerText();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/reshape/pivotReshapeWithEncoding.js
@@ -18153,17 +19263,17 @@ var init_addColorToEncoding = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/color/index.js
-var init_color$3 = __esmMin((() => {
+var init_color$1 = __esmMin((() => {
 	init_addColorToEncoding();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/column.js
 var defaultEncodingForColumn, encodingForColumn, generateDefaultDimensionEncoding$20, generateDimensionEncoding$20, generateDefaultMeasureEncoding$19, generateMeasureEncoding$20;
-var init_column$8 = __esmMin((() => {
+var init_column$6 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	init_addColorToEncoding();
 	defaultEncodingForColumn = (advancedVSeed) => {
 		const { measures = [], reshapeMeasures = [], dimensions = [] } = advancedVSeed;
@@ -18232,11 +19342,11 @@ var init_column$8 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/bar.js
 var defaultEncodingForBar, encodingForBar, generateDefaultDimensionEncoding$19, generateDimensionEncoding$19, generateDefaultMeasureEncoding$18, generateMeasureEncoding$19;
-var init_bar$7 = __esmMin((() => {
+var init_bar$5 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	init_addColorToEncoding();
 	defaultEncodingForBar = (advancedVSeed) => {
 		const { measures = [], reshapeMeasures = [], dimensions = [] } = advancedVSeed;
@@ -18305,11 +19415,11 @@ var init_bar$7 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/pie.js
 var defaultEncodingForPie, encodingForPie, generateDefaultDimensionEncoding$18, generateDimensionEncoding$18, generateDefaultMeasureEncoding$17, generateMeasureEncoding$18;
-var init_pie$8 = __esmMin((() => {
+var init_pie$6 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	defaultEncodingForPie = (advancedVSeed) => {
 		const { measures = [], reshapeMeasures = [], dimensions = [] } = advancedVSeed;
 		const encoding = {};
@@ -18375,11 +19485,11 @@ var init_pie$8 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/dualAxis.js
 var defaultEncodingForDualAxis, encodingForDualAxis, generateDefaultDimensionEncoding$17, generateDimensionEncoding$17, generateDefaultMeasureEncoding$16, generateMeasureEncoding$17;
-var init_dualAxis$8 = __esmMin((() => {
+var init_dualAxis$6 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	init_addColorToEncoding();
 	defaultEncodingForDualAxis = (advancedVSeed) => {
 		const { measures = [], reshapeMeasures = [], dimensions = [] } = advancedVSeed;
@@ -18448,11 +19558,11 @@ var init_dualAxis$8 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/funnel.js
 var defaultEncodingForFunnel, encodingForFunnel, generateDefaultDimensionEncoding$16, generateDimensionEncoding$16, generateDefaultMeasureEncoding$15, generateMeasureEncoding$16;
-var init_funnel$7 = __esmMin((() => {
+var init_funnel$5 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	defaultEncodingForFunnel = (advancedVSeed) => {
 		const { measures = [], reshapeMeasures = [], dimensions = [] } = advancedVSeed;
 		const encoding = {};
@@ -18517,11 +19627,11 @@ var init_funnel$7 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/heatmap.js
 var defaultEncodingForHeatmap, encodingForHeatmap, generateDefaultDimensionEncoding$15, generateDimensionEncoding$15, generateDefaultMeasureEncoding$14, generateMeasureEncoding$15;
-var init_heatmap$9 = __esmMin((() => {
+var init_heatmap$7 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	defaultEncodingForHeatmap = (advancedVSeed) => {
 		const { measures = [], dimensions = [] } = advancedVSeed;
 		const encoding = {};
@@ -18592,11 +19702,11 @@ var init_heatmap$9 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/radar.js
 var defaultEncodingForRadar, encodingForRadar, generateDefaultDimensionEncoding$14, generateDimensionEncoding$14, generateDefaultMeasureEncoding$13, generateMeasureEncoding$14;
-var init_radar$6 = __esmMin((() => {
+var init_radar$5 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	init_addColorToEncoding();
 	defaultEncodingForRadar = (advancedVSeed) => {
 		const { measures = [], reshapeMeasures = [], dimensions = [] } = advancedVSeed;
@@ -18665,7 +19775,7 @@ var init_radar$6 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/scatter.js
 var defaultEncodingForScatter, encodingForScatter, generateDefaultDimensionEncoding$13, generateDimensionEncoding$13, generateDefaultMeasureEncoding$12, generateMeasureEncoding$13;
-var init_scatter$8 = __esmMin((() => {
+var init_scatter$6 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	defaultEncodingForScatter = (advancedVSeed) => {
@@ -18740,11 +19850,11 @@ var init_scatter$8 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/line.js
 var defaultEncodingForLine, encodingForLine, generateDefaultDimensionEncoding$12, generateDimensionEncoding$12, generateMeasureEncoding$12;
-var init_line$8 = __esmMin((() => {
+var init_line$6 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	init_addColorToEncoding();
 	defaultEncodingForLine = (advancedVSeed) => {
 		const { reshapeMeasures = [], measures = [], dimensions = [] } = advancedVSeed;
@@ -18808,11 +19918,11 @@ var init_line$8 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/rose.js
 var defaultEncodingForRose, encodingForRose, generateDefaultDimensionEncoding$11, generateDimensionEncoding$11, generateDefaultMeasureEncoding$11, generateMeasureEncoding$11;
-var init_rose$7 = __esmMin((() => {
+var init_rose$5 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	init_addColorToEncoding();
 	defaultEncodingForRose = (advancedVSeed) => {
 		const { measures = [], reshapeMeasures = [], dimensions = [] } = advancedVSeed;
@@ -18899,10 +20009,10 @@ var init_adapter = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/histogram.js
 var defaultEncodingForHistogram, encodingForHistogram, generateDefaultDimensionEncoding$10, generateDimensionEncoding$10, generateDefaultMeasureEncoding$10, generateMeasureEncoding$10;
-var init_histogram$7 = __esmMin((() => {
+var init_histogram$6 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
-	init_color$3();
+	init_color$1();
 	defaultEncodingForHistogram = (advancedVSeed) => {
 		const { measures = [], dimensions = [] } = advancedVSeed;
 		const encoding = {};
@@ -18975,7 +20085,7 @@ var init_boxplot$4 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	init_addColorToEncoding();
 	defaultEncodingForBoxplot = (advancedVSeed) => {
 		const { measures = [], reshapeMeasures = [], dimensions = [] } = advancedVSeed;
@@ -19048,11 +20158,11 @@ var init_boxplot$4 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/raceColumn.js
 var defaultEncodingForRaceColumn, encodingForRaceColumn, generateDefaultDimensionEncoding$8, generateDimensionEncoding$8, generateDefaultMeasureEncoding$8, generateMeasureEncoding$8;
-var init_raceColumn$4 = __esmMin((() => {
+var init_raceColumn$3 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	init_addColorToEncoding();
 	defaultEncodingForRaceColumn = (advancedVSeed) => {
 		const { measures = [], reshapeMeasures = [], dimensions = [] } = advancedVSeed;
@@ -19123,11 +20233,11 @@ var init_raceColumn$4 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/raceBar.js
 var defaultEncodingForRaceBar, encodingForRaceBar, generateDefaultDimensionEncoding$7, generateDimensionEncoding$7, generateDefaultMeasureEncoding$7, generateMeasureEncoding$7;
-var init_raceBar$4 = __esmMin((() => {
+var init_raceBar$3 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	init_addColorToEncoding();
 	defaultEncodingForRaceBar = (advancedVSeed) => {
 		const { measures = [], reshapeMeasures = [], dimensions = [] } = advancedVSeed;
@@ -19198,7 +20308,7 @@ var init_raceBar$4 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/raceScatter.js
 var defaultEncodingForRaceScatter, encodingForRaceScatter, generateDefaultDimensionEncoding$6, generateDimensionEncoding$6, generateDefaultMeasureEncoding$6, generateMeasureEncoding$6;
-var init_raceScatter$4 = __esmMin((() => {
+var init_raceScatter$3 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	defaultEncodingForRaceScatter = (advancedVSeed) => {
@@ -19275,11 +20385,11 @@ var init_raceScatter$4 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/raceLine.js
 var defaultEncodingForRaceLine, encodingForRaceLine, generateDefaultDimensionEncoding$5, generateDimensionEncoding$5, generateDefaultMeasureEncoding$5, generateMeasureEncoding$5;
-var init_raceLine$6 = __esmMin((() => {
+var init_raceLine$5 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	init_addColorToEncoding();
 	defaultEncodingForRaceLine = (advancedVSeed) => {
 		const { measures = [], reshapeMeasures = [], dimensions = [] } = advancedVSeed;
@@ -19358,11 +20468,11 @@ var init_raceLine$6 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/racePie.js
 var defaultEncodingForRacePie, encodingForRacePie, generateDefaultDimensionEncoding$4, generateDimensionEncoding$4, generateDefaultMeasureEncoding$4, generateMeasureEncoding$4;
-var init_racePie$6 = __esmMin((() => {
+var init_racePie$5 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	init_addColorToEncoding();
 	defaultEncodingForRacePie = (advancedVSeed) => {
 		const { measures = [], reshapeMeasures = [], dimensions = [] } = advancedVSeed;
@@ -19431,11 +20541,11 @@ var init_racePie$6 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/raceDonut.js
 var defaultEncodingForRaceDonut, encodingForRaceDonut, generateDefaultDimensionEncoding$3, generateDimensionEncoding$3, generateDefaultMeasureEncoding$3, generateMeasureEncoding$3;
-var init_raceDonut$4 = __esmMin((() => {
+var init_raceDonut$3 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
-	init_color$3();
+	init_color$1();
 	init_addColorToEncoding();
 	defaultEncodingForRaceDonut = (advancedVSeed) => {
 		const { measures = [], reshapeMeasures = [], dimensions = [] } = advancedVSeed;
@@ -19577,7 +20687,7 @@ var init_hierarchy$2 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/sankey.js
 var defaultEncodingForSankey, encodingForSankey, generateDefaultDimensionEncoding$1, generateDimensionEncoding$1, generateDefaultMeasureEncoding$1, generateMeasureEncoding$1;
-var init_sankey$6 = __esmMin((() => {
+var init_sankey$4 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
@@ -19650,33 +20760,33 @@ var init_sankey$6 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/encoding/index.js
-var init_encoding$2 = __esmMin((() => {
-	init_column$8();
-	init_bar$7();
-	init_pie$8();
-	init_dualAxis$8();
-	init_funnel$7();
-	init_heatmap$9();
-	init_radar$6();
-	init_scatter$8();
-	init_line$8();
-	init_rose$7();
+var init_encoding$1 = __esmMin((() => {
+	init_column$6();
+	init_bar$5();
+	init_pie$6();
+	init_dualAxis$6();
+	init_funnel$5();
+	init_heatmap$7();
+	init_radar$5();
+	init_scatter$6();
+	init_line$6();
+	init_rose$5();
 	init_adapter();
-	init_histogram$7();
+	init_histogram$6();
 	init_boxplot$4();
-	init_raceColumn$4();
-	init_raceBar$4();
-	init_raceScatter$4();
-	init_raceLine$6();
-	init_racePie$6();
-	init_raceDonut$4();
+	init_raceColumn$3();
+	init_raceBar$3();
+	init_raceScatter$3();
+	init_raceLine$5();
+	init_racePie$5();
+	init_raceDonut$3();
 	init_hierarchy$2();
-	init_sankey$6();
+	init_sankey$4();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/line.js
 var lineConfig;
-var init_line$7 = __esmMin((() => {
+var init_line$5 = __esmMin((() => {
 	init_dist$1();
 	init_utils$4();
 	lineConfig = (advancedVSeed, context) => {
@@ -19708,7 +20818,7 @@ var init_line$7 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/column.js
 var columnConfig;
-var init_column$7 = __esmMin((() => {
+var init_column$5 = __esmMin((() => {
 	init_dist$1();
 	init_utils$4();
 	columnConfig = (advancedVSeed, context) => {
@@ -19725,6 +20835,7 @@ var init_column$7 = __esmMin((() => {
 			"xAxis",
 			"yAxis",
 			"crosshairRect",
+			"cornerRadius",
 			"stackCornerRadius",
 			"barMaxWidth",
 			"barGapInGroup",
@@ -19743,7 +20854,7 @@ var init_column$7 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/pie.js
 var pieConfig;
-var init_pie$7 = __esmMin((() => {
+var init_pie$5 = __esmMin((() => {
 	init_dist$1();
 	init_utils$4();
 	pieConfig = (advancedVSeed, context) => {
@@ -19770,7 +20881,7 @@ var init_pie$7 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/dualAxis.js
 var dualAxisConfig;
-var init_dualAxis$7 = __esmMin((() => {
+var init_dualAxis$5 = __esmMin((() => {
 	init_dist$1();
 	init_utils$4();
 	dualAxisConfig = (advancedVSeed, context) => {
@@ -19791,6 +20902,7 @@ var init_dualAxis$7 = __esmMin((() => {
 			"crosshairRect",
 			"barGapInGroup",
 			"barMaxWidth",
+			"cornerRadius",
 			"stackCornerRadius",
 			"dimensionLinkage"
 		]));
@@ -19804,7 +20916,7 @@ var init_dualAxis$7 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/scatter.js
 var scatterConfig;
-var init_scatter$7 = __esmMin((() => {
+var init_scatter$5 = __esmMin((() => {
 	init_dist$1();
 	init_utils$4();
 	scatterConfig = (advancedVSeed, context) => {
@@ -19837,7 +20949,7 @@ var init_scatter$7 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/histogram.js
 var histogramConfig, histogramXAxisConfig;
-var init_histogram$6 = __esmMin((() => {
+var init_histogram$5 = __esmMin((() => {
 	init_es();
 	init_dist$1();
 	init_dataReshape();
@@ -19856,6 +20968,8 @@ var init_histogram$6 = __esmMin((() => {
 			"xAxis",
 			"yAxis",
 			"crosshairRect",
+			"cornerRadius",
+			"stackCornerRadius",
 			"binCount",
 			"binStep",
 			"binValueType",
@@ -19949,7 +21063,7 @@ var init_boxplot$3 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/heatmap.js
 var heatmapConfig;
-var init_heatmap$8 = __esmMin((() => {
+var init_heatmap$6 = __esmMin((() => {
 	init_dist$1();
 	init_utils$4();
 	heatmapConfig = (advancedVSeed, context) => {
@@ -19978,7 +21092,7 @@ var init_heatmap$8 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/treeMap.js
 var treeMapConfig;
-var init_treeMap$5 = __esmMin((() => {
+var init_treeMap$3 = __esmMin((() => {
 	init_dist$1();
 	init_utils$4();
 	treeMapConfig = (advancedVSeed, context) => {
@@ -20002,7 +21116,7 @@ var init_treeMap$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/sunburst.js
 var sunburstConfig;
-var init_sunburst$5 = __esmMin((() => {
+var init_sunburst$3 = __esmMin((() => {
 	init_dist$1();
 	init_utils$4();
 	sunburstConfig = (advancedVSeed, context) => {
@@ -20026,7 +21140,7 @@ var init_sunburst$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/circlePacking.js
 var circlePackingConfig;
-var init_circlePacking$5 = __esmMin((() => {
+var init_circlePacking$3 = __esmMin((() => {
 	init_dist$1();
 	init_utils$4();
 	circlePackingConfig = (advancedVSeed, context) => {
@@ -20050,7 +21164,7 @@ var init_circlePacking$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/hierarchySankey.js
 var hierarchySankeyConfig;
-var init_hierarchySankey$5 = __esmMin((() => {
+var init_hierarchySankey$3 = __esmMin((() => {
 	init_dist$1();
 	init_utils$4();
 	hierarchySankeyConfig = (advancedVSeed, context) => {
@@ -20074,7 +21188,7 @@ var init_hierarchySankey$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/sankey.js
 var sankeyConfig;
-var init_sankey$5 = __esmMin((() => {
+var init_sankey$3 = __esmMin((() => {
 	init_dist$1();
 	init_utils$4();
 	sankeyConfig = (advancedVSeed, context) => {
@@ -20096,22 +21210,87 @@ var init_sankey$5 = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/piePresentation.js
+var presentationConfig, pieStyleConfig, centerTextConfig;
+var init_piePresentation = __esmMin((() => {
+	init_dist$1();
+	init_utils$4();
+	presentationConfig = (keys) => (advancedVSeed, { vseed }) => ({
+		...advancedVSeed,
+		config: {
+			...advancedVSeed.config,
+			[vseed.chartType]: {
+				...advancedVSeed.config?.[vseed.chartType],
+				...replaceNullToUndefined(i$9(vseed, keys))
+			}
+		}
+	});
+	pieStyleConfig = presentationConfig(["pieStyle"]);
+	centerTextConfig = presentationConfig(["centerText"]);
+}));
+//#endregion
+//#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/pieGeometry.js
+var geometryConfig, pieGeometryConfig, donutGeometryConfig;
+var init_pieGeometry = __esmMin((() => {
+	init_pie$11();
+	geometryConfig = (getDefaults) => (advancedVSeed, { vseed, customTheme }) => {
+		const { chartType, theme = "light" } = vseed;
+		const base = {
+			...getDefaults(),
+			...getDefaultPieAngles()
+		};
+		const themeGeometry = customTheme?.[theme]?.config?.[chartType];
+		const defaults = {
+			outerRadius: themeGeometry?.outerRadius ?? base.outerRadius,
+			innerRadius: themeGeometry?.innerRadius ?? base.innerRadius,
+			startAngle: themeGeometry?.startAngle ?? base.startAngle,
+			endAngle: themeGeometry?.endAngle ?? base.endAngle
+		};
+		const options = vseed;
+		const outerRadius = options.outerRadius ?? defaults.outerRadius;
+		const innerRadius = options.innerRadius ?? outerRadius / defaults.outerRadius * defaults.innerRadius;
+		const startAngle = options.startAngle ?? defaults.startAngle;
+		const endAngle = options.endAngle ?? startAngle + (defaults.endAngle - defaults.startAngle);
+		if (!(outerRadius > 0 && outerRadius <= 1 && innerRadius >= 0 && innerRadius < outerRadius)) throw new Error("Pie radii must satisfy 0 <= innerRadius < outerRadius <= 1");
+		if (!(endAngle > startAngle && endAngle - startAngle <= 360)) throw new Error("Pie angle span must be greater than 0 and at most 360 degrees");
+		return {
+			...advancedVSeed,
+			config: {
+				...advancedVSeed.config,
+				[chartType]: {
+					...advancedVSeed.config?.[chartType],
+					outerRadius,
+					innerRadius,
+					...null != options.startAngle || null != options.endAngle || themeGeometry?.startAngle != null || themeGeometry?.endAngle != null ? {
+						startAngle,
+						endAngle
+					} : {}
+				}
+			}
+		};
+	};
+	pieGeometryConfig = geometryConfig(getDefaultPieGeometry);
+	donutGeometryConfig = geometryConfig(getDefaultDonutGeometry);
+}));
+//#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/config/index.js
 var areaConfig, areaPercentConfig, barConfig, barParallelConfig, barPercentConfig, columnParallelConfig, columnPercentConfig, donutConfig, roseConfig, roseParallelConfig, radarConfig, funnelConfig;
-var init_config$3 = __esmMin((() => {
-	init_line$7();
-	init_column$7();
-	init_pie$7();
-	init_dualAxis$7();
-	init_scatter$7();
-	init_histogram$6();
+var init_config$1 = __esmMin((() => {
+	init_line$5();
+	init_column$5();
+	init_pie$5();
+	init_dualAxis$5();
+	init_scatter$5();
+	init_histogram$5();
 	init_boxplot$3();
-	init_heatmap$8();
-	init_treeMap$5();
-	init_sunburst$5();
-	init_circlePacking$5();
-	init_hierarchySankey$5();
-	init_sankey$5();
+	init_heatmap$6();
+	init_treeMap$3();
+	init_sunburst$3();
+	init_circlePacking$3();
+	init_hierarchySankey$3();
+	init_sankey$3();
+	init_piePresentation();
+	init_pieGeometry();
 	areaConfig = lineConfig;
 	areaPercentConfig = lineConfig;
 	barConfig = columnConfig;
@@ -20128,7 +21307,7 @@ var init_config$3 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/theme/theme.js
 var theme_theme, mergeArray;
-var init_theme$4 = __esmMin((() => {
+var init_theme$3 = __esmMin((() => {
 	init_dist$1();
 	theme_theme = (advancedVSeed, context) => {
 		const { customTheme, vseed } = context;
@@ -20157,8 +21336,8 @@ var init_theme$4 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/theme/index.js
-var init_theme$3 = __esmMin((() => {
-	init_theme$4();
+var init_theme$2 = __esmMin((() => {
+	init_theme$3();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/pivot/pivotAdapter.js
@@ -20179,7 +21358,7 @@ var init_pivot$1 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/markStyle/markStyle.js
 var markStyle_markStyle;
-var init_markStyle$2 = __esmMin((() => {
+var init_markStyle$1 = __esmMin((() => {
 	init_dist$1();
 	init_utils$4();
 	markStyle_markStyle = (advancedVSeed, context) => {
@@ -20200,15 +21379,30 @@ var init_markStyle$2 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/markStyle/index.js
-var init_markStyle$1 = __esmMin((() => {
-	init_markStyle$2();
+var init_markStyle = __esmMin((() => {
+	init_markStyle$1();
+}));
+//#endregion
+//#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/annotation/rejectAnnotationAreaRange.js
+var rejectRange, rejectUnsupportedAnnotationAreaRange, rejectPivotAnnotationAreaRange;
+var init_rejectAnnotationAreaRange = __esmMin((() => {
+	rejectRange = (message) => (advancedVSeed) => {
+		const areas = advancedVSeed.annotation?.annotationArea;
+		const rangeIndex = (Array.isArray(areas) ? areas : areas ? [areas] : []).findIndex((area) => void 0 !== area.range);
+		if (-1 !== rangeIndex) throw new Error(`annotationArea[${rangeIndex}].range ${message}`);
+		return advancedVSeed;
+	};
+	rejectUnsupportedAnnotationAreaRange = rejectRange("does not support this chart type");
+	rejectPivotAnnotationAreaRange = rejectRange("does not support pivot or combination charts");
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/annotation/annotation.js
-var annotation_annotation;
-var init_annotation$4 = __esmMin((() => {
+var annotationWithRange, annotation_annotation;
+var init_annotation$1 = __esmMin((() => {
 	init_dist$1();
-	annotation_annotation = (advancedVSeed, context) => {
+	init_types$1();
+	init_rejectAnnotationAreaRange();
+	annotationWithRange = (advancedVSeed, context) => {
 		const { vseed } = context;
 		const annotation = i$9(vseed, [
 			"annotationPoint",
@@ -20217,16 +21411,32 @@ var init_annotation$4 = __esmMin((() => {
 			"annotationArea",
 			"annotationDifferenceLine"
 		]);
+		const areas = annotation.annotationArea;
+		(Array.isArray(areas) ? areas : areas ? [areas] : []).forEach((area, index) => {
+			const path = `annotationArea[${index}]`;
+			if (void 0 === area.range) {
+				if (void 0 === area.selector || null === area.selector) throw new Error(`${path}: selector or range is required`);
+				return;
+			}
+			if (void 0 !== area.selector) throw new Error(`${path}: selector and range are mutually exclusive`);
+			const validation = zAnnotationAreaRange.safeParse(area.range);
+			if (!validation.success) {
+				const issues = validation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join("; ");
+				throw new Error(`${path}.range: ${issues}`);
+			}
+		});
 		return {
 			...advancedVSeed,
 			annotation
 		};
 	};
+	annotation_annotation = (advancedVSeed, context) => rejectUnsupportedAnnotationAreaRange(annotationWithRange(advancedVSeed, context), context);
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/annotation/index.js
-var init_annotation$3 = __esmMin((() => {
-	init_annotation$4();
+var init_annotation = __esmMin((() => {
+	init_annotation$1();
+	init_rejectAnnotationAreaRange();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/analysis/common.js
@@ -20254,7 +21464,7 @@ var init_common$2 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/analysis/sortLegend.js
 var sortLegend_sortLegend;
-var init_sortLegend$1 = __esmMin((() => {
+var init_sortLegend = __esmMin((() => {
 	init_common$2();
 	sortLegend_sortLegend = (advancedVSeed, context) => {
 		const result = { ...advancedVSeed };
@@ -20320,9 +21530,9 @@ var init_sortYBand = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/analysis/index.js
-var init_analysis$2 = __esmMin((() => {
+var init_analysis = __esmMin((() => {
 	init_common$2();
-	init_sortLegend$1();
+	init_sortLegend();
 	init_sortXBand();
 	init_sortYBand();
 }));
@@ -20421,7 +21631,7 @@ var init_buildMeasuresForScatter = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/measures/index.js
-var init_measures$1 = __esmMin((() => {
+var init_measures = __esmMin((() => {
 	init_utils$5();
 	init_buildMeasuresForDualAxis();
 	init_buildMeasures();
@@ -20476,7 +21686,7 @@ var init_addPivotDimensionsForScatter = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/dimensions/index.js
-var init_dimensions$1 = __esmMin((() => {
+var init_dimensions = __esmMin((() => {
 	init_pickDimensionsForReshape();
 	init_addPivotDimensionsForScatter();
 }));
@@ -20580,7 +21790,7 @@ var init_default$1 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/regressionLine/regressionLine.js
 var regressionLine;
-var init_regressionLine$3 = __esmMin((() => {
+var init_regressionLine$2 = __esmMin((() => {
 	regressionLine = (advancedVSeed, context) => {
 		const { vseed } = context;
 		let keys = [];
@@ -20611,13 +21821,13 @@ var init_regressionLine$3 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/regressionLine/index.js
-var init_regressionLine$2 = __esmMin((() => {
-	init_regressionLine$3();
+var init_regressionLine$1 = __esmMin((() => {
+	init_regressionLine$2();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/page/page.js
 var page_page$1;
-var init_page$4 = __esmMin((() => {
+var init_page$3 = __esmMin((() => {
 	page_page$1 = (advancedVSeed, context) => {
 		const { vseed } = context;
 		const { page } = vseed;
@@ -20634,31 +21844,31 @@ var init_page$4 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/page/index.js
-var init_page$3 = __esmMin((() => {
-	init_page$4();
+var init_page$2 = __esmMin((() => {
+	init_page$3();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/index.js
 var init_pipes$2 = __esmMin((() => {
 	init_init$3();
 	init_reshape();
-	init_encoding$2();
-	init_config$3();
-	init_theme$3();
+	init_encoding$1();
+	init_config$1();
+	init_theme$2();
 	init_pivot$1();
-	init_markStyle$1();
-	init_annotation$3();
-	init_analysis$2();
-	init_measures$1();
-	init_dimensions$1();
+	init_markStyle();
+	init_annotation();
+	init_analysis();
+	init_measures();
+	init_dimensions();
 	init_default$1();
-	init_regressionLine$2();
-	init_page$3();
+	init_regressionLine$1();
+	init_page$2();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/line.js
 var lineAdvancedPipeline;
-var init_line$6 = __esmMin((() => {
+var init_line$4 = __esmMin((() => {
 	init_pipes$2();
 	lineAdvancedPipeline = [
 		page_page$1,
@@ -20677,13 +21887,13 @@ var init_line$6 = __esmMin((() => {
 		lineConfig,
 		theme_theme,
 		markStyle_markStyle,
-		annotation_annotation
+		pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange])
 	];
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/bar.js
 var barAdvancedPipeline;
-var init_bar$6 = __esmMin((() => {
+var init_bar$4 = __esmMin((() => {
 	init_pipes$2();
 	barAdvancedPipeline = [
 		page_page$1,
@@ -20702,13 +21912,13 @@ var init_bar$6 = __esmMin((() => {
 		barConfig,
 		theme_theme,
 		markStyle_markStyle,
-		annotation_annotation
+		pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange])
 	];
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/barParallel.js
 var barParallelAdvancedPipeline;
-var init_barParallel$3 = __esmMin((() => {
+var init_barParallel$2 = __esmMin((() => {
 	init_pipes$2();
 	barParallelAdvancedPipeline = [
 		page_page$1,
@@ -20727,13 +21937,13 @@ var init_barParallel$3 = __esmMin((() => {
 		barParallelConfig,
 		theme_theme,
 		markStyle_markStyle,
-		annotation_annotation
+		pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange])
 	];
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/barPercent.js
 var barPercentAdvancedPipeline;
-var init_barPercent$3 = __esmMin((() => {
+var init_barPercent$2 = __esmMin((() => {
 	init_pipes$2();
 	barPercentAdvancedPipeline = [
 		page_page$1,
@@ -20752,13 +21962,13 @@ var init_barPercent$3 = __esmMin((() => {
 		barPercentConfig,
 		theme_theme,
 		markStyle_markStyle,
-		annotation_annotation
+		pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange])
 	];
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/column.js
 var columnAdvancedPipeline;
-var init_column$6 = __esmMin((() => {
+var init_column$4 = __esmMin((() => {
 	init_pipes$2();
 	columnAdvancedPipeline = [
 		page_page$1,
@@ -20777,14 +21987,14 @@ var init_column$6 = __esmMin((() => {
 		columnConfig,
 		theme_theme,
 		markStyle_markStyle,
-		annotation_annotation,
+		pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange]),
 		regressionLine
 	];
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/columnParallel.js
 var columnParallelAdvancedPipeline;
-var init_columnParallel$3 = __esmMin((() => {
+var init_columnParallel$2 = __esmMin((() => {
 	init_pipes$2();
 	columnParallelAdvancedPipeline = [
 		page_page$1,
@@ -20803,13 +22013,13 @@ var init_columnParallel$3 = __esmMin((() => {
 		columnParallelConfig,
 		theme_theme,
 		markStyle_markStyle,
-		annotation_annotation
+		pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange])
 	];
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/columnPercent.js
 var columnPercentAdvancedPipeline;
-var init_columnPercent$3 = __esmMin((() => {
+var init_columnPercent$2 = __esmMin((() => {
 	init_pipes$2();
 	columnPercentAdvancedPipeline = [
 		page_page$1,
@@ -20828,13 +22038,13 @@ var init_columnPercent$3 = __esmMin((() => {
 		columnPercentConfig,
 		theme_theme,
 		markStyle_markStyle,
-		annotation_annotation
+		pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange])
 	];
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/area.js
 var areaAdvancedPipeline;
-var init_area$6 = __esmMin((() => {
+var init_area$4 = __esmMin((() => {
 	init_pipes$2();
 	areaAdvancedPipeline = [
 		page_page$1,
@@ -20853,13 +22063,13 @@ var init_area$6 = __esmMin((() => {
 		areaConfig,
 		theme_theme,
 		markStyle_markStyle,
-		annotation_annotation
+		pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange])
 	];
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/areaPercent.js
 var areaPercentAdvancedPipeline;
-var init_areaPercent$3 = __esmMin((() => {
+var init_areaPercent$2 = __esmMin((() => {
 	init_pipes$2();
 	areaPercentAdvancedPipeline = [
 		page_page$1,
@@ -20878,13 +22088,13 @@ var init_areaPercent$3 = __esmMin((() => {
 		areaPercentConfig,
 		theme_theme,
 		markStyle_markStyle,
-		annotation_annotation
+		pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange])
 	];
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/pie.js
 var pieAdvancedPipeline;
-var init_pie$6 = __esmMin((() => {
+var init_pie$4 = __esmMin((() => {
 	init_pipes$2();
 	pieAdvancedPipeline = [
 		page_page$1,
@@ -20899,6 +22109,8 @@ var init_pie$6 = __esmMin((() => {
 		]),
 		pivotAdapter([reshapeWithEncoding], [pivotReshapeWithEncoding]),
 		pieConfig,
+		pieGeometryConfig,
+		pieStyleConfig,
 		theme_theme,
 		annotation_annotation
 	];
@@ -20906,7 +22118,7 @@ var init_pie$6 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/donut.js
 var donutAdvancedPipeline;
-var init_donut$3 = __esmMin((() => {
+var init_donut$2 = __esmMin((() => {
 	init_pipes$2();
 	donutAdvancedPipeline = [
 		page_page$1,
@@ -20921,6 +22133,9 @@ var init_donut$3 = __esmMin((() => {
 		]),
 		pivotAdapter([reshapeWithEncoding], [pivotReshapeWithEncoding]),
 		donutConfig,
+		donutGeometryConfig,
+		pieStyleConfig,
+		centerTextConfig,
 		theme_theme,
 		annotation_annotation
 	];
@@ -20928,7 +22143,7 @@ var init_donut$3 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/rose.js
 var roseAdvancedPipeline;
-var init_rose$6 = __esmMin((() => {
+var init_rose$4 = __esmMin((() => {
 	init_pipes$2();
 	roseAdvancedPipeline = [
 		page_page$1,
@@ -20951,7 +22166,7 @@ var init_rose$6 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/roseParallel.js
 var roseParallelAdvancedPipeline;
-var init_roseParallel$3 = __esmMin((() => {
+var init_roseParallel$2 = __esmMin((() => {
 	init_pipes$2();
 	roseParallelAdvancedPipeline = [
 		page_page$1,
@@ -20974,7 +22189,7 @@ var init_roseParallel$3 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/funnel.js
 var funnelAdvancedPipeline;
-var init_funnel$6 = __esmMin((() => {
+var init_funnel$4 = __esmMin((() => {
 	init_pipes$2();
 	funnelAdvancedPipeline = [
 		page_page$1,
@@ -20996,7 +22211,7 @@ var init_funnel$6 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/scatter.js
 var scatterAdvancedPipeline;
-var init_scatter$6 = __esmMin((() => {
+var init_scatter$4 = __esmMin((() => {
 	init_pipes$2();
 	scatterAdvancedPipeline = [
 		page_page$1,
@@ -21018,14 +22233,14 @@ var init_scatter$6 = __esmMin((() => {
 		scatterConfig,
 		theme_theme,
 		markStyle_markStyle,
-		annotation_annotation,
+		pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange]),
 		regressionLine
 	];
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/heatmap.js
 var heatmapAdvancedPipeline;
-var init_heatmap$7 = __esmMin((() => {
+var init_heatmap$5 = __esmMin((() => {
 	init_pipes$2();
 	heatmapAdvancedPipeline = [
 		page_page$1,
@@ -21049,7 +22264,7 @@ var init_heatmap$7 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/radar.js
 var radarAdvancedPipeline;
-var init_radar$5 = __esmMin((() => {
+var init_radar$4 = __esmMin((() => {
 	init_pipes$2();
 	radarAdvancedPipeline = [
 		page_page$1,
@@ -21073,7 +22288,7 @@ var init_radar$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/dualAxis.js
 var dualAxisAdvancedPipeline;
-var init_dualAxis$6 = __esmMin((() => {
+var init_dualAxis$4 = __esmMin((() => {
 	init_pipes$2();
 	dualAxisAdvancedPipeline = [
 		page_page$1,
@@ -21132,15 +22347,15 @@ var init_boxplot$2 = __esmMin((() => {
 		sortLegend_sortLegend,
 		theme_theme,
 		markStyle_markStyle,
-		annotation_annotation
+		pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange])
 	];
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/histogram.js
 var histogramAdvancedPipeline;
-var init_histogram$5 = __esmMin((() => {
+var init_histogram$4 = __esmMin((() => {
 	init_pipes$2();
-	init_histogram$6();
+	init_histogram$5();
 	histogramAdvancedPipeline = [
 		page_page$1,
 		initAdvancedVSeed$1,
@@ -21169,14 +22384,14 @@ var init_histogram$5 = __esmMin((() => {
 		sortLegend_sortLegend,
 		theme_theme,
 		markStyle_markStyle,
-		annotation_annotation,
+		pivotAdapter([annotationWithRange], [annotationWithRange, rejectPivotAnnotationAreaRange]),
 		regressionLine
 	];
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/raceBar.js
 var raceBarAdvancedPipeline;
-var init_raceBar$3 = __esmMin((() => {
+var init_raceBar$2 = __esmMin((() => {
 	init_pipes$2();
 	raceBarAdvancedPipeline = [
 		page_page$1,
@@ -21201,7 +22416,7 @@ var init_raceBar$3 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/raceColumn.js
 var raceColumnAdvancedPipeline;
-var init_raceColumn$3 = __esmMin((() => {
+var init_raceColumn$2 = __esmMin((() => {
 	init_pipes$2();
 	raceColumnAdvancedPipeline = [
 		page_page$1,
@@ -21227,7 +22442,7 @@ var init_raceColumn$3 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/raceScatter.js
 var raceScatterAdvancedPipeline;
-var init_raceScatter$3 = __esmMin((() => {
+var init_raceScatter$2 = __esmMin((() => {
 	init_pipes$2();
 	raceScatterAdvancedPipeline = [
 		page_page$1,
@@ -21256,7 +22471,7 @@ var init_raceScatter$3 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/raceLine.js
 var raceLineAdvancedPipeline;
-var init_raceLine$5 = __esmMin((() => {
+var init_raceLine$4 = __esmMin((() => {
 	init_pipes$2();
 	raceLineAdvancedPipeline = [
 		page_page$1,
@@ -21281,7 +22496,7 @@ var init_raceLine$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/racePie.js
 var racePieAdvancedPipeline;
-var init_racePie$5 = __esmMin((() => {
+var init_racePie$4 = __esmMin((() => {
 	init_pipes$2();
 	racePieAdvancedPipeline = [
 		page_page$1,
@@ -21296,6 +22511,7 @@ var init_racePie$5 = __esmMin((() => {
 		]),
 		pivotAdapter([reshapeWithEncoding], [pivotReshapeWithEncoding]),
 		pieConfig,
+		pieGeometryConfig,
 		theme_theme,
 		annotation_annotation
 	];
@@ -21303,7 +22519,7 @@ var init_racePie$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/raceDonut.js
 var raceDonutAdvancedPipeline;
-var init_raceDonut$3 = __esmMin((() => {
+var init_raceDonut$2 = __esmMin((() => {
 	init_pipes$2();
 	raceDonutAdvancedPipeline = [
 		page_page$1,
@@ -21318,6 +22534,7 @@ var init_raceDonut$3 = __esmMin((() => {
 		]),
 		pivotAdapter([reshapeWithEncoding], [pivotReshapeWithEncoding]),
 		donutConfig,
+		donutGeometryConfig,
 		theme_theme,
 		annotation_annotation
 	];
@@ -21325,7 +22542,7 @@ var init_raceDonut$3 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/treeMap.js
 var treeMapAdvancedPipeline;
-var init_treeMap$4 = __esmMin((() => {
+var init_treeMap$2 = __esmMin((() => {
 	init_pipes$2();
 	treeMapAdvancedPipeline = [
 		page_page$1,
@@ -21347,7 +22564,7 @@ var init_treeMap$4 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/sunburst.js
 var sunburstAdvancedPipeline;
-var init_sunburst$4 = __esmMin((() => {
+var init_sunburst$2 = __esmMin((() => {
 	init_pipes$2();
 	sunburstAdvancedPipeline = [
 		page_page$1,
@@ -21369,7 +22586,7 @@ var init_sunburst$4 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/circlePacking.js
 var circlePackingAdvancedPipeline;
-var init_circlePacking$4 = __esmMin((() => {
+var init_circlePacking$2 = __esmMin((() => {
 	init_pipes$2();
 	circlePackingAdvancedPipeline = [
 		page_page$1,
@@ -21391,7 +22608,7 @@ var init_circlePacking$4 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/hierarchySankey.js
 var hierarchySankeyAdvancedPipeline;
-var init_hierarchySankey$4 = __esmMin((() => {
+var init_hierarchySankey$2 = __esmMin((() => {
 	init_pipes$2();
 	hierarchySankeyAdvancedPipeline = [
 		page_page$1,
@@ -21413,7 +22630,7 @@ var init_hierarchySankey$4 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/sankey.js
 var sankeyAdvancedPipeline;
-var init_sankey$4 = __esmMin((() => {
+var init_sankey$2 = __esmMin((() => {
 	init_pipes$2();
 	sankeyAdvancedPipeline = [
 		page_page$1,
@@ -21435,37 +22652,37 @@ var init_sankey$4 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipeline/index.js
 var init_pipeline$4 = __esmMin((() => {
-	init_line$6();
-	init_bar$6();
-	init_barParallel$3();
-	init_barPercent$3();
-	init_column$6();
-	init_columnParallel$3();
-	init_columnPercent$3();
-	init_area$6();
-	init_areaPercent$3();
-	init_pie$6();
-	init_donut$3();
-	init_rose$6();
-	init_roseParallel$3();
-	init_funnel$6();
-	init_scatter$6();
-	init_heatmap$7();
-	init_radar$5();
-	init_dualAxis$6();
+	init_line$4();
+	init_bar$4();
+	init_barParallel$2();
+	init_barPercent$2();
+	init_column$4();
+	init_columnParallel$2();
+	init_columnPercent$2();
+	init_area$4();
+	init_areaPercent$2();
+	init_pie$4();
+	init_donut$2();
+	init_rose$4();
+	init_roseParallel$2();
+	init_funnel$4();
+	init_scatter$4();
+	init_heatmap$5();
+	init_radar$4();
+	init_dualAxis$4();
 	init_boxplot$2();
-	init_histogram$5();
-	init_raceBar$3();
-	init_raceColumn$3();
-	init_raceScatter$3();
-	init_raceLine$5();
-	init_racePie$5();
-	init_raceDonut$3();
-	init_treeMap$4();
-	init_sunburst$4();
-	init_circlePacking$4();
-	init_hierarchySankey$4();
-	init_sankey$4();
+	init_histogram$4();
+	init_raceBar$2();
+	init_raceColumn$2();
+	init_raceScatter$2();
+	init_raceLine$4();
+	init_racePie$4();
+	init_raceDonut$2();
+	init_treeMap$2();
+	init_sunburst$2();
+	init_circlePacking$2();
+	init_hierarchySankey$2();
+	init_sankey$2();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/index.js
@@ -21572,7 +22789,7 @@ var init_pivotTableConfig = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/table/pipes/config/index.js
-var init_config$2 = __esmMin((() => {
+var init_config = __esmMin((() => {
 	init_tableConfig();
 	init_pivotTableConfig();
 }));
@@ -21666,7 +22883,7 @@ var init_default = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/table/pipes/encoding/pivotTable.js
 var encodingForPivotTable, generateDefaultDimensionEncoding, generateDimensionEncoding, generateDefaultMeasureEncoding, generateMeasureEncoding;
-var init_pivotTable$6 = __esmMin((() => {
+var init_pivotTable$4 = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_utils$4();
@@ -21720,13 +22937,13 @@ var init_pivotTable$6 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/table/pipes/encoding/index.js
-var init_encoding$1 = __esmMin((() => {
-	init_pivotTable$6();
+var init_encoding = __esmMin((() => {
+	init_pivotTable$4();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/table/pipes/cellStyle/cellStyle.js
 var cellStyle;
-var init_cellStyle$3 = __esmMin((() => {
+var init_cellStyle$2 = __esmMin((() => {
 	init_dist$1();
 	init_utils$4();
 	cellStyle = (advancedVSeed, context) => {
@@ -21740,13 +22957,13 @@ var init_cellStyle$3 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/table/pipes/cellStyle/index.js
-var init_cellStyle$2 = __esmMin((() => {
-	init_cellStyle$3();
+var init_cellStyle$1 = __esmMin((() => {
+	init_cellStyle$2();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/table/pipes/page/page.js
 var page_page;
-var init_page$2 = __esmMin((() => {
+var init_page$1 = __esmMin((() => {
 	page_page = (advancedVSeed, context) => {
 		const { vseed } = context;
 		const { page } = vseed;
@@ -21763,24 +22980,24 @@ var init_page$2 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/table/pipes/page/index.js
-var init_page$1 = __esmMin((() => {
-	init_page$2();
+var init_page = __esmMin((() => {
+	init_page$1();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/table/pipes/index.js
 var init_pipes$1 = __esmMin((() => {
 	init_init$1();
 	init_records();
-	init_config$2();
+	init_config();
 	init_default();
-	init_encoding$1();
-	init_cellStyle$2();
-	init_page$1();
+	init_encoding();
+	init_cellStyle$1();
+	init_page();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/table/pipeline/pivotTable.js
 var pivotTableAdvancedPipeline;
-var init_pivotTable$5 = __esmMin((() => {
+var init_pivotTable$3 = __esmMin((() => {
 	init_pipes$2();
 	init_pipes$1();
 	pivotTableAdvancedPipeline = [
@@ -21798,7 +23015,7 @@ var init_pivotTable$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/table/pipeline/table.js
 var tableAdvancedPipeline;
-var init_table$9 = __esmMin((() => {
+var init_table$7 = __esmMin((() => {
 	init_pipes$1();
 	init_pipes$2();
 	tableAdvancedPipeline = [
@@ -21815,24 +23032,24 @@ var init_table$9 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/table/pipeline/index.js
 var init_pipeline$3 = __esmMin((() => {
-	init_pivotTable$5();
-	init_table$9();
+	init_pivotTable$3();
+	init_table$7();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/table/index.js
-var init_table$8 = __esmMin((() => {
+var init_table$6 = __esmMin((() => {
 	init_pipeline$3();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/index.js
 var init_advanced$1 = __esmMin((() => {
 	init_chart$1();
-	init_table$8();
+	init_table$6();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/line.js
 var lineSpecPipeline;
-var init_line$5 = __esmMin((() => {
+var init_line$3 = __esmMin((() => {
 	init_pipes$3();
 	lineSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
@@ -21899,14 +23116,14 @@ var init_line$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/column.js
 var columnSpecPipeline;
-var init_column$5 = __esmMin((() => {
+var init_column$3 = __esmMin((() => {
 	init_pipes$3();
 	columnSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initColumn,
 		columnAnimation,
 		regionPadding,
-		stackCornerRadius_stackCornerRadius,
+		barCornerRadius,
 		barMaxWidth_barMaxWidth,
 		stackInverse,
 		colorAdapter(color_color, linearColor),
@@ -21937,7 +23154,7 @@ var init_column$5 = __esmMin((() => {
 			initColumn,
 			columnAnimation,
 			regionPadding,
-			stackCornerRadius_stackCornerRadius,
+			barCornerRadius,
 			barMaxWidth_barMaxWidth,
 			stackInverse,
 			colorAdapter(color_color, linearColor),
@@ -21968,14 +23185,14 @@ var init_column$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/columnParallel.js
 var columnParallelSpecPipeline;
-var init_columnParallel$2 = __esmMin((() => {
+var init_columnParallel$1 = __esmMin((() => {
 	init_pipes$3();
 	columnParallelSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initColumnParallel,
 		columnAnimation,
 		regionPadding,
-		stackCornerRadius_stackCornerRadius,
+		barCornerRadius,
 		barMaxWidth_barMaxWidth,
 		barGapInGroup_barGapInGroup,
 		colorAdapter(color_color, linearColor),
@@ -22005,7 +23222,7 @@ var init_columnParallel$2 = __esmMin((() => {
 			initColumnParallel,
 			columnAnimation,
 			regionPadding,
-			stackCornerRadius_stackCornerRadius,
+			barCornerRadius,
 			barMaxWidth_barMaxWidth,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
@@ -22034,14 +23251,14 @@ var init_columnParallel$2 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/columnPercent.js
 var columnPercentSpecPipeline;
-var init_columnPercent$2 = __esmMin((() => {
+var init_columnPercent$1 = __esmMin((() => {
 	init_pipes$3();
 	columnPercentSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initColumn,
 		columnAnimation,
 		regionPadding,
-		stackCornerRadius_stackCornerRadius,
+		barCornerRadius,
 		stackInverse,
 		barMaxWidth_barMaxWidth,
 		colorAdapter(color_color, linearColor),
@@ -22071,7 +23288,7 @@ var init_columnPercent$2 = __esmMin((() => {
 			initColumn,
 			columnAnimation,
 			regionPadding,
-			stackCornerRadius_stackCornerRadius,
+			barCornerRadius,
 			stackInverse,
 			barMaxWidth_barMaxWidth,
 			colorAdapter(color_color, linearColor),
@@ -22101,14 +23318,14 @@ var init_columnPercent$2 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/bar.js
 var barSpecPipeline;
-var init_bar$5 = __esmMin((() => {
+var init_bar$3 = __esmMin((() => {
 	init_pipes$3();
 	barSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initBar,
 		barAnimation,
 		regionPadding,
-		stackCornerRadius_stackCornerRadius,
+		barCornerRadius,
 		barMaxWidth_barMaxWidth,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
@@ -22137,7 +23354,7 @@ var init_bar$5 = __esmMin((() => {
 			initBar,
 			barAnimation,
 			regionPadding,
-			stackCornerRadius_stackCornerRadius,
+			barCornerRadius,
 			barMaxWidth_barMaxWidth,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
@@ -22166,12 +23383,12 @@ var init_bar$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/raceBar.js
 var raceBarSpecPipeline;
-var init_raceBar$2 = __esmMin((() => {
+var init_raceBar$1 = __esmMin((() => {
 	init_pipes$3();
 	raceBarSpecPipeline = [
 		fontFamilyTheme,
 		initBar,
-		stackCornerRadius_stackCornerRadius,
+		barCornerRadius,
 		barMaxWidth_barMaxWidth,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
@@ -22194,12 +23411,12 @@ var init_raceBar$2 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/raceColumn.js
 var raceColumnSpecPipeline;
-var init_raceColumn$2 = __esmMin((() => {
+var init_raceColumn$1 = __esmMin((() => {
 	init_pipes$3();
 	raceColumnSpecPipeline = [
 		fontFamilyTheme,
 		initColumn,
-		stackCornerRadius_stackCornerRadius,
+		barCornerRadius,
 		barMaxWidth_barMaxWidth,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
@@ -22222,7 +23439,7 @@ var init_raceColumn$2 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/raceScatter.js
 var raceScatterSpecPipeline;
-var init_raceScatter$2 = __esmMin((() => {
+var init_raceScatter$1 = __esmMin((() => {
 	init_pipes$3();
 	raceScatterSpecPipeline = [
 		fontFamilyTheme,
@@ -22255,7 +23472,7 @@ var init_raceScatter$2 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/raceLine.js
 var raceLineSpecPipeline;
-var init_raceLine$4 = __esmMin((() => {
+var init_raceLine$3 = __esmMin((() => {
 	init_pipes$3();
 	raceLineSpecPipeline = [
 		fontFamilyTheme,
@@ -22282,17 +23499,19 @@ var init_raceLine$4 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/racePie.js
 var racePieSpecPipeline;
-var init_racePie$4 = __esmMin((() => {
+var init_racePie$3 = __esmMin((() => {
 	init_pipes$3();
 	racePieSpecPipeline = [
 		fontFamilyTheme,
 		initPie,
+		pieGeometry,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		isPlayer(playerPie, datasetXY),
 		progressive,
 		brush_brush,
 		colorPieStyleFill(pieStyle),
+		pieHover,
 		colorAdapter(discreteLegend, colorLegend),
 		labelPie,
 		tooltip_tooltip({ titleEncoding: "color" }),
@@ -22305,11 +23524,12 @@ var init_racePie$4 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/raceDonut.js
 var raceDonutSpecPipeline;
-var init_raceDonut$2 = __esmMin((() => {
+var init_raceDonut$1 = __esmMin((() => {
 	init_pipes$3();
 	raceDonutSpecPipeline = [
 		fontFamilyTheme,
 		initDonut,
+		pieGeometry,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		isPlayer(playerPie, datasetXY),
@@ -22317,6 +23537,7 @@ var init_raceDonut$2 = __esmMin((() => {
 		brush_brush,
 		labelPie,
 		colorPieStyleFill(pieStyle),
+		pieHover,
 		colorAdapter(discreteLegend, colorLegend),
 		tooltip_tooltip({ titleEncoding: "color" }),
 		annotationPoint,
@@ -22328,14 +23549,14 @@ var init_raceDonut$2 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/barParallel.js
 var barParallelSpecPipeline;
-var init_barParallel$2 = __esmMin((() => {
+var init_barParallel$1 = __esmMin((() => {
 	init_pipes$3();
 	barParallelSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initBarParallel,
 		barAnimation,
 		regionPadding,
-		stackCornerRadius_stackCornerRadius,
+		barCornerRadius,
 		barMaxWidth_barMaxWidth,
 		barGapInGroup_barGapInGroup,
 		colorAdapter(color_color, linearColor),
@@ -22365,7 +23586,7 @@ var init_barParallel$2 = __esmMin((() => {
 			initBarParallel,
 			barAnimation,
 			regionPadding,
-			stackCornerRadius_stackCornerRadius,
+			barCornerRadius,
 			barMaxWidth_barMaxWidth,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
@@ -22393,14 +23614,14 @@ var init_barParallel$2 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/barPercent.js
 var barPercentSpecPipeline;
-var init_barPercent$2 = __esmMin((() => {
+var init_barPercent$1 = __esmMin((() => {
 	init_pipes$3();
 	barPercentSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initBar,
 		barAnimation,
 		regionPadding,
-		stackCornerRadius_stackCornerRadius,
+		barCornerRadius,
 		barMaxWidth_barMaxWidth,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
@@ -22429,7 +23650,7 @@ var init_barPercent$2 = __esmMin((() => {
 			initBar,
 			barAnimation,
 			regionPadding,
-			stackCornerRadius_stackCornerRadius,
+			barCornerRadius,
 			barMaxWidth_barMaxWidth,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
@@ -22457,7 +23678,7 @@ var init_barPercent$2 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/area.js
 var areaSpecPipeline;
-var init_area$5 = __esmMin((() => {
+var init_area$3 = __esmMin((() => {
 	init_pipes$3();
 	areaSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
@@ -22528,7 +23749,7 @@ var init_area$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/areaPercent.js
 var areaPercentSpecPipeline;
-var init_areaPercent$2 = __esmMin((() => {
+var init_areaPercent$1 = __esmMin((() => {
 	init_pipes$3();
 	areaPercentSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
@@ -22597,7 +23818,7 @@ var init_areaPercent$2 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/scatter.js
 var scatterSpecPipeline;
-var init_scatter$5 = __esmMin((() => {
+var init_scatter$3 = __esmMin((() => {
 	init_pipes$3();
 	scatterSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
@@ -22668,7 +23889,7 @@ var init_scatter$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/dualAxis.js
 var dualAxisSpecPipeline;
-var init_dualAxis$5 = __esmMin((() => {
+var init_dualAxis$3 = __esmMin((() => {
 	init_pipes$3();
 	dualAxisSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
@@ -22682,7 +23903,7 @@ var init_dualAxis$5 = __esmMin((() => {
 			progressive,
 			barMaxWidth_barMaxWidth,
 			barGapInGroup_barGapInGroup,
-			barStyleFilter(stackCornerRadius_stackCornerRadius),
+			barStyleFilter(barCornerRadius),
 			barStyleFilter(colorBarStyleFill(columnStyle)),
 			pointStyleFilter(colorPointStyleFill(pointStyle)),
 			pointStyleFilter(pointStateDimensionHover),
@@ -22719,7 +23940,7 @@ var init_dualAxis$5 = __esmMin((() => {
 				progressive,
 				barMaxWidth_barMaxWidth,
 				barGapInGroup_barGapInGroup,
-				barStyleFilter(stackCornerRadius_stackCornerRadius),
+				barStyleFilter(barCornerRadius),
 				barStyleFilter(colorBarStyleFill(columnStyle)),
 				pointStyleFilter(colorPointStyleFill(pointStyle)),
 				pointStyleFilter(pointStateDimensionHover),
@@ -22749,18 +23970,20 @@ var init_dualAxis$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/pie.js
 var pieSpecPipeline;
-var init_pie$5 = __esmMin((() => {
+var init_pie$3 = __esmMin((() => {
 	init_pipes$3();
 	pieSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initPie,
 		pieAnimation,
+		pieGeometry,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
 		progressive,
 		brush_brush,
 		colorPieStyleFill(pieStyle),
+		pieHover,
 		colorAdapter(discreteLegend, colorLegend),
 		labelPie,
 		tooltip_tooltip({ titleEncoding: "color" }),
@@ -22778,12 +24001,14 @@ var init_pie$5 = __esmMin((() => {
 			fontFamilyTheme,
 			initPie,
 			pieAnimation,
+			pieGeometry,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetXY,
 			progressive,
 			brush_brush,
 			colorPieStyleFill(pieStyle),
+			pieHover,
 			labelPie,
 			tooltip_tooltip({ titleEncoding: "color" }),
 			annotationPoint,
@@ -22802,12 +24027,14 @@ var init_pie$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/donut.js
 var donutSpecPipeline;
-var init_donut$2 = __esmMin((() => {
+var init_donut$1 = __esmMin((() => {
 	init_pipes$3();
 	donutSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initDonut,
 		pieAnimation,
+		pieGeometry,
+		centerText,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
@@ -22815,6 +24042,7 @@ var init_donut$2 = __esmMin((() => {
 		brush_brush,
 		labelPie,
 		colorPieStyleFill(pieStyle),
+		pieHover,
 		colorAdapter(discreteLegend, colorLegend),
 		tooltip_tooltip({ titleEncoding: "color" }),
 		annotationPoint,
@@ -22831,6 +24059,8 @@ var init_donut$2 = __esmMin((() => {
 			fontFamilyTheme,
 			initDonut,
 			pieAnimation,
+			pieGeometry,
+			centerText,
 			addRegionPadding,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
@@ -22839,6 +24069,7 @@ var init_donut$2 = __esmMin((() => {
 			brush_brush,
 			labelPie,
 			colorPieStyleFill(pieStyle),
+			pieHover,
 			tooltip_tooltip({ titleEncoding: "color" }),
 			annotationPoint,
 			annotationVerticalLine_annotationVerticalLine,
@@ -22855,13 +24086,12 @@ var init_donut$2 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/rose.js
 var roseSpecPipeline;
-var init_rose$5 = __esmMin((() => {
+var init_rose$3 = __esmMin((() => {
 	init_pipes$3();
 	roseSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initRose,
 		roseAnimation,
-		stackCornerRadius_stackCornerRadius,
 		stackInverse,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
@@ -22884,7 +24114,6 @@ var init_rose$5 = __esmMin((() => {
 			initRose,
 			roseAnimation,
 			addRegionPadding,
-			stackCornerRadius_stackCornerRadius,
 			stackInverse,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
@@ -22906,13 +24135,12 @@ var init_rose$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/roseParallel.js
 var roseParallelSpecPipeline;
-var init_roseParallel$2 = __esmMin((() => {
+var init_roseParallel$1 = __esmMin((() => {
 	init_pipes$3();
 	roseParallelSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initRoseParallel,
 		roseAnimation,
-		stackCornerRadius_stackCornerRadius,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
@@ -22938,7 +24166,6 @@ var init_roseParallel$2 = __esmMin((() => {
 			initRoseParallel,
 			roseAnimation,
 			addRegionPadding,
-			stackCornerRadius_stackCornerRadius,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetXY,
@@ -22963,7 +24190,7 @@ var init_roseParallel$2 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/radar.js
 var radarSpecPipeline;
-var init_radar$4 = __esmMin((() => {
+var init_radar$3 = __esmMin((() => {
 	init_pipes$3();
 	radarSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
@@ -23017,7 +24244,7 @@ var init_radar$4 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/funnel.js
 var funnelSpecPipeline;
-var init_funnel$5 = __esmMin((() => {
+var init_funnel$3 = __esmMin((() => {
 	init_pipes$3();
 	funnelSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
@@ -23065,7 +24292,7 @@ var init_funnel$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/init/heatmap.js
 var initHeatmap;
-var init_heatmap$6 = __esmMin((() => {
+var init_heatmap$4 = __esmMin((() => {
 	initHeatmap = (spec, context) => {
 		const result = { ...spec };
 		const { advancedVSeed } = context;
@@ -23086,9 +24313,9 @@ var init_heatmap$6 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/heatmap.js
 var heatmapSpecPipeline;
-var init_heatmap$5 = __esmMin((() => {
+var init_heatmap$3 = __esmMin((() => {
 	init_pipes$3();
-	init_heatmap$6();
+	init_heatmap$4();
 	heatmapSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initHeatmap,
@@ -23141,7 +24368,6 @@ var init_boxplot$1 = __esmMin((() => {
 	boxplotSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initBoxplot,
-		stackCornerRadius_stackCornerRadius,
 		boxMaxWidth_boxMaxWidth,
 		boxGapInGroup_boxGapInGroup,
 		colorAdapter(color_color, linearColor),
@@ -23167,7 +24393,6 @@ var init_boxplot$1 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initBoxplot,
-			stackCornerRadius_stackCornerRadius,
 			boxMaxWidth_boxMaxWidth,
 			boxGapInGroup_boxGapInGroup,
 			colorAdapter(color_color, linearColor),
@@ -23196,11 +24421,12 @@ var init_boxplot$1 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/histogram.js
 var histogramSpecPipeline;
-var init_histogram$4 = __esmMin((() => {
+var init_histogram$3 = __esmMin((() => {
 	init_pipes$3();
 	histogramSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
 		initHistogram,
+		barCornerRadius,
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetHistogram,
@@ -23226,6 +24452,7 @@ var init_histogram$4 = __esmMin((() => {
 		pivotIndicators$1([
 			fontFamilyTheme,
 			initHistogram,
+			barCornerRadius,
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetHistogram,
@@ -23352,7 +24579,7 @@ var init_tooltipTreeMap = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/treeMap.js
 var treeMapSpecPipeline;
-var init_treeMap$3 = __esmMin((() => {
+var init_treeMap$1 = __esmMin((() => {
 	init_pipes$3();
 	init_tooltipTreeMap();
 	treeMapSpecPipeline = [pivotAdapter$1([
@@ -23391,7 +24618,7 @@ var init_treeMap$3 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/sunburst.js
 var sunburstSpecPipeline;
-var init_sunburst$3 = __esmMin((() => {
+var init_sunburst$1 = __esmMin((() => {
 	init_pipes$3();
 	sunburstSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
@@ -23427,7 +24654,7 @@ var init_sunburst$3 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/circlePacking.js
 var circlePackingSpecPipeline;
-var init_circlePacking$3 = __esmMin((() => {
+var init_circlePacking$1 = __esmMin((() => {
 	init_pipes$3();
 	circlePackingSpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
@@ -23463,7 +24690,7 @@ var init_circlePacking$3 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/hierarchySankey.js
 var hierarchySankeySpecPipeline;
-var init_hierarchySankey$3 = __esmMin((() => {
+var init_hierarchySankey$1 = __esmMin((() => {
 	init_pipes$3();
 	hierarchySankeySpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
@@ -23500,7 +24727,7 @@ var init_hierarchySankey$3 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/sankey.js
 var sankeySpecPipeline;
-var init_sankey$3 = __esmMin((() => {
+var init_sankey$1 = __esmMin((() => {
 	init_pipes$3();
 	sankeySpecPipeline = [pivotAdapter$1([
 		fontFamilyTheme,
@@ -23537,37 +24764,37 @@ var init_sankey$3 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipeline/index.js
 var init_pipeline$2 = __esmMin((() => {
-	init_line$5();
-	init_column$5();
-	init_columnParallel$2();
-	init_columnPercent$2();
-	init_bar$5();
-	init_raceBar$2();
-	init_raceColumn$2();
-	init_raceScatter$2();
-	init_raceLine$4();
-	init_racePie$4();
-	init_raceDonut$2();
-	init_barParallel$2();
-	init_barPercent$2();
-	init_area$5();
-	init_areaPercent$2();
-	init_scatter$5();
-	init_dualAxis$5();
-	init_pie$5();
-	init_donut$2();
-	init_rose$5();
-	init_roseParallel$2();
-	init_radar$4();
-	init_funnel$5();
-	init_heatmap$5();
+	init_line$3();
+	init_column$3();
+	init_columnParallel$1();
+	init_columnPercent$1();
+	init_bar$3();
+	init_raceBar$1();
+	init_raceColumn$1();
+	init_raceScatter$1();
+	init_raceLine$3();
+	init_racePie$3();
+	init_raceDonut$1();
+	init_barParallel$1();
+	init_barPercent$1();
+	init_area$3();
+	init_areaPercent$1();
+	init_scatter$3();
+	init_dualAxis$3();
+	init_pie$3();
+	init_donut$1();
+	init_rose$3();
+	init_roseParallel$1();
+	init_radar$3();
+	init_funnel$3();
+	init_heatmap$3();
 	init_boxplot$1();
-	init_histogram$4();
-	init_treeMap$3();
-	init_sunburst$3();
-	init_circlePacking$3();
-	init_hierarchySankey$3();
-	init_sankey$3();
+	init_histogram$3();
+	init_treeMap$1();
+	init_sunburst$1();
+	init_circlePacking$1();
+	init_hierarchySankey$1();
+	init_sankey$1();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/utils/condition.js
@@ -23586,7 +24813,7 @@ var init_chart = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/table/pipes/init/table.js
 var initTable;
-var init_table$7 = __esmMin((() => {
+var init_table$5 = __esmMin((() => {
 	initTable = (spec, context) => {
 		const { advancedVSeed } = context;
 		const { dataset } = advancedVSeed;
@@ -23624,7 +24851,7 @@ var init_table$7 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/table/pipes/init/pivotTable.js
 var initPivotTable;
-var init_pivotTable$4 = __esmMin((() => {
+var init_pivotTable$2 = __esmMin((() => {
 	initPivotTable = (spec, context) => {
 		const { advancedVSeed } = context;
 		const { dataset } = advancedVSeed;
@@ -23670,8 +24897,8 @@ var init_pivotTable$4 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/table/pipes/init/index.js
 var init_init = __esmMin((() => {
-	init_table$7();
-	init_pivotTable$4();
+	init_table$5();
+	init_pivotTable$2();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/table/pipes/columns/utils.js
@@ -24301,7 +25528,7 @@ var init_selectionStyle = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/table/pipes/theme/index.js
-var init_theme$2 = __esmMin((() => {
+var init_theme$1 = __esmMin((() => {
 	init_bodyStyle();
 	init_headerStyle();
 	init_bottomFrozenStyle();
@@ -24413,7 +25640,7 @@ var init_common$1 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/table/pipes/cellStyle/table.js
 var tableBodyCell;
-var init_table$6 = __esmMin((() => {
+var init_table$4 = __esmMin((() => {
 	init_es();
 	init_dist$1();
 	init_selector$1();
@@ -24427,7 +25654,7 @@ var init_table$6 = __esmMin((() => {
 		const bodyCellStyle = cellStyle?.bodyCellStyle;
 		const themeConfig = config?.[chartType];
 		if (!bodyCellStyle) return spec;
-		const bodyCellStyleList = array(bodyCellStyle);
+		const bodyCellStyleList = array$1(bodyCellStyle);
 		const columns = spec.columns || [];
 		const selectedPos = [];
 		const allData = advancedVSeed.dataset || [];
@@ -24436,7 +25663,7 @@ var init_table$6 = __esmMin((() => {
 			const matchedStyles = bodyCellStyleList.filter((style) => {
 				if (style?.dynamicFilter) return style.dynamicFilter?.result?.success === true || !!style.dynamicFilter?.fallback;
 				if (n$10(style.selector)) return true;
-				return array(style.selector).some((sel) => {
+				return array$1(style.selector).some((sel) => {
 					if (isFieldSelector(sel)) return matchesFieldSelector(field, sel);
 					if (r$11(sel)) return n$10(sel.field) || sel.field === field;
 					return e$8(sel) || t$14(sel);
@@ -24526,7 +25753,7 @@ var init_pivot = __esmMin((() => {
 		const bodyCellStyle = cellStyle?.bodyCellStyle;
 		const themeConfig = config?.[chartType];
 		if (!bodyCellStyle) return spec;
-		const bodyCellStyleList = array(bodyCellStyle);
+		const bodyCellStyleList = array$1(bodyCellStyle);
 		const indicators = spec.indicators || [];
 		const selectedPos = [];
 		const hasDynamicFilter = bodyCellStyleList.some((style) => !!style.dynamicFilter);
@@ -24604,8 +25831,8 @@ var init_pivot = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/table/pipes/cellStyle/index.js
-var init_cellStyle$1 = __esmMin((() => {
-	init_table$6();
+var init_cellStyle = __esmMin((() => {
+	init_table$4();
 	init_pivot();
 }));
 //#endregion
@@ -24615,14 +25842,14 @@ var init_pipes = __esmMin((() => {
 	init_columns();
 	init_rows();
 	init_indicators();
-	init_theme$2();
+	init_theme$1();
 	init_corner();
-	init_cellStyle$1();
+	init_cellStyle();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/table/pipeline/table.js
 var tableSpecPipeline;
-var init_table$5 = __esmMin((() => {
+var init_table$3 = __esmMin((() => {
 	init_pipes();
 	tableSpecPipeline = [
 		initTable,
@@ -24640,7 +25867,7 @@ var init_table$5 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/table/pipeline/pivotTable.js
 var pivotTableSpecPipeline;
-var init_pivotTable$3 = __esmMin((() => {
+var init_pivotTable$1 = __esmMin((() => {
 	init_pipes();
 	init_pivotDataConfig();
 	pivotTableSpecPipeline = [
@@ -24662,19 +25889,19 @@ var init_pivotTable$3 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/table/pipeline/index.js
 var init_pipeline$1 = __esmMin((() => {
-	init_table$5();
-	init_pivotTable$3();
+	init_table$3();
+	init_pivotTable$1();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/table/index.js
-var init_table$4 = __esmMin((() => {
+var init_table$2 = __esmMin((() => {
 	init_pipeline$1();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/index.js
 var init_spec = __esmMin((() => {
 	init_chart();
-	init_table$4();
+	init_table$2();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/index.js
@@ -24682,787 +25909,6 @@ var init_pipeline = __esmMin((() => {
 	init_advanced$1();
 	init_spec();
 	init_utils$4();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/chartType/index.js
-var init_chartType$2 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/dataset/index.js
-var init_dataset = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/encoding/zDimensionEncoding.js
-var zDimensionEncoding;
-var init_zDimensionEncoding = __esmMin((() => {
-	init_zod();
-	zDimensionEncoding = _enum([
-		"xAxis",
-		"yAxis",
-		"angle",
-		"color",
-		"detail",
-		"tooltip",
-		"label",
-		"row",
-		"column",
-		"player",
-		"hierarchy",
-		"source",
-		"target"
-	]);
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/encoding/index.js
-var init_encoding = __esmMin((() => {
-	init_zDimensionEncoding();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/format/numFormat.js
-var zNumFormat;
-var init_numFormat = __esmMin((() => {
-	init_zod();
-	zNumFormat = object({
-		type: _enum([
-			"number",
-			"percent",
-			"permille",
-			"scientific"
-		]).default("number").optional(),
-		ratio: number().default(1).optional(),
-		symbol: string().default("").optional(),
-		thousandSeparator: boolean().default(false).optional(),
-		prefix: string().default("").optional(),
-		suffix: string().default("").optional(),
-		fractionDigits: number().default(2).optional(),
-		significantDigits: number().default(0).optional(),
-		roundingPriority: _enum(["morePrecision", "lessPrecision"]).default("morePrecision").optional(),
-		roundingMode: _enum([
-			"floor",
-			"ceil",
-			"halfEven",
-			"expand",
-			"trunc",
-			"halfFloor",
-			"halfCeil",
-			"halfExpand",
-			"halfTrunc"
-		]).default("halfCeil").optional()
-	}).optional();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/format/timeFormat.js
-var init_timeFormat = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/format/index.js
-var init_format = __esmMin((() => {
-	init_numFormat();
-	init_timeFormat();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/dimensions/zDimensions.js
-var init_zDimensions = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/dimensions/index.js
-var init_dimensions = __esmMin((() => {
-	init_zDimensions();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/measures/zMeasures.js
-var init_zMeasures = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/measures/zDualMeasures.js
-var init_zDualMeasures = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/measures/index.js
-var init_measures = __esmMin((() => {
-	init_zMeasures();
-	init_zDualMeasures();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/datasetReshapeInfo/index.js
-var init_datasetReshapeInfo = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/backgroundColor/backgroundColor.js
-var init_backgroundColor$1 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/table.js
-var init_table$3 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/axes/zLinearAxis.js
-var init_zLinearAxis = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/axes/zBandAxis.js
-var init_zBandAxis = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/axes/index.js
-var init_axes$1 = __esmMin((() => {
-	init_zLinearAxis();
-	init_zBandAxis();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/crosshair/zCrosshair.js
-var init_zCrosshair = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/crosshair/index.js
-var init_crosshair$1 = __esmMin((() => {
-	init_zCrosshair();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/color/color.js
-var init_color$2 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/dataSelector/selector.js
-var init_selector = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/dataSelector/index.js
-var init_dataSelector = __esmMin((() => {
-	init_selector();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/label/zLabel.js
-var init_zLabel = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/label/zPieLabel.js
-var init_zPieLabel = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/label/index.js
-var init_label$1 = __esmMin((() => {
-	init_zLabel();
-	init_zPieLabel();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/legend/legend.js
-var init_legend$2 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/tooltip/tooltip.js
-var init_tooltip$2 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/annotation/zAnnotationPoint.js
-var init_zAnnotationPoint = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/annotation/zAnnotationDifferenceLine.js
-var init_zAnnotationDifferenceLine = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/annotation/zAnnotationHorizontalLine.js
-var init_zAnnotationHorizontalLine = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/annotation/zAnnotationArea.js
-var init_zAnnotationArea = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/annotation/zAnnotation.js
-var init_zAnnotation = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/pivotGrid/index.js
-var init_pivotGrid = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/dimensionLinkage/dimensionLinkage.js
-var init_dimensionLinkage$1 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/dimensionLinkage/index.js
-var init_dimensionLinkage = __esmMin((() => {
-	init_dimensionLinkage$1();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/regionPadding/zRegionPadding.js
-var init_zRegionPadding = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/regionPadding/index.js
-var init_regionPadding = __esmMin((() => {
-	init_zRegionPadding();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/animation/zAnimation.js
-var init_zAnimation = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/animation/index.js
-var init_animation = __esmMin((() => {
-	init_zAnimation();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/line.js
-var init_line$4 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/stackCornerRadius/stackCornerRadius.js
-var init_stackCornerRadius$1 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/barWidth/index.js
-var init_barWidth = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/regressionLine/zRegressionLine.js
-var init_zRegressionLine = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/regressionLine/index.js
-var init_regressionLine$1 = __esmMin((() => {
-	init_zRegressionLine();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/column.js
-var init_column$4 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/bar.js
-var init_bar$4 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/area.js
-var init_area$4 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/scatter.js
-var init_scatter$4 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/dualAxis.js
-var init_dualAxis$4 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/pie.js
-var init_pie$4 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/rose.js
-var init_rose$4 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/funnelTransform/zFunnelTransform.js
-var init_zFunnelTransform = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/funnel.js
-var init_funnel$4 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/heatmap.js
-var init_heatmap$4 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/pivotTable.js
-var init_pivotTable$2 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/whiskers/index.js
-var init_whiskers = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/markStyle/zBarStyle.js
-var init_zBarStyle = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/markStyle/zPointStyle.js
-var init_zPointStyle = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/markStyle/zLineStyle.js
-var init_zLineStyle = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/markStyle/zAreaStyle.js
-var init_zAreaStyle = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/markStyle/zBoxPlotStyle.js
-var init_zBoxPlotStyle = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/markStyle/zOutlierStyle.js
-var init_zOutlierStyle = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/markStyle/zMarkStyle.js
-var init_zMarkStyle = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/markStyle/index.js
-var init_markStyle = __esmMin((() => {
-	init_zBarStyle();
-	init_zPointStyle();
-	init_zLineStyle();
-	init_zAreaStyle();
-	init_zBoxPlotStyle();
-	init_zOutlierStyle();
-	init_zMarkStyle();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/boxWidth/zBoxWidth.js
-var init_zBoxWidth = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/boxWidth/index.js
-var init_boxWidth = __esmMin((() => {
-	init_zBoxWidth();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/player/index.js
-var init_player$1 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/treeMap.js
-var init_treeMap$2 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/sunburst.js
-var init_sunburst$2 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/circlePacking.js
-var init_circlePacking$2 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/hierarchySankey.js
-var init_hierarchySankey$2 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/sankey.js
-var init_sankey$2 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/config.js
-var init_config$1 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/annotation/index.js
-var init_annotation$2 = __esmMin((() => {
-	init_zAnnotation();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/backgroundColor/index.js
-var init_backgroundColor = __esmMin((() => {
-	init_backgroundColor$1();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/color/index.js
-var init_color$1 = __esmMin((() => {
-	init_color$2();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/funnelTransform/index.js
-var init_funnelTransform$1 = __esmMin((() => {
-	init_zFunnelTransform();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/legend/index.js
-var init_legend$1 = __esmMin((() => {
-	init_legend$2();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/stackCornerRadius/index.js
-var init_stackCornerRadius = __esmMin((() => {
-	init_stackCornerRadius$1();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/tooltip/index.js
-var init_tooltip$1 = __esmMin((() => {
-	init_tooltip$2();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/config/index.js
-var init_config = __esmMin((() => {
-	init_config$1();
-	init_annotation$2();
-	init_axes$1();
-	init_backgroundColor();
-	init_color$1();
-	init_crosshair$1();
-	init_funnelTransform$1();
-	init_label$1();
-	init_legend$1();
-	init_pivotGrid();
-	init_stackCornerRadius();
-	init_barWidth();
-	init_tooltip$1();
-	init_whiskers();
-	init_area$4();
-	init_bar$4();
-	init_column$4();
-	init_dualAxis$4();
-	init_funnel$4();
-	init_heatmap$4();
-	init_line$4();
-	init_pie$4();
-	init_rose$4();
-	init_scatter$4();
-	init_table$3();
-	init_pivotTable$2();
-	init_dimensionLinkage();
-	init_treeMap$2();
-	init_sunburst$2();
-	init_circlePacking$2();
-	init_hierarchySankey$2();
-	init_sankey$2();
-	init_boxWidth();
-	init_animation();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/theme/index.js
-var init_theme$1 = __esmMin((() => {
-	init_config();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/annotation/zAnnotationVerticalLine.js
-var init_zAnnotationVerticalLine = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/annotation/annotation.js
-var init_annotation$1 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/annotation/index.js
-var init_annotation = __esmMin((() => {
-	init_zAnnotationPoint();
-	init_zAnnotationVerticalLine();
-	init_zAnnotationHorizontalLine();
-	init_zAnnotationArea();
-	init_zAnnotationDifferenceLine();
-	init_annotation$1();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/analysis/sort.js
-var init_sort = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/analysis/sortLegend.js
-var init_sortLegend = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/analysis/analysis.js
-var init_analysis$1 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/analysis/index.js
-var init_analysis = __esmMin((() => {
-	init_sort();
-	init_sortLegend();
-	init_analysis$1();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/cellStyle/bodyCellStyle.js
-var init_bodyCellStyle = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/cellStyle/index.js
-var init_cellStyle = __esmMin((() => {
-	init_bodyCellStyle();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/brush/index.js
-var init_brush$1 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/page/index.js
-var init_page = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/totals/index.js
-var init_totals = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/aggregation/index.js
-var init_aggregation = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/properties/index.js
-var init_properties = __esmMin((() => {
-	init_chartType$2();
-	init_dataset();
-	init_dimensions();
-	init_measures();
-	init_datasetReshapeInfo();
-	init_encoding();
-	init_config();
-	init_theme$1();
-	init_markStyle();
-	init_annotation();
-	init_analysis();
-	init_format();
-	init_regressionLine$1();
-	init_cellStyle();
-	init_brush$1();
-	init_page();
-	init_regionPadding();
-	init_player$1();
-	init_totals();
-	init_aggregation();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/i18n/i18n.js
-var init_i18n$1 = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/i18n/index.js
-var init_i18n = __esmMin((() => {
-	init_i18n$1();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/table/zTable.js
-var init_zTable = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/table/index.js
-var init_table$2 = __esmMin((() => {
-	init_zTable();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/pivotTable/zPivotTable.js
-var init_zPivotTable = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/pivotTable/index.js
-var init_pivotTable$1 = __esmMin((() => {
-	init_zPivotTable();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/line/zLine.js
-var init_zLine = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/line/index.js
-var init_line$3 = __esmMin((() => {
-	init_zLine();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/column/zColumn.js
-var init_zColumn = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/column/index.js
-var init_column$3 = __esmMin((() => {
-	init_zColumn();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/columnParallel/zColumnParallel.js
-var init_zColumnParallel = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/columnParallel/index.js
-var init_columnParallel$1 = __esmMin((() => {
-	init_zColumnParallel();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/columnPercent/zColumnPercent.js
-var init_zColumnPercent = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/columnPercent/index.js
-var init_columnPercent$1 = __esmMin((() => {
-	init_zColumnPercent();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/bar/zBar.js
-var init_zBar = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/bar/index.js
-var init_bar$3 = __esmMin((() => {
-	init_zBar();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/raceBar/zRaceBar.js
-var init_zRaceBar = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/raceBar/index.js
-var init_raceBar$1 = __esmMin((() => {
-	init_zRaceBar();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/raceColumn/zRaceColumn.js
-var init_zRaceColumn = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/raceColumn/index.js
-var init_raceColumn$1 = __esmMin((() => {
-	init_zRaceColumn();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/raceScatter/zRaceScatter.js
-var init_zRaceScatter = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/raceScatter/index.js
-var init_raceScatter$1 = __esmMin((() => {
-	init_zRaceScatter();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/raceLine/zRaceLine.js
-var init_zRaceLine = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/raceLine/index.js
-var init_raceLine$3 = __esmMin((() => {
-	init_zRaceLine();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/barParallel/zBarParallel.js
-var init_zBarParallel = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/barParallel/index.js
-var init_barParallel$1 = __esmMin((() => {
-	init_zBarParallel();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/barPercent/zBarPercent.js
-var init_zBarPercent = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/barPercent/index.js
-var init_barPercent$1 = __esmMin((() => {
-	init_zBarPercent();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/area/index.js
-var init_area$3 = __esmMin((() => {
-	init_i18n();
-	init_properties();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/areaPercent/index.js
-var init_areaPercent$1 = __esmMin((() => {
-	init_i18n();
-	init_properties();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/scatter/zScatter.js
-var init_zScatter = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/scatter/index.js
-var init_scatter$3 = __esmMin((() => {
-	init_zScatter();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/dualAxis/index.js
-var init_dualAxis$3 = __esmMin((() => {
-	init_i18n();
-	init_properties();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/histogram/zHistogram.js
-var init_zHistogram = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/histogram/index.js
-var init_histogram$3 = __esmMin((() => {
-	init_zHistogram();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/rose/zRose.js
-var init_zRose = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/rose/index.js
-var init_rose$3 = __esmMin((() => {
-	init_zRose();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/roseParallel/zRoseParallel.js
-var init_zRoseParallel = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/roseParallel/index.js
-var init_roseParallel$1 = __esmMin((() => {
-	init_zRoseParallel();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/pie/zPie.js
-var init_zPie = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/pie/index.js
-var init_pie$3 = __esmMin((() => {
-	init_zPie();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/donut/zDonut.js
-var init_zDonut = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/donut/index.js
-var init_donut$1 = __esmMin((() => {
-	init_zDonut();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/radar/zRadar.js
-var init_zRadar = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/radar/index.js
-var init_radar$3 = __esmMin((() => {
-	init_zRadar();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/treeMap/zTreeMap.js
-var init_zTreeMap = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/treeMap/index.js
-var init_treeMap$1 = __esmMin((() => {
-	init_zTreeMap();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/sunburst/zSunburst.js
-var init_zSunburst = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/sunburst/index.js
-var init_sunburst$1 = __esmMin((() => {
-	init_zSunburst();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/circlePacking/zCirclePacking.js
-var init_zCirclePacking = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/circlePacking/index.js
-var init_circlePacking$1 = __esmMin((() => {
-	init_zCirclePacking();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/hierarchySankey/zHierarchySankey.js
-var init_zHierarchySankey = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/hierarchySankey/index.js
-var init_hierarchySankey$1 = __esmMin((() => {
-	init_zHierarchySankey();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/sankey/zSankey.js
-var init_zSankey = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/sankey/index.js
-var init_sankey$1 = __esmMin((() => {
-	init_zSankey();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/racePie/zRacePie.js
-var init_zRacePie = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/racePie/index.js
-var init_racePie$3 = __esmMin((() => {
-	init_zRacePie();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/raceDonut/zRaceDonut.js
-var init_zRaceDonut = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/raceDonut/index.js
-var init_raceDonut$1 = __esmMin((() => {
-	init_zRaceDonut();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/funnel/zFunnel.js
-var init_zFunnel = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/funnel/index.js
-var init_funnel$3 = __esmMin((() => {
-	init_zFunnel();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/heatmap/zHeatmap.js
-var init_zHeatmap = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/heatmap/index.js
-var init_heatmap$3 = __esmMin((() => {
-	init_zHeatmap();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/boxPlot/zBoxPlot.js
-var init_zBoxPlot = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/boxPlot/index.js
-var init_boxPlot$3 = __esmMin((() => {
-	init_zBoxPlot();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/chartType/index.js
-var init_chartType$1 = __esmMin((() => {
-	init_table$2();
-	init_pivotTable$1();
-	init_line$3();
-	init_column$3();
-	init_columnParallel$1();
-	init_columnPercent$1();
-	init_bar$3();
-	init_raceBar$1();
-	init_raceColumn$1();
-	init_raceScatter$1();
-	init_raceLine$3();
-	init_barParallel$1();
-	init_barPercent$1();
-	init_area$3();
-	init_areaPercent$1();
-	init_scatter$3();
-	init_dualAxis$3();
-	init_histogram$3();
-	init_rose$3();
-	init_roseParallel$1();
-	init_pie$3();
-	init_donut$1();
-	init_radar$3();
-	init_treeMap$1();
-	init_sunburst$1();
-	init_circlePacking$1();
-	init_hierarchySankey$1();
-	init_sankey$1();
-	init_racePie$3();
-	init_raceDonut$1();
-	init_funnel$3();
-	init_heatmap$3();
-	init_boxPlot$3();
-}));
-//#endregion
-//#region ../vseed/dist/esm/types/zVseed.js
-var init_zVseed = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/advancedVSeed.js
-var init_advancedVSeed = __esmMin((() => {}));
-//#endregion
-//#region ../vseed/dist/esm/types/index.js
-var init_types = __esmMin((() => {
-	init_properties();
-	init_chartType$1();
-	init_zVseed();
-	init_advancedVSeed();
-	init_i18n();
-	init_dataSelector();
 }));
 //#endregion
 //#region ../vseed/dist/esm/theme/common/label.js
@@ -25542,6 +25988,7 @@ var getDefaultLegend, getDarkLegend, getLightLegend, getDarkColorLegend, getLigh
 var init_legend = __esmMin((() => {
 	getDefaultLegend = () => ({
 		enable: true,
+		interactive: true,
 		border: true,
 		maxSize: 1,
 		shapeType: "rectRound",
@@ -26174,12 +26621,8 @@ var init_column$2 = __esmMin((() => {
 			xAxis: bandAxis,
 			yAxis: linearAxis,
 			crosshairRect,
-			stackCornerRadius: [
-				4,
-				4,
-				0,
-				0
-			],
+			cornerRadius: 0,
+			stackCornerRadius: false,
 			pivotGrid: getDarkPivotChartGridConfig(),
 			annotation: getDarkAnnotation(),
 			regressionLine: getDarkRegressionLine()
@@ -26199,12 +26642,8 @@ var init_column$2 = __esmMin((() => {
 			xAxis: bandAxis,
 			yAxis: linearAxis,
 			crosshairRect,
-			stackCornerRadius: [
-				4,
-				4,
-				0,
-				0
-			],
+			cornerRadius: 0,
+			stackCornerRadius: false,
 			pivotGrid: getDarkPivotChartGridConfig(),
 			annotation: getDarkAnnotation()
 		};
@@ -26245,12 +26684,8 @@ var init_bar$2 = __esmMin((() => {
 			xAxis: linearAxis,
 			yAxis: barBandAxis,
 			crosshairRect,
-			stackCornerRadius: [
-				0,
-				4,
-				4,
-				0
-			],
+			cornerRadius: 0,
+			stackCornerRadius: false,
 			pivotGrid: getDarkPivotChartGridConfig(),
 			annotation: getDarkAnnotation()
 		};
@@ -26354,6 +26789,8 @@ var init_dualAxis$2 = __esmMin((() => {
 			legend: getDarkLegend(),
 			tooltip: getDarkTooltip(),
 			brush: getDarkBrushConfig(),
+			cornerRadius: 0,
+			stackCornerRadius: false,
 			xAxis: bandAxis,
 			primaryYAxis: linearAxis,
 			secondaryYAxis: {
@@ -26372,6 +26809,7 @@ var getPieTheme$1, getDonutTheme$1;
 var init_pie$2 = __esmMin((() => {
 	init_common();
 	init_tooltip();
+	init_pie$11();
 	getPieTheme$1 = () => {
 		const baseConfig = {
 			backgroundColor: "transparent",
@@ -26383,6 +26821,8 @@ var init_pie$2 = __esmMin((() => {
 		};
 		return {
 			...baseConfig,
+			...getDefaultPieGeometry(),
+			pieStyle: getDefaultPieStyle(),
 			label: {
 				...baseConfig.label,
 				showValuePercent: true,
@@ -26392,7 +26832,11 @@ var init_pie$2 = __esmMin((() => {
 			pivotGrid: getDarkPivotChartGridConfig()
 		};
 	};
-	getDonutTheme$1 = () => getPieTheme$1();
+	getDonutTheme$1 = () => ({
+		...getPieTheme$1(),
+		...getDefaultDonutGeometry(),
+		centerText: getDefaultCenterText()
+	});
 }));
 //#endregion
 //#region ../vseed/dist/esm/theme/dark/radar.js
@@ -26537,6 +26981,8 @@ var init_histogram$2 = __esmMin((() => {
 			legend: getDarkLegend(),
 			tooltip: getDarkTooltip(),
 			brush: getDarkBrushConfig(),
+			cornerRadius: 0,
+			stackCornerRadius: false,
 			xAxis: linearAxis,
 			yAxis: linearAxis,
 			crosshairRect,
@@ -26670,12 +27116,8 @@ var init_race$1 = __esmMin((() => {
 			xAxis: linearAxis,
 			yAxis: barBandAxis,
 			crosshairRect,
-			stackCornerRadius: [
-				0,
-				4,
-				4,
-				0
-			],
+			cornerRadius: 0,
+			stackCornerRadius: false,
 			pivotGrid: getDarkPivotChartGridConfig(),
 			annotation: getDarkAnnotation(),
 			player
@@ -26703,12 +27145,8 @@ var init_race$1 = __esmMin((() => {
 			xAxis: bandAxis,
 			yAxis: linearAxis,
 			crosshairRect,
-			stackCornerRadius: [
-				4,
-				4,
-				0,
-				0
-			],
+			cornerRadius: 0,
+			stackCornerRadius: false,
 			pivotGrid: getDarkPivotChartGridConfig(),
 			annotation: getDarkAnnotation(),
 			player,
@@ -26807,6 +27245,7 @@ var init_raceLine$2 = __esmMin((() => {
 var getRacePieTheme$1, getRaceDonutTheme$1;
 var init_racePie$2 = __esmMin((() => {
 	init_pie$2();
+	init_pie$11();
 	init_common();
 	getRacePieTheme$1 = () => {
 		const pieTheme = getPieTheme$1();
@@ -26820,7 +27259,10 @@ var init_racePie$2 = __esmMin((() => {
 			player
 		};
 	};
-	getRaceDonutTheme$1 = () => getRacePieTheme$1();
+	getRaceDonutTheme$1 = () => ({
+		...getRacePieTheme$1(),
+		...getDefaultDonutGeometry()
+	});
 }));
 //#endregion
 //#region ../vseed/dist/esm/theme/dark/dark.js
@@ -26938,12 +27380,8 @@ var init_column$1 = __esmMin((() => {
 			xAxis: bandAxis,
 			yAxis: linearAxis,
 			crosshairRect,
-			stackCornerRadius: [
-				4,
-				4,
-				0,
-				0
-			],
+			cornerRadius: 0,
+			stackCornerRadius: false,
 			pivotGrid: getLightPivotChartGridConfig(),
 			annotation: getLightAnnotation(),
 			regressionLine: getLightRegressionLine()
@@ -26963,12 +27401,8 @@ var init_column$1 = __esmMin((() => {
 			xAxis: bandAxis,
 			yAxis: linearAxis,
 			crosshairRect,
-			stackCornerRadius: [
-				4,
-				4,
-				0,
-				0
-			],
+			cornerRadius: 0,
+			stackCornerRadius: false,
 			pivotGrid: getLightPivotChartGridConfig(),
 			annotation: getLightAnnotation()
 		};
@@ -27009,12 +27443,8 @@ var init_bar$1 = __esmMin((() => {
 			xAxis: linearAxis,
 			yAxis: barBandAxis,
 			crosshairRect,
-			stackCornerRadius: [
-				0,
-				4,
-				4,
-				0
-			],
+			cornerRadius: 0,
+			stackCornerRadius: false,
 			pivotGrid: getLightPivotChartGridConfig(),
 			annotation: getLightAnnotation()
 		};
@@ -27118,6 +27548,8 @@ var init_dualAxis$1 = __esmMin((() => {
 			legend: getLightLegend(),
 			tooltip: getLightTooltip(),
 			brush: getLightBrushConfig(),
+			cornerRadius: 0,
+			stackCornerRadius: false,
 			xAxis: bandAxis,
 			primaryYAxis: linearAxis,
 			secondaryYAxis: {
@@ -27136,6 +27568,7 @@ var getPieTheme, getDonutTheme;
 var init_pie$1 = __esmMin((() => {
 	init_common();
 	init_tooltip();
+	init_pie$11();
 	getPieTheme = () => {
 		const baseConfig = {
 			backgroundColor: "transparent",
@@ -27147,6 +27580,8 @@ var init_pie$1 = __esmMin((() => {
 		};
 		return {
 			...baseConfig,
+			...getDefaultPieGeometry(),
+			pieStyle: getDefaultPieStyle(),
 			label: {
 				...baseConfig.label,
 				showValuePercent: true,
@@ -27156,7 +27591,11 @@ var init_pie$1 = __esmMin((() => {
 			pivotGrid: getLightPivotChartGridConfig()
 		};
 	};
-	getDonutTheme = () => getPieTheme();
+	getDonutTheme = () => ({
+		...getPieTheme(),
+		...getDefaultDonutGeometry(),
+		centerText: getDefaultCenterText()
+	});
 }));
 //#endregion
 //#region ../vseed/dist/esm/theme/light/radar.js
@@ -27275,6 +27714,8 @@ var init_histogram$1 = __esmMin((() => {
 			legend: getLightLegend(),
 			tooltip: getLightTooltip(),
 			brush: getLightBrushConfig(),
+			cornerRadius: 0,
+			stackCornerRadius: false,
 			xAxis: linearAxis,
 			yAxis: linearAxis,
 			crosshairRect,
@@ -27392,12 +27833,8 @@ var init_race = __esmMin((() => {
 			},
 			crosshairRect,
 			player,
-			stackCornerRadius: [
-				0,
-				4,
-				4,
-				0
-			],
+			cornerRadius: 0,
+			stackCornerRadius: false,
 			pivotGrid: getLightPivotChartGridConfig(),
 			annotation: getLightAnnotation()
 		};
@@ -27438,12 +27875,8 @@ var init_race = __esmMin((() => {
 			},
 			crosshairRect,
 			player,
-			stackCornerRadius: [
-				4,
-				4,
-				0,
-				0
-			],
+			cornerRadius: 0,
+			stackCornerRadius: false,
 			pivotGrid: getLightPivotChartGridConfig(),
 			annotation: getLightAnnotation(),
 			regressionLine: getLightRegressionLine()
@@ -27549,6 +27982,7 @@ var init_raceLine$1 = __esmMin((() => {
 var getRacePieTheme, getRaceDonutTheme;
 var init_racePie$1 = __esmMin((() => {
 	init_pie$1();
+	init_pie$11();
 	init_common();
 	getRacePieTheme = () => {
 		const pieTheme = getPieTheme();
@@ -27562,7 +27996,10 @@ var init_racePie$1 = __esmMin((() => {
 			player
 		};
 	};
-	getRaceDonutTheme = () => getRacePieTheme();
+	getRaceDonutTheme = () => ({
+		...getRacePieTheme(),
+		...getDefaultDonutGeometry()
+	});
 }));
 //#endregion
 //#region ../vseed/dist/esm/theme/light/light.js
@@ -28770,7 +29207,7 @@ var init_tokenTheme = __esmMin((() => {
 var zTokenThemeDefinition;
 var init_tokenThemeSchema = __esmMin((() => {
 	init_zod();
-	zTokenThemeDefinition = object({
+	zTokenThemeDefinition = object$1({
 		baseTheme: _enum(["light", "dark"]),
 		fontFamily: string().optional(),
 		tableHeaderFontSize: number().optional(),
@@ -28831,7 +29268,7 @@ var init_tokenThemeSchema = __esmMin((() => {
 			"dashed",
 			"dotted"
 		]).optional(),
-		annotationLineDash: array$1(number()).optional(),
+		annotationLineDash: array(number()).optional(),
 		annotationTextColor: string().optional(),
 		annotationTextBackgroundColor: string().optional(),
 		annotationTextBackgroundBorderRadius: number().optional(),
@@ -28871,7 +29308,7 @@ var init_builder = __esmMin((() => {
 //#region ../vseed/dist/esm/index.js
 var init_esm = __esmMin((() => {
 	init_pipeline();
-	init_types();
+	init_types$1();
 	init_dataReshape();
 	init_dataSelector$1();
 	init_theme();
@@ -30701,7 +31138,7 @@ var m, p;
 var init_vbi_chart_upload2 = __esmMin((() => {
 	init_client();
 	init_chart_context();
-	init_dataset$2();
+	init_dataset$3();
 	init_parseCsv();
 	init_random();
 	init_vbi_button2();
@@ -34195,10 +34632,10 @@ var init_dist = __esmMin((() => {
 			return this.findAll().map((builder) => builder.toJSON());
 		}
 	};
-	zVBIDashboardThemeDefinition = object({
+	zVBIDashboardThemeDefinition = object$1({
 		label: string().optional(),
 		tokens: zTokenThemeDefinition,
-		dashboard: object({
+		dashboard: object$1({
 			backgroundColor: string().optional(),
 			widgetBackgroundColor: string().optional(),
 			widgetBorderColor: string().optional(),
@@ -34209,7 +34646,7 @@ var init_dist = __esmMin((() => {
 		}).optional()
 	});
 	zVBIDashboardTheme = string().trim().min(1);
-	zVBIDashboardMeta = object({
+	zVBIDashboardMeta = object$1({
 		title: string(),
 		description: string().optional(),
 		theme: zVBIDashboardTheme.default("light-default"),
@@ -34662,7 +35099,7 @@ var init_dist = __esmMin((() => {
 			if (JSON.stringify(meta) !== JSON.stringify(this.dsl.get("meta"))) this.dsl.set("meta", meta);
 		}
 	};
-	zVBIDashboardItemLayout = object({
+	zVBIDashboardItemLayout = object$1({
 		id: string(),
 		widgetId: string(),
 		x: number().int(),
@@ -34671,8 +35108,8 @@ var init_dist = __esmMin((() => {
 		h: number().int().positive(),
 		static: boolean().optional()
 	});
-	zVBIDashboardLayout = record(zVBIDashboardBreakpoint, array$1(zVBIDashboardItemLayout).optional());
-	zVBIDashboardBaseWidget = object({
+	zVBIDashboardLayout = record(zVBIDashboardBreakpoint, array(zVBIDashboardItemLayout).optional());
+	zVBIDashboardBaseWidget = object$1({
 		id: string(),
 		title: string().optional(),
 		description: string().optional()
@@ -34686,9 +35123,9 @@ var init_dist = __esmMin((() => {
 		insightId: string()
 	});
 	zVBIDashboardWidget = discriminatedUnion("type", [zVBIDashboardChartWidget, zVBIDashboardInsightWidget]);
-	zVBIDashboardDSL = object({
+	zVBIDashboardDSL = object$1({
 		uuid: string().optional().default(""),
-		widgets: array$1(zVBIDashboardWidget).optional().default([]),
+		widgets: array(zVBIDashboardWidget).optional().default([]),
 		breakpoints: zVBIDashboardBreakpoints,
 		layout: zVBIDashboardLayout,
 		meta: zVBIDashboardMeta,
@@ -34754,7 +35191,7 @@ var init_dist = __esmMin((() => {
 		build = () => buildVBIDashboardDSL(this.dsl);
 		isEmpty = () => isEmptyVBIDashboardDSL(this.dsl);
 	};
-	zVBIInsightDSL = object({
+	zVBIInsightDSL = object$1({
 		uuid: string().optional().default(""),
 		content: string().optional().default(""),
 		version: number().int().min(0).optional().default(0)
@@ -34958,7 +35395,7 @@ var init_dist = __esmMin((() => {
 		},
 		createEmpty: createEmptyInsight
 	});
-	zDimensionAggregate = object({ func: _enum([
+	zDimensionAggregate = object$1({ func: _enum([
 		"toYear",
 		"toQuarter",
 		"toMonth",
@@ -34969,8 +35406,8 @@ var init_dist = __esmMin((() => {
 		"toSecond"
 	]) });
 	zVBISortOrder = _enum(["asc", "desc"]);
-	zVBISort = object({ order: zVBISortOrder });
-	zVBIDimensionSchema = object({
+	zVBISort = object$1({ order: zVBISortOrder });
+	zVBIDimensionSchema = object$1({
 		id: string(),
 		field: string(),
 		alias: string(),
@@ -34978,12 +35415,12 @@ var init_dist = __esmMin((() => {
 		aggregate: zDimensionAggregate.optional(),
 		sort: zVBISort.optional()
 	});
-	zVBIDimensionGroupSchema = object({
+	zVBIDimensionGroupSchema = object$1({
 		alias: string(),
-		children: lazy(() => array$1(union([zVBIDimensionSchema, zVBIDimensionGroupSchema])))
+		children: lazy(() => array(union([zVBIDimensionSchema, zVBIDimensionGroupSchema])))
 	});
-	zVBIDimensionTree = array$1(union([zVBIDimensionSchema, zVBIDimensionGroupSchema]));
-	zSimpleAggregate = object({ func: _enum([
+	zVBIDimensionTree = array(union([zVBIDimensionSchema, zVBIDimensionGroupSchema]));
+	zSimpleAggregate = object$1({ func: _enum([
 		"count",
 		"countDistinct",
 		"sum",
@@ -34995,23 +35432,23 @@ var init_dist = __esmMin((() => {
 		"stddev",
 		"median"
 	]) });
-	zQuantileAggregate = object({
+	zQuantileAggregate = object$1({
 		func: literal("quantile"),
 		quantile: number().min(0).max(1).optional()
 	});
 	zAggregate = discriminatedUnion("func", [zSimpleAggregate, zQuantileAggregate]);
 	zHavingLogicalOperator = _enum(["and", "or"]);
-	zVBIHavingFilter = object({
+	zVBIHavingFilter = object$1({
 		id: string(),
 		field: string(),
 		aggregate: zAggregate,
 		op: string(),
 		value: any().optional()
 	});
-	zVBIHavingGroup = lazy(() => object({
+	zVBIHavingGroup = lazy(() => object$1({
 		id: string(),
 		op: zHavingLogicalOperator,
-		conditions: array$1(zVBIHavingClause)
+		conditions: array(zVBIHavingClause)
 	}));
 	zVBIHavingClause = lazy(() => union([zVBIHavingFilter, zVBIHavingGroup]));
 	zVBIDSLLocale = _enum([
@@ -35025,8 +35462,8 @@ var init_dist = __esmMin((() => {
 		"vi-VN"
 	]);
 	zNumFormatObject = zNumFormat.unwrap();
-	zVBIMeasureFormat = union([object({ autoFormat: literal(true) }), zNumFormatObject.extend({ autoFormat: literal(false).optional() })]);
-	zVBIMeasure = object({
+	zVBIMeasureFormat = union([object$1({ autoFormat: literal(true) }), zNumFormatObject.extend({ autoFormat: literal(false).optional() })]);
+	zVBIMeasure = object$1({
 		id: string(),
 		field: string(),
 		alias: string(),
@@ -35057,19 +35494,19 @@ var init_dist = __esmMin((() => {
 		format: zVBIMeasureFormat.optional(),
 		sort: zVBISort.optional()
 	});
-	zVBIMeasureGroup = object({
+	zVBIMeasureGroup = object$1({
 		alias: string(),
-		children: lazy(() => array$1(union([zVBIMeasure, zVBIMeasureGroup])))
+		children: lazy(() => array(union([zVBIMeasure, zVBIMeasureGroup])))
 	});
-	zVBIMeasureTree = array$1(union([zVBIMeasure, zVBIMeasureGroup]));
+	zVBIMeasureTree = array(union([zVBIMeasure, zVBIMeasureGroup]));
 	zVBIDSLTheme = _enum(["light", "dark"]);
 	zVBIWhereDateInput = union([string(), date()]);
 	zVBIWhereDatePeriod = discriminatedUnion("unit", [
-		object({
+		object$1({
 			unit: literal("year"),
 			year: number().int()
 		}),
-		object({
+		object$1({
 			unit: literal("quarter"),
 			year: number().int(),
 			quarter: union([
@@ -35079,29 +35516,29 @@ var init_dist = __esmMin((() => {
 				literal(4)
 			])
 		}),
-		object({
+		object$1({
 			unit: literal("month"),
 			year: number().int(),
 			month: number().int().min(1).max(12)
 		}),
-		object({
+		object$1({
 			unit: literal("week"),
 			year: number().int(),
 			week: number().int().min(1).max(53)
 		}),
-		object({
+		object$1({
 			unit: literal("day"),
 			date: zVBIWhereDateInput
 		})
 	]);
 	zVBIWhereDatePredicate = union([
-		object({
+		object$1({
 			type: literal("range"),
 			start: zVBIWhereDateInput,
 			end: zVBIWhereDateInput,
 			bounds: _enum(["[)", "[]"]).optional()
 		}),
-		object({
+		object$1({
 			type: literal("relative"),
 			mode: _enum(["last", "next"]),
 			amount: number().int().positive(),
@@ -35114,7 +35551,7 @@ var init_dist = __esmMin((() => {
 			]),
 			complete: boolean().optional()
 		}),
-		object({
+		object$1({
 			type: literal("current"),
 			unit: _enum([
 				"year",
@@ -35125,29 +35562,29 @@ var init_dist = __esmMin((() => {
 			]),
 			offset: number().int().optional()
 		}),
-		object({ type: literal("period") }).and(zVBIWhereDatePeriod)
+		object$1({ type: literal("period") }).and(zVBIWhereDatePeriod)
 	]);
 	zWhereLogicalOperator = _enum(["and", "or"]);
-	zVBIWhereDateFilter = object({
+	zVBIWhereDateFilter = object$1({
 		id: string(),
 		field: string(),
 		op: literal("date"),
 		value: zVBIWhereDatePredicate
 	});
-	zVBIWhereScalarFilter = object({
+	zVBIWhereScalarFilter = object$1({
 		id: string(),
 		field: string(),
 		op: string().refine((op) => "date" !== op),
 		value: any().optional()
 	});
 	zVBIWhereFilter = union([zVBIWhereDateFilter, zVBIWhereScalarFilter]);
-	zVBIWhereGroup = lazy(() => object({
+	zVBIWhereGroup = lazy(() => object$1({
 		id: string(),
 		op: zWhereLogicalOperator,
-		conditions: array$1(zVBIWhereClause)
+		conditions: array(zVBIWhereClause)
 	}));
 	zVBIWhereClause = lazy(() => union([zVBIWhereFilter, zVBIWhereGroup]));
-	zVBIChartDSL = object({
+	zVBIChartDSL = object$1({
 		uuid: string().optional().default(""),
 		connectorId: string(),
 		chartType: custom(),
@@ -35272,55 +35709,258 @@ var init_dist = __esmMin((() => {
 }));
 //#endregion
 //#region ../vquery/dist/browser/esm/browser.js
-var PostgresDialect, escapeValue, inlineParameters, OPERATOR_MAP, toSqlOperator, applyWhere, applyGroupBy, AGGREGATE_FUNCTIONS, isAggregateFunction, toAggregateExpression, applyHaving, applyLimit, applyOrder, isSelectItem, DATE_FORMAT_MAP, applySelect, convertDSLToSQL, Dataset, isUrl, isHttpUrl, isBase64Url, MIME_TYPES, DatasetSourceBuilder, wrapIDBRequest, idbPut, idbGet, idbDelete, idbGetAll, IndexedDBAdapter, castValue, shapeRows, parseCsvRows, parseCsv, parseJson, loadRows, tokenize, Parser, parseSQL, aggregateNames, isAggregateCall, isAggregate, numericValues, compareText, compare, parseTimestamp, weekNumber, formatTimestamp, aggregate, evaluate, like, evaluatePredicate, expressionName, stableHash, executeSQL, InMemoryTable, InMemoryQueryAdapter, VQuery, vquery_browser_VQuery;
+function prepareMysqlStatistics(query, dsl, db, strategy, columns) {
+	const fields = /* @__PURE__ */ new Set();
+	const statistical = /* @__PURE__ */ new Set();
+	const used = /* @__PURE__ */ new Set();
+	const selectItems = dsl.select.map((item) => "string" == typeof item ? { field: item } : item);
+	for (const item of selectItems) {
+		fields.add(item.field);
+		used.add(item.alias ?? item.field);
+		if (item.aggr?.func === "median" || item.aggr?.func === "quantile") statistical.add(item.field);
+	}
+	const visit = (node) => {
+		if ("conditions" in node) node.conditions.forEach(visit);
+		else {
+			fields.add(node.field);
+			if (node.aggr?.func === "median" || node.aggr?.func === "quantile") statistical.add(node.field);
+		}
+	};
+	if (dsl.having) visit(dsl.having);
+	if (!statistical.size) return {
+		query,
+		aggregate: strategy.aggregate
+	};
+	const aliases = new Map(selectItems.map((item) => [item.alias ?? item.field, item]));
+	const sourceNames = /* @__PURE__ */ new Set([...fields, ...columns.map((column) => column.name)]);
+	const groups = (dsl.groupBy ?? []).map((name) => {
+		const item = sourceNames.has(name) ? void 0 : aliases.get(name);
+		const field = item?.field ?? name;
+		fields.add(field);
+		return item?.aggr ? strategy.aggregate(field, item.aggr) : sql.ref(field);
+	});
+	for (const item of dsl.orderBy ?? []) if (!aliases.has(item.field)) fields.add(item.field);
+	for (const field of fields) used.add(field);
+	let serial = 0;
+	const unique = () => {
+		let name;
+		do
+			name = `__vquery_stat_${serial++}`;
+		while (used.has(name));
+		used.add(name);
+		return name;
+	};
+	const partition = groups.length ? sql`partition by ${sql.join(groups)}` : sql``;
+	const windows = /* @__PURE__ */ new Map();
+	const projections = [...fields];
+	for (const field of statistical) {
+		const rank = unique(), count = unique();
+		windows.set(field, {
+			rank,
+			count
+		});
+		projections.push(sql`row_number() over (${partition} order by ${sql.ref(field)} is null, ${sql.ref(field)})`.as(rank), sql`count(${sql.ref(field)}) over (${partition})`.as(count));
+	}
+	const ranked = query.select(projections).as("__vquery_ranked");
+	const aggregate = (field, aggr) => {
+		if ("median" !== aggr.func && "quantile" !== aggr.func) return strategy.aggregate(field, aggr);
+		const names = windows.get(field);
+		const rank = sql.ref(names.rank), count = sql.ref(names.count), value = sql.ref(field);
+		if ("median" === aggr.func) return sql`avg(case when ${rank} in (floor((${count} + 1) / 2), floor((${count} + 2) / 2)) then ${value} end)`;
+		const quantile = aggr.quantile ?? .5;
+		const position = sql`greatest(${count} - floor(${count} - ${count} * CAST(${Math.abs(quantile)} AS DOUBLE)), 1)`;
+		return sql`max(case when ${rank} = ${quantile < 0 ? sql`${count} + 1 - ${position}` : position} then ${value} end)`;
+	};
+	return {
+		query: db.selectFrom(ranked),
+		aggregate
+	};
+}
+function assert(ok, message) {
+	if (!ok) throw new Error(message);
+}
+function validateQuery_aggregate(value, allowDates) {
+	assert(object(value), "Invalid aggregate");
+	assert(aggregates.includes(value.func) || allowDates && dates.includes(value.func), "Unsupported aggregate");
+	assert(Object.keys(value).every((key) => "func" === key || "quantile" === key), "Unsupported aggregate property");
+	if (void 0 !== value.quantile) assert("quantile" === value.func && "number" == typeof value.quantile && Number.isFinite(value.quantile) && value.quantile >= -1 && value.quantile <= 1, "Invalid quantile");
+}
+function validateQuery_predicate(node, having) {
+	assert(object(node), "Invalid filter");
+	if ("conditions" in node) {
+		assert(("and" === node.op || "or" === node.op) && Array.isArray(node.conditions), "Invalid filter group");
+		node.conditions.forEach((child) => validateQuery_predicate(child, having));
+		return;
+	}
+	assert(validateQuery_name(node.field), "Invalid filter field");
+	if (having) {
+		assert(object(node.aggr) && aggregates.includes(node.aggr.func), `Invalid having clause for field "${node.field}": aggr.func is required`);
+		validateQuery_aggregate(node.aggr, false);
+	}
+	assert("string" == typeof node.op, "Invalid filter operator");
+	const op = toSqlOperator(having ? node.op.trim().toLowerCase() : node.op);
+	assert(operators.includes(op) && (!having || !op.includes("like")), "Unsupported filter operator");
+	if ("is null" === op || "is not null" === op) return;
+	if ("in" === op || "not in" === op) assert(Array.isArray(node.value) ? node.value.length > 0 && node.value.every(scalar) : scalar(node.value), "Invalid IN values");
+	else "between" === op || "not between" === op ? assert(Array.isArray(node.value) && 2 === node.value.length && node.value.every(scalar), "Invalid range") : assert(scalar(node.value), "Invalid filter value");
+}
+function validateQuery(dsl, columns = []) {
+	assert(object(dsl), "Expected query DSL");
+	assert(Object.keys(dsl).every((key) => [
+		"select",
+		"where",
+		"groupBy",
+		"having",
+		"orderBy",
+		"limit"
+	].includes(key)), "Unsupported query property");
+	const numeric = [
+		"sum",
+		"avg",
+		"variance",
+		"variance_pop",
+		"stddev",
+		"median",
+		"quantile"
+	];
+	const columnTypes = new Map(columns.map((column) => [column.name, column.type]));
+	const checkType = (field, aggr) => {
+		if (columns.length && numeric.includes(aggr.func)) assert("number" === columnTypes.get(field), `${aggr.func} requires a number column: ${field}`);
+	};
+	const checkValues = (node, having) => {
+		if ("conditions" in node) return void node.conditions.forEach((child) => checkValues(child, having));
+		const fieldType = columnTypes.get(node.field);
+		const type = having && "min" !== node.aggr.func && "max" !== node.aggr.func ? "number" : fieldType;
+		const op = node.op.trim().toLowerCase();
+		if (op.includes("like")) assert(null === node.value || "string" == typeof node.value, "LIKE requires a string pattern");
+		if (columns.length && op.includes("like")) assert("string" === type, `LIKE requires a string column: ${node.field}`);
+		if (!columns.length || !type || op.includes("like") || "is null" === op || "is not null" === op) return;
+		assert((Array.isArray(node.value) ? node.value : [node.value]).every((value) => null === value || ("number" === type ? "number" == typeof value : "string" === type ? "string" == typeof value : "string" == typeof value || value instanceof Date)), `Filter value does not match ${type} column: ${node.field}`);
+	};
+	assert(Array.isArray(dsl.select), "Invalid select");
+	for (const item of dsl.select) if ("string" == typeof item) assert(validateQuery_name(item), "Invalid select field");
+	else {
+		assert(object(item) && validateQuery_name(item.field), "Invalid select item");
+		assert(void 0 === item.alias || validateQuery_name(item.alias), "Invalid select alias");
+		if (void 0 !== item.aggr) {
+			validateQuery_aggregate(item.aggr, true);
+			checkType(item.field, item.aggr);
+		}
+	}
+	if (void 0 !== dsl.where) {
+		validateQuery_predicate(dsl.where, false);
+		checkValues(dsl.where, false);
+	}
+	if (void 0 !== dsl.having) {
+		validateQuery_predicate(dsl.having, true);
+		checkValues(dsl.having, true);
+		const checkHaving = (node) => {
+			if ("conditions" in node) node.conditions.forEach(checkHaving);
+			else checkType(node.field, node.aggr);
+		};
+		checkHaving(dsl.having);
+	}
+	if (void 0 !== dsl.groupBy) assert(Array.isArray(dsl.groupBy) && dsl.groupBy.every(validateQuery_name), "Invalid groupBy");
+	if (void 0 !== dsl.orderBy) assert(Array.isArray(dsl.orderBy) && dsl.orderBy.every((item) => object(item) && validateQuery_name(item.field) && (void 0 === item.order || "asc" === item.order || "desc" === item.order) && (void 0 === item.nulls || "first" === item.nulls || "last" === item.nulls)), "Invalid orderBy");
+	if (void 0 !== dsl.limit) assert(Number.isSafeInteger(dsl.limit) && dsl.limit >= 0, "Invalid limit");
+}
+var compilationDialect, createSource, normalizeValue, mysql_text, formats, mysqlStrategy, duckdb_formats, duckdbStrategy, OPERATOR_MAP, toSqlOperator, applyWhere, applyGroupBy, applyHaving, applyLimit, applyOrder, isSelectItem, applySelect, aggregates, dates, operators, object, validateQuery_name, scalar, strategies, compileQuery, escapeValue, inlineParameters, convertDSLToDuckDB, Dataset, isUrl, isHttpUrl, isBase64Url, MIME_TYPES, DatasetSourceBuilder, wrapIDBRequest, idbPut, idbGet, idbDelete, idbGetAll, IndexedDBAdapter, InMemoryAdapter, castValue, shapeRows, parseCsvRows, parseCsv, parseJson, loadRows, tokenize, Parser, parseSQL, aggregateNames, isAggregateCall, isAggregate, numericValues, compareText, compareNonNull, parseTimestamp, weekNumber, formatTimestamp, sql_aggregate, evaluate, like, evaluatePredicate, expressionName, stableHash, executeSQL, InMemoryTable, InMemoryQueryAdapter, VQuery, vquery_browser_VQuery;
 var init_browser = __esmMin((() => {
 	init_esm$2();
-	PostgresDialect = class {
-		createDriver() {
-			return new DummyDriver();
-		}
-		createQueryCompiler() {
-			return new PostgresQueryCompiler();
-		}
-		createAdapter() {
-			return new PostgresAdapter();
-		}
-		createIntrospector(db) {
-			class NullIntrospector {
-				async getSchemas() {
-					return [];
-				}
-				async getTables(options) {
-					options?.withInternalKyselyTables;
-					return [];
-				}
-				async getMetadata(options) {
-					options?.withInternalKyselyTables;
-					return { tables: [] };
-				}
+	compilationDialect = (compiler, adapter) => ({
+		createDriver: () => new DummyDriver(),
+		createQueryCompiler: () => compiler,
+		createAdapter: () => adapter,
+		createIntrospector: () => ({
+			getSchemas: async () => [],
+			getTables: async () => [],
+			getMetadata: async () => ({ tables: [] })
+		})
+	});
+	createSource = (db, table, columns, text) => {
+		const query = "string" == typeof table ? db.selectFrom(table) : db.withSchema(table.database).selectFrom(table.name);
+		if (!columns.some((column) => "string" === column.type)) return query;
+		const source = query.select(columns.map((column) => {
+			const field = sql.ref(column.name);
+			return ("string" === column.type ? text(field) : field).as(column.name);
+		})).as("__vquery_source");
+		return db.selectFrom(source);
+	};
+	normalizeValue = (value) => value instanceof Date ? value.toISOString().slice(0, 23).replace("T", " ") : value;
+	mysql_text = (field) => sql`convert(${field} using utf8mb4) collate utf8mb4_0900_bin`;
+	formats = {
+		to_year: "%Y",
+		to_month: "%Y-%m",
+		to_day: "%Y-%m-%d",
+		to_hour: "%Y-%m-%d %H",
+		to_minute: "%Y-%m-%d %H:%i",
+		to_second: "%Y-%m-%d %H:%i:%s"
+	};
+	mysqlStrategy = {
+		dialect: compilationDialect(new MysqlQueryCompiler(), new MysqlAdapter()),
+		source: (db, table, columns) => createSource(db, table, columns, mysql_text),
+		prepare: (query, dsl, db, columns) => prepareMysqlStatistics(query, dsl, db, mysqlStrategy, columns),
+		value: (value) => {
+			const normalized = normalizeValue(value);
+			return "string" == typeof normalized ? mysql_text(sql.val(normalized)) : sql.val(normalized);
+		},
+		limit: (value) => sql.lit(value),
+		aggregate: (name, aggr) => {
+			const field = sql.ref(name);
+			const { func } = aggr;
+			if (formats[func]) return sql`date_format(${field}, ${formats[func]})`;
+			switch (func) {
+				case "to_week": return sql`concat(date_format(${field}, '%Y-W'), lpad(week(${field}, 5), 2, '0'))`;
+				case "to_quarter": return sql`concat(date_format(${field}, '%Y'), '-Q', quarter(${field}))`;
+				case "count_distinct": return sql`count(distinct ${field})`;
+				case "variance": return sql`var_samp(${field})`;
+				case "variance_pop": return sql`var_pop(${field})`;
+				case "stddev": return sql`stddev_samp(${field})`;
+				case "median":
+				case "quantile": throw new Error("Statistical aggregates cannot be used as grouping keys");
+				default: return sql`${sql.raw(func)}(${field})`;
 			}
-			return new NullIntrospector();
-		}
+		},
+		like: (field, value, negated, insensitive) => {
+			const left = mysql_text(field), right = mysql_text(sql.val(normalizeValue(value)));
+			return sql`${insensitive ? sql`lower(${left})` : left} ${sql.raw(negated ? "not like" : "like")} ${insensitive ? sql`lower(${right})` : right} escape ''`;
+		},
+		order: (field, direction, nulls) => [sql`${sql.ref(field)} is null ${sql.raw("last" === nulls ? "asc" : "desc")}`, sql`${sql.ref(field)} ${sql.raw(direction)}`]
 	};
-	escapeValue = (value) => {
-		if (null === value) return "null";
-		if ("string" == typeof value) return `'${value.replace(/'/g, "''")}'`;
-		if ("number" == typeof value) return `${value}`;
-		if ("boolean" == typeof value) return value ? "TRUE" : "FALSE";
-		return `'${String(value).replace(/'/g, "''")}'`;
+	duckdb_formats = {
+		to_year: "%Y",
+		to_month: "%Y-%m",
+		to_day: "%Y-%m-%d",
+		to_week: "%Y-W%W",
+		to_hour: "%Y-%m-%d %H",
+		to_minute: "%Y-%m-%d %H:%M",
+		to_second: "%Y-%m-%d %H:%M:%S"
 	};
-	inlineParameters = (sql, params) => {
-		if (0 === params.length) return sql;
-		if (sql.includes("?")) {
-			let out = sql;
-			for (const p of params) out = out.replace(/\?/, escapeValue(p));
-			return out;
-		}
-		if (/\$\d+/.test(sql)) return sql.replace(/\$(\d+)/g, (_, idx) => {
-			const v = params[Number(idx) - 1];
-			return escapeValue(v);
-		});
-		return sql;
+	duckdbStrategy = {
+		dialect: compilationDialect(new PostgresQueryCompiler(), new PostgresAdapter()),
+		source: (db, table, columns) => createSource(db, table, columns, (field) => sql`${field} collate "binary"`),
+		prepare: (query) => ({
+			query,
+			aggregate: duckdbStrategy.aggregate
+		}),
+		value: (value) => sql.val(normalizeValue(value)),
+		limit: (value) => value,
+		aggregate: (name, aggr) => {
+			const field = sql.ref(name);
+			const { func } = aggr;
+			if (duckdb_formats[func]) return sql`strftime(CAST(${field} AS TIMESTAMP), ${duckdb_formats[func]})`;
+			switch (func) {
+				case "to_quarter": return sql`strftime(CAST(${field} AS TIMESTAMP), '%Y') || '-Q' || date_part('quarter', CAST(${field} AS TIMESTAMP))`;
+				case "count": return sql`count(${field})`;
+				case "count_distinct": return sql`count(distinct ${field})`;
+				case "variance": return sql`var_samp(${field})`;
+				case "variance_pop": return sql`var_pop(${field})`;
+				case "quantile": return sql`quantile(${field}, CAST(${aggr.quantile ?? .5} AS DOUBLE))`;
+				default: return sql`${sql.raw(func)}(${field})`;
+			}
+		},
+		like: (field, value, negated, insensitive) => sql`${field} ${sql.raw(`${negated ? "not " : ""}${insensitive ? "ilike" : "like"}`)} ${sql.val(normalizeValue(value))} escape ''`,
+		order: (field, direction, nulls) => [sql`${sql.ref(field)} ${sql.raw(direction)} nulls ${sql.raw(nulls)}`]
 	};
 	OPERATOR_MAP = {
 		gt: ">",
@@ -35331,10 +35971,11 @@ var init_browser = __esmMin((() => {
 		neq: "!="
 	};
 	toSqlOperator = (op) => OPERATOR_MAP[op] ?? op;
-	applyWhere = (qb, where) => {
+	applyWhere = (qb, where, strategy) => {
 		if (!where) return qb;
 		const toRaw = (w) => {
 			if ("op" in w && "conditions" in w) {
+				if (0 === w.conditions.length) return "and" === w.op ? sql`1=1` : sql`0=1`;
 				const parts = w.conditions.map((c) => toRaw(c));
 				const sep = sql` ${sql.raw(w.op)} `;
 				return sql`(${sql.join(parts, sep)})`;
@@ -35344,25 +35985,29 @@ var init_browser = __esmMin((() => {
 			const value = leaf.value;
 			const sqlOp = toSqlOperator(leaf.op);
 			switch (leaf.op) {
+				case "like":
+				case "not like":
+				case "ilike":
+				case "not ilike": return strategy.like(sql.ref(field), value, leaf.op.startsWith("not "), leaf.op.includes("ilike"));
 				case "is null": return sql`${sql.ref(field)} is null`;
 				case "is not null": return sql`${sql.ref(field)} is not null`;
 				case "in": {
 					const items = Array.isArray(value) ? value : [value];
-					return sql`${sql.ref(field)} in (${sql.join(items.map((v) => sql.val(v)))})`;
+					return sql`${sql.ref(field)} in (${sql.join(items.map((v) => strategy.value(v)))})`;
 				}
 				case "not in": {
 					const items = Array.isArray(value) ? value : [value];
-					return sql`not ${sql.ref(field)} in (${sql.join(items.map((v) => sql.val(v)))})`;
+					return sql`not ${sql.ref(field)} in (${sql.join(items.map((v) => strategy.value(v)))})`;
 				}
 				case "between": {
 					const [a, b] = value;
-					return sql`${sql.ref(field)} between ${sql.val(a)} and ${sql.val(b)}`;
+					return sql`${sql.ref(field)} between ${strategy.value(a)} and ${strategy.value(b)}`;
 				}
 				case "not between": {
 					const [a, b] = value;
-					return sql`${sql.ref(field)} not between ${sql.val(a)} and ${sql.val(b)}`;
+					return sql`${sql.ref(field)} not between ${strategy.value(a)} and ${strategy.value(b)}`;
 				}
-				default: return sql`${sql.ref(field)} ${sql.raw(sqlOp)} ${sql.val(value)}`;
+				default: return sql`${sql.ref(field)} ${sql.raw(sqlOp)} ${strategy.value(value)}`;
 			}
 		};
 		return qb.where(toRaw(where));
@@ -35374,11 +36019,67 @@ var init_browser = __esmMin((() => {
 		}
 		return qb;
 	};
-	AGGREGATE_FUNCTIONS = [
-		"sum",
-		"avg",
+	applyHaving = (qb, having, strategy) => {
+		if (!having) return qb;
+		const toRaw = (h) => {
+			if ("op" in h && "conditions" in h) {
+				if (0 === h.conditions.length) return "and" === h.op ? sql`1=1` : sql`0=1`;
+				const parts = h.conditions.map((c) => toRaw(c));
+				const sep = sql` ${sql.raw(h.op)} `;
+				return sql`(${sql.join(parts, sep)})`;
+			}
+			const leaf = h;
+			const field = leaf.field;
+			const value = leaf.value;
+			const compareOp = toSqlOperator(leaf.op.trim().toLowerCase());
+			const leftExpr = strategy.aggregate(field, leaf.aggr);
+			switch (compareOp) {
+				case "is null": return sql`${leftExpr} is null`;
+				case "is not null": return sql`${leftExpr} is not null`;
+				case "in": {
+					const items = Array.isArray(value) ? value : [value];
+					return sql`${leftExpr} in (${sql.join(items.map((v) => strategy.value(v)))})`;
+				}
+				case "not in": {
+					const items = Array.isArray(value) ? value : [value];
+					return sql`not ${leftExpr} in (${sql.join(items.map((v) => strategy.value(v)))})`;
+				}
+				case "between": {
+					const [a, b] = value;
+					return sql`${leftExpr} between ${strategy.value(a)} and ${strategy.value(b)}`;
+				}
+				case "not between": {
+					const [a, b] = value;
+					return sql`${leftExpr} not between ${strategy.value(a)} and ${strategy.value(b)}`;
+				}
+				default: return sql`${leftExpr} ${sql.raw(compareOp)} ${strategy.value(value)}`;
+			}
+		};
+		return qb.having(toRaw(having));
+	};
+	applyLimit = (qb, limit, strategy) => {
+		if (void 0 !== limit) qb = qb.limit(strategy.limit(limit));
+		return qb;
+	};
+	applyOrder = (qb, orderBy, strategy) => {
+		for (const item of orderBy ?? []) for (const expression of strategy.order(item.field, item.order ?? "asc", item.nulls ?? "last")) qb = qb.orderBy(expression);
+		return qb;
+	};
+	isSelectItem = (item) => "object" == typeof item && "field" in item;
+	applySelect = (qb, select, strategy) => {
+		if (0 === select.length) return qb.selectAll();
+		return qb.select(() => select.map((item) => {
+			if (!isSelectItem(item)) return item;
+			const field = item.field;
+			const expression = sql.ref(field);
+			return (item.aggr ? strategy.aggregate(field, item.aggr) : expression).as(item.alias ?? field);
+		}));
+	};
+	aggregates = [
 		"count",
 		"count_distinct",
+		"sum",
+		"avg",
 		"min",
 		"max",
 		"variance",
@@ -35387,119 +36088,87 @@ var init_browser = __esmMin((() => {
 		"median",
 		"quantile"
 	];
-	isAggregateFunction = (func) => AGGREGATE_FUNCTIONS.includes(func);
-	toAggregateExpression = (func, field, aggr) => {
-		switch (func) {
-			case "count": return sql`count(${sql.ref(field)})`;
-			case "count_distinct": return sql`count(distinct ${sql.ref(field)})`;
-			case "variance": return sql`var_samp(${sql.ref(field)})`;
-			case "variance_pop": return sql`var_pop(${sql.ref(field)})`;
-			case "quantile": return sql`quantile(${sql.ref(field)}, ${aggr?.quantile ?? .5})`;
-			default: return sql`${sql.raw(func)}(${sql.ref(field)})`;
-		}
+	dates = [
+		"to_year",
+		"to_quarter",
+		"to_month",
+		"to_week",
+		"to_day",
+		"to_hour",
+		"to_minute",
+		"to_second"
+	];
+	operators = [
+		"=",
+		"!=",
+		">",
+		">=",
+		"<",
+		"<=",
+		"like",
+		"not like",
+		"ilike",
+		"not ilike",
+		"in",
+		"not in",
+		"between",
+		"not between",
+		"is null",
+		"is not null"
+	];
+	object = (value) => null !== value && "object" == typeof value && !Array.isArray(value);
+	validateQuery_name = (value) => "string" == typeof value && value.length > 0;
+	scalar = (value) => value instanceof Date && Number.isFinite(value.getTime()) || null === value || "string" == typeof value || "boolean" == typeof value || "number" == typeof value && Number.isFinite(value);
+	strategies = {
+		mysql: mysqlStrategy,
+		duckdb: duckdbStrategy
 	};
-	applyHaving = (qb, having) => {
-		if (!having) return qb;
-		const toRaw = (h) => {
-			if ("op" in h && "conditions" in h) {
-				const parts = h.conditions.map((c) => toRaw(c));
-				const sep = sql` ${sql.raw(h.op)} `;
-				return sql`(${sql.join(parts, sep)})`;
-			}
-			const leaf = h;
-			const field = leaf.field;
-			const value = leaf.value;
-			if (!leaf.aggr?.func || !isAggregateFunction(leaf.aggr.func)) throw new Error(`Invalid having clause for field "${String(field)}": aggr.func is required`);
-			const compareOp = toSqlOperator(leaf.op.trim().toLowerCase());
-			const leftExpr = toAggregateExpression(leaf.aggr.func, field, leaf.aggr);
-			switch (compareOp) {
-				case "is null": return sql`${leftExpr} is null`;
-				case "is not null": return sql`${leftExpr} is not null`;
-				case "in": {
-					const items = Array.isArray(value) ? value : [value];
-					return sql`${leftExpr} in (${sql.join(items.map((v) => sql.val(v)))})`;
-				}
-				case "not in": {
-					const items = Array.isArray(value) ? value : [value];
-					return sql`not ${leftExpr} in (${sql.join(items.map((v) => sql.val(v)))})`;
-				}
-				case "between": {
-					const [a, b] = value;
-					return sql`${leftExpr} between ${sql.val(a)} and ${sql.val(b)}`;
-				}
-				case "not between": {
-					const [a, b] = value;
-					return sql`${leftExpr} not between ${sql.val(a)} and ${sql.val(b)}`;
-				}
-				default: return sql`${leftExpr} ${sql.raw(compareOp)} ${sql.val(value)}`;
-			}
+	compileQuery = (dsl, options) => {
+		const dialect = options.dialect ?? "mysql";
+		if (!Object.hasOwn(strategies, dialect)) throw new Error(`Unsupported query dialect: ${dialect}`);
+		const strategy = strategies[dialect];
+		validateQuery(dsl, options.columns);
+		const db = new Kysely({ dialect: strategy.dialect });
+		let qb = strategy.source(db, options.table, options.columns ?? []);
+		qb = applyWhere(qb, dsl.where, strategy);
+		const prepared = strategy.prepare(qb, dsl, db, options.columns ?? []);
+		const preparedStrategy = {
+			...strategy,
+			aggregate: prepared.aggregate
 		};
-		return qb.having(toRaw(having));
-	};
-	applyLimit = (qb, limit) => {
-		if (limit && "number" == typeof limit) qb = qb.limit(limit);
-		return qb;
-	};
-	applyOrder = (qb, orderBy) => {
-		if (orderBy && orderBy.length > 0) orderBy.forEach((o) => {
-			qb = qb.orderBy(o.field, o.order ?? "asc");
-		});
-		return qb;
-	};
-	isSelectItem = (item) => "object" == typeof item && "field" in item;
-	DATE_FORMAT_MAP = {
-		year: "%Y",
-		month: "%Y-%m",
-		day: "%Y-%m-%d",
-		week: "%Y-W%W",
-		hour: "%Y-%m-%d %H",
-		minute: "%Y-%m-%d %H:%M",
-		second: "%Y-%m-%d %H:%M:%S"
-	};
-	applySelect = (qb, select) => {
-		if (select && select.length > 0) return qb.select((eb) => select.map((item) => {
-			if (isSelectItem(item)) {
-				const field = item.field;
-				const expression = eb.ref(field);
-				const alias = item.alias ?? field;
-				if (item.aggr) {
-					const { func } = item.aggr;
-					if ([
-						"avg",
-						"sum",
-						"min",
-						"max",
-						"variance",
-						"variance_pop",
-						"stddev",
-						"median"
-					].includes(func)) {
-						if ("variance" === func) return sql`var_samp(${expression})`.as(alias);
-						if ("variance_pop" === func) return sql`var_pop(${expression})`.as(alias);
-						return sql`${sql.raw(func)}(${expression})`.as(alias);
-					} else if ("count" === func) return sql`CAST(count(${expression}) AS INTEGER)`.as(alias);
-					else if ("quantile" === func) return sql`quantile(${expression}, ${item.aggr.quantile ?? .5})`.as(alias);
-					else if ("count_distinct" === func) return sql`CAST(count(distinct ${expression}) AS INTEGER)`.as(alias);
-					const dateTrunc = func.replace("to_", "");
-					const format = DATE_FORMAT_MAP[dateTrunc];
-					if (format) return sql`strftime(CAST(${expression} AS TIMESTAMP), ${format})`.as(alias);
-					return sql`strftime(CAST(${expression} AS TIMESTAMP), '%Y') || '-Q' || date_part('quarter', CAST(${expression} AS TIMESTAMP))`.as(alias);
-				}
-				return expression.as(alias);
-			}
-			return item;
-		}));
-		else return qb.selectAll();
-	};
-	convertDSLToSQL = (dsl, tableName) => {
-		let qb = new Kysely({ dialect: new PostgresDialect() }).selectFrom(tableName);
-		qb = applySelect(qb, dsl.select);
-		qb = applyWhere(qb, dsl.where);
+		qb = applySelect(prepared.query, dsl.select, preparedStrategy);
 		qb = applyGroupBy(qb, dsl.groupBy);
-		qb = applyHaving(qb, dsl.having);
-		qb = applyOrder(qb, dsl.orderBy);
-		qb = applyLimit(qb, dsl.limit);
+		qb = applyHaving(qb, dsl.having, preparedStrategy);
+		qb = applyOrder(qb, dsl.orderBy, strategy);
+		qb = applyLimit(qb, dsl.limit, strategy);
 		const { sql, parameters } = qb.compile();
+		return {
+			sql,
+			parameters
+		};
+	};
+	escapeValue = (value) => {
+		if (null === value) return "null";
+		if ("string" == typeof value) return `'${value.replace(/'/g, "''")}'`;
+		if ("number" == typeof value) return `${value}`;
+		if ("boolean" == typeof value) return value ? "TRUE" : "FALSE";
+		return `'${String(value).replace(/'/g, "''")}'`;
+	};
+	inlineParameters = (sql, params, dialect = "duckdb") => {
+		if (0 === params.length) return sql;
+		let index = 0;
+		return sql.replace(/("(?:[^"]|"")*"|'(?:[^']|'')*'|`(?:[^`]|``)*`)|\$(\d+)|\?/g, (match, quoted, numbered) => {
+			if (quoted) return match;
+			const value = params[numbered ? Number(numbered) - 1 : index++];
+			return escapeValue("mysql" === dialect && "string" == typeof value ? value.replaceAll("\\", "\\\\") : value);
+		});
+	};
+	convertDSLToDuckDB = (dsl, table, options = {}) => {
+		const { sql, parameters } = compileQuery(dsl, {
+			...options,
+			table,
+			dialect: "duckdb"
+		});
 		return inlineParameters(sql, parameters);
 	};
 	Dataset = class {
@@ -35524,7 +36193,7 @@ var init_browser = __esmMin((() => {
 			await this.queryAdapter.loadDataset(this._datasetId, columns, datasetSource);
 		}
 		async query(queryDSL) {
-			const sql = convertDSLToSQL(queryDSL, this.datasetId);
+			const sql = convertDSLToDuckDB(queryDSL, this.datasetId);
 			return this.queryBySQL(sql);
 		}
 		async queryBySQL(sql) {
@@ -35641,6 +36310,38 @@ var init_browser = __esmMin((() => {
 			if (!this.db) return Promise.reject("DB is not open");
 			return idbGetAll(this.db, this.datasetStoreName);
 		};
+	};
+	InMemoryAdapter = class {
+		datasets = /* @__PURE__ */ new Map();
+		isOpen = false;
+		open = async () => {
+			this.isOpen = true;
+			this.datasets = /* @__PURE__ */ new Map();
+		};
+		close = async () => {
+			this.isOpen = false;
+			this.datasets.clear();
+		};
+		writeDataset = (datasetId, datasetSchema, datasetSource) => new Promise((resolve) => {
+			const record = {
+				datasetId,
+				datasetSchema,
+				datasetSource
+			};
+			this.datasets.set(datasetId, record);
+			resolve();
+		});
+		readDataset = (datasetId) => new Promise((resolve) => {
+			const record = this.datasets.get(datasetId);
+			resolve(record ? record : null);
+		});
+		deleteDataset = (datasetId) => new Promise((resolve) => {
+			this.datasets.delete(datasetId);
+			resolve();
+		});
+		listDatasets = () => new Promise((resolve) => {
+			resolve(Array.from(this.datasets.values()));
+		});
 	};
 	castValue = (value, column) => {
 		if (null == value || "" === value) return null;
@@ -35988,11 +36689,17 @@ var init_browser = __esmMin((() => {
 			}
 			if (this.match("like") || this.match("ilike")) {
 				const matchedOperator = this.tokens[this.index - 1].value.toLowerCase();
+				const operator = negated ? `not ${matchedOperator}` : matchedOperator;
+				const right = this.scalar();
+				if (this.match("escape")) {
+					const escape = this.scalar();
+					if ("literal" !== escape.type || "" !== escape.value) throw new Error("Only empty LIKE escape is supported");
+				}
 				return {
 					type: "comparison",
-					operator: negated ? `not ${matchedOperator}` : matchedOperator,
+					operator,
 					left,
-					right: this.scalar()
+					right
 				};
 			}
 			if (negated) throw new Error("Expected IN, BETWEEN, LIKE, or ILIKE after NOT");
@@ -36042,9 +36749,13 @@ var init_browser = __esmMin((() => {
 				do {
 					const expression = this.scalar();
 					const direction = this.match("desc") ? "desc" : (this.match("asc"), "asc");
+					let nulls = "last";
+					if (this.match("nulls")) if (this.match("first")) nulls = "first";
+					else this.expect("last");
 					result.orderBy.push({
 						expression,
-						direction
+						direction,
+						nulls
 					});
 				} while (this.match(","));
 			} else if (this.match("limit")) {
@@ -36089,10 +36800,8 @@ var init_browser = __esmMin((() => {
 		}
 		return leftCodePoints.length - rightCodePoints.length;
 	};
-	compare = (left, right) => {
+	compareNonNull = (left, right) => {
 		if (left === right) return 0;
-		if (null == left) return 1;
-		if (null == right) return -1;
 		if ("number" == typeof left && "number" == typeof right) return left - right;
 		return compareText(String(left), String(right));
 	};
@@ -36120,7 +36829,7 @@ var init_browser = __esmMin((() => {
 		};
 		return Object.entries(replacements).reduce((result, [token, replacement]) => result.replaceAll(token, replacement), format);
 	};
-	aggregate = (expression, rows) => {
+	sql_aggregate = (expression, rows) => {
 		const argument = expression.arguments[0] ?? { type: "star" };
 		let values = rows.map((row) => evaluate(argument, row, rows)).filter((value) => null != value);
 		if (expression.distinct) values = [...new Set(values)];
@@ -36133,8 +36842,8 @@ var init_browser = __esmMin((() => {
 			const numbers = numericValues(argument, rows);
 			return numbers.length ? numbers.reduce((sum, value) => sum + value, 0) / numbers.length : null;
 		}
-		if ("min" === expression.name) return values.length ? values.reduce((a, b) => compare(a, b) <= 0 ? a : b) : null;
-		if ("max" === expression.name) return values.length ? values.reduce((a, b) => compare(a, b) >= 0 ? a : b) : null;
+		if ("min" === expression.name) return values.length ? values.reduce((a, b) => compareNonNull(a, b) <= 0 ? a : b) : null;
+		if ("max" === expression.name) return values.length ? values.reduce((a, b) => compareNonNull(a, b) >= 0 ? a : b) : null;
 		const numbers = numericValues(argument, rows).sort((a, b) => a - b);
 		if (!numbers.length) return null;
 		if ("median" === expression.name) {
@@ -36146,7 +36855,8 @@ var init_browser = __esmMin((() => {
 			const value = evaluate(expression.arguments[1], rows[0], rows);
 			const quantile = Number(value);
 			if (null == value || !Number.isFinite(quantile) || quantile < -1 || quantile > 1) throw new Error("QUANTILE parameter must be a number in the range [-1, 1]");
-			return numbers[quantile < 0 ? Math.min(numbers.length + Math.floor(quantile * numbers.length), numbers.length - 1) : Math.max(Math.ceil(quantile * numbers.length) - 1, 0)];
+			const position = Math.max(numbers.length - Math.floor(numbers.length - numbers.length * Math.abs(quantile)), 1);
+			return numbers[quantile < 0 ? numbers.length - position : position - 1];
 		}
 		const average = numbers.reduce((sum, value) => sum + value, 0) / numbers.length;
 		const squared = numbers.reduce((sum, value) => sum + (value - average) ** 2, 0);
@@ -36166,7 +36876,7 @@ var init_browser = __esmMin((() => {
 			const values = expression.parts.map((part) => evaluate(part, row, rows));
 			return values.some((value) => null == value) ? null : values.map(String).join("");
 		}
-		if (isAggregateCall(expression)) return aggregate(expression, rows);
+		if (isAggregateCall(expression)) return sql_aggregate(expression, rows);
 		if ("round" === expression.name) {
 			const value = evaluate(expression.arguments[0], row, rows);
 			if (null == value) return null;
@@ -36221,14 +36931,14 @@ var init_browser = __esmMin((() => {
 		if ("in" === predicate.operator || "not in" === predicate.operator) {
 			const values = predicate.values.map((value) => evaluate(value, row, rows));
 			if (null == left) return null;
-			if (values.some((value) => null != value && 0 === compare(left, value))) return "in" === predicate.operator;
+			if (values.some((value) => null != value && 0 === compareNonNull(left, value))) return "in" === predicate.operator;
 			if (values.some((value) => null == value)) return null;
 			return "not in" === predicate.operator;
 		}
 		if ("between" === predicate.operator || "not between" === predicate.operator) {
 			const values = predicate.values.map((value) => evaluate(value, row, rows));
 			if (null == left || values.some((value) => null == value)) return null;
-			const found = compare(left, values[0]) >= 0 && compare(left, values[1]) <= 0;
+			const found = compareNonNull(left, values[0]) >= 0 && compareNonNull(left, values[1]) <= 0;
 			return "between" === predicate.operator ? found : !found;
 		}
 		const operator = predicate.operator;
@@ -36239,7 +36949,7 @@ var init_browser = __esmMin((() => {
 			return operator.startsWith("not ") ? !result : result;
 		}
 		if (null == left || null == right) return null;
-		const comparison = compare(left, right);
+		const comparison = compareNonNull(left, right);
 		if ("=" === operator) return 0 === comparison;
 		if ("!=" === operator || "<>" === operator) return 0 !== comparison;
 		if (">" === operator) return comparison > 0;
@@ -36297,7 +37007,13 @@ var init_browser = __esmMin((() => {
 				const fieldName = "field" === order.expression.type ? order.expression.name : void 0;
 				const leftValue = fieldName && Object.hasOwn(left.output, fieldName) ? left.output[fieldName] : evaluate(order.expression, left.row, left.rows);
 				const rightValue = fieldName && Object.hasOwn(right.output, fieldName) ? right.output[fieldName] : evaluate(order.expression, right.row, right.rows);
-				const result = compare(leftValue, rightValue);
+				const leftNull = null == leftValue;
+				const rightNull = null == rightValue;
+				if (leftNull || rightNull) {
+					if (leftNull !== rightNull) return (leftNull ? 1 : -1) * ("first" === order.nulls ? -1 : 1);
+					continue;
+				}
+				const result = compareNonNull(leftValue, rightValue);
 				if (0 !== result) return "desc" === order.direction ? -result : result;
 			}
 			if (!query.groupBy.length || !query.orderBy.length) return 0;
@@ -36438,8 +37154,8 @@ var init_browser = __esmMin((() => {
 		}
 	};
 	vquery_browser_VQuery = class extends VQuery {
-		constructor() {
-			super(new InMemoryQueryAdapter(), new IndexedDBAdapter());
+		constructor({ enableIndexedDB = false } = {}) {
+			super(new InMemoryQueryAdapter(), enableIndexedDB ? new IndexedDBAdapter() : new InMemoryAdapter());
 		}
 	};
 }));
@@ -37041,7 +37757,7 @@ var init_vbi_config_provider = __esmMin((() => {
 	init_esm();
 	init_browser();
 	init_random();
-	init_dataset$2();
+	init_dataset$3();
 	init_fieldRole();
 	init_chart_context();
 	init_preload_helper();

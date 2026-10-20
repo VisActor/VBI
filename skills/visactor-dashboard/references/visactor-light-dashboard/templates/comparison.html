@@ -97,6 +97,59 @@
         width: 100%;
         height: auto;
       }
+      .preview {
+        display: block;
+        position: relative;
+        min-height: 240px;
+        background: #f4f7fa;
+      }
+      .preview img {
+        transition: opacity 160ms ease;
+      }
+      .preview[aria-busy='true'] img {
+        opacity: 0.25;
+      }
+      .image-status {
+        position: absolute;
+        top: 16px;
+        left: 12px;
+        right: 12px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: white;
+        color: #345b85;
+        box-shadow: 0 2px 12px #29374412;
+        font-size: 12px;
+        text-align: center;
+      }
+      .preview[aria-busy='true'] .image-status::before {
+        content: '';
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 8px;
+        border: 2px solid #d6e1ed;
+        border-top-color: #345b85;
+        border-radius: 50%;
+        vertical-align: -2px;
+        animation: loading 0.8s linear infinite;
+      }
+      .preview[data-state='error'] img {
+        visibility: hidden;
+      }
+      @keyframes loading {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .preview img {
+          transition: none;
+        }
+        .preview .image-status::before {
+          animation: none;
+        }
+      }
       .reason {
         max-width: 1080px;
         margin: 22px 0;
@@ -180,6 +233,61 @@
             catalog.findIndex((entry) => entry.path === new URLSearchParams(location.search).get('template')),
           ),
           mode = 'desktop'
+        const previewRequests = new WeakMap()
+        function loadPreview(image, source) {
+          if (image.dataset.requested === source) return
+          const previous = previewRequests.get(image)
+          if (previous) previous.src = ''
+          image.dataset.requested = source
+          const link = image.parentElement,
+            status = link.querySelector('.image-status')
+          link.dataset.state = 'loading'
+          link.setAttribute('aria-busy', 'true')
+          link.href = source
+          status.hidden = false
+          status.textContent = '截图加载中…'
+          const pending = new Image()
+          previewRequests.set(image, pending)
+          pending.decoding = 'async'
+          pending.src = source
+          pending.decode().then(
+            () => {
+              if (previewRequests.get(image) !== pending) return
+              previewRequests.delete(image)
+              image.width = pending.naturalWidth
+              image.height = pending.naturalHeight
+              image.src = source
+              link.dataset.state = 'ready'
+              link.setAttribute('aria-busy', 'false')
+              status.hidden = true
+            },
+            () => {
+              if (previewRequests.get(image) !== pending) return
+              previewRequests.delete(image)
+              link.dataset.state = 'error'
+              link.setAttribute('aria-busy', 'false')
+              status.textContent = '截图加载失败，点击重试'
+            },
+          )
+        }
+        document.querySelectorAll('.comparison img').forEach((image) => {
+          const link = image.parentElement,
+            status = document.createElement('span')
+          link.classList.add('preview')
+          status.className = 'image-status'
+          status.setAttribute('role', 'status')
+          link.append(status)
+          image.decoding = 'async'
+          link.addEventListener('click', (event) => {
+            if (link.dataset.state === 'ready') return
+            event.preventDefault()
+            if (link.dataset.state === 'error') {
+              const source = image.dataset.requested
+              delete image.dataset.requested
+              loadPreview(image, source)
+            }
+          })
+        })
         function render() {
           const entry = catalog[index],
             suffix = mode === 'mobile' ? '-mobile' : ''
@@ -189,13 +297,11 @@
             `${index + 1} / ${catalog.length} · ${mode === 'mobile' ? '390 × 844' : '1440 × 1000'}`
           document.querySelector('#reason').textContent = entry.layoutReason + ' ' + entry.colorReason
           const image = entry.path.replace('.html', suffix + '.png')
-          document.querySelector('#target').src = image
-          document.querySelector('#target-image-link').href = image
+          loadPreview(document.querySelector('#target'), image)
           document.querySelector('#target-link').href = entry.path
           document.querySelector('#target-link').textContent = entry.title
           document.querySelectorAll('.reference').forEach((image) => {
-            image.src = `${image.dataset.stem}${suffix}.png`
-            image.parentElement.href = image.src
+            loadPreview(image, `${image.dataset.stem}${suffix}.png`)
           })
           document.querySelector('#previous').disabled = index === 0
           document.querySelector('#next').disabled = index === catalog.length - 1

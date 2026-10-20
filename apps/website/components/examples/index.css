@@ -43,3 +43,7 @@
     padding-left: 12px;
   }
 }
+
+.dashboard-examples__frame--map {
+  height: calc(100dvh - var(--rp-nav-height, 64px) - 176px);
+}
