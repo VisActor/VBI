@@ -1,6 +1,6 @@
 # Filter 筛选器最佳实践
 
-适用于 light-dashboard 主页和指标分析面板的地区、周期、类别等筛选组件。**胶囊平铺与定制 Select 是两种标准外观，按选项数量、标签长度和可用空间选择。** UI 负责呈现与操作，用 VBI Builder 修改数据范围，复用图表实例通过 `updateSpec()` 更新，并同步播放指标文本动画。参考[完整轻量看板](../templates/example.html)的周期按钮、`setPeriod()`、`applyPeriod()`、`requestRender()` 和 `draw()`；地区与周期组合见[精简模板](../templates/template-business-overview.html)的 `applyFilters()`。
+适用于 visactor-light-dashboard 主页和指标分析面板的地区、周期、类别等筛选组件。**胶囊平铺与定制 Select 是两种标准外观，按选项数量、标签长度和可用空间选择。** UI 负责呈现与操作，用 VBI Builder 修改数据范围，复用图表实例通过 `updateSpec()` 更新，并同步播放指标文本动画。参考[完整轻量看板](../templates/example.html)的周期按钮、`setPeriod()`、`applyPeriod()`、`requestRender()` 和 `draw()`；地区与周期组合见[精简模板](../templates/template-business-overview.html)的 `applyFilters()`。
 
 ## 选型与用户动线
 

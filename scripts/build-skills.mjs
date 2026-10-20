@@ -6,7 +6,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { buildSkillApi, skillApiStageCount } from './build-skill-api.mjs'
 
 const repoDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const scenes = ['light-dashboard', 'map-dashboard']
+const scenes = ['visactor-light-dashboard', 'visactor-map2d-dashboard']
 const sharedReferences = ['metric-analysis', 'visual-query', 'server-runtime']
 const excludedDirectories = new Set(['node_modules', '.git', '.turbo', 'coverage', 'dist', '__pycache__'])
 const archiveTime = new Date('1980-01-01T00:00:00Z')

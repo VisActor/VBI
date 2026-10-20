@@ -9,8 +9,8 @@ pnpm build:skills
 需要根目录声明的 Node.js、pnpm 版本，以及系统 `zip` 命令。`build-skills.mjs` 每次运行
 都会先从源码重新生成 `skills/visactor-dashboard/api/`，成功后再打包：
 
-- `dist/skills/light-dashboard.zip`
-- `dist/skills/map-dashboard.zip`
+- `dist/skills/visactor-light-dashboard.zip`
+- `dist/skills/visactor-map2d-dashboard.zip`
 
 执行时按 `[1/11]` 至 `[11/11]` 输出当前阶段：目录检查、各包 API 生成与格式化、API 写入、两个 ZIP 打包和产物写入。提示在阶段开始前输出；全部成功后列出完成的文件及路径，失败时最后一条进度指出出错阶段。
 
