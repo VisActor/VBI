@@ -319,7 +319,7 @@ VTable 的构造函数接收容器和 options，不调用 VChart 的 `renderSync
 ### 配置、查询与渲染分别使用对应入口
 
 - `builder.build()` 返回可序列化的 VBI 图表 DSL；`builder.buildVQuery()` 只生成查询，不请求数据。只构建这两种配置时，不必注册连接器或创建渲染器。
-- `buildVSeed()` 会调用连接器的 `discoverSchema()` 和 `query()`，此前需要注册对应的 `connectorId`。返回数据以维度、度量 ID 为列名，保留这些 ID 供 VSeed 使用。
+- `buildVSeed()` 会调用连接器的 `discoverSchema()` 和 `query()`，执行查询前先注册对应的 `connectorId`。返回数据以维度、度量 ID 为列名，保留这些 ID 供 VSeed 使用。
 - 修改字段、聚合和过滤条件后重新查询。只修改视觉样式时，可以基于已有 seed 构建新 options；同一份查询结果也可以同时提供给图形、指标卡和 HTML 表格。
 - VChart 与 VTable 的原生配置不同。先在 VSeed 层设置支持的主题、格式或样式，再按所选渲染器补充特有配置，具体分层见[查询与渲染](query-and-render.md)。
 
