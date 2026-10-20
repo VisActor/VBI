@@ -1,6 +1,6 @@
 # 模板适配
 
-默认复制完整模板并运行，再替换业务数据和展示槽位。保留适用的通用机制；不匹配的数据粒度、业务图表与动效可以删除或替换。已有宿主和用户指定设计优先，改变能力时说明原因并按[验收标准](acceptance.md)核对结果。
+默认复制完整模板并运行，再替换业务数据和展示槽位。业务语义不适用时，先判断表现机制能否用于有依据的语义，再删除或替换。已有宿主和用户指定设计优先，改变能力时说明原因、替代体验与视觉影响，并按[验收标准](acceptance.md)核对结果。
 
 ## 复用边界
 
@@ -46,6 +46,7 @@ const visibleRecords = pointRows.map((row) => {
 | 源数据与字段   | `loadFeed`、`normalize`、`SOURCE_ID`、`schema`、`refresh`                          | 替换来源、字段及 Connector ID；同步调整数据集更新与释放路径。数据接入按 [server-runtime](../../server-runtime/SKILL.md#数据接入判断)。 |
 | 查询与筛选     | `chart`、`summary`、`eventTable`、`rangeConditions`、`applyRange`、`updateFilters` | 调整维度、聚合、投影与筛选条件；主屏和分析沿用同一范围，保留失败回退。                                                                 |
 | 地图与详情     | `initializeMap`、`renderMap`、`eventIndex`、`recordDetail`、`renderList`           | 替换实体 ID、点标与事实字段，保留导航、选中、返回与清理。                                                                              |
+| 地图动效       | `renderMapEffects`、`positionMapEffects`、`syncMotion`                             | 复用投影、涟漪与暂停机制，按[标记点与动效](open-street-map.md#标记点与动效)适配语义。                                                  |
 | 指标分析       | `quakeMetric`、`quakeAnalysisContext`、`bindMapMetricAnalysis`                     | 替换指标、条件、分组、明细与格式，保留容器、生命周期和标题入口。                                                                       |
 | 渲染与释放     | `renderMetrics`、`renderDistributions`、`render`、`refresh`、`pagehide`            | 替换业务展示，保留批量查询、原位更新、请求取消和资源释放。                                                                             |
 

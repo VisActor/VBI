@@ -8,6 +8,7 @@ import { test } from 'node:test'
 import { buildSkills } from './build-skills.mjs'
 
 const scenes = ['visactor-light-dashboard', 'visactor-map2d-dashboard']
+const archiveNames = [...scenes, 'light-dashboard']
 
 test('CLI builds archives from the calling repository', (t) => {
   const { repoRoot, source } = fixture(t)
@@ -19,7 +20,7 @@ test('CLI builds archives from the calling repository', (t) => {
   const stages = [...output.matchAll(/\[build:skills\] \[(\d+)\/(\d+)\] (.+)/g)]
   assert.deepEqual(
     stages.map(([, step]) => Number(step)),
-    Array.from({ length: 11 }, (_, i) => i + 1),
+    Array.from({ length: 12 }, (_, i) => i + 1),
   )
   assert.ok(stages.every(([, , total]) => Number(total) === stages.length))
   assert.deepEqual(
@@ -35,11 +36,12 @@ test('CLI builds archives from the calling repository', (t) => {
       '写入 API 文档',
       '检查资源并打包 visactor-light-dashboard.zip',
       '检查资源并打包 visactor-map2d-dashboard.zip',
+      '检查资源并打包 light-dashboard.zip',
       '写入分发产物 dist/skills',
     ],
   )
-  assert.ok(output.indexOf('[11/11]') < output.indexOf('[build:skills] 完成'))
-  for (const name of scenes) {
+  assert.ok(output.indexOf('[12/12]') < output.indexOf('[build:skills] 完成'))
+  for (const name of archiveNames) {
     assert.ok(output.includes(`${name}.zip`))
     const archive = path.join(repoRoot, 'dist/skills', `${name}.zip`)
     const downloaded = extract(t, archive)
@@ -149,7 +151,10 @@ test('builds self-contained scene archives with rewritten references and unchang
   const { repoRoot, source } = fixture(t)
   const before = contents(source)
   const packages = await buildSkills({ repoRoot })
-  assert.equal(packages.length, 2)
+  assert.deepEqual(
+    packages.map(({ name }) => name),
+    archiveNames,
+  )
   assert.deepEqual(new Map([...contents(source)].filter(([file]) => !file.startsWith('api/'))), before)
   assert.deepEqual(fs.readdirSync(path.join(repoRoot, 'skills')), ['visactor-dashboard'])
   for (const { name, archive, files } of packages) {
@@ -160,6 +165,20 @@ test('builds self-contained scene archives with rewritten references and unchang
     const resources = contents(root)
     assert.equal(resources.size, files)
     assert.ok(resources.has('SKILL.md'))
+    assert.match(resources.get('SKILL.md').toString(), new RegExp(`^---\\nname: ${name}\\n`))
+    if (name === 'light-dashboard') {
+      const canonical = contents(path.join(extract(t, packages[0].archive), 'visactor-light-dashboard'))
+      canonical.set(
+        'SKILL.md',
+        Buffer.from(
+          canonical
+            .get('SKILL.md')
+            .toString()
+            .replace(/^name:.*$/m, `name: ${name}`),
+        ),
+      )
+      assert.deepEqual(resources, canonical)
+    }
     assert.ok(resources.has('agents/openai.yaml'))
     assert.ok(resources.has('references/server-runtime/scripts/runtime/.env.example'))
     assert.ok(resources.has('references/server-runtime/scripts/runtime/server.mjs'))
@@ -235,7 +254,7 @@ test('rejects reverse and cross-scene dependencies while preserving previous arc
         new RegExp(`Forbidden skill dependency: ${owner} → ${dependency}`),
       )
       assert.deepEqual(
-        scenes.map((name) => fs.readFileSync(path.join(repoRoot, 'dist/skills', `${name}.zip`))),
+        archiveNames.map((name) => fs.readFileSync(path.join(repoRoot, 'dist/skills', `${name}.zip`))),
         previous,
       )
     }

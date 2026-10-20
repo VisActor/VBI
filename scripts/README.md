@@ -11,10 +11,12 @@ pnpm build:skills
 
 - `dist/skills/visactor-light-dashboard.zip`
 - `dist/skills/visactor-map2d-dashboard.zip`
+- `dist/skills/light-dashboard.zip`（保留旧技能名称，复用轻量看板资源）
 
-执行时按 `[1/11]` 至 `[11/11]` 输出当前阶段：目录检查、各包 API 生成与格式化、API 写入、两个 ZIP 打包和产物写入。提示在阶段开始前输出；全部成功后列出完成的文件及路径，失败时最后一条进度指出出错阶段。
+执行时按 `[1/12]` 至 `[12/12]` 输出当前阶段：目录检查、各包 API 生成与格式化、API 写入、三个 ZIP 打包和产物写入。提示在阶段开始前输出；全部成功后列出完成的文件及路径，失败时最后一条进度指出出错阶段。
 
 每个 ZIP 包含同名技能根目录及其 `SKILL.md`、元数据、模板、公共查询与服务能力、API。
+根目录 `SKILL.md` 的 `name` 与 ZIP 文件名一致；`light-dashboard.zip` 使用 `light-dashboard/` 根目录和 `name: light-dashboard`，其余资源与 `visactor-light-dashboard.zip` 相同。
 两个看板都包含 `metric-analysis`、`server-runtime`、`visual-query` 三份公共指南；地图场景另有自身的指标分析指南。
 场景文档链接在打包时重写；缺失或未打包的本地文档依赖会使构建失败。
 两个看板可以引用上述公共指南，公共指南禁止反向引用看板；两个看板禁止彼此引用。
