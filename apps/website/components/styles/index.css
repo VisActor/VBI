@@ -1,11 +1,55 @@
 @import '../../theme/index.css';
 @import '../examples/index.css';
 
-.rp-playground {
-  margin: 0 !important;
+.rp-doc-layout__container:has(.playground-page) {
+  --rp-sidebar-margin-left: 0px;
+  --rp-outline-margin-right: 0px;
 }
-.rp-playground-horizontal {
-  height: calc(100vh - 72px) !important;
+
+.rp-doc-layout__container:has(.playground-page) .rp-doc-layout__doc {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: none;
+}
+
+.rp-doc-layout__container:has(.playground-page) .rp-doc-layout__doc-container {
+  box-sizing: border-box;
+  display: flex;
+  min-width: 0;
+  height: calc(100dvh - var(--rp-nav-height) - var(--rp-sidebar-menu-height) - var(--rp-banner-height, 0px));
+  min-height: 420px;
+  padding: 24px;
+}
+
+.rp-doc-layout__container:has(.playground-page) .rspress-doc {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  max-width: none;
+}
+
+.rp-doc-layout__container:has(.playground-page) .rspress-doc > h1 {
+  flex-shrink: 0;
+}
+
+.playground-page {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.playground-page .rp-playground-horizontal {
+  flex: 1;
+  min-width: 0;
+  height: auto;
+  margin: 0;
+}
+
+.playground-page .rp-playground-runner,
+.playground-page .rp-playground-editor {
+  min-width: 0;
 }
 
 .rp-doc-layout__container:has(.starter-page) .rp-doc-layout__doc {

@@ -21,7 +21,7 @@
         margin: 0;
         min-height: 100svh;
         color: var(--ink);
-        font-family: Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        font-family: var(--font-ui);
         -webkit-font-smoothing: antialiased;
       }
       body::before {
@@ -305,31 +305,6 @@
         cursor: pointer;
         font-size: 13px;
       }
-      .table-wrap {
-        overflow-x: auto;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 16px;
-        font-size: 12px;
-        font-variant-numeric: tabular-nums;
-      }
-      th,
-      td {
-        padding: 12px 8px;
-        border-bottom: 1px solid #e5eaee;
-        text-align: right;
-        white-space: nowrap;
-      }
-      th {
-        color: var(--muted);
-        font-weight: 500;
-      }
-      th:first-child,
-      td:first-child {
-        text-align: left;
-      }
       footer {
         margin-top: 24px;
       }
@@ -369,7 +344,6 @@
       }
 
       :root {
-        --surface: #fbfdff;
         --border: #e5eaee;
       }
       .brand {
@@ -396,9 +370,6 @@
       }
       .brand-mark i:last-child {
         opacity: 0.45;
-      }
-      .card {
-        border: 1px solid #ffffffb0;
       }
       #filters {
         align-self: center;
@@ -443,23 +414,6 @@
       #main-empty {
         position: absolute;
         inset: 70px 0 auto;
-      }
-      .pagination {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        justify-content: flex-end;
-        margin-top: 14px;
-      }
-      .pagination button {
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 6px 12px;
-        font-size: 12px;
-      }
-      .pagination button:disabled {
-        cursor: default;
       }
       .table-caption {
         text-align: left;
@@ -564,9 +518,7 @@
         font-size: 30px;
       }
       .card {
-        border-radius: 26px;
-        background: #ffffffed;
-        box-shadow: 0 18px 48px -32px #25344835;
+        border-radius: 22px;
       }
       .insight {
         padding: 24px 28px;
@@ -806,6 +758,65 @@
         }
       }
     </style>
+    <style id="dashboard-material">
+      /* 与地图模板共用玻璃层次；每个阅读面只做一次背景模糊。 */
+      :root {
+        --chart-track: #dce5f7;
+        --glass-surface: rgb(255 255 255 / 46%);
+        --glass-fallback: #f8fafc;
+        --glass-filter: blur(14px) saturate(1.08) brightness(1.02);
+        --glass-sheen: linear-gradient(145deg, rgb(255 255 255 / 32%), rgb(255 255 255 / 4%) 58%);
+        --glass-background: var(--glass-sheen), var(--glass-surface);
+        --glass-edge: rgb(255 255 255 / 64%);
+        --glass-shadow:
+          0 18px 48px -20px rgb(40 51 62 / 15%), 0 4px 16px -8px rgb(40 51 62 / 8%),
+          inset 0 1px 0 rgb(255 255 255 / 76%), inset 0 -1px 0 rgb(255 255 255 / 16%);
+        --glass-tile: linear-gradient(145deg, rgb(255 255 255 / 48%), rgb(255 255 255 / 20%));
+        --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 68%), 0 5px 16px -12px rgb(40 51 62 / 12%);
+        --glass-control: rgb(255 255 255 / 48%);
+        --glass-control-hover: rgb(255 255 255 / 76%);
+        --glass-divider: rgb(104 122 143 / 12%);
+        --overlay-duration: 420ms;
+        --overlay-stagger: 55ms;
+        --overlay-easing: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .card,
+      #dashboard-content > details {
+        background: var(--glass-background);
+        border: 1px solid var(--glass-edge);
+        box-shadow: var(--glass-shadow);
+        backdrop-filter: var(--glass-filter);
+        -webkit-backdrop-filter: var(--glass-filter);
+      }
+      /* 底部明细保留更轻、更透的阅读面，与上方指标卡区分。 */
+      #dashboard-content > details {
+        --glass-surface: rgb(255 255 255 / 24%);
+        --glass-background:
+          linear-gradient(145deg, rgb(255 255 255 / 14%), rgb(255 255 255 / 2%) 58%), var(--glass-surface);
+        --glass-edge: rgb(255 255 255 / 34%);
+        --glass-shadow: 0 10px 32px -24px rgb(40 51 62 / 10%), inset 0 1px 0 rgb(255 255 255 / 38%);
+      }
+      .hero-bottom,
+      .hero-bottom > div + div {
+        border-color: var(--glass-divider);
+      }
+      @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        .card,
+        #dashboard-content > details,
+        dialog.ma-dialog {
+          background: var(--glass-fallback);
+        }
+      }
+      @media (prefers-reduced-transparency: reduce) {
+        .card,
+        #dashboard-content > details,
+        dialog.ma-dialog {
+          background: var(--glass-fallback);
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+        }
+      }
+    </style>
     <style id="metric-analysis-style">
       /* 指标入口保持轻量；分析内容仅在用户打开后呈现。 */
       .ma-entry,
@@ -837,21 +848,112 @@
         opacity: 1;
       }
       .ma-dialog {
-        color: #28333e;
-        background: #fff;
-        border: 1px solid #e4e9ef;
-        border-radius: 20px;
+        --glass-surface: rgb(255 255 255 / 78%);
+        --glass-background: var(--glass-sheen), var(--glass-surface);
+        color: var(--ink);
+        background: var(--glass-background);
+        border: 1px solid var(--glass-edge);
+        border-radius: 22px;
+        backdrop-filter: var(--glass-filter);
+        -webkit-backdrop-filter: var(--glass-filter);
         padding: 0;
         width: min(1120px, calc(100vw - 48px));
         max-width: none;
         height: min(780px, calc(100dvh - 48px));
         max-height: calc(100dvh - 48px);
         overflow: hidden;
-        box-shadow: 0 24px 100px #15203030;
+        box-shadow:
+          var(--glass-shadow),
+          0 32px 100px -24px rgb(21 32 48 / 24%);
       }
       .ma-dialog::backdrop {
-        background: #17243655;
-        backdrop-filter: blur(5px);
+        background: rgb(38 51 69 / 22%);
+        backdrop-filter: blur(7px);
+        -webkit-backdrop-filter: blur(7px);
+      }
+      /* 整体先展开；内容绘制就绪后分批出现，局部筛选不重播。 */
+      .ma-dialog[open] {
+        animation: overlay-enter var(--overlay-duration) var(--overlay-easing) backwards;
+      }
+      .ma-dialog[open]::backdrop {
+        animation: overlay-scrim-enter 260ms ease-out backwards;
+      }
+      .ma-dialog:not([data-content-enter='true']) .ma-content {
+        visibility: hidden;
+      }
+      .ma-dialog[open] .ma-header h2,
+      .ma-dialog[open] .ma-header .ma-scope,
+      .ma-dialog[open] .ma-close,
+      .ma-dialog[data-content-enter='true'] .ma-summary > *,
+      .ma-dialog[data-content-enter='true'] .ma-toolbar > *,
+      .ma-dialog[data-content-enter='true'] .ma-chart-panel,
+      .ma-dialog[data-content-enter='true'] .ma-table-panel,
+      .ma-dialog[data-content-enter='true'] .ma-definition {
+        animation: overlay-content-enter 380ms var(--overlay-easing) backwards;
+        animation-delay: calc(100ms + var(--overlay-order, 0) * var(--overlay-stagger));
+      }
+      .ma-header .ma-scope {
+        --overlay-order: 1;
+      }
+      .ma-summary > :first-child {
+        --overlay-order: 2;
+      }
+      .ma-summary > :last-child {
+        --overlay-order: 3;
+      }
+      .ma-modes {
+        --overlay-order: 4;
+      }
+      .ma-selection {
+        --overlay-order: 5;
+      }
+      .ma-picker {
+        --overlay-order: 6;
+      }
+      .ma-chart-panel {
+        --overlay-order: 7;
+      }
+      .ma-table-panel {
+        --overlay-order: 8;
+      }
+      .ma-definition {
+        --overlay-order: 9;
+      }
+      @keyframes overlay-enter {
+        from {
+          opacity: 0;
+          transform: translateY(14px) scale(0.985);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes overlay-content-enter {
+        from {
+          opacity: 0;
+          transform: translateY(9px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes overlay-scrim-enter {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .ma-dialog,
+        .ma-dialog *,
+        .ma-dialog::backdrop {
+          animation: none !important;
+          transition: none !important;
+        }
       }
       .ma-dialog .ma-shell {
         display: flex;
@@ -865,7 +967,7 @@
         justify-content: space-between;
         gap: 20px;
         padding: 22px 28px 18px;
-        border-bottom: 1px solid #edf0f4;
+        border-bottom: 1px solid var(--glass-divider);
         flex: none;
       }
       .ma-dialog .ma-header > div {
@@ -890,21 +992,22 @@
         font: inherit;
         font-size: 12px;
         line-height: 1.4;
-        border: 1px solid #e2e7ed;
-        background: #fff;
-        color: #526173;
-        border-radius: 7px;
+        border: 0;
+        background: var(--glass-control);
+        color: var(--muted);
+        border-radius: 9px;
         padding: 7px 10px;
         cursor: pointer;
         box-shadow: none;
         transform: none;
       }
       .ma-dialog button:hover {
-        background: #f3f6f9;
+        background: var(--glass-control-hover);
+        color: var(--ink);
       }
       .ma-dialog button:focus-visible,
       .ma-dialog summary:focus-visible {
-        outline: 2px solid var(--ma-accent);
+        outline: 2px solid var(--focus-ring);
         outline-offset: 3px;
       }
       .ma-dialog button:disabled {
@@ -912,9 +1015,8 @@
         cursor: default;
       }
       .ma-dialog button[aria-pressed='true'] {
-        border-color: var(--ma-accent);
-        background: color-mix(in srgb, var(--ma-accent) 14%, white);
-        color: #28333e;
+        background: color-mix(in srgb, var(--ma-accent) 24%, rgb(255 255 255 / 68%));
+        color: var(--ink);
       }
       .ma-dialog button.ma-close {
         display: grid;
@@ -926,7 +1028,7 @@
         line-height: 1;
         padding: 0;
         border: 0;
-        color: #718092;
+        color: var(--text-secondary);
       }
       .ma-dialog .ma-body {
         position: relative;
@@ -940,16 +1042,18 @@
       }
       .ma-dialog .ma-eyebrow {
         font-size: 11px;
-        color: #748092;
+        color: var(--text-faint);
         line-height: 1.6;
       }
       .ma-dialog .ma-scope,
       .ma-dialog .ma-hint {
-        color: #7b8795;
+        color: var(--text-faint);
         font-size: 11px;
         line-height: 1.6;
       }
       .ma-dialog .ma-toolbar {
+        position: relative;
+        z-index: 1;
         grid-column: 1 / -1;
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 220px) auto;
@@ -968,12 +1072,12 @@
         align-items: center;
         gap: 7px;
         font-size: 12px;
-        color: #445569;
+        color: var(--text-secondary);
       }
       .ma-dialog .ma-selection button {
         border: 0;
         padding: 5px 6px;
-        color: #748092;
+        color: var(--text-faint);
       }
       .ma-dialog .ma-feedback {
         position: absolute;
@@ -981,7 +1085,7 @@
         left: 28px;
         right: 28px;
         font-size: 11px;
-        color: #718092;
+        color: var(--text-secondary);
         line-height: 1.7;
       }
       .ma-dialog .ma-feedback:empty {
@@ -1031,7 +1135,7 @@
       .ma-dialog .ma-finding {
         font-size: 12px;
         line-height: 1.8;
-        color: #5a6778;
+        color: var(--text-secondary);
         max-height: 80px;
         overflow: auto;
       }
@@ -1041,8 +1145,10 @@
         flex-direction: column;
         min-width: 0;
         padding: 16px;
-        border: 1px solid #e8edf2;
-        border-radius: 12px;
+        border: 1px solid rgb(255 255 255 / 42%);
+        border-radius: 14px;
+        background: var(--glass-tile);
+        box-shadow: var(--glass-tile-shadow);
       }
       .ma-dialog .ma-panel-heading {
         display: flex;
@@ -1066,12 +1172,6 @@
         width: 100%;
         margin-top: 10px;
       }
-      .ma-dialog .ma-pagination {
-        display: flex;
-        align-items: center;
-        min-height: 30px;
-        margin-top: 12px;
-      }
       .ma-dialog .ma-picker {
         position: relative;
         margin: 0 0 0 auto;
@@ -1084,12 +1184,13 @@
       .ma-dialog .ma-picker > summary {
         list-style: none;
         font-size: 12px;
-        color: #526173;
+        color: var(--text-secondary);
         cursor: pointer;
         padding: 7px 10px;
         line-height: 1.4;
-        border: 1px solid #e2e7ed;
-        border-radius: 7px;
+        border: 0;
+        border-radius: 9px;
+        background: var(--glass-control);
       }
       .ma-dialog .ma-picker > summary::-webkit-details-marker {
         display: none;
@@ -1110,9 +1211,9 @@
         max-height: 280px;
         overflow: auto;
         padding: 6px;
-        background: #fff;
-        border: 1px solid #e2e7ed;
-        border-radius: 10px;
+        background: var(--glass-fallback);
+        border: 1px solid var(--glass-edge);
+        border-radius: 12px;
         box-shadow: 0 8px 30px #1520301a;
       }
       .ma-dialog .ma-groups button {
@@ -1129,7 +1230,7 @@
         background: transparent;
         font-size: 11px;
         line-height: 1.8;
-        color: #718092;
+        color: var(--text-secondary);
       }
       .ma-dialog .ma-definition summary {
         cursor: pointer;
@@ -1137,16 +1238,6 @@
       }
       .ma-dialog .ma-definition p {
         margin-top: 8px;
-      }
-      .ma-dialog .ma-pagination {
-        gap: 6px;
-        justify-content: space-between;
-        font-size: 11px;
-        color: #718092;
-        font-variant-numeric: tabular-nums;
-      }
-      .ma-dialog .ma-pagination button {
-        padding: 5px 8px;
       }
       .ma-dialog [hidden] {
         display: none !important;
@@ -1240,14 +1331,253 @@
           grid-row: 2;
           width: 100%;
         }
-        .ma-dialog .ma-pagination {
-          gap: 4px;
-        }
-        .ma-dialog .ma-pagination button {
-          padding: 6px;
-        }
       }
     </style>
+    <style id="dashboard-table-tokens">
+      /* Shared semantic tokens. Theme palettes supply --ink, --muted and --accent. */
+      :root {
+        --font-ui: var(--dashboard-font-family, Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif);
+        --text-primary: var(--ink);
+        --text-strong: var(--strong, var(--ink));
+        --text-secondary: var(--muted);
+        --text-faint: color-mix(in srgb, var(--muted) 88%, transparent);
+        --focus-ring: color-mix(in srgb, var(--accent) 68%, var(--ink));
+        --table-canvas: transparent;
+        --table-body: rgb(255 255 255 / 6%);
+        --table-stripe: rgb(255 255 255 / 18%);
+        --table-header: color-mix(in srgb, var(--ink) 3%, rgb(255 255 255 / 66%));
+        --table-text: var(--text-primary);
+        --table-header-text: var(--text-strong);
+        --table-divider: color-mix(in srgb, var(--ink) 8%, transparent);
+        --table-frame: color-mix(in srgb, var(--ink) 10%, transparent);
+        --table-hover: color-mix(in srgb, var(--accent) 15%, transparent);
+        --table-hover-row: color-mix(in srgb, var(--accent) 8%, transparent);
+        --table-selected: color-mix(in srgb, var(--accent) 25%, transparent);
+        --table-selected-row: color-mix(in srgb, var(--accent) 9%, transparent);
+        --table-selected-border: color-mix(in srgb, var(--accent) 70%, var(--ink));
+        --table-scroll-thumb: color-mix(in srgb, var(--muted) 38%, transparent);
+        --table-scroll-rail: transparent;
+        --table-font-size: 12px;
+        --table-header-font-size: 11px;
+        --table-row-height: 40px;
+        --table-header-height: 38px;
+        --table-selection-width: 1px;
+        --table-radius: 10px;
+        --table-overview-max-height: 398px;
+      }
+      :root[data-mode='dark'] {
+        --table-body: transparent;
+        --table-stripe: color-mix(in srgb, var(--ink) 3%, transparent);
+        --table-header: color-mix(in srgb, var(--ink) 6%, transparent);
+        --table-divider: color-mix(in srgb, var(--ink) 9%, transparent);
+        --table-frame: color-mix(in srgb, var(--ink) 12%, transparent);
+      }
+      .dashboard-table,
+      .ma-dialog .ma-table {
+        border-radius: var(--table-radius);
+        overflow: hidden;
+        outline: none;
+      }
+      .dashboard-table:focus-visible,
+      .ma-dialog .ma-table:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 3px;
+      }
+      .dashboard-table {
+        position: relative;
+        width: 100%;
+        height: var(--table-overview-max-height);
+        margin-top: 14px;
+      }
+      .dashboard-table[data-empty='true']::after {
+        content: '当前筛选暂无数据';
+        position: absolute;
+        inset: 45% 0 auto;
+        text-align: center;
+        color: var(--text-secondary);
+        font: 12px var(--font-ui);
+        pointer-events: none;
+      }
+      .dashboard-table-caption {
+        margin: 16px 0 0;
+        color: var(--text-secondary);
+        font-size: 12px;
+        line-height: 1.85;
+      }
+      .dashboard-table-count {
+        margin-left: 10px;
+        color: var(--text-faint);
+        font-size: 11px;
+        font-weight: 400;
+      }
+    </style>
+    <script id="dashboard-table-runtime">
+      /* CSS is the palette authority; this adapter resolves its tokens for Canvas. */
+      window.DashboardTable = (() => {
+        let library
+        function load() {
+          if (window.VTable?.ListTable) return Promise.resolve(window.VTable)
+          if (!library)
+            library = new Promise((resolve, reject) => {
+              const script = document.createElement('script')
+              const fail = () => {
+                clearTimeout(timer)
+                script.remove()
+                library = undefined
+                reject(new Error('明细模块加载失败，请重试'))
+              }
+              const timer = setTimeout(fail, 30000)
+              script.src = 'https://cdn.jsdelivr.net/npm/@visactor/vtable@1.23.1/dist/vtable.min.js'
+              script.onload = () => {
+                clearTimeout(timer)
+                if (window.VTable?.ListTable) resolve(window.VTable)
+                else fail()
+              }
+              script.onerror = fail
+              document.head.append(script)
+            })
+          return library
+        }
+        function readTokens(host) {
+          const style = getComputedStyle(host)
+          const probe = document.createElement('span')
+          probe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none'
+          host.append(probe)
+          const canvas = document.createElement('canvas')
+          canvas.width = canvas.height = 1
+          const context = canvas.getContext('2d', { willReadFrequently: true })
+          const color = (name) => {
+            // Resolve var()/color-mix() in the host, then normalize to VRender-compatible RGBA.
+            probe.style.color = `var(${name})`
+            context.clearRect(0, 0, 1, 1)
+            context.fillStyle = getComputedStyle(probe).color
+            context.fillRect(0, 0, 1, 1)
+            const [r, g, b, a] = context.getImageData(0, 0, 1, 1).data
+            return `rgba(${r}, ${g}, ${b}, ${a / 255})`
+          }
+          try {
+            return {
+              color,
+              number: (name) => parseFloat(style.getPropertyValue(name)),
+              fontFamily: style.getPropertyValue('--font-ui').trim(),
+              dispose: () => probe.remove(),
+            }
+          } catch (error) {
+            probe.remove()
+            throw error
+          }
+        }
+        const animation = () =>
+          matchMedia('(prefers-reduced-motion: reduce)').matches ? false : { type: 'all', duration: 220, delay: 0 }
+        function options(base, host) {
+          const tokens = readTokens(host)
+          try {
+            const color = tokens.color
+            const normal = color('--table-body')
+            const stripe = color('--table-stripe')
+            const divider = color('--table-divider')
+            const hover = {
+              cellBgColor: color('--table-hover'),
+              inlineRowBgColor: color('--table-hover-row'),
+              inlineColumnBgColor: color('--table-canvas'),
+            }
+            const common = {
+              fontFamily: tokens.fontFamily,
+              fontSize: tokens.number('--table-font-size'),
+              color: color('--table-text'),
+              padding: [10, 12, 10, 12],
+              borderColor: divider,
+              borderLineWidth: [0, 0, 1, 0],
+            }
+            return {
+              ...base,
+              columns: base.columns.map((column) => ({
+                ...column,
+                headerStyle: { ...column.headerStyle, textAlign: column.style?.textAlign || 'left' },
+              })),
+              autoFillWidth: true,
+              autoWrapText: false,
+              heightMode: 'standard',
+              defaultRowHeight: tokens.number('--table-row-height'),
+              defaultHeaderRowHeight: tokens.number('--table-header-height'),
+              hover: { highlightMode: 'row' },
+              select: { highlightMode: 'row', headerSelectMode: 'cell' },
+              animationAppear: animation(),
+              theme: {
+                underlayBackgroundColor: color('--table-canvas'),
+                defaultStyle: common,
+                bodyStyle: {
+                  ...common,
+                  bgColor: ({ row, table }) => ((row - table.columnHeaderLevelCount) % 2 ? stripe : normal),
+                  hover,
+                },
+                headerStyle: {
+                  ...common,
+                  fontSize: tokens.number('--table-header-font-size'),
+                  fontWeight: 600,
+                  color: color('--table-header-text'),
+                  bgColor: color('--table-header'),
+                  hover,
+                },
+                selectionStyle: {
+                  cellBorderLineWidth: tokens.number('--table-selection-width'),
+                  cellBorderColor: color('--table-selected-border'),
+                  cellBgColor: color('--table-selected'),
+                  inlineRowBgColor: color('--table-selected-row'),
+                  inlineColumnBgColor: color('--table-canvas'),
+                  selectionFillMode: 'overlay',
+                },
+                frameStyle: {
+                  borderColor: color('--table-frame'),
+                  borderLineWidth: 1,
+                  cornerRadius: tokens.number('--table-radius'),
+                },
+                scrollStyle: {
+                  visible: 'scrolling',
+                  hoverOn: true,
+                  width: 5,
+                  scrollSliderCornerRadius: 3,
+                  scrollSliderColor: color('--table-scroll-thumb'),
+                  scrollRailColor: color('--table-scroll-rail'),
+                },
+                columnResize: { lineColor: color('--table-selected-border'), lineWidth: 1 },
+              },
+            }
+          } finally {
+            tokens.dispose()
+          }
+        }
+        function overview(Builder, columns, rows, host) {
+          const records = rows.map((values) =>
+            Object.fromEntries(values.map((value, index) => [`c${index}`, value ?? '—'])),
+          )
+          const dimensions = columns.map((alias, index) => ({ id: `c${index}`, alias, encoding: 'column' }))
+          const base = records.length
+            ? Builder.from({ chartType: 'table', dataset: records, dimensions, measures: [] }).build()
+            : { records, columns: dimensions.map(({ id, alias }) => ({ field: id, title: alias })) }
+          base.columns = columns.map((title, index) => ({
+            ...base.columns.find((column) => column.field === `c${index}`),
+            field: `c${index}`,
+            title,
+            width: index === 0 ? 170 : Math.max(130, Math.min(210, title.length * 12 + 24)),
+            style: { textAlign: index === 0 ? 'left' : 'right' },
+          }))
+          base.widthMode = 'standard'
+          const resolved = options(base, host)
+          host.style.height = `${Math.min(
+            parseFloat(getComputedStyle(host).getPropertyValue('--table-overview-max-height')),
+            resolved.defaultHeaderRowHeight + Math.max(1, rows.length) * resolved.defaultRowHeight + 2,
+          )}px`
+          return resolved
+        }
+        function setRecords(table, records) {
+          table.clearSelected()
+          table.options.animationAppear = animation()
+          table.setRecords(records)
+        }
+        return { load, options, overview, setRecords }
+      })()
+    </script>
   </head>
   <body
     data-state="loading"
@@ -1384,30 +1714,13 @@
           </div>
         </main>
         <details open data-enter="6">
-          <summary>年龄组明细与统计口径</summary>
-          <div class="table-wrap">
-            <table>
-              <caption class="muted table-caption">
-                每行一名学生；G1/G3 为首期/期末成绩，满分 20。≥10
-                分仅作本页分析分界，不推断学校政策。分组差异不证明因果。
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">年龄组</th>
-                  <th scope="col">记录数</th>
-                  <th scope="col">期末成绩均值</th>
-                  <th scope="col">期末 ≥10 分占比</th>
-                  <th scope="col">平均缺课次数</th>
-                  <th scope="col">期末与首期平均差</th>
-                </tr>
-              </thead>
-              <tbody id="table-body"></tbody>
-            </table>
-          </div>
-          <nav id="pagination" class="pagination" aria-label="明细分页" hidden>
-            <button type="button" id="page-previous">← 上一页</button><span id="page-label" class="muted"></span
-            ><button type="button" id="page-next">下一页 →</button>
-          </nav>
+          <summary>
+            年龄组明细与统计口径<span id="overview-count" class="dashboard-table-count" aria-live="polite"></span>
+          </summary>
+          <p class="dashboard-table-caption">
+            每行一名学生；G1/G3 为首期/期末成绩，满分 20。≥10 分仅作本页分析分界，不推断学校政策。分组差异不证明因果。
+          </p>
+          <div id="overview-table" class="dashboard-table" role="region" aria-label="完整明细表" tabindex="0"></div>
         </details>
       </div>
       <footer>
@@ -1426,7 +1739,7 @@
     <noscript>请启用 JavaScript 以查询和绘制图表。</noscript>
     <!-- 完整 CSV 以列名 + 类型化行数组内嵌；不请求外部数据文件。图表依赖沿用模板的固定版本 CDN。 -->
     <!-- prettier-ignore -->
-    <script id="page-config" type="application/json">{"mode":"industry","accent":"#7694D4","track":"#DCE5F7","labels":["期末成绩均值","期末 ≥10 分占比","平均缺课次数","期末与首期平均差"],"formats":[[1," /20",1],[1,"%",1],[1," 次",1],[1," 分",1],[0," 条",1],[1," /20",1],[0,"",1]],"initial":{"f1":"","f2":""},"sourceNote":"葡萄牙两所中学 · 葡语课程","restoreLabel":"范围汇总 · 悬停或方向键查看年龄组","layout":[{"x":0,"y":1,"w":8,"h":9},{"x":8,"y":1,"w":4,"h":3},{"x":8,"y":4,"w":4,"h":3},{"x":8,"y":7,"w":4,"h":3}],"schema":{"id":"string","m0":"number","flag":"number","m2":"number","m3":"number","m4":"number","f1":"string","f2":"string","g":"string","s":"string"},"aliases":{"g":"年龄组","s":"每周学习时长"},"queries":{"groups":{"type":"bar","dimensions":["g"],"measures":[["id","记录数","countDistinct"],["flag","期末 ≥10 分","sum"],["m0","期末成绩均值","avg"],["m2","平均缺课次数","avg"],["m3","期末与首期平均差","avg"],["m4","首期成绩均值","avg"]]},"secondary":{"type":"column","dimensions":["s"],"measures":[["id","记录数","countDistinct"],["flag","期末 ≥10 分","sum"],["m0","期末成绩均值","avg"],["m2","平均缺课次数","avg"],["m3","期末与首期平均差","avg"],["m4","首期成绩均值","avg"]]},"totals":{"measures":[["id","记录数","countDistinct"],["flag","期末 ≥10 分","sum"],["m0","期末成绩均值","avg"],["m2","平均缺课次数","avg"],["m3","期末与首期平均差","avg"],["m4","首期成绩均值","avg"]]}},"connectorId":"vbi-industry-education-1","columns":["年龄组","记录数","期末成绩均值","期末 ≥10 分占比","平均缺课次数","期末与首期平均差"],"filters":[{"title":"学校","field":"f1","options":[["","全部学校"],["GP","GP"],["MS","MS"]]},{"title":"性别","field":"f2","options":[["","全部性别"],["F","女"],["M","男"]]}],"metrics":[{"field":"m0","title":"期末成绩均值","aggregate":"avg","digits":1,"unit":" /20","scale":1},{"field":"m2","title":"平均缺课次数","aggregate":"avg","digits":1,"unit":" 次","scale":1},{"field":"m3","title":"期末与首期平均差","aggregate":"avg","digits":1,"unit":" 分","scale":1},{"field":"m4","title":"首期成绩均值","aggregate":"avg","digits":1,"unit":" /20","scale":1}],"hit":"期末 ≥10 分","miss":"期末 \u003c10 分","groupTitle":"年龄组","secondaryTitle":"每周学习时长","temporal":false,"groupOrder":["15–16 岁","17 岁","18 岁","19–22 岁"],"secondaryOrder":["不足 2h","2–5h","5–10h","超过 10h"],"auxiliaryTitle":"首期成绩均值","derivedNote":"占比以同范围记录数为分母；均值按原始有效记录计算，不平均分组均值。"}</script>
+    <script id="page-config" type="application/json">{"mode":"industry","labels":["期末成绩均值","期末 ≥10 分占比","平均缺课次数","期末与首期平均差"],"formats":[[1," /20",1],[1,"%",1],[1," 次",1],[1," 分",1],[0," 条",1],[1," /20",1],[0,"",1]],"initial":{"f1":"","f2":""},"sourceNote":"葡萄牙两所中学 · 葡语课程","restoreLabel":"范围汇总 · 悬停或方向键查看年龄组","layout":[{"x":0,"y":1,"w":8,"h":9},{"x":8,"y":1,"w":4,"h":3},{"x":8,"y":4,"w":4,"h":3},{"x":8,"y":7,"w":4,"h":3}],"schema":{"id":"string","m0":"number","flag":"number","m2":"number","m3":"number","m4":"number","f1":"string","f2":"string","g":"string","s":"string"},"aliases":{"g":"年龄组","s":"每周学习时长"},"queries":{"groups":{"type":"bar","dimensions":["g"],"measures":[["id","记录数","countDistinct"],["flag","期末 ≥10 分","sum"],["m0","期末成绩均值","avg"],["m2","平均缺课次数","avg"],["m3","期末与首期平均差","avg"],["m4","首期成绩均值","avg"]]},"secondary":{"type":"column","dimensions":["s"],"measures":[["id","记录数","countDistinct"],["flag","期末 ≥10 分","sum"],["m0","期末成绩均值","avg"],["m2","平均缺课次数","avg"],["m3","期末与首期平均差","avg"],["m4","首期成绩均值","avg"]]},"totals":{"measures":[["id","记录数","countDistinct"],["flag","期末 ≥10 分","sum"],["m0","期末成绩均值","avg"],["m2","平均缺课次数","avg"],["m3","期末与首期平均差","avg"],["m4","首期成绩均值","avg"]]}},"connectorId":"vbi-industry-education-1","columns":["年龄组","记录数","期末成绩均值","期末 ≥10 分占比","平均缺课次数","期末与首期平均差"],"filters":[{"title":"学校","field":"f1","options":[["","全部学校"],["GP","GP"],["MS","MS"]]},{"title":"性别","field":"f2","options":[["","全部性别"],["F","女"],["M","男"]]}],"metrics":[{"field":"m0","title":"期末成绩均值","aggregate":"avg","digits":1,"unit":" /20","scale":1},{"field":"m2","title":"平均缺课次数","aggregate":"avg","digits":1,"unit":" 次","scale":1},{"field":"m3","title":"期末与首期平均差","aggregate":"avg","digits":1,"unit":" 分","scale":1},{"field":"m4","title":"首期成绩均值","aggregate":"avg","digits":1,"unit":" /20","scale":1}],"hit":"期末 ≥10 分","miss":"期末 <10 分","groupTitle":"年龄组","secondaryTitle":"每周学习时长","temporal":false,"groupOrder":["15–16 岁","17 岁","18 岁","19–22 岁"],"secondaryOrder":["不足 2h","2–5h","5–10h","超过 10h"],"auxiliaryTitle":"首期成绩均值","derivedNote":"占比以同范围记录数为分母；均值按原始有效记录计算，不平均分组均值。"}</script>
     <!-- prettier-ignore -->
     <script id="source-data" type="application/json">{"filename":"student-por.csv","columns":["school","sex","age","address","famsize","Pstatus","Medu","Fedu","Mjob","Fjob","reason","guardian","traveltime","studytime","failures","schoolsup","famsup","paid","activities","nursery","higher","internet","romantic","famrel","freetime","goout","Dalc","Walc","health","absences","G1","G2","G3"],"rows":[["GP","F","18","U","GT3","A","4","4","at_home","teacher","course","mother","2","2","0","yes","no","no","no","yes","yes","no","no","4","3","4","1","1","3","4","0","11","11"],["GP","F","17","U","GT3","T","1","1","at_home","other","course","father","1","2","0","no","yes","no","no","no","yes","yes","no","5","3","3","1","1","3","2","9","11","11"],["GP","F","15","U","LE3","T","1","1","at_home","other","other","mother","1","2","0","yes","no","no","no","yes","yes","yes","no","4","3","2","2","3","3","6","12","13","12"],["GP","F","15","U","GT3","T","4","2","health","services","home","mother","1","3","0","no","yes","no","yes","yes","yes","yes","yes","3","2","2","1","1","5","0","14","14","14"],["GP","F","16","U","GT3","T","3","3","other","other","home","father","1","2","0","no","yes","no","no","yes","yes","no","no","4","3","2","1","2","5","0","11","13","13"],["GP","M","16","U","LE3","T","4","3","services","other","reputation","mother","1","2","0","no","yes","no","yes","yes","yes","yes","no","5","4","2","1","2","5","6","12","12","13"],["GP","M","16","U","LE3","T","2","2","other","other","home","mother","1","2","0","no","no","no","no","yes","yes","yes","no","4","4","4","1","1","3","0","13","12","13"],["GP","F","17","U","GT3","A","4","4","other","teacher","home","mother","2","2","0","yes","yes","no","no","yes","yes","no","no","4","1","4","1","1","1","2","10","13","13"],["GP","M","15","U","LE3","A","3","2","services","other","home","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","4","2","2","1","1","1","0","15","16","17"],["GP","M","15","U","GT3","T","3","4","other","other","home","mother","1","2","0","no","yes","no","yes","yes","yes","yes","no","5","5","1","1","1","5","0","12","12","13"],["GP","F","15","U","GT3","T","4","4","teacher","health","reputation","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","3","3","3","1","2","2","2","14","14","14"],["GP","F","15","U","GT3","T","2","1","services","other","reputation","father","3","3","0","no","yes","no","yes","yes","yes","yes","no","5","2","2","1","1","4","0","10","12","13"],["GP","M","15","U","LE3","T","4","4","health","services","course","father","1","1","0","no","yes","no","yes","yes","yes","yes","no","4","3","3","1","3","5","0","12","13","12"],["GP","M","15","U","GT3","T","4","3","teacher","other","course","mother","2","2","0","no","yes","no","no","yes","yes","yes","no","5","4","3","1","2","3","0","12","12","13"],["GP","M","15","U","GT3","A","2","2","other","other","home","other","1","3","0","no","yes","no","no","yes","yes","yes","yes","4","5","2","1","1","3","0","14","14","15"],["GP","F","16","U","GT3","T","4","4","health","other","home","mother","1","1","0","no","yes","no","no","yes","yes","yes","no","4","4","4","1","2","2","6","17","17","17"],["GP","F","16","U","GT3","T","4","4","services","services","reputation","mother","1","3","0","no","yes","no","yes","yes","yes","yes","no","3","2","3","1","2","2","10","13","13","14"],["GP","F","16","U","GT3","T","3","3","other","other","reputation","mother","3","2","0","yes","yes","no","yes","yes","yes","no","no","5","3","2","1","1","4","2","13","14","14"],["GP","M","17","U","GT3","T","3","2","services","services","course","mother","1","1","3","no","yes","yes","yes","yes","yes","yes","no","5","5","5","2","4","5","2","8","8","7"],["GP","M","16","U","LE3","T","4","3","health","other","home","father","1","1","0","no","no","no","yes","yes","yes","yes","no","3","1","3","1","3","5","6","12","12","12"],["GP","M","15","U","GT3","T","4","3","teacher","other","reputation","mother","1","2","0","no","no","no","no","yes","yes","yes","no","4","4","1","1","1","1","0","12","13","14"],["GP","M","15","U","GT3","T","4","4","health","health","other","father","1","1","0","no","yes","yes","no","yes","yes","yes","no","5","4","2","1","1","5","0","11","12","12"],["GP","M","16","U","LE3","T","4","2","teacher","other","course","mother","1","2","0","no","no","no","yes","yes","yes","yes","no","4","5","1","1","3","5","0","12","13","14"],["GP","M","16","U","LE3","T","2","2","other","other","reputation","mother","2","2","0","no","yes","no","yes","yes","yes","yes","no","5","4","4","2","4","5","2","10","10","10"],["GP","F","15","R","GT3","T","2","4","services","health","course","mother","1","3","0","yes","yes","no","yes","yes","yes","yes","no","4","3","2","1","1","5","2","10","11","10"],["GP","F","16","U","GT3","T","2","2","services","services","home","mother","1","1","0","no","yes","no","no","no","yes","yes","no","1","2","2","1","3","5","6","10","11","12"],["GP","M","15","U","GT3","T","2","2","other","other","home","mother","1","1","0","no","yes","no","no","yes","yes","yes","no","4","2","2","1","2","5","8","11","12","12"],["GP","M","15","U","GT3","T","4","2","health","services","other","mother","1","1","0","no","no","no","no","yes","yes","yes","no","2","2","4","2","4","1","0","11","11","11"],["GP","M","16","U","LE3","A","3","4","services","other","home","mother","1","2","0","yes","yes","yes","yes","yes","yes","yes","no","5","3","3","1","1","5","2","12","12","13"],["GP","M","16","U","GT3","T","4","4","teacher","teacher","home","mother","1","2","0","no","yes","yes","yes","yes","yes","yes","yes","4","4","5","5","5","5","4","12","11","12"],["GP","M","15","U","GT3","T","4","4","health","services","home","mother","1","2","0","no","yes","yes","no","no","yes","yes","no","5","4","2","3","4","5","0","10","11","11"],["GP","M","15","U","GT3","T","4","4","services","services","reputation","mother","2","2","0","no","yes","no","yes","yes","yes","yes","no","4","3","1","1","1","5","2","15","15","15"],["GP","M","15","R","GT3","T","4","3","teacher","at_home","course","mother","1","2","0","no","yes","no","yes","yes","yes","yes","yes","4","5","2","1","1","5","0","13","14","15"],["GP","M","15","U","LE3","T","3","3","other","other","course","mother","1","2","0","no","no","no","yes","no","yes","yes","no","5","3","2","1","1","2","0","13","12","12"],["GP","M","16","U","GT3","T","3","2","other","other","home","mother","1","1","0","no","yes","no","no","no","yes","yes","no","5","4","3","1","1","5","4","12","12","12"],["GP","F","15","U","GT3","T","2","3","other","other","other","father","2","1","0","no","yes","no","yes","yes","yes","no","no","3","5","1","1","1","5","4","11","11","11"],["GP","M","15","U","LE3","T","4","3","teacher","services","home","mother","1","3","0","no","yes","no","yes","yes","yes","yes","no","5","4","3","1","1","4","0","14","14","14"],["GP","M","16","R","GT3","A","4","4","other","teacher","reputation","mother","2","3","0","no","yes","no","yes","yes","yes","yes","yes","2","4","3","1","1","5","4","13","13","13"],["GP","F","15","R","GT3","T","3","4","services","health","course","mother","1","3","0","yes","yes","no","yes","yes","yes","yes","no","4","3","2","1","1","5","2","11","12","12"],["GP","F","15","R","GT3","T","2","2","at_home","other","reputation","mother","1","1","0","yes","yes","no","yes","yes","yes","no","no","4","3","1","1","1","2","8","14","13","12"],["GP","F","16","U","LE3","T","2","2","other","other","home","mother","2","2","0","no","yes","no","yes","no","yes","yes","yes","3","3","3","1","2","3","16","11","11","10"],["GP","M","15","U","LE3","T","4","4","teacher","other","home","other","1","1","0","no","yes","no","no","no","yes","yes","yes","5","4","3","2","4","5","8","10","11","11"],["GP","M","15","U","GT3","T","4","4","services","teacher","course","father","1","2","0","no","yes","no","yes","yes","yes","yes","no","4","3","3","1","1","5","0","14","15","15"],["GP","M","15","U","GT3","T","2","2","services","services","course","father","1","1","0","yes","yes","no","no","yes","yes","yes","no","5","4","1","1","1","1","0","9","10","10"],["GP","F","16","U","LE3","T","2","2","other","at_home","course","father","2","2","1","yes","no","no","yes","yes","yes","yes","no","4","3","3","2","2","5","14","10","11","11"],["GP","F","15","U","LE3","A","4","3","other","other","course","mother","1","2","0","yes","yes","yes","yes","yes","yes","yes","yes","5","2","2","1","1","5","4","10","11","11"],["GP","F","16","U","LE3","A","3","3","other","services","home","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","2","3","5","1","4","3","6","13","12","13"],["GP","M","16","U","GT3","T","4","3","health","services","reputation","mother","1","4","0","no","no","no","yes","yes","yes","yes","no","4","2","2","1","1","2","2","17","17","17"],["GP","M","15","U","GT3","T","4","2","teacher","other","home","mother","1","2","0","no","yes","no","no","yes","yes","no","no","4","3","3","2","2","5","4","11","12","13"],["GP","F","15","U","GT3","T","4","4","services","teacher","other","father","1","2","0","yes","yes","no","yes","no","yes","yes","no","4","4","4","1","1","3","2","13","12","12"],["GP","F","16","U","LE3","T","2","2","services","services","course","mother","3","2","0","no","yes","no","no","yes","yes","yes","no","4","3","3","2","3","4","0","14","13","13"],["GP","F","15","U","LE3","T","4","2","health","other","other","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","4","3","3","1","1","5","0","16","14","16"],["GP","M","15","U","LE3","A","4","2","health","health","other","father","2","1","0","no","no","no","no","yes","yes","no","no","5","5","5","3","4","5","4","10","9","9"],["GP","F","15","U","GT3","T","4","4","services","services","course","mother","1","1","0","yes","yes","no","no","yes","yes","yes","no","3","3","4","2","3","5","0","13","12","12"],["GP","F","15","U","LE3","A","3","3","other","other","other","mother","1","1","0","no","no","no","no","yes","yes","yes","no","5","3","4","4","4","1","0","13","12","13"],["GP","F","16","U","GT3","A","2","1","other","other","other","mother","1","2","0","no","no","no","yes","yes","yes","yes","yes","5","3","4","1","1","2","2","12","13","12"],["GP","F","15","U","GT3","A","4","3","services","services","reputation","mother","1","2","0","no","yes","no","yes","yes","yes","yes","no","4","3","2","1","1","1","0","15","14","15"],["GP","M","15","U","GT3","T","4","4","teacher","health","reputation","mother","1","2","0","no","yes","no","yes","yes","yes","no","no","3","2","2","1","1","5","8","15","15","16"],["GP","M","15","U","LE3","T","1","2","other","at_home","home","father","1","2","0","yes","yes","no","yes","yes","yes","yes","no","4","3","2","1","1","5","0","14","13","14"],["GP","F","16","U","GT3","T","4","2","services","other","course","mother","1","2","0","no","yes","yes","no","yes","yes","yes","no","4","2","3","1","1","5","2","16","15","16"],["GP","F","16","R","GT3","T","4","4","health","teacher","other","mother","1","2","0","no","yes","no","yes","yes","yes","no","no","2","4","4","2","3","4","0","17","16","16"],["GP","F","16","U","GT3","T","1","1","services","services","course","father","4","1","0","yes","yes","no","yes","no","yes","yes","yes","5","5","5","5","5","5","0","10","10","16"],["GP","F","16","U","LE3","T","1","2","other","services","reputation","father","1","2","0","yes","no","no","yes","yes","yes","yes","no","4","4","3","1","1","1","0","13","13","10"],["GP","F","16","U","GT3","T","4","3","teacher","health","home","mother","1","3","0","yes","yes","no","yes","yes","yes","yes","no","3","4","4","2","4","4","0","14","13","13"],["GP","F","15","U","LE3","T","4","3","services","services","reputation","father","1","2","0","yes","no","no","yes","yes","yes","yes","yes","4","4","4","2","4","2","0","13","12","12"],["GP","F","16","U","LE3","T","4","3","teacher","services","course","mother","3","2","0","no","yes","no","yes","yes","yes","yes","no","5","4","3","1","2","1","2","16","15","16"],["GP","M","15","U","GT3","A","4","4","other","services","reputation","mother","1","4","0","no","yes","no","yes","no","yes","yes","yes","1","3","3","5","5","3","0","11","12","12"],["GP","F","16","U","GT3","T","3","1","services","other","course","mother","1","4","0","yes","yes","no","no","yes","yes","yes","no","4","3","3","1","2","5","0","10","9","10"],["GP","F","15","R","LE3","T","2","2","health","services","reputation","mother","2","2","0","yes","yes","no","no","yes","yes","yes","no","4","1","3","1","3","4","0","11","10","11"],["GP","F","15","R","LE3","T","3","1","other","other","reputation","father","2","4","0","no","yes","no","no","no","yes","yes","no","4","4","2","2","3","3","6","15","15","15"],["GP","M","16","U","GT3","T","3","1","other","other","reputation","father","2","4","0","no","yes","no","no","yes","yes","yes","no","4","3","2","1","1","5","2","13","11","11"],["GP","M","15","U","GT3","T","4","2","other","other","course","mother","1","4","0","no","no","no","no","yes","yes","yes","no","3","3","3","1","1","3","0","11","9","10"],["GP","F","15","R","GT3","T","1","1","other","other","reputation","mother","1","2","0","yes","yes","no","no","no","yes","yes","yes","3","3","4","2","4","5","2","13","11","11"],["GP","M","16","U","GT3","T","3","1","other","other","reputation","mother","1","1","0","no","no","no","yes","yes","yes","no","no","5","3","2","2","2","5","0","13","13","14"],["GP","F","16","U","GT3","T","3","3","other","services","home","mother","1","2","0","yes","yes","no","yes","yes","yes","yes","no","4","3","3","2","4","5","4","11","11","11"],["GP","M","15","U","GT3","T","4","3","teacher","other","home","mother","1","2","0","no","yes","no","yes","yes","yes","yes","no","4","3","3","2","3","5","0","11","11","11"],["GP","M","15","U","GT3","T","4","0","teacher","other","course","mother","2","4","0","no","no","no","yes","yes","yes","yes","no","3","4","3","1","1","1","0","12","11","11"],["GP","F","16","U","GT3","T","2","2","other","other","reputation","mother","1","4","0","no","no","no","no","yes","yes","yes","yes","5","2","3","1","3","3","1","13","13","13"],["GP","M","17","U","GT3","T","2","1","other","other","home","mother","2","1","3","yes","yes","no","yes","yes","no","yes","no","4","5","1","1","1","3","0","9","9","10"],["GP","F","16","U","GT3","T","3","4","at_home","other","course","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","2","4","3","1","2","3","14","12","11","11"],["GP","M","15","U","GT3","T","2","3","other","services","course","father","1","1","0","yes","yes","no","yes","no","yes","yes","yes","3","2","2","1","3","3","0","11","11","12"],["GP","M","15","U","GT3","T","2","3","other","other","home","mother","1","3","0","yes","no","no","no","no","yes","yes","no","5","3","2","1","2","5","2","10","9","9"],["GP","F","15","U","LE3","T","3","2","services","other","reputation","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","4","4","4","1","1","5","4","12","11","11"],["GP","M","15","U","LE3","T","2","2","services","services","home","mother","2","2","0","no","no","yes","yes","yes","yes","yes","no","5","3","3","1","3","4","2","13","12","13"],["GP","F","15","U","GT3","T","1","1","other","other","home","father","1","2","0","no","yes","no","yes","no","yes","yes","no","4","3","2","2","3","4","2","13","12","12"],["GP","F","15","U","GT3","T","4","4","services","services","reputation","father","2","2","0","no","no","no","no","yes","yes","yes","yes","4","4","4","2","3","5","4","12","11","12"],["GP","F","16","U","LE3","T","2","2","at_home","other","course","mother","1","2","0","no","yes","no","no","yes","yes","no","no","4","3","4","1","2","2","6","13","11","11"],["GP","F","15","U","GT3","T","4","2","other","other","reputation","mother","1","3","0","no","yes","no","yes","yes","yes","yes","no","5","3","3","1","3","1","4","15","15","15"],["GP","M","16","U","GT3","T","2","2","services","other","reputation","father","2","2","0","no","no","no","yes","no","yes","yes","no","4","4","2","1","1","3","6","12","10","11"],["GP","M","16","U","LE3","A","4","4","teacher","health","reputation","mother","1","2","0","no","yes","no","no","yes","yes","no","no","4","1","3","3","5","5","6","9","9","10"],["GP","F","16","U","GT3","T","3","3","other","other","home","mother","1","3","0","no","yes","no","no","yes","yes","yes","yes","4","3","3","1","3","4","2","9","11","11"],["GP","F","15","U","GT3","T","4","3","services","other","reputation","mother","1","1","0","no","no","no","yes","yes","yes","yes","no","4","5","5","1","3","1","6","14","13","13"],["GP","F","16","U","LE3","T","3","1","other","other","home","father","1","2","0","yes","yes","no","no","yes","yes","no","no","3","3","3","2","3","2","0","12","13","12"],["GP","F","16","U","GT3","T","4","2","teacher","services","home","mother","2","2","0","no","yes","no","yes","yes","yes","yes","no","5","3","3","1","1","1","2","13","14","14"],["GP","M","15","U","LE3","T","2","2","services","health","reputation","mother","1","4","0","no","yes","no","yes","yes","yes","yes","no","4","3","4","1","1","4","2","11","12","12"],["GP","F","15","R","GT3","T","1","1","at_home","other","home","mother","2","4","0","yes","yes","yes","yes","yes","yes","yes","no","3","1","2","1","1","1","4","13","13","13"],["GP","M","16","R","GT3","T","4","3","services","other","reputation","mother","2","1","0","yes","yes","yes","yes","no","yes","yes","no","3","3","3","1","1","4","6","9","11","11"],["GP","F","16","U","GT3","T","2","1","other","other","course","mother","1","2","0","no","yes","no","no","yes","yes","no","yes","4","3","5","1","1","5","0","13","12","12"],["GP","F","16","U","GT3","T","4","4","other","other","reputation","mother","1","1","0","no","no","no","yes","no","yes","yes","no","5","3","4","1","2","1","4","12","13","13"],["GP","F","16","U","GT3","T","4","3","other","at_home","course","mother","1","3","0","yes","yes","no","no","yes","yes","yes","no","5","3","5","1","1","3","2","12","13","13"],["GP","M","16","U","GT3","T","4","4","services","services","other","mother","1","1","0","yes","yes","no","yes","yes","yes","yes","no","4","5","5","5","5","4","12","9","9","8"],["GP","M","16","U","GT3","T","4","4","services","teacher","other","father","1","3","0","no","yes","no","yes","yes","yes","yes","yes","4","4","3","1","1","4","0","16","16","16"],["GP","M","15","U","GT3","T","4","4","services","other","course","mother","1","1","0","no","yes","yes","yes","no","yes","yes","no","5","3","3","1","1","5","2","12","13","12"],["GP","F","15","U","GT3","T","3","2","services","other","home","mother","2","2","0","yes","yes","no","no","yes","yes","yes","no","4","3","5","1","1","2","16","11","10","10"],["GP","M","15","U","GT3","A","3","4","services","other","course","mother","1","2","0","no","yes","no","yes","yes","yes","yes","no","5","4","4","1","1","1","0","16","16","16"],["GP","F","15","U","GT3","A","3","3","other","health","reputation","father","1","4","0","yes","no","no","no","yes","yes","no","no","4","3","3","1","1","4","10","10","10","10"],["GP","F","15","U","GT3","T","2","2","other","other","course","mother","1","4","0","yes","yes","no","no","yes","yes","yes","no","5","1","2","1","1","3","4","10","10","10"],["GP","M","16","U","GT3","T","3","3","services","other","home","father","1","3","0","no","yes","no","yes","yes","yes","yes","no","5","3","3","1","1","5","4","13","14","14"],["GP","M","15","R","GT3","T","4","4","other","other","home","father","4","4","0","no","yes","no","yes","yes","yes","yes","yes","1","3","5","3","5","1","8","12","10","11"],["GP","F","16","U","LE3","T","4","4","health","health","other","mother","1","3","0","no","yes","no","yes","yes","yes","yes","yes","5","4","5","1","1","4","2","15","15","14"],["GP","M","15","U","LE3","A","4","4","teacher","teacher","course","mother","1","1","0","no","no","no","yes","yes","yes","yes","no","5","5","3","1","1","4","4","13","14","14"],["GP","F","16","R","GT3","T","3","3","services","other","reputation","father","1","3","0","yes","yes","no","yes","yes","yes","yes","no","4","1","2","1","1","2","4","11","11","11"],["GP","F","16","U","GT3","T","2","2","at_home","other","home","mother","1","2","1","yes","no","no","yes","yes","yes","yes","no","3","1","2","1","1","5","12","8","10","10"],["GP","M","15","U","LE3","T","4","2","teacher","other","course","mother","1","1","0","no","no","no","no","yes","yes","yes","no","3","5","2","1","1","3","10","18","17","18"],["GP","M","15","R","GT3","T","2","1","health","services","reputation","mother","1","2","0","no","no","no","yes","yes","yes","yes","yes","5","4","2","1","1","5","4","10","9","10"],["GP","M","16","U","GT3","T","4","4","teacher","teacher","course","father","1","2","0","no","yes","no","yes","yes","yes","yes","no","5","4","4","1","2","5","6","16","14","14"],["GP","M","15","U","GT3","T","4","4","other","teacher","reputation","father","2","2","0","no","yes","no","yes","yes","yes","no","no","4","4","3","1","1","2","4","16","15","16"],["GP","M","16","U","GT3","T","3","3","other","services","home","father","2","1","0","no","no","no","yes","yes","yes","yes","no","5","4","2","1","1","5","6","14","14","15"],["GP","M","17","R","GT3","T","1","3","other","other","course","father","3","2","1","no","yes","no","yes","yes","yes","yes","no","5","2","4","1","4","5","14","12","11","11"],["GP","M","15","U","GT3","T","3","4","other","other","reputation","father","1","1","0","no","no","no","no","yes","yes","yes","no","3","4","3","1","2","4","2","14","13","14"],["GP","F","15","U","GT3","T","1","2","at_home","services","course","mother","1","2","0","no","no","no","no","no","yes","yes","no","3","2","3","1","2","1","0","14","14","14"],["GP","M","15","U","GT3","T","2","2","services","services","home","father","1","4","0","no","yes","no","yes","yes","yes","yes","no","5","5","4","1","2","5","6","14","13","13"],["GP","F","16","U","LE3","T","2","4","other","health","course","father","2","2","0","no","yes","no","yes","yes","yes","yes","yes","4","2","2","1","2","5","2","14","12","13"],["GP","M","16","U","GT3","T","4","4","health","other","course","mother","1","1","0","no","yes","no","yes","yes","yes","yes","no","3","4","4","1","4","5","4","12","13","13"],["GP","F","16","U","GT3","T","2","2","other","other","home","mother","1","2","0","no","no","no","no","yes","yes","yes","yes","5","4","4","1","1","5","0","12","11","11"],["GP","M","15","U","GT3","T","3","4","services","services","home","father","1","1","0","yes","no","no","no","yes","yes","yes","no","5","5","5","3","2","5","2","9","9","9"],["GP","F","15","U","LE3","A","3","4","other","other","home","mother","1","2","0","yes","no","no","yes","yes","yes","yes","yes","5","3","2","1","1","1","0","10","11","11"],["GP","F","19","U","GT3","T","0","1","at_home","other","course","other","1","2","2","no","yes","no","no","no","no","no","no","3","4","2","1","1","5","0","9","10","11"],["GP","M","16","R","GT3","T","4","4","teacher","teacher","course","mother","1","1","0","no","no","no","yes","yes","yes","yes","no","3","5","5","2","5","4","8","14","14","15"],["GP","M","16","U","GT3","T","2","3","other","other","course","mother","2","3","0","no","yes","no","no","no","yes","yes","yes","3","2","3","2","2","1","4","13","12","13"],["GP","F","15","R","GT3","T","3","4","services","teacher","course","father","2","3","0","no","yes","no","no","yes","yes","yes","yes","4","2","2","2","2","5","0","10","11","12"],["GP","F","18","U","GT3","T","2","1","services","other","reputation","mother","1","2","3","no","yes","no","yes","yes","no","yes","yes","5","4","5","1","3","5","10","10","9","8"],["GP","F","17","U","LE3","A","2","1","other","other","course","mother","3","1","0","no","yes","no","no","yes","yes","yes","no","3","2","2","1","2","5","8","11","10","11"],["GP","F","15","U","GT3","T","1","1","at_home","other","course","mother","3","1","0","no","yes","no","yes","no","yes","yes","yes","4","3","3","1","2","4","6","11","12","13"],["GP","F","17","U","LE3","T","2","2","other","other","course","father","1","1","0","no","yes","no","no","yes","yes","yes","yes","3","4","4","1","3","5","2","13","12","12"],["GP","F","16","U","GT3","A","3","4","services","other","course","father","1","1","0","no","no","no","no","yes","yes","yes","no","3","2","1","1","4","5","12","15","13","14"],["GP","M","16","U","GT3","T","2","1","at_home","other","course","mother","4","1","0","no","no","no","no","yes","yes","no","no","3","2","1","1","1","2","4","9","9","11"],["GP","F","16","U","GT3","A","2","2","other","other","home","mother","1","1","1","no","no","no","no","yes","yes","no","no","5","3","4","1","1","5","12","13","11","11"],["GP","M","15","R","GT3","T","3","4","at_home","teacher","course","mother","4","2","0","no","yes","no","no","yes","yes","no","yes","5","3","3","1","1","5","2","12","11","11"],["GP","F","15","U","GT3","T","4","4","services","at_home","course","mother","1","3","0","no","yes","no","yes","yes","yes","yes","yes","4","3","3","1","1","5","4","13","14","15"],["GP","M","17","R","GT3","T","3","4","at_home","other","course","mother","3","2","0","no","no","no","no","yes","yes","no","no","5","4","5","2","4","5","2","10","9","10"],["GP","F","16","R","GT3","T","1","1","at_home","other","course","mother","4","2","0","no","yes","no","no","yes","yes","no","no","5","1","3","1","1","3","0","14","13","13"],["GP","M","18","U","LE3","T","3","1","services","services","course","mother","2","1","0","no","no","no","yes","yes","yes","yes","yes","3","3","4","4","5","4","2","11","11","12"],["GP","F","18","U","GT3","A","3","2","other","services","course","other","1","3","0","no","yes","no","yes","no","yes","yes","yes","4","3","3","5","1","5","10","12","11","11"],["GP","F","16","R","GT3","T","1","1","other","services","reputation","mother","2","1","0","no","yes","no","yes","yes","yes","no","yes","3","3","3","1","2","1","8","12","11","11"],["GP","F","16","U","GT3","A","3","3","other","other","course","other","2","1","0","no","yes","no","yes","no","yes","yes","yes","4","3","2","1","1","5","4","9","9","10"],["GP","M","16","U","LE3","T","1","1","services","other","course","mother","1","2","2","no","no","no","no","yes","yes","no","yes","4","4","4","1","3","5","0","10","10","10"],["GP","F","15","U","GT3","T","4","4","teacher","teacher","course","mother","2","1","0","no","no","no","yes","yes","yes","yes","no","4","3","2","1","1","5","6","13","14","14"],["GP","F","15","R","GT3","T","1","1","other","other","course","mother","3","1","1","no","no","no","yes","yes","yes","yes","yes","5","5","5","1","1","1","2","8","9","9"],["GP","M","15","U","GT3","T","4","3","teacher","services","course","father","2","4","0","yes","yes","no","no","yes","yes","yes","no","2","2","2","1","1","3","6","9","11","11"],["GP","F","15","U","GT3","A","3","3","services","services","home","mother","1","2","0","no","no","no","no","no","yes","no","yes","1","3","2","2","3","1","24","9","8","9"],["GP","M","16","U","GT3","T","4","4","services","services","course","mother","1","3","0","no","yes","no","yes","yes","yes","yes","no","5","3","3","1","3","5","0","15","13","13"],["GP","M","16","U","LE3","T","2","2","services","services","reputation","father","2","1","0","no","yes","no","yes","yes","yes","yes","no","2","3","3","2","2","2","4","12","11","11"],["GP","F","15","U","GT3","T","4","4","teacher","services","course","mother","1","3","0","no","yes","no","yes","yes","yes","yes","no","4","2","2","1","1","5","2","13","13","13"],["GP","F","16","U","LE3","T","1","1","at_home","at_home","course","mother","1","1","0","no","no","no","no","yes","yes","yes","no","3","4","4","3","3","1","4","10","11","11"],["GP","M","17","U","GT3","T","2","1","other","other","home","mother","1","1","0","no","yes","no","no","yes","yes","yes","no","5","4","5","1","2","5","22","9","7","6"],["GP","F","15","U","GT3","T","1","1","other","services","course","father","1","2","0","no","yes","no","no","yes","yes","yes","no","4","4","2","1","2","5","0","12","12","12"],["GP","F","15","U","LE3","A","2","1","at_home","other","home","mother","2","1","0","no","yes","no","yes","yes","no","yes","yes","4","4","2","1","1","5","0","11","10","10"],["GP","F","15","U","GT3","T","3","2","health","services","home","father","1","2","1","no","yes","no","no","yes","yes","yes","no","3","3","2","1","1","3","2","11","11","11"],["GP","F","15","U","GT3","T","1","2","at_home","other","course","mother","1","2","0","no","yes","no","no","no","yes","yes","no","4","3","2","1","1","5","6","13","12","13"],["GP","F","15","U","GT3","T","1","2","at_home","services","course","father","1","2","0","no","no","no","no","no","yes","no","yes","2","3","4","2","4","1","6","11","11","11"],["GP","M","16","U","GT3","T","4","4","teacher","teacher","course","mother","1","1","0","no","yes","no","no","yes","no","yes","yes","3","3","2","2","1","5","16","9","9","8"],["GP","M","15","U","LE3","A","2","1","services","other","course","mother","4","1","0","no","no","no","no","yes","yes","yes","no","4","5","5","2","5","5","0","12","11","11"],["GP","M","18","U","LE3","T","1","1","other","other","course","mother","1","1","2","no","no","no","no","yes","no","yes","yes","2","3","5","2","5","4","0","11","9","0"],["GP","M","16","U","LE3","T","2","1","at_home","other","course","mother","1","1","1","no","no","no","yes","yes","yes","no","yes","4","4","4","3","5","5","6","9","10","10"],["GP","F","15","R","GT3","T","3","3","services","services","reputation","other","2","3","0","no","yes","yes","yes","yes","yes","yes","yes","4","2","1","2","3","3","2","13","13","13"],["GP","M","19","U","GT3","T","3","2","services","at_home","home","mother","1","1","0","no","yes","no","no","yes","no","yes","yes","4","5","4","1","1","4","6","11","9","11"],["GP","F","17","U","GT3","T","4","4","other","teacher","course","mother","1","1","0","yes","yes","no","no","yes","yes","no","yes","4","2","1","1","1","4","0","13","13","13"],["GP","M","15","R","GT3","T","2","3","at_home","services","course","mother","1","2","0","yes","no","yes","yes","yes","yes","no","no","4","4","4","1","1","1","0","7","8","8"],["GP","M","17","R","LE3","T","1","2","other","other","reputation","mother","1","1","3","no","no","no","no","yes","yes","no","no","2","2","2","3","3","5","14","9","8","10"],["GP","F","18","R","GT3","T","1","1","at_home","other","course","mother","3","1","3","no","yes","no","yes","no","yes","no","no","5","2","5","1","5","4","6","11","10","11"],["GP","M","16","R","GT3","T","2","2","at_home","other","course","mother","3","1","0","no","no","no","no","no","yes","no","no","4","2","2","1","2","3","4","12","10","11"],["GP","M","16","U","GT3","T","3","3","other","services","course","father","1","2","1","no","yes","no","no","yes","yes","yes","yes","4","5","5","4","4","5","0","10","10","1"],["GP","M","16","U","LE3","T","1","2","health","services","course","mother","2","1","2","no","no","no","no","no","yes","yes","no","4","4","5","3","5","5","0","9","8","10"],["GP","M","17","R","LE3","T","2","1","at_home","other","course","mother","2","1","1","no","no","yes","yes","yes","no","yes","yes","3","3","2","2","2","5","8","8","8","9"],["GP","M","17","R","GT3","T","3","2","other","other","course","mother","2","2","2","yes","yes","no","no","yes","yes","yes","yes","4","4","4","1","4","3","4","7","6","8"],["GP","M","15","U","LE3","T","1","2","other","other","course","mother","2","1","0","no","no","no","yes","yes","yes","no","no","4","4","4","2","4","5","2","8","9","10"],["GP","M","16","U","GT3","T","1","3","at_home","services","course","father","1","1","1","no","no","no","no","yes","no","yes","no","5","3","3","1","4","2","2","9","8","8"],["GP","M","17","R","LE3","T","1","1","other","services","course","mother","4","2","0","no","no","no","yes","yes","no","no","yes","5","3","5","1","5","5","0","8","8","8"],["GP","M","17","U","GT3","T","3","2","services","services","course","mother","2","1","3","no","yes","no","yes","no","no","no","no","4","5","2","1","1","2","10","8","7","8"],["GP","M","16","U","GT3","T","2","2","other","other","course","father","1","2","0","no","no","no","no","yes","no","yes","no","4","3","5","2","4","4","0","9","10","11"],["GP","F","16","U","GT3","T","4","2","health","services","home","father","1","2","0","no","no","no","no","yes","yes","yes","yes","4","2","3","1","1","3","0","17","17","18"],["GP","F","16","U","GT3","T","2","2","other","other","home","mother","1","2","0","no","yes","no","no","no","yes","yes","no","5","1","5","1","1","4","0","12","12","13"],["GP","F","16","U","GT3","T","4","4","health","health","reputation","mother","1","2","0","no","yes","no","no","yes","yes","yes","yes","4","4","2","1","1","3","0","16","16","17"],["GP","M","16","U","GT3","T","3","4","other","other","course","father","3","1","1","no","yes","no","yes","no","yes","yes","no","3","4","5","2","4","2","4","9","9","10"],["GP","M","16","U","GT3","T","1","0","other","other","reputation","mother","2","2","0","no","yes","no","yes","yes","yes","yes","yes","4","3","2","1","1","3","0","16","17","18"],["GP","M","17","U","LE3","T","4","4","teacher","other","reputation","mother","1","2","0","no","yes","no","yes","yes","yes","yes","no","4","4","4","1","3","5","0","11","9","10"],["GP","F","16","U","GT3","T","1","3","at_home","services","home","mother","1","2","0","no","no","no","yes","no","yes","yes","yes","4","3","5","1","1","3","0","14","13","13"],["GP","F","16","U","LE3","T","3","3","other","other","reputation","mother","2","2","0","no","yes","no","yes","yes","yes","yes","no","4","4","5","1","1","4","0","14","14","15"],["GP","M","17","U","LE3","T","4","3","teacher","other","course","mother","2","2","0","no","no","no","yes","yes","yes","yes","no","4","4","4","4","4","4","0","10","11","11"],["GP","F","16","U","GT3","T","2","2","services","other","reputation","mother","2","2","0","no","no","no","yes","no","yes","yes","no","3","4","4","1","4","5","0","13","12","14"],["GP","M","17","U","GT3","T","3","3","other","other","reputation","father","1","2","0","no","no","no","yes","no","yes","yes","no","4","3","4","1","4","4","4","11","9","10"],["GP","M","16","R","GT3","T","4","2","teacher","services","other","mother","1","1","0","no","yes","no","yes","yes","yes","yes","yes","4","3","3","3","4","3","8","10","9","11"],["GP","M","17","U","GT3","T","4","3","other","other","course","mother","1","2","0","no","yes","yes","yes","yes","yes","yes","yes","5","2","3","1","1","2","4","11","11","13"],["GP","M","16","U","GT3","T","4","3","teacher","other","home","mother","1","2","0","no","yes","yes","yes","yes","yes","yes","no","3","4","3","2","3","3","4","11","10","11"],["GP","M","16","U","GT3","T","3","3","services","other","home","mother","1","2","0","no","no","no","yes","yes","yes","yes","yes","4","2","3","1","2","3","0","11","12","13"],["GP","F","17","U","GT3","T","2","4","services","services","reputation","father","1","2","0","no","yes","no","yes","yes","yes","no","no","5","4","2","2","3","5","0","17","18","17"],["GP","F","17","U","LE3","T","3","3","other","other","reputation","mother","1","2","0","no","yes","no","yes","yes","yes","yes","yes","5","3","3","2","3","1","32","14","13","14"],["GP","F","16","U","GT3","T","3","2","other","other","reputation","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","1","2","2","1","2","1","8","14","15","16"],["GP","M","17","U","GT3","T","3","3","services","services","other","mother","1","2","0","no","yes","no","yes","yes","yes","yes","yes","4","3","4","2","3","4","6","11","13","14"],["GP","M","16","U","GT3","T","1","2","services","services","other","mother","1","1","0","no","yes","no","yes","yes","yes","yes","yes","3","3","3","1","2","3","0","10","9","11"],["GP","M","16","U","LE3","T","2","1","other","other","course","mother","1","2","0","no","no","no","yes","yes","yes","yes","yes","4","2","3","1","2","5","0","13","14","16"],["GP","F","17","U","GT3","A","3","3","health","other","reputation","mother","1","2","0","no","yes","no","no","no","yes","yes","yes","3","3","3","1","3","3","10","12","13","14"],["GP","M","17","R","GT3","T","1","2","at_home","other","home","mother","1","2","0","no","no","no","no","yes","yes","no","no","3","1","3","1","5","3","6","9","9","10"],["GP","F","16","U","GT3","T","2","3","services","services","course","mother","1","2","0","no","no","no","no","yes","yes","yes","no","4","3","3","1","1","2","6","12","12","13"],["GP","F","17","U","GT3","T","1","1","at_home","services","course","mother","1","2","0","no","no","no","yes","yes","yes","yes","no","5","3","3","1","1","3","0","12","11","12"],["GP","M","17","U","GT3","T","1","2","at_home","services","other","other","2","2","0","no","no","no","yes","no","yes","yes","no","4","4","4","4","5","5","16","10","11","12"],["GP","M","16","R","GT3","T","3","3","services","services","reputation","mother","1","1","0","no","yes","no","yes","yes","yes","yes","no","4","3","2","3","4","5","0","11","10","10"],["GP","M","16","U","GT3","T","2","3","other","other","home","father","2","1","0","no","no","no","no","yes","yes","yes","no","5","3","3","1","1","3","0","13","12","12"],["GP","F","17","U","LE3","T","2","4","services","services","course","father","1","2","0","no","no","no","yes","yes","yes","yes","yes","4","3","2","1","1","5","8","14","15","16"],["GP","M","17","U","GT3","T","4","4","services","teacher","home","mother","1","1","0","no","no","no","no","yes","yes","yes","no","5","2","3","1","2","5","4","13","13","14"],["GP","M","16","R","LE3","T","3","3","teacher","other","home","father","3","1","0","no","yes","no","yes","yes","yes","yes","no","3","3","4","3","5","3","16","10","11","12"],["GP","F","17","U","GT3","T","4","4","services","teacher","home","mother","2","1","1","no","yes","no","no","yes","yes","yes","no","4","2","4","2","3","2","30","14","15","16"],["GP","F","16","U","LE3","T","4","4","teacher","teacher","reputation","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","4","5","2","1","2","3","0","11","10","11"],["GP","F","16","U","GT3","T","4","3","health","other","home","mother","1","2","0","no","yes","no","yes","yes","yes","yes","no","4","3","5","1","5","2","2","14","14","15"],["GP","F","16","U","GT3","T","2","3","other","other","reputation","mother","1","2","0","yes","yes","no","yes","yes","yes","no","no","4","4","3","1","3","4","4","11","12","12"],["GP","F","17","U","GT3","T","1","1","other","other","course","mother","1","2","0","no","yes","no","no","no","yes","no","no","4","4","4","1","3","1","0","14","15","15"],["GP","F","17","R","GT3","T","2","2","other","other","reputation","mother","1","1","0","no","yes","no","no","yes","yes","yes","no","5","3","2","1","2","3","21","13","13","13"],["GP","F","16","R","GT3","T","2","2","services","services","reputation","mother","2","4","0","no","yes","no","yes","no","yes","yes","no","5","3","5","1","1","5","6","13","13","13"],["GP","F","17","U","GT3","T","3","4","at_home","services","home","mother","1","3","1","no","yes","yes","no","yes","yes","yes","yes","4","4","3","3","4","5","14","8","9","8"],["GP","F","16","U","GT3","A","3","1","services","other","course","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","2","3","3","2","2","4","2","11","11","12"],["GP","F","16","U","GT3","T","4","3","teacher","other","other","mother","1","2","0","no","no","no","yes","yes","yes","yes","yes","1","3","2","1","1","1","4","14","15","15"],["GP","F","16","U","GT3","T","1","1","at_home","other","home","mother","2","1","0","no","yes","no","no","yes","yes","no","no","4","3","2","1","4","5","2","12","13","13"],["GP","F","17","R","GT3","T","4","3","teacher","other","reputation","mother","2","3","0","no","yes","no","yes","yes","yes","yes","yes","4","4","2","1","1","4","0","11","12","12"],["GP","F","19","U","GT3","T","3","3","other","other","reputation","other","1","4","0","no","yes","no","yes","yes","yes","yes","no","4","3","3","1","2","3","4","12","12","12"],["GP","M","17","U","LE3","T","4","4","services","other","home","mother","1","2","0","no","yes","no","no","yes","yes","yes","yes","5","3","5","4","5","3","15","13","12","12"],["GP","F","16","U","GT3","A","2","2","other","other","reputation","mother","1","2","0","yes","yes","no","no","yes","yes","yes","no","3","3","4","1","1","4","0","13","13","13"],["GP","M","18","U","GT3","T","2","2","services","other","home","mother","1","2","0","no","yes","no","yes","yes","yes","yes","no","4","4","4","2","4","5","10","12","11","11"],["GP","F","17","R","LE3","T","4","4","services","other","other","mother","1","1","0","no","yes","no","no","yes","yes","no","no","5","2","1","1","2","3","6","12","11","11"],["GP","F","17","U","LE3","T","3","2","other","other","reputation","mother","2","2","0","no","no","no","no","yes","yes","yes","no","4","4","4","1","3","1","2","14","16","15"],["GP","F","17","U","GT3","T","4","3","other","other","reputation","mother","1","2","0","no","no","no","no","yes","yes","yes","yes","3","4","5","2","4","1","16","11","9","10"],["GP","M","18","U","LE3","T","3","3","services","health","home","father","1","2","0","no","yes","no","no","yes","yes","yes","no","3","2","4","2","4","4","10","10","10","10"],["GP","F","17","U","GT3","T","2","3","at_home","other","home","father","2","1","0","no","yes","no","no","yes","yes","no","no","3","3","3","1","4","3","4","12","13","13"],["GP","F","17","U","GT3","T","2","2","at_home","at_home","course","mother","1","3","0","no","yes","no","yes","yes","yes","yes","no","4","3","3","1","1","4","0","12","12","13"],["GP","F","17","R","GT3","T","2","1","at_home","services","reputation","mother","2","2","0","no","yes","no","yes","yes","yes","yes","no","4","2","5","1","2","5","0","11","10","11"],["GP","F","17","U","GT3","T","1","1","at_home","other","reputation","mother","1","3","0","no","yes","no","yes","yes","yes","no","yes","4","3","4","1","1","5","12","12","12","12"],["GP","F","16","U","GT3","T","2","3","services","teacher","other","mother","1","2","0","yes","no","no","no","yes","yes","yes","no","2","3","1","1","1","3","0","13","13","14"],["GP","M","18","U","GT3","T","2","2","other","other","home","mother","2","2","3","no","yes","yes","no","yes","yes","yes","no","3","3","3","5","5","4","9","10","9","10"],["GP","F","16","U","GT3","T","4","4","teacher","services","home","mother","1","3","0","no","yes","no","yes","no","yes","yes","no","5","3","2","1","1","5","4","15","16","16"],["GP","F","18","R","GT3","T","3","1","other","other","reputation","mother","1","2","0","no","no","no","yes","yes","yes","yes","yes","5","3","3","1","1","4","4","8","8","8"],["GP","F","17","U","GT3","T","3","2","other","other","course","mother","1","2","0","no","no","no","yes","no","yes","yes","no","5","3","4","1","3","3","2","17","18","17"],["GP","M","17","U","LE3","T","2","3","services","services","reputation","father","1","2","0","no","yes","no","no","no","yes","yes","no","5","3","3","1","3","3","0","10","11","11"],["GP","M","18","U","LE3","T","2","1","at_home","other","course","mother","4","2","0","yes","yes","no","yes","yes","yes","yes","yes","4","3","2","4","5","3","2","9","10","11"],["GP","F","17","U","GT3","A","2","1","other","other","course","mother","2","3","0","no","no","no","yes","yes","yes","yes","yes","3","2","3","1","2","3","0","15","15","16"],["GP","F","17","U","LE3","T","4","3","health","other","reputation","father","1","2","0","no","no","no","yes","yes","yes","yes","yes","3","2","3","1","2","3","0","14","12","12"],["GP","M","17","R","GT3","T","2","2","other","other","course","father","2","2","0","no","yes","no","yes","yes","yes","yes","no","4","5","2","1","1","1","0","12","13","13"],["GP","M","17","U","GT3","T","4","4","teacher","teacher","reputation","mother","1","2","0","yes","yes","no","yes","yes","yes","yes","yes","4","5","5","1","3","2","0","13","13","13"],["GP","M","16","U","GT3","T","4","4","health","other","reputation","father","1","2","0","no","yes","no","yes","yes","yes","yes","no","4","2","4","2","4","1","0","13","13","14"],["GP","M","16","U","LE3","T","1","1","other","other","home","mother","2","2","0","no","yes","no","no","yes","yes","yes","no","3","4","2","1","1","5","2","9","9","9"],["GP","M","16","U","GT3","T","3","2","at_home","other","reputation","mother","2","3","0","no","no","no","yes","yes","yes","yes","yes","5","3","3","1","3","2","0","12","12","12"],["GP","M","17","U","LE3","T","2","2","other","other","home","father","1","2","0","no","no","no","yes","no","yes","yes","yes","4","4","2","5","5","4","0","16","16","16"],["GP","F","16","U","GT3","T","2","1","other","other","home","mother","1","1","0","no","no","no","no","yes","yes","yes","yes","4","5","2","1","1","5","4","9","10","10"],["GP","F","16","U","GT3","A","4","1","other","other","home","mother","1","2","0","no","no","no","yes","yes","yes","yes","yes","5","3","3","1","2","5","0","14","13","13"],["GP","F","18","U","LE3","A","2","4","services","other","course","mother","2","2","1","no","yes","no","no","yes","yes","yes","no","4","3","3","1","1","3","18","10","10","10"],["GP","F","18","U","LE3","T","2","2","at_home","services","course","mother","1","2","1","no","yes","no","no","no","yes","yes","yes","5","3","1","1","1","5","16","9","8","10"],["GP","F","18","U","GT3","T","3","3","other","other","course","mother","2","1","1","no","no","no","no","yes","no","yes","no","4","1","1","1","1","3","14","8","7","7"],["GP","M","18","U","GT3","T","2","2","other","at_home","course","other","1","1","1","no","yes","no","yes","no","no","yes","yes","4","4","3","2","2","1","26","7","8","8"],["GP","M","17","U","GT3","T","4","4","teacher","teacher","course","mother","1","1","0","no","yes","no","yes","no","yes","yes","no","4","2","1","1","2","5","6","10","8","9"],["GP","F","17","U","GT3","T","3","2","other","other","course","father","1","2","0","no","no","no","yes","yes","yes","no","no","5","4","2","1","1","3","4","14","14","15"],["GP","F","17","U","LE3","T","1","1","at_home","at_home","course","mother","1","3","0","no","yes","no","yes","yes","yes","yes","yes","4","3","2","1","2","4","10","11","10","10"],["GP","F","16","U","GT3","T","1","2","other","other","course","mother","1","1","0","no","no","no","no","yes","no","yes","no","5","3","5","1","2","5","4","12","11","11"],["GP","F","17","R","GT3","T","2","1","at_home","services","course","mother","3","2","0","no","no","no","yes","yes","yes","no","no","2","1","1","1","1","3","2","13","13","13"],["GP","F","17","R","LE3","A","1","4","other","other","course","other","4","1","1","no","yes","no","no","yes","yes","yes","no","5","5","4","1","1","5","14","9","9","8"],["GP","M","18","U","GT3","T","2","2","other","services","reputation","father","1","2","0","no","no","no","no","yes","no","yes","no","5","5","4","3","5","2","16","8","7","8"],["GP","F","17","U","LE3","A","2","2","other","other","home","mother","1","1","1","no","yes","no","no","no","no","yes","no","3","1","2","1","1","1","8","11","9","10"],["GP","F","17","R","LE3","T","1","1","at_home","other","course","mother","2","3","0","no","no","no","yes","yes","yes","yes","no","4","3","3","1","3","5","4","15","14","15"],["GP","F","17","U","LE3","A","4","2","teacher","other","course","mother","1","2","0","no","yes","no","yes","yes","yes","no","no","4","3","2","1","1","4","4","15","14","14"],["GP","M","17","U","LE3","T","4","3","health","other","course","mother","2","2","0","no","no","no","yes","yes","yes","yes","yes","2","5","5","1","4","5","8","15","15","15"],["GP","M","17","R","LE3","A","4","4","teacher","other","course","mother","2","2","0","no","yes","no","no","yes","yes","yes","no","3","3","3","2","3","4","0","12","12","12"],["GP","M","16","U","LE3","T","4","3","teacher","other","course","mother","1","1","0","no","no","no","yes","no","yes","yes","no","5","4","5","1","1","3","7","14","14","15"],["GP","M","16","U","GT3","T","4","4","services","services","course","mother","1","1","0","no","no","yes","yes","yes","yes","yes","no","5","3","2","1","2","5","4","14","15","15"],["GP","F","17","U","GT3","T","4","4","teacher","services","course","mother","1","2","0","no","yes","yes","no","yes","yes","yes","yes","5","3","1","1","4","5","2","11","11","12"],["GP","M","17","R","GT3","T","1","1","other","other","home","father","2","3","0","no","no","no","no","no","yes","yes","yes","4","3","3","1","1","1","2","13","14","15"],["GP","F","17","U","GT3","T","3","3","services","other","home","mother","2","3","0","no","yes","no","no","yes","yes","yes","yes","4","2","2","2","3","5","10","11","11","11"],["GP","F","17","U","GT3","T","1","1","at_home","other","course","mother","1","2","0","yes","no","no","no","no","yes","no","yes","4","3","2","1","1","4","10","10","9","10"],["GP","F","18","U","GT3","T","2","1","other","other","course","other","2","3","0","no","yes","no","no","no","yes","yes","yes","4","4","4","1","1","3","10","12","10","11"],["GP","M","16","U","GT3","T","2","1","other","other","course","mother","3","1","0","no","no","no","no","yes","yes","yes","no","4","3","3","1","1","4","7","15","16","16"],["GP","F","17","U","GT3","T","1","1","other","services","course","father","1","2","0","no","yes","no","no","yes","yes","no","no","4","3","4","1","2","5","4","11","10","11"],["GP","M","17","U","GT3","T","2","3","other","other","course","father","2","1","0","no","no","no","no","yes","yes","yes","no","5","2","2","1","1","2","2","9","12","13"],["GP","M","22","U","GT3","T","3","1","services","services","other","mother","1","1","3","no","no","no","no","no","no","yes","yes","5","4","5","5","5","1","12","7","8","5"],["GP","M","18","R","LE3","T","3","3","other","services","course","mother","1","2","0","no","yes","no","no","yes","yes","yes","yes","4","3","3","1","3","5","8","10","9","10"],["GP","M","16","U","GT3","T","0","2","other","other","other","mother","1","1","0","no","no","no","no","no","yes","yes","no","4","3","2","2","4","5","0","11","12","11"],["GP","M","18","U","GT3","T","3","2","services","other","course","mother","2","1","0","no","no","no","no","yes","no","yes","no","4","4","5","2","4","5","8","7","8","7"],["GP","M","16","U","GT3","T","3","3","at_home","other","reputation","other","3","2","1","yes","yes","no","no","no","yes","yes","no","5","3","3","1","3","2","4","9","11","10"],["GP","M","18","U","GT3","T","2","1","services","services","other","mother","1","1","2","no","no","no","no","no","no","yes","no","3","2","5","2","5","5","4","7","8","6"],["GP","M","16","R","GT3","T","2","1","other","other","course","mother","2","1","0","no","no","no","yes","no","yes","no","no","3","3","2","1","3","3","2","14","13","12"],["GP","M","17","R","GT3","T","2","1","other","other","course","mother","1","1","0","no","no","no","no","no","yes","yes","no","4","4","2","2","4","5","0","12","12","13"],["GP","M","17","U","LE3","T","1","1","health","other","course","mother","2","1","1","no","yes","no","yes","yes","yes","yes","no","4","4","4","1","2","5","0","9","10","10"],["GP","F","18","U","LE3","A","2","1","other","other","course","mother","1","2","0","no","yes","no","no","no","yes","yes","yes","4","3","4","1","3","5","2","12","12","13"],["GP","F","17","U","LE3","T","4","2","teacher","services","reputation","mother","1","4","0","no","yes","no","yes","yes","yes","yes","no","4","2","3","1","1","4","2","14","15","17"],["GP","F","19","U","GT3","T","2","2","services","services","home","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","4","3","3","1","1","5","0","10","10","11"],["GP","M","18","U","LE3","T","2","1","services","other","course","mother","3","2","1","no","no","no","yes","no","no","yes","no","4","4","5","4","4","5","4","11","10","11"],["GP","F","17","R","GT3","T","4","2","other","other","course","mother","1","3","0","no","yes","no","yes","yes","yes","yes","no","4","3","4","1","3","5","2","11","12","14"],["GP","F","18","U","LE3","T","1","1","other","at_home","home","mother","1","3","0","no","yes","no","no","no","yes","no","no","4","4","3","2","3","3","4","11","12","14"],["GP","F","18","R","GT3","T","2","2","other","other","home","mother","1","2","0","yes","no","no","no","yes","yes","no","no","3","2","3","1","1","5","4","11","11","13"],["GP","M","19","U","LE3","A","4","3","services","at_home","reputation","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","4","3","1","1","1","1","4","11","13","14"],["GP","M","18","U","GT3","T","2","1","other","other","home","mother","1","2","0","no","no","no","yes","yes","yes","yes","no","5","2","4","1","2","4","2","16","16","16"],["GP","M","17","R","GT3","T","2","2","other","services","other","mother","2","1","0","no","no","no","no","no","no","no","no","5","2","2","1","1","4","0","9","10","10"],["GP","F","17","U","LE3","T","2","2","services","services","course","father","1","4","0","no","no","no","yes","yes","yes","yes","yes","3","4","1","1","1","2","2","10","11","12"],["GP","F","20","R","GT3","T","2","1","other","other","course","other","2","2","0","no","yes","yes","yes","yes","no","yes","yes","1","2","3","1","2","2","8","10","12","12"],["GP","F","18","U","GT3","T","4","3","services","other","home","father","1","2","0","no","yes","no","no","yes","yes","yes","yes","3","1","2","1","3","2","2","15","15","15"],["GP","M","18","U","GT3","T","4","3","teacher","other","course","mother","1","2","0","no","yes","no","no","no","yes","yes","no","4","3","2","1","1","3","2","10","10","11"],["GP","M","18","R","GT3","T","3","2","other","other","course","mother","1","3","0","no","no","no","yes","no","yes","no","no","5","3","2","1","1","3","2","10","11","12"],["GP","F","17","U","GT3","T","3","3","other","other","home","mother","1","3","0","no","no","no","yes","no","yes","no","no","3","2","3","1","1","4","2","15","12","13"],["GP","F","18","U","GT3","T","2","2","at_home","services","home","mother","1","3","0","no","yes","no","yes","yes","yes","yes","yes","4","3","3","1","1","3","0","11","12","13"],["GP","M","17","U","GT3","T","2","2","other","other","home","father","2","1","0","no","no","no","no","yes","no","yes","no","4","4","4","2","3","4","8","8","8","9"],["GP","M","18","R","LE3","A","3","4","other","other","reputation","mother","2","2","0","no","yes","no","yes","yes","yes","yes","no","4","2","5","3","4","1","6","15","16","16"],["GP","M","17","U","GT3","T","3","1","services","other","other","mother","1","2","0","no","no","no","yes","yes","yes","yes","yes","5","4","4","3","4","5","0","11","11","14"],["GP","F","18","R","GT3","T","4","4","teacher","other","reputation","mother","2","2","0","no","no","no","yes","yes","yes","yes","no","4","3","4","2","2","4","8","10","11","12"],["GP","M","18","U","GT3","T","4","2","health","other","reputation","father","1","2","0","no","yes","no","yes","yes","yes","yes","yes","5","4","5","1","3","5","4","10","12","14"],["GP","F","18","R","GT3","T","2","1","other","other","reputation","mother","2","2","0","no","yes","no","no","yes","no","yes","yes","4","3","5","1","2","3","12","8","9","10"],["GP","F","19","U","GT3","T","3","3","other","services","home","other","1","2","0","no","yes","no","yes","yes","yes","yes","no","4","3","5","3","3","5","16","11","12","12"],["GP","F","18","U","GT3","T","2","3","other","services","reputation","father","1","4","0","no","yes","no","yes","yes","yes","yes","yes","4","5","5","1","3","2","10","16","16","16"],["GP","F","18","U","LE3","T","1","1","other","other","home","mother","2","2","0","no","yes","no","no","no","yes","no","no","4","4","3","1","1","3","2","13","13","13"],["GP","M","17","R","GT3","T","1","2","at_home","at_home","home","mother","1","2","0","no","yes","no","yes","no","yes","no","yes","3","5","2","2","2","1","2","16","17","18"],["GP","F","18","U","GT3","T","2","1","other","other","home","mother","1","2","0","no","yes","no","no","yes","yes","yes","yes","4","2","5","1","2","1","8","14","14","15"],["GP","F","17","U","GT3","T","2","4","at_home","health","reputation","mother","2","2","0","no","yes","no","no","yes","yes","yes","yes","4","3","3","1","1","1","6","15","16","16"],["GP","F","17","U","LE3","T","2","2","services","other","course","mother","2","2","0","yes","yes","no","no","yes","yes","yes","yes","4","4","4","2","3","5","6","12","12","12"],["GP","F","18","R","GT3","A","3","2","other","services","home","mother","2","2","0","no","no","no","no","no","no","yes","yes","4","1","1","1","1","5","15","12","9","10"],["GP","M","18","U","GT3","T","4","4","teacher","services","home","mother","2","1","0","no","no","no","yes","yes","yes","yes","no","3","2","4","1","4","3","6","11","12","12"],["GP","F","18","U","GT3","T","4","4","health","health","reputation","father","1","2","1","yes","yes","no","yes","yes","yes","yes","yes","2","4","4","1","1","4","2","14","12","13"],["GP","F","17","U","GT3","T","2","2","other","services","reputation","father","3","3","0","no","yes","no","no","yes","yes","yes","yes","4","2","3","1","1","1","8","13","15","15"],["GP","F","19","R","GT3","T","3","2","services","services","reputation","father","1","2","1","yes","yes","no","no","yes","no","yes","no","3","3","3","4","3","3","0","9","8","10"],["GP","M","18","U","LE3","T","4","3","teacher","services","course","mother","2","1","0","no","no","no","yes","yes","yes","yes","no","4","2","3","1","2","1","0","10","10","10"],["GP","M","18","U","GT3","T","1","2","at_home","other","home","other","2","1","0","no","no","no","no","no","no","yes","no","3","4","4","2","4","4","10","10","10","11"],["GP","M","17","U","LE3","A","4","1","services","other","home","mother","2","1","0","no","no","no","yes","yes","yes","yes","yes","4","5","4","2","4","5","22","11","11","10"],["GP","M","17","U","LE3","A","3","2","teacher","services","home","mother","1","1","0","no","no","no","no","yes","yes","yes","no","4","4","4","3","4","3","18","13","13","13"],["GP","F","18","R","LE3","T","1","1","at_home","other","reputation","mother","2","4","0","no","yes","no","yes","yes","yes","no","no","5","2","2","1","1","3","2","17","17","18"],["GP","F","18","U","GT3","T","1","1","other","other","home","mother","2","2","0","yes","no","no","yes","yes","yes","yes","no","5","4","4","1","1","4","0","12","13","13"],["GP","F","17","U","GT3","T","2","2","other","other","course","mother","1","2","0","no","yes","no","no","no","yes","yes","no","5","4","5","1","2","5","12","12","12","14"],["GP","F","18","U","GT3","T","2","1","other","other","reputation","mother","2","2","0","no","no","no","yes","yes","yes","yes","yes","4","3","1","1","1","5","10","12","13","14"],["GP","M","17","U","GT3","T","1","1","other","other","reputation","father","1","2","0","no","no","no","no","no","yes","yes","no","4","3","3","1","2","4","0","12","12","12"],["GP","F","18","U","GT3","T","2","2","at_home","at_home","other","mother","1","3","0","no","yes","no","no","yes","yes","yes","no","4","3","3","1","2","2","0","18","18","18"],["GP","F","17","U","GT3","T","1","1","services","teacher","reputation","mother","1","3","0","no","yes","no","no","yes","yes","yes","no","4","3","3","1","1","3","0","13","13","14"],["GP","M","18","U","GT3","T","2","1","services","services","reputation","mother","1","3","0","no","no","no","yes","yes","yes","yes","no","4","2","4","1","3","2","0","14","15","15"],["GP","M","18","U","LE3","A","4","4","teacher","teacher","reputation","mother","1","2","0","no","yes","no","yes","yes","yes","yes","no","5","4","3","1","1","2","0","17","17","17"],["GP","M","18","U","GT3","T","4","2","teacher","other","home","mother","1","2","0","no","yes","no","yes","yes","yes","yes","yes","4","3","2","1","4","5","2","15","16","16"],["GP","F","17","U","GT3","T","4","3","health","services","reputation","mother","1","3","0","no","yes","no","no","yes","yes","yes","no","4","2","2","1","2","3","0","17","18","18"],["GP","F","17","R","LE3","T","3","1","services","other","reputation","mother","2","4","0","no","yes","no","no","yes","yes","no","no","3","1","2","1","1","3","0","18","19","19"],["GP","M","18","R","LE3","T","3","2","services","other","reputation","mother","2","3","0","no","yes","no","yes","yes","yes","yes","no","5","4","2","1","1","4","0","14","15","15"],["GP","M","17","U","GT3","T","3","3","health","other","home","mother","1","1","0","no","yes","no","no","yes","yes","yes","no","4","4","3","1","3","5","0","14","15","15"],["GP","F","19","U","GT3","T","4","4","health","other","reputation","other","2","2","0","no","yes","no","yes","yes","yes","yes","no","2","3","4","2","3","2","2","14","13","13"],["GP","F","18","U","LE3","T","4","3","other","other","home","other","2","2","0","no","yes","no","no","yes","yes","yes","yes","4","4","5","1","2","2","0","13","14","14"],["GP","F","18","U","GT3","T","4","3","other","other","reputation","father","1","4","0","no","yes","no","no","yes","yes","yes","no","4","3","3","1","1","3","0","16","17","17"],["GP","M","18","U","LE3","T","4","4","teacher","teacher","home","mother","1","1","0","no","yes","no","no","yes","yes","yes","yes","1","4","2","2","2","1","0","18","18","17"],["GP","F","18","U","LE3","A","4","4","health","other","home","mother","1","2","0","no","yes","yes","no","yes","yes","yes","yes","4","2","4","1","1","4","0","14","15","15"],["GP","M","17","U","LE3","T","4","4","other","teacher","home","father","2","1","0","no","no","no","no","yes","yes","yes","no","4","1","1","2","2","5","0","12","13","13"],["GP","F","17","R","GT3","T","4","4","services","services","reputation","mother","2","3","0","no","yes","no","yes","yes","yes","yes","no","5","3","4","1","1","5","0","7","7","8"],["GP","F","17","U","GT3","T","4","2","other","other","reputation","mother","2","3","0","no","yes","no","no","yes","yes","yes","no","4","3","3","1","1","3","0","16","16","16"],["GP","F","17","U","GT3","T","3","2","health","health","reputation","father","1","4","0","no","yes","no","yes","no","yes","yes","no","5","2","2","1","2","5","0","18","18","18"],["GP","M","19","R","LE3","T","2","1","at_home","services","course","mother","2","3","1","no","no","no","yes","yes","yes","yes","yes","4","3","1","1","1","5","0","9","10","11"],["GP","M","20","U","GT3","A","3","2","services","other","course","other","1","1","2","no","no","no","yes","yes","yes","no","no","5","5","3","1","1","5","0","14","15","15"],["GP","M","19","R","GT3","T","3","3","other","services","reputation","father","1","2","0","no","no","no","yes","yes","yes","no","yes","4","5","3","1","2","5","0","10","10","11"],["GP","F","18","U","GT3","T","1","4","other","teacher","home","mother","1","2","0","yes","yes","no","no","no","yes","no","yes","3","4","4","1","2","5","2","10","10","11"],["GP","F","18","U","GT3","T","2","1","services","other","course","mother","2","2","0","no","yes","no","yes","yes","yes","yes","no","5","3","3","1","2","1","2","12","12","15"],["GP","F","17","U","GT3","T","2","3","other","other","course","father","2","2","0","no","no","no","yes","yes","yes","yes","yes","4","2","1","1","1","3","2","11","12","14"],["GP","F","17","R","GT3","T","4","4","teacher","teacher","course","mother","1","1","0","no","no","no","yes","yes","yes","yes","no","4","4","4","1","1","5","2","15","16","17"],["GP","F","18","U","GT3","T","4","3","other","other","course","mother","1","3","0","no","yes","no","yes","yes","yes","yes","yes","4","3","4","1","1","5","2","14","15","17"],["GP","F","18","U","LE3","T","4","3","health","services","course","mother","2","1","0","no","yes","no","no","yes","yes","yes","no","3","2","4","1","4","1","8","12","12","15"],["GP","F","17","R","GT3","T","3","4","at_home","services","course","father","1","3","0","no","yes","no","yes","no","yes","yes","no","4","3","4","2","5","5","2","15","15","17"],["GP","F","18","U","GT3","T","3","3","at_home","other","course","father","1","2","0","no","yes","no","no","yes","yes","yes","no","4","1","4","1","1","3","8","11","12","14"],["GP","M","19","U","GT3","T","4","2","health","other","course","mother","2","2","0","no","yes","no","yes","yes","yes","yes","yes","5","4","4","1","1","1","9","11","10","10"],["GP","F","18","U","GT3","T","4","4","teacher","other","course","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","4","4","4","3","3","5","0","12","11","13"],["GP","F","18","U","GT3","T","3","4","other","other","course","mother","1","1","0","no","yes","no","yes","yes","yes","yes","yes","5","4","4","1","1","1","4","11","12","14"],["GP","F","17","U","GT3","T","4","4","health","health","course","mother","1","1","0","no","no","no","yes","yes","yes","yes","no","5","3","4","1","2","5","2","14","15","17"],["GP","F","17","U","GT3","A","4","3","services","services","course","mother","1","2","0","no","yes","no","no","yes","yes","yes","yes","5","2","2","1","2","5","14","15","14","17"],["GP","F","17","U","LE3","A","3","3","services","other","home","mother","1","2","0","yes","yes","no","no","yes","yes","yes","no","5","3","3","1","1","5","0","12","12","13"],["GP","F","17","U","LE3","T","2","1","other","other","home","father","1","2","0","no","no","no","yes","yes","yes","yes","no","4","2","3","2","2","2","2","11","12","14"],["GP","M","18","U","LE3","T","4","4","other","other","reputation","father","1","1","0","no","yes","no","no","yes","yes","yes","no","4","2","5","3","4","5","2","8","9","11"],["GP","F","19","U","GT3","T","1","1","other","other","course","other","3","3","0","no","no","no","yes","yes","no","no","yes","1","5","5","4","3","5","12","10","10","11"],["GP","F","19","U","LE3","A","1","1","other","other","course","other","3","2","2","no","yes","no","no","no","yes","yes","yes","5","3","4","1","1","4","2","8","8","9"],["GP","F","18","U","GT3","T","2","2","other","other","course","mother","1","1","0","no","yes","no","yes","yes","yes","yes","yes","4","3","5","2","4","5","2","10","10","10"],["GP","F","17","U","GT3","T","2","2","other","other","course","mother","1","2","0","no","yes","no","no","yes","yes","no","yes","4","2","2","1","1","3","4","14","13","13"],["GP","F","17","R","LE3","T","2","2","services","services","course","mother","1","3","0","no","yes","no","yes","yes","yes","yes","no","3","3","2","2","2","3","0","11","11","10"],["GP","F","17","U","GT3","T","3","1","services","services","course","father","1","3","0","no","yes","no","no","no","yes","yes","no","3","4","3","2","3","5","0","17","18","17"],["GP","F","17","U","LE3","T","0","2","at_home","at_home","home","father","2","3","0","no","no","no","no","yes","yes","yes","no","3","3","3","2","3","2","0","14","14","15"],["GP","F","18","U","GT3","T","1","1","other","other","home","mother","2","3","0","no","no","no","yes","yes","yes","yes","no","4","5","5","1","2","2","0","14","14","14"],["GP","M","18","U","GT3","T","4","4","other","other","course","mother","1","3","0","no","no","no","yes","yes","yes","yes","no","4","3","3","2","2","3","0","13","14","13"],["GP","M","17","U","GT3","T","3","3","other","services","reputation","mother","1","1","0","no","no","no","yes","no","yes","yes","no","4","3","5","3","5","5","0","17","18","17"],["GP","M","17","R","GT3","T","2","2","services","other","course","mother","4","1","0","no","yes","no","no","yes","yes","yes","no","4","4","5","5","5","4","2","11","10","10"],["GP","F","17","U","GT3","T","4","4","teacher","services","course","mother","1","3","0","no","yes","no","yes","yes","yes","yes","no","5","4","4","1","3","4","0","13","12","13"],["GP","F","17","U","GT3","T","4","4","teacher","teacher","course","mother","2","3","0","no","yes","no","no","no","yes","yes","yes","4","3","3","1","2","4","4","15","14","15"],["GP","F","17","U","GT3","T","3","3","at_home","other","course","mother","1","1","0","no","yes","yes","yes","yes","yes","yes","no","4","2","5","2","5","5","2","11","12","11"],["GP","M","18","U","LE3","T","2","2","other","other","course","mother","1","4","0","no","yes","yes","yes","yes","yes","yes","no","4","5","5","2","4","5","0","11","11","12"],["GP","M","19","R","GT3","T","3","2","at_home","services","home","other","1","1","0","no","yes","no","no","no","yes","no","yes","5","3","4","2","2","5","0","11","10","10"],["GP","F","18","U","GT3","T","2","2","at_home","other","course","mother","4","2","0","no","no","no","yes","yes","yes","no","yes","4","2","5","1","1","2","2","10","9","10"],["GP","F","17","R","GT3","T","2","4","at_home","other","course","father","1","3","0","no","yes","no","no","yes","yes","yes","yes","4","4","3","1","1","5","0","15","15","15"],["GP","M","18","U","GT3","T","2","2","other","other","reputation","mother","1","1","0","no","no","no","no","no","yes","yes","no","5","4","2","1","2","5","6","15","14","15"],["GP","F","18","U","GT3","T","3","3","services","services","home","mother","1","2","0","no","no","no","yes","yes","yes","yes","no","5","3","4","1","1","4","8","10","11","12"],["GP","F","18","U","LE3","T","2","2","other","other","home","other","1","2","0","no","no","no","yes","no","yes","yes","yes","4","3","3","1","1","2","0","10","9","12"],["GP","F","18","R","GT3","T","2","2","at_home","other","course","mother","2","4","0","no","no","no","yes","yes","yes","no","no","4","4","4","1","1","4","6","14","13","14"],["GP","F","17","U","GT3","T","3","4","services","other","course","mother","1","3","0","no","no","no","no","yes","yes","yes","no","4","4","5","1","3","5","8","11","13","14"],["GP","F","17","U","GT3","T","3","2","other","other","home","mother","1","2","0","no","yes","no","no","yes","yes","yes","yes","4","3","2","2","3","2","0","12","13","15"],["GP","F","18","U","LE3","T","3","3","services","services","home","mother","1","4","0","no","yes","no","no","yes","yes","yes","no","5","3","3","1","1","1","4","14","14","15"],["GP","F","17","R","GT3","A","3","2","other","other","home","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","4","3","3","2","3","2","0","14","14","16"],["GP","M","18","U","GT3","T","4","4","teacher","services","home","father","1","2","0","no","yes","no","yes","yes","yes","yes","no","4","3","3","2","2","2","0","12","12","13"],["GP","M","18","U","LE3","T","3","4","services","other","home","mother","1","2","0","no","no","no","yes","yes","yes","yes","yes","4","3","3","1","3","5","6","16","16","17"],["GP","F","17","U","GT3","A","2","2","at_home","at_home","home","father","1","2","0","no","yes","no","no","yes","yes","yes","yes","3","3","1","1","2","4","18","10","12","14"],["GP","F","18","U","GT3","T","2","3","at_home","other","course","mother","1","3","0","no","yes","no","no","yes","yes","yes","no","4","3","3","1","2","3","0","11","12","14"],["GP","F","18","U","GT3","T","3","2","other","services","other","mother","1","3","0","no","no","no","no","yes","yes","yes","yes","5","4","3","2","3","1","4","14","16","17"],["GP","M","18","R","GT3","T","4","3","teacher","services","course","mother","1","3","0","no","no","no","no","yes","yes","yes","yes","5","3","2","1","2","4","4","15","14","17"],["GP","M","18","U","GT3","T","4","3","teacher","other","course","mother","1","3","0","no","yes","no","no","yes","yes","yes","yes","5","4","5","2","3","5","0","14","13","14"],["GP","F","17","U","GT3","T","4","3","health","other","reputation","mother","1","3","0","no","yes","no","yes","yes","yes","yes","yes","4","4","3","1","3","4","0","11","12","13"],["GP","F","17","U","GT3","T","2","1","services","other","course","mother","2","2","0","no","yes","no","yes","yes","yes","yes","yes","4","3","4","2","2","1","10","12","15","15"],["GP","F","17","U","GT3","T","2","1","services","other","reputation","mother","1","2","0","no","yes","no","yes","yes","yes","yes","no","4","3","5","2","4","4","4","12","16","16"],["GP","F","19","U","LE3","A","2","3","at_home","other","home","other","2","1","1","no","no","no","no","yes","no","yes","no","2","2","3","3","4","5","16","10","11","11"],["GP","F","17","U","GT3","T","3","1","other","at_home","home","mother","1","1","1","no","yes","yes","no","yes","yes","yes","yes","4","1","2","1","1","3","6","10","13","13"],["GP","F","21","U","LE3","T","4","4","other","other","reputation","other","1","3","2","no","no","yes","yes","yes","yes","yes","no","3","3","2","1","1","5","0","9","12","12"],["GP","M","18","U","LE3","T","2","2","services","services","reputation","mother","1","2","0","no","yes","no","yes","no","no","yes","no","4","4","4","1","3","3","11","9","11","12"],["GP","M","18","U","LE3","A","3","4","other","other","reputation","other","1","2","0","no","no","no","yes","yes","yes","yes","yes","4","3","5","1","4","2","9","13","14","15"],["GP","F","17","U","GT3","T","2","2","services","services","reputation","mother","1","2","0","no","yes","no","yes","yes","yes","yes","no","4","3","4","1","3","4","0","13","17","17"],["GP","M","17","U","LE3","A","4","4","health","other","reputation","mother","1","3","0","no","yes","no","no","yes","yes","yes","no","4","4","2","1","2","4","2","12","15","15"],["GP","F","18","U","LE3","T","4","2","teacher","other","course","mother","1","2","0","no","yes","no","yes","yes","yes","yes","no","4","2","2","1","1","3","0","14","17","17"],["GP","M","21","R","LE3","T","1","1","at_home","other","course","other","2","2","2","no","yes","no","yes","yes","no","yes","yes","5","3","3","5","2","4","21","9","10","10"],["GP","F","20","R","GT3","T","1","1","other","other","reputation","other","2","3","0","no","no","no","no","yes","yes","yes","yes","3","2","2","1","3","3","8","11","15","15"],["GP","F","19","U","GT3","T","4","4","teacher","other","home","other","1","1","1","no","yes","no","no","yes","yes","yes","yes","3","2","5","4","4","5","5","9","10","11"],["GP","M","17","U","LE3","A","3","2","other","other","reputation","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","4","4","4","1","2","5","10","16","18","18"],["GP","F","18","U","GT3","T","3","2","at_home","other","reputation","father","1","3","0","no","yes","no","no","yes","yes","yes","yes","4","3","4","1","2","2","5","14","17","17"],["GP","M","18","R","GT3","T","2","3","other","services","reputation","father","1","1","0","no","no","no","no","yes","yes","yes","no","3","1","3","4","5","4","13","13","14","14"],["GP","M","19","U","GT3","T","2","1","other","other","reputation","mother","1","1","0","no","no","no","no","yes","yes","yes","no","5","3","4","1","4","4","10","7","11","11"],["GP","F","18","U","LE3","A","2","2","services","other","reputation","mother","2","2","0","no","yes","no","no","yes","yes","yes","no","4","1","4","1","3","4","10","14","17","17"],["GP","F","20","U","GT3","T","1","0","other","other","reputation","mother","2","1","1","yes","no","no","no","yes","yes","yes","yes","5","3","1","1","1","5","5","8","10","10"],["GP","F","18","U","GT3","T","3","2","services","other","home","mother","1","2","0","no","yes","no","yes","no","yes","yes","yes","3","1","2","1","2","1","4","10","13","13"],["MS","F","16","U","GT3","T","1","3","at_home","other","other","father","2","1","0","no","yes","no","no","yes","no","yes","yes","4","3","3","1","3","5","11","10","11","11"],["MS","F","16","R","GT3","T","2","2","other","other","course","mother","2","2","0","no","yes","no","yes","yes","yes","yes","no","4","4","4","1","1","5","0","12","12","12"],["MS","F","15","R","GT3","T","1","1","at_home","services","other","mother","1","1","1","no","yes","no","no","yes","yes","no","yes","4","1","3","1","1","2","6","10","10","10"],["MS","F","15","R","GT3","T","3","3","at_home","other","course","mother","2","1","0","no","yes","no","no","yes","yes","yes","no","5","4","4","2","3","5","4","10","10","11"],["MS","F","16","R","GT3","T","2","3","at_home","services","course","mother","2","2","0","no","no","no","no","yes","yes","no","no","4","5","2","1","2","5","0","16","17","17"],["MS","F","15","R","LE3","T","2","1","at_home","other","home","mother","2","1","0","no","no","no","no","yes","no","no","no","1","3","4","1","1","1","0","6","8","9"],["MS","M","16","R","LE3","A","4","4","at_home","other","home","mother","1","2","0","no","yes","no","no","yes","yes","no","no","5","3","2","1","3","2","5","10","11","11"],["MS","M","16","U","GT3","A","1","2","other","other","other","mother","1","3","0","yes","no","no","no","yes","yes","yes","no","4","4","3","1","1","5","0","10","11","11"],["MS","F","17","R","GT3","T","3","2","at_home","other","course","father","1","2","1","no","no","no","no","yes","yes","no","yes","4","5","4","1","2","5","0","10","10","10"],["MS","F","17","R","GT3","T","1","1","other","other","other","father","1","1","1","no","yes","no","no","no","no","yes","no","5","4","4","2","2","5","0","6","6","7"],["MS","F","15","R","GT3","T","4","4","teacher","other","course","mother","2","1","0","no","no","no","no","yes","yes","yes","yes","1","5","1","3","5","5","0","13","14","14"],["MS","F","16","U","LE3","A","2","2","at_home","other","reputation","mother","2","4","0","no","no","no","yes","no","no","no","yes","1","2","1","1","1","1","4","10","9","11"],["MS","F","15","R","LE3","T","1","1","at_home","services","reputation","father","2","2","0","no","yes","no","no","yes","yes","yes","no","5","4","3","1","2","4","0","10","10","10"],["MS","F","15","R","LE3","T","1","1","other","services","course","mother","2","1","1","no","yes","no","no","yes","yes","yes","yes","4","4","3","1","2","2","4","6","7","8"],["MS","F","16","R","GT3","T","0","2","other","other","other","mother","2","1","0","no","yes","no","yes","yes","yes","no","no","3","2","3","1","2","2","0","12","11","12"],["MS","F","17","R","GT3","T","2","3","other","other","course","mother","2","1","0","no","yes","no","no","yes","yes","yes","no","5","5","5","1","3","3","2","10","11","12"],["MS","F","15","R","GT3","T","3","3","other","services","course","father","2","1","0","no","no","no","no","no","yes","yes","no","4","1","3","1","1","4","0","14","16","16"],["MS","M","16","U","GT3","T","1","1","at_home","services","home","mother","2","2","0","no","yes","no","yes","yes","yes","no","yes","5","4","5","4","5","3","0","7","0","0"],["MS","M","17","U","GT3","T","1","1","other","other","home","mother","1","2","0","no","no","yes","no","no","yes","yes","no","4","4","3","2","4","5","4","8","9","9"],["MS","M","15","R","LE3","T","4","1","health","services","reputation","father","1","2","0","no","yes","no","yes","yes","yes","yes","no","5","3","4","1","2","2","0","12","13","14"],["MS","M","15","R","LE3","T","4","1","health","services","reputation","father","1","2","0","no","yes","no","yes","yes","yes","yes","no","5","3","4","1","2","2","7","7","9","8"],["MS","M","16","R","GT3","T","3","4","other","health","other","mother","3","2","0","no","no","no","no","no","yes","no","no","3","4","5","1","2","5","4","9","10","11"],["MS","M","15","R","GT3","T","1","1","other","other","course","mother","4","2","0","no","yes","no","yes","yes","yes","no","yes","5","4","5","2","4","4","8","7","9","9"],["MS","M","15","U","LE3","T","3","3","at_home","at_home","reputation","father","1","2","0","no","yes","no","yes","yes","yes","yes","no","5","3","3","1","1","5","0","11","11","11"],["MS","M","17","R","GT3","T","2","1","other","other","other","mother","3","1","0","no","no","no","yes","yes","no","no","yes","5","5","5","5","5","3","8","8","10","9"],["MS","F","16","R","GT3","T","4","4","teacher","teacher","course","mother","2","3","0","no","no","no","yes","yes","yes","yes","yes","4","2","2","1","1","4","6","16","16","17"],["MS","F","15","R","GT3","T","1","2","other","services","course","mother","2","1","0","no","no","no","no","yes","yes","no","no","5","1","2","1","1","1","3","11","13","13"],["MS","F","16","R","GT3","T","2","3","other","services","course","mother","3","2","0","no","yes","no","no","yes","yes","yes","no","4","5","4","1","2","1","2","15","15","15"],["MS","M","16","R","GT3","T","1","2","other","other","course","father","2","2","0","no","no","no","no","yes","yes","no","no","4","3","3","1","1","5","0","10","11","11"],["MS","F","16","R","GT3","T","2","2","other","other","course","mother","3","2","0","no","yes","no","no","yes","yes","yes","no","4","4","5","1","1","4","4","9","10","11"],["MS","F","16","U","GT3","T","1","2","other","services","course","mother","1","3","1","no","yes","no","no","yes","yes","no","no","1","3","2","1","2","4","0","10","8","8"],["MS","F","16","U","GT3","T","1","2","other","services","course","mother","1","3","1","no","yes","no","no","yes","yes","no","no","1","3","2","1","2","4","3","9","8","8"],["MS","F","15","U","GT3","T","2","1","at_home","other","home","mother","1","2","0","yes","yes","no","no","no","yes","yes","no","4","4","2","3","3","2","0","9","10","9"],["MS","F","16","U","GT3","T","1","1","at_home","other","course","father","1","2","0","no","yes","no","no","no","yes","no","yes","5","4","3","2","1","2","0","13","14","15"],["MS","M","17","R","LE3","T","1","2","at_home","services","reputation","mother","1","1","0","no","yes","no","yes","yes","yes","yes","no","5","5","5","5","5","3","4","10","11","11"],["MS","F","16","R","GT3","T","1","1","other","other","home","father","4","4","0","no","yes","no","no","no","yes","yes","no","4","3","2","1","1","1","0","13","10","13"],["MS","F","16","R","GT3","T","1","1","at_home","other","other","father","4","3","0","yes","yes","no","no","yes","yes","no","no","4","4","3","1","1","5","2","10","9","10"],["MS","F","15","R","GT3","T","1","1","at_home","other","home","father","2","2","0","no","yes","no","yes","yes","yes","yes","no","4","3","3","1","1","2","1","11","10","11"],["MS","F","16","R","GT3","T","1","1","at_home","other","other","mother","2","1","0","no","no","no","yes","yes","yes","yes","yes","4","2","2","4","3","2","0","13","12","14"],["MS","F","15","R","GT3","T","1","1","at_home","at_home","course","father","3","2","0","no","yes","no","no","yes","yes","no","no","4","2","1","1","2","2","0","13","14","14"],["MS","F","15","R","LE3","T","2","2","other","other","other","father","1","3","0","yes","yes","no","no","yes","yes","no","no","4","4","3","2","2","5","2","14","11","12"],["MS","M","16","R","GT3","T","1","1","at_home","other","other","father","2","1","0","no","no","no","yes","yes","yes","no","no","3","4","4","3","4","5","6","11","11","11"],["MS","F","18","U","GT3","T","1","2","other","other","course","father","1","2","1","no","yes","no","yes","yes","yes","yes","yes","3","4","4","2","3","5","9","9","8","8"],["MS","M","15","U","GT3","T","3","1","other","services","home","mother","2","1","0","no","yes","no","no","yes","yes","no","no","3","2","3","1","3","4","0","10","9","11"],["MS","F","16","R","GT3","T","2","2","other","services","course","father","3","2","0","no","yes","no","yes","yes","yes","yes","no","5","3","4","1","1","2","1","14","13","14"],["MS","M","15","U","GT3","T","2","2","health","other","reputation","mother","3","1","0","no","no","no","no","yes","yes","no","no","4","3","3","1","2","4","1","13","12","13"],["MS","M","16","U","GT3","T","4","4","other","teacher","course","father","1","2","0","no","yes","no","yes","yes","yes","no","yes","4","3","1","1","1","3","0","13","12","13"],["MS","F","15","R","GT3","T","3","3","services","other","reputation","mother","1","2","0","no","yes","no","no","yes","yes","yes","yes","4","5","4","1","1","1","4","13","12","12"],["MS","F","16","R","GT3","T","2","2","at_home","other","course","mother","2","2","1","no","yes","no","yes","no","yes","no","no","4","4","4","2","3","5","2","12","11","12"],["MS","F","16","R","LE3","T","2","2","other","other","home","father","3","1","0","no","yes","no","yes","yes","yes","no","yes","4","3","2","1","1","4","0","14","14","16"],["MS","M","16","U","LE3","T","2","1","at_home","services","course","mother","2","1","0","no","yes","no","yes","yes","yes","yes","no","2","4","3","2","3","4","4","10","8","10"],["MS","M","15","R","LE3","T","1","3","at_home","other","reputation","father","3","1","0","no","yes","no","yes","yes","yes","yes","no","4","2","4","3","5","3","2","10","11","11"],["MS","F","15","U","GT3","T","2","2","other","services","course","mother","2","3","0","no","yes","no","yes","yes","yes","no","no","5","3","2","1","1","4","0","12","13","14"],["MS","F","16","R","LE3","T","2","1","other","other","home","mother","1","1","0","no","yes","no","no","yes","yes","yes","yes","5","4","3","1","1","5","2","10","8","8"],["MS","M","15","U","GT3","T","3","3","services","services","course","father","2","1","0","no","yes","no","yes","no","yes","yes","no","4","3","3","2","4","3","11","12","10","11"],["MS","F","16","R","GT3","T","1","1","at_home","other","course","father","2","2","3","yes","yes","no","no","yes","yes","no","no","3","4","3","1","1","1","0","7","7","8"],["MS","F","17","U","GT3","T","2","2","other","at_home","course","mother","1","1","0","no","yes","no","yes","yes","no","no","no","4","5","3","1","1","5","4","9","9","10"],["MS","F","19","U","GT3","T","2","3","at_home","services","course","other","1","1","1","no","no","no","no","yes","no","yes","yes","4","4","4","1","1","2","0","9","9","10"],["MS","F","17","R","GT3","T","2","1","at_home","other","course","mother","3","1","0","no","yes","no","yes","yes","no","no","yes","5","5","3","1","1","3","2","9","10","11"],["MS","F","15","R","LE3","T","1","1","at_home","other","course","mother","2","1","0","no","yes","no","no","yes","no","no","yes","5","2","1","1","3","4","0","9","10","9"],["MS","F","16","R","GT3","T","2","2","other","other","course","father","3","2","0","no","yes","no","no","yes","no","yes","no","3","4","5","1","2","1","1","9","10","11"],["MS","F","16","U","LE3","A","2","2","other","other","home","mother","1","1","0","no","yes","no","no","yes","no","no","no","4","3","4","1","2","1","6","7","7","8"],["MS","F","17","R","GT3","T","2","2","at_home","other","course","mother","2","2","0","no","yes","no","no","yes","yes","yes","no","4","3","5","1","2","4","0","11","10","11"],["MS","F","16","U","GT3","T","2","2","other","services","course","father","1","1","1","no","yes","yes","yes","no","yes","yes","no","4","4","3","1","4","3","1","9","10","10"],["MS","F","18","R","LE3","A","3","2","other","other","course","other","2","3","2","no","yes","no","no","no","no","no","yes","3","3","2","1","1","2","6","7","9","10"],["MS","F","19","U","GT3","T","1","1","at_home","services","course","mother","1","3","1","no","no","no","yes","yes","no","no","yes","5","3","1","1","1","3","6","7","9","9"],["MS","M","18","R","GT3","T","1","1","other","other","home","mother","2","1","1","no","no","no","yes","yes","no","yes","no","4","4","3","3","4","4","0","8","9","10"],["MS","F","18","R","GT3","T","1","1","at_home","at_home","course","mother","2","1","1","no","no","no","no","no","no","yes","yes","3","2","3","1","1","2","4","9","11","10"],["MS","F","19","U","GT3","T","1","1","other","other","course","other","2","2","1","no","yes","no","no","yes","yes","yes","yes","1","1","4","4","1","1","12","7","8","9"],["MS","F","16","R","GT3","A","2","2","health","other","course","mother","1","2","0","no","no","no","no","no","yes","no","yes","3","3","2","1","1","3","2","8","10","10"],["MS","F","17","U","GT3","T","0","1","other","at_home","course","father","2","1","0","no","no","no","yes","no","yes","no","no","2","4","4","3","5","5","5","9","9","10"],["MS","F","16","R","LE3","T","1","2","at_home","other","course","mother","1","2","0","no","no","no","yes","yes","no","yes","no","4","4","5","1","3","3","0","8","9","9"],["MS","F","16","U","GT3","T","3","3","other","other","reputation","mother","1","1","0","no","no","no","yes","yes","no","yes","yes","4","5","4","1","1","4","0","14","13","13"],["MS","F","16","R","LE3","T","1","1","services","services","home","mother","1","1","0","no","yes","no","yes","yes","yes","yes","yes","4","4","4","2","2","4","2","14","14","14"],["MS","M","17","U","GT3","T","3","3","services","at_home","course","mother","2","4","1","no","yes","yes","yes","yes","yes","no","no","5","4","5","3","4","5","0","10","11","10"],["MS","F","16","U","GT3","T","2","1","other","services","course","mother","1","2","0","no","yes","no","yes","yes","yes","yes","no","5","3","3","1","1","1","0","14","13","14"],["MS","F","16","U","GT3","T","2","2","services","other","course","mother","1","1","0","no","yes","yes","yes","yes","yes","no","yes","4","2","5","1","2","5","0","17","16","16"],["MS","M","17","U","GT3","T","1","2","other","other","course","father","1","1","1","no","yes","no","yes","yes","no","yes","yes","5","3","5","5","5","1","12","6","7","7"],["MS","M","16","U","LE3","T","4","3","other","other","course","father","1","1","0","no","no","no","yes","yes","yes","yes","no","4","2","5","1","5","5","8","14","12","13"],["MS","M","17","R","LE3","T","2","2","services","services","other","mother","3","4","1","no","yes","no","no","yes","yes","no","no","1","3","5","3","5","3","2","10","8","9"],["MS","F","16","U","GT3","T","1","1","other","other","course","other","1","4","0","yes","yes","no","yes","yes","yes","yes","no","2","2","1","1","1","5","0","14","14","14"],["MS","F","19","U","LE3","T","2","2","other","other","home","mother","1","3","0","no","no","no","no","yes","yes","yes","yes","5","4","5","1","1","1","0","12","13","13"],["MS","F","17","R","GT3","T","1","1","at_home","other","reputation","mother","2","1","0","no","yes","no","yes","no","yes","yes","yes","4","4","5","1","2","5","0","11","11","11"],["MS","F","20","U","GT3","T","3","3","at_home","services","other","mother","2","2","1","no","no","no","yes","yes","yes","yes","yes","3","3","4","2","4","3","8","11","9","10"],["MS","F","17","U","LE3","T","1","1","other","services","course","father","1","3","0","no","yes","no","no","yes","yes","no","yes","4","3","3","1","1","3","0","11","11","10"],["MS","M","17","R","GT3","T","2","2","other","other","course","mother","3","1","1","no","yes","no","no","no","yes","yes","no","4","4","5","1","2","5","0","10","9","9"],["MS","F","16","R","LE3","T","1","1","at_home","other","course","father","3","2","0","no","yes","no","no","yes","yes","no","no","5","3","2","1","1","1","0","16","17","18"],["MS","F","17","R","GT3","T","2","2","other","other","reputation","mother","2","2","0","no","yes","no","yes","yes","yes","no","no","5","3","2","1","1","1","0","15","17","17"],["MS","F","17","U","GT3","A","1","0","other","other","other","mother","2","2","0","no","no","no","no","yes","yes","yes","yes","4","4","5","1","1","4","1","11","9","10"],["MS","F","18","R","GT3","T","1","1","at_home","other","other","mother","1","2","1","no","yes","no","no","yes","yes","yes","yes","4","3","2","1","1","5","9","7","7","7"],["MS","F","16","U","GT3","T","3","1","other","other","course","mother","1","1","0","no","no","no","yes","yes","yes","yes","no","3","1","3","1","3","1","0","8","6","8"],["MS","F","16","U","GT3","T","3","2","services","at_home","course","mother","1","1","0","no","no","no","no","yes","yes","yes","no","3","1","3","1","4","3","2","7","6","7"],["MS","F","18","U","LE3","T","1","1","other","at_home","reputation","mother","2","2","0","yes","no","no","no","yes","yes","no","no","2","3","5","1","4","3","8","9","8","10"],["MS","F","16","R","GT3","T","4","4","health","teacher","reputation","father","1","2","0","no","no","no","yes","no","yes","yes","yes","4","3","3","2","3","2","0","14","16","16"],["MS","F","16","R","LE3","T","1","2","other","other","reputation","mother","2","1","0","no","no","no","yes","yes","yes","yes","no","5","4","5","1","4","2","0","14","14","15"],["MS","F","18","U","GT3","A","2","4","other","services","reputation","father","1","2","1","no","yes","no","no","yes","yes","yes","no","2","3","2","1","3","1","8","8","5","8"],["MS","M","16","R","GT3","T","2","1","other","services","reputation","mother","2","2","0","no","no","no","yes","yes","yes","yes","no","5","2","1","1","1","2","0","8","7","0"],["MS","F","16","U","LE3","T","1","1","at_home","other","other","mother","3","2","0","no","yes","no","no","yes","yes","yes","no","4","3","2","1","3","5","6","6","8","8"],["MS","F","16","R","GT3","T","2","3","at_home","services","other","mother","2","2","0","no","yes","no","yes","yes","yes","yes","no","3","3","3","1","1","2","0","8","10","10"],["MS","F","16","U","GT3","T","4","4","health","health","course","mother","1","2","0","no","yes","no","no","yes","yes","yes","yes","4","3","4","1","2","3","4","8","8","8"],["MS","M","18","U","LE3","T","4","4","at_home","health","home","mother","1","4","0","no","yes","no","yes","yes","no","yes","yes","5","5","5","5","5","5","2","5","6","6"],["MS","F","16","R","LE3","T","3","4","at_home","other","other","mother","3","2","0","no","yes","no","no","no","yes","no","no","4","2","1","1","1","2","2","7","9","8"],["MS","M","17","U","LE3","T","4","4","other","services","home","mother","1","3","0","no","yes","no","no","yes","yes","yes","no","4","4","3","1","2","5","0","15","14","16"],["MS","F","17","R","GT3","T","4","1","other","other","other","mother","1","1","0","no","no","no","no","yes","yes","yes","yes","4","2","3","1","2","5","1","13","14","14"],["MS","M","16","U","LE3","T","2","2","services","services","other","mother","4","3","0","no","no","no","no","yes","yes","no","no","5","1","3","2","2","3","0","10","9","10"],["MS","F","17","R","GT3","T","2","2","at_home","other","other","mother","1","1","0","no","yes","yes","no","yes","yes","yes","no","5","1","3","1","2","5","5","9","9","9"],["MS","F","16","U","LE3","T","4","4","services","services","other","father","2","1","0","no","yes","no","no","yes","yes","no","no","5","1","3","1","2","5","1","11","11","11"],["MS","M","17","U","GT3","T","3","3","services","services","home","mother","1","1","0","no","yes","no","yes","yes","yes","yes","no","4","1","4","5","5","3","8","7","10","9"],["MS","M","17","U","GT3","T","1","1","at_home","services","other","mother","3","2","0","no","no","no","no","yes","yes","yes","yes","5","1","3","3","3","1","0","10","10","10"],["MS","M","16","U","GT3","T","2","1","health","services","other","mother","2","2","0","no","no","no","no","no","yes","yes","yes","4","2","2","1","4","5","2","9","7","8"],["MS","F","16","U","LE3","T","2","1","other","services","other","mother","1","2","0","no","no","no","no","yes","yes","yes","yes","3","2","2","1","1","3","0","14","15","16"],["MS","M","16","U","LE3","T","4","4","teacher","health","other","father","1","1","0","no","yes","no","no","yes","yes","yes","no","4","1","2","2","5","5","0","11","12","12"],["MS","M","15","R","GT3","T","1","2","other","services","course","mother","3","2","0","no","yes","no","yes","yes","yes","no","no","5","5","5","1","3","5","11","9","11","10"],["MS","M","15","U","LE3","A","2","2","other","other","reputation","mother","3","4","0","no","yes","no","yes","yes","yes","no","no","5","4","5","2","3","5","8","13","14","14"],["MS","M","15","U","LE3","A","2","1","services","services","course","mother","1","1","0","no","no","no","yes","yes","yes","yes","no","4","3","3","1","2","5","11","12","13","12"],["MS","F","16","R","LE3","T","2","2","other","other","course","mother","1","3","0","no","yes","no","no","no","yes","no","yes","4","3","3","2","2","5","2","11","11","11"],["MS","F","16","U","LE3","T","4","1","other","other","home","mother","2","2","0","no","yes","no","yes","yes","yes","yes","no","1","2","4","2","2","1","8","9","10","10"],["MS","F","17","U","GT3","T","3","2","at_home","other","home","mother","2","1","0","no","no","no","no","yes","yes","no","yes","4","3","3","2","2","1","5","9","11","11"],["MS","F","17","R","GT3","T","2","2","other","other","other","mother","2","2","0","yes","no","yes","no","yes","yes","no","no","5","1","3","1","1","5","0","11","9","11"],["MS","F","16","U","GT3","T","4","4","teacher","services","course","mother","2","3","0","no","yes","no","no","yes","yes","yes","yes","5","3","5","1","4","5","1","10","11","12"],["MS","M","17","R","GT3","T","4","4","health","other","course","father","3","1","3","no","no","no","yes","yes","yes","yes","yes","3","3","3","1","3","5","2","9","9","8"],["MS","M","17","R","LE3","T","1","3","other","other","course","father","2","1","0","no","no","no","yes","yes","yes","no","yes","5","1","2","3","3","5","2","12","11","12"],["MS","M","17","U","GT3","T","3","4","services","other","other","mother","1","2","1","no","yes","no","yes","no","yes","yes","yes","5","4","4","3","4","5","8","8","9","8"],["MS","F","17","U","GT3","T","4","4","health","health","course","father","1","2","0","no","yes","no","no","yes","yes","yes","no","5","2","5","1","1","5","0","13","15","16"],["MS","M","16","R","LE3","T","4","1","other","at_home","other","father","1","1","0","no","no","no","no","yes","yes","yes","no","4","1","2","2","1","2","0","10","11","11"],["MS","F","17","U","GT3","A","1","1","at_home","at_home","other","mother","1","2","0","no","no","no","yes","yes","yes","yes","yes","4","5","5","1","2","3","2","11","10","11"],["MS","F","17","R","GT3","T","4","2","other","other","course","mother","2","2","0","yes","yes","no","no","no","yes","yes","no","4","3","3","2","3","5","0","17","18","18"],["MS","M","16","U","LE3","A","2","2","other","services","course","father","2","2","0","no","yes","no","no","no","yes","yes","yes","4","1","2","2","2","5","0","12","13","13"],["MS","M","17","U","GT3","T","3","2","other","other","other","father","2","2","0","no","yes","yes","no","yes","yes","yes","no","4","1","2","2","2","1","0","13","14","13"],["MS","M","19","U","GT3","T","1","1","other","other","other","mother","1","2","2","no","yes","no","yes","yes","no","yes","no","4","4","3","3","4","4","2","9","9","10"],["MS","M","17","U","LE3","A","1","0","other","other","home","mother","1","1","0","no","no","no","no","yes","yes","no","yes","4","1","2","1","1","5","4","11","11","12"],["MS","F","17","R","GT3","T","1","1","at_home","at_home","course","father","2","1","0","no","yes","no","yes","yes","no","yes","yes","3","5","5","2","2","4","3","10","11","10"],["MS","F","16","R","GT3","T","1","2","other","other","home","father","1","3","0","yes","yes","no","no","no","yes","yes","yes","4","3","4","1","1","3","5","13","14","13"],["MS","M","16","R","LE3","T","1","2","other","at_home","course","mother","1","1","0","no","no","no","no","yes","yes","no","no","4","4","4","2","4","5","4","9","10","11"],["MS","F","17","R","GT3","T","3","1","other","other","course","mother","2","2","3","no","yes","no","yes","no","yes","yes","yes","5","4","4","1","1","5","2","7","9","10"],["MS","M","17","R","GT3","T","2","2","other","other","course","mother","2","1","0","no","no","no","yes","yes","no","no","yes","5","5","5","3","5","5","0","8","13","10"],["MS","M","18","R","GT3","T","1","0","at_home","at_home","course","other","3","1","1","yes","yes","no","no","yes","yes","no","no","4","3","2","1","1","4","0","12","12","13"],["MS","M","17","R","GT3","T","1","1","other","services","course","mother","2","1","0","no","yes","no","yes","no","yes","yes","yes","4","5","5","1","3","2","0","10","9","10"],["MS","M","18","U","LE3","T","1","1","at_home","at_home","course","mother","2","2","0","no","yes","no","yes","yes","yes","no","no","4","3","3","1","4","5","6","10","9","10"],["MS","F","16","R","LE3","T","2","2","other","services","course","father","1","2","0","no","no","no","yes","yes","yes","no","yes","5","4","3","1","1","1","0","11","13","12"],["MS","M","17","U","GT3","T","2","2","other","other","course","mother","1","1","1","no","no","no","yes","yes","yes","no","yes","1","2","1","2","3","5","0","7","0","0"],["MS","M","16","R","GT3","T","3","2","services","other","course","father","2","1","0","no","no","no","no","yes","yes","yes","no","4","5","5","2","3","5","2","11","9","10"],["MS","M","16","R","LE3","T","1","1","at_home","other","course","mother","2","1","0","no","no","no","yes","yes","yes","yes","no","4","5","5","2","4","5","0","10","10","9"],["MS","M","18","R","GT3","T","1","1","services","other","course","other","2","1","1","no","yes","no","no","yes","no","yes","yes","5","3","3","2","3","5","2","9","7","9"],["MS","M","18","R","GT3","T","3","2","services","other","course","mother","1","1","1","no","no","no","no","yes","no","yes","no","2","3","1","2","2","5","0","4","0","0"],["MS","M","19","U","GT3","T","3","2","at_home","services","course","mother","2","1","3","no","no","no","yes","yes","yes","no","no","3","2","1","1","1","3","4","6","11","9"],["MS","M","18","U","GT3","T","3","3","at_home","at_home","course","mother","1","2","2","no","yes","no","yes","yes","no","yes","no","4","4","5","1","3","3","9","4","8","8"],["MS","M","16","R","GT3","T","2","2","services","services","course","mother","2","1","0","no","yes","no","yes","yes","yes","yes","yes","5","4","3","2","4","4","6","7","8","8"],["MS","M","19","U","GT3","T","2","1","at_home","other","course","other","2","1","3","no","no","no","yes","no","no","yes","yes","4","4","3","1","3","5","4","8","9","9"],["MS","F","16","U","GT3","A","3","2","services","at_home","course","mother","2","2","2","no","yes","no","yes","yes","yes","no","yes","2","5","5","1","1","1","8","5","5","7"],["MS","F","17","U","GT3","T","1","1","other","at_home","course","mother","1","1","0","no","yes","no","yes","yes","yes","no","no","4","3","2","1","2","5","9","7","9","10"],["MS","M","20","R","GT3","T","1","1","other","other","course","other","2","1","1","no","yes","no","no","yes","no","yes","yes","4","4","3","2","4","4","12","8","11","10"],["MS","F","18","R","GT3","A","4","3","services","services","course","mother","1","1","0","no","yes","no","no","yes","yes","yes","no","5","4","4","3","4","2","8","10","11","10"],["MS","M","18","R","GT3","T","3","2","other","other","course","mother","2","1","0","no","yes","no","no","no","yes","yes","no","2","5","5","5","5","5","8","9","10","11"],["MS","M","19","R","GT3","T","1","1","other","services","home","other","3","2","1","no","no","no","no","yes","yes","yes","no","5","4","4","3","3","2","8","10","9","11"],["MS","M","17","U","GT3","T","3","3","health","other","course","mother","2","2","1","no","yes","no","no","yes","yes","yes","no","4","5","4","2","3","3","4","8","9","10"],["MS","M","18","U","LE3","T","1","3","at_home","services","course","mother","1","1","0","no","no","no","no","yes","no","yes","yes","4","3","3","2","3","3","0","9","10","9"],["MS","M","19","R","GT3","T","1","1","other","other","home","other","3","1","1","no","yes","no","no","yes","yes","yes","no","4","4","4","3","3","5","4","8","9","10"],["MS","F","18","U","GT3","A","1","2","at_home","other","course","mother","2","2","2","no","yes","no","no","yes","yes","no","no","4","3","3","1","1","5","2","6","8","8"],["MS","F","19","U","LE3","A","1","1","at_home","other","course","mother","1","1","0","no","yes","no","no","yes","no","no","no","1","4","4","1","1","5","0","6","8","7"],["MS","F","18","R","GT3","T","2","2","other","other","other","mother","2","1","1","no","no","no","no","yes","no","yes","yes","5","5","5","1","1","3","0","8","6","0"],["MS","F","17","R","GT3","T","0","0","at_home","other","course","mother","2","1","0","no","yes","no","no","yes","yes","yes","no","4","4","3","1","1","5","0","10","11","11"],["MS","F","17","R","LE3","A","3","1","other","at_home","course","other","2","3","0","no","yes","yes","no","yes","no","no","no","4","2","3","2","2","3","5","8","7","8"],["MS","F","17","U","GT3","T","4","2","teacher","services","home","mother","1","2","0","yes","yes","no","yes","yes","yes","yes","no","5","5","5","1","3","5","0","8","8","0"],["MS","F","18","R","LE3","T","2","2","services","services","course","mother","1","2","1","no","yes","no","yes","yes","yes","yes","no","2","3","3","1","2","4","3","7","6","8"],["MS","F","17","U","GT3","T","4","1","health","at_home","course","mother","1","1","0","no","yes","no","no","yes","yes","no","yes","3","2","2","1","1","5","0","8","10","9"],["MS","F","17","U","LE3","T","1","2","at_home","other","course","father","1","1","0","no","no","no","no","yes","yes","yes","no","5","5","1","1","1","3","0","7","10","10"],["MS","F","18","U","GT3","T","1","1","other","other","course","mother","3","2","2","no","no","no","yes","yes","yes","no","yes","3","4","4","2","2","5","3","7","8","7"],["MS","F","18","U","GT3","T","2","2","services","at_home","reputation","father","2","2","0","no","no","no","yes","no","yes","yes","no","4","3","5","1","1","1","2","12","13","14"],["MS","F","17","U","GT3","T","3","3","services","services","course","mother","2","1","0","no","yes","no","no","yes","yes","yes","no","4","4","3","1","1","4","0","11","12","13"],["MS","F","18","U","LE3","A","1","2","at_home","other","reputation","mother","2","2","0","no","no","no","no","yes","yes","yes","no","4","4","3","1","2","4","0","12","13","14"],["MS","F","18","U","GT3","T","4","4","teacher","teacher","reputation","mother","2","2","0","no","no","no","yes","no","yes","yes","no","4","3","5","1","2","1","0","18","18","18"],["MS","M","18","U","LE3","T","4","4","services","other","reputation","mother","1","1","0","no","yes","no","yes","yes","yes","yes","no","5","4","5","1","1","5","3","17","17","17"],["MS","F","17","U","GT3","T","4","2","other","other","course","mother","2","2","0","no","yes","no","no","yes","yes","yes","no","4","3","3","1","2","4","0","17","18","18"],["MS","F","18","R","GT3","T","2","2","at_home","other","course","mother","3","2","1","no","no","no","yes","yes","yes","no","yes","4","3","3","1","1","4","0","9","0","0"],["MS","M","18","U","LE3","T","1","2","at_home","services","home","mother","2","1","0","no","yes","no","no","no","yes","no","no","4","1","4","5","5","1","8","10","11","11"],["MS","M","18","R","GT3","T","4","4","at_home","services","other","mother","3","1","0","no","yes","yes","yes","yes","yes","yes","yes","2","5","5","1","1","1","5","12","13","14"],["MS","M","17","R","GT3","T","1","1","other","services","other","father","3","1","0","no","no","no","no","no","no","no","no","4","2","3","3","4","4","4","12","13","14"],["MS","F","18","U","GT3","T","2","2","other","other","course","mother","2","2","0","no","yes","no","no","no","yes","yes","yes","1","3","1","1","1","2","4","8","8","10"],["MS","F","18","U","LE3","T","2","2","services","services","course","father","2","3","0","no","no","no","no","yes","yes","yes","yes","5","4","5","1","4","3","0","11","12","13"],["MS","F","18","R","LE3","A","4","2","teacher","other","reputation","mother","1","2","0","no","no","no","yes","yes","yes","yes","yes","5","3","1","1","1","5","0","5","0","0"],["MS","F","18","U","GT3","T","1","1","at_home","services","course","mother","3","2","1","no","no","no","no","yes","no","no","no","4","4","2","1","2","2","2","9","10","10"],["MS","F","19","U","GT3","T","1","1","at_home","services","other","father","2","1","1","no","no","no","no","yes","no","no","no","5","5","5","2","3","2","0","5","0","0"],["MS","F","17","U","GT3","T","4","2","teacher","other","course","father","2","4","0","no","no","no","no","yes","yes","yes","yes","4","2","3","3","1","5","0","18","18","18"],["MS","F","17","R","LE3","A","2","1","services","other","reputation","mother","2","2","0","no","no","no","yes","yes","yes","yes","yes","5","3","3","1","2","2","5","11","11","12"],["MS","F","18","U","LE3","A","1","1","at_home","services","course","mother","1","2","0","no","no","no","no","yes","yes","no","yes","5","2","3","1","2","3","2","8","10","11"],["MS","F","18","U","GT3","T","1","2","at_home","at_home","course","father","2","2","0","no","yes","no","no","yes","no","no","no","4","1","1","1","1","4","0","11","11","12"],["MS","F","19","R","GT3","A","1","1","at_home","at_home","course","other","2","2","3","no","yes","no","yes","yes","no","no","yes","3","5","4","1","4","1","0","8","0","0"],["MS","F","18","R","GT3","T","2","2","services","other","home","mother","2","3","0","no","no","no","no","yes","yes","yes","yes","4","2","1","1","1","4","5","14","14","15"],["MS","M","17","R","GT3","T","4","3","services","other","home","mother","2","2","1","no","yes","yes","yes","no","yes","yes","yes","4","5","5","1","3","2","4","10","11","11"],["MS","F","18","U","GT3","T","3","3","services","services","course","father","1","2","0","no","yes","no","no","yes","yes","no","yes","5","3","4","1","1","5","0","10","10","10"],["MS","F","17","R","GT3","T","4","4","teacher","services","other","father","2","2","0","no","yes","yes","yes","yes","yes","yes","no","4","3","3","1","2","5","2","12","12","12"],["MS","F","17","U","LE3","A","3","2","services","other","reputation","mother","2","2","0","no","no","no","no","yes","yes","no","yes","1","2","3","1","2","5","0","15","14","15"],["MS","M","18","U","LE3","T","1","1","other","services","home","father","2","1","0","no","no","no","no","no","yes","yes","yes","3","3","2","1","2","3","2","14","13","14"],["MS","F","18","U","LE3","T","1","1","at_home","services","course","father","2","3","0","no","no","no","no","yes","yes","yes","no","5","3","2","1","1","4","0","19","17","18"],["MS","F","18","R","LE3","A","1","2","at_home","other","course","mother","3","2","0","no","no","no","no","yes","yes","no","yes","4","3","4","1","4","5","0","16","15","15"],["MS","F","18","U","GT3","T","3","3","services","services","other","mother","2","2","0","no","yes","no","no","yes","yes","yes","yes","4","3","2","1","3","3","6","13","12","13"],["MS","F","17","U","LE3","T","4","4","at_home","at_home","course","mother","1","2","0","no","yes","no","yes","yes","yes","yes","yes","2","3","4","1","1","1","4","15","14","15"],["MS","F","17","R","GT3","T","1","2","other","services","course","father","2","2","0","no","no","no","no","no","yes","no","no","3","2","2","1","2","3","0","13","13","13"],["MS","M","18","R","GT3","T","1","3","at_home","other","course","mother","2","2","0","no","yes","yes","no","yes","yes","no","no","3","3","4","2","4","3","0","8","10","9"],["MS","M","18","U","LE3","T","4","4","teacher","services","other","mother","2","3","0","no","no","no","no","yes","yes","yes","yes","4","2","2","2","2","5","0","15","16","16"],["MS","F","17","R","GT3","T","1","1","other","services","reputation","mother","3","1","1","no","yes","no","no","yes","yes","yes","yes","5","2","1","1","2","1","0","8","8","9"],["MS","F","18","U","GT3","T","2","3","at_home","services","course","father","2","1","0","no","yes","no","no","yes","yes","yes","yes","5","2","3","1","2","4","0","10","10","10"],["MS","F","18","R","GT3","T","4","4","other","teacher","other","father","3","2","0","no","yes","no","no","no","yes","yes","yes","3","2","2","4","2","5","0","7","5","0"],["MS","M","18","R","LE3","T","1","2","at_home","services","other","father","3","1","0","no","yes","no","yes","yes","no","yes","yes","4","3","3","2","3","3","3","9","10","10"],["MS","F","17","U","GT3","T","2","2","other","at_home","home","mother","1","3","0","no","no","no","yes","yes","yes","no","yes","3","4","3","1","1","3","8","10","11","12"],["MS","F","17","R","GT3","T","1","2","other","other","course","mother","1","1","0","no","no","no","yes","yes","yes","yes","no","3","5","5","1","3","1","4","7","8","9"],["MS","F","18","R","LE3","T","4","4","other","other","reputation","mother","2","3","0","no","no","no","no","yes","yes","yes","no","5","4","4","1","1","1","0","15","17","17"],["MS","F","18","R","GT3","T","1","1","other","other","home","mother","4","3","0","no","no","no","no","yes","yes","yes","no","4","3","2","1","2","4","4","10","11","12"],["MS","F","19","R","GT3","T","1","1","at_home","other","course","other","2","2","1","no","yes","no","no","yes","yes","yes","yes","4","3","3","1","1","3","4","7","8","9"],["MS","F","18","R","LE3","T","4","4","teacher","services","course","mother","1","2","0","no","no","no","yes","yes","yes","yes","no","5","4","3","3","4","2","1","13","14","14"],["MS","F","18","U","GT3","T","3","3","other","other","home","mother","1","2","0","no","no","no","no","yes","yes","yes","yes","4","1","3","1","2","1","1","16","16","16"],["MS","F","17","R","GT3","T","3","1","at_home","other","reputation","mother","1","2","0","no","yes","no","yes","no","yes","yes","no","4","5","4","2","3","1","10","8","9","9"],["MS","M","18","U","GT3","T","4","4","teacher","teacher","home","father","1","2","0","no","no","no","yes","no","yes","yes","no","3","2","4","1","4","2","4","17","18","19"],["MS","M","18","R","GT3","T","2","1","other","other","other","mother","2","1","0","no","no","no","yes","no","yes","yes","yes","4","4","3","1","3","5","0","7","7","0"],["MS","M","17","U","GT3","T","2","3","other","services","home","father","2","2","0","no","no","no","yes","yes","yes","yes","no","4","4","3","1","1","3","4","14","15","16"],["MS","M","19","R","GT3","T","1","1","other","services","other","mother","2","1","1","no","no","no","no","yes","yes","no","no","4","3","2","1","3","5","0","5","8","0"],["MS","M","18","R","GT3","T","4","2","other","other","home","father","2","1","1","no","no","yes","no","yes","yes","no","no","5","4","3","4","3","3","0","7","7","0"],["MS","F","18","R","GT3","T","2","2","at_home","other","other","mother","2","3","0","no","no","no","no","yes","yes","no","no","5","3","3","1","3","4","0","14","17","15"],["MS","F","17","U","GT3","T","4","3","teacher","other","other","mother","2","2","0","no","no","no","no","yes","yes","yes","no","5","5","4","1","1","1","0","6","9","11"],["MS","F","18","R","GT3","T","4","4","teacher","at_home","reputation","mother","3","1","0","no","yes","no","yes","yes","yes","yes","yes","4","4","3","2","2","5","4","7","9","10"],["MS","F","19","R","GT3","T","2","3","services","other","course","mother","1","3","1","no","no","no","yes","no","yes","yes","no","5","4","2","1","2","5","4","10","11","10"],["MS","F","18","U","LE3","T","3","1","teacher","services","course","mother","1","2","0","no","yes","no","no","yes","yes","yes","no","4","3","4","1","1","1","4","15","15","16"],["MS","F","18","U","GT3","T","1","1","other","other","course","mother","2","2","0","no","no","no","yes","yes","yes","no","no","1","1","1","1","1","5","6","11","12","9"],["MS","M","17","U","LE3","T","3","1","services","services","course","mother","2","1","0","no","no","no","no","no","yes","yes","no","2","4","5","3","4","2","6","10","10","10"],["MS","M","18","R","LE3","T","3","2","services","other","course","mother","3","1","0","no","no","no","no","no","yes","yes","no","4","4","1","3","4","5","4","10","11","11"]],"provenance":{"url":"https://www.kaggle.com/datasets/larsen0966/student-performance-data-set","title":"Student Performance Data Set","version":2,"licenseAsListed":"CC0: Public Domain","csvSHA256":"5be7b02f13f5800fddd66e2c8d834cd00ece14c552fb404def2397b31b63236b"}}</script>
     <script src="https://cdn.jsdelivr.net/npm/@visactor/vchart@2.1.7/build/index.min.js"></script>
@@ -1610,7 +1923,11 @@
       const tilts = [...document.querySelectorAll('.metric-card')].map(bindCardTilt)
       subscriptions.push(() => tilts.forEach((tilt) => tilt.dispose()))
 
-      const PAGE = JSON.parse($('#page-config').textContent)
+      const PAGE = {
+        ...JSON.parse($('#page-config').textContent),
+        accent: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
+        track: getComputedStyle(document.documentElement).getPropertyValue('--chart-track').trim(),
+      }
       function prepareRows(source) {
         const N = (r, key) => (r[key] === null || r[key] === '' ? null : Number(r[key]))
         const T = (r, key) => String(r[key] ?? '')
@@ -1807,35 +2124,23 @@
       const bindings = new Map()
       const plotSizes = new WeakMap()
       const definitionByPlot = new Map()
-      let pageNumber = 0
+      let overviewTable, overviewObserver
       const preparedRows = prepareRows(sourceData)
       function setTable(rows) {
-        const pageSize = 10
-        const pageCount = Math.max(1, Math.ceil(rows.length / pageSize))
-        pageNumber = Math.min(pageNumber, pageCount - 1)
-        $('#table-body').replaceChildren(
-          ...rows.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize).map((values) => {
-            const tr = document.createElement('tr')
-            for (const value of values) {
-              const td = document.createElement('td')
-              td.textContent = value ?? '—'
-              tr.append(td)
-            }
-            return tr
-          }),
-        )
-        if (!rows.length) {
-          const tr = document.createElement('tr'),
-            td = document.createElement('td')
-          td.colSpan = PAGE.columns.length
-          td.textContent = '当前筛选暂无数据'
-          tr.append(td)
-          $('#table-body').append(tr)
+        const host = $('#overview-table')
+        const options = DashboardTable.overview(Builder, PAGE.columns, rows, host)
+        host.dataset.empty = String(!rows.length)
+        host.dataset.recordCount = String(rows.length)
+        $('#overview-count').textContent = `${rows.length} 条记录`
+        host.setAttribute('aria-label', `完整明细表，${rows.length} 条记录`)
+        if (overviewTable) DashboardTable.setRecords(overviewTable, options.records)
+        else {
+          overviewTable = new window.VTable.ListTable(host, options)
+          overviewObserver = new ResizeObserver(() => {
+            if (host.clientWidth && host.clientHeight) overviewTable?.resize()
+          })
+          overviewObserver.observe(host)
         }
-        $('#pagination').hidden = pageCount === 1
-        $('#page-label').textContent = `${pageNumber + 1} / ${pageCount} · ${count(rows.length)} 项`
-        $('#page-previous').disabled = pageNumber === 0
-        $('#page-next').disabled = pageNumber === pageCount - 1
       }
       function showMetrics(metrics, only = 'all', label = '') {
         if (!metrics) return
@@ -2076,7 +2381,6 @@
                 return span
               }),
             )
-            pageNumber = 0
             setTable(next.table)
             for (const definition of next.plots) definitionByPlot.set(definition.id, definition)
             await Promise.all(next.plots.map(drawPlot))
@@ -2185,6 +2489,7 @@
           import('https://cdn.jsdelivr.net/npm/@visactor/vbi@0.6.4/+esm'),
           import('https://cdn.jsdelivr.net/npm/@visactor/vquery@0.6.4/dist/browser/esm/browser.js/+esm'),
           import('https://cdn.jsdelivr.net/npm/@visactor/vseed@0.6.4/+esm'),
+          DashboardTable.load(),
         ])
         Builder = vseed.Builder
         vseed.registerAll()
@@ -2266,14 +2571,6 @@
           clearHover()
           showMetrics(view?.metrics)
         })
-        $('#page-previous').addEventListener('click', () => {
-          pageNumber--
-          setTable(view.table)
-        })
-        $('#page-next').addEventListener('click', () => {
-          pageNumber++
-          setTable(view.table)
-        })
         function onMotionChange() {
           if (reducedMotion.matches) {
             finishEntrance()
@@ -2320,6 +2617,8 @@
         () => {
           disposed = true
           observer?.disconnect()
+          overviewObserver?.disconnect()
+          overviewTable?.release()
           subscriptions.forEach((dispose) => dispose())
           entrances.forEach((animation) => animation.cancel())
           metricAnimations.forEach((state) => cancelAnimationFrame(state.frame))
@@ -2417,20 +2716,15 @@
       function bindMetricAnalysis({ vbi, Builder, VChart, accent, entries, getContext, ready }) {
         let dialog, context, active, dimension, selection, chart, table, observer, controller
         let version = 0,
-          tableLibrary,
           records = [],
-          page = 0,
           opener,
           previousOverflow,
-          previousParentScroll,
           loadingTimer,
           chartSize = '',
           tableSize = '',
           renderQueue = Promise.resolve()
-        const pageSize = 50
         const listeners = []
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-        const tableAnimation = () => (reducedMotion.matches ? false : { duration: 220, delay: 0, type: 'all' })
         const resizeChart = () => {
           const node = dialog && find('chart'),
             size = node && `${node.clientWidth}:${node.clientHeight}`
@@ -2467,28 +2761,7 @@
           node.addEventListener('click', action)
           return node
         }
-        function loadTable() {
-          if (window.VTable?.ListTable) return Promise.resolve(window.VTable)
-          if (!tableLibrary)
-            tableLibrary = new Promise((resolve, reject) => {
-              const script = document.createElement('script')
-              const timer = setTimeout(() => fail(), 30000)
-              const fail = () => {
-                clearTimeout(timer)
-                script.remove()
-                tableLibrary = undefined
-                reject(new Error('明细模块加载失败，请重试'))
-              }
-              script.src = 'https://cdn.jsdelivr.net/npm/@visactor/vtable@1.23.1/dist/vtable.min.js'
-              script.onload = () => {
-                clearTimeout(timer)
-                window.VTable?.ListTable ? resolve(window.VTable) : fail()
-              }
-              script.onerror = fail
-              document.head.append(script)
-            })
-          return tableLibrary
-        }
+        const loadTable = DashboardTable.load
         function createDialog() {
           if (dialog) return
           dialog = element('dialog', 'ma-dialog')
@@ -2502,7 +2775,7 @@
         <section class="ma-summary"><div><p class="ma-eyebrow" data-ma="value-label"></p><strong class="ma-value" data-ma="value"></strong></div><p class="ma-finding" data-ma="finding"></p></section>
         <div class="ma-toolbar"><nav class="ma-modes" aria-label="分析维度" data-ma="modes"></nav><div class="ma-selection" data-ma="selection" hidden><span data-ma="selected"></span><button type="button" data-ma="reset" aria-label="清除分组筛选">清除 ×</button></div><details class="ma-picker" data-ma="picker"><summary data-ma="picker-label">选择分组</summary><div class="ma-groups" data-ma="groups" role="group" aria-label="选择分组查看记录"></div></details></div>
         <section class="ma-chart-panel"><div class="ma-panel-heading"><h3 data-ma="chart-title"></h3></div><p class="ma-hint" data-ma="chart-hint"></p><div class="ma-chart" data-ma="chart" role="img"></div></section>
-        <section class="ma-table-panel"><div class="ma-panel-heading"><h3>关联明细</h3><button type="button" data-ma="expand" aria-expanded="false">展开表格</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="分析明细表" tabindex="0"></div><nav class="ma-pagination" aria-label="分析明细分页"><button type="button" data-ma="previous">上一页</button><span data-ma="page"></span><button type="button" data-ma="next">下一页</button></nav></section>
+        <section class="ma-table-panel"><div class="ma-panel-heading"><h3>关联明细</h3><button type="button" data-ma="expand" aria-expanded="false">展开表格</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="分析明细表" tabindex="0"></div></section>
         <details class="ma-definition"><summary>统计口径与依据</summary><p data-ma="definition"></p><p data-ma="evidence"></p><p data-ma="grain"></p></details>
       </div></div></div>`
           document.body.append(dialog)
@@ -2513,14 +2786,6 @@
             void refresh(false)
           })
           find('retry').addEventListener('click', () => void refresh(true))
-          find('previous').addEventListener('click', () => {
-            page--
-            showTable()
-          })
-          find('next').addEventListener('click', () => {
-            page++
-            showTable()
-          })
           find('expand').addEventListener('click', () => {
             const expanded = dialog.classList.toggle('ma-expanded')
             find('expand').setAttribute('aria-expanded', String(expanded))
@@ -2583,6 +2848,7 @@
           renderQueue = Promise.resolve()
           controller?.abort()
           clearTimeout(loadingTimer)
+          if (dialog) delete dialog.dataset.contentEnter
           dialog?.getAnimations({ subtree: true }).forEach((animation) => animation.cancel())
           chart?.release()
           chart = undefined
@@ -2596,10 +2862,6 @@
             previousOverflow = undefined
           }
           opener?.focus({ preventScroll: true })
-          if (previousParentScroll !== undefined && window.frameElement) {
-            window.parent.scrollTo({ top: previousParentScroll, behavior: 'instant' })
-            previousParentScroll = undefined
-          }
         }
         async function query(dimensions, conditions, measures, signal) {
           const builder = vbi.chart.create(vbi.chart.createEmpty(context.connectorId))
@@ -2622,18 +2884,6 @@
             builder.undoManager?.destroy()
             builder.doc.destroy()
           }
-        }
-        function showTable(updateRecords = true) {
-          if (!table) return
-          const count = Math.max(1, Math.ceil(records.length / pageSize))
-          page = Math.max(0, Math.min(page, count - 1))
-          if (updateRecords) {
-            table.options.animationAppear = tableAnimation()
-            table.setRecords(records.slice(page * pageSize, (page + 1) * pageSize))
-          }
-          find('page').textContent = `${page + 1} / ${count} · 共 ${number(records.length, 0)} 条`
-          find('previous').disabled = page === 0
-          find('next').disabled = page + 1 >= count
         }
         function buildAnalysisSpec(group, metric, chartRows, chartTitle, selected) {
           const spec = Builder.from({
@@ -2690,7 +2940,7 @@
           const options = records.length
             ? Builder.from({
                 chartType: 'table',
-                dataset: records.slice(0, pageSize),
+                dataset: records,
                 dimensions,
                 measures,
                 theme: 'light',
@@ -2700,30 +2950,15 @@
                 records: [],
               }
           options.widthMode = 'standard'
-          options.autoFillWidth = true
-          options.animationAppear = tableAnimation()
           options.columns = options.columns.map((column) => ({
             ...column,
             width:
-              { country: 156, year: 64, id: 96 }[column.field] ||
+              { country: 156, year: 72, id: 96, order_id: 110, order_date: 128, date: 128 }[column.field] ||
               Math.max(96, Math.min(160, String(column.title || '').length * 12 + 24)),
           }))
           options.tooltip = { ...options.tooltip, parentElement: dialog, confine: true }
-          options.heightMode = 'standard'
           options.defaultColWidth = 130
-          options.defaultRowHeight = 34
-          options.theme = {
-            ...options.theme,
-            headerStyle: {
-              ...options.theme?.headerStyle,
-              bgColor: '#f3f5f8',
-              color: '#364152',
-              fontSize: 12,
-              borderColor: '#e2e7ee',
-            },
-            bodyStyle: { ...options.theme?.bodyStyle, color: '#364152', fontSize: 12, borderColor: '#e7ecf2' },
-          }
-          return options
+          return DashboardTable.options(options, find('table'))
         }
         let groupRows, totalRow, priorRow
         async function refresh(reload) {
@@ -2744,7 +2979,6 @@
           find('retry').hidden = true
           find('content').setAttribute('aria-busy', 'true')
           find('groups').inert = true
-          find('previous').disabled = find('next').disabled = true
           find('selection').hidden = selected === undefined
           find('selected').textContent = selected === undefined ? '' : `${group[1]}：${selected}`
           const extra =
@@ -2805,7 +3039,6 @@
               plotRows.sort((a, b) => b.value - a.value || a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
             else plotRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
             records = details.map((row) => ({ ...row }))
-            page = 0
             find('content').hidden = false
             find('value-label').textContent =
               selected === undefined
@@ -2831,9 +3064,9 @@
             find('definition').textContent = metric.definition
             find('evidence').textContent = metric.evidence
               ? metric.evidence(current, baseline)
-              : '汇总由当前范围内的完整记录计算；表格分页不改变汇总值。'
+              : '汇总由当前范围内的完整记录计算；表格滚动不改变汇总值。'
             find('grain').textContent =
-              `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 分页可访问全部结果`
+              `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 表格包含当前范围的完整结果`
             const detailScope = selected === undefined ? model.detailScope || '当前范围' : `${group[1]}：${selected}`
             find('table-scope').textContent = `${detailScope} · ${number(records.length, 0)} 条记录`
             find('table-scope').title = find('table-scope').textContent
@@ -2897,10 +3130,11 @@
                   tableSize = `${find('table').clientWidth}:${find('table').clientHeight}`
                 }
                 if (!dialog.open || ticket !== version) return
-                showTable(existingTable)
+                if (existingTable) DashboardTable.setRecords(table, records)
                 resizeChart()
                 find('feedback').textContent = records.length ? '' : '当前范围暂无明细记录。'
                 dialog.dataset.state = records.length ? 'ready' : 'empty'
+                dialog.dataset.contentEnter = 'true'
               })
             await renderQueue
           } catch (error) {
@@ -2918,8 +3152,9 @@
           }
         }
         function open(index, trigger) {
-          if (!ready()) return
+          if (!ready() || dialog?.open) return
           createDialog()
+          delete dialog.dataset.contentEnter
           context = getContext(index)
           active = context.metric
           dimension = context.dimensions[0]
@@ -2949,21 +3184,9 @@
           )
           previousOverflow = document.body.style.overflow
           document.body.style.overflow = 'hidden'
-          // Embedded examples scroll with the website; fit the dialog to its visible viewport.
-          if (window.frameElement) {
-            previousParentScroll = window.parent.scrollY
-            dialog.style.height = `${Math.min(780, Math.max(320, window.parent.innerHeight - 144))}px`
-          }
           dialog.showModal()
           dialog.querySelector('.ma-body').scrollTop = 0
           find('close').focus()
-          if (window.frameElement) {
-            const top = window.frameElement.getBoundingClientRect().top + dialog.getBoundingClientRect().top
-            window.parent.scrollBy({
-              top: top - Math.max(112, (window.parent.innerHeight - dialog.offsetHeight) / 2),
-              behavior: 'instant',
-            })
-          }
           dialog.dataset.state = 'loading'
           void refresh(true)
         }

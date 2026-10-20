@@ -1,5 +1,10 @@
 [
   {
+    "text": "示例",
+    "link": "/examples/light-dashboard/",
+    "activeMatch": "/examples/"
+  },
+  {
     "text": "开发文档",
     "items": [
       {
@@ -28,15 +33,5 @@
         "activeMatch": "/vbi-component/"
       }
     ]
-  },
-  {
-    "text": "Examples",
-    "link": "/examples/light-dashboard/",
-    "activeMatch": "/examples/"
-  },
-  {
-    "text": "Playground",
-    "link": "/playground/vseed",
-    "activeMatch": "/playground/"
   }
 ]

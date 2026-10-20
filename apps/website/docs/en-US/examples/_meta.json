@@ -4,5 +4,11 @@
     "name": "light-dashboard",
     "label": "light dashboard",
     "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "map-dashboard",
+    "label": "Map Dashboard",
+    "collapsed": false
   }
 ]

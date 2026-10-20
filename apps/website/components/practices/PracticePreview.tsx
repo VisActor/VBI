@@ -1,7 +1,7 @@
 import { useDark, useLang } from '@rspress/core/runtime'
 import type { ComponentType } from 'react'
 
-const SUPPORTED_PRACTICE_LOCALES = ['zh-CN', 'en-US', 'ja-JP', 'de-DE', 'id-ID', 'fr-FR', 'ko-KR', 'vi-VN'] as const
+const SUPPORTED_PRACTICE_LOCALES = ['zh-CN', 'en-US'] as const
 
 type PracticeLocale = (typeof SUPPORTED_PRACTICE_LOCALES)[number]
 

@@ -22,7 +22,7 @@
         min-height: 100svh;
         color: var(--ink);
         background: #f0f2f5;
-        font-family: Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        font-family: var(--font-ui);
         -webkit-font-smoothing: antialiased;
       }
       body::before {
@@ -146,8 +146,7 @@
       .card {
         min-width: 0;
         padding: 24px;
-        border-radius: 26px;
-        box-shadow: 0 18px 38px -22px #28394826;
+        border-radius: 22px;
         height: 100%;
       }
       .card-slot {
@@ -337,31 +336,6 @@
         cursor: pointer;
         font-size: 13px;
       }
-      .table-wrap {
-        overflow-x: auto;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 16px;
-        font-size: 12px;
-        font-variant-numeric: tabular-nums;
-      }
-      th,
-      td {
-        padding: 12px 8px;
-        border-bottom: 1px solid #e5eaee;
-        text-align: right;
-        white-space: nowrap;
-      }
-      th {
-        color: var(--muted);
-        font-weight: 500;
-      }
-      th:first-child,
-      td:first-child {
-        text-align: left;
-      }
       footer {
         margin-top: 24px;
       }
@@ -401,7 +375,6 @@
       }
 
       :root {
-        --surface: #fbfdff;
         --border: #e5eaee;
       }
       .brand {
@@ -428,10 +401,6 @@
       }
       .brand-mark i:last-child {
         opacity: 0.45;
-      }
-      .card {
-        background: var(--surface);
-        border: 1px solid #ffffffb0;
       }
       .insight h2 {
         color: var(--accent-ink);
@@ -495,23 +464,6 @@
       #main-empty {
         position: absolute;
         inset: 70px 0 auto;
-      }
-      .pagination {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        justify-content: flex-end;
-        margin-top: 14px;
-      }
-      .pagination button {
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 6px 12px;
-        font-size: 12px;
-      }
-      .pagination button:disabled {
-        cursor: default;
       }
       .table-caption {
         text-align: left;
@@ -586,6 +538,65 @@
         --background-start: #e2eaf3;
       }
     </style>
+    <style id="dashboard-material">
+      /* 与地图模板共用玻璃层次；每个阅读面只做一次背景模糊。 */
+      :root {
+        --chart-track: #e9eff5;
+        --glass-surface: rgb(255 255 255 / 46%);
+        --glass-fallback: #f8fafc;
+        --glass-filter: blur(14px) saturate(1.08) brightness(1.02);
+        --glass-sheen: linear-gradient(145deg, rgb(255 255 255 / 32%), rgb(255 255 255 / 4%) 58%);
+        --glass-background: var(--glass-sheen), var(--glass-surface);
+        --glass-edge: rgb(255 255 255 / 64%);
+        --glass-shadow:
+          0 18px 48px -20px rgb(40 51 62 / 15%), 0 4px 16px -8px rgb(40 51 62 / 8%),
+          inset 0 1px 0 rgb(255 255 255 / 76%), inset 0 -1px 0 rgb(255 255 255 / 16%);
+        --glass-tile: linear-gradient(145deg, rgb(255 255 255 / 48%), rgb(255 255 255 / 20%));
+        --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 68%), 0 5px 16px -12px rgb(40 51 62 / 12%);
+        --glass-control: rgb(255 255 255 / 48%);
+        --glass-control-hover: rgb(255 255 255 / 76%);
+        --glass-divider: rgb(104 122 143 / 12%);
+        --overlay-duration: 420ms;
+        --overlay-stagger: 55ms;
+        --overlay-easing: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .card,
+      #dashboard-content > details {
+        background: var(--glass-background);
+        border: 1px solid var(--glass-edge);
+        box-shadow: var(--glass-shadow);
+        backdrop-filter: var(--glass-filter);
+        -webkit-backdrop-filter: var(--glass-filter);
+      }
+      /* 底部明细保留更轻、更透的阅读面，与上方指标卡区分。 */
+      #dashboard-content > details {
+        --glass-surface: rgb(255 255 255 / 24%);
+        --glass-background:
+          linear-gradient(145deg, rgb(255 255 255 / 14%), rgb(255 255 255 / 2%) 58%), var(--glass-surface);
+        --glass-edge: rgb(255 255 255 / 34%);
+        --glass-shadow: 0 10px 32px -24px rgb(40 51 62 / 10%), inset 0 1px 0 rgb(255 255 255 / 38%);
+      }
+      .hero-bottom,
+      .hero-bottom > div + div {
+        border-color: var(--glass-divider);
+      }
+      @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        .card,
+        #dashboard-content > details,
+        dialog.ma-dialog {
+          background: var(--glass-fallback);
+        }
+      }
+      @media (prefers-reduced-transparency: reduce) {
+        .card,
+        #dashboard-content > details,
+        dialog.ma-dialog {
+          background: var(--glass-fallback);
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+        }
+      }
+    </style>
     <style id="metric-analysis-style">
       /* 指标入口保持轻量；分析内容仅在用户打开后呈现。 */
       .ma-entry,
@@ -617,21 +628,112 @@
         opacity: 1;
       }
       .ma-dialog {
-        color: #28333e;
-        background: #fff;
-        border: 1px solid #e4e9ef;
-        border-radius: 20px;
+        --glass-surface: rgb(255 255 255 / 78%);
+        --glass-background: var(--glass-sheen), var(--glass-surface);
+        color: var(--ink);
+        background: var(--glass-background);
+        border: 1px solid var(--glass-edge);
+        border-radius: 22px;
+        backdrop-filter: var(--glass-filter);
+        -webkit-backdrop-filter: var(--glass-filter);
         padding: 0;
         width: min(1120px, calc(100vw - 48px));
         max-width: none;
         height: min(780px, calc(100dvh - 48px));
         max-height: calc(100dvh - 48px);
         overflow: hidden;
-        box-shadow: 0 24px 100px #15203030;
+        box-shadow:
+          var(--glass-shadow),
+          0 32px 100px -24px rgb(21 32 48 / 24%);
       }
       .ma-dialog::backdrop {
-        background: #17243655;
-        backdrop-filter: blur(5px);
+        background: rgb(38 51 69 / 22%);
+        backdrop-filter: blur(7px);
+        -webkit-backdrop-filter: blur(7px);
+      }
+      /* 整体先展开；内容绘制就绪后分批出现，局部筛选不重播。 */
+      .ma-dialog[open] {
+        animation: overlay-enter var(--overlay-duration) var(--overlay-easing) backwards;
+      }
+      .ma-dialog[open]::backdrop {
+        animation: overlay-scrim-enter 260ms ease-out backwards;
+      }
+      .ma-dialog:not([data-content-enter='true']) .ma-content {
+        visibility: hidden;
+      }
+      .ma-dialog[open] .ma-header h2,
+      .ma-dialog[open] .ma-header .ma-scope,
+      .ma-dialog[open] .ma-close,
+      .ma-dialog[data-content-enter='true'] .ma-summary > *,
+      .ma-dialog[data-content-enter='true'] .ma-toolbar > *,
+      .ma-dialog[data-content-enter='true'] .ma-chart-panel,
+      .ma-dialog[data-content-enter='true'] .ma-table-panel,
+      .ma-dialog[data-content-enter='true'] .ma-definition {
+        animation: overlay-content-enter 380ms var(--overlay-easing) backwards;
+        animation-delay: calc(100ms + var(--overlay-order, 0) * var(--overlay-stagger));
+      }
+      .ma-header .ma-scope {
+        --overlay-order: 1;
+      }
+      .ma-summary > :first-child {
+        --overlay-order: 2;
+      }
+      .ma-summary > :last-child {
+        --overlay-order: 3;
+      }
+      .ma-modes {
+        --overlay-order: 4;
+      }
+      .ma-selection {
+        --overlay-order: 5;
+      }
+      .ma-picker {
+        --overlay-order: 6;
+      }
+      .ma-chart-panel {
+        --overlay-order: 7;
+      }
+      .ma-table-panel {
+        --overlay-order: 8;
+      }
+      .ma-definition {
+        --overlay-order: 9;
+      }
+      @keyframes overlay-enter {
+        from {
+          opacity: 0;
+          transform: translateY(14px) scale(0.985);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes overlay-content-enter {
+        from {
+          opacity: 0;
+          transform: translateY(9px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes overlay-scrim-enter {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .ma-dialog,
+        .ma-dialog *,
+        .ma-dialog::backdrop {
+          animation: none !important;
+          transition: none !important;
+        }
       }
       .ma-dialog .ma-shell {
         display: flex;
@@ -645,7 +747,7 @@
         justify-content: space-between;
         gap: 20px;
         padding: 22px 28px 18px;
-        border-bottom: 1px solid #edf0f4;
+        border-bottom: 1px solid var(--glass-divider);
         flex: none;
       }
       .ma-dialog .ma-header > div {
@@ -670,21 +772,22 @@
         font: inherit;
         font-size: 12px;
         line-height: 1.4;
-        border: 1px solid #e2e7ed;
-        background: #fff;
-        color: #526173;
-        border-radius: 7px;
+        border: 0;
+        background: var(--glass-control);
+        color: var(--muted);
+        border-radius: 9px;
         padding: 7px 10px;
         cursor: pointer;
         box-shadow: none;
         transform: none;
       }
       .ma-dialog button:hover {
-        background: #f3f6f9;
+        background: var(--glass-control-hover);
+        color: var(--ink);
       }
       .ma-dialog button:focus-visible,
       .ma-dialog summary:focus-visible {
-        outline: 2px solid var(--ma-accent);
+        outline: 2px solid var(--focus-ring);
         outline-offset: 3px;
       }
       .ma-dialog button:disabled {
@@ -692,9 +795,8 @@
         cursor: default;
       }
       .ma-dialog button[aria-pressed='true'] {
-        border-color: var(--ma-accent);
-        background: color-mix(in srgb, var(--ma-accent) 14%, white);
-        color: #28333e;
+        background: color-mix(in srgb, var(--ma-accent) 24%, rgb(255 255 255 / 68%));
+        color: var(--ink);
       }
       .ma-dialog button.ma-close {
         display: grid;
@@ -706,7 +808,7 @@
         line-height: 1;
         padding: 0;
         border: 0;
-        color: #718092;
+        color: var(--text-secondary);
       }
       .ma-dialog .ma-body {
         position: relative;
@@ -720,16 +822,18 @@
       }
       .ma-dialog .ma-eyebrow {
         font-size: 11px;
-        color: #748092;
+        color: var(--text-faint);
         line-height: 1.6;
       }
       .ma-dialog .ma-scope,
       .ma-dialog .ma-hint {
-        color: #7b8795;
+        color: var(--text-faint);
         font-size: 11px;
         line-height: 1.6;
       }
       .ma-dialog .ma-toolbar {
+        position: relative;
+        z-index: 1;
         grid-column: 1 / -1;
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 220px) auto;
@@ -748,12 +852,12 @@
         align-items: center;
         gap: 7px;
         font-size: 12px;
-        color: #445569;
+        color: var(--text-secondary);
       }
       .ma-dialog .ma-selection button {
         border: 0;
         padding: 5px 6px;
-        color: #748092;
+        color: var(--text-faint);
       }
       .ma-dialog .ma-feedback {
         position: absolute;
@@ -761,7 +865,7 @@
         left: 28px;
         right: 28px;
         font-size: 11px;
-        color: #718092;
+        color: var(--text-secondary);
         line-height: 1.7;
       }
       .ma-dialog .ma-feedback:empty {
@@ -811,7 +915,7 @@
       .ma-dialog .ma-finding {
         font-size: 12px;
         line-height: 1.8;
-        color: #5a6778;
+        color: var(--text-secondary);
         max-height: 80px;
         overflow: auto;
       }
@@ -821,8 +925,10 @@
         flex-direction: column;
         min-width: 0;
         padding: 16px;
-        border: 1px solid #e8edf2;
-        border-radius: 12px;
+        border: 1px solid rgb(255 255 255 / 42%);
+        border-radius: 14px;
+        background: var(--glass-tile);
+        box-shadow: var(--glass-tile-shadow);
       }
       .ma-dialog .ma-panel-heading {
         display: flex;
@@ -846,12 +952,6 @@
         width: 100%;
         margin-top: 10px;
       }
-      .ma-dialog .ma-pagination {
-        display: flex;
-        align-items: center;
-        min-height: 30px;
-        margin-top: 12px;
-      }
       .ma-dialog .ma-picker {
         position: relative;
         margin: 0 0 0 auto;
@@ -864,12 +964,13 @@
       .ma-dialog .ma-picker > summary {
         list-style: none;
         font-size: 12px;
-        color: #526173;
+        color: var(--text-secondary);
         cursor: pointer;
         padding: 7px 10px;
         line-height: 1.4;
-        border: 1px solid #e2e7ed;
-        border-radius: 7px;
+        border: 0;
+        border-radius: 9px;
+        background: var(--glass-control);
       }
       .ma-dialog .ma-picker > summary::-webkit-details-marker {
         display: none;
@@ -890,9 +991,9 @@
         max-height: 280px;
         overflow: auto;
         padding: 6px;
-        background: #fff;
-        border: 1px solid #e2e7ed;
-        border-radius: 10px;
+        background: var(--glass-fallback);
+        border: 1px solid var(--glass-edge);
+        border-radius: 12px;
         box-shadow: 0 8px 30px #1520301a;
       }
       .ma-dialog .ma-groups button {
@@ -909,7 +1010,7 @@
         background: transparent;
         font-size: 11px;
         line-height: 1.8;
-        color: #718092;
+        color: var(--text-secondary);
       }
       .ma-dialog .ma-definition summary {
         cursor: pointer;
@@ -917,16 +1018,6 @@
       }
       .ma-dialog .ma-definition p {
         margin-top: 8px;
-      }
-      .ma-dialog .ma-pagination {
-        gap: 6px;
-        justify-content: space-between;
-        font-size: 11px;
-        color: #718092;
-        font-variant-numeric: tabular-nums;
-      }
-      .ma-dialog .ma-pagination button {
-        padding: 5px 8px;
       }
       .ma-dialog [hidden] {
         display: none !important;
@@ -1020,14 +1111,253 @@
           grid-row: 2;
           width: 100%;
         }
-        .ma-dialog .ma-pagination {
-          gap: 4px;
-        }
-        .ma-dialog .ma-pagination button {
-          padding: 6px;
-        }
       }
     </style>
+    <style id="dashboard-table-tokens">
+      /* Shared semantic tokens. Theme palettes supply --ink, --muted and --accent. */
+      :root {
+        --font-ui: var(--dashboard-font-family, Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif);
+        --text-primary: var(--ink);
+        --text-strong: var(--strong, var(--ink));
+        --text-secondary: var(--muted);
+        --text-faint: color-mix(in srgb, var(--muted) 88%, transparent);
+        --focus-ring: color-mix(in srgb, var(--accent) 68%, var(--ink));
+        --table-canvas: transparent;
+        --table-body: rgb(255 255 255 / 6%);
+        --table-stripe: rgb(255 255 255 / 18%);
+        --table-header: color-mix(in srgb, var(--ink) 3%, rgb(255 255 255 / 66%));
+        --table-text: var(--text-primary);
+        --table-header-text: var(--text-strong);
+        --table-divider: color-mix(in srgb, var(--ink) 8%, transparent);
+        --table-frame: color-mix(in srgb, var(--ink) 10%, transparent);
+        --table-hover: color-mix(in srgb, var(--accent) 15%, transparent);
+        --table-hover-row: color-mix(in srgb, var(--accent) 8%, transparent);
+        --table-selected: color-mix(in srgb, var(--accent) 25%, transparent);
+        --table-selected-row: color-mix(in srgb, var(--accent) 9%, transparent);
+        --table-selected-border: color-mix(in srgb, var(--accent) 70%, var(--ink));
+        --table-scroll-thumb: color-mix(in srgb, var(--muted) 38%, transparent);
+        --table-scroll-rail: transparent;
+        --table-font-size: 12px;
+        --table-header-font-size: 11px;
+        --table-row-height: 40px;
+        --table-header-height: 38px;
+        --table-selection-width: 1px;
+        --table-radius: 10px;
+        --table-overview-max-height: 398px;
+      }
+      :root[data-mode='dark'] {
+        --table-body: transparent;
+        --table-stripe: color-mix(in srgb, var(--ink) 3%, transparent);
+        --table-header: color-mix(in srgb, var(--ink) 6%, transparent);
+        --table-divider: color-mix(in srgb, var(--ink) 9%, transparent);
+        --table-frame: color-mix(in srgb, var(--ink) 12%, transparent);
+      }
+      .dashboard-table,
+      .ma-dialog .ma-table {
+        border-radius: var(--table-radius);
+        overflow: hidden;
+        outline: none;
+      }
+      .dashboard-table:focus-visible,
+      .ma-dialog .ma-table:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 3px;
+      }
+      .dashboard-table {
+        position: relative;
+        width: 100%;
+        height: var(--table-overview-max-height);
+        margin-top: 14px;
+      }
+      .dashboard-table[data-empty='true']::after {
+        content: 'No data for these filters';
+        position: absolute;
+        inset: 45% 0 auto;
+        text-align: center;
+        color: var(--text-secondary);
+        font: 12px var(--font-ui);
+        pointer-events: none;
+      }
+      .dashboard-table-caption {
+        margin: 16px 0 0;
+        color: var(--text-secondary);
+        font-size: 12px;
+        line-height: 1.85;
+      }
+      .dashboard-table-count {
+        margin-left: 10px;
+        color: var(--text-faint);
+        font-size: 11px;
+        font-weight: 400;
+      }
+    </style>
+    <script id="dashboard-table-runtime">
+      /* CSS is the palette authority; this adapter resolves its tokens for Canvas. */
+      window.DashboardTable = (() => {
+        let library
+        function load() {
+          if (window.VTable?.ListTable) return Promise.resolve(window.VTable)
+          if (!library)
+            library = new Promise((resolve, reject) => {
+              const script = document.createElement('script')
+              const fail = () => {
+                clearTimeout(timer)
+                script.remove()
+                library = undefined
+                reject(new Error('Could not load details. Try again.'))
+              }
+              const timer = setTimeout(fail, 30000)
+              script.src = 'https://cdn.jsdelivr.net/npm/@visactor/vtable@1.23.1/dist/vtable.min.js'
+              script.onload = () => {
+                clearTimeout(timer)
+                if (window.VTable?.ListTable) resolve(window.VTable)
+                else fail()
+              }
+              script.onerror = fail
+              document.head.append(script)
+            })
+          return library
+        }
+        function readTokens(host) {
+          const style = getComputedStyle(host)
+          const probe = document.createElement('span')
+          probe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none'
+          host.append(probe)
+          const canvas = document.createElement('canvas')
+          canvas.width = canvas.height = 1
+          const context = canvas.getContext('2d', { willReadFrequently: true })
+          const color = (name) => {
+            // Resolve var()/color-mix() in the host, then normalize to VRender-compatible RGBA.
+            probe.style.color = `var(${name})`
+            context.clearRect(0, 0, 1, 1)
+            context.fillStyle = getComputedStyle(probe).color
+            context.fillRect(0, 0, 1, 1)
+            const [r, g, b, a] = context.getImageData(0, 0, 1, 1).data
+            return `rgba(${r}, ${g}, ${b}, ${a / 255})`
+          }
+          try {
+            return {
+              color,
+              number: (name) => parseFloat(style.getPropertyValue(name)),
+              fontFamily: style.getPropertyValue('--font-ui').trim(),
+              dispose: () => probe.remove(),
+            }
+          } catch (error) {
+            probe.remove()
+            throw error
+          }
+        }
+        const animation = () =>
+          matchMedia('(prefers-reduced-motion: reduce)').matches ? false : { type: 'all', duration: 220, delay: 0 }
+        function options(base, host) {
+          const tokens = readTokens(host)
+          try {
+            const color = tokens.color
+            const normal = color('--table-body')
+            const stripe = color('--table-stripe')
+            const divider = color('--table-divider')
+            const hover = {
+              cellBgColor: color('--table-hover'),
+              inlineRowBgColor: color('--table-hover-row'),
+              inlineColumnBgColor: color('--table-canvas'),
+            }
+            const common = {
+              fontFamily: tokens.fontFamily,
+              fontSize: tokens.number('--table-font-size'),
+              color: color('--table-text'),
+              padding: [10, 12, 10, 12],
+              borderColor: divider,
+              borderLineWidth: [0, 0, 1, 0],
+            }
+            return {
+              ...base,
+              columns: base.columns.map((column) => ({
+                ...column,
+                headerStyle: { ...column.headerStyle, textAlign: column.style?.textAlign || 'left' },
+              })),
+              autoFillWidth: true,
+              autoWrapText: false,
+              heightMode: 'standard',
+              defaultRowHeight: tokens.number('--table-row-height'),
+              defaultHeaderRowHeight: tokens.number('--table-header-height'),
+              hover: { highlightMode: 'row' },
+              select: { highlightMode: 'row', headerSelectMode: 'cell' },
+              animationAppear: animation(),
+              theme: {
+                underlayBackgroundColor: color('--table-canvas'),
+                defaultStyle: common,
+                bodyStyle: {
+                  ...common,
+                  bgColor: ({ row, table }) => ((row - table.columnHeaderLevelCount) % 2 ? stripe : normal),
+                  hover,
+                },
+                headerStyle: {
+                  ...common,
+                  fontSize: tokens.number('--table-header-font-size'),
+                  fontWeight: 600,
+                  color: color('--table-header-text'),
+                  bgColor: color('--table-header'),
+                  hover,
+                },
+                selectionStyle: {
+                  cellBorderLineWidth: tokens.number('--table-selection-width'),
+                  cellBorderColor: color('--table-selected-border'),
+                  cellBgColor: color('--table-selected'),
+                  inlineRowBgColor: color('--table-selected-row'),
+                  inlineColumnBgColor: color('--table-canvas'),
+                  selectionFillMode: 'overlay',
+                },
+                frameStyle: {
+                  borderColor: color('--table-frame'),
+                  borderLineWidth: 1,
+                  cornerRadius: tokens.number('--table-radius'),
+                },
+                scrollStyle: {
+                  visible: 'scrolling',
+                  hoverOn: true,
+                  width: 5,
+                  scrollSliderCornerRadius: 3,
+                  scrollSliderColor: color('--table-scroll-thumb'),
+                  scrollRailColor: color('--table-scroll-rail'),
+                },
+                columnResize: { lineColor: color('--table-selected-border'), lineWidth: 1 },
+              },
+            }
+          } finally {
+            tokens.dispose()
+          }
+        }
+        function overview(Builder, columns, rows, host) {
+          const records = rows.map((values) =>
+            Object.fromEntries(values.map((value, index) => [`c${index}`, value ?? '—'])),
+          )
+          const dimensions = columns.map((alias, index) => ({ id: `c${index}`, alias, encoding: 'column' }))
+          const base = records.length
+            ? Builder.from({ chartType: 'table', dataset: records, dimensions, measures: [] }).build()
+            : { records, columns: dimensions.map(({ id, alias }) => ({ field: id, title: alias })) }
+          base.columns = columns.map((title, index) => ({
+            ...base.columns.find((column) => column.field === `c${index}`),
+            field: `c${index}`,
+            title,
+            width: index === 0 ? 170 : Math.max(130, Math.min(210, title.length * 12 + 24)),
+            style: { textAlign: index === 0 ? 'left' : 'right' },
+          }))
+          base.widthMode = 'standard'
+          const resolved = options(base, host)
+          host.style.height = `${Math.min(
+            parseFloat(getComputedStyle(host).getPropertyValue('--table-overview-max-height')),
+            resolved.defaultHeaderRowHeight + Math.max(1, rows.length) * resolved.defaultRowHeight + 2,
+          )}px`
+          return resolved
+        }
+        function setRecords(table, records) {
+          table.clearSelected()
+          table.options.animationAppear = animation()
+          table.setRecords(records)
+        }
+        return { load, options, overview, setRecords }
+      })()
+    </script>
   </head>
   <body data-state="loading" data-initialized="false" data-entrance="pending" data-template="focus">
     <div class="shell">
@@ -1158,29 +1488,26 @@
           </div>
         </main>
         <details open data-enter="6">
-          <summary>Country details and definitions</summary>
-          <div class="table-wrap">
-            <table>
-              <caption class="muted table-caption">
-                Details contain 2015
-                valid life expectancy records, sorted by life expectancy. Life expectancy and schooling use equally weighted countries with valid values, not population weighted; Coverage is the number of countries with valid life expectancy divided by
-                countries in source records for the year. The trend axis does not start at zero.
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Country</th>
-                  <th scope="col">Life expectancy (years)</th>
-                  <th scope="col">Schooling (years)</th>
-                  <th scope="col">Adult mortality (source field value)</th>
-                </tr>
-              </thead>
-              <tbody id="table-body"></tbody>
-            </table>
-          </div>
-          <nav id="pagination" class="pagination" aria-label="Detail pagination" hidden>
-            <button type="button" id="page-previous">← Previous</button><span id="page-label" class="muted"></span
-            ><button type="button" id="page-next">Next →</button>
-          </nav>
+          <summary>
+            Country details and definitions<span
+              id="overview-count"
+              class="dashboard-table-count"
+              aria-live="polite"
+            ></span>
+          </summary>
+          <p class="dashboard-table-caption">
+            Details contain 2015 valid life expectancy records, sorted by life expectancy. Life expectancy and schooling
+            use equally weighted countries with valid values, not population weighted; Coverage is the number of
+            countries with valid life expectancy divided by countries in source records for the year. The trend axis
+            does not start at zero.
+          </p>
+          <div
+            id="overview-table"
+            class="dashboard-table"
+            role="region"
+            aria-label="Complete detail table"
+            tabindex="0"
+          ></div>
         </details>
       </div>
       <footer><p id="status" role="status">Loading chart modules…</p></footer>
@@ -1349,8 +1676,8 @@
 
       const PAGE = {
         mode: 'focus',
-        accent: '#9FBFDF',
-        track: '#e9eff5',
+        accent: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
+        track: getComputedStyle(document.documentElement).getPropertyValue('--chart-track').trim(),
         labels: ['Average life expectancy', 'Life expectancy change', 'Countries covered', 'Average schooling'],
         formats: [
           [1, ' years'],
@@ -1447,7 +1774,11 @@
           last = groups.at(-1) || {}
         const coverage = new Map(result.coverage.map((r) => [r.year, r.country]))
         const selectedStatus =
-          state.status === 'Developed' ? 'Developed countries' : state.status === 'Developing' ? 'Developing countries' : 'All countries'
+          state.status === 'Developed'
+            ? 'Developed countries'
+            : state.status === 'Developing'
+              ? 'Developing countries'
+              : 'All countries'
         function metrics(r) {
           const delta = Number.isFinite(r.life) && Number.isFinite(first.life) ? r.life - first.life : undefined
           return {
@@ -1480,7 +1811,7 @@
           scope,
           empty: !groups.length,
           conclusion: groups.length
-            ? `${last.year} average life expectancy ${formatNumber(last.life)} years, versus ${first.year} ${Math.abs(current.values[1]) < 0.05 ? 'remained stable' : `${current.values[1] >= 0 ? 'increased' : 'decreased'} ${formatNumber(Math.abs(current.values[1]))} years`}; Coverage ${count(last.country)} countriesries.`
+            ? `${last.year} average life expectancy ${formatNumber(last.life)} years, versus ${first.year} ${Math.abs(current.values[1]) < 0.05 ? 'remained stable' : `${current.values[1] >= 0 ? 'increased' : 'decreased'} ${formatNumber(Math.abs(current.values[1]))} years`}; Coverage ${count(last.country)} countries.`
             : 'No valid life expectancy records for these filters.',
           evidence: [
             `Average life expectancy: ${formatNumber(last.life)} years; First-to-last change: ${formatNumber(current.values[1])} years.`,
@@ -1572,35 +1903,23 @@
       const bindings = new Map()
       const plotSizes = new WeakMap()
       const definitionByPlot = new Map()
-      let pageNumber = 0
+      let overviewTable, overviewObserver
       const preparedRows = prepareRows(sourceData)
       function setTable(rows) {
-        const pageSize = 10
-        const pageCount = Math.max(1, Math.ceil(rows.length / pageSize))
-        pageNumber = Math.min(pageNumber, pageCount - 1)
-        $('#table-body').replaceChildren(
-          ...rows.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize).map((values) => {
-            const tr = document.createElement('tr')
-            for (const value of values) {
-              const td = document.createElement('td')
-              td.textContent = value ?? '—'
-              tr.append(td)
-            }
-            return tr
-          }),
-        )
-        if (!rows.length) {
-          const tr = document.createElement('tr'),
-            td = document.createElement('td')
-          td.colSpan = PAGE.columns.length
-          td.textContent = 'No data for these filters'
-          tr.append(td)
-          $('#table-body').append(tr)
+        const host = $('#overview-table')
+        const options = DashboardTable.overview(Builder, PAGE.columns, rows, host)
+        host.dataset.empty = String(!rows.length)
+        host.dataset.recordCount = String(rows.length)
+        $('#overview-count').textContent = `Records: ${rows.length}`
+        host.setAttribute('aria-label', `Complete detail table, record count: ${rows.length}`)
+        if (overviewTable) DashboardTable.setRecords(overviewTable, options.records)
+        else {
+          overviewTable = new window.VTable.ListTable(host, options)
+          overviewObserver = new ResizeObserver(() => {
+            if (host.clientWidth && host.clientHeight) overviewTable?.resize()
+          })
+          overviewObserver.observe(host)
         }
-        $('#pagination').hidden = pageCount === 1
-        $('#page-label').textContent = `${pageNumber + 1} / ${pageCount} · ${count(rows.length)} items`
-        $('#page-previous').disabled = pageNumber === 0
-        $('#page-next').disabled = pageNumber === pageCount - 1
       }
       function showMetrics(metrics, only = 'all', label = '') {
         if (!metrics) return
@@ -1820,7 +2139,6 @@
                 return span
               }),
             )
-            pageNumber = 0
             setTable(next.table)
             for (const definition of next.plots) definitionByPlot.set(definition.id, definition)
             await Promise.all(next.plots.map(drawPlot))
@@ -1918,12 +2236,14 @@
         )
       }
       try {
-        if (!window.VChart?.default) throw new Error('VChart Module could not be loaded, Check your connection and refresh')
+        if (!window.VChart?.default)
+          throw new Error('VChart Module could not be loaded, Check your connection and refresh')
         VChart = window.VChart.default
         const [{ createVBI }, { VQuery }, vseed] = await Promise.all([
           import('https://cdn.jsdelivr.net/npm/@visactor/vbi@0.6.4/+esm'),
           import('https://cdn.jsdelivr.net/npm/@visactor/vquery@0.6.4/dist/browser/esm/browser.js/+esm'),
           import('https://cdn.jsdelivr.net/npm/@visactor/vseed@0.6.4/+esm'),
+          DashboardTable.load(),
         ])
         Builder = vseed.Builder
         vseed.registerAll()
@@ -2005,14 +2325,6 @@
           clearHover()
           showMetrics(view?.metrics)
         })
-        $('#page-previous').addEventListener('click', () => {
-          pageNumber--
-          setTable(view.table)
-        })
-        $('#page-next').addEventListener('click', () => {
-          pageNumber++
-          setTable(view.table)
-        })
         function onMotionChange() {
           if (reducedMotion.matches) {
             finishEntrance()
@@ -2059,6 +2371,8 @@
         () => {
           disposed = true
           observer?.disconnect()
+          overviewObserver?.disconnect()
+          overviewTable?.release()
           subscriptions.forEach((dispose) => dispose())
           entrances.forEach((animation) => animation.cancel())
           metricAnimations.forEach((state) => cancelAnimationFrame(state.frame))
@@ -2083,7 +2397,8 @@
             Number.isFinite(row[field]) && Number.isFinite(row[denominator]) && row[denominator] > 0
               ? (factor * row[field]) / row[denominator]
               : undefined
-        const avgDefinition = (title) => `${title} is calculated from valid source records in the current scope. Missing values are not replaced with zero, and group averages are not averaged again.`
+        const avgDefinition = (title) =>
+          `${title} is calculated from valid source records in the current scope. Missing values are not replaced with zero, and group averages are not averaged again.`
 
         const range = conditionsFor('groups', snapshot)
         const years = view.plots[0].points.map((point) => Number(point.key))
@@ -2101,7 +2416,8 @@
               ]
             : PAGE.queries.groups.measures
         const fields = ['life', 'life', 'country', 'school', 'developed', 'life']
-        const title = index < 4 ? PAGE.labels[index] : index === 4 ? 'Developed-country share' : 'Life expectancy coverage'
+        const title =
+          index < 4 ? PAGE.labels[index] : index === 4 ? 'Developed-country share' : 'Life expectancy coverage'
         metric = {
           title,
           conditions: forYear(last, index !== 5),
@@ -2180,20 +2496,15 @@
       function bindMetricAnalysis({ vbi, Builder, VChart, accent, entries, getContext, ready }) {
         let dialog, context, active, dimension, selection, chart, table, observer, controller
         let version = 0,
-          tableLibrary,
           records = [],
-          page = 0,
           opener,
           previousOverflow,
-          previousParentScroll,
           loadingTimer,
           chartSize = '',
           tableSize = '',
           renderQueue = Promise.resolve()
-        const pageSize = 50
         const listeners = []
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-        const tableAnimation = () => (reducedMotion.matches ? false : { duration: 220, delay: 0, type: 'all' })
         const resizeChart = () => {
           const node = dialog && find('chart'),
             size = node && `${node.clientWidth}:${node.clientHeight}`
@@ -2230,28 +2541,7 @@
           node.addEventListener('click', action)
           return node
         }
-        function loadTable() {
-          if (window.VTable?.ListTable) return Promise.resolve(window.VTable)
-          if (!tableLibrary)
-            tableLibrary = new Promise((resolve, reject) => {
-              const script = document.createElement('script')
-              const timer = setTimeout(() => fail(), 30000)
-              const fail = () => {
-                clearTimeout(timer)
-                script.remove()
-                tableLibrary = undefined
-                reject(new Error('Could not load details, Try again'))
-              }
-              script.src = 'https://cdn.jsdelivr.net/npm/@visactor/vtable@1.23.1/dist/vtable.min.js'
-              script.onload = () => {
-                clearTimeout(timer)
-                window.VTable?.ListTable ? resolve(window.VTable) : fail()
-              }
-              script.onerror = fail
-              document.head.append(script)
-            })
-          return tableLibrary
-        }
+        const loadTable = DashboardTable.load
         function createDialog() {
           if (dialog) return
           dialog = element('dialog', 'ma-dialog')
@@ -2265,7 +2555,7 @@
         <section class="ma-summary"><div><p class="ma-eyebrow" data-ma="value-label"></p><strong class="ma-value" data-ma="value"></strong></div><p class="ma-finding" data-ma="finding"></p></section>
         <div class="ma-toolbar"><nav class="ma-modes" aria-label="Analysis dimension" data-ma="modes"></nav><div class="ma-selection" data-ma="selection" hidden><span data-ma="selected"></span><button type="button" data-ma="reset" aria-label="Clear group filter">Clear ×</button></div><details class="ma-picker" data-ma="picker"><summary data-ma="picker-label">Select group</summary><div class="ma-groups" data-ma="groups" role="group" aria-label="Select a group to view records"></div></details></div>
         <section class="ma-chart-panel"><div class="ma-panel-heading"><h3 data-ma="chart-title"></h3></div><p class="ma-hint" data-ma="chart-hint"></p><div class="ma-chart" data-ma="chart" role="img"></div></section>
-        <section class="ma-table-panel"><div class="ma-panel-heading"><h3>Related records</h3><button type="button" data-ma="expand" aria-expanded="false">Expand table</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="Analysis details" tabindex="0"></div><nav class="ma-pagination" aria-label="Detail pagination"><button type="button" data-ma="previous">Previous</button><span data-ma="page"></span><button type="button" data-ma="next">Next</button></nav></section>
+        <section class="ma-table-panel"><div class="ma-panel-heading"><h3>Related records</h3><button type="button" data-ma="expand" aria-expanded="false">Expand table</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="Analysis details" tabindex="0"></div></section>
         <details class="ma-definition"><summary>Definitions and evidence</summary><p data-ma="definition"></p><p data-ma="evidence"></p><p data-ma="grain"></p></details>
       </div></div></div>`
           document.body.append(dialog)
@@ -2276,14 +2566,6 @@
             void refresh(false)
           })
           find('retry').addEventListener('click', () => void refresh(true))
-          find('previous').addEventListener('click', () => {
-            page--
-            showTable()
-          })
-          find('next').addEventListener('click', () => {
-            page++
-            showTable()
-          })
           find('expand').addEventListener('click', () => {
             const expanded = dialog.classList.toggle('ma-expanded')
             find('expand').setAttribute('aria-expanded', String(expanded))
@@ -2346,6 +2628,7 @@
           renderQueue = Promise.resolve()
           controller?.abort()
           clearTimeout(loadingTimer)
+          if (dialog) delete dialog.dataset.contentEnter
           dialog?.getAnimations({ subtree: true }).forEach((animation) => animation.cancel())
           chart?.release()
           chart = undefined
@@ -2359,10 +2642,6 @@
             previousOverflow = undefined
           }
           opener?.focus({ preventScroll: true })
-          if (previousParentScroll !== undefined && window.frameElement) {
-            window.parent.scrollTo({ top: previousParentScroll, behavior: 'instant' })
-            previousParentScroll = undefined
-          }
         }
         async function query(dimensions, conditions, measures, signal) {
           const builder = vbi.chart.create(vbi.chart.createEmpty(context.connectorId))
@@ -2385,18 +2664,6 @@
             builder.undoManager?.destroy()
             builder.doc.destroy()
           }
-        }
-        function showTable(updateRecords = true) {
-          if (!table) return
-          const count = Math.max(1, Math.ceil(records.length / pageSize))
-          page = Math.max(0, Math.min(page, count - 1))
-          if (updateRecords) {
-            table.options.animationAppear = tableAnimation()
-            table.setRecords(records.slice(page * pageSize, (page + 1) * pageSize))
-          }
-          find('page').textContent = `${page + 1} / ${count} · Total ${number(records.length, 0)} records`
-          find('previous').disabled = page === 0
-          find('next').disabled = page + 1 >= count
         }
         function buildAnalysisSpec(group, metric, chartRows, chartTitle, selected) {
           const spec = Builder.from({
@@ -2453,7 +2720,7 @@
           const options = records.length
             ? Builder.from({
                 chartType: 'table',
-                dataset: records.slice(0, pageSize),
+                dataset: records,
                 dimensions,
                 measures,
                 theme: 'light',
@@ -2463,30 +2730,15 @@
                 records: [],
               }
           options.widthMode = 'standard'
-          options.autoFillWidth = true
-          options.animationAppear = tableAnimation()
           options.columns = options.columns.map((column) => ({
             ...column,
             width:
-              { country: 156, year: 64, id: 96 }[column.field] ||
+              { country: 156, year: 72, id: 96, order_id: 110, order_date: 128, date: 128 }[column.field] ||
               Math.max(96, Math.min(160, String(column.title || '').length * 12 + 24)),
           }))
           options.tooltip = { ...options.tooltip, parentElement: dialog, confine: true }
-          options.heightMode = 'standard'
           options.defaultColWidth = 130
-          options.defaultRowHeight = 34
-          options.theme = {
-            ...options.theme,
-            headerStyle: {
-              ...options.theme?.headerStyle,
-              bgColor: '#f3f5f8',
-              color: '#364152',
-              fontSize: 12,
-              borderColor: '#e2e7ee',
-            },
-            bodyStyle: { ...options.theme?.bodyStyle, color: '#364152', fontSize: 12, borderColor: '#e7ecf2' },
-          }
-          return options
+          return DashboardTable.options(options, find('table'))
         }
         let groupRows, totalRow, priorRow
         async function refresh(reload) {
@@ -2507,7 +2759,6 @@
           find('retry').hidden = true
           find('content').setAttribute('aria-busy', 'true')
           find('groups').inert = true
-          find('previous').disabled = find('next').disabled = true
           find('selection').hidden = selected === undefined
           find('selected').textContent = selected === undefined ? '' : `${group[1]}: ${selected}`
           const extra =
@@ -2568,7 +2819,6 @@
               plotRows.sort((a, b) => b.value - a.value || a.key.localeCompare(b.key, 'en-US', { numeric: true }))
             else plotRows.sort((a, b) => a.key.localeCompare(b.key, 'en-US', { numeric: true }))
             records = details.map((row) => ({ ...row }))
-            page = 0
             find('content').hidden = false
             find('value-label').textContent =
               selected === undefined
@@ -2594,15 +2844,17 @@
             find('definition').textContent = metric.definition
             find('evidence').textContent = metric.evidence
               ? metric.evidence(current, baseline)
-              : 'Summaries use all records in the current scope. Pagination does not change the summary.'
+              : 'Summaries use all records in the current scope. Scrolling does not change the summary.'
             find('grain').textContent =
-              `${model.grain} · ${selected === undefined ? 'Current filters' : `${group[1]}: ${selected}`} · All results are available through pagination`
-            const detailScope = selected === undefined ? model.detailScope || 'Current scope' : `${group[1]}: ${selected}`
+              `${model.grain} · ${selected === undefined ? 'Current filters' : `${group[1]}: ${selected}`} · The table contains all results in this scope`
+            const detailScope =
+              selected === undefined ? model.detailScope || 'Current scope' : `${group[1]}: ${selected}`
             find('table-scope').textContent = `${detailScope} · ${number(records.length, 0)} records`
             find('table-scope').title = find('table-scope').textContent
             find('table').setAttribute('aria-label', `Related records, ${detailScope}, ${records.length} records`)
             const chartTitle = metric.groupTitle || metric.title
-            find('chart-title').textContent = metric.groupTitle || (group[2] ? `${group[1]} trend` : `${group[1]} comparison`)
+            find('chart-title').textContent =
+              metric.groupTitle || (group[2] ? `${group[1]} trend` : `${group[1]} comparison`)
             find('chart-hint').textContent = !group[2] && plotRows.length > 12 ? 'Top 12 groups' : ''
             find('picker-label').textContent = `Select ${group[1]}`
             find('picker').hidden = !plotRows.length
@@ -2660,10 +2912,11 @@
                   tableSize = `${find('table').clientWidth}:${find('table').clientHeight}`
                 }
                 if (!dialog.open || ticket !== version) return
-                showTable(existingTable)
+                if (existingTable) DashboardTable.setRecords(table, records)
                 resizeChart()
                 find('feedback').textContent = records.length ? '' : 'No records in this scope.'
                 dialog.dataset.state = records.length ? 'ready' : 'empty'
+                dialog.dataset.contentEnter = 'true'
               })
             await renderQueue
           } catch (error) {
@@ -2681,8 +2934,9 @@
           }
         }
         function open(index, trigger) {
-          if (!ready()) return
+          if (!ready() || dialog?.open) return
           createDialog()
+          delete dialog.dataset.contentEnter
           context = getContext(index)
           active = context.metric
           dimension = context.dimensions[0]
@@ -2712,21 +2966,9 @@
           )
           previousOverflow = document.body.style.overflow
           document.body.style.overflow = 'hidden'
-          // Embedded examples scroll with the website; fit the dialog to its visible viewport.
-          if (window.frameElement) {
-            previousParentScroll = window.parent.scrollY
-            dialog.style.height = `${Math.min(780, Math.max(320, window.parent.innerHeight - 144))}px`
-          }
           dialog.showModal()
           dialog.querySelector('.ma-body').scrollTop = 0
           find('close').focus()
-          if (window.frameElement) {
-            const top = window.frameElement.getBoundingClientRect().top + dialog.getBoundingClientRect().top
-            window.parent.scrollBy({
-              top: top - Math.max(112, (window.parent.innerHeight - dialog.offsetHeight) / 2),
-              behavior: 'instant',
-            })
-          }
           dialog.dataset.state = 'loading'
           void refresh(true)
         }

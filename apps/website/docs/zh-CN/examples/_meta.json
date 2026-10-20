@@ -4,5 +4,11 @@
     "name": "light-dashboard",
     "label": "轻量Dashboard",
     "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "map-dashboard",
+    "label": "地图 Dashboard",
+    "collapsed": false
   }
 ]

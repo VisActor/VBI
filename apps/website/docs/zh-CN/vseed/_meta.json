@@ -3,5 +3,6 @@
   { "type": "dir", "name": "examples", "label": "示例", "collapsed": true },
   { "type": "dir", "name": "option", "label": "配置项", "collapsed": true },
   { "type": "dir", "name": "api", "label": "API", "collapsed": true },
-  { "type": "dir", "name": "development", "label": "贡献指南", "collapsed": true }
+  { "type": "dir", "name": "development", "label": "贡献指南", "collapsed": true },
+  "playground"
 ]

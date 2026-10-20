@@ -41,6 +41,7 @@ Chart Builder 描述分析
 | 数据接入、统一查询、字段映射、结果复用、Spec 与实例更新         | [查询与渲染](references/query-and-render.md)        |
 | 页面资源关系、筛选作用域、联动、自动刷新、取消、保存恢复        | [组合与联动](references/composition.md)             |
 | 单文件 HTML、浏览器依赖、内置数据、图表 / 普通表 / 透视表教程   | [HTML 接入](references/html-integration.md)         |
+| 主页与分析明细的表格 token、Canvas 主题、选中态与完整结果滚动   | [表格主题与适配器](references/table-theme.md)       |
 | 本地服务、数据库、文件、HTTP 与自定义数据源适配器               | [server-runtime 子技能](../server-runtime/SKILL.md) |
 | 实例、Chart / Dashboard / Insight Builder、Connector 与资源 API | [分析配置 API](../../api/vbi/SKILL.md)              |
 | 数据集、查询 DSL、SQL 编译与查询适配器 API                      | [数据查询 API](../../api/vquery/SKILL.md)           |

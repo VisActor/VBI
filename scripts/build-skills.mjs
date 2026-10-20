@@ -6,7 +6,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { buildSkillApi, skillApiStageCount } from './build-skill-api.mjs'
 
 const repoDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const scenes = ['light-dashboard', 'map-dashboard']
+const scenes = ['visactor-light-dashboard', 'visactor-map2d-dashboard']
+const archiveNames = [...scenes, 'light-dashboard']
 const sharedReferences = ['metric-analysis', 'visual-query', 'server-runtime']
 const excludedDirectories = new Set(['node_modules', '.git', '.turbo', 'coverage', 'dist', '__pycache__'])
 const archiveTime = new Date('1980-01-01T00:00:00Z')
@@ -54,9 +55,9 @@ function rewriteLinks(content, source, destination, files, sourceRoot) {
   })
 }
 
-function prepareSkill(sourceRoot, name, staging) {
+function prepareSkill(sourceRoot, scene, name, staging) {
   const files = new Map()
-  collectFiles(path.join(sourceRoot, 'references', name), '.', files)
+  collectFiles(path.join(sourceRoot, 'references', scene), '.', files)
   collectFiles(path.join(sourceRoot, 'api'), 'api', files)
   for (const reference of sharedReferences) {
     collectFiles(path.join(sourceRoot, 'references', reference), path.join('references', reference), files)
@@ -70,6 +71,7 @@ function prepareSkill(sourceRoot, name, staging) {
   for (const [source, destination] of files) {
     let content = fs.readFileSync(source)
     if (source.endsWith('.md')) content = rewriteLinks(content.toString(), source, destination, files, sourceRoot)
+    if (destination === 'SKILL.md') content = content.toString().replace(/^name:.*$/m, `name: ${name}`)
     const relative = path.join(name, destination)
     const target = path.join(staging, relative)
     fs.mkdirSync(path.dirname(target), { recursive: true })
@@ -89,16 +91,17 @@ function prepareSkill(sourceRoot, name, staging) {
 
 export async function buildSkills({ repoRoot = repoDirectory, onProgress = () => {} } = {}) {
   let step = 0
-  const total = skillApiStageCount + scenes.length + 1
+  const total = skillApiStageCount + archiveNames.length + 1
   const progress = (message) => onProgress({ step: ++step, total, message })
   const sourceRoot = path.resolve(repoRoot, 'skills/visactor-dashboard')
   await buildSkillApi({ repoRoot, onProgress: progress })
   const staging = fs.mkdtempSync(path.join(os.tmpdir(), 'vbi-skills-'))
   try {
-    // Prepare both archives before publishing either, so invalid inputs preserve previous builds.
-    const packages = scenes.map((name) => {
+    // Prepare all archives before publishing, so invalid inputs preserve previous builds.
+    const packages = archiveNames.map((name) => {
       progress(`检查资源并打包 ${name}.zip`)
-      return prepareSkill(sourceRoot, name, staging)
+      const scene = name === 'light-dashboard' ? 'visactor-light-dashboard' : name
+      return prepareSkill(sourceRoot, scene, name, staging)
     })
     progress('写入分发产物 dist/skills')
     const output = path.resolve(repoRoot, 'dist/skills')
