@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.7.1
+
+### Patch Changes
+
+- a17a6d9: Improve chart morph transitions, animation defaults, and data reshaping across VSeed charts.
+
 ## 0.7.0
 
 ### Minor Changes
