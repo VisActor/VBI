@@ -68,7 +68,7 @@ export const CSVModal: React.FC<CSVModalProps> = ({ open, onCancel, onConfirm })
       title: t('csvModalColOriginal'),
       dataIndex: 'name',
       key: 'original',
-      render: (text: string) => <Text code>{text}</Text>,
+      render: (_text: string, _record: DatasetColumn, index: number) => <Text code>{headers[index]}</Text>,
     },
     {
       title: t('csvModalColCustom'),
@@ -79,7 +79,7 @@ export const CSVModal: React.FC<CSVModalProps> = ({ open, onCancel, onConfirm })
           value={text}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             const newSchema = [...schema]
-            newSchema[index].name = e.target.value
+            newSchema[index] = { ...newSchema[index], name: e.target.value }
             setSchema(newSchema)
           }}
         />
@@ -95,7 +95,7 @@ export const CSVModal: React.FC<CSVModalProps> = ({ open, onCancel, onConfirm })
           style={{ width: 120 }}
           onChange={(value) => {
             const newSchema = [...schema]
-            newSchema[index].type = value
+            newSchema[index] = { ...newSchema[index], type: value }
             setSchema(newSchema)
           }}
           options={

@@ -149,7 +149,7 @@ export const ShelfDndProvider = ({ children }: { children: React.ReactNode }) =>
                 background: token.colorBgElevated,
                 boxShadow: token.boxShadowSecondary,
                 fontSize: 12,
-                color: token.colorText,
+                color: activeDrag.payload.role === 'measure' ? token.colorSuccessText : token.colorPrimaryText,
                 maxWidth: 200,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',

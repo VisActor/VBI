@@ -72,6 +72,28 @@ describe('dataset utils', () => {
   })
 
   describe('rowsToDataset', () => {
+    test('normalizes calendar dates for correct lexical range comparisons without shifting timezones', () => {
+      expect(
+        rowsToDataset(['date'], [['2018/4/27'], ['2018-5-1'], ['2018-12-31'], ['']], [{ name: 'date', type: 'date' }]),
+      ).toEqual([{ date: '2018-04-27' }, { date: '2018-05-01' }, { date: '2018-12-31' }])
+    })
+    test('applies renamed columns and their edited types by source position', () => {
+      expect(
+        rowsToDataset(
+          ['source', 'value'],
+          [['A', '0'], ['B', 'Infinity'], ['C']],
+          [
+            { name: 'region', type: 'string' },
+            { name: 'revenue', type: 'number' },
+          ],
+        ),
+      ).toEqual([
+        { region: 'A', revenue: 0 },
+        { region: 'B', revenue: null },
+        { region: 'C', revenue: null },
+      ])
+      expect(rowsToDataset(['fallback'], [[' x ']], [])).toEqual([{ fallback: 'x' }])
+    })
     test('should convert rows to objects based on schema', () => {
       const headers = ['name', 'age', 'joined']
       const rows = [

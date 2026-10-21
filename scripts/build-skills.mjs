@@ -6,8 +6,16 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { buildSkillApi, skillApiStageCount } from './build-skill-api.mjs'
 
 const repoDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const scenes = ['visactor-light-dashboard', 'visactor-map2d-dashboard']
-const archiveNames = [...scenes, 'light-dashboard']
+const scenes = [
+  'visactor-light-dashboard',
+  'visactor-map2d-dashboard',
+  'visactor-chart-editor',
+  'visactor-map3d-dashboard',
+]
+const packages = scenes.flatMap((scene) => [
+  { scene, name: scene },
+  { scene, name: scene.replace(/^visactor-/, '') },
+])
 const sharedReferences = ['metric-analysis', 'visual-query', 'server-runtime']
 const excludedDirectories = new Set(['node_modules', '.git', '.turbo', 'coverage', 'dist', '__pycache__'])
 const archiveTime = new Date('1980-01-01T00:00:00Z')
@@ -91,22 +99,21 @@ function prepareSkill(sourceRoot, scene, name, staging) {
 
 export async function buildSkills({ repoRoot = repoDirectory, onProgress = () => {} } = {}) {
   let step = 0
-  const total = skillApiStageCount + archiveNames.length + 1
+  const total = skillApiStageCount + packages.length + 1
   const progress = (message) => onProgress({ step: ++step, total, message })
   const sourceRoot = path.resolve(repoRoot, 'skills/visactor-dashboard')
   await buildSkillApi({ repoRoot, onProgress: progress })
   const staging = fs.mkdtempSync(path.join(os.tmpdir(), 'vbi-skills-'))
   try {
     // Prepare all archives before publishing, so invalid inputs preserve previous builds.
-    const packages = archiveNames.map((name) => {
+    const archives = packages.map(({ scene, name }) => {
       progress(`检查资源并打包 ${name}.zip`)
-      const scene = name === 'light-dashboard' ? 'visactor-light-dashboard' : name
       return prepareSkill(sourceRoot, scene, name, staging)
     })
     progress('写入分发产物 dist/skills')
     const output = path.resolve(repoRoot, 'dist/skills')
     fs.mkdirSync(output, { recursive: true })
-    return packages.map(({ name, archive, files }) => {
+    return archives.map(({ name, archive, files }) => {
       const target = path.join(output, `${name}.zip`)
       fs.copyFileSync(archive, target)
       return { name, archive: target, files }

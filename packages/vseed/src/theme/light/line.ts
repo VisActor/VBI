@@ -16,6 +16,7 @@ export const getLineTheme = () => {
   const crosshairLine = getLightCrosshairLine()
 
   const baseConfig = {
+    animation: { morph: true },
     backgroundColor: 'transparent',
     color: getLightColor(),
     label: getLightLabel(),

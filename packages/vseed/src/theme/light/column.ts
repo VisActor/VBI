@@ -17,6 +17,7 @@ export const getColumnTheme = () => {
   const crosshairRect = getLightCrosshairRect()
 
   const baseConfig = {
+    animation: { morph: true },
     backgroundColor: 'transparent',
     color: getLightColor(),
     label: getLightLabel(),
@@ -46,6 +47,7 @@ export const getColumnParallelTheme = () => {
   const crosshairRect = getLightCrosshairRect()
 
   const baseConfig = {
+    animation: { morph: true },
     backgroundColor: 'transparent',
     color: getLightColor(),
     label: getLightLabel(),

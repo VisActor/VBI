@@ -1,3 +1,4 @@
+import type { Animation } from '../../properties/config/animation'
 import type { Locale } from '../../i18n'
 import type {
   AnnotationArea,
@@ -60,6 +61,9 @@ import type {
  * - 支持数据重塑: 至少`1`个指标, `0`个维度
  */
 export interface DualAxis {
+  /** @description 动画开关与图表切换形变配置 */
+  animation?: Animation
+
   /**
    * @description 双轴图，展示两个不同量级指标对比关系的复合图表
    * @example 'dualAxis'

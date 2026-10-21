@@ -1,5 +1,5 @@
 import { n as __esmMin, o as __toESM, r as __exportAll } from "./rolldown-runtime.js";
-import { $ as string, $n as init_entry_preview, A as YArray, An as isNil, B as any, Bn as h$5, Bt as C$6, Ct as t$13, Dt as y$10, E as Kysely, En as isArray, F as init_dist$2, Fn as H$4, Ft as m$8, G as discriminatedUnion, Gn as preview_exports$1, Gt as PivotTableAll, H as boolean, Hn as proxyCustomElement, Ht as init_es$2, In as Host, It as T$4, J as literal, Jn as entry_preview_argtypes_exports, Kn as entry_preview_docs_exports, L as v4, Ln as createEvent, M as applyUpdate, Mn as init_esm$1, Mt as i$9, N as encodeStateAsUpdate, Nn as StreamLight, O as Doc, On as isUndefined, Ot as D$4, P as init_yjs, Q as record, Qn as entry_preview_exports, Qt as bin, R as init_zod, Rn as forceUpdate, Rt as i$7, S as DummyDriver, Sn as pickWithout, T as sql, U as custom, Un as transformTag, Ut as PivotChart, V as array, Vn as init_client, W as date, Wn as init_preview$1, X as number, Xt as boxplot, Y as never, Yn as init_entry_preview_argtypes, Yt as init_es$1, Z as object$1, Zn as setCustomElementsManifest, _n as clamper, an as ecdf, b as PostgresQueryCompiler, cn as kde, ct as i$10, dt as o$9, en as chartModule, er as __vitePreload, et as tuple, f as init_dist$3, fn as regressionLowess, g as MysqlQueryCompiler, gn as regressionLinear, gt as e$8, ht as o$10, it as d$6, j as YMap, jn as esm_default, jt as r$11, k as UndoManager$1, m as MysqlAdapter, mn as regressionLogistic, nn as init_es, nr as init_runtime, nt as require_tinycolor, p as init_esm$2, pt as n$11, q as lazy, qn as init_entry_preview_docs, qt as ListTableAll, rn as Color, rr as setup, rt as init_dist$1, st as k$7, tr as init_preload_helper, tt as union, un as regressionPolynomial, v as PostgresAdapter, wn as merge, wt as i$8, xt as t$14, yn as array$1, yt as n$10, z as _enum, zn as getRenderingRef } from "./vendor.js";
+import { $ as string, $n as init_entry_preview, A as YArray, An as isNil, B as any, Bn as h$5, Bt as C$6, Ct as t$13, Dt as y$10, E as Kysely, En as isArray, F as init_dist$2, Fn as H$4, Ft as m$8, G as discriminatedUnion, Gn as preview_exports$1, Gt as PivotTableAll, H as boolean, Hn as proxyCustomElement, Ht as init_es$2, In as Host, It as T$4, J as literal, Jn as entry_preview_argtypes_exports, Kn as entry_preview_docs_exports, L as v4, Ln as createEvent, M as applyUpdate, Mn as init_esm$1, Mt as i$9, N as encodeStateAsUpdate, Nn as StreamLight, O as Doc, On as isUndefined, Ot as D$4, P as init_yjs, Q as record, Qn as entry_preview_exports, Qt as bin, R as init_zod, Rn as forceUpdate, Rt as i$7, S as DummyDriver, Sn as pickWithout, T as sql, U as custom, Un as transformTag, Ut as PivotChart, V as array, Vn as init_client, W as date, Wn as init_preview$1, X as number, Xt as boxplot, Y as never, Yn as init_entry_preview_argtypes, Yt as init_es$1, Z as object$1, Zn as setCustomElementsManifest, _n as clamper, an as ecdf, b as PostgresQueryCompiler, cn as kde, ct as i$10, dt as o$10, en as chartModule, er as __vitePreload, et as tuple, f as init_dist$3, fn as regressionLowess, g as MysqlQueryCompiler, gn as regressionLinear, gt as e$8, ht as o$11, it as d$6, j as YMap, jn as esm_default, jt as r$11, k as UndoManager$1, m as MysqlAdapter, mn as regressionLogistic, nn as init_es, nr as init_runtime, nt as require_tinycolor, p as init_esm$2, pt as n$11, q as lazy, qn as init_entry_preview_docs, qt as ListTableAll, rn as Color, rr as setup, rt as init_dist$1, st as k$7, tr as init_preload_helper, tt as union, un as regressionPolynomial, v as PostgresAdapter, wn as merge, wt as i$8, xt as t$14, yn as array$1, yt as n$10, z as _enum, zn as getRenderingRef } from "./vendor.js";
 //#region iframe.html?html-proxy&inline-css&index=0.css
 var init_iframe_html_html_proxy_inline_css_index_0 = __esmMin((() => {}));
 //#endregion
@@ -74,11 +74,11 @@ function n$8(n) {
 }
 function e$6(e, t) {
 	return e.map(((e, r) => {
-		const u = t.map(((n) => n[r]?.trim() ?? "")).filter(((n) => n.length > 0)).slice(0, 100);
-		return u.length > 0 && u.every(((n) => Number.isFinite(Number(n)))) ? {
+		const o = t.map(((n) => n[r]?.trim() ?? "")).filter(((n) => n.length > 0)).slice(0, 100);
+		return o.length > 0 && o.every(((n) => Number.isFinite(Number(n)))) ? {
 			name: e,
 			type: "number"
-		} : u.length > 0 && u.every(n$8) ? {
+		} : o.length > 0 && o.every(n$8) ? {
 			name: e,
 			type: "date"
 		} : {
@@ -98,12 +98,12 @@ function r$10(n, e, t) {
 	const r = new Map(t.map(((n) => [n.name, n.type])));
 	return e.map(((e) => {
 		const t = {};
-		return n.forEach(((n, u) => {
-			const i = e[u]?.trim() ?? "";
-			if ("number" !== r.get(n)) t[n] = i;
+		return n.forEach(((n, o) => {
+			const u = e[o]?.trim() ?? "";
+			if ("number" !== r.get(n)) t[n] = u;
 			else {
-				const e = Number(i);
-				t[n] = "" === i || Number.isNaN(e) ? null : e;
+				const e = Number(u);
+				t[n] = "" === u || Number.isNaN(e) ? null : e;
 			}
 		})), t;
 	})).filter(((n) => Object.values(n).some(((n) => "" !== n && null !== n))));
@@ -130,10 +130,10 @@ function i$6(n, e) {
 			}
 			if (!r || "object" != typeof r) continue;
 			const n = r.field, u = r.alias ?? n;
-			n && u && (r.aggr?.func ? t.push({
+			n && u && (!r.aggr?.func || o$9.has(r.aggr.func) ? e.push({
 				alias: u,
 				field: n
-			}) : e.push({
+			}) : t.push({
 				alias: u,
 				field: n
 			}));
@@ -145,18 +145,30 @@ function i$6(n, e) {
 	}(n);
 	return 0 === t.length && 0 === r.length ? e : e.map(((n) => {
 		const e = {};
-		for (const { alias: t, field: i } of r) {
-			const r = t || i, o = u$5(n[r]);
-			null !== o && (e[r] = o);
+		for (const { alias: t, field: o } of r) {
+			const r = t || o, i = u$5(n[r]);
+			null !== i && (e[r] = i);
 		}
-		for (const { alias: r, field: u } of t) {
-			const t = r || u;
+		for (const { alias: r, field: o } of t) {
+			const t = r || o;
 			t in n && (e[t] = n[t]);
 		}
 		return e;
 	}));
 }
-var init_dataset$3 = __esmMin((() => {}));
+var o$9;
+var init_dataset$3 = __esmMin((() => {
+	o$9 = /* @__PURE__ */ new Set([
+		"to_year",
+		"to_quarter",
+		"to_month",
+		"to_week",
+		"to_day",
+		"to_hour",
+		"to_minute",
+		"to_second"
+	]);
+}));
 //#endregion
 //#region dist/components/fieldRole.js
 var e$5, t$9, a$6;
@@ -6136,7 +6148,7 @@ var init_checkVSeed = __esmMin((() => {
 	checkVSeed = (vseed) => {
 		const { chartType, dataset, dimensions, measures } = vseed;
 		if (!chartType) throw new Error("chartType is required");
-		if (!dataset || !o$9(dataset)) throw new Error("dataset is required, and must be an array");
+		if (!dataset || !o$10(dataset)) throw new Error("dataset is required, and must be an array");
 		if (n$11(dataset) && !isVTable(vseed)) throw new Error("dataset can not empty");
 		if (dimensions && !Array.isArray(dimensions)) throw new Error("dimensions must be an array");
 		if (measures && !Array.isArray(measures)) throw new Error("measures must be an array");
@@ -6149,7 +6161,7 @@ var init_valid = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/dataReshape/constant.js
-var ORIGINAL_DATA, FoldMeasureName, FoldMeasureId, FoldMeasureValue, MeasureId, MeasureName, FoldPrimaryMeasureValue, FoldSecondaryMeasureValue, DimAxisType, FoldXMeasureValue, FoldYMeasureValue, FoldXMeasureId, FoldYMeasureId, XEncoding, YEncoding, AngleEncoding, DetailEncoding, PlayerEncoding, ColorEncoding, ColorIdEncoding, HierarchyEncoding, SourceEncoding, TargetEncoding, BoxPlotPivotIndicator, Q1MeasureValue, Q3MeasureValue, LowerWhisker, UpperWhisker, OutliersMeasureId, MedianMeasureId, BinStartMeasureId, BinEndMeasureId, BinCountMeasureId, BinPercentageMeasureId, InnerRowIndex;
+var ORIGINAL_DATA, FoldMeasureName, FoldMeasureId, FoldMeasureValue, MeasureId, MeasureName, FoldPrimaryMeasureValue, FoldSecondaryMeasureValue, DimAxisType, FoldXMeasureValue, FoldYMeasureValue, FoldXMeasureId, FoldYMeasureId, DimensionKey, XEncoding, YEncoding, AngleEncoding, DetailEncoding, PlayerEncoding, ColorEncoding, ColorIdEncoding, HierarchyEncoding, SourceEncoding, TargetEncoding, BoxPlotPivotIndicator, Q1MeasureValue, Q3MeasureValue, LowerWhisker, UpperWhisker, OutliersMeasureId, MedianMeasureId, BinStartMeasureId, BinEndMeasureId, BinCountMeasureId, BinPercentageMeasureId, InnerRowIndex;
 var init_constant = __esmMin((() => {
 	ORIGINAL_DATA = "__OriginalData__";
 	FoldMeasureName = "__MeaName__";
@@ -6164,6 +6176,7 @@ var init_constant = __esmMin((() => {
 	FoldYMeasureValue = "__MeaYValue__";
 	FoldXMeasureId = "__MeaXId__";
 	FoldYMeasureId = "__MeaYId__";
+	DimensionKey = "__Dim_Key__";
 	XEncoding = "__Dim_X__";
 	YEncoding = "__Dim_Y__";
 	AngleEncoding = "__Dim_Angle__";
@@ -7359,10 +7372,12 @@ var init_unfoldDimensions = __esmMin((() => {
 		const hierarchyDimensions = hierarchy ? dimensions.filter((dim) => hierarchy.includes(dim.id)) : [];
 		const sourceDimensions = source ? dimensions.filter((dim) => source.includes(dim.id)) : [];
 		const targetDimensions = target ? dimensions.filter((dim) => target.includes(dim.id)) : [];
+		const identityDimensions = dimensions.map(({ id }) => id).filter((id) => id !== "__MeaId__" && id !== options.foldMeasureId).sort();
 		const colorItems = /* @__PURE__ */ new Set();
 		const colorIdMap = {};
 		for (let i = 0; i < dataset.length; i++) {
 			const datum = dataset[i];
+			datum[DimensionKey] = (options.chartType ? `${options.chartType}:` : "") + JSON.stringify(identityDimensions.map((id) => [id, datum[id]]));
 			applyEncoding(AngleEncoding, angleDimensions, datum, separator);
 			applyEncoding(XEncoding, xDimensions, datum, separator);
 			applyEncoding(YEncoding, yDimensions, datum, separator);
@@ -7409,7 +7424,7 @@ var init_dataReshapeByEncoding = __esmMin((() => {
 	init_unfoldDimensions();
 	init_createFormatterByDimension();
 	dataReshapeByEncoding = (dataset, dimensions, measures, encoding, options) => {
-		const { foldMeasureId = FoldMeasureId, foldMeasureName = FoldMeasureName, foldMeasureValue = FoldMeasureValue, colorItemAsId = false, colorMeasureId, locale, omitIds } = options || {};
+		const { chartType, foldMeasureId = FoldMeasureId, foldMeasureName = FoldMeasureName, foldMeasureValue = FoldMeasureValue, colorItemAsId = false, colorMeasureId, locale, omitIds } = options || {};
 		const { dataset: foldedDataset, foldInfo } = foldMeasures(dataset, measures, {
 			measureId: foldMeasureId,
 			measureName: foldMeasureName,
@@ -7418,6 +7433,7 @@ var init_dataReshapeByEncoding = __esmMin((() => {
 			omitIds
 		});
 		const { dataset: finalDataset, unfoldInfo } = unfoldDimensions(foldedDataset, dimensions, encoding, {
+			chartType,
 			foldMeasureId,
 			separator: "-",
 			colorItemAsId,
@@ -13359,7 +13375,7 @@ var init_annotationVerticalLine = __esmMin((() => {
 				fallback: dynamicFilter?.fallback,
 				defaultValue: xValue
 			});
-			if (o$9(finalXValue) || t$14(finalXValue) || e$8(finalXValue)) return (Array.isArray(finalXValue) ? finalXValue : [finalXValue]).map(generateOneMarkLine);
+			if (o$10(finalXValue) || t$14(finalXValue) || e$8(finalXValue)) return (Array.isArray(finalXValue) ? finalXValue : [finalXValue]).map(generateOneMarkLine);
 			return [];
 		});
 		const newMarkLine = [...spec.markLine || [], ...markLine || []];
@@ -13458,7 +13474,7 @@ var init_annotationHorizontalLine = __esmMin((() => {
 				fallback: dynamicFilter?.fallback,
 				defaultValue: yValue
 			});
-			if (o$9(finalYValue) || t$14(finalYValue) || e$8(finalYValue)) return (Array.isArray(finalYValue) ? finalYValue : [finalYValue]).map(generateOneMarkLine);
+			if (o$10(finalYValue) || t$14(finalYValue) || e$8(finalYValue)) return (Array.isArray(finalYValue) ? finalYValue : [finalYValue]).map(generateOneMarkLine);
 			return [];
 		});
 		const newMarkLine = [...spec.markLine || [], ...markLine || []];
@@ -14800,6 +14816,7 @@ var init_scatter$9 = __esmMin((() => {
 //#endregion
 //#region ../vseed/dist/esm/types/chartType/dualAxis/index.js
 var init_dualAxis$7 = __esmMin((() => {
+	init_animation$2();
 	init_i18n();
 	init_properties();
 }));
@@ -17491,6 +17508,35 @@ var init_theme$4 = __esmMin((() => {
 	init_fontFamily();
 }));
 //#endregion
+//#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/createAnimationPipe.js
+var createAnimationPipe;
+var init_createAnimationPipe = __esmMin((() => {
+	createAnimationPipe = (stages) => (spec, { advancedVSeed }) => {
+		const animation = advancedVSeed.config[advancedVSeed.chartType]?.animation;
+		if (animation?.enable === false) return {
+			...spec,
+			animation: false
+		};
+		const { appear, update, loop } = animation?.params ?? {};
+		const updateConfig = void 0 === update ? { enable: true } : update;
+		const animationUpdate = stages.update(updateConfig, spec);
+		const animationAppear = void 0 === appear ? {
+			...stages.defaultAppear,
+			duration: update?.duration ?? 1e3,
+			easing: update?.ease
+		} : stages.appear(appear);
+		return {
+			...spec,
+			animation: true,
+			animationAppear,
+			animationNormal: stages.loop(loop, false !== animationAppear, spec),
+			animationEnter: stages.enter ? stages.enter(updateConfig, loop, spec) : animationUpdate,
+			animationUpdate,
+			animationExit: stages.exit(updateConfig)
+		};
+	};
+}));
+//#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/types.js
 var VScreenAnimationType;
 var init_types = __esmMin((() => {
@@ -17578,30 +17624,6 @@ var init_utils$2 = __esmMin((() => {
 		if (!config?.enable) return false;
 		const effects = config.effects ?? [];
 		return (effects[effects.length - 1] ?? EFFECT_NONE) !== EFFECT_NONE;
-	};
-}));
-//#endregion
-//#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/createAnimationPipe.js
-var createAnimationPipe;
-var init_createAnimationPipe = __esmMin((() => {
-	init_utils$2();
-	createAnimationPipe = (stages) => (spec, { advancedVSeed }) => {
-		const animation = advancedVSeed.config[advancedVSeed.chartType]?.animation;
-		if (!animation?.enable) return {
-			...spec,
-			animation: false
-		};
-		const { appear, update, loop } = animation.params ?? {};
-		const animationUpdate = stages.update(update, spec);
-		return {
-			...spec,
-			animation: true,
-			animationAppear: stages.appear(appear),
-			animationNormal: stages.loop(loop, allowAnimation(appear), spec),
-			animationEnter: stages.enter ? stages.enter(update, loop, spec) : animationUpdate,
-			animationUpdate,
-			animationExit: stages.exit(update)
-		};
 	};
 }));
 //#endregion
@@ -18342,6 +18364,7 @@ var init_animation$1 = __esmMin((() => {
 		exit: scatterUpdate
 	});
 	radarAnimation = createAnimationPipe({
+		defaultAppear: { preset: "fadeIn" },
 		appear: radarAppear,
 		loop: radarLoop,
 		update: radarUpdate,
@@ -18349,10 +18372,44 @@ var init_animation$1 = __esmMin((() => {
 	});
 }));
 //#endregion
+//#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/animationMorph.js
+var animationMorph, pieAnimationMorph;
+var init_animationMorph = __esmMin((() => {
+	init_dataReshape();
+	animationMorph = (spec, { advancedVSeed }) => {
+		const { animation } = advancedVSeed.config[advancedVSeed.chartType];
+		const theme = advancedVSeed.customTheme?.config?.[advancedVSeed.chartType];
+		return {
+			...spec,
+			...animation?.enable === false ? { animation: false } : {},
+			morph: {
+				enable: animation?.morph ?? theme?.animation?.morph,
+				morphElementKey: DimensionKey
+			}
+		};
+	};
+	pieAnimationMorph = (spec, context) => {
+		const result = animationMorph(spec, context);
+		const { advancedVSeed } = context;
+		if (advancedVSeed.datasetReshapeInfo[0].foldInfo.statistics.min > 0) return result;
+		result.morph = {
+			...result.morph,
+			enable: false
+		};
+		const { animation } = advancedVSeed.config[advancedVSeed.chartType];
+		if (false !== result.animation && animation?.params?.appear === void 0) result.animationAppear = {
+			...result.animationAppear,
+			preset: "fadeIn"
+		};
+		return result;
+	};
+}));
+//#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/animation/index.js
 var init_animation = __esmMin((() => {
 	init_animation$1();
 	init_types();
+	init_animationMorph();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/spec/chart/pipes/geometry/pieGeometry.js
@@ -18442,13 +18499,13 @@ var init_pipes$3 = __esmMin((() => {
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/reshape/pivotReshapeWithEncoding.js
-var pivotReshapeWithEncoding;
+var createPivotReshapeWithEncoding, pivotReshapeWithEncoding;
 var init_pivotReshapeWithEncoding = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_pipes$3();
 	init_constant$1();
-	pivotReshapeWithEncoding = (advancedVSeed, context) => {
+	createPivotReshapeWithEncoding = (chartType) => (advancedVSeed, context) => {
 		const result = { ...advancedVSeed };
 		const { vseed } = context;
 		const { dataset } = vseed;
@@ -18462,6 +18519,7 @@ var init_pivotReshapeWithEncoding = __esmMin((() => {
 			if (!measures) return;
 			const groupId = measures[0].parentId ?? "__DefaultParentId__";
 			const { dataset: newSubDataset, foldInfo, unfoldInfo } = dataReshapeByEncoding(dataset, T$4(dimensions, (item) => item.id), T$4(measures, (item) => item.id), encoding, {
+				chartType,
 				colorItemAsId: false,
 				foldMeasureValue: `${FoldMeasureValue}${groupId}`,
 				colorMeasureId: getColorMeasureId(advancedVSeed, vseed),
@@ -18483,22 +18541,24 @@ var init_pivotReshapeWithEncoding = __esmMin((() => {
 			datasetReshapeInfo
 		};
 	};
+	pivotReshapeWithEncoding = createPivotReshapeWithEncoding();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/reshape/reshapeWithEncoding.js
-var reshapeWithEncoding;
+var createReshapeWithEncoding, reshapeWithEncoding;
 var init_reshapeWithEncoding = __esmMin((() => {
 	init_dist$1();
 	init_dataReshape();
 	init_pipes$3();
-	reshapeWithEncoding = (advancedVSeed, context) => {
+	createReshapeWithEncoding = (chartType) => (advancedVSeed, context) => {
 		const result = { ...advancedVSeed };
 		const { vseed } = context;
-		const { dataset, chartType } = vseed;
+		const { dataset } = vseed;
 		const { encoding, reshapeMeasures = [] } = advancedVSeed;
 		const allMeasuresIds = (reshapeMeasures[0] ?? []).map((m) => m.id);
 		const colorMeasureId = getColorMeasureId(advancedVSeed, vseed);
 		const { dataset: newDatasets, foldInfo, unfoldInfo } = dataReshapeByEncoding(dataset, T$4(advancedVSeed.reshapeDimensions ?? advancedVSeed.dimensions ?? [], (item) => item.id), T$4(advancedVSeed.reshapeMeasures?.[0] ?? [], (item) => item.id), encoding, {
+			chartType,
 			colorItemAsId: false,
 			colorMeasureId,
 			omitIds: allMeasuresIds,
@@ -18508,13 +18568,14 @@ var init_reshapeWithEncoding = __esmMin((() => {
 			...result,
 			dataset: newDatasets,
 			datasetReshapeInfo: [{
-				id: String(chartType),
+				id: String(vseed.chartType),
 				index: 0,
 				foldInfo,
 				unfoldInfo
 			}]
 		};
 	};
+	reshapeWithEncoding = createReshapeWithEncoding();
 }));
 //#endregion
 //#region ../vseed/dist/esm/pipeline/advanced/chart/pipes/reshape/reshapeWithDualEncoding.js
@@ -20889,6 +20950,7 @@ var init_dualAxis$5 = __esmMin((() => {
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
 		const config = replaceNullToUndefined(i$9(vseed, [
+			"animation",
 			"backgroundColor",
 			"color",
 			"label",
@@ -21071,6 +21133,7 @@ var init_heatmap$6 = __esmMin((() => {
 		const { chartType } = vseed;
 		const result = { ...advancedVSeed };
 		const config = replaceNullToUndefined(i$9(vseed, [
+			"animation",
 			"backgroundColor",
 			"color",
 			"label",
@@ -21330,7 +21393,7 @@ var init_theme$3 = __esmMin((() => {
 	mergeArray = (arr, themeItem) => {
 		if (n$10(themeItem) || t$14(themeItem) || e$8(themeItem)) return arr;
 		if (!Array.isArray(arr)) return arr;
-		if (arr.some((d) => !o$10(d))) return arr;
+		if (arr.some((d) => !o$11(d))) return arr;
 		return arr.map((item) => t$13(themeItem, item));
 	};
 }));
@@ -22277,7 +22340,7 @@ var init_radar$4 = __esmMin((() => {
 			encodingForRadar,
 			pickDimensionsForReshape
 		]),
-		pivotAdapter([reshapeWithEncoding], [pivotReshapeWithEncoding]),
+		pivotAdapter([createReshapeWithEncoding("radar")], [createPivotReshapeWithEncoding("radar")]),
 		sortLegend_sortLegend,
 		radarConfig,
 		theme_theme,
@@ -23059,6 +23122,7 @@ var init_line$3 = __esmMin((() => {
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
+		animationMorph,
 		progressive,
 		xBand,
 		yLinear,
@@ -23089,6 +23153,7 @@ var init_line$3 = __esmMin((() => {
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetXY,
+			animationMorph,
 			progressive,
 			xBand,
 			pivotAxisStyle(yLinear),
@@ -23129,6 +23194,7 @@ var init_column$3 = __esmMin((() => {
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
+		animationMorph,
 		progressive,
 		xBand,
 		yLinear,
@@ -23160,6 +23226,7 @@ var init_column$3 = __esmMin((() => {
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetXY,
+			animationMorph,
 			progressive,
 			xBand,
 			pivotAxisStyle(yLinear),
@@ -23198,6 +23265,7 @@ var init_columnParallel$1 = __esmMin((() => {
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
+		animationMorph,
 		progressive,
 		xBand,
 		yLinear,
@@ -23227,6 +23295,7 @@ var init_columnParallel$1 = __esmMin((() => {
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetXY,
+			animationMorph,
 			progressive,
 			xBand,
 			pivotAxisStyle(yLinear),
@@ -23265,6 +23334,7 @@ var init_columnPercent$1 = __esmMin((() => {
 		background_backgroundColor,
 		percent,
 		datasetXY,
+		animationMorph,
 		progressive,
 		xBand,
 		yLinear,
@@ -23295,6 +23365,7 @@ var init_columnPercent$1 = __esmMin((() => {
 			percent,
 			background_backgroundColor,
 			datasetXY,
+			animationMorph,
 			progressive,
 			xBand,
 			pivotAxisStyle(yLinear),
@@ -23330,6 +23401,7 @@ var init_bar$3 = __esmMin((() => {
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetYX,
+		animationMorph,
 		progressive,
 		xLinear,
 		yBand,
@@ -23359,6 +23431,7 @@ var init_bar$3 = __esmMin((() => {
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetYX,
+			animationMorph,
 			progressive,
 			xLinear,
 			pivotAxisStyle(yBand),
@@ -23562,6 +23635,7 @@ var init_barParallel$1 = __esmMin((() => {
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetYX,
+		animationMorph,
 		progressive,
 		xLinear,
 		yBand,
@@ -23591,6 +23665,7 @@ var init_barParallel$1 = __esmMin((() => {
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetYX,
+			animationMorph,
 			xLinear,
 			pivotAxisStyle(yBand),
 			brush_brush,
@@ -23627,6 +23702,7 @@ var init_barPercent$1 = __esmMin((() => {
 		background_backgroundColor,
 		percent,
 		datasetYX,
+		animationMorph,
 		progressive,
 		xLinear,
 		yBand,
@@ -23656,6 +23732,7 @@ var init_barPercent$1 = __esmMin((() => {
 			background_backgroundColor,
 			percent,
 			datasetYX,
+			animationMorph,
 			xLinear,
 			pivotAxisStyle(yBand),
 			brush_brush,
@@ -23689,6 +23766,7 @@ var init_area$3 = __esmMin((() => {
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
+		animationMorph,
 		progressive,
 		xBand,
 		yLinear,
@@ -23721,6 +23799,7 @@ var init_area$3 = __esmMin((() => {
 			background_backgroundColor,
 			stackInverse,
 			datasetXY,
+			animationMorph,
 			progressive,
 			xBand,
 			pivotAxisStyle(yLinear),
@@ -23761,6 +23840,7 @@ var init_areaPercent$1 = __esmMin((() => {
 		background_backgroundColor,
 		percent,
 		datasetXY,
+		animationMorph,
 		progressive,
 		xBand,
 		yLinear,
@@ -23792,6 +23872,7 @@ var init_areaPercent$1 = __esmMin((() => {
 			background_backgroundColor,
 			percent,
 			datasetXY,
+			animationMorph,
 			progressive,
 			xBand,
 			pivotAxisStyle(yLinear),
@@ -23827,6 +23908,7 @@ var init_scatter$3 = __esmMin((() => {
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetScatter,
+		animationMorph,
 		progressive,
 		xLinear,
 		yLinear,
@@ -23859,6 +23941,7 @@ var init_scatter$3 = __esmMin((() => {
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetScatter,
+			animationMorph,
 			progressive,
 			xLinear,
 			pivotAxisStyle(yLinear),
@@ -23900,6 +23983,7 @@ var init_dualAxis$3 = __esmMin((() => {
 			labelDualAxis,
 			tooltipOfDualAxisSeries
 		], [
+			animationMorph,
 			progressive,
 			barMaxWidth_barMaxWidth,
 			barGapInGroup_barGapInGroup,
@@ -23937,6 +24021,7 @@ var init_dualAxis$3 = __esmMin((() => {
 				labelDualAxis,
 				tooltipOfDualAxisSeries
 			], [
+				animationMorph,
 				progressive,
 				barMaxWidth_barMaxWidth,
 				barGapInGroup_barGapInGroup,
@@ -23980,6 +24065,7 @@ var init_pie$3 = __esmMin((() => {
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
+		pieAnimationMorph,
 		progressive,
 		brush_brush,
 		colorPieStyleFill(pieStyle),
@@ -24005,6 +24091,7 @@ var init_pie$3 = __esmMin((() => {
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetXY,
+			pieAnimationMorph,
 			progressive,
 			brush_brush,
 			colorPieStyleFill(pieStyle),
@@ -24038,6 +24125,7 @@ var init_donut$1 = __esmMin((() => {
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
+		pieAnimationMorph,
 		progressive,
 		brush_brush,
 		labelPie,
@@ -24065,6 +24153,7 @@ var init_donut$1 = __esmMin((() => {
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetXY,
+			pieAnimationMorph,
 			progressive,
 			brush_brush,
 			labelPie,
@@ -24096,6 +24185,7 @@ var init_rose$3 = __esmMin((() => {
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
+		animationMorph,
 		progressive,
 		radiusAxis,
 		verticalCrosshairRect,
@@ -24118,6 +24208,7 @@ var init_rose$3 = __esmMin((() => {
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetXY,
+			animationMorph,
 			progressive,
 			radiusAxis,
 			verticalCrosshairRect,
@@ -24144,6 +24235,7 @@ var init_roseParallel$1 = __esmMin((() => {
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
+		animationMorph,
 		progressive,
 		radiusAxis,
 		colorRoseStyleFill(roseStyle),
@@ -24169,6 +24261,7 @@ var init_roseParallel$1 = __esmMin((() => {
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetXY,
+			animationMorph,
 			progressive,
 			radiusAxis,
 			verticalCrosshairRect,
@@ -24199,6 +24292,7 @@ var init_radar$3 = __esmMin((() => {
 		colorAdapter(color_color, linearColor),
 		background_backgroundColor,
 		datasetXY,
+		animationMorph,
 		progressive,
 		radarAngleAxis,
 		radarRadiusAxis,
@@ -24224,6 +24318,7 @@ var init_radar$3 = __esmMin((() => {
 			colorAdapter(color_color, linearColor),
 			background_backgroundColor,
 			datasetXY,
+			animationMorph,
 			progressive,
 			radarAngleAxis,
 			radarRadiusAxis,
@@ -24321,6 +24416,7 @@ var init_heatmap$3 = __esmMin((() => {
 		initHeatmap,
 		background_backgroundColor,
 		datasetXY,
+		animationMorph,
 		colorAdapter(color_color, linearColor),
 		label_label,
 		heatmapBandAxis,
@@ -24342,6 +24438,7 @@ var init_heatmap$3 = __esmMin((() => {
 			initHeatmap,
 			background_backgroundColor,
 			datasetXY,
+			animationMorph,
 			colorAdapter(color_color, linearColor),
 			label_label,
 			pivotAxisStyle(heatmapBandAxis),
@@ -25630,7 +25727,7 @@ var init_common$1 = __esmMin((() => {
 	getCellOriginalDataByDatum = (datum, hasDynamicFilter, originalDatum) => {
 		const tableInstance = datum?.table;
 		let originRowData = tableInstance && hasDynamicFilter ? tableInstance?.getCellOriginRecord(datum?.col, datum?.row) : null;
-		if (originRowData && o$9(originRowData)) originRowData = originRowData[0];
+		if (originRowData && o$10(originRowData)) originRowData = originRowData[0];
 		return originRowData ? {
 			...originalDatum,
 			[InnerRowIndex]: originRowData?.[InnerRowIndex]
@@ -26514,6 +26611,7 @@ var init_line$2 = __esmMin((() => {
 		const bandAxis = getDarkBandAxis();
 		const crosshairLine = getDarkCrosshairLine();
 		return {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getDarkColor(),
 			label: getDarkLabel(),
@@ -26612,6 +26710,7 @@ var init_column$2 = __esmMin((() => {
 		const bandAxis = getDarkBandAxis();
 		const crosshairRect = getDarkCrosshairRect();
 		return {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getDarkColor(),
 			label: getDarkLabel(),
@@ -26633,6 +26732,7 @@ var init_column$2 = __esmMin((() => {
 		const bandAxis = getDarkBandAxis();
 		const crosshairRect = getDarkCrosshairRect();
 		return {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getDarkColor(),
 			label: getDarkLabel(),
@@ -26675,6 +26775,7 @@ var init_bar$2 = __esmMin((() => {
 		};
 		const crosshairRect = getDarkCrosshairRect();
 		return {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getDarkColor(),
 			label: getDarkLabel(),
@@ -26706,6 +26807,7 @@ var init_area$2 = __esmMin((() => {
 		const bandAxis = getDarkBandAxis();
 		const crosshairLine = getDarkCrosshairLine();
 		return {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getDarkColor(),
 			label: getDarkLabel(),
@@ -26734,6 +26836,7 @@ var init_scatter$2 = __esmMin((() => {
 		const linearAxis = getDarkLinearAxis();
 		const crosshairLine = getDarkCrosshairLine();
 		const baseConfig = {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getDarkColor(),
 			label: getDarkLabel(),
@@ -26783,6 +26886,7 @@ var init_dualAxis$2 = __esmMin((() => {
 		const bandAxis = getDarkBandAxis();
 		const crosshairRect = getDarkCrosshairRect();
 		return {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getDarkColor(),
 			label: getDarkLabel(),
@@ -26812,6 +26916,7 @@ var init_pie$2 = __esmMin((() => {
 	init_pie$11();
 	getPieTheme$1 = () => {
 		const baseConfig = {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getDarkColor(),
 			label: getDarkLabel(),
@@ -26846,6 +26951,7 @@ var init_radar$2 = __esmMin((() => {
 	init_tooltip();
 	getRadarTheme$1 = () => {
 		return {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getDarkColor(),
 			label: getDarkLabel(),
@@ -26864,6 +26970,7 @@ var init_rose$2 = __esmMin((() => {
 	init_tooltip();
 	getRoseTheme$1 = () => {
 		const baseConfig = {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getDarkColor(),
 			label: getDarkLabel(),
@@ -26941,6 +27048,7 @@ var init_heatmap$2 = __esmMin((() => {
 	getHeatmapTheme$1 = () => {
 		const bandAxis = getDarkBandAxis();
 		const baseConfig = {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getDarkColor(),
 			label: getDarkLabel(),
@@ -27343,6 +27451,7 @@ var init_line$1 = __esmMin((() => {
 		const bandAxis = getLightBandAxis();
 		const crosshairLine = getLightCrosshairLine();
 		return {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getLightColor(),
 			label: getLightLabel(),
@@ -27371,6 +27480,7 @@ var init_column$1 = __esmMin((() => {
 		const bandAxis = getLightBandAxis();
 		const crosshairRect = getLightCrosshairRect();
 		return {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getLightColor(),
 			label: getLightLabel(),
@@ -27392,6 +27502,7 @@ var init_column$1 = __esmMin((() => {
 		const bandAxis = getLightBandAxis();
 		const crosshairRect = getLightCrosshairRect();
 		return {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getLightColor(),
 			label: getLightLabel(),
@@ -27434,6 +27545,7 @@ var init_bar$1 = __esmMin((() => {
 		};
 		const crosshairRect = getLightCrosshairRect();
 		return {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getLightColor(),
 			label: getLightLabel(),
@@ -27465,6 +27577,7 @@ var init_area$1 = __esmMin((() => {
 		const bandAxis = getLightBandAxis();
 		const crosshairLine = getLightCrosshairLine();
 		return {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getLightColor(),
 			label: getLightLabel(),
@@ -27493,6 +27606,7 @@ var init_scatter$1 = __esmMin((() => {
 		const linearAxis = getLightLinearAxis();
 		const crosshairLine = getLightCrosshairLine();
 		const baseConfig = {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getLightColor(),
 			label: getLightLabel(),
@@ -27542,6 +27656,7 @@ var init_dualAxis$1 = __esmMin((() => {
 		const bandAxis = getLightBandAxis();
 		const crosshairRect = getLightCrosshairRect();
 		return {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getLightColor(),
 			label: getLightLabel(),
@@ -27571,6 +27686,7 @@ var init_pie$1 = __esmMin((() => {
 	init_pie$11();
 	getPieTheme = () => {
 		const baseConfig = {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getLightColor(),
 			label: getLightLabel(),
@@ -27605,6 +27721,7 @@ var init_radar$1 = __esmMin((() => {
 	init_tooltip();
 	getRadarTheme = () => {
 		return {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getLightColor(),
 			label: getLightLabel(),
@@ -27623,6 +27740,7 @@ var init_rose$1 = __esmMin((() => {
 	init_tooltip();
 	getRoseTheme = () => {
 		const baseConfig = {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getLightColor(),
 			label: getLightLabel(),
@@ -27674,6 +27792,7 @@ var init_heatmap$1 = __esmMin((() => {
 	getHeatmapTheme = () => {
 		const bandAxis = getLightBandAxis();
 		const baseConfig = {
+			animation: { morph: true },
 			backgroundColor: "transparent",
 			color: getLightColor(),
 			label: getLightLabel(),

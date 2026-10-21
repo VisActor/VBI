@@ -29,15 +29,15 @@ export const openShelfRenameModal = (params: {
         }}
       />
     ),
-    onOk: () => {
+    onOk: (close: () => void) => {
       const trimmed = nextAlias.trim()
       if (!trimmed) {
         message.warning(emptyNameMessage)
-        return Promise.reject(new Error(emptyNameMessage))
+        return
       }
 
       onRename(id, trimmed)
-      return Promise.resolve()
+      close()
     },
   })
 }

@@ -13,6 +13,7 @@ import { getDarkHeatmapCellTheme } from '../common/heatmapCell'
 export const getHeatmapTheme = () => {
   const bandAxis = getDarkBandAxis()
   const baseConfig = {
+    animation: { morph: true },
     backgroundColor: 'transparent',
     color: getDarkColor(),
     label: getDarkLabel(),

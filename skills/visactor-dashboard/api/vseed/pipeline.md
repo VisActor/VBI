@@ -407,7 +407,7 @@ export declare const areaPercentAdvancedPipeline: AdvancedPipeline
 
 ## areaPercentSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/areaPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/areaPercent.ts#L116)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/areaPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/areaPercent.ts#L119)
 
 包导出：`areaPercentSpecPipeline`
 
@@ -417,7 +417,7 @@ export declare const areaPercentSpecPipeline: import('src/types').SpecPipe[]
 
 ## areaSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/area.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/area.ts#L118)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/area.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/area.ts#L121)
 
 包导出：`areaSpecPipeline`
 
@@ -481,7 +481,7 @@ export declare const barParallelAdvancedPipeline: AdvancedPipeline
 
 ## barParallelSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/barParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/barParallel.ts#L108)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/barParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/barParallel.ts#L111)
 
 包导出：`barParallelSpecPipeline`
 
@@ -501,7 +501,7 @@ export declare const barPercentAdvancedPipeline: AdvancedPipeline
 
 ## barPercentSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/barPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/barPercent.ts#L106)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/barPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/barPercent.ts#L109)
 
 包导出：`barPercentSpecPipeline`
 
@@ -511,7 +511,7 @@ export declare const barPercentSpecPipeline: import('src/types').SpecPipe[]
 
 ## barSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/bar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/bar.ts#L108)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/bar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/bar.ts#L111)
 
 包导出：`barSpecPipeline`
 
@@ -591,7 +591,7 @@ export declare const columnParallelAdvancedPipeline: AdvancedPipeline
 
 ## columnParallelSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/columnParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/columnParallel.ts#L109)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/columnParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/columnParallel.ts#L112)
 
 包导出：`columnParallelSpecPipeline`
 
@@ -611,7 +611,7 @@ export declare const columnPercentAdvancedPipeline: AdvancedPipeline
 
 ## columnPercentSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/columnPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/columnPercent.ts#L110)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/columnPercent.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/columnPercent.ts#L113)
 
 包导出：`columnPercentSpecPipeline`
 
@@ -621,7 +621,7 @@ export declare const columnPercentSpecPipeline: import('src/types').SpecPipe[]
 
 ## columnSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/column.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/column.ts#L113)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/column.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/column.ts#L116)
 
 包导出：`columnSpecPipeline`
 
@@ -771,7 +771,7 @@ export declare const donutAdvancedPipeline: AdvancedPipeline
 
 ## donutSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/donut.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/donut.ts#L98)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/donut.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/donut.ts#L101)
 
 包导出：`donutSpecPipeline`
 
@@ -791,7 +791,7 @@ export declare const dualAxisAdvancedPipeline: AdvancedPipeline
 
 ## dualAxisSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/dualAxis.ts#L143)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/dualAxis.ts#L146)
 
 包导出：`dualAxisSpecPipeline`
 
@@ -964,7 +964,7 @@ export declare const heatmapAdvancedPipeline: AdvancedPipeline
 
 ## heatmapSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/heatmap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/heatmap.ts#L82)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/heatmap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/heatmap.ts#L85)
 
 包导出：`heatmapSpecPipeline`
 
@@ -1310,7 +1310,7 @@ export declare const lineAdvancedPipeline: AdvancedPipeline
 
 ## lineSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/line.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/line.ts#L111)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/line.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/line.ts#L114)
 
 包导出：`lineSpecPipeline`
 
@@ -1353,7 +1353,7 @@ export declare const pieAdvancedPipeline: AdvancedPipeline
 
 ## pieSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/pie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/pie.ts#L95)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/pie.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/pie.ts#L98)
 
 包导出：`pieSpecPipeline`
 
@@ -1534,7 +1534,7 @@ export declare const radarAdvancedPipeline: AdvancedPipeline
 
 ## radarSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/radar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/radar.ts#L100)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/radar.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/radar.ts#L103)
 
 包导出：`radarSpecPipeline`
 
@@ -1591,7 +1591,7 @@ export declare const roseParallelAdvancedPipeline: AdvancedPipeline
 
 ## roseParallelSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/roseParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/roseParallel.ts#L92)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/roseParallel.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/roseParallel.ts#L95)
 
 包导出：`roseParallelSpecPipeline`
 
@@ -1601,7 +1601,7 @@ export declare const roseParallelSpecPipeline: import('src/types').SpecPipe[]
 
 ## roseSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/rose.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/rose.ts#L83)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/rose.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/rose.ts#L86)
 
 包导出：`roseSpecPipeline`
 
@@ -1641,7 +1641,7 @@ export declare const scatterAdvancedPipeline: AdvancedPipeline
 
 ## scatterSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/chart/pipeline/scatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/scatter.ts#L116)
+源码：[packages/vseed/src/pipeline/spec/chart/pipeline/scatter.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/chart/pipeline/scatter.ts#L119)
 
 包导出：`scatterSpecPipeline`
 

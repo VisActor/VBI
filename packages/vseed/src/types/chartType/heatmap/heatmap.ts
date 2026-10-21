@@ -1,3 +1,4 @@
+import type { Animation } from '../../properties/config/animation'
 import { type Locale } from '../../i18n'
 import type {
   Color,
@@ -39,6 +40,9 @@ import type { Brush } from '../../properties'
  * - 支持数据重塑: 至少`1`个指标, `0`个维度
  */
 export interface Heatmap {
+  /** @description 动画开关与图表切换形变配置 */
+  animation?: Animation
+
   /**
    * 热力图
    * @description 热力图，通过二维矩阵的颜色深浅展示数据的分布和强弱关系

@@ -11,6 +11,7 @@ export const dualAxisConfig: AdvancedPipe = (advancedVSeed, context) => {
 
   const pickedConfig = pick(vseed, [
     // common
+    'animation',
     'backgroundColor',
     'color',
     'label',

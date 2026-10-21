@@ -1,7 +1,7 @@
 import { theme } from 'antd'
 import type { MenuProps } from 'antd'
 import { useMemo } from 'react'
-import { useVBIBuilder, useVBIDimensions, useVBISchemaFields } from '../../../hooks'
+import { useVBIDimensions, useVBISchemaFields } from '../../../hooks'
 import { useTranslation } from '../../../i18n'
 import { useVBIStore } from '../../../model'
 import type { VBIDimension } from '@visactor/vbi'
@@ -44,15 +44,13 @@ const DIMENSION_ENCODING_LABEL_KEY_MAP: Record<NonNullable<VBIDimension['encodin
 export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder)
   const { token } = theme.useToken()
-  const { theme: themeMode } = useVBIBuilder(builder)
   const { t } = useTranslation()
   const { dimensions, addDimension, removeDimension, updateDimension, findDimension } = useVBIDimensions(builder)
   const { fieldTypeMap } = useVBISchemaFields(builder)
   const dimensionShelfTone = useMemo<FieldShelfTone>(() => {
-    const accent = themeMode === 'dark' ? '#91caff' : '#0958d9'
-    const border = themeMode === 'dark' ? 'rgba(145, 202, 255, 0.34)' : '#b7d9ff'
-    const hoverBackground = themeMode === 'dark' ? 'rgba(32, 79, 183, 0.18)' : '#eef5ff'
-    const iconBackground = themeMode === 'dark' ? 'rgba(145, 202, 255, 0.14)' : 'rgba(22, 119, 255, 0.12)'
+    const accent = token.colorPrimaryText
+    const border = token.colorPrimaryBorder
+    const hoverBackground = token.colorPrimaryBgHover
 
     return {
       trackBackground: token.colorBgContainer,
@@ -65,11 +63,11 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       itemBorder: border,
       itemHoverBorder: accent,
       textColor: accent,
-      iconBackground,
-      iconHoverBackground: hoverBackground,
+      iconBackground: 'transparent',
+      iconHoverBackground: 'transparent',
       iconColor: accent,
     }
-  }, [themeMode, token])
+  }, [token])
 
   const isDateField = (fieldName: string) => {
     return isDateDimensionField(fieldTypeMap[fieldName])
@@ -232,7 +230,7 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       },
       {
         key: 'delete',
-        label: <span style={{ color: '#ff4d4f' }}>{t('shelvesMenuDelete')}</span>,
+        label: <span style={{ color: token.colorError }}>{t('shelvesMenuDelete')}</span>,
         style: SHELF_MENU_ITEM_STYLE,
       },
     )

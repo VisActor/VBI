@@ -12,6 +12,7 @@
 - [ColorIdEncoding](data.md#coloridencoding)
 - [DetailEncoding](data.md#detailencoding)
 - [DimAxisType](data.md#dimaxistype)
+- [DimensionKey](data.md#dimensionkey)
 - [DynamicFilter](data.md#dynamicfilter)
 - [DynamicFilterResult](data.md#dynamicfilterresult)
 - [FoldMeasureId](data.md#foldmeasureid)
@@ -79,15 +80,15 @@ import type {
   ValueSelector,
   ValueDynamicFilter,
 } from '../types/dataSelector'
-import type { Dataset, Dimension, Encoding, FoldInfo, Measure, UnfoldInfo, Locale } from 'src/types'
-import type { Dataset, Dimension, Encoding, UnfoldInfo } from 'src/types'
+import type { ChartType, Dataset, Dimension, Encoding, FoldInfo, Measure, UnfoldInfo, Locale } from 'src/types'
+import type { ChartType, Dataset, Dimension, Encoding, UnfoldInfo } from 'src/types'
 import type { Dataset, FoldInfo, Measures } from 'src/types'
 import type { Datum } from 'src/types'
 ```
 
 ## AngleEncoding
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L25)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L27)
 
 包导出：`AngleEncoding`
 
@@ -97,7 +98,7 @@ export declare const AngleEncoding = '__Dim_Angle__'
 
 ## BinCountMeasureId
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L46)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L48)
 
 包导出：`BinCountMeasureId`
 
@@ -107,7 +108,7 @@ export declare const BinCountMeasureId = '__BinCount__'
 
 ## BinEndMeasureId
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L45)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L47)
 
 包导出：`BinEndMeasureId`
 
@@ -117,7 +118,7 @@ export declare const BinEndMeasureId = '__BinEnd__'
 
 ## BinPercentageMeasureId
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L47)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L49)
 
 包导出：`BinPercentageMeasureId`
 
@@ -127,7 +128,7 @@ export declare const BinPercentageMeasureId = '__BinPercentage__'
 
 ## BinStartMeasureId
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L44)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L46)
 
 包导出：`BinStartMeasureId`
 
@@ -137,7 +138,7 @@ export declare const BinStartMeasureId = '__BinStart__'
 
 ## BoxPlotPivotIndicator
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L35)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L37)
 
 包导出：`BoxPlotPivotIndicator`
 
@@ -147,7 +148,7 @@ export declare const BoxPlotPivotIndicator = '__BoxPlot_Pivot_Indicator__'
 
 ## ColorEncoding
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L28)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L30)
 
 包导出：`ColorEncoding`
 
@@ -157,7 +158,7 @@ export declare const ColorEncoding = '__Dim_Color__'
 
 ## ColorIdEncoding
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L29)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L31)
 
 包导出：`ColorIdEncoding`
 
@@ -167,7 +168,7 @@ export declare const ColorIdEncoding = '__Dim_ColorId__'
 
 ## DetailEncoding
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L26)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L28)
 
 包导出：`DetailEncoding`
 
@@ -183,6 +184,16 @@ export declare const DetailEncoding = '__Dim_Detail__'
 
 ```typescript
 export declare const DimAxisType = '__Dim_AxisType__'
+```
+
+## DimensionKey
+
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L24)
+
+包导出：`DimensionKey`
+
+```typescript
+export declare const DimensionKey = '__Dim_Key__'
 ```
 
 ## DynamicFilter
@@ -297,7 +308,7 @@ export declare const FoldYMeasureValue = '__MeaYValue__'
 
 ## HierarchyEncoding
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L30)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L32)
 
 包导出：`HierarchyEncoding`
 
@@ -307,7 +318,7 @@ export declare const HierarchyEncoding = '__Dim_Hierarchy__'
 
 ## InnerRowIndex
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L50)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L52)
 
 包导出：`InnerRowIndex`
 
@@ -317,7 +328,7 @@ export declare const InnerRowIndex = '__row_index'
 
 ## LowerWhisker
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L38)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L40)
 
 包导出：`LowerWhisker`
 
@@ -347,7 +358,7 @@ export declare const MeasureName = '__MeaName__'
 
 ## MedianMeasureId
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L41)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L43)
 
 包导出：`MedianMeasureId`
 
@@ -367,7 +378,7 @@ export declare const ORIGINAL_DATA = '__OriginalData__'
 
 ## OutliersMeasureId
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L40)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L42)
 
 包导出：`OutliersMeasureId`
 
@@ -377,7 +388,7 @@ export declare const OutliersMeasureId = '__Outliers__'
 
 ## PlayerEncoding
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L27)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L29)
 
 包导出：`PlayerEncoding`
 
@@ -387,7 +398,7 @@ export declare const PlayerEncoding = '__Dim_Player__'
 
 ## Q1MeasureValue
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L36)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L38)
 
 包导出：`Q1MeasureValue`
 
@@ -397,7 +408,7 @@ export declare const Q1MeasureValue = '__Q1__'
 
 ## Q3MeasureValue
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L37)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L39)
 
 包导出：`Q3MeasureValue`
 
@@ -417,7 +428,7 @@ export declare const Separator = '-'
 
 ## SourceEncoding
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L31)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L33)
 
 包导出：`SourceEncoding`
 
@@ -427,7 +438,7 @@ export declare const SourceEncoding = '__Dim_Source__'
 
 ## TargetEncoding
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L32)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L34)
 
 包导出：`TargetEncoding`
 
@@ -437,7 +448,7 @@ export declare const TargetEncoding = '__Dim_Target__'
 
 ## UpperWhisker
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L39)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L41)
 
 包导出：`UpperWhisker`
 
@@ -447,7 +458,7 @@ export declare const UpperWhisker = '__Upper_Whisker__'
 
 ## XEncoding
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L23)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L25)
 
 包导出：`XEncoding`
 
@@ -457,7 +468,7 @@ export declare const XEncoding = '__Dim_X__'
 
 ## YEncoding
 
-源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L24)
+源码：[packages/vseed/src/dataReshape/constant.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/constant.ts#L26)
 
 包导出：`YEncoding`
 
@@ -467,7 +478,7 @@ export declare const YEncoding = '__Dim_Y__'
 
 ## dataReshapeByEncoding
 
-源码：[packages/vseed/src/dataReshape/dataReshapeByEncoding.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/dataReshapeByEncoding.ts#L7)
+源码：[packages/vseed/src/dataReshape/dataReshapeByEncoding.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/dataReshapeByEncoding.ts#L17)
 
 包导出：`dataReshapeByEncoding`
 
@@ -478,6 +489,7 @@ export declare const dataReshapeByEncoding: (
   measures: Measure[],
   encoding: Encoding,
   options?: {
+    chartType?: ChartType
     foldMeasureId?: string
     foldMeasureName?: string
     foldMeasureValue?: string
@@ -805,7 +817,7 @@ export declare const selectorWithDynamicFilter: (
 
 ## unfoldDimensions
 
-源码：[packages/vseed/src/dataReshape/unfoldDimensions.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/unfoldDimensions.ts#L25)
+源码：[packages/vseed/src/dataReshape/unfoldDimensions.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/dataReshape/unfoldDimensions.ts#L26)
 
 包导出：`unfoldDimensions`
 
@@ -823,6 +835,7 @@ export declare const unfoldDimensions: (
   dimensions: Dimension[],
   encoding: Encoding,
   options: {
+    chartType?: ChartType
     foldMeasureId: string
     separator: string
     colorItemAsId: boolean

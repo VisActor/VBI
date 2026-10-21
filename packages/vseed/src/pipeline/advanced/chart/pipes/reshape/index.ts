@@ -1,5 +1,5 @@
-export { pivotReshapeWithEncoding } from './pivotReshapeWithEncoding'
-export { reshapeWithEncoding } from './reshapeWithEncoding'
+export { pivotReshapeWithEncoding, createPivotReshapeWithEncoding } from './pivotReshapeWithEncoding'
+export { reshapeWithEncoding, createReshapeWithEncoding } from './reshapeWithEncoding'
 export { reshapeWithDualEncoding } from './reshapeWithDualEncoding'
 export { pivotReshapeWithDualEncoding } from './pivotReshapeWithDualEncoding'
 export { reshapeWithBoxplotEncoding } from './reshapeWithBoxplotEncoding'

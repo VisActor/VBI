@@ -5,7 +5,7 @@ import { supermarketSchema } from './supermarketSchema'
 export type LocalValue = string | number | boolean | null | undefined
 export type LocalRow = Record<string, LocalValue>
 type QueryValue = string | number
-type FieldSelection = { alias: string; field: string }
+type FieldSelection = { alias: string; field: string; aggregate?: string }
 
 export const CONNECTOR_ID = 'localDataConnector'
 
@@ -33,6 +33,18 @@ function inferSchema(data: LocalRow[]): DatasetColumn[] {
   }))
 }
 
+// Date aggregations return dimension labels, including numeric-looking years.
+const dateAggregateFunctions = new Set([
+  'to_year',
+  'to_quarter',
+  'to_month',
+  'to_week',
+  'to_day',
+  'to_hour',
+  'to_minute',
+  'to_second',
+])
+
 function getFieldSelections(queryDSL: VQueryDSL<Record<string, QueryValue>>): {
   dimensionFields: FieldSelection[]
   measureFields: FieldSelection[]
@@ -57,8 +69,8 @@ function getFieldSelections(queryDSL: VQueryDSL<Record<string, QueryValue>>): {
       continue
     }
 
-    if (item.aggr?.func) {
-      measureFields.push({ alias, field })
+    if (item.aggr?.func && !dateAggregateFunctions.has(item.aggr.func)) {
+      measureFields.push({ alias, field, aggregate: item.aggr.func })
       continue
     }
 
@@ -85,7 +97,11 @@ function normalizeMeasureValue(value: unknown): number | null {
   return null
 }
 
-function normalizeDataset(queryDSL: VQueryDSL<Record<string, QueryValue>>, dataset: LocalRow[]): LocalRow[] {
+function normalizeDataset(
+  queryDSL: VQueryDSL<Record<string, QueryValue>>,
+  dataset: LocalRow[],
+  schema: DatasetColumn[],
+): LocalRow[] {
   const { dimensionFields, measureFields } = getFieldSelections(queryDSL)
 
   if (dimensionFields.length === 0 && measureFields.length === 0) {
@@ -95,8 +111,13 @@ function normalizeDataset(queryDSL: VQueryDSL<Record<string, QueryValue>>, datas
   return dataset.map((row) => {
     const normalizedRow: LocalRow = {}
 
-    for (const { alias, field } of measureFields) {
+    for (const { alias, field, aggregate } of measureFields) {
       const sourceKey = alias || field
+      const sourceType = schema.find((column) => column.name === field)?.type
+      if ((aggregate === 'min' || aggregate === 'max') && sourceType && sourceType !== 'number') {
+        if (sourceKey in row) normalizedRow[sourceKey] = row[sourceKey]
+        continue
+      }
       const nextValue = normalizeMeasureValue(row[sourceKey])
       if (nextValue !== null) {
         normalizedRow[sourceKey] = nextValue
@@ -166,7 +187,7 @@ export function createLocalConnector(connectorId: string): string {
         const dataset = await vquery.connectDataset(connectorId)
         const dsl = queryDSL as VQueryDSL<Record<string, QueryValue>>
         const result = await dataset.query(dsl)
-        return { dataset: normalizeDataset(dsl, result.dataset as LocalRow[]) }
+        return { dataset: normalizeDataset(dsl, result.dataset as LocalRow[], schema as DatasetColumn[]) }
       },
     }),
   )

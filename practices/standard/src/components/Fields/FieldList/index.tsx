@@ -45,7 +45,7 @@ const getFieldIcon = (field: Pick<VBISchemaField, 'isDate' | 'role'>, color: str
 const FieldListItem = ({ field, onClick }: { field: VBISchemaField; onClick: () => void }) => {
   const { token } = theme.useToken()
   const [isHovered, setIsHovered] = useState(false)
-  const accentColor = field.role === 'measure' ? token.colorSuccess : token.colorPrimary
+  const accentColor = field.role === 'measure' ? token.colorSuccessText : token.colorPrimaryText
   const hoverBackground = field.role === 'measure' ? token.colorSuccessBg : token.colorPrimaryBg
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: createSchemaFieldDragId({
@@ -375,7 +375,7 @@ export const FieldList = memo(({ style }: { style?: React.CSSProperties }) => {
                 padding: 0,
                 borderRadius: token.borderRadiusSM,
                 border: `1px solid ${hasActiveFilter ? token.colorPrimaryBorder : token.colorBorderSecondary}`,
-                color: hasActiveFilter ? token.colorPrimary : token.colorTextSecondary,
+                color: hasActiveFilter ? token.colorPrimaryText : token.colorTextSecondary,
                 backgroundColor: hasActiveFilter ? token.colorPrimaryBg : token.colorFillQuaternary,
               }}
             />

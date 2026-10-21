@@ -10,5 +10,17 @@
     "name": "map-dashboard",
     "label": "Map Dashboard",
     "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "map3d-dashboard",
+    "label": "3D Map Dashboard",
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "chart-editor",
+    "label": "Chart Editor",
+    "collapsed": false
   }
 ]

@@ -1,6 +1,6 @@
 ---
 name: visactor-dashboard
-description: 创建和修改交互式 Dashboard 看板，涵盖经营指标分析、地理分析、数据接入、图表组合、筛选联动与状态恢复，也支持 VBI、VQuery 和 VSeed 的独立能力集成。
+description: 创建和修改交互式 Dashboard 看板与图表编辑器，涵盖经营指标、二维 / Three.js 三维地图、数据接入、图表配置、筛选联动与状态恢复，也支持 VBI、VQuery 和 VSeed 的独立能力集成。
 ---
 
 # VisActor Dashboard
@@ -9,16 +9,18 @@ description: 创建和修改交互式 Dashboard 看板，涵盖经营指标分�
 
 ## 场景
 
-| 用户需求                           | 场景指南                                                 |
-| ---------------------------------- | -------------------------------------------------------- |
-| 地图、地理分布、位置关系或地域下钻 | [地图看板](references/visactor-map2d-dashboard/SKILL.md) |
-| 经营概览、指标监测、趋势和专题分析 | [轻量看板](references/visactor-light-dashboard/SKILL.md) |
+| 用户需求                           | 场景指南                                                     |
+| ---------------------------------- | ------------------------------------------------------------ |
+| 地图、地理分布、位置关系或地域下钻 | [地图看板](references/visactor-map2d-dashboard/SKILL.md)     |
+| 经营概览、指标监测、趋势和专题分析 | [轻量看板](references/visactor-light-dashboard/SKILL.md)     |
+| 字段配置、聚合筛选与可视化图表编辑 | [图表编辑器](references/visactor-chart-editor/SKILL.md)      |
+| Three.js 三维地图、地球与空间态势  | [三维地图看板](references/visactor-map3d-dashboard/SKILL.md) |
 
-用户明确指定类型时按其要求选择；没有地图需求时使用轻量看板。
+用户明确指定类型时按其要求选择；图表编辑使用编辑器，明确的三维需求使用三维地图，普通地图使用二维地图，其余看板使用轻量看板。
 
 ## 通用能力
 
-两种场景共用 visual-query 的查询、渲染和联动流程；布局与视觉按对应场景指南处理。
+四个场景技能直接依赖 visual-query 的查询、渲染和联动能力；布局与视觉按对应场景指南处理。场景之间不相互引用，共享能力也不反向依赖场景。
 
 | 任务                                    | 子技能                                               |
 | --------------------------------------- | ---------------------------------------------------- |

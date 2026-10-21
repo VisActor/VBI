@@ -1,5 +1,6 @@
 import type { PivotChartSpecPipeline, SpecPipeline, VChartSpecPipeline } from 'src/types'
 import {
+  animationMorph,
   datasetXY,
   backgroundColor,
   label,
@@ -45,6 +46,7 @@ const radar: VChartSpecPipeline = [
   colorAdapter(color, linearColor),
   backgroundColor,
   datasetXY,
+  animationMorph,
   progressive,
   radarAngleAxis,
   radarRadiusAxis,
@@ -76,6 +78,7 @@ const pivotRadar: PivotChartSpecPipeline = [
     colorAdapter(color, linearColor),
     backgroundColor,
     datasetXY,
+    animationMorph,
     progressive,
     radarAngleAxis,
     radarRadiusAxis,

@@ -88,6 +88,42 @@ describe('localConnector', () => {
     expect(result.dataset).toEqual([{ totalSales: 123.5, city: 'HCM' }])
   })
 
+  test('preserves string and date min/max values while count and numeric aggregates stay numeric', async () => {
+    const { __vqueryMockState } = (await import('@visactor/vquery')) as any
+    __vqueryMockState.connectDataset.mockResolvedValue({
+      query: rs.fn().mockResolvedValue({
+        dataset: [
+          { first: '001', last: 'Retail', day: '2018-01-01', n: '3', amount: '20' },
+          { n: '0', amount: 0 },
+        ],
+      }),
+    })
+    setLocalDataWithSchema([{ label: '001' }], [{ name: 'label', type: 'string' }])
+    createLocalConnector('typed-aggregates')
+    const { __vbiMockState } = (await import('@visactor/vbi')) as any
+    const connector = await __vbiMockState.register.mock.calls[0][1]()
+    const result = await connector.query({
+      schema: [
+        { name: 'label', type: 'string' },
+        { name: 'date', type: 'date' },
+        { name: 'value', type: 'number' },
+      ],
+      queryDSL: {
+        select: [
+          { field: 'label', alias: 'first', aggr: { func: 'min' } },
+          { field: 'label', alias: 'last', aggr: { func: 'max' } },
+          { field: 'date', alias: 'day', aggr: { func: 'min' } },
+          { field: 'label', alias: 'n', aggr: { func: 'count' } },
+          { field: 'value', alias: 'amount', aggr: { func: 'max' } },
+        ],
+      },
+    })
+    expect(result.dataset).toEqual([
+      { first: '001', last: 'Retail', day: '2018-01-01', n: 3, amount: 20 },
+      { n: 0, amount: 0 },
+    ])
+  })
+
   test('createDefaultBuilder uses default connector id', () => {
     const builder = createDefaultBuilder() as any
     expect(builder.source.connectorId).toBe(CONNECTOR_ID)

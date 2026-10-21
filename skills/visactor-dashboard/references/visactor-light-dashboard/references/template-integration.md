@@ -43,7 +43,7 @@
 | 加载与动效       | `data-initialized`、`entranceTiming`、`bindCardTilt()`                    | 可测量的加载布局、错误反馈、入场与倾斜分层、减少动态效果及销毁清理。                                                         |
 | 筛选与明细       | `applyFilters()`、`requestRender()`、`renderLoop()`、`details`            | 查询过期保护、同步更新、不重建明细外壳、不覆盖用户折叠状态。                                                                 |
 | 指标分析         | `bindMetricAnalysis()`                                                    | 继承已确认范围、局部下钻与返回；按[分析规范](../../metric-analysis/SKILL.md)替换问题和指标。                                 |
-| 材质与弹窗       | `dashboard-material`、`.ma-dialog`、`data-content-enter`                  | 卡片与底部明细的透光层次、弹窗整体展开与内容分批入场，见[材质](design.md#玻璃阅读面)与[动效](layout.md#弹窗与内容分批入场)。 |
+| 材质与弹窗       | `dashboard-material`、`.ma-dialog`、`data-content-enter`                  | 卡片与底部明细的透光层次、弹窗整体展开与内容同步入场，见[材质](design.md#玻璃阅读面)与[动效](layout.md#弹窗与内容同步入场)。 |
 | 表格主题与更新   | `dashboard-table-tokens`、`dashboard-table-runtime`、`DashboardTable`     | 共用[表格资源](../../visual-query/references/table-theme.md)，保留完整结果、原位更新与主题同步；不逐页另写表格色板。         |
 | 主页明细生命周期 | `#overview-table`、`#overview-count`、`overviewTable`、`overviewObserver` | 保留记录数、短表收缩、容器内滚动、ResizeObserver 与 `pagehide` 释放；表格实例独立于 VChart 实例集合。                        |
 
@@ -83,6 +83,19 @@
 
 ## 修改模板时同步维护
 
-以实际 HTML 为函数、选择器、依赖版本和默认行为的依据。增删模板或改名时同步[模板列表](templates.md)、[可视总览](../templates/index.html)、参考链接与截图；改变业务数据时重算核对值。修改公共表格资源后按[同步步骤](../../visual-query/references/table-theme.md#维护入口)更新全部内联副本，不能只修改某份模板中的副本。
+每份模板 HTML 是该页面样式与脚本的维护入口，直接编辑其中的内嵌实现。不要在 light-dashboard 中另建 `assets/`、抽取独立 CSS/JS 维护源或增加生成同步层。页面内部按职责分段，业务模块维护配置、查询、图形定义与联动。
 
-交付前检查相对链接及锚点、公共资源同步、桌面与窄屏实际行为；仓库技能打包会进一步检查资源链接与场景依赖。同步检查只能证明副本一致，不能代替[视觉与交互验收](acceptance.md)。
+| HTML 内嵌标记               | 负责内容                         |
+| --------------------------- | -------------------------------- |
+| `dashboard-loading-runtime` | 初始化等待、就绪门槛、失败与重试 |
+| `dashboard-motion-runtime`  | 入场、数字过渡、卡片倾斜及清理   |
+| `metric-analysis-runtime`   | 指标分析弹窗与交互生命周期       |
+| `metric-analysis-style`     | 弹窗样式与动效                   |
+
+`DashboardMotion({ reducedMotion, metricUnit })` 返回页面需要的呈现方法；`metricUnit` 只供行业模板保留数字与单位分排，其余模板使用原有纯文本。页面退出调用 `disposeMotion()`，不直接访问动画内部状态。业务查询、缓存、数据口径与主题仍留在页面中。
+
+修改跨模板行为时，直接更新涉及的 HTML，并逐份验证；保留各模板的数据口径、布局和交互差异。
+
+以实际 HTML 为函数、选择器、依赖版本和默认行为的依据。增删模板或改名时同步[模板列表](templates.md)、[可视总览](../templates/index.html)、参考链接与截图；改变业务数据时重算核对值。公共表格能力直接依赖 [visual-query](../../visual-query/SKILL.md)，复用其资源与接入说明。
+
+交付前检查相对链接及锚点、内嵌脚本、桌面与窄屏实际行为；仓库技能打包会进一步检查资源链接与场景依赖。自动检查不能代替[视觉与交互验收](acceptance.md)。

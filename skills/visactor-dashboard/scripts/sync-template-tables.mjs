@@ -4,15 +4,17 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { execFileSync } from 'node:child_process'
 
-const reference = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const scenes = path.resolve(reference, '..')
-const repoRoot = path.resolve(reference, '../../../..')
+const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+const scenes = path.join(skillRoot, 'references')
+const reference = path.join(scenes, 'visual-query')
+const repoRoot = path.resolve(skillRoot, '../..')
 const templates = [
   ...fs
     .readdirSync(path.join(scenes, 'visactor-light-dashboard/templates'))
     .filter((name) => /^template-.*\.html$/.test(name))
     .map((name) => path.join(scenes, 'visactor-light-dashboard/templates', name)),
   path.join(scenes, 'visactor-map2d-dashboard/templates/template.html'),
+  path.join(scenes, 'visactor-map3d-dashboard/templates/template.html'),
 ]
 const check = process.argv.includes('--check')
 let stale = 0
@@ -40,6 +42,7 @@ for (const file of templates) {
   })
   if (next !== fs.readFileSync(file, 'utf8')) {
     stale++
+    if (check) console.error(`Stale table adapter: ${path.relative(repoRoot, file)}`)
     if (!check) fs.writeFileSync(file, next)
   }
 }

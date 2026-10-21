@@ -14,7 +14,7 @@
 - [theme](theme.md)
 - [types](types.md)
 
-## 公开导出（522）
+## 公开导出（524）
 
 | 导出                                 | 入口条件 | 声明                                                                                 |
 | ------------------------------------ | -------- | ------------------------------------------------------------------------------------ |
@@ -25,6 +25,7 @@
 | `AdvancedPipelineContext`            | default  | [AdvancedPipelineContext](types.md#advancedpipelinecontext)                          |
 | `AdvancedVSeed`                      | default  | [AdvancedVSeed](types.md#advancedvseed)                                              |
 | `AngleEncoding`                      | default  | [AngleEncoding](data.md#angleencoding)                                               |
+| `Animation`                          | default  | [Animation](types.md#animation)                                                      |
 | `AnimationEffectConfig`              | default  | [AnimationEffectConfig](types.md#animationeffectconfig)                              |
 | `Annotation`                         | default  | [Annotation](types.md#annotation)                                                    |
 | `AnnotationArea`                     | default  | [AnnotationArea](types.md#annotationarea)                                            |
@@ -140,6 +141,7 @@
 | `DimensionEncoding`                  | default  | [DimensionEncoding](types.md#dimensionencoding)                                      |
 | `DimensionEncodingEnum`              | default  | [DimensionEncodingEnum](types.md#dimensionencodingenum)                              |
 | `DimensionGroup`                     | default  | [DimensionGroup](types.md#dimensiongroup)                                            |
+| `DimensionKey`                       | default  | [DimensionKey](data.md#dimensionkey)                                                 |
 | `DimensionLinkage`                   | default  | [DimensionLinkage](types.md#dimensionlinkage)                                        |
 | `DimensionSelector`                  | default  | [DimensionSelector](types.md#dimensionselector)                                      |
 | `DimensionTree`                      | default  | [DimensionTree](types.md#dimensiontree)                                              |

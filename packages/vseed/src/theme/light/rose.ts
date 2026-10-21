@@ -9,6 +9,7 @@ import { getLightTooltip } from '../common/tooltip'
 
 export const getRoseTheme = () => {
   const baseConfig = {
+    animation: { morph: true },
     backgroundColor: 'transparent',
     color: getLightColor(),
     label: getLightLabel(),

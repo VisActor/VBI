@@ -1,3 +1,4 @@
+import { zAnimation } from '../../properties/config/animation'
 import { z } from 'zod'
 import { zLocale } from 'src/types/i18n'
 import {
@@ -33,6 +34,7 @@ import {
 } from 'src/types/properties'
 
 export const zDualAxis = z.object({
+  animation: zAnimation.nullish(),
   chartType: z.literal('dualAxis'),
   dataset: zDataset.nullish(),
   dimensions: zDimensions.nullish(),

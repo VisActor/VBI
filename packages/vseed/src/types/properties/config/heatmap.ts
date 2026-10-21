@@ -1,3 +1,4 @@
+import { zAnimation } from './animation'
 import { z } from 'zod'
 import { zBackgroundColor } from './backgroundColor/backgroundColor'
 import { zColor } from './color/color'
@@ -11,6 +12,7 @@ import { zXBandAxis, zYBandAxis } from './axes/zBandAxis'
 import { zBrushConfig } from '../brush/zBrush'
 
 export const zHeatmapConfig = z.object({
+  animation: zAnimation.nullish(),
   backgroundColor: zBackgroundColor.nullish(),
   label: zLabel.nullish(),
   color: zColor.nullish(),

@@ -20,6 +20,8 @@ export const FoldYMeasureValue = '__MeaYValue__'
 export const FoldXMeasureId = '__MeaXId__'
 export const FoldYMeasureId = '__MeaYId__'
 // Encoding
+// Stable full-dimensional group, independent of visual channels and folded measures.
+export const DimensionKey = '__Dim_Key__'
 export const XEncoding = '__Dim_X__'
 export const YEncoding = '__Dim_Y__'
 export const AngleEncoding = '__Dim_Angle__'

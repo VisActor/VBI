@@ -226,3 +226,50 @@ describe('normalizeDataset', () => {
     expect(normalizeDataset(queryDSL, dataset)).toEqual([{ value: '42' }])
   })
 })
+
+const dateAggregates = [
+  ['to_year', '2025'],
+  ['to_quarter', '2025-Q1'],
+  ['to_month', '2025-01'],
+  ['to_week', '2025-W00'],
+  ['to_day', '2025-01-02'],
+  ['to_hour', '2025-01-02 03'],
+  ['to_minute', '2025-01-02 03:04'],
+  ['to_second', '2025-01-02 03:04:05'],
+] as const
+
+for (const [func, value] of dateAggregates) {
+  it(`${func} selects date dimensions and preserves their values alongside numeric measures`, () => {
+    const queryDSL: VQueryDSL<Record<string, QueryValue>> = {
+      select: [
+        { field: 'order_date', alias: 'date_bucket', aggr: { func } },
+        { field: 'delivery_date', aggr: { func } },
+        { field: 'sales', alias: 'total', aggr: { func: 'sum' } },
+        { field: 'order_date', alias: 'n', aggr: { func: 'count' } },
+        'city',
+      ],
+    }
+    expect(getFieldSelections(queryDSL)).toEqual({
+      dimensionFields: [
+        { field: 'order_date', alias: 'date_bucket' },
+        { field: 'delivery_date', alias: 'delivery_date' },
+        { field: 'city', alias: 'city' },
+      ],
+      measureFields: [
+        { field: 'sales', alias: 'total' },
+        { field: 'order_date', alias: 'n' },
+      ],
+    })
+    expect(
+      normalizeDataset(queryDSL, [
+        { date_bucket: value, delivery_date: value, total: '123.5', n: '2', city: 'Shanghai', extra: 'ignored' },
+        { date_bucket: null, delivery_date: null, total: 0, n: '0' },
+        { total: 1, n: '1' },
+      ]),
+    ).toEqual([
+      { date_bucket: value, delivery_date: value, total: 123.5, n: 2, city: 'Shanghai' },
+      { date_bucket: null, delivery_date: null, total: 0, n: 0 },
+      { total: 1, n: 1 },
+    ])
+  })
+}

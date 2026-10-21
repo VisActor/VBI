@@ -10,5 +10,17 @@
     "name": "map-dashboard",
     "label": "地图 Dashboard",
     "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "map3d-dashboard",
+    "label": "三维地图 Dashboard",
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "chart-editor",
+    "label": "图表编辑器",
+    "collapsed": false
   }
 ]

@@ -1,5 +1,6 @@
 import type { PivotChartSpecPipeline, VChartSpecPipeline } from 'src/types'
 import {
+  pieAnimationMorph,
   backgroundColor,
   color,
   datasetXY,
@@ -46,6 +47,7 @@ const pie: VChartSpecPipeline = [
   colorAdapter(color, linearColor),
   backgroundColor,
   datasetXY,
+  pieAnimationMorph,
   progressive,
   brush,
   colorPieStyleFill(pieStyle),
@@ -73,6 +75,7 @@ const pivotPie: PivotChartSpecPipeline = [
     colorAdapter(color, linearColor),
     backgroundColor,
     datasetXY,
+    pieAnimationMorph,
     progressive,
     brush,
     colorPieStyleFill(pieStyle),

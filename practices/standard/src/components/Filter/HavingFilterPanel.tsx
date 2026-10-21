@@ -138,6 +138,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   const selectedAggregateFunc = Form.useWatch('aggregateFunc', form)
   const selectedOperator = normalizeHavingOperator(Form.useWatch('operator', form))
   const isSingleItemEdit = itemEdit && filters.length === 1
+  const editingItem = isSingleItemEdit ? filters[0] : undefined
   const fixedEditingField = isSingleItemEdit ? fixedField || filters[0]?.field : undefined
   const selectedField = selectedFieldFromForm ?? fixedEditingField
 
@@ -222,7 +223,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
       return
     }
 
-    const current = filters[0]
+    const current = editingItem
     if (!current) {
       return
     }
@@ -237,7 +238,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
       operator,
       value: getHavingFilterFormValue(operator, current.value) as HavingFormValue,
     })
-  }, [isSingleItemEdit, open, filters, fields, form])
+  }, [isSingleItemEdit, open, editingItem, fields, form])
 
   useEffect(() => {
     if (!isActive) {

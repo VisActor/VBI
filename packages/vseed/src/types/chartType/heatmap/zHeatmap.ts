@@ -1,3 +1,4 @@
+import { zAnimation } from '../../properties/config/animation'
 import { z } from 'zod'
 import { zLocale } from '../../i18n'
 
@@ -16,6 +17,7 @@ import {
 } from '../../properties'
 
 export const zHeatmap = z.object({
+  animation: zAnimation.nullish(),
   chartType: z.literal('heatmap'),
   dataset: zDataset.nullish(),
   dimensions: zDimensions.nullish(),
