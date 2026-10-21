@@ -10,6 +10,7 @@ export const heatmapConfig: AdvancedPipe = (advancedVSeed, context) => {
   }
 
   const pickedConfig = pick(vseed, [
+    'animation',
     'backgroundColor',
     'color',
     'label',

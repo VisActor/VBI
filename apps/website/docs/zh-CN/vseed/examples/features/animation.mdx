@@ -9,65 +9,71 @@ import { VSeedRender } from '@components'
 
 export default () => {
   const vseedConfig = {
-    chartType: 'column',
-    animation: {
-      enable: true,
-      params: {
-        appear: {
-          enable: true,
-          effects: ['growth'],
-          duration: 800,
-          ease: 'cubicOut',
-        },
-        update: {
-          enable: true,
-          effects: ['moveIn'],
-          duration: 600,
-          ease: 'quadOut',
-        },
-        loop: {
-          enable: true,
-          interval: 1200,
-          loop: {
-            enable: true,
-            effects: ['highLight'],
-            duration: 1000,
-          },
-          atmosphere: {
-            effect: 'ripple',
-            color: '#4e79a7',
-            ease: 'linear',
-          },
-        },
+  "chartType": "column",
+  "animation": {
+    "enable": true,
+    "params": {
+      "appear": {
+        "enable": true,
+        "effects": [
+          "growth"
+        ],
+        "duration": 800,
+        "ease": "cubicOut"
       },
+      "update": {
+        "enable": true,
+        "effects": [
+          "moveIn"
+        ],
+        "duration": 600,
+        "ease": "quadOut"
+      },
+      "loop": {
+        "enable": true,
+        "interval": 1200,
+        "loop": {
+          "enable": true,
+          "effects": [
+            "highLight"
+          ],
+          "duration": 1000
+        },
+        "atmosphere": {
+          "effect": "ripple",
+          "color": "#4e79a7",
+          "ease": "linear"
+        }
+      }
+    }
+  },
+  "dataset": [
+    {
+      "date": "2019",
+      "sales": 20
     },
-    dataset: [
-      {
-        date: '2019',
-        sales: 20,
-      },
-      {
-        date: '2020',
-        sales: 60,
-      },
-      {
-        date: '2021',
-        sales: 45,
-      },
-    ],
-    dimensions: [
-      {
-        id: 'date',
-        alias: 'Date',
-      },
-    ],
-    measures: [
-      {
-        id: 'sales',
-        alias: 'Sales',
-      },
-    ],
-  }
+    {
+      "date": "2020",
+      "sales": 60
+    },
+    {
+      "date": "2021",
+      "sales": 45
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "date",
+      "alias": "Date"
+    }
+  ],
+  "measures": [
+    {
+      "id": "sales",
+      "alias": "Sales"
+    }
+  ]
+}
 
   return <VSeedRender vseed={vseedConfig} />
 }
@@ -82,86 +88,86 @@ import { VSeedRender } from '@components'
 
 export default () => {
   const vseedConfig = {
-    chartType: 'area',
-    dataset: [
-      {
-        date: '2019',
-        region: 'East',
-        value: 10,
-      },
-      {
-        date: '2020',
-        region: 'East',
-        value: 20,
-      },
-      {
-        date: '2021',
-        region: 'East',
-        value: 14,
-      },
-      {
-        date: '2022',
-        region: 'East',
-        value: 30,
-      },
-      {
-        date: '2019',
-        region: 'West',
-        value: 5,
-      },
-      {
-        date: '2020',
-        region: 'West',
-        value: 10,
-      },
-      {
-        date: '2021',
-        region: 'West',
-        value: 8,
-      },
-      {
-        date: '2022',
-        region: 'West',
-        value: 17,
-      },
-    ],
-    dimensions: [
-      {
-        id: 'date',
-      },
-      {
-        id: 'region',
-        encoding: 'color',
-      },
-    ],
-    measures: [
-      {
-        id: 'value',
-      },
-    ],
-    pointStyle: {
-      pointVisible: false,
+  "chartType": "area",
+  "dataset": [
+    {
+      "date": "2019",
+      "region": "East",
+      "value": 10
     },
-    lineStyle: {
-      lineSmooth: true,
+    {
+      "date": "2020",
+      "region": "East",
+      "value": 20
     },
-    label: {
-      enable: false,
+    {
+      "date": "2021",
+      "region": "East",
+      "value": 14
     },
-    animation: {
-      enable: true,
-      params: {
-        appear: {
-          enable: false,
-        },
-        update: {
-          enable: true,
-          duration: 600,
-          ease: 'cubicInOut',
-        },
+    {
+      "date": "2022",
+      "region": "East",
+      "value": 30
+    },
+    {
+      "date": "2019",
+      "region": "West",
+      "value": 5
+    },
+    {
+      "date": "2020",
+      "region": "West",
+      "value": 10
+    },
+    {
+      "date": "2021",
+      "region": "West",
+      "value": 8
+    },
+    {
+      "date": "2022",
+      "region": "West",
+      "value": 17
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "date"
+    },
+    {
+      "id": "region",
+      "encoding": "color"
+    }
+  ],
+  "measures": [
+    {
+      "id": "value"
+    }
+  ],
+  "pointStyle": {
+    "pointVisible": false
+  },
+  "lineStyle": {
+    "lineSmooth": true
+  },
+  "label": {
+    "enable": false
+  },
+  "animation": {
+    "enable": true,
+    "params": {
+      "appear": {
+        "enable": false
       },
-    },
+      "update": {
+        "enable": true,
+        "duration": 600,
+        "ease": "cubicInOut"
+      }
+    }
   }
+}
 
   return <VSeedRender vseed={vseedConfig} />
 }
@@ -176,64 +182,117 @@ import { VSeedRender } from '@components'
 
 export default () => {
   const vseedConfig = {
-    chartType: 'line',
-    animation: {
-      enable: true,
-      params: {
-        appear: {
-          enable: true,
-          effects: ['load'],
-          duration: 1000,
-          ease: 'cubicOut',
-        },
-        update: {
-          enable: true,
-          effects: ['growth'],
-          duration: 500,
-        },
-        loop: {
-          enable: true,
-          interval: 1000,
-          loop: {
-            enable: true,
-            effects: ['growth'],
-            duration: 1000,
-          },
-          atmosphere: {
-            effect: 'breath',
-            color: '#f28e2b',
-            ease: 'quadInOut',
-          },
-        },
+  "chartType": "line",
+  "animation": {
+    "enable": true,
+    "params": {
+      "appear": {
+        "enable": true,
+        "effects": [
+          "load"
+        ],
+        "duration": 1000,
+        "ease": "cubicOut"
       },
+      "update": {
+        "enable": true,
+        "effects": [
+          "growth"
+        ],
+        "duration": 500
+      },
+      "loop": {
+        "enable": true,
+        "interval": 1000,
+        "loop": {
+          "enable": true,
+          "effects": [
+            "growth"
+          ],
+          "duration": 1000
+        },
+        "atmosphere": {
+          "effect": "breath",
+          "color": "#f28e2b",
+          "ease": "quadInOut"
+        }
+      }
+    }
+  },
+  "dataset": [
+    {
+      "date": "2019",
+      "profit": 10
     },
-    dataset: [
-      {
-        date: '2019',
-        profit: 10,
-      },
-      {
-        date: '2020',
-        profit: 35,
-      },
-      {
-        date: '2021',
-        profit: 28,
-      },
-    ],
-    dimensions: [
-      {
-        id: 'date',
-        alias: 'Date',
-      },
-    ],
-    measures: [
-      {
-        id: 'profit',
-        alias: 'Profit',
-      },
-    ],
+    {
+      "date": "2020",
+      "profit": 35
+    },
+    {
+      "date": "2021",
+      "profit": 28
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "date",
+      "alias": "Date"
+    }
+  ],
+  "measures": [
+    {
+      "id": "profit",
+      "alias": "Profit"
+    }
+  ]
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
+## 图型切换 Morph
+
+深浅色主题默认开启 morph；自定义主题可通过 config.column.animation.morph 设置默认值，图表的 animation.morph 显式配置优先。关闭形变仍保留普通动画。宿主复用图表实例并调用 updateSpec。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "column",
+  "dataset": [
+    {
+      "category": "A",
+      "value": 10
+    },
+    {
+      "category": "B",
+      "value": 20
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "category"
+    }
+  ],
+  "measures": [
+    {
+      "id": "value"
+    }
+  ],
+  "animation": {
+    "enable": true,
+    "params": {
+      "update": {
+        "enable": true,
+        "duration": 650,
+        "ease": "cubicInOut"
+      }
+    },
+    "morph": true
   }
+}
 
   return <VSeedRender vseed={vseedConfig} />
 }
@@ -248,62 +307,68 @@ import { VSeedRender } from '@components'
 
 export default () => {
   const vseedConfig = {
-    chartType: 'pie',
-    animation: {
-      enable: true,
-      params: {
-        appear: {
-          enable: true,
-          effects: ['radial'],
-          duration: 800,
-        },
-        update: {
-          enable: true,
-          effects: ['radial'],
-          duration: 600,
-        },
-        loop: {
-          enable: true,
-          interval: 1500,
-          loop: {
-            enable: true,
-            effects: ['enlarge'],
-            duration: 1000,
-          },
-          atmosphere: {
-            color: '#59a14f',
-            ease: 'linear',
-          },
-        },
+  "chartType": "pie",
+  "animation": {
+    "enable": true,
+    "params": {
+      "appear": {
+        "enable": true,
+        "effects": [
+          "radial"
+        ],
+        "duration": 800
       },
+      "update": {
+        "enable": true,
+        "effects": [
+          "radial"
+        ],
+        "duration": 600
+      },
+      "loop": {
+        "enable": true,
+        "interval": 1500,
+        "loop": {
+          "enable": true,
+          "effects": [
+            "enlarge"
+          ],
+          "duration": 1000
+        },
+        "atmosphere": {
+          "color": "#59a14f",
+          "ease": "linear"
+        }
+      }
+    }
+  },
+  "dataset": [
+    {
+      "type": "A",
+      "value": 30
     },
-    dataset: [
-      {
-        type: 'A',
-        value: 30,
-      },
-      {
-        type: 'B',
-        value: 45,
-      },
-      {
-        type: 'C',
-        value: 25,
-      },
-    ],
-    dimensions: [
-      {
-        id: 'type',
-        alias: 'Type',
-      },
-    ],
-    measures: [
-      {
-        id: 'value',
-        alias: 'Value',
-      },
-    ],
-  }
+    {
+      "type": "B",
+      "value": 45
+    },
+    {
+      "type": "C",
+      "value": 25
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "type",
+      "alias": "Type"
+    }
+  ],
+  "measures": [
+    {
+      "id": "value",
+      "alias": "Value"
+    }
+  ]
+}
 
   return <VSeedRender vseed={vseedConfig} />
 }
@@ -318,40 +383,44 @@ import { VSeedRender } from '@components'
 
 export default () => {
   const vseedConfig = {
-    chartType: 'radar',
-    animation: {
-      enable: true,
-      params: {
-        appear: {
-          enable: true,
-          effects: ['scale'],
-          duration: 800,
-        },
-        update: {
-          enable: true,
-          effects: ['growth'],
-          duration: 600,
-        },
-        loop: {
-          enable: true,
-          interval: 1000,
-          atmosphere: {
-            effect: 'reveal',
-            color: '#e15759',
-            ease: 'quadInOut',
-          },
-        },
+  "chartType": "radar",
+  "animation": {
+    "enable": true,
+    "params": {
+      "appear": {
+        "enable": true,
+        "effects": [
+          "scale"
+        ],
+        "duration": 800
       },
-    },
-    dataset: [
-      {
-        quality: 82,
-        speed: 76,
-        stability: 91,
-        cost: 64,
+      "update": {
+        "enable": true,
+        "effects": [
+          "growth"
+        ],
+        "duration": 600
       },
-    ],
-  }
+      "loop": {
+        "enable": true,
+        "interval": 1000,
+        "atmosphere": {
+          "effect": "reveal",
+          "color": "#e15759",
+          "ease": "quadInOut"
+        }
+      }
+    }
+  },
+  "dataset": [
+    {
+      "quality": 82,
+      "speed": 76,
+      "stability": 91,
+      "cost": 64
+    }
+  ]
+}
 
   return <VSeedRender vseed={vseedConfig} />
 }
@@ -366,76 +435,83 @@ import { VSeedRender } from '@components'
 
 export default () => {
   const vseedConfig = {
-    chartType: 'scatter',
-    animation: {
-      enable: true,
-      params: {
-        appear: {
-          enable: true,
-          effects: ['scale'],
-          duration: 800,
-        },
-        update: {
-          enable: true,
-          effects: ['growth'],
-          duration: 500,
-        },
-        loop: {
-          enable: true,
-          interval: 1000,
-          loop: {
-            enable: true,
-            effects: ['growth'],
-            duration: 1000,
-          },
-          atmosphere: {
-            effect: 'ripple',
-            color: '#76b7b2',
-            ease: 'linear',
-          },
-        },
+  "chartType": "scatter",
+  "animation": {
+    "enable": true,
+    "params": {
+      "appear": {
+        "enable": true,
+        "effects": [
+          "scale"
+        ],
+        "duration": 800
       },
+      "update": {
+        "enable": true,
+        "effects": [
+          "growth"
+        ],
+        "duration": 500
+      },
+      "loop": {
+        "enable": true,
+        "interval": 1000,
+        "loop": {
+          "enable": true,
+          "effects": [
+            "growth"
+          ],
+          "duration": 1000
+        },
+        "atmosphere": {
+          "effect": "ripple",
+          "color": "#76b7b2",
+          "ease": "linear"
+        }
+      }
+    }
+  },
+  "dataset": [
+    {
+      "date": "2019",
+      "sales": 20,
+      "profit": 10
     },
-    dataset: [
-      {
-        date: '2019',
-        sales: 20,
-        profit: 10,
-      },
-      {
-        date: '2020',
-        sales: 60,
-        profit: 35,
-      },
-      {
-        date: '2021',
-        sales: 80,
-        profit: 28,
-      },
-    ],
-    dimensions: [
-      {
-        id: 'date',
-        alias: 'Date',
-      },
-    ],
-    measures: [
-      {
-        id: 'sales',
-        alias: 'Sales',
-        encoding: 'xAxis',
-      },
-      {
-        id: 'profit',
-        alias: 'Profit',
-        encoding: 'yAxis',
-      },
-    ],
-    label: {
-      enable: false,
+    {
+      "date": "2020",
+      "sales": 60,
+      "profit": 35
     },
+    {
+      "date": "2021",
+      "sales": 80,
+      "profit": 28
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "date",
+      "alias": "Date"
+    }
+  ],
+  "measures": [
+    {
+      "id": "sales",
+      "alias": "Sales",
+      "encoding": "xAxis"
+    },
+    {
+      "id": "profit",
+      "alias": "Profit",
+      "encoding": "yAxis"
+    }
+  ],
+  "label": {
+    "enable": false
   }
+}
 
   return <VSeedRender vseed={vseedConfig} />
 }
 ```
+

@@ -1,3 +1,4 @@
+import { zAnimation } from './animation'
 import { z } from 'zod'
 import { zXBandAxis, zYLinearAxis } from './axes'
 import { zCornerRadius } from './cornerRadius'
@@ -15,6 +16,7 @@ import type { ChartType } from '../chartType'
 import type { FoldInfo } from '../datasetReshapeInfo/datasetReshapeInfo'
 
 export const zDualAxisConfig = z.object({
+  animation: zAnimation.nullish(),
   backgroundColor: zBackgroundColor.nullish(),
   label: zLabel.nullish(),
   color: zColor.nullish(),

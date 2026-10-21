@@ -9,6 +9,7 @@ export const ChartPanel = () => {
   const vseed = useVBIStore((state) => state.vseed)
   const configuredVSeed = useConfiguredVSeed(vseed)
   const loading = useVBIStore((state) => state.loading)
+  const error = useVBIStore((state) => state.error)
   const builder = useVBIStore((state) => state.builder)
   const isEmptyDsl = builder.isEmpty()
   const { token } = theme.useToken()
@@ -32,7 +33,11 @@ export const ChartPanel = () => {
         },
       }}
     >
-      {isEmptyDsl ? (
+      {error ? (
+        <Typography.Text role='alert' type='danger'>
+          {error}
+        </Typography.Text>
+      ) : isEmptyDsl ? (
         <Flex
           vertical
           align='center'

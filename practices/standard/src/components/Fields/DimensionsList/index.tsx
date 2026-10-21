@@ -55,7 +55,7 @@ const DimensionFieldItem = ({
       }}
       onMouseEnter={(event) => {
         event.currentTarget.style.backgroundColor = token.colorPrimaryBg
-        event.currentTarget.style.color = token.colorPrimary
+        event.currentTarget.style.color = token.colorPrimaryText
       }}
       onMouseLeave={(event) => {
         event.currentTarget.style.backgroundColor = 'transparent'
@@ -70,9 +70,9 @@ const DimensionFieldItem = ({
         }}
       >
         {fieldType === 'date' ? (
-          <CalendarOutlined style={{ color: token.colorPrimary, fontSize: 12 }} />
+          <CalendarOutlined style={{ color: token.colorPrimaryText, fontSize: 12 }} />
         ) : (
-          <FontSizeOutlined style={{ color: token.colorPrimary, fontSize: 12 }} />
+          <FontSizeOutlined style={{ color: token.colorPrimaryText, fontSize: 12 }} />
         )}
       </span>
       <span

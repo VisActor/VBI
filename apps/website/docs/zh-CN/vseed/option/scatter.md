@@ -1876,6 +1876,15 @@ brush的类型
 
 :::
 
+### morph
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用图表切换形变动画，默认开启；关闭后保留普通入场和数据更新动画
+
+:::
+
 
 ## xAxis
 

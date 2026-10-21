@@ -26,23 +26,33 @@ export function inferSchema(headers: string[], rows: string[][]): DatasetColumn[
 }
 
 export function rowsToDataset(headers: string[], rows: string[][], schema: DatasetColumn[]): LocalRow[] {
-  const schemaByName = new Map(schema.map((field) => [field.name, field.type]))
-
   return rows
     .map((values) => {
       const row: LocalRow = {}
 
       headers.forEach((header, index) => {
         const rawValue = values[index]?.trim() ?? ''
-        const fieldType = schemaByName.get(header)
+        // The schema editor preserves column order while allowing names and types to change.
+        const field = schema[index]
+        const name = field?.name ?? header
+        const fieldType = field?.type
+
+        if (fieldType === 'date') {
+          // CSV calendar dates need a comparable representation for date ranges.
+          const parts = /^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/.exec(rawValue)
+          if (parts) {
+            row[name] = `${parts[1]}-${parts[2].padStart(2, '0')}-${parts[3].padStart(2, '0')}`
+            return
+          }
+        }
 
         if (fieldType === 'number') {
           const numValue = Number(rawValue)
-          row[header] = rawValue === '' || Number.isNaN(numValue) ? null : numValue
+          row[name] = rawValue === '' || !Number.isFinite(numValue) ? null : numValue
           return
         }
 
-        row[header] = rawValue
+        row[name] = rawValue
       })
 
       return row

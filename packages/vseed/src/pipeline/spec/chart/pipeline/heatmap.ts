@@ -1,5 +1,6 @@
 import type { PivotChartSpecPipeline, VChartSpecPipeline } from 'src/types'
 import {
+  animationMorph,
   datasetXY,
   backgroundColor,
   label,
@@ -38,6 +39,7 @@ const heatmap: VChartSpecPipeline = [
   initHeatmap,
   backgroundColor,
   datasetXY,
+  animationMorph,
   colorAdapter(color, linearColor),
   label,
   heatmapBandAxis,
@@ -61,6 +63,7 @@ const pivotHeatmap: PivotChartSpecPipeline = [
     initHeatmap,
     backgroundColor,
     datasetXY,
+    animationMorph,
     colorAdapter(color, linearColor),
     label,
     pivotAxisStyle(heatmapBandAxis),

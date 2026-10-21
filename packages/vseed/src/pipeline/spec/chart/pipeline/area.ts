@@ -1,5 +1,6 @@
 import { type PivotChartSpecPipeline, type VChartSpecPipeline } from 'src/types'
 import {
+  animationMorph,
   xBand,
   yLinear,
   initArea,
@@ -56,6 +57,7 @@ const area: VChartSpecPipeline = [
   colorAdapter(color, linearColor),
   backgroundColor,
   datasetXY,
+  animationMorph,
   progressive,
   xBand,
   yLinear,
@@ -90,6 +92,7 @@ const pivotArea: PivotChartSpecPipeline = [
     backgroundColor,
     stackInverse,
     datasetXY,
+    animationMorph,
     progressive,
     xBand,
     pivotAxisStyle(yLinear),

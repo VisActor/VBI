@@ -8,8 +8,8 @@ import {
   sortLegend,
   radarConfig,
   encodingForRadar,
-  reshapeWithEncoding,
-  pivotReshapeWithEncoding,
+  createReshapeWithEncoding,
+  createPivotReshapeWithEncoding,
   buildMeasures,
   defaultMeasures,
   defaultDimensions,
@@ -31,7 +31,8 @@ export const radarAdvancedPipeline: AdvancedPipeline = [
     [buildMeasures(['radius', 'detail']), defaultEncodingForRadar],
     [buildMeasures(['radius', 'detail']), encodingForRadar, pickDimensionsForReshape],
   ),
-  pivotAdapter([reshapeWithEncoding], [pivotReshapeWithEncoding]),
+  // Isolate radar point identities: its line/area cannot follow cross-family paths.
+  pivotAdapter([createReshapeWithEncoding('radar')], [createPivotReshapeWithEncoding('radar')]),
 
   // sortXBandAxis,
   sortLegend,

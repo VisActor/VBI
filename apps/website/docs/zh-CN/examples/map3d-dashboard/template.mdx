@@ -1,0 +1,21 @@
+---
+title: 全球空气质量
+pageType: doc-wide
+footer: false
+outline: false
+---
+
+import { withBase } from '@rspress/core/runtime'
+
+# 全球空气质量
+
+<div className="dashboard-examples">
+  <div className="dashboard-examples__toolbar">
+    <a href={withBase('/examples/map3d-dashboard/zh-CN/template.html')} target="_blank" rel="noreferrer">在新窗口打开 <span aria-hidden="true">↗</span></a>
+  </div>
+  <iframe
+    className="dashboard-examples__frame dashboard-examples__frame--map"
+    title="全球空气质量"
+    src={withBase('/examples/map3d-dashboard/zh-CN/template.html')}
+  />
+</div>

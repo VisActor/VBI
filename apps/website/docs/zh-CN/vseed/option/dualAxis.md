@@ -59,6 +59,35 @@
 :::
 
 
+## animation
+
+**Type:** `Animation | undefined`
+
+:::note{title=描述}
+动画开关与图表切换形变配置
+
+:::
+
+
+### enable
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用动画，默认开启
+
+:::
+
+### morph
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用图表切换形变动画，默认开启；关闭后保留普通入场和数据更新动画
+
+:::
+
+
 ## chartType
 
 **Type:** `"dualAxis"`

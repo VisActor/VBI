@@ -39,6 +39,7 @@
 类型引用沿用源码模块名，包的公开导出以索引为准：
 
 ```typescript
+import type { Animation } from '../../properties/config/animation'
 import type {
   AnnotationArea,
   AnnotationDifferenceLine,
@@ -2716,7 +2717,7 @@ export interface Donut {
 
 ## DualAxis
 
-源码：[packages/vseed/src/types/chartType/dualAxis/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/dualAxis/dualAxis.ts#L62)
+源码：[packages/vseed/src/types/chartType/dualAxis/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/dualAxis/dualAxis.ts#L63)
 
 包导出：`DualAxis`
 
@@ -2750,6 +2751,8 @@ export interface Donut {
  * - 支持数据重塑: 至少`1`个指标, `0`个维度
  */
 export interface DualAxis {
+  /** @description 动画开关与图表切换形变配置 */
+  animation?: Animation
   /**
    * @description 双轴图，展示两个不同量级指标对比关系的复合图表
    * @example 'dualAxis'
@@ -3051,7 +3054,7 @@ export interface Funnel {
 
 ## Heatmap
 
-源码：[packages/vseed/src/types/chartType/heatmap/heatmap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/heatmap/heatmap.ts#L41)
+源码：[packages/vseed/src/types/chartType/heatmap/heatmap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/chartType/heatmap/heatmap.ts#L42)
 
 包导出：`Heatmap`
 
@@ -3082,6 +3085,8 @@ export interface Funnel {
  * - 支持数据重塑: 至少`1`个指标, `0`个维度
  */
 export interface Heatmap {
+  /** @description 动画开关与图表切换形变配置 */
+  animation?: Animation
   /**
    * 热力图
    * @description 热力图，通过二维矩阵的颜色深浅展示数据的分布和强弱关系

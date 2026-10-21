@@ -1,27 +1,21 @@
 # 表格主题与完整结果
 
-轻量模板和地图模板共用语义 token 契约，保留各自的强调色与玻璃层次。色板在 CSS 中定义，Canvas 适配器负责把 CSS 颜色解析为 RGBA，VTable 配置不再维护第二套颜色。纯文本、数字和日期的格式仍由业务配置决定。
+宿主页面通过语义 token 契约接入表格，保留自身的强调色与表面层次。色板在 CSS 中定义，Canvas 适配器负责把 CSS 颜色解析为 RGBA，VTable 配置不再维护第二套颜色。纯文本、数字和日期的格式仍由业务配置决定。
 
 ## 维护入口
 
 - [dashboard-table.css](../assets/dashboard-table.css)：公共语义 token、深色覆盖、表格容器与键盘焦点。
 - [dashboard-table.js](../assets/dashboard-table.js)：CSS → Canvas 颜色解析、统一 VTable 主题、模块加载及完整记录更新。
-- [sync-template-tables.mjs](../scripts/sync-template-tables.mjs)：仓库维护时将公共资源内联到 24 份轻量模板与地图模板，保留单文件复制能力。修改公共资源后运行此脚本；`--check` 检查内联内容是否一致。业务数据和列配置留在各模板。
 
-模板中的 `style#dashboard-table-tokens` 与 `script#dashboard-table-runtime` 是同步副本；公共修改应先改上述资源，再同步，不能逐页修补。同步脚本只用于源码仓库维护，需仓库的格式化工具；独立交付 HTML 不依赖脚本。新增或移除模板时同步调整脚本覆盖范围与模板文档。
+将上述资源作为样式和脚本接入宿主；交付单文件 HTML 时，把内容分别内联到 `style#dashboard-table-tokens` 与 `script#dashboard-table-runtime`。业务数据、列配置和查询由调用方提供，不需要具体场景模板或其他 package 的源码。维护内联副本时先修改公共资源，再由调用方同步并验证副本一致性。
 
-仓库根目录执行：
-
-```sh
-node skills/visactor-dashboard/references/visual-query/scripts/sync-template-tables.mjs
-node skills/visactor-dashboard/references/visual-query/scripts/sync-template-tables.mjs --check
-```
+适配器只处理平面 `ListTable` 的表现；`PivotTable` / `PivotChart` 保留 VSeed 输出的布局与交互，按对应表类型另行接入。
 
 ## Token 契约
 
 | 用途           | Token                                                                                                                                           |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| 宿主输入       | `--ink`、`--muted`、`--accent`、可选 `--dashboard-font-family`；地图还提供 `--strong` 和 `data-mode`                                            |
+| 宿主输入       | `--ink`、`--muted`、`--accent`、可选 `--dashboard-font-family`；可选 `--strong` 和 `data-mode`                                                  |
 | 通用排印与焦点 | `--font-ui`、`--text-primary`、`--text-strong`、`--text-secondary`、`--text-faint`、`--focus-ring`                                              |
 | 默认阅读面     | `--table-canvas`、`--table-body`、`--table-stripe`、`--table-header`                                                                            |
 | 文本与分隔     | `--table-text`、`--table-header-text`、`--table-divider`、`--table-frame`                                                                       |
@@ -32,7 +26,7 @@ node skills/visactor-dashboard/references/visual-query/scripts/sync-template-tab
 
 默认仅保留弱行分隔，不给每个单元格叠加竖线。表头略高于正文对比，斑马纹仅辅助跟行。悬停跟随整行，选中单元格以主题色浅填充及 1px 细框定位；表头使用 `headerSelectMode: 'cell'`，避免一次点击染满整列。键盘焦点与数据选中分别呈现，减少动态效果时关闭数据过渡。
 
-当前适配器服务模板中的平面 `ListTable`。`DashboardTable.load()` 按需加载固定版本 VTable；`DashboardTable.options(base, host)` 负责表现适配，保留 Builder 输出的列、字段格式与数据。`DashboardTable.overview(Builder, columns, rows, host)` 将主页已格式化的汇总行映射为表格，不执行业务聚合；透视表按其表头与聚合结构另做接入，不直接假定此适配器覆盖所有表类型。
+当前适配器服务平面 `ListTable`。`DashboardTable.load()` 按需加载固定版本 VTable；`DashboardTable.options(base, host)` 负责表现适配，保留 Builder 输出的列、字段格式与数据。`DashboardTable.overview(Builder, columns, rows, host)` 将主页已格式化的汇总行映射为表格，不执行业务聚合；透视表按其表头与聚合结构另做接入，不直接假定此适配器覆盖所有表类型。
 
 通过 `DashboardTable.setRecords(table, records)` 原位替换完整结果并清除过期的单元格选择；主题切换重新解析宿主 token，使用 `updateTheme()`，不为换色重建表格。主页概览与分析明细各自管理实例、ResizeObserver 和释放，不能将 VTable 混入只负责 VChart 的实例集合。
 

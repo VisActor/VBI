@@ -53,7 +53,7 @@ const MeasureFieldItem = ({
       }}
       onMouseEnter={(event) => {
         event.currentTarget.style.backgroundColor = token.colorSuccessBg
-        event.currentTarget.style.color = token.colorSuccess
+        event.currentTarget.style.color = token.colorSuccessText
       }}
       onMouseLeave={(event) => {
         event.currentTarget.style.backgroundColor = 'transparent'
@@ -67,7 +67,7 @@ const MeasureFieldItem = ({
           alignItems: 'center',
         }}
       >
-        <NumberOutlined style={{ color: token.colorSuccess, fontSize: 12 }} />
+        <NumberOutlined style={{ color: token.colorSuccessText, fontSize: 12 }} />
       </span>
       <span
         style={{

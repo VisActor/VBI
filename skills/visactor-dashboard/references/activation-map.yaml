@@ -47,8 +47,18 @@ dashboards:
       when:
         - 地图、地理分布、位置关系或地域下钻
         - 修改已有地图看板
+    - id: visactor-chart-editor
+      path: references/visactor-chart-editor/SKILL.md
+      when:
+        - 可视化搭建、字段配置、聚合筛选与图表实时预览
+        - 参考 practices/standard 创建独立 HTML 图表编辑器
+    - id: visactor-map3d-dashboard
+      path: references/visactor-map3d-dashboard/SKILL.md
+      when:
+        - 用户明确要求 Three.js 三维地图、地球或空间态势
+        - 修改已有三维地图看板
 selection:
-  - 用户明确指定类型时按其要求选择；需要地图时使用 visactor-map2d-dashboard，其余看板使用 visactor-light-dashboard
+  - 用户明确指定类型时按其要求选择；编辑图表使用 visactor-chart-editor，明确三维地图使用 visactor-map3d-dashboard，普通地图使用 visactor-map2d-dashboard，其余看板使用 visactor-light-dashboard
   - 修改已有页面时优先复用已有内容
   - 按职责选择能力子技能；跨层任务只补读涉及的能力与 API
   - 单图、指标卡和普通分析页面读取 visual-query，布局与视觉沿用宿主要求

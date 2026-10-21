@@ -6,6 +6,7 @@
 - [AdvancedPipeline](types.md#advancedpipeline)
 - [AdvancedPipelineContext](types.md#advancedpipelinecontext)
 - [AdvancedVSeed](types.md#advancedvseed)
+- [Animation](types.md#animation)
 - [AnimationEffectConfig](types.md#animationeffectconfig)
 - [Annotation](types.md#annotation)
 - [AnnotationArea](types.md#annotationarea)
@@ -461,6 +462,21 @@ export type AdvancedVSeed = {
   locale: z.infer<typeof zLocale>
   regressionLine: z.infer<typeof zRegressionLine>
   totals?: PivotTableTotals
+}
+```
+
+## Animation
+
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts#L62)
+
+包导出：`Animation`
+
+```typescript
+export interface Animation {
+  /** @description 是否启用动画，默认开启 */
+  enable?: boolean
+  /** @description 是否启用图表切换形变动画，默认开启；关闭后保留普通入场和数据更新动画 */
+  morph?: boolean
 }
 ```
 
@@ -1568,12 +1584,12 @@ export type BarGapInGroup = z.infer<typeof zBarGapInGroup>
 
 ## BarLikeAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts#L62)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts#L69)
 
 包导出：`BarLikeAnimation`
 
 ```typescript
-export interface BarLikeAnimation {
+export interface BarLikeAnimation extends Animation {
   /** @description 是否启用条形/柱形图动画 */
   enable?: boolean
   /** @description 条形/柱形图动画参数 */
@@ -3081,7 +3097,7 @@ export type DonutMeasure = PieMeasure
 
 ## DualAxisConfig
 
-源码：[packages/vseed/src/types/properties/config/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/dualAxis.ts#L38)
+源码：[packages/vseed/src/types/properties/config/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/dualAxis.ts#L40)
 
 包导出：`DualAxisConfig`
 
@@ -3132,7 +3148,7 @@ export type DualAxisMeasure = BaseMeasure & {
 
 ## DualAxisOptions
 
-源码：[packages/vseed/src/types/properties/config/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/dualAxis.ts#L40)
+源码：[packages/vseed/src/types/properties/config/dualAxis.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/dualAxis.ts#L42)
 
 包导出：`DualAxisOptions`
 
@@ -3481,7 +3497,7 @@ export interface FunnelTransformConfig {
 
 ## HeatmapConfig
 
-源码：[packages/vseed/src/types/properties/config/heatmap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/heatmap.ts#L29)
+源码：[packages/vseed/src/types/properties/config/heatmap.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/heatmap.ts#L31)
 
 包导出：`HeatmapConfig`
 
@@ -3912,12 +3928,12 @@ type Light = 'light' & {
 
 ## LineAreaAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts#L68)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts#L75)
 
 包导出：`LineAreaAnimation`
 
 ```typescript
-export interface LineAreaAnimation {
+export interface LineAreaAnimation extends Animation {
   /** @description 是否启用折线/面积图动画 */
   enable?: boolean
   /** @description 折线/面积图动画参数 */
@@ -4905,12 +4921,12 @@ export type PieLabel = Label & {
 
 ## PieLikeAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts#L80)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts#L87)
 
 包导出：`PieLikeAnimation`
 
 ```typescript
-export interface PieLikeAnimation {
+export interface PieLikeAnimation extends Animation {
   /** @description 是否启用饼图/环图/玫瑰图动画 */
   enable?: boolean
   /** @description 饼图/环图/玫瑰图动画参数 */
@@ -5611,12 +5627,12 @@ export type RaceScatterDimension = BaseDimension & {
 
 ## RadarAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts#L86)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts#L93)
 
 包导出：`RadarAnimation`
 
 ```typescript
-export interface RadarAnimation {
+export interface RadarAnimation extends Animation {
   /** @description 是否启用雷达图动画 */
   enable?: boolean
   /** @description 雷达图动画参数 */
@@ -5933,12 +5949,12 @@ export type SankeyMeasure = BaseMeasure & {
 
 ## ScatterAnimation
 
-源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts#L74)
+源码：[packages/vseed/src/types/properties/config/animation/animation.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/animation/animation.ts#L81)
 
 包导出：`ScatterAnimation`
 
 ```typescript
-export interface ScatterAnimation {
+export interface ScatterAnimation extends Animation {
   /** @description 是否启用散点图动画 */
   enable?: boolean
   /** @description 散点图动画参数 */

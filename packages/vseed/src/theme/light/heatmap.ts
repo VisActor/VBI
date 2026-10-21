@@ -14,6 +14,7 @@ export const getHeatmapTheme = () => {
   const bandAxis = getLightBandAxis()
 
   const baseConfig = {
+    animation: { morph: true },
     backgroundColor: 'transparent',
     color: getLightColor(),
     label: getLightLabel(),

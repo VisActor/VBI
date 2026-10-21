@@ -118,6 +118,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   const operator = Form.useWatch('operator', form)
   const selectedFieldFromForm = Form.useWatch('field', form)
   const isSingleItemEdit = itemEdit && filters.length === 1
+  const editingItem = isSingleItemEdit ? filters[0] : undefined
   const fixedEditingField = isSingleItemEdit ? fixedField || filters[0]?.field : undefined
   const selectedField = selectedFieldFromForm ?? fixedEditingField
 
@@ -149,11 +150,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
   // itemEdit 模式下，每次打开都从当前 builder 值回填表单
   useEffect(() => {
-    if (!isSingleItemEdit || !open) {
+    if (!editingItem || !open) {
       return
     }
 
-    const item = filters[0]
+    const item = editingItem
     if (normalizeWhereOperator(item.operator) === 'date') {
       setDatePredicate(item.value as VBIWhereDatePredicate)
       form.setFieldsValue({ field: item.field })
@@ -165,7 +166,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         value: getWhereFilterFormValue(item.operator, item.value),
       })
     }
-  }, [isSingleItemEdit, open, filters, form])
+  }, [editingItem, open, form])
 
   // Update operator when role changes (skip in date mode)
   useEffect(() => {

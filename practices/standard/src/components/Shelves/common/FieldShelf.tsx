@@ -15,8 +15,6 @@ import {
 import { ShelfTrack, type ShelfTone } from './ShelfTrack'
 import './FieldShelf.css'
 
-const REMOVE_ICON_DEFAULT_COLOR = '#8c8c8c'
-const REMOVE_ICON_HOVER_COLOR = '#ff4d4f'
 const SHELF_ITEM_SPACING = 6
 
 export const SHELF_MENU_ITEM_STYLE: React.CSSProperties = {
@@ -270,13 +268,13 @@ const FieldShelfTag = <TItem extends FieldShelfItem>(props: {
             style={{
               fontSize: 8,
               cursor: 'pointer',
-              color: REMOVE_ICON_DEFAULT_COLOR,
+              color: token.colorTextTertiary,
             }}
             onMouseEnter={(event: MouseEvent<HTMLElement>) => {
-              event.currentTarget.style.color = REMOVE_ICON_HOVER_COLOR
+              event.currentTarget.style.color = token.colorError
             }}
             onMouseLeave={(event: MouseEvent<HTMLElement>) => {
-              event.currentTarget.style.color = REMOVE_ICON_DEFAULT_COLOR
+              event.currentTarget.style.color = token.colorTextTertiary
             }}
           />
         </span>

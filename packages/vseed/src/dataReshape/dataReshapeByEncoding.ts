@@ -1,4 +1,14 @@
-import type { Dataset, Dimension, Encoding, FoldInfo, Measure, Measures, UnfoldInfo, Locale } from 'src/types'
+import type {
+  ChartType,
+  Dataset,
+  Dimension,
+  Encoding,
+  FoldInfo,
+  Measure,
+  Measures,
+  UnfoldInfo,
+  Locale,
+} from 'src/types'
 import { foldMeasures } from './foldMeasures'
 import { FoldMeasureId, FoldMeasureName, FoldMeasureValue, Separator } from './constant'
 import { unfoldDimensions } from './unfoldDimensions'
@@ -10,6 +20,7 @@ export const dataReshapeByEncoding = (
   measures: Measure[],
   encoding: Encoding,
   options?: {
+    chartType?: ChartType
     foldMeasureId?: string
     foldMeasureName?: string
     foldMeasureValue?: string
@@ -24,6 +35,7 @@ export const dataReshapeByEncoding = (
   unfoldInfo: UnfoldInfo
 } => {
   const {
+    chartType,
     foldMeasureId = FoldMeasureId,
     foldMeasureName = FoldMeasureName,
     foldMeasureValue = FoldMeasureValue,
@@ -44,6 +56,7 @@ export const dataReshapeByEncoding = (
 
   // 展开指定的维度为指标
   const { dataset: finalDataset, unfoldInfo } = unfoldDimensions(foldedDataset, dimensions, encoding, {
+    chartType,
     foldMeasureId,
     separator: Separator,
     colorItemAsId,

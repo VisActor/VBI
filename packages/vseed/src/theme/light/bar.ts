@@ -26,6 +26,7 @@ export const getBarTheme = () => {
   const crosshairRect = getLightCrosshairRect()
 
   const baseConfig = {
+    animation: { morph: true },
     backgroundColor: 'transparent',
     color: getLightColor(),
     label: getLightLabel(),

@@ -1,0 +1,38 @@
+{
+  "name": "图型切换 Morph",
+  "description": "深浅色主题默认开启 morph；自定义主题可通过 config.column.animation.morph 设置默认值，图表的 animation.morph 显式配置优先。关闭形变仍保留普通动画。宿主复用图表实例并调用 updateSpec。",
+  "vseed": {
+    "chartType": "column",
+    "dataset": [
+      {
+        "category": "A",
+        "value": 10
+      },
+      {
+        "category": "B",
+        "value": 20
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "category"
+      }
+    ],
+    "measures": [
+      {
+        "id": "value"
+      }
+    ],
+    "animation": {
+      "enable": true,
+      "params": {
+        "update": {
+          "enable": true,
+          "duration": 650,
+          "ease": "cubicInOut"
+        }
+      },
+      "morph": true
+    }
+  }
+}

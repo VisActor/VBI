@@ -5,6 +5,7 @@ import { getDefaultPieGeometry, getDefaultDonutGeometry, getDefaultPieStyle, get
 
 export const getPieTheme = () => {
   const baseConfig = {
+    animation: { morph: true },
     backgroundColor: 'transparent',
     color: getDarkColor(),
     label: getDarkLabel(),

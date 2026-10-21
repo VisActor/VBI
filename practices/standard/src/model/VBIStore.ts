@@ -9,6 +9,7 @@ type DestroyCallback = () => void
 
 export interface VBIStoreState {
   loading: boolean
+  error: string | null
   vseed: VSeed | null
   builder: VBIChartBuilder
   initialized: boolean
@@ -99,6 +100,7 @@ export const createVBIStore = (builder?: VBIChartBuilder): VBIStoreApi => {
 
   return createStore<VBIStoreState>((set, get) => ({
     loading: false,
+    error: null,
     vseed: null,
     initialized: false,
     builder: initialBuilder,
@@ -129,6 +131,7 @@ export const createVBIStore = (builder?: VBIChartBuilder): VBIStoreApi => {
         builder,
         dsl: builder.dsl.toJSON() as VBIChartDSL,
         loading: false,
+        error: null,
         vseed: null,
         initialized: true,
       })
@@ -152,17 +155,17 @@ export const createVBIStore = (builder?: VBIChartBuilder): VBIStoreApi => {
         const { dsl, snapshot } = getDslState(builder)
         if (builder.isEmpty()) {
           vseedCache.set(builder, { dslSnapshot: snapshot, vseed: null })
-          set({ dsl, loading: false, vseed: null })
+          set({ dsl, loading: false, error: null, vseed: null })
           return
         }
 
         const cached = vseedCache.get(builder)
         if (cached?.dslSnapshot === snapshot && !cached.pending) {
-          set({ dsl, loading: false, vseed: cached.vseed })
+          set({ dsl, loading: false, error: null, vseed: cached.vseed })
           return
         }
 
-        set({ dsl, loading: true })
+        set({ dsl, loading: true, error: null })
 
         try {
           const newVSeed = await loadVSeed(builder, snapshot)
@@ -174,9 +177,11 @@ export const createVBIStore = (builder?: VBIChartBuilder): VBIStoreApi => {
 
           set({ dsl: currentState.dsl, vseed: newVSeed })
         } catch (error) {
-          console.error('VSeed Build Error:', error)
+          if (get().builder === builder && getDslState(builder).snapshot === snapshot) {
+            set({ vseed: null, error: error instanceof Error ? error.message : String(error) })
+          }
         } finally {
-          if (get().builder === builder) {
+          if (get().builder === builder && getDslState(builder).snapshot === snapshot) {
             set({ loading: false })
           }
         }

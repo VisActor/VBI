@@ -1,5 +1,6 @@
 import type { PivotChartSpecPipeline, VChartSpecPipeline } from 'src/types'
 import {
+  animationMorph,
   xBand,
   backgroundColor,
   discreteLegend,
@@ -63,6 +64,7 @@ const dualAxis: VChartSpecPipeline = [
     [initDualAxis, dualChartType, datasetDualAxis, labelDualAxis, tooltipOfDualAxisSeries],
 
     [
+      animationMorph,
       progressive,
 
       barMaxWidth,
@@ -106,6 +108,7 @@ const pivotDualAxis: PivotChartSpecPipeline = [
       [initDualAxis, dualChartType, datasetDualAxis, labelDualAxis, tooltipOfDualAxisSeries],
 
       [
+        animationMorph,
         progressive,
 
         barMaxWidth,

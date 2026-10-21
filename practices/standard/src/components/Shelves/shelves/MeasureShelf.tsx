@@ -2,7 +2,7 @@ import { theme } from 'antd'
 import type { MenuProps } from 'antd'
 import { message } from 'antd'
 import { useMemo } from 'react'
-import { useVBIBuilder, useVBIMeasures, useVBISchemaFields } from '../../../hooks'
+import { useVBIMeasures, useVBISchemaFields } from '../../../hooks'
 import { useTranslation } from '../../../i18n'
 import { useVBIStore } from '../../../model'
 import type { VBIMeasure, VBIMeasureFormat } from '@visactor/vbi'
@@ -54,15 +54,13 @@ const MEASURE_ENCODING_LABEL_KEY_MAP: Record<NonNullable<VBIMeasure['encoding']>
 export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder)
   const { token } = theme.useToken()
-  const { theme: themeMode } = useVBIBuilder(builder)
   const { t } = useTranslation()
   const { measures, addMeasure, removeMeasure, updateMeasure } = useVBIMeasures(builder)
   const { fieldTypeMap } = useVBISchemaFields(builder)
   const measureShelfTone = useMemo<FieldShelfTone>(() => {
-    const accent = themeMode === 'dark' ? '#95de64' : '#389e0d'
-    const border = themeMode === 'dark' ? 'rgba(149, 222, 100, 0.34)' : '#c8efbb'
-    const hoverBackground = themeMode === 'dark' ? 'rgba(84, 196, 26, 0.16)' : '#eef9e6'
-    const iconBackground = themeMode === 'dark' ? 'rgba(149, 222, 100, 0.14)' : 'rgba(82, 196, 26, 0.12)'
+    const accent = token.colorSuccessText
+    const border = token.colorSuccessBorder
+    const hoverBackground = token.colorSuccessBgHover
 
     return {
       trackBackground: token.colorBgContainer,
@@ -75,11 +73,11 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
       itemBorder: border,
       itemHoverBorder: accent,
       textColor: accent,
-      iconBackground,
-      iconHoverBackground: hoverBackground,
+      iconBackground: 'transparent',
+      iconHoverBackground: 'transparent',
       iconColor: accent,
     }
-  }, [themeMode, token])
+  }, [token])
 
   const getFieldRole = (fieldName: string, fieldType?: string) => {
     return getMeasureFieldRoleBySchemaType(fieldType ?? fieldTypeMap[fieldName])
@@ -258,7 +256,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
       },
       {
         key: 'delete',
-        label: <span style={{ color: '#ff4d4f' }}>{t('shelvesMenuDelete')}</span>,
+        label: <span style={{ color: token.colorError }}>{t('shelvesMenuDelete')}</span>,
         style: SHELF_MENU_ITEM_STYLE,
       },
     ]

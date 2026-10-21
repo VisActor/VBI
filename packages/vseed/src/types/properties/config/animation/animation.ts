@@ -59,31 +59,38 @@ export interface RadarAnimationParams {
   loop?: RadarAnimationLoop
 }
 
-export interface BarLikeAnimation {
+export interface Animation {
+  /** @description 是否启用动画，默认开启 */
+  enable?: boolean
+  /** @description 是否启用图表切换形变动画，默认开启；关闭后保留普通入场和数据更新动画 */
+  morph?: boolean
+}
+
+export interface BarLikeAnimation extends Animation {
   /** @description 是否启用条形/柱形图动画 */
   enable?: boolean
   /** @description 条形/柱形图动画参数 */
   params?: BarLikeAnimationParams
 }
-export interface LineAreaAnimation {
+export interface LineAreaAnimation extends Animation {
   /** @description 是否启用折线/面积图动画 */
   enable?: boolean
   /** @description 折线/面积图动画参数 */
   params?: LineAreaAnimationParams
 }
-export interface ScatterAnimation {
+export interface ScatterAnimation extends Animation {
   /** @description 是否启用散点图动画 */
   enable?: boolean
   /** @description 散点图动画参数 */
   params?: ScatterAnimationParams
 }
-export interface PieLikeAnimation {
+export interface PieLikeAnimation extends Animation {
   /** @description 是否启用饼图/环图/玫瑰图动画 */
   enable?: boolean
   /** @description 饼图/环图/玫瑰图动画参数 */
   params?: PieLikeAnimationParams
 }
-export interface RadarAnimation {
+export interface RadarAnimation extends Animation {
   /** @description 是否启用雷达图动画 */
   enable?: boolean
   /** @description 雷达图动画参数 */

@@ -39,9 +39,18 @@ const ToolbarDivider = () => {
 }
 
 export const Toolbar: React.FC<{
+  supportedLocales?: readonly DemoLocale[]
+  allowSourceChange?: boolean
+  showChartType?: boolean
   isFullscreen: boolean
   onToggleFullscreen: () => void | Promise<void>
-}> = ({ isFullscreen, onToggleFullscreen }) => {
+}> = ({
+  supportedLocales = DEMO_SUPPORTED_LOCALES,
+  allowSourceChange = true,
+  showChartType = true,
+  isFullscreen,
+  onToggleFullscreen,
+}) => {
   const [isCSVModalOpen, setIsCSVModalOpen] = useState(false)
   const builder = useVBIStore((state) => state.builder)
   const logState = useVBIStore((state) => state.logState)
@@ -96,17 +105,19 @@ export const Toolbar: React.FC<{
             whiteSpace: 'nowrap',
           }}
         >
-          <ChartTypeSelector compact />
+          {showChartType ? <ChartTypeSelector compact /> : null}
 
-          <Tooltip title={t('toolbarImportCSV')}>
-            <Button
-              icon={<CloudUploadOutlined style={{ fontSize: 12 }} />}
-              onClick={() => setIsCSVModalOpen(true)}
-              size='small'
-            />
-          </Tooltip>
+          {allowSourceChange ? (
+            <Tooltip title={t('toolbarImportCSV')}>
+              <Button
+                icon={<CloudUploadOutlined style={{ fontSize: 12 }} />}
+                onClick={() => setIsCSVModalOpen(true)}
+                size='small'
+              />
+            </Tooltip>
+          ) : null}
 
-          <ToolbarDivider />
+          {showChartType || allowSourceChange ? <ToolbarDivider /> : null}
 
           <Space.Compact size='small'>
             <Tooltip title={`${t('toolbarHistoryUndo')} (Ctrl/Cmd+Z)`}>
@@ -176,7 +187,7 @@ export const Toolbar: React.FC<{
                   size='small'
                   value={locale}
                   style={{ minWidth: 128 }}
-                  options={DEMO_SUPPORTED_LOCALES.map((value) => ({ label: DEMO_LOCALE_LABELS[value], value }))}
+                  options={supportedLocales.map((value) => ({ label: DEMO_LOCALE_LABELS[value], value }))}
                   onChange={setLocale}
                 />
               </Tooltip>
@@ -226,14 +237,16 @@ export const Toolbar: React.FC<{
           </Tooltip>
         </div>
       </div>
-      <CSVModal
-        open={isCSVModalOpen}
-        onCancel={() => setIsCSVModalOpen(false)}
-        onConfirm={async (data, schema) => {
-          await switchSource(CONNECTOR_ID, data, schema)
-          setIsCSVModalOpen(false)
-        }}
-      />
+      {allowSourceChange ? (
+        <CSVModal
+          open={isCSVModalOpen}
+          onCancel={() => setIsCSVModalOpen(false)}
+          onConfirm={async (data, schema) => {
+            await switchSource(CONNECTOR_ID, data, schema)
+            setIsCSVModalOpen(false)
+          }}
+        />
+      ) : null}
     </div>
   )
 }

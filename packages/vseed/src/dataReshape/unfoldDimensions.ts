@@ -1,5 +1,6 @@
-import type { Dataset, Datum, Dimension, Encoding, UnfoldInfo } from 'src/types'
+import type { ChartType, Dataset, Datum, Dimension, Encoding, UnfoldInfo } from 'src/types'
 import {
+  DimensionKey,
   AngleEncoding,
   XEncoding,
   YEncoding,
@@ -27,6 +28,7 @@ export const unfoldDimensions = (
   dimensions: Dimension[],
   encoding: Encoding,
   options: {
+    chartType?: ChartType
     foldMeasureId: string
     separator: string
     colorItemAsId: boolean
@@ -66,6 +68,11 @@ export const unfoldDimensions = (
   const sourceDimensions = source ? dimensions.filter((dim) => source.includes(dim.id)) : []
   const targetDimensions = target ? dimensions.filter((dim) => target.includes(dim.id)) : []
 
+  const identityDimensions = dimensions
+    .map(({ id }) => id)
+    .filter((id) => id !== MeasureId && id !== options.foldMeasureId)
+    .sort()
+
   // 离散图例项
   const colorItems = new Set<string>()
   const colorIdMap: Record<string, { id: string; alias: string }> = {}
@@ -74,6 +81,11 @@ export const unfoldDimensions = (
   for (let i = 0; i < dataset.length; i++) {
     // 应用编码至Datum上
     const datum = dataset[i]
+    // Preserve full tuples (including field names) without an extra dataset pass.
+    // Measures share a group so native split/merge also works across dual axes.
+    datum[DimensionKey] =
+      (options.chartType ? `${options.chartType}:` : '') +
+      JSON.stringify(identityDimensions.map((id) => [id, datum[id]]))
 
     /**
      * !important 这是全仓库, 最最最重要的五行代码, 贯穿VSeed整个生命周期, 是化繁为简的绝对核心

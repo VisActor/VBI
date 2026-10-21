@@ -7,8 +7,13 @@ import { fileURLToPath } from 'node:url'
 import { test } from 'node:test'
 import { buildSkills } from './build-skills.mjs'
 
-const scenes = ['visactor-light-dashboard', 'visactor-map2d-dashboard']
-const archiveNames = [...scenes, 'light-dashboard']
+const scenes = [
+  'visactor-light-dashboard',
+  'visactor-map2d-dashboard',
+  'visactor-chart-editor',
+  'visactor-map3d-dashboard',
+]
+const archiveNames = scenes.flatMap((scene) => [scene, scene.replace(/^visactor-/, '')])
 
 test('CLI builds archives from the calling repository', (t) => {
   const { repoRoot, source } = fixture(t)
@@ -20,7 +25,7 @@ test('CLI builds archives from the calling repository', (t) => {
   const stages = [...output.matchAll(/\[build:skills\] \[(\d+)\/(\d+)\] (.+)/g)]
   assert.deepEqual(
     stages.map(([, step]) => Number(step)),
-    Array.from({ length: 12 }, (_, i) => i + 1),
+    Array.from({ length: 17 }, (_, i) => i + 1),
   )
   assert.ok(stages.every(([, , total]) => Number(total) === stages.length))
   assert.deepEqual(
@@ -35,12 +40,17 @@ test('CLI builds archives from the calling repository', (t) => {
       '格式化 vseed API',
       '写入 API 文档',
       '检查资源并打包 visactor-light-dashboard.zip',
-      '检查资源并打包 visactor-map2d-dashboard.zip',
       '检查资源并打包 light-dashboard.zip',
+      '检查资源并打包 visactor-map2d-dashboard.zip',
+      '检查资源并打包 map2d-dashboard.zip',
+      '检查资源并打包 visactor-chart-editor.zip',
+      '检查资源并打包 chart-editor.zip',
+      '检查资源并打包 visactor-map3d-dashboard.zip',
+      '检查资源并打包 map3d-dashboard.zip',
       '写入分发产物 dist/skills',
     ],
   )
-  assert.ok(output.indexOf('[12/12]') < output.indexOf('[build:skills] 完成'))
+  assert.ok(output.indexOf('[17/17]') < output.indexOf('[build:skills] 完成'))
   for (const name of archiveNames) {
     assert.ok(output.includes(`${name}.zip`))
     const archive = path.join(repoRoot, 'dist/skills', `${name}.zip`)
@@ -166,8 +176,10 @@ test('builds self-contained scene archives with rewritten references and unchang
     assert.equal(resources.size, files)
     assert.ok(resources.has('SKILL.md'))
     assert.match(resources.get('SKILL.md').toString(), new RegExp(`^---\\nname: ${name}\\n`))
-    if (name === 'light-dashboard') {
-      const canonical = contents(path.join(extract(t, packages[0].archive), 'visactor-light-dashboard'))
+    if (!name.startsWith('visactor-')) {
+      const prefixed = `visactor-${name}`
+      const canonicalArchive = packages.find((item) => item.name === prefixed).archive
+      const canonical = contents(path.join(extract(t, canonicalArchive), prefixed))
       canonical.set(
         'SKILL.md',
         Buffer.from(
@@ -185,8 +197,7 @@ test('builds self-contained scene archives with rewritten references and unchang
     assert.ok(resources.has('references/metric-analysis/SKILL.md'))
     assert.equal(resources.has('api/vseed/schemas.md'), false)
     assert.doesNotMatch(resources.get('api/vseed/index.md').toString(), /schemas\.md|zChart/)
-    assert.equal(fs.existsSync(path.join(root, 'references/visactor-light-dashboard')), false)
-    assert.equal(fs.existsSync(path.join(root, 'references/visactor-map2d-dashboard')), false)
+    for (const scene of scenes) assert.equal(fs.existsSync(path.join(root, 'references', scene)), false)
     assert.deepEqual(resources.get('templates/preview.png'), Buffer.from([0, 1, 127, 255]))
     for (const [file, data] of resources) {
       assert.ok(!data.includes('Do not distribute'), file)
@@ -223,11 +234,11 @@ test('rebuilds deterministically and replaces obsolete archive contents', async 
     fs.readFileSync(path.join(downloaded, 'visactor-light-dashboard/templates/example.html'), 'utf8'),
     '<p>Updated template</p>',
   )
-  assert.deepEqual(fs.readFileSync(packages[1].archive), first[1])
+  assert.deepEqual(fs.readFileSync(packages[2].archive), first[2])
   assert.equal(fs.readFileSync(path.join(repoRoot, 'dist/skills/unrelated.txt'), 'utf8'), 'Preserve unrelated outputs')
 })
 
-test('preserves both previous archives when the second scene has an unbundled reference', async (t) => {
+test('preserves previous archives when a scene has an unbundled reference', async (t) => {
   const { repoRoot, source } = fixture(t)
   await buildSkills({ repoRoot })
   const output = path.join(repoRoot, 'dist/skills')

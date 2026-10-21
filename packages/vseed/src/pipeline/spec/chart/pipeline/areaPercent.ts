@@ -1,5 +1,6 @@
 import type { PivotChartSpecPipeline, VChartSpecPipeline } from 'src/types'
 import {
+  animationMorph,
   percent,
   datasetXY,
   xBand,
@@ -56,6 +57,7 @@ const areaPercent: VChartSpecPipeline = [
   backgroundColor,
   percent,
   datasetXY,
+  animationMorph,
   progressive,
   xBand,
   yLinear,
@@ -90,6 +92,7 @@ const pivotAreaPercent: PivotChartSpecPipeline = [
     backgroundColor,
     percent,
     datasetXY,
+    animationMorph,
     progressive,
     xBand,
     pivotAxisStyle(yLinear),

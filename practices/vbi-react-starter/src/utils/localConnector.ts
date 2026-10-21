@@ -26,6 +26,18 @@ function inferSchema(data: LocalRow[]): DatasetColumn[] {
   }))
 }
 
+// Date aggregations return dimension labels, including numeric-looking years.
+const dateAggregateFunctions = new Set([
+  'to_year',
+  'to_quarter',
+  'to_month',
+  'to_week',
+  'to_day',
+  'to_hour',
+  'to_minute',
+  'to_second',
+])
+
 function getFieldSelections(queryDSL: VQueryDSL<Record<string, QueryValue>>): {
   dimensionFields: FieldSelection[]
   measureFields: FieldSelection[]
@@ -50,7 +62,7 @@ function getFieldSelections(queryDSL: VQueryDSL<Record<string, QueryValue>>): {
       continue
     }
 
-    if (item.aggr?.func) {
+    if (item.aggr?.func && !dateAggregateFunctions.has(item.aggr.func)) {
       measureFields.push({ alias, field })
       continue
     }

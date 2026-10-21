@@ -1,5 +1,10 @@
 import { z } from 'zod'
 
+export const zAnimation = z.object({
+  enable: z.boolean().optional(),
+  morph: z.boolean().optional(),
+})
+
 const createEffectConfig = <T extends readonly [string, ...string[]]>(effects: T) =>
   z.object({
     enable: z.boolean().optional(),
@@ -33,8 +38,7 @@ const createAnimation = <
   loop?: L
   atmosphere?: typeof zPointAtmosphere | typeof zNoEffectAtmosphere
 }) =>
-  z.object({
-    enable: z.boolean().optional(),
+  zAnimation.extend({
     params: z
       .object({
         appear: createEffectConfig(config.appear).optional(),

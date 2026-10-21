@@ -45,6 +45,9 @@ export const scatterAnimation = createAnimationPipe<NonNullable<ScatterAnimation
 })
 
 export const radarAnimation = createAnimationPipe<NonNullable<RadarAnimation['params']>>({
+  // A group-level angular clip cuts incoming morph paths in half. Fade the
+  // non-morphing area/line instead; explicit radial appearances remain available.
+  defaultAppear: { preset: 'fadeIn' },
   appear: radarAppear,
   loop: radarLoop,
   update: radarUpdate,

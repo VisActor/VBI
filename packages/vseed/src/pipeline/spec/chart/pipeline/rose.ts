@@ -1,5 +1,6 @@
 import type { PivotChartSpecPipeline, VChartSpecPipeline } from 'src/types'
 import {
+  animationMorph,
   datasetXY,
   backgroundColor,
   tooltip,
@@ -42,6 +43,7 @@ const rose: VChartSpecPipeline = [
   colorAdapter(color, linearColor),
   backgroundColor,
   datasetXY,
+  animationMorph,
   progressive,
   radiusAxis,
   verticalCrosshairRect,
@@ -66,6 +68,7 @@ const pivotRose: PivotChartSpecPipeline = [
     colorAdapter(color, linearColor),
     backgroundColor,
     datasetXY,
+    animationMorph,
     progressive,
     radiusAxis,
     verticalCrosshairRect,
