@@ -2421,16 +2421,12 @@
             [finePointer, 'change', reset],
           ]
           events.forEach(([target, type, handler, options]) => target.addEventListener(type, handler, options))
-          return {
-            reset,
-            dispose() {
-              events.forEach(([target, type, handler, options]) => target.removeEventListener(type, handler, options))
-              cancelAnimationFrame(frame)
-            },
+          return () => {
+            events.forEach(([target, type, handler, options]) => target.removeEventListener(type, handler, options))
+            cancelAnimationFrame(frame)
           }
         }
         // 选中面依附按钮尺寸，loading 伸缩与换行无需逐帧测量。
-        const controlBindings = new Set()
         function bindControls(root) {
           const states = (root.matches('.segment') ? [root] : [...root.querySelectorAll('.segment')]).map((group) => {
             const indicator = document.createElement('span')
@@ -2489,7 +2485,7 @@
           }
           reducedMotion.addEventListener('change', finish)
           update()
-          const dispose = () => {
+          return () => {
             observer.disconnect()
             reducedMotion.removeEventListener('change', finish)
             states.forEach(({ group, indicator, animation }) => {
@@ -2497,14 +2493,9 @@
               indicator.remove()
               delete group.dataset.glass
             })
-            controlBindings.delete(dispose)
           }
-          controlBindings.add(dispose)
-          return dispose
         }
-        bindControls($('#filters'))
         function disposeMotion() {
-          controlBindings.forEach((dispose) => dispose())
           entrances.forEach((animation) => animation.cancel())
           cancelAnimationFrame(metricFrame)
           metricAnimations.clear()
@@ -2537,7 +2528,7 @@
         getContext,
         ready,
       }) {
-        let dialog, context, active, dimension, selection, chart, table, observer, controller
+        let dialog, context, dimension, selection, chart, table, observer, controller
         let version = 0,
           opener,
           previousOverflow,
@@ -2565,7 +2556,6 @@
         }
         const number = (value, digits = 1) => motion.formatNumber(value, digits, 0)
         const nodes = {}
-        const find = (name) => nodes[name]
         const button = (label, action) => {
           const node = document.createElement('button')
           node.textContent = label
@@ -2604,58 +2594,58 @@
       </div></div></div>`
           for (const node of dialog.querySelectorAll('[data-ma]')) nodes[node.dataset.ma] = node
           document.body.append(dialog)
-          listeners.push(motion.bindControls(find('modes')))
-          find('close').addEventListener('click', closeDialog)
-          find('reset').addEventListener('click', (event) => {
+          listeners.push(motion.bindControls(nodes.modes))
+          nodes.close.addEventListener('click', closeDialog)
+          nodes.reset.addEventListener('click', (event) => {
             selection = undefined
-            find('picker-label').focus({ preventScroll: true })
+            nodes['picker-label'].focus({ preventScroll: true })
             void refresh(false, event.currentTarget)
           })
-          find('retry').addEventListener('click', (event) => void refresh(true, event.currentTarget))
-          find('expand').addEventListener('click', () => {
+          nodes.retry.addEventListener('click', (event) => void refresh(true, event.currentTarget))
+          nodes.expand.addEventListener('click', () => {
             const expanded = dialog.classList.toggle('ma-expanded')
-            find('expand').setAttribute('aria-expanded', String(expanded))
-            find('expand').textContent = expanded ? '返回分析布局' : '展开表格'
-            resize(table, find('table'))
-            resize(chart, find('chart'))
+            nodes.expand.setAttribute('aria-expanded', String(expanded))
+            nodes.expand.textContent = expanded ? '返回分析布局' : '展开表格'
+            resize(table, nodes.table)
+            resize(chart, nodes.chart)
           })
           dialog.addEventListener('cancel', (event) => {
             event.preventDefault()
             closeDialog()
           })
           dialog.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && find('picker').open) {
+            if (event.key === 'Escape' && nodes.picker.open) {
               event.preventDefault()
               event.stopPropagation()
-              find('picker').open = false
-              find('picker-label').focus()
+              nodes.picker.open = false
+              nodes['picker-label'].focus()
             }
           })
           dialog.addEventListener('click', (event) => {
-            if (!find('picker').contains(event.target)) find('picker').open = false
+            if (!nodes.picker.contains(event.target)) nodes.picker.open = false
           })
           dialog.addEventListener('close', () => {
             if (!dialog.open && context) cleanup()
           })
           observer = new ResizeObserver(() => {
             if (dialog.open) {
-              resize(chart, find('chart'))
-              resize(table, find('table'))
+              resize(chart, nodes.chart)
+              resize(table, nodes.table)
             }
           })
-          observer.observe(find('chart'))
-          observer.observe(find('table'))
+          observer.observe(nodes.chart)
+          observer.observe(nodes.table)
         }
         function selectGroup(key) {
           selection = selection === key ? undefined : key
-          if (find('picker').open) {
-            find('picker').open = false
-            find('picker-label').focus({ preventScroll: true })
+          if (nodes.picker.open) {
+            nodes.picker.open = false
+            nodes['picker-label'].focus({ preventScroll: true })
           }
-          void refresh(false, find('picker-label'))
+          void refresh(false, nodes['picker-label'])
         }
         function selectDimension(event) {
-          if (!dialog?.open || find('groups').inert) return
+          if (!dialog?.open || nodes.groups.inert) return
           // 与原生 crosshair 使用同一维度命中，不要求鼠标或手指落在线条上。
           const datum = event.dimensionInfo
             ?.flatMap((info) => info.data || [])
@@ -2670,11 +2660,7 @@
         function closeDialog() {
           if (!dialog?.open || dialog.dataset.closing === 'true') return
           // 退场开始就让旧查询失效，但保留当前 Canvas 直到画面退场完成。
-          version++
-          controller?.abort()
-          if (dialog) motion.cancelMetric(find('value'))
-          stopControlLoading()
-          clearTimeout(loadingTimer)
+          cancelRefresh()
           if (reducedMotion.matches) return completeClose()
           const current = getComputedStyle(dialog)
           const from = { opacity: current.opacity, transform: current.transform }
@@ -2691,13 +2677,16 @@
             })
             .catch(() => {})
         }
-        function cleanup() {
+        function cancelRefresh() {
           version++
-          renderQueue = Promise.resolve()
           controller?.abort()
-          if (dialog) motion.cancelMetric(find('value'))
+          if (dialog) motion.cancelMetric(nodes.value)
           stopControlLoading()
           clearTimeout(loadingTimer)
+        }
+        function cleanup() {
+          cancelRefresh()
+          renderQueue = Promise.resolve()
           if (dialog) {
             delete dialog.dataset.contentEnter
             delete dialog.dataset.closing
@@ -2819,33 +2808,52 @@
           }))
           options.tooltip = { ...options.tooltip, parentElement: dialog, confine: true }
           options.defaultColWidth = 130
-          return DashboardTable.options(options, find('table'))
+          return DashboardTable.options(options, nodes.table)
+        }
+        function renderGroupPicker(group, metric, rows, selected) {
+          nodes['picker-text'].textContent = `选择${group[1]}`
+          nodes.picker.hidden = !rows.length
+          if (rows !== menuRows) {
+            nodes.groups.replaceChildren(
+              ...rows.map((row) => {
+                const choice = button(`${row.key} · ${(metric.groupFormat || metric.format)(row.value)}`, () =>
+                  selectGroup(row.key),
+                )
+                choice.dataset.key = row.key
+                return choice
+              }),
+            )
+            menuRows = rows
+          }
+          for (const choice of nodes.groups.children)
+            choice.setAttribute('aria-pressed', String(selected === choice.dataset.key))
         }
         let groupRows, totalRow, priorRow
         async function refresh(reload, control) {
           if (!dialog?.open || dialog.dataset.closing === 'true') return
           const ticket = ++version
+          const isCurrent = () => dialog.open && ticket === version
           startControlLoading(control)
           const started = performance.now()
-          const hadContent = !find('content').hidden
+          const hadContent = !nodes.content.hidden
           controller?.abort()
           controller = new AbortController()
           const signal = controller.signal
           dialog.dataset.state = 'loading'
           const model = context,
-            metric = active,
+            metric = context.metric,
             group = dimension,
             selected = selection
           clearTimeout(loadingTimer)
-          find('feedback').textContent = ''
-          find('feedback').dataset.loading = String(!hadContent)
-          find('feedback').setAttribute('aria-label', hadContent ? '' : '正在加载分析')
-          find('retry').hidden = control !== find('retry')
-          find('content').setAttribute('aria-busy', 'true')
-          find('groups').inert = true
-          const clearing = control === find('reset')
-          find('selection').hidden = selected === undefined && !clearing
-          if (!clearing) find('selected').textContent = selected === undefined ? '' : `${group[1]}：${selected}`
+          nodes.feedback.textContent = ''
+          nodes.feedback.dataset.loading = String(!hadContent)
+          nodes.feedback.setAttribute('aria-label', hadContent ? '' : '正在加载分析')
+          nodes.retry.hidden = control !== nodes.retry
+          nodes.content.setAttribute('aria-busy', 'true')
+          nodes.groups.inert = true
+          const clearing = control === nodes.reset
+          nodes.selection.hidden = selected === undefined && !clearing
+          if (!clearing) nodes.selected.textContent = selected === undefined ? '' : `${group[1]}：${selected}`
           const extra =
             selected === undefined
               ? []
@@ -2858,7 +2866,7 @@
                   loadingFrame = requestAnimationFrame(resolve)
                 })
               })
-            if (!dialog.open || ticket !== version) return
+            if (!isCurrent()) return
             const base = metric.conditions
             const selectedConditions =
               selected !== undefined && metric.selectionConditions
@@ -2890,7 +2898,7 @@
                 ? query([], previousConditions, metric.measures, signal)
                 : undefined,
             ])
-            if (!dialog.open || ticket !== version) return
+            if (!isCurrent()) return
             if (reload) {
               totalRow = total[0] || {}
               priorRow = prior?.[0] || {}
@@ -2913,18 +2921,18 @@
             renderQueue = renderQueue
               .catch(() => {})
               .then(async () => {
-                if (!dialog.open || ticket !== version) return
-                find('content').hidden = false
-                find('value-label').textContent =
+                if (!isCurrent()) return
+                nodes.content.hidden = false
+                nodes['value-label'].textContent =
                   selected === undefined
                     ? metric.previous
                       ? '当前比较范围'
                       : model.detailScope || '当前范围'
                     : `${group[1]}：${selected}`
-                find('value-label').title = find('value-label').textContent
-                motion.animateReading(find('value'), value, metric.format)
+                nodes['value-label'].title = nodes['value-label'].textContent
+                motion.animateReading(nodes.value, value, metric.format)
                 const ranked = selected === undefined ? [...plotRows].sort((a, b) => b.value - a.value) : []
-                find('finding').textContent =
+                nodes.finding.textContent =
                   selected !== undefined
                     ? `总体 ${metric.format(overall)}`
                     : metric.finding
@@ -2934,47 +2942,31 @@
                         : ranked.length
                           ? `${ranked[0].key}的${metric.title}最高（${metric.format(ranked[0].value)}）${ranked.length > 1 ? `，${ranked.at(-1).key}最低（${metric.format(ranked.at(-1).value)}）` : ''}。`
                           : '当前范围没有可分析的有效值。可返回看板调整筛选。'
-                find('definition').textContent = metric.definition
-                find('evidence').textContent = metric.evidence
+                nodes.definition.textContent = metric.definition
+                nodes.evidence.textContent = metric.evidence
                   ? metric.evidence(current, baseline)
                   : '汇总由当前范围内的完整记录计算；表格滚动不改变汇总值。'
-                find('grain').textContent =
-                  `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 表格包含当前范围的完整结果`
+                nodes.grain.textContent = `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 表格包含当前范围的完整结果`
                 const detailScope =
                   selected === undefined ? model.detailScope || '当前范围' : `${group[1]}：${selected}`
-                find('table-scope').textContent = `${detailScope} · ${number(details.length, 0)} 条记录`
-                find('table-scope').title = find('table-scope').textContent
-                find('table').setAttribute('aria-label', `关联明细，${detailScope}，${details.length} 条记录`)
+                nodes['table-scope'].textContent = `${detailScope} · ${number(details.length, 0)} 条记录`
+                nodes['table-scope'].title = nodes['table-scope'].textContent
+                nodes.table.setAttribute('aria-label', `关联明细，${detailScope}，${details.length} 条记录`)
                 const chartTitle = metric.groupTitle || metric.title
-                find('chart-title').textContent =
+                nodes['chart-title'].textContent =
                   metric.groupTitle || (group[2] ? `${group[1]}趋势` : `${group[1]}比较`)
-                find('chart-hint').textContent = !group[2] && plotRows.length > 12 ? '前 12 组' : ''
-                find('picker-text').textContent = `选择${group[1]}`
-                find('picker').hidden = !plotRows.length
-                if (plotRows !== menuRows) {
-                  find('groups').replaceChildren(
-                    ...plotRows.map((row) => {
-                      const choice = button(`${row.key} · ${(metric.groupFormat || metric.format)(row.value)}`, () =>
-                        selectGroup(row.key),
-                      )
-                      choice.dataset.key = row.key
-                      return choice
-                    }),
-                  )
-                  menuRows = plotRows
-                }
-                for (const choice of find('groups').children)
-                  choice.setAttribute('aria-pressed', String(selected === choice.dataset.key))
+                nodes['chart-hint'].textContent = !group[2] && plotRows.length > 12 ? '前 12 组' : ''
+                renderGroupPicker(group, metric, plotRows, selected)
                 const chartRows = group[2] ? plotRows : plotRows.slice(0, 12)
                 // 菜单可选择 Top N 以外的分组；选中项仍须能在图中定位。
                 if (selected !== undefined && !chartRows.some((row) => row.key === selected)) {
                   const row = plotRows.find((row) => row.key === selected)
                   if (row) {
                     chartRows.splice(Math.max(0, chartRows.length - 1), 1, row)
-                    find('chart-hint').textContent = '前 11 组及已选项'
+                    nodes['chart-hint'].textContent = '前 11 组及已选项'
                   }
                 }
-                find('chart').dataset.empty = String(!chartRows.length)
+                nodes.chart.dataset.empty = String(!chartRows.length)
                 if (!chartRows.length) {
                   chart?.release()
                   chart = undefined
@@ -2993,16 +2985,16 @@
                       changedType ? { change: true, reMake: true } : undefined,
                     )
                   } else {
-                    chart = new VChart(spec, { dom: find('chart') })
+                    chart = new VChart(spec, { dom: nodes.chart })
                     chart.renderSync()
                   }
                   chartType = spec.type
-                  if (!dialog.open || ticket !== version) return
+                  if (!isCurrent()) return
                   // 切换图型后重新绑定到当前坐标系；同一次点击只走维度事件，避免二次切换。
                   chart.off('dimensionClick', selectDimension)
                   chart.on('dimensionClick', selectDimension)
                 }
-                find('chart').setAttribute(
+                nodes.chart.setAttribute(
                   'aria-label',
                   `${chartTitle}，${selected === undefined ? '未选择分组' : `已选择${selected}`}，也可通过选择${group[1]}菜单联动明细`,
                 )
@@ -3010,41 +3002,41 @@
                 const existingTable = !!table
                 if (!table) {
                   const options = buildTableOptions(detailDimensions, detailMeasures, details)
-                  table = new library.ListTable(find('table'), options)
-                  sizes.set(table, `${find('table').clientWidth}:${find('table').clientHeight}`)
+                  table = new library.ListTable(nodes.table, options)
+                  sizes.set(table, `${nodes.table.clientWidth}:${nodes.table.clientHeight}`)
                 }
-                if (!dialog.open || ticket !== version) return
+                if (!isCurrent()) return
                 if (existingTable) DashboardTable.setRecords(table, details, { animate: false })
-                resize(chart, find('chart'))
-                find('feedback').textContent = details.length ? '' : '当前范围暂无明细记录。'
+                resize(chart, nodes.chart)
+                nodes.feedback.textContent = details.length ? '' : '当前范围暂无明细记录。'
                 dialog.dataset.state = details.length ? 'ready' : 'empty'
                 if (dialog.dataset.contentEnter !== 'true') dialog.dataset.contentEnter = 'true'
               })
             await renderQueue
-            if (!dialog.open || ticket !== version) return
+            if (!isCurrent()) return
             clearTimeout(loadingTimer)
             const remaining = control ? 200 - (performance.now() - started) : 0
-            if (remaining > 0 && dialog.open && ticket === version)
+            if (remaining > 0)
               await new Promise((resolve) => {
                 finishLoadingPaint = resolve
                 loadingTimer = setTimeout(resolve, remaining)
               })
           } catch (error) {
-            if (ticket !== version || !dialog.open) return
-            find('feedback').textContent = `分析未完成：${error.message}`
-            find('retry').hidden = false
-            find('content').hidden = !hadContent
+            if (!isCurrent()) return
+            nodes.feedback.textContent = `分析未完成：${error.message}`
+            nodes.retry.hidden = false
+            nodes.content.hidden = !hadContent
             dialog.dataset.state = 'error'
           } finally {
-            if (ticket === version && dialog.open) {
+            if (isCurrent()) {
               clearTimeout(loadingTimer)
               stopControlLoading()
-              delete find('feedback').dataset.loading
-              find('feedback').removeAttribute('aria-label')
-              find('selection').hidden = selection === undefined
-              if (dialog.dataset.state !== 'error') find('retry').hidden = true
-              find('content').setAttribute('aria-busy', 'false')
-              find('groups').inert = false
+              delete nodes.feedback.dataset.loading
+              nodes.feedback.removeAttribute('aria-label')
+              nodes.selection.hidden = selection === undefined
+              if (dialog.dataset.state !== 'error') nodes.retry.hidden = true
+              nodes.content.setAttribute('aria-busy', 'false')
+              nodes.groups.inert = false
             }
           }
         }
@@ -3053,26 +3045,25 @@
           createDialog()
           delete dialog.dataset.contentEnter
           context = getContext(index)
-          active = context.metric
           dimension = context.dimensions[0]
           selection = undefined
           groupRows = undefined
           opener = trigger
           dialog.classList.remove('ma-expanded')
-          find('expand').textContent = '展开表格'
-          find('expand').setAttribute('aria-expanded', 'false')
-          find('content').hidden = true
+          nodes.expand.textContent = '展开表格'
+          nodes.expand.setAttribute('aria-expanded', 'false')
+          nodes.content.hidden = true
           dialog.querySelector('.ma-definition').open = false
-          find('picker').open = false
-          dialog.querySelector('#ma-title').textContent = active.title
-          find('scope').textContent = context.scope
-          find('modes').replaceChildren(
+          nodes.picker.open = false
+          dialog.querySelector('#ma-title').textContent = context.metric.title
+          nodes.scope.textContent = context.scope
+          nodes.modes.replaceChildren(
             ...context.dimensions.map((group) => {
               const choice = button(group[1], () => {
                 if (dimension === group) return
                 dimension = group
                 selection = undefined
-                for (const sibling of find('modes').children)
+                for (const sibling of nodes.modes.children)
                   sibling.setAttribute('aria-pressed', String(sibling === choice))
                 void refresh(true, choice)
               })
@@ -3091,7 +3082,7 @@
           const y = Math.max(12, Math.min(88, ((origin.top + origin.height / 2 - top) / dialog.offsetHeight) * 100))
           dialog.style.setProperty('--overlay-origin', `${x}% ${y}%`)
           dialog.querySelector('.ma-body').scrollTop = 0
-          find('close').focus()
+          nodes.close.focus()
           void refresh(true)
         }
         const onOverlayMotionChange = () => {
@@ -3170,8 +3161,10 @@
       const { revealComponents, finishEntrance, animateMetric, finishMetricAnimations, bindCardTilt, disposeMotion } =
         motion
       const formatNumber = motion.formatNumber
-      const tilts = [...document.querySelectorAll('.metric-card')].map(bindCardTilt)
-      subscriptions.push(() => tilts.forEach((tilt) => tilt.dispose()))
+      subscriptions.push(
+        motion.bindControls($('#filters')),
+        ...[...document.querySelectorAll('.metric-card')].map(bindCardTilt),
+      )
 
       const PAGE = {
         ...JSON.parse($('#page-config').textContent),
@@ -3869,12 +3862,6 @@
         const snapshot = { ...state }
         const format = (value, i) => (Number.isFinite(value) ? formats[i](value) : '—')
         const base = conditionsFor('totals', snapshot)
-        let metric,
-          dimensions,
-          detailDimensions,
-          detailScope,
-          grain = '每行一条来源记录',
-          scope = view.scope
         const ratioValue =
           (field, denominator, factor = 1) =>
           (row) =>
@@ -3896,7 +3883,7 @@
           const numerator = measures.find((item) => item[0] === definition.field)
           numerator[1] = `${title}分子（汇总前原值）`
         }
-        metric = {
+        const metric = {
           title,
           measures,
           conditions: base,
@@ -3920,7 +3907,7 @@
               ? `分子 ${numberForAnalysis(row[definition.field])}；分母 ${numberForAnalysis(row[definition.denominator])}。${PAGE.derivedNote}`
               : PAGE.derivedNote,
         }
-        dimensions = [
+        const dimensions = [
           ['g', PAGE.groupTitle, PAGE.temporal],
           [
             's',
@@ -3929,7 +3916,7 @@
           ],
         ]
         if (index === 0 || index === 5) dimensions.reverse()
-        detailDimensions = [
+        const detailDimensions = [
           ['id', '来源记录 ID'],
           ['g', PAGE.groupTitle],
           ['s', PAGE.secondaryTitle],
@@ -3940,9 +3927,8 @@
           rowLimit: sourceData.rows.length,
           dimensions,
           detailDimensions,
-          grain,
-          detailScope,
-          scope,
+          grain: '每行一条来源记录',
+          scope: view.scope,
           metric,
         }
       }
