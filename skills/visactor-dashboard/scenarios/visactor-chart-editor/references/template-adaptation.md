@@ -25,7 +25,7 @@
 
 当前技能以完整的 `templates/template.html` 为可运行入口，不包含构建或测试工程。业务适配优先修改可读的配置、数据和 CSS；不要从压缩代码重写编辑器，也不要假设改动 Standard 源码后模板会自动更新。
 
-外壳样式直接维护完整 HTML 中的 CSS。`templates/startup.js` 仅为初始化参考，单独修改它不会更新完整 HTML。需要改变核心运行时能力时，先确认仓库公开 API 与模板内嵌版本，再维护完整 HTML，保留 DOM、公开宿主接口、资源许可和实例生命周期，并按验收矩阵验证行为。
+外壳样式、初始化与局部等待反馈直接维护完整 HTML 中的 CSS、`startup-runtime` 和 `control-feedback`，避免另一份启动脚本与交付文件分叉。需要改变核心运行时能力时，先确认仓库公开 API 与模板内嵌版本，再维护完整 HTML，保留 DOM、公开宿主接口、资源许可和实例生命周期，并按验收矩阵验证行为。
 
 渲染适配替换原因与 API 约束见[Standard 对照](standard-reference.md)。表格直接使用 Standard / VSeed 完整主题与 PivotChart 交互，不注入仅适用于平面 ListTable 的公共 DashboardTable 副本。其他体验必须通过[验收矩阵](standard-parity.md)，任何额外移除 / 重写在交付中记录原因、替代行为和验证证据。
 
@@ -37,7 +37,7 @@
 
 图型选择与工具栏合为顶部一行，位于字段列表和配置槽上方，复用 Standard 的 `ChartTypeSelector`、分组元数据和 Builder 操作。工具栏传 `showChartType={false}` 避免重复入口，选择器传 `closeOnSelect={false}`；Standard 默认仍在选中后关闭。面板支持连续选择、关闭按钮、Esc 与点击外部关闭，主动关闭返回触发按钮焦点；通过 `placement="bottomLeft"` 向下展开并与入口左边缘对齐，空间不足时沿用 Ant Design 自动调整，全屏时浮层挂到全屏容器内。入口布局与面板保持属于 UI 状态，不写入 DSL。验收应覆盖位置、连续选择、Canvas 悬停隔离、中英、窄屏和全屏。
 
-字段颜色直接消费 Ant Design 语义 token：维度使用 `colorPrimaryText / colorPrimaryBg / colorPrimaryBgHover / colorPrimaryBorder`，指标使用对应 `colorSuccess*`。ChartEditor 的 `colorSuccess` 固定为绿色种子 `#52c41a`，由深浅色算法生成各状态，小字号字段文字使用浅色深一阶、深色浅一阶的文本 token；维度跟随当前主题的 `colorPrimary`。字段列表、槽位标签、悬停和拖拽预览保持同一身份色；图型图标和字段箭头不叠加独立底色，交互反馈作用于整个按钮或标签；外层容器使用中性色边框，图表色盘不受字段角色色影响。验收应覆盖十套主题、拖拽身份色及桌面 / 窄屏单行工具栏。
+字段颜色直接消费 Ant Design 语义 token：维度使用 `colorPrimaryText / colorPrimaryBg / colorPrimaryBgHover / colorPrimaryBorder`，指标使用对应 `colorSuccess*`。ChartEditor 的 `colorSuccess` 固定为绿色种子 `#52c41a`，由深浅色算法生成各状态，小字号字段文字使用浅色深一阶、深色浅一阶的文本 token；维度跟随当前主题的 `colorPrimary`。字段列表、槽位标签、悬停和拖拽预览保持同一身份色；图型图标和字段箭头不叠加独立底色，交互反馈作用于整个按钮或标签；外层容器使用中性色边框，图表色盘不受字段角色色影响。验收应覆盖十套主题、拖拽身份色及桌面单行 / 窄屏双行工具栏。
 
 ### 数据感知的动画边界
 
@@ -57,7 +57,7 @@
 
 ## 数据与图片导出
 
-工具栏图型入口与其它控件统一为 26px 高；数据、图片菜单采用原生 Ant Design Dropdown。导出属于宿主呈现能力，不改变 DSL 或渲染 spec。
+工具栏图型入口与其它按钮桌面为 32px 高，窄屏为 44px；数据、图片菜单采用原生 Ant Design Dropdown。导出属于宿主呈现能力，不改变 DSL 或渲染 spec。
 
 CSV / Excel / 复制数据使用当前 VSeed 的查询结果和维度、指标元数据，按当前字段顺序输出别名列头，包含当前过滤、聚合、排序和 limit；不导出完整原始数据、不导出内部重塑字段。CSV 带 UTF-8 BOM、处理引号与换行，并将公式样式字符串作为文本；Excel 为真正的 `.xlsx`，保留数值类型。复制数据为带列头的 TSV，便于粘贴到表格。
 
