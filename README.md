@@ -2,7 +2,6 @@
 
 VBI provides reusable packages and agent skills for AI-oriented business intelligence.
 
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/VisActor/VBI)
 [![Changesets](https://github.com/VisActor/VSeed/actions/workflows/changesets.yml/badge.svg)](https://github.com/VisActor/VBI)
 [![Deploy to GitHub Pages](https://github.com/VisActor/VSeed/actions/workflows/deploy.yml/badge.svg)](https://visactor.github.io/VBI/)
 
