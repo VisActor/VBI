@@ -760,15 +760,6 @@
       .ma-dialog p {
         margin: 0;
       }
-      .ma-dialog button:focus-visible,
-      .ma-dialog summary:focus-visible {
-        outline: 2px solid var(--focus-ring);
-        outline-offset: 3px;
-      }
-      .ma-dialog button:disabled {
-        opacity: 0.4;
-        cursor: default;
-      }
       .ma-dialog button.ma-close {
         display: grid;
         place-items: center;
@@ -1787,7 +1778,20 @@
       window.DashboardMotion = function createDashboardMotion({ reducedMotion, metricUnit }) {
         const $ = (selector) => document.querySelector(selector)
         const finePointer = matchMedia('(hover: hover) and (pointer: fine)')
-        const metricAnimations = new Map()
+        const metricAnimations = new Map(),
+          numberFormats = new Map()
+        let metricFrame = 0
+        const easeOut = (p) => 1 - (1 - p) ** 3
+        function formatNumber(value, digits = 1, minimum = digits) {
+          if (!Number.isFinite(value)) return '—'
+          const key = `${minimum}:${digits}`
+          if (!numberFormats.has(key))
+            numberFormats.set(
+              key,
+              new Intl.NumberFormat('zh-CN', { minimumFractionDigits: minimum, maximumFractionDigits: digits }),
+            )
+          return numberFormats.get(key).format(value)
+        }
         // 参考 chart-editor 的 surface / chart 入场；按页面位置轻微错峰，整组约两秒。
         const entranceTiming = {
           total: 2000,
@@ -1887,14 +1891,11 @@
         }
         const metricTextNodes = new WeakMap()
         function writeMetricText(element, text, busy = false) {
-          if (!metricUnit) {
-            element.textContent = text
-            return
-          }
-          element.setAttribute('aria-busy', String(busy))
-          const unit = metricUnit(element) || ''
+          if (metricUnit && element.getAttribute('aria-busy') !== String(busy))
+            element.setAttribute('aria-busy', String(busy))
+          const unit = metricUnit?.(element)
           if (!unit || text === '—') {
-            element.textContent = text
+            if (element.textContent !== text) element.textContent = text
             metricTextNodes.delete(element)
             return
           }
@@ -1906,36 +1907,59 @@
             element.replaceChildren(...nodes)
             metricTextNodes.set(element, nodes)
           }
-          nodes[0].textContent = text.slice(0, -unit.length)
-          nodes[1].textContent = unit
+          const value = text.slice(0, -unit.length)
+          if (nodes[0].textContent !== value) nodes[0].textContent = value
+          if (nodes[1].textContent !== unit) nodes[1].textContent = unit
         }
-        function animateMetric(selector, target, format = String, emptyText = '—') {
-          const element = $(selector)
+        // 同一页面的读数共用一帧，保留各自的时长、缓动和连续更新起点。
+        function tickMetrics(now) {
+          metricFrame = 0
+          let running = false
+          metricAnimations.forEach((state) => {
+            if (state.tick && !state.tick(now)) state.tick = undefined
+            running ||= !!state.tick
+          })
+          if (running) metricFrame = requestAnimationFrame(tickMetrics)
+        }
+        function animateMetric(selector, target, format = String, emptyText = '—', duration = 600, ease = easeOut) {
+          const element = typeof selector === 'string' ? $(selector) : selector
           const previous = metricAnimations.get(element)
           if (previous && previous.target === target) return
-          if (previous) cancelAnimationFrame(previous.frame)
           if (!Number.isFinite(target)) {
             metricAnimations.delete(element)
             writeMetricText(element, emptyText)
             return
           }
-          const state = { value: previous?.value ?? target, target, format, frame: 0 }
+          const from = previous?.value ?? target
+          const state = { value: from, target, format }
           metricAnimations.set(element, state)
-          const from = state.value,
-            started = performance.now()
-          function tick(now) {
-            const progress =
-              !previous || reducedMotion.matches || from === target ? 1 : Math.min(1, (now - started) / 600)
-            state.value = from + (target - from) * (1 - (1 - progress) ** 3)
-            writeMetricText(element, format(state.value), progress < 1)
-            state.frame = progress < 1 ? requestAnimationFrame(tick) : 0
+          const write = (value, busy = false) => {
+            state.value = value
+            writeMetricText(element, format(value), busy)
           }
-          tick(started)
+          if (!previous || reducedMotion.matches || from === target) return write(target)
+          const started = performance.now()
+          state.tick = (now) => {
+            const progress = Math.min(1, (now - started) / duration)
+            write(from + (target - from) * ease(progress), progress < 1)
+            return progress < 1
+          }
+          write(from, true)
+          if (!metricFrame) metricFrame = requestAnimationFrame(tickMetrics)
+        }
+        function animateReading(element, target, format) {
+          animateMetric(element, target, format, Number.isFinite(target) ? '—' : format(target), 550, (p) =>
+            p < 0.5 ? 4 * p ** 3 : 1 - (-2 * p + 2) ** 3 / 2,
+          )
+        }
+        function cancelMetric(element) {
+          metricAnimations.delete(element)
         }
         function finishMetricAnimations() {
+          cancelAnimationFrame(metricFrame)
+          metricFrame = 0
           metricAnimations.forEach((state, element) => {
-            cancelAnimationFrame(state.frame)
-            state.frame = 0
+            state.tick = undefined
             state.value = state.target
             writeMetricText(element, state.format(state.target))
           })
@@ -2000,7 +2024,7 @@
             start()
           }
           const events = [
-            [document, 'pointermove', move, { capture: true, passive: true }],
+            [slot, 'pointermove', move, { capture: true, passive: true }],
             [slot, 'pointerleave', reset],
             [document, 'pointercancel', reset, true],
             [window, 'blur', reset],
@@ -2019,10 +2043,20 @@
         }
         function disposeMotion() {
           entrances.forEach((animation) => animation.cancel())
-          metricAnimations.forEach((state) => cancelAnimationFrame(state.frame))
+          cancelAnimationFrame(metricFrame)
           metricAnimations.clear()
         }
-        return { revealComponents, finishEntrance, animateMetric, finishMetricAnimations, bindCardTilt, disposeMotion }
+        return {
+          revealComponents,
+          finishEntrance,
+          animateMetric,
+          animateReading,
+          cancelMetric,
+          finishMetricAnimations,
+          formatNumber,
+          bindCardTilt,
+          disposeMotion,
+        }
       }
     </script>
     <script id="metric-analysis-runtime">
@@ -2034,6 +2068,7 @@
         Builder,
         VChart,
         accent,
+        motion,
         entries,
         getContext,
         ready,
@@ -2047,64 +2082,33 @@
           loadingControl,
           loadingFrame,
           finishLoadingPaint,
-          chartSize = '',
           chartType,
-          tableSize = '',
-          menuSignature = '',
-          reading,
+          menuRows,
+          analysisSpec,
+          analysisKey,
           renderQueue = Promise.resolve()
         const listeners = []
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-        const resizeChart = () => {
-          const node = dialog && find('chart'),
-            size = node && `${node.clientWidth}:${node.clientHeight}`
-          if (chart && node.clientWidth && node.clientHeight && size !== chartSize) {
-            chartSize = size
-            chart.resize(node.clientWidth, node.clientHeight)
+        const sizes = new WeakMap()
+        const resize = (instance, node) => {
+          if (!instance) return
+          const { clientWidth: width, clientHeight: height } = node
+          const size = `${width}:${height}`
+          if (width && height && sizes.get(instance) !== size) {
+            sizes.set(instance, size)
+            if (instance === chart) instance.resize(width, height)
+            else instance.resize()
           }
         }
-        const resizeTable = () => {
-          const node = dialog && find('table'),
-            size = node && `${node.clientWidth}:${node.clientHeight}`
-          if (table && node.clientWidth && node.clientHeight && size !== tableSize) {
-            tableSize = size
-            table.resize()
-          }
-        }
-        const updateReading = (target, format) => {
-          const node = find('value')
-          const from = reading?.value
-          cancelAnimationFrame(reading?.frame)
-          const state = { value: from, target, format, frame: 0 }
-          reading = state
-          node.dataset.value = Number.isFinite(target) ? String(target) : ''
-          const write = (value) => {
-            state.value = value
-            const text = format(value)
-            if (node.textContent !== text) node.textContent = text
-          }
-          if (reducedMotion.matches || !Number.isFinite(from) || !Number.isFinite(target) || from === target) {
-            write(target)
-            return
-          }
-          const started = performance.now()
-          const tick = (now) => {
-            const progress = Math.min(1, (now - started) / 550)
-            const eased = progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2
-            write(from + (target - from) * eased)
-            state.frame = progress < 1 ? requestAnimationFrame(tick) : 0
-          }
-          state.frame = requestAnimationFrame(tick)
-        }
-        const number = (value, digits = 1) =>
-          Number.isFinite(value) ? value.toLocaleString('zh-CN', { maximumFractionDigits: digits }) : '—'
+        const number = (value, digits = 1) => motion.formatNumber(value, digits, 0)
         const element = (tag, className, text) => {
           const node = document.createElement(tag)
           if (className) node.className = className
           if (text !== undefined) node.textContent = text
           return node
         }
-        const find = (name) => dialog.querySelector(`[data-ma="${name}"]`)
+        const nodes = {}
+        const find = (name) => nodes[name]
         const button = (label, action, className = '') => {
           const node = element('button', className, label)
           node.type = 'button'
@@ -2140,6 +2144,7 @@
         <section class="ma-table-panel"><div class="ma-panel-heading"><h3>关联明细</h3><button type="button" data-ma="expand" aria-expanded="false">展开表格</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="分析明细表" tabindex="0"></div></section>
         <details class="ma-definition"><summary>统计口径与依据</summary><p data-ma="definition"></p><p data-ma="evidence"></p><p data-ma="grain"></p></details>
       </div></div></div>`
+          for (const node of dialog.querySelectorAll('[data-ma]')) nodes[node.dataset.ma] = node
           document.body.append(dialog)
           find('close').addEventListener('click', closeDialog)
           find('reset').addEventListener('click', (event) => {
@@ -2152,8 +2157,8 @@
             const expanded = dialog.classList.toggle('ma-expanded')
             find('expand').setAttribute('aria-expanded', String(expanded))
             find('expand').textContent = expanded ? '返回分析布局' : '展开表格'
-            resizeTable()
-            resizeChart()
+            resize(table, find('table'))
+            resize(chart, find('chart'))
           })
           dialog.addEventListener('cancel', (event) => {
             event.preventDefault()
@@ -2175,8 +2180,8 @@
           })
           observer = new ResizeObserver(() => {
             if (dialog.open) {
-              resizeChart()
-              resizeTable()
+              resize(chart, find('chart'))
+              resize(table, find('table'))
             }
           })
           observer.observe(find('chart'))
@@ -2197,8 +2202,7 @@
             ?.flatMap((info) => info.data || [])
             .flatMap((data) => data.datum || [])
             .find((row) => row.key !== undefined)
-          if (datum && groupRows?.some((row) => String(row[dimension[0]]) === String(datum.key)))
-            selectGroup(String(datum.key))
+          if (datum && groupRows?.some((row) => row.key === String(datum.key))) selectGroup(String(datum.key))
         }
         function completeClose() {
           if (dialog?.open) dialog.close()
@@ -2209,7 +2213,7 @@
           // 退场开始就让旧查询失效，但保留当前 Canvas 直到画面退场完成。
           version++
           controller?.abort()
-          cancelAnimationFrame(reading?.frame)
+          if (dialog) motion.cancelMetric(find('value'))
           stopControlLoading()
           clearTimeout(loadingTimer)
           if (reducedMotion.matches) return completeClose()
@@ -2232,7 +2236,7 @@
           version++
           renderQueue = Promise.resolve()
           controller?.abort()
-          cancelAnimationFrame(reading?.frame)
+          if (dialog) motion.cancelMetric(find('value'))
           stopControlLoading()
           clearTimeout(loadingTimer)
           if (dialog) {
@@ -2244,10 +2248,8 @@
           chart = undefined
           table?.release()
           table = undefined
-          chartSize = tableSize = ''
           chartType = undefined
-          menuSignature = ''
-          reading = undefined
+          menuRows = analysisSpec = analysisKey = undefined
           records = []
           context = undefined
           if (previousOverflow !== undefined) {
@@ -2279,36 +2281,41 @@
           }
         }
         function buildAnalysisSpec(group, metric, chartRows, chartTitle, selected) {
-          const spec = Builder.from({
-            chartType: group[2] ? 'line' : 'bar',
-            dataset: chartRows.map((row) => ({ ...row, value: row.value / (metric.scale || 1) })),
-            dimensions: [{ id: 'key', alias: group[1], encoding: group[2] ? 'xAxis' : 'yAxis' }],
-            measures: [
-              {
-                id: 'value',
-                alias: chartTitle,
-                encoding: group[2] ? 'yAxis' : 'xAxis',
-                format: { type: 'number', fractionDigits: metric.digits ?? 1, suffix: metric.unit || '' },
+          const key = JSON.stringify([group[0], chartRows, reducedMotion.matches])
+          if (key !== analysisKey) {
+            analysisSpec = Builder.from({
+              chartType: group[2] ? 'line' : 'bar',
+              dataset: chartRows.map((row) => ({ ...row, value: row.value / (metric.scale || 1) })),
+              dimensions: [{ id: 'key', alias: group[1], encoding: group[2] ? 'xAxis' : 'yAxis' }],
+              measures: [
+                {
+                  id: 'value',
+                  alias: chartTitle,
+                  encoding: group[2] ? 'yAxis' : 'xAxis',
+                  format: { type: 'number', fractionDigits: metric.digits ?? 1, suffix: metric.unit || '' },
+                },
+              ],
+              backgroundColor: 'transparent',
+              color: { colorScheme: [accent] },
+              legend: { enable: false },
+              label: { enable: false },
+              tooltip: { enable: false },
+              xAxis: { visible: true, zero: !group[2] },
+              yAxis: { visible: true, zero: !group[2] },
+              pointStyle: { pointVisible: true },
+              lineStyle: { lineSmooth: false },
+              animation: {
+                enable: !reducedMotion.matches,
+                params: {
+                  appear: { enable: true, effects: ['growth'], duration: 550, ease: 'cubicInOut' },
+                  update: { enable: true, duration: 550, ease: 'cubicInOut' },
+                },
               },
-            ],
-            backgroundColor: 'transparent',
-            color: { colorScheme: [accent] },
-            legend: { enable: false },
-            label: { enable: false },
-            tooltip: { enable: false },
-            xAxis: { visible: true, zero: !group[2] },
-            yAxis: { visible: true, zero: !group[2] },
-            pointStyle: { pointVisible: true },
-            lineStyle: { lineSmooth: false },
-            animation: {
-              enable: !reducedMotion.matches,
-              params: {
-                appear: { enable: true, effects: ['growth'], duration: 550, ease: 'cubicInOut' },
-                update: { enable: true, duration: 550, ease: 'cubicInOut' },
-              },
-            },
-            barStyle: { barRadius: 3, barGradient: false },
-          }).build()
+              barStyle: { barRadius: 3, barGradient: false },
+            }).build()
+            analysisKey = key
+          }
+          const spec = { ...analysisSpec }
           spec.padding = { top: 12, right: 20, bottom: 10, left: 4 }
           spec.stackCornerRadius = 0
           const mark = group[2] ? 'point' : 'bar'
@@ -2405,48 +2412,46 @@
                 : [...(metric.previous || []), ...extra]
             const detailDimensions = model.detailDimensions.filter(([field]) => !metric.detailExclude?.includes(field))
             const detailMeasures = metric.measures.filter(([field]) => !detailDimensions.some(([key]) => field === key))
-            const jobs = [DashboardTable.load(), query(detailDimensions, selectedConditions, detailMeasures, signal)]
-            if (reload)
-              jobs.push(
-                query(
-                  [group],
-                  typeof metric.groupConditions === 'function'
-                    ? metric.groupConditions(group)
-                    : metric.groupConditions || base,
-                  metric.measures,
-                  signal,
-                ),
-                query([], base, metric.measures, signal),
-                metric.previous ? query([], metric.previous, metric.measures, signal) : undefined,
-              )
-            else jobs.push(undefined, undefined, undefined)
-            jobs.push(selected !== undefined ? query([], selectedConditions, metric.measures, signal) : undefined)
-            jobs.push(
+            const [library, details, groups, total, prior, selectedTotal, selectedPrior] = await Promise.all([
+              DashboardTable.load(),
+              query(detailDimensions, selectedConditions, detailMeasures, signal),
+              reload
+                ? query(
+                    [group],
+                    typeof metric.groupConditions === 'function'
+                      ? metric.groupConditions(group)
+                      : metric.groupConditions || base,
+                    metric.measures,
+                    signal,
+                  )
+                : undefined,
+              reload ? query([], base, metric.measures, signal) : undefined,
+              reload && metric.previous ? query([], metric.previous, metric.measures, signal) : undefined,
+              selected !== undefined ? query([], selectedConditions, metric.measures, signal) : undefined,
               selected !== undefined && metric.previous
                 ? query([], previousConditions, metric.measures, signal)
                 : undefined,
-            )
-            const [library, details, groups, total, prior, selectedTotal, selectedPrior] = await Promise.all(jobs)
+            ])
             if (!dialog.open || ticket !== version) return
             if (reload) {
-              groupRows = groups
               totalRow = total[0] || {}
               priorRow = prior?.[0] || {}
+              groupRows = groups
+                .map((row) => ({
+                  key: String(row[group[0]]),
+                  value: metric.groupValue ? metric.groupValue(row, priorRow) : metric.value(row, priorRow),
+                }))
+                .filter((row) => Number.isFinite(row.value))
+              if (!group[2])
+                groupRows.sort((a, b) => b.value - a.value || a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
+              else groupRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
             }
             const current = selectedTotal?.[0] || totalRow
             const baseline = selectedPrior?.[0] || priorRow
             const value = metric.value(current, baseline)
             const overall = metric.value(totalRow, priorRow)
             const plotRows = groupRows
-              .map((row) => ({
-                key: String(row[group[0]]),
-                value: metric.groupValue ? metric.groupValue(row, priorRow) : metric.value(row, priorRow),
-              }))
-              .filter((row) => Number.isFinite(row.value))
-            if (!group[2])
-              plotRows.sort((a, b) => b.value - a.value || a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
-            else plotRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
-            records = details.map((row) => ({ ...row }))
+            records = details
             // 提交串行化，切换或关闭后的旧查询与旧渲染都不能覆盖当前结果。
             renderQueue = renderQueue
               .catch(() => {})
@@ -2460,8 +2465,8 @@
                       : model.detailScope || '当前范围'
                     : `${group[1]}：${selected}`
                 find('value-label').title = find('value-label').textContent
-                updateReading(value, metric.format)
-                const ranked = [...plotRows].sort((a, b) => b.value - a.value)
+                motion.animateReading(find('value'), value, metric.format)
+                const ranked = selected === undefined ? [...plotRows].sort((a, b) => b.value - a.value) : []
                 find('finding').textContent =
                   selected !== undefined
                     ? `总体 ${metric.format(overall)}`
@@ -2489,8 +2494,7 @@
                 find('chart-hint').textContent = !group[2] && plotRows.length > 12 ? '前 12 组' : ''
                 find('picker-text').textContent = `选择${group[1]}`
                 find('picker').hidden = !plotRows.length
-                const nextMenu = JSON.stringify([group[0], plotRows])
-                if (nextMenu !== menuSignature) {
+                if (plotRows !== menuRows) {
                   find('groups').replaceChildren(
                     ...plotRows.map((row) => {
                       const choice = button(`${row.key} · ${(metric.groupFormat || metric.format)(row.value)}`, () =>
@@ -2500,7 +2504,7 @@
                       return choice
                     }),
                   )
-                  menuSignature = nextMenu
+                  menuRows = plotRows
                 }
                 for (const choice of find('groups').children)
                   choice.setAttribute('aria-pressed', String(selected === choice.dataset.key))
@@ -2517,7 +2521,6 @@
                 if (!chartRows.length) {
                   chart?.release()
                   chart = undefined
-                  chartSize = ''
                 }
                 if (chartRows.length) {
                   const spec = buildAnalysisSpec(group, metric, chartRows, chartTitle, selected)
@@ -2535,7 +2538,6 @@
                   } else {
                     chart = new VChart(spec, { dom: find('chart') })
                     chart.renderSync()
-                    chartSize = ''
                   }
                   chartType = spec.type
                   if (!dialog.open || ticket !== version) return
@@ -2552,11 +2554,11 @@
                 if (!table) {
                   const options = buildTableOptions(detailDimensions, detailMeasures, records)
                   table = new library.ListTable(find('table'), options)
-                  tableSize = `${find('table').clientWidth}:${find('table').clientHeight}`
+                  sizes.set(table, `${find('table').clientWidth}:${find('table').clientHeight}`)
                 }
                 if (!dialog.open || ticket !== version) return
                 if (existingTable) DashboardTable.setRecords(table, records, { animate: false })
-                resizeChart()
+                resize(chart, find('chart'))
                 find('feedback').textContent = records.length ? '' : '当前范围暂无明细记录。'
                 dialog.dataset.state = records.length ? 'ready' : 'empty'
                 if (dialog.dataset.contentEnter !== 'true') dialog.dataset.contentEnter = 'true'
@@ -2633,16 +2635,10 @@
           dialog.style.setProperty('--overlay-origin', `${x}% ${y}%`)
           dialog.querySelector('.ma-body').scrollTop = 0
           find('close').focus()
-          dialog.dataset.state = 'loading'
           void refresh(true)
         }
         const onOverlayMotionChange = () => {
           if (!reducedMotion.matches || !dialog?.open) return
-          if (reading) {
-            cancelAnimationFrame(reading.frame)
-            reading.value = reading.target
-            find('value').textContent = reading.format(reading.target)
-          }
           if (dialog.dataset.closing === 'true') completeClose()
           else dialog.getAnimations({ subtree: true }).forEach((animation) => animation.cancel())
         }
@@ -2706,13 +2702,16 @@
       const $ = (selector) => document.querySelector(selector)
       const grid = $('#dashboard')
       const instances = new Map()
+      const plotSizes = new WeakMap()
       let observer,
         disposed = false
       let overviewTable, overviewObserver
       const subscriptions = []
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
+      const motion = DashboardMotion({ reducedMotion })
       const { revealComponents, finishEntrance, animateMetric, finishMetricAnimations, bindCardTilt, disposeMotion } =
-        DashboardMotion({ reducedMotion })
+        motion
+      const formatNumber = motion.formatNumber
       const tilts = [...document.querySelectorAll('.metric-card')].map(bindCardTilt)
       subscriptions.push(() => tilts.forEach((tilt) => tilt.dispose()))
       try {
@@ -2725,7 +2724,7 @@
           DashboardTable.load(),
         ])
         registerAll()
-        const money = (value) => `¥${Math.round(value).toLocaleString('zh-CN')}`
+        const money = (value) => `¥${formatNumber(Math.round(value), 0)}`
         const dateKey = (day) => new Date(day * 86400000).toISOString().slice(0, 10)
         // 内置的确定性演示数据：60 天、两个地区，每个订单有两条商品明细。
         // 实际接入时替换 rawDataset 与 schema，不改变后续 Builder 查询链路。
@@ -2845,7 +2844,19 @@
             card.dataset.enter = index + 1
           }
           if (grid.contains(focused) && document.activeElement !== focused) focused.focus({ preventScroll: true })
-          instances.forEach((instance, element) => instance.resize(element.clientWidth, element.clientHeight))
+          const sizes = [...instances].map(([instance, element]) => [
+            instance,
+            element,
+            element.clientWidth,
+            element.clientHeight,
+          ])
+          for (const [instance, element, width, height] of sizes) {
+            const previous = plotSizes.get(element)
+            if (width && height && (previous?.width !== width || previous?.height !== height)) {
+              plotSizes.set(element, { width, height })
+              instance.resize(width, height)
+            }
+          }
         }
         observer = new ResizeObserver(layoutDashboard)
         observer.observe(grid)
@@ -3149,23 +3160,20 @@
 
         let revision = 0,
           completed = 0,
-          rendering = false,
-          queued = false
+          rendering = false
         function requestRender() {
           if (disposed) return
           DashboardLoading.refresh(requestRender)
           metricsReady = false
           clearHover()
           revision++
-          if (queued || disposed) return
-          queued = true
+          if (rendering) return
+          rendering = true
           queueMicrotask(() => {
-            queued = false
-            if (!rendering && !disposed) void renderLoop()
+            if (!disposed) void renderLoop()
           })
         }
         async function renderLoop() {
-          rendering = true
           grid.setAttribute('aria-busy', 'true')
           document.body.dataset.state = 'loading'
           $('#status').textContent = '正在查询…'
@@ -3374,7 +3382,7 @@
               : index === 1 || index === 4
                 ? `${index === 1 && value > 0 ? '+' : ''}${value.toFixed(1)}%`
                 : index === 2
-                  ? `${value.toLocaleString('zh-CN')} 单`
+                  ? `${formatNumber(value, 3, 0)} 单`
                   : money(value)
           const field = index === 2 ? 'order_id' : index === 3 ? 'profit' : 'sales'
           const value =
@@ -3452,6 +3460,7 @@
         }
         subscriptions.push(
           bindMetricAnalysis({
+            motion,
             vbi: VBI,
             Builder,
             VChart,

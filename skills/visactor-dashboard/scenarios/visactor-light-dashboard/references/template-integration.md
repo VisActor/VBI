@@ -93,7 +93,7 @@
 | `metric-analysis-runtime`   | 指标分析弹窗与交互生命周期                      |
 | `metric-analysis-style`     | 弹窗样式与动效                                  |
 
-`DashboardMotion({ reducedMotion, metricUnit })` 返回页面需要的呈现方法；`metricUnit` 只供行业模板保留数字与单位分排，其余模板使用原有纯文本。页面退出调用 `disposeMotion()`，不直接访问动画内部状态。业务查询、缓存、数据口径与主题仍留在页面中。
+`DashboardMotion({ reducedMotion, metricUnit })` 负责页面与分析弹窗的读数动画和数字格式器；同一帧合并更新，保留各读数的时长、缓动与当前值。`metricUnit` 只供行业模板保留数字与单位分排，其余模板使用原有纯文本。将同一 `motion` 对象传给 `bindMetricAnalysis()`；关闭弹窗取消其读数，页面退出调用 `disposeMotion()`。卡片倾斜只监听自身外层命中区；图表先统一测量尺寸，仅在变化时 resize。业务查询、数据口径与主题仍留在页面中。
 
 修改跨模板行为时，直接更新涉及的 HTML，并逐份验证；保留各模板的数据口径、布局和交互差异。
 
