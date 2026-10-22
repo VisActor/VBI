@@ -28,7 +28,7 @@
 
 当前适配器服务平面 `ListTable`。`DashboardTable.load()` 按需加载固定版本 VTable；`DashboardTable.options(base, host)` 负责表现适配，保留 Builder 输出的列、字段格式与数据。`DashboardTable.overview(Builder, columns, rows, host)` 将主页已格式化的汇总行映射为表格，不执行业务聚合；透视表按其表头与聚合结构另做接入，不直接假定此适配器覆盖所有表类型。
 
-通过 `DashboardTable.setRecords(table, records)` 原位替换完整结果并清除过期的单元格选择；主题切换重新解析宿主 token，使用 `updateTheme()`，不为换色重建表格。主页概览与分析明细各自管理实例、ResizeObserver 和释放，不能将 VTable 混入只负责 VChart 的实例集合。
+通过 `DashboardTable.setRecords(table, records)` 原位替换完整结果并清除过期的单元格选择；分析弹窗连续筛选使用 `DashboardTable.setRecords(table, records, { animate: false })`，避免每次重播 `animationAppear` 造成闪烁；主题切换重新解析宿主 token，使用 `updateTheme()`，不为换色重建表格。主页概览与分析明细各自管理实例、ResizeObserver 和释放，不能将 VTable 混入只负责 VChart 的实例集合。
 
 ## 完整数据与布局
 

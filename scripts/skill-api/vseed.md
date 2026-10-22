@@ -1,15 +1,10 @@
----
-name: vseed
-description: 使用 VSeed DSL 和 Builder 生成 VChart / VTable Spec，配置图表类型、编码、主题，并按需扩展可视化 Pipeline。
----
-
 # VSeed 可视化构建
 
-由 [统一入口](../../SKILL.md)按需加载。本篇说明可视化构建方法，接口签名与类型见 [API 索引](index.md)。
+由 [统一入口](../../../SKILL.md)按需加载。本篇说明可视化构建方法，接口签名与类型见 [API 索引](index.md)。
 
 ## 构建与渲染
 
-- 输入为 VSeed DSL 与实际查询结果。数据查询由 [VQuery](../vquery/SKILL.md)或宿主 Connector 执行；分析配置来自 [VBI](../vbi/SKILL.md)时保持 `buildVSeed()` 返回的字段 ID。
+- 输入为 VSeed DSL 与实际查询结果。数据查询由 [VQuery](../vquery/guide.md)或宿主 Connector 执行；分析配置来自 [VBI](../vbi/guide.md)时保持 `buildVSeed()` 返回的字段 ID。
 - 注册所需图表类型与主题；`registerAll()` 适合完整能力接入，按类型注册适合明确范围的集成。
 - 用 `Builder.from()` 创建 Builder，再调用 `build()` 生成 VChart / VTable Spec。DSL 包含动态过滤代码时，先 `await prepare()`，再构建；不要把异步准备当成已经完成。
 - 根据实际数据选择图表、维度、指标与编码。只有存在真实时间字段时才组织时间趋势；单位、聚合粒度与比例口径与查询结果一致。
@@ -31,4 +26,4 @@ description: 使用 VSeed DSL 和 Builder 生成 VChart / VTable Spec，配置�
 | 公共配置、编码与类型           | [types](types.md)                                                               |
 | 构建管线、数据重塑、主题与语言 | [pipeline](pipeline.md) · [data](data.md) · [theme](theme.md) · [i18n](i18n.md) |
 
-验收实际图表、空数据、更新与尺寸变化；扩展共享 Pipe 时覆盖受影响的图表类型。查询与页面组合通过 [visual-query](../../references/visual-query/SKILL.md)串联；布局、视觉与场景交互质量另按所选 Dashboard 指南验收。
+验收实际图表、空数据、更新与尺寸变化；扩展共享 Pipe 时覆盖受影响的图表类型。查询与页面组合通过 [visual-query](../../visual-query/guide.md)串联；布局、视觉与场景交互质量另按所选 Dashboard 指南验收。

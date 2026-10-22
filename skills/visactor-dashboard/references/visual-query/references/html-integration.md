@@ -2,7 +2,7 @@
 
 用一个 HTML 文件接入 VBI：无需框架或打包工具，使用 Builder 配置分析，再交给 VChart 或 VTable 渲染。VBI、VQuery、VSeed 通过浏览器 ESM 加载，VChart 和 VTable 使用发布包中的浏览器 bundle。本文提供可直接运行的图表与表格教程；查询与字段映射见 [查询与渲染](query-and-render.md)，资源关系与联动见 [组合与联动](composition.md)。
 
-数据库、本地文件或需要服务端取数的 HTTP 接口，通过 [server-runtime 子技能](../../server-runtime/SKILL.md)接入：由本地服务提供 HTML 和同源查询接口。下文的数据内置要求针对直接以 `file://` 打开或分享的静态独立 HTML；使用 runtime 时，业务数据从服务端查询，模板中的布局与交互仍可复用。
+数据库、本地文件或需要服务端取数的 HTTP 接口，通过 [server-runtime 指南](../../server-runtime/guide.md)接入：由本地服务提供 HTML 和同源查询接口。下文的数据内置要求针对直接以 `file://` 打开或分享的静态独立 HTML；使用 runtime 时，业务数据从服务端查询，模板中的布局与交互仍可复用。
 
 **可直接打开或分享的独立 HTML，必须将分析数据内置在 HTML 中。** JSON 使用内联数组，CSV 使用内联文本，再通过 VQuery 的 `rawDataset` 接入。不要在运行时用 `fetch()` 读取旁边的 JSON / CSV 文件或依赖远程数据 URL：通过 `file://` 打开时，本地文件请求可能因 `origin: null` 被浏览器拦截；远程请求也可能受 CORS、网络或预览环境限制，导致 `blocked`、`Failed to fetch` 和图表空白。内置数据不代表完全离线，本文的 CDN 模块仍需联网加载。
 
@@ -354,4 +354,4 @@ DSL 不包含连接器实现、原始数据、外部图片，以及页面后加�
 | 图表显示但透视表方向不对                          | 显式设置维度的 `row` / `column` 编码；修改后重新构建 VSeed 和表格 options。                                                                                                                                             |
 | 页面一直显示加载中                                | 静态导入失败不能由模块主体内的 `try/catch` 捕获；本例用动态 `import()` 捕获加载错误，再区分初始化和查询渲染错误。                                                                                                       |
 
-更多接口按职责查阅 [VBI 子技能](../../../api/vbi/SKILL.md)中的实例、Chart / Dashboard Builder 与 DSL 类型，[VQuery 子技能](../../../api/vquery/SKILL.md)中的数据集与查询 API，以及 [VSeed 子技能](../../../api/vseed/SKILL.md)中的 Spec 构建与主题 API。
+更多接口按职责查阅 [VBI API 指南](../../api/vbi/guide.md)中的实例、Chart / Dashboard Builder 与 DSL 类型，[VQuery API 指南](../../api/vquery/guide.md)中的数据集与查询 API，以及 [VSeed API 指南](../../api/vseed/guide.md)中的 Spec 构建与主题 API。

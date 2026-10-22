@@ -5,8 +5,8 @@ import { fileURLToPath } from 'node:url'
 import { execFileSync } from 'node:child_process'
 
 const skillRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const scenes = path.join(skillRoot, 'references')
-const reference = path.join(scenes, 'visual-query')
+const scenes = path.join(skillRoot, 'scenarios')
+const reference = path.join(skillRoot, 'references', 'visual-query')
 const repoRoot = path.resolve(skillRoot, '../..')
 const templates = [
   ...fs

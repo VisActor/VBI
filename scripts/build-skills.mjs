@@ -48,8 +48,8 @@ function rewriteLinks(content, source, destination, files, sourceRoot) {
     const resource = separator === -1 ? href : href.slice(0, separator)
     const fragment = separator === -1 ? '' : href.slice(separator)
     const resolved = path.resolve(path.dirname(source), resource)
-    const owner = path.relative(path.join(sourceRoot, 'references'), source).split(path.sep)[0]
-    const dependency = path.relative(path.join(sourceRoot, 'references'), resolved).split(path.sep)[0]
+    const owner = resourceOwner(sourceRoot, source)
+    const dependency = resourceOwner(sourceRoot, resolved)
     if (
       scenes.includes(dependency) &&
       owner !== dependency &&
@@ -63,14 +63,26 @@ function rewriteLinks(content, source, destination, files, sourceRoot) {
   })
 }
 
+function resourceOwner(sourceRoot, file) {
+  const [group, name] = path.relative(sourceRoot, file).split(path.sep)
+  if (group === 'scenarios' && scenes.includes(name)) return name
+  if (group === 'references' && sharedReferences.includes(name)) return name
+  return null
+}
+
 function prepareSkill(sourceRoot, scene, name, staging) {
   const files = new Map()
-  collectFiles(path.join(sourceRoot, 'references', scene), '.', files)
-  collectFiles(path.join(sourceRoot, 'api'), 'api', files)
+  collectFiles(path.join(sourceRoot, 'scenarios', scene), '.', files)
+  collectFiles(path.join(sourceRoot, 'references', 'api'), path.join('references', 'api'), files)
   for (const reference of sharedReferences) {
     collectFiles(path.join(sourceRoot, 'references', reference), path.join('references', reference), files)
   }
-  for (const required of ['SKILL.md', 'api/vbi/SKILL.md', 'api/vquery/SKILL.md', 'api/vseed/SKILL.md']) {
+  for (const required of [
+    'SKILL.md',
+    'references/api/vbi/guide.md',
+    'references/api/vquery/guide.md',
+    'references/api/vseed/guide.md',
+  ]) {
     if (![...files.values()].some((file) => slash(file) === required)) {
       throw new Error(`Missing ${required} for ${name}`)
     }

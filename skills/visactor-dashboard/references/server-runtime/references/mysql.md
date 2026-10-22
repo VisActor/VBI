@@ -1,6 +1,6 @@
 # MySQL 数据源
 
-查询 DSL、SQL 编译与 schema 校验的 API 参考见 [VQuery 子技能](../../../api/vquery/SKILL.md)；本篇维护 MySQL 连接、只读事务与数据库时钟约定；启动流程见 [server-runtime](../SKILL.md)。
+查询 DSL、SQL 编译与 schema 校验的 API 参考见 [VQuery API 指南](../../api/vquery/guide.md)；本篇维护 MySQL 连接、只读事务与数据库时钟约定；启动流程见 [server-runtime](../guide.md)。
 
 `scripts/runtime` 直接提供 HTML、查询接口和 MySQL 只读执行。启动时指定 HTML，连接参数放在环境变量或 `.env` 中。
 

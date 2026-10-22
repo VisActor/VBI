@@ -317,7 +317,7 @@ export async function buildSkillApi({ repoRoot = repoDirectory, onProgress = () 
   })
   for (const { name, files } of packages) {
     onProgress(`格式化 ${name} API`)
-    files.set('SKILL.md', fs.readFileSync(path.join(repoRoot, 'scripts/skill-api', `${name}.md`), 'utf8'))
+    files.set('guide.md', fs.readFileSync(path.join(repoRoot, 'scripts/skill-api', `${name}.md`), 'utf8'))
     for (const [filename, content] of files) {
       const result = await format(filename, content, formatOptions)
       if (result.errors.length)
@@ -328,7 +328,7 @@ export async function buildSkillApi({ repoRoot = repoDirectory, onProgress = () 
   onProgress('写入 API 文档')
   for (const { name, files } of packages) {
     // API pages live only in the all-in-one skill; build:skills packages consumers.
-    const directory = path.join(skillRoot, 'api', name)
+    const directory = path.join(skillRoot, 'references', 'api', name)
     fs.rmSync(directory, { recursive: true, force: true })
     fs.mkdirSync(directory, { recursive: true })
     for (const [filename, content] of files) fs.writeFileSync(path.join(directory, filename), content)

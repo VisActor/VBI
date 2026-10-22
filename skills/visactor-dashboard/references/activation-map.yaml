@@ -1,34 +1,34 @@
 # 路径相对于本技能根目录，按当前任务选择所需资料。
 capabilities:
   - id: metric-analysis
-    path: references/metric-analysis/SKILL.md
+    path: references/metric-analysis/guide.md
     when:
       - 用户要求围绕某个指标深入分析，或为看板配置指标分析入口
       - 组织指标详情中的趋势、比较、结构、下钻与 VTable 明细动线
       - 保持主页简约，用户主动探索后逐步展开有依据的分析
   - id: visual-query
-    path: references/visual-query/SKILL.md
+    path: references/visual-query/guide.md
     when:
       - 完成单图、指标卡、表格与普通分析页面的查询和呈现
       - Dashboard 的通用查询、渲染、页面组合与联动
       - 查询复用、刷新调度、资源关系及状态恢复
   - id: vbi
-    path: api/vbi/SKILL.md
+    path: references/api/vbi/guide.md
     when:
       - Chart、Dashboard 或 Insight DSL 与 Builder 操作
       - Connector、资源关联、保存恢复、撤销与协同
   - id: vquery
-    path: api/vquery/SKILL.md
+    path: references/api/vquery/guide.md
     when:
       - 数据集接入、查询 DSL、筛选聚合与查询适配器
       - MySQL 或 DuckDB SQL 编译、参数绑定与 schema 校验
   - id: vseed
-    path: api/vseed/SKILL.md
+    path: references/api/vseed/guide.md
     when:
       - VSeed DSL 转 VChart 或 VTable Spec
       - 图表类型、主题、数据编码与 Pipeline 扩展
   - id: server-runtime
-    path: references/server-runtime/SKILL.md
+    path: references/server-runtime/guide.md
     when:
       - 判断数据内嵌或服务端接入，优先复用已有数据接入
       - 在服务端连接本地或远程数据库、本地 JSON/CSV 与 HTTP 数据源
@@ -38,30 +38,30 @@ dashboards:
   default: visactor-light-dashboard
   routes:
     - id: visactor-light-dashboard
-      path: references/visactor-light-dashboard/SKILL.md
+      path: scenarios/visactor-light-dashboard/SKILL.md
       when:
         - 经营概览、指标监测、趋势或专题分析
         - 没有地图需求，或修改已有轻量看板
     - id: visactor-map2d-dashboard
-      path: references/visactor-map2d-dashboard/SKILL.md
+      path: scenarios/visactor-map2d-dashboard/SKILL.md
       when:
         - 地图、地理分布、位置关系或地域下钻
         - 修改已有地图看板
     - id: visactor-chart-editor
-      path: references/visactor-chart-editor/SKILL.md
+      path: scenarios/visactor-chart-editor/SKILL.md
       when:
         - 可视化搭建、字段配置、聚合筛选与图表实时预览
         - 参考 practices/standard 创建独立 HTML 图表编辑器
     - id: visactor-map3d-dashboard
-      path: references/visactor-map3d-dashboard/SKILL.md
+      path: scenarios/visactor-map3d-dashboard/SKILL.md
       when:
         - 用户明确要求 Three.js 三维地图、地球或空间态势
         - 修改已有三维地图看板
 selection:
   - 用户明确指定类型时按其要求选择；编辑图表使用 visactor-chart-editor，明确三维地图使用 visactor-map3d-dashboard，普通地图使用 visactor-map2d-dashboard，其余看板使用 visactor-light-dashboard
   - 修改已有页面时优先复用已有内容
-  - 按职责选择能力子技能；跨层任务只补读涉及的能力与 API
+  - 按职责选择参考指南；跨层任务只补读涉及的能力与 API
   - 单图、指标卡和普通分析页面读取 visual-query，布局与视觉沿用宿主要求
   - 为指标设计主动探索入口时补读 metric-analysis；普通悬停、样式修改或单纯表格展示不触发
-  - 独立数据查询或 API 问题直接读取对应能力子技能
+  - 独立数据查询或 API 问题直接读取对应参考指南
   - 数据接入按 server-runtime 的判断规则选择
