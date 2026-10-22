@@ -8,10 +8,12 @@
     <title>全球空气质量 · 国家与城市样本观察</title>
     <script>
       try {
-        const t = localStorage.getItem('vbi-air-theme')
-        if (['dark', 'gold', 'ice', 'jade'].includes(t)) {
+        const saved = localStorage.getItem('vbi-air-theme')
+        const t = { jade: 'silver', gold: 'graphite' }[saved] || saved
+        if (['dark', 'graphite', 'ice', 'silver'].includes(t)) {
           document.documentElement.dataset.theme = t
-          document.documentElement.dataset.mode = ['ice', 'jade'].includes(t) ? 'light' : 'dark'
+          document.documentElement.dataset.mode = ['ice', 'silver'].includes(t) ? 'light' : 'dark'
+          if (t !== saved) localStorage.setItem('vbi-air-theme', t)
         }
       } catch {}
     </script>
@@ -52,10 +54,8 @@
         --unhealthy: #ed8279;
         --very: #bb8ed5;
         --hazard: #bc7394;
-        --radius: 18px;
-        --duration: 380ms;
         --ease: cubic-bezier(0.18, 0.75, 0.2, 1);
-        --glass-radius: 19px;
+        --glass-radius: calc(var(--rail-radius) - var(--rail-padding) - 1px);
         --glass-surface: rgb(16 29 40 / 0.54);
         --glass-fallback: var(--glass-solid);
         --glass-filter: blur(14px) saturate(1.08) brightness(1.02);
@@ -114,13 +114,13 @@
           rgb(255 255 255 / 0.08) 58%,
           rgb(238 246 250 / 0.22)
         );
-        --glass-edge: rgb(255 255 255 / 0.8);
-        --glass-edge-hover: rgb(255 255 255 / 0.92);
+        --glass-edge: rgb(255 255 255 / 0.42);
+        --glass-edge-hover: rgb(255 255 255 / 0.62);
         --glass-shadow:
-          0 5px 15px -10px rgb(41 77 96 / 0.17), inset 0 1px 0 rgb(255 255 255 / 0.98),
+          0 5px 15px -10px rgb(41 77 96 / 0.17), inset 0 1px 0 rgb(255 255 255 / 0.48),
           inset 0 -1px 0 rgb(132 161 176 / 0.08);
-        --glass-hover-shadow: 0 7px 20px -10px rgb(41 77 96 / 0.22), inset 0 1px 0 white;
-        --glass-inset: radial-gradient(ellipse at 7% 0%, rgb(255 255 255 / 0.22), transparent 55%);
+        --glass-hover-shadow: 0 7px 20px -10px rgb(41 77 96 / 0.22), inset 0 1px 0 rgb(255 255 255 / 0.62);
+        --glass-inset: radial-gradient(ellipse at 7% 0%, rgb(255 255 255 / 0.1), transparent 55%);
         --glass-inset-shadow: inset 1px 0 0 rgb(255 255 255 / 0.35), inset -1px 0 0 rgb(255 255 255 / 0.1);
         --glass-tile: linear-gradient(145deg, rgb(255 255 255 / 0.48), rgb(255 255 255 / 0.2));
         --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 0.68), 0 5px 16px -12px rgb(40 51 62 / 0.12);
@@ -140,21 +140,6 @@
           0 24px 60px -23px rgb(35 71 91 / 0.24), inset 0 1px 0 rgb(255 255 255 / 0.5),
           inset 1px 0 0 rgb(255 255 255 / 0.2);
         --glass-filter: blur(12px) saturate(1.08);
-      }
-      :root[data-theme='gold'] {
-        --bg: #100e0d;
-        --bg-end: #191512;
-        --ink: #ded5cf;
-        --strong: #fff5ed;
-        --muted: #b0a196;
-        --faint: #8a786b;
-        --accent: #e8b68d;
-        --accent-rgb: 232 182 141;
-        --glass-solid: #211b17;
-        --edge: rgb(239 213 192 / 0.12);
-        --shine: rgb(255 227 202 / 0.16);
-        --glow: rgb(190 113 66 / 0.07);
-        --chart-track: rgb(212 186 159 / 0.12);
       }
       :root[data-theme='ice'] {
         --bg: #e4edf3;
@@ -179,30 +164,6 @@
         --unhealthy: #be5f5d;
         --very: #9463ad;
         --hazard: #9c506f;
-      }
-      :root[data-theme='jade'] {
-        --bg: #e8efed;
-        --bg-end: #dbe7e1;
-        --ink: #3d5148;
-        --strong: #23463e;
-        --muted: #5d7870;
-        --faint: #819084;
-        --accent: #458b77;
-        --accent-rgb: 69 139 119;
-        --inner: rgb(42 77 57 / 0.035);
-        --glass-solid: #f3f8f5;
-        --edge: rgb(45 83 61 / 0.12);
-        --shine: rgb(255 255 255 / 0.95);
-        --shadow: 0 15px 32px #325b6817, inset 0 1px 0 #ffffffef;
-        --glow: rgb(76 129 96 / 0.07);
-        --chart-track: rgb(45 90 65 / 0.1);
-        --danger: #b05f44;
-        --good: #3b9282;
-        --moderate: #a78b45;
-        --sensitive: #c28246;
-        --unhealthy: #bd6b62;
-        --very: #986eae;
-        --hazard: #a15e78;
       }
       /* Geographic optics: one base palette and explicit theme overrides; no business values. */
       :root {
@@ -238,12 +199,12 @@
         --map-night-strength: 1.6;
         --map-specular: #193b49;
       }
-      :root[data-theme='gold'] {
-        --map-outline: #b6c2bb;
-        --map-grid: #657b83;
-        --map-halo: #afcfd9;
-        --map-water: 7 37 49;
-        --map-night-color: #ffd38b;
+      :root[data-theme='graphite'] {
+        --map-outline: #9aafa6;
+        --map-grid: #66756e;
+        --map-halo: #b1c4b9;
+        --map-water: 28 42 44;
+        --map-night-color: #ddd3b5;
       }
       :root[data-theme='ice'] {
         --map-ambient-strength: 1.5;
@@ -265,17 +226,17 @@
         --map-cloud-light: 0.65;
         --map-specular: #b3ccc4;
       }
-      :root[data-theme='jade'] {
+      :root[data-theme='silver'] {
         --map-ambient-strength: 1.5;
         --map-key-strength: 1.8;
-        --map-outline: #527b80;
+        --map-outline: #647886;
         --map-border-opacity: 0.62;
-        --map-grid: #60877e;
-        --map-halo: #9cddd3;
+        --map-grid: #82919d;
+        --map-halo: #b3c6d5;
         --map-water: 127 174 178;
-        --map-ambient: #f5faf3;
-        --map-key: #fff9ed;
-        --map-rim: #b9dbe1;
+        --map-ambient: #f4f6f8;
+        --map-key: #ffffff;
+        --map-rim: #d2dce4;
         --map-cloud-opacity: 0.58;
         --map-atmosphere-strength: 0.12;
         --map-surface-haze: 0.45;
@@ -283,7 +244,7 @@
         --map-shadow-floor: 0.82;
         --map-cloud-floor: 0.7;
         --map-cloud-light: 0.65;
-        --map-specular: #afcbbd;
+        --map-specular: #bdc8d1;
       }
 
       /* Geographic data layer: continuous magnitude colors, separate from AQI health categories. */
@@ -296,14 +257,14 @@
         --map-column-edge: #8deaff;
         --map-column-cap: #d9fcff;
       }
-      :root[data-theme='gold'] {
-        --map-field-land: #485366;
-        --map-field-ocean: #121e2d;
-        --map-hex-strength: 0.32;
-        --map-column-low: #ae8b55;
-        --map-column-high: #efd09a;
-        --map-column-edge: #f0cb8d;
-        --map-column-cap: #fff0d3;
+      :root[data-theme='graphite'] {
+        --map-field-land: #526760;
+        --map-field-ocean: #283c3a;
+        --map-hex-strength: 0.26;
+        --map-column-low: #708b83;
+        --map-column-high: #b5cbbe;
+        --map-column-edge: #bed1c5;
+        --map-column-cap: #e7f0e9;
       }
       :root[data-theme='ice'] {
         --map-field-land: #b6d2df;
@@ -314,14 +275,23 @@
         --map-column-edge: #236d91;
         --map-column-cap: #bdeaf5;
       }
-      :root[data-theme='jade'] {
-        --map-field-land: #bbd6cc;
-        --map-field-ocean: #97b9b1;
-        --map-hex-strength: 0.16;
-        --map-column-low: #367f6a;
-        --map-column-high: #196b61;
-        --map-column-edge: #267866;
-        --map-column-cap: #c3f2dd;
+      :root[data-theme='silver'] {
+        --map-field-land: #cbd3dc;
+        --map-field-ocean: #aab9c6;
+        --map-hex-strength: 0.13;
+        --map-column-low: #617d94;
+        --map-column-high: #354f67;
+        --map-column-edge: #536e86;
+        --map-column-cap: #dbe5ed;
+      }
+      :root[data-theme='silver'] {
+        --danger: #b75c3d;
+        --good: #358f83;
+        --moderate: #ac8541;
+        --sensitive: #c27d41;
+        --unhealthy: #be5f5d;
+        --very: #9463ad;
+        --hazard: #9c506f;
       }
     </style>
     <style id="dashboard-layout">
@@ -1204,22 +1174,9 @@
         height: 31px;
         font-size: 11px;
       }
-      .analysis-tabs {
-        display: flex;
-        gap: 4px;
-        background: var(--inner);
-        border-radius: 10px;
-        padding: 3px;
-      }
       .analysis-tabs button {
         padding: 5px 12px;
         font-size: 11px;
-        color: var(--muted);
-        border-radius: 7px;
-      }
-      .analysis-tabs button[aria-selected='true'] {
-        background: rgb(var(--accent-rgb) / 0.15);
-        color: var(--strong);
       }
       .analysis-grid {
         flex: 1;
@@ -1953,34 +1910,16 @@
         font-size: 10px;
       }
       .quick-filters {
-        display: flex;
-        gap: 3px;
-        align-items: center;
-        padding: 3px;
-        border: 1px solid var(--edge);
-        border-radius: 10px;
-        background: var(--glass-solid);
-        box-shadow: 0 8px 24px #0002;
         pointer-events: auto;
       }
       .quick-country {
         min-height: var(--control-compact-height);
         padding: 4px 11px;
-        border-radius: 7px;
         font-size: 11px;
-        color: var(--muted);
-        transition:
-          background 0.2s,
-          color 0.2s;
       }
       .quick-country:hover {
         color: var(--strong);
         background: var(--inner);
-      }
-      .quick-country[aria-pressed='true'] {
-        background: var(--accent);
-        color: var(--bg);
-        box-shadow: 0 3px 8px rgb(var(--accent-rgb) / 0.2);
       }
       @media (max-height: 780px) and (min-width: 981px) {
         #map {
@@ -2011,7 +1950,7 @@
         bottom: 64px;
       }
       :root[data-theme='ice'] .globe-label,
-      :root[data-theme='jade'] .globe-label {
+      :root[data-theme='silver'] .globe-label {
         --map-label-bg: rgb(247 251 249 / 0.92);
         --map-label-ink: #3a5d62;
         --map-label-strong: #1e3b40;
@@ -2302,9 +2241,6 @@
         .header {
           padding: 7px 4px;
         }
-        .quick-filters {
-          gap: 2px;
-        }
         .quick-country {
           padding: 7px 10px;
         }
@@ -2345,24 +2281,13 @@
         max-width: 100%;
         min-width: 100%;
         padding: 0 10px;
-        border: 1px solid var(--edge);
-        border-radius: var(--control-radius);
         text-align: left;
-        color: var(--ink);
         font-size: var(--control-font);
-        transition:
-          border-color 0.18s,
-          background 0.18s;
       }
       .select-trigger > span {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-      }
-      .select-trigger:hover,
-      .select-trigger[aria-expanded='true'] {
-        border-color: rgb(var(--accent-rgb) / 0.5);
-        background: rgb(var(--accent-rgb) / 0.08);
       }
       .select-chevron {
         width: var(--control-icon);
@@ -2390,7 +2315,6 @@
         display: flex;
         flex-direction: column;
         gap: 7px;
-        animation: select-appear 0.14s ease-out;
       }
       .select-search {
         width: 100%;
@@ -2443,21 +2367,6 @@
         font-size: 12px;
         color: var(--muted);
       }
-      @keyframes select-appear {
-        from {
-          opacity: 0;
-          transform: translateY(-4px);
-        }
-        to {
-          opacity: 1;
-          transform: none;
-        }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .select-panel:popover-open {
-          animation: none;
-        }
-      }
       @media (max-width: 600px) {
         .select-control[data-for='country'] {
           flex: 1;
@@ -2495,12 +2404,7 @@
         }
       }
 
-      /* Atmospheric highlights must not reduce the country control's text contrast. */
-      .header .select-trigger {
-        background: var(--glass-solid);
-      }
-
-      /* Map controls reuse the existing surface tokens; cards are unchanged. */
+      /* Scene-specific control placement and dimensions; material is shared below. */
       .map-toolbar {
         position: absolute;
         z-index: 4;
@@ -2520,9 +2424,6 @@
         border: 0;
         color: var(--ink);
         font: inherit;
-      }
-      .map-metrics {
-        border: 1px solid var(--edge);
       }
       .map-metrics button {
         min-height: var(--control-compact-height);
@@ -2682,14 +2583,6 @@
         border-color: var(--glass-edge-hover);
         box-shadow: var(--glass-hover-shadow);
       }
-      .select-trigger {
-        background: var(--glass-control);
-        border-color: var(--glass-divider);
-        box-shadow: var(--glass-tile-shadow);
-      }
-      .select-trigger:hover {
-        background: var(--glass-control-hover);
-      }
       .select-panel {
         background: var(--glass-popover);
         backdrop-filter: none;
@@ -2814,37 +2707,99 @@
       :root {
         --query-control-size: var(--control-height);
         --query-icon-size: var(--control-icon);
-        --query-control-ink: var(--muted);
-        --query-hover: var(--glass-control-hover);
-        --query-track: var(--control-surface, var(--glass-control));
-        --query-active: var(--control-active, var(--glass-solid));
-        --query-ink: var(--control-selected, var(--strong));
+        --query-control-ink: var(--ink);
+        --query-hover: color-mix(in srgb, var(--strong) 7%, transparent);
+        --query-track: color-mix(in srgb, var(--glass-fallback) 62%, transparent);
+        --query-active: rgb(255 255 255 / 14%);
+        --query-ink: var(--strong);
+        --query-edge: rgb(255 255 255 / 14%);
+        --query-highlight: rgb(255 255 255 / 18%);
+        --query-shadow: 0 3px 10px -4px rgb(0 0 0 / 24%);
+        --query-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      :root[data-mode='light'] {
+        --query-active: rgb(255 255 255 / 84%);
+        --query-edge: rgb(255 255 255 / 58%);
+        --query-highlight: rgb(255 255 255 / 88%);
+        --query-shadow: 0 3px 10px -4px rgb(35 54 70 / 18%);
       }
       .control-group {
+        position: relative;
+        isolation: isolate;
         display: flex;
         align-items: center;
-        border-radius: 20px;
+        border: 0;
+        border-radius: calc(var(--query-control-size) / 2 + 3px);
         padding: 3px;
         gap: 3px;
         background: var(--query-track);
+        box-shadow:
+          inset 0 0 0 1px var(--query-edge),
+          var(--query-shadow);
+      }
+      .control-group::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: var(--segment-width, 0px);
+        height: var(--segment-height, 0px);
+        transform: translate(var(--segment-x, 0px), var(--segment-y, 0px));
+        border-radius: 999px;
+        background: var(--query-active);
+        box-shadow:
+          inset 0 1px 0 var(--query-highlight),
+          var(--query-shadow);
+        pointer-events: none;
+        opacity: 0;
+      }
+      .control-group[data-segmented='true']::before {
+        opacity: 1;
+        transition:
+          transform 280ms var(--query-ease),
+          width 180ms var(--query-ease);
       }
       .control-group button {
+        position: relative;
+        border: 0;
+        box-shadow: none;
         background: transparent;
         color: var(--query-control-ink);
-        transition:
-          background 180ms ease,
-          color 180ms ease;
-        border-radius: 17px;
+        border-radius: 999px;
       }
       .control-group button:is([aria-pressed='true'], [aria-selected='true']) {
         background: var(--query-active);
         color: var(--query-ink);
-        box-shadow: 0 2px 10px #26354410;
+        box-shadow: var(--query-shadow);
       }
+      .control-group[data-segmented='true'] button:is([aria-pressed='true'], [aria-selected='true']) {
+        background: transparent;
+        box-shadow: none;
+      }
+      :is(.select-trigger, #analysis-clear, #analysis-retry, .table-expand),
+      .control-icon {
+        border: 0;
+        border-radius: 999px;
+        background: var(--query-track);
+        color: var(--query-control-ink);
+        box-shadow:
+          inset 0 0 0 1px var(--query-edge),
+          var(--query-shadow);
+      }
+      .control-group button,
       :is(.select-trigger, #analysis-clear, #analysis-retry, .table-expand) {
-        border-radius: 17px;
+        transition:
+          background 160ms ease,
+          color 160ms ease,
+          scale 180ms var(--query-ease);
       }
-      .query-control {
+      .control-group,
+      :is(.control-icon, .select-trigger) {
+        backdrop-filter: blur(12px) saturate(1.12);
+        -webkit-backdrop-filter: blur(12px) saturate(1.12);
+      }
+      .query-control,
+      .control-icon {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -2858,31 +2813,22 @@
         margin: 0 0 0 6px;
       }
       .control-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
         flex: 0 0 auto;
-        gap: 0;
         width: auto;
         min-width: var(--query-control-size);
         height: var(--query-control-size);
         padding: 0;
-        border: 0;
-        border-radius: 999px;
-        background: var(--query-track);
-        box-shadow: var(--glass-tile-shadow);
-        color: var(--query-control-ink);
         line-height: 1;
         transition:
           padding 180ms ease,
           background 180ms ease,
           color 180ms ease,
-          box-shadow 180ms ease;
+          box-shadow 180ms ease,
+          scale 180ms var(--query-ease);
       }
       .control-icon[data-loading='true'] {
         padding: 0 8px;
       }
-      .control-icon:hover:not(:disabled),
       .control-icon[aria-expanded='true'] {
         background: var(--query-hover);
         color: var(--query-ink);
@@ -2948,13 +2894,57 @@
         border-radius: 50%;
         animation: query-turn 1.1s linear infinite;
       }
-      .control-group button:hover:not(:disabled):not([aria-pressed='true'], [aria-selected='true']) {
-        background: var(--query-hover);
-        color: var(--query-ink);
-      }
       :is(.control-group button, .control-icon, .query-control):focus-visible {
         outline: 2px solid var(--accent);
-        outline-offset: 2px;
+        outline-offset: 3px;
+      }
+      :is(.control-group button, .control-icon, .query-control):active:not(:disabled) {
+        scale: 0.97;
+      }
+      :is(.control-group button, .control-icon, .query-control):disabled {
+        cursor: default;
+      }
+      @media (hover: hover) {
+        .control-icon:hover:not(:disabled),
+        .control-group button:hover:not(:disabled):not([aria-pressed='true'], [aria-selected='true']),
+        :is(.select-trigger, #analysis-clear, #analysis-retry, .table-expand):hover:not(:disabled) {
+          background: var(--query-hover);
+          color: var(--query-ink);
+        }
+      }
+      /* Controls on an existing glass surface use a fill, without a second blur pass. */
+      :is(.dialog, .column) :is(.control-group, .control-icon, .query-control) {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      .select-panel:popover-open {
+        transform-origin: var(--popover-origin, top right);
+        animation: control-reveal 220ms var(--query-ease) backwards;
+      }
+      @keyframes control-reveal {
+        from {
+          opacity: 0;
+          transform: translateY(var(--popover-shift, -4px)) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @media (prefers-reduced-transparency: reduce) {
+        :is(.control-group, .control-icon, .select-trigger, #analysis-clear, #analysis-retry, .table-expand) {
+          background: var(--glass-fallback);
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+        }
+      }
+      @media (prefers-contrast: more) {
+        :is(.control-group, .control-icon, .select-trigger, #analysis-clear, #analysis-retry, .table-expand) {
+          box-shadow: inset 0 0 0 1px var(--query-control-ink);
+        }
+        .control-group::before {
+          box-shadow: inset 0 0 0 1px var(--query-ink);
+        }
       }
       @keyframes query-turn {
         to {
@@ -2962,14 +2952,129 @@
         }
       }
       @media (prefers-reduced-motion: reduce) {
+        .control-group::before,
+        .control-group button,
+        .query-control,
         .query-control::after,
         .control-icon {
-          transition: none;
+          transition: none !important;
+          scale: none;
         }
+        .select-panel:popover-open,
         .query-control::after,
         .analysis-loading::before {
           animation: none !important;
         }
+      }
+    </style>
+    <style id="dashboard-neutral-themes">
+      /* Shared 2D/3D neutral palettes. Scene data encodings remain in their own tokens. */
+      :root[data-theme='silver'] {
+        --bg: #eef0f3;
+        --bg-end: #e1e6eb;
+        --ink: #333b45;
+        --strong: #1f242c;
+        --muted: #626e7b;
+        --faint: #75808d;
+        --accent: #45647d;
+        --accent-rgb: 69 100 125;
+        --glass-solid: #fafbfc;
+        --glass-surface: rgb(250 251 252 / 54%);
+        --glass-contrast-surface: rgb(250 251 252 / 86%);
+        --glass-popover: rgb(250 251 252 / 96%);
+        --edge: rgb(58 68 80 / 12%);
+        --shine: rgb(255 255 255 / 88%);
+        --inner: rgb(58 68 80 / 3.5%);
+        --glow: rgb(69 100 125 / 4%);
+        --chart-track: rgb(58 68 80 / 10%);
+        --glass-filter: blur(14px) saturate(1.02);
+        --glass-sheen: linear-gradient(145deg, rgb(255 255 255 / 28%), rgb(255 255 255 / 6%) 60%);
+        --glass-edge: rgb(255 255 255 / 58%);
+        --glass-edge-hover: rgb(255 255 255 / 78%);
+        --glass-shadow: 0 6px 20px -12px rgb(31 36 44 / 20%), inset 0 1px 0 rgb(255 255 255 / 60%);
+        --glass-hover-shadow: 0 8px 24px -12px rgb(31 36 44 / 24%), inset 0 1px 0 rgb(255 255 255 / 78%);
+        --glass-inset: linear-gradient(145deg, rgb(255 255 255 / 16%), rgb(238 240 243 / 6%));
+        --glass-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 32%);
+        --glass-tile: linear-gradient(145deg, rgb(255 255 255 / 44%), rgb(250 251 252 / 22%));
+        --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 58%);
+        --glass-reflection: rgb(255 255 255 / 12%);
+        --glass-highlight: rgb(255 255 255 / 6%);
+        --glass-scrim: rgb(31 36 44 / 30%);
+        --glass-dialog-shadow: 0 24px 88px rgb(31 36 44 / 24%), inset 0 1px 0 var(--glass-edge);
+        --rail-background: linear-gradient(145deg, rgb(255 255 255 / 18%), rgb(225 230 235 / 12%) 60%);
+        --rail-edge: rgb(255 255 255 / 42%);
+        --rail-shadow: 0 24px 60px -24px rgb(31 36 44 / 24%), inset 0 1px 0 rgb(255 255 255 / 56%);
+        --control-active: rgb(255 255 255 / 84%);
+        --control-selected: var(--strong);
+        --query-shadow: 0 3px 10px -4px rgb(31 36 44 / 18%);
+      }
+      :root[data-theme='graphite'] {
+        --bg: #17191b;
+        --bg-end: #1f2326;
+        --ink: #e2e6e3;
+        --strong: #f1f2f0;
+        --muted: #adb3b0;
+        --faint: #8d9992;
+        --accent: #a5b8ac;
+        --accent-rgb: 165 184 172;
+        --glass-solid: #25282b;
+        --glass-surface: rgb(37 40 43 / 60%);
+        --glass-contrast-surface: rgb(37 40 43 / 88%);
+        --glass-popover: rgb(43 47 50 / 98%);
+        --edge: rgb(221 228 224 / 12%);
+        --shine: rgb(255 255 255 / 14%);
+        --inner: rgb(255 255 255 / 3%);
+        --glow: rgb(165 184 172 / 3%);
+        --chart-track: rgb(221 228 224 / 10%);
+        --glass-filter: blur(14px) saturate(0.96);
+        --glass-sheen: linear-gradient(145deg, rgb(255 255 255 / 6%), rgb(255 255 255 / 1%) 60%);
+        --glass-edge: rgb(230 235 232 / 16%);
+        --glass-edge-hover: rgb(230 235 232 / 26%);
+        --glass-shadow: 0 6px 20px -12px rgb(0 0 0 / 38%), inset 0 1px 0 rgb(255 255 255 / 12%);
+        --glass-hover-shadow: 0 8px 24px -12px rgb(0 0 0 / 46%), inset 0 1px 0 rgb(255 255 255 / 18%);
+        --glass-inset: linear-gradient(145deg, rgb(255 255 255 / 3%), rgb(23 25 27 / 4%));
+        --glass-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 6%);
+        --glass-tile: linear-gradient(145deg, rgb(230 235 232 / 7%), rgb(230 235 232 / 3%));
+        --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 9%);
+        --glass-reflection: rgb(255 255 255 / 8%);
+        --glass-highlight: rgb(255 255 255 / 4%);
+        --glass-scrim: rgb(0 0 0 / 54%);
+        --glass-dialog-shadow: 0 24px 88px rgb(0 0 0 / 46%), inset 0 1px 0 var(--glass-edge);
+        --rail-background: linear-gradient(145deg, rgb(230 235 232 / 6%), rgb(23 25 27 / 28%) 60%);
+        --rail-edge: rgb(230 235 232 / 14%);
+        --rail-shadow: 0 24px 60px -24px rgb(0 0 0 / 48%), inset 0 1px 0 rgb(255 255 255 / 14%);
+        --control-active: rgb(255 255 255 / 14%);
+        --control-selected: var(--strong);
+        --query-shadow: 0 3px 10px -4px rgb(0 0 0 / 24%);
+      }
+      :root[data-theme='silver'],
+      :root[data-theme='graphite'] {
+        --page-surface: var(--bg);
+        --glass-fallback: var(--glass-solid);
+        --popover-surface: var(--glass-popover);
+        --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--glass-solid));
+        --focus: var(--accent);
+        --line: var(--edge);
+        --divider: var(--edge);
+        --glass-divider: var(--edge);
+        --shadow: var(--glass-shadow);
+        --glass-tile-hover-shadow: var(--glass-hover-shadow);
+        --dialog-scrim: var(--glass-scrim);
+        --track: var(--chart-track);
+        --hover: color-mix(in srgb, var(--ink) 6%, transparent);
+        --control-hover: var(--hover);
+        --control-surface: color-mix(in srgb, var(--glass-solid) 68%, transparent);
+        --control-ink: var(--muted);
+        --control-selected-muted: var(--muted);
+        --chart-ink: var(--accent);
+        --meter-fill: var(--accent);
+        --rail-filter: blur(18px) saturate(1.02);
+      }
+      .theme-swatch[data-swatch='silver'] {
+        background: linear-gradient(135deg, #fafbfc 50%, #45647d 50%);
+      }
+      .theme-swatch[data-swatch='graphite'] {
+        background: linear-gradient(135deg, #25282b 50%, #a5b8ac 50%);
       }
     </style>
   </head>
@@ -3524,7 +3629,90 @@
             else instance.resize(width, height)
           }
         }
-        return { createMetrics, createActivity, createResize, format }
+        // Observe only control groups; chart/metric mutations do not schedule layout work.
+        function createControls(root = document) {
+          const groups = new Map([...root.querySelectorAll('.control-group')].map((group) => [group, new Set()]))
+          let frame = 0
+          const schedule = () => {
+            if (!frame && !document.hidden) frame = requestAnimationFrame(update)
+          }
+          const resize = new ResizeObserver(schedule)
+          const mutations = new MutationObserver((records) => {
+            if (records.some((record) => record.type === 'childList')) observeButtons()
+            schedule()
+          })
+          function observeButtons() {
+            for (const [group, previous] of groups) {
+              const buttons = new Set(group.querySelectorAll(':scope > button'))
+              for (const button of previous) if (!buttons.has(button)) resize.unobserve(button)
+              for (const button of buttons) if (!previous.has(button)) resize.observe(button)
+              groups.set(group, buttons)
+            }
+          }
+          function update() {
+            frame = 0
+            // Read all geometry first. offset* remains stable during dialog/press transforms.
+            const layouts = [...groups.keys()].map((group) => {
+              const active =
+                group.querySelector(':scope > button[data-loading="true"]') ||
+                group.querySelector(':scope > button:is([aria-pressed="true"], [aria-selected="true"])')
+              const box = active?.offsetWidth
+                ? [active.offsetLeft, active.offsetTop, active.offsetWidth, active.offsetHeight]
+                : null
+              // Keep a widening end button visible on compact, scrollable tracks.
+              const scroll =
+                box && group.clientWidth
+                  ? Math.max(
+                      0,
+                      Math.min(box[0] - 3, Math.max(group.scrollLeft, box[0] + box[2] + 3 - group.clientWidth)),
+                    )
+                  : group.scrollLeft
+              return [group, box, scroll]
+            })
+            for (const [group, box, scroll] of layouts) {
+              if (group.scrollLeft !== scroll) group.scrollLeft = scroll
+              if (box)
+                ['x', 'y', 'width', 'height'].forEach((key, i) => {
+                  const value = `${box[i]}px`
+                  if (group.style.getPropertyValue(`--segment-${key}`) !== value)
+                    group.style.setProperty(`--segment-${key}`, value)
+                })
+              const visible = box ? 'true' : 'false'
+              if (group.dataset.segmented !== visible) group.dataset.segmented = visible
+            }
+          }
+          for (const group of groups.keys()) {
+            resize.observe(group)
+            mutations.observe(group, {
+              subtree: true,
+              childList: true,
+              attributes: true,
+              attributeFilter: ['aria-pressed', 'aria-selected', 'data-loading', 'hidden'],
+            })
+          }
+          observeButtons()
+          schedule()
+          const visibility = () => {
+            cancelAnimationFrame(frame)
+            frame = 0
+            if (!document.hidden) schedule()
+          }
+          document.addEventListener('visibilitychange', visibility)
+          return {
+            destroy() {
+              cancelAnimationFrame(frame)
+              resize.disconnect()
+              mutations.disconnect()
+              document.removeEventListener('visibilitychange', visibility)
+              for (const group of groups.keys()) {
+                delete group.dataset.segmented
+                for (const key of ['x', 'y', 'width', 'height']) group.style.removeProperty(`--segment-${key}`)
+              }
+              groups.clear()
+            },
+          }
+        }
+        return { createMetrics, createActivity, createResize, createControls, format }
       })()
     </script>
     <script id="dashboard-loading-runtime">
@@ -17799,6 +17987,7 @@
       const metrics = DashboardUI.createMetrics({ reducedMotion: reduced, duration: 540 })
       const mainActivity = DashboardUI.createActivity(),
         modalActivity = DashboardUI.createActivity()
+      const segmentedControls = DashboardUI.createControls()
       const resizeChart = DashboardUI.createResize()
       const catNames = [
           'Good',
@@ -17857,8 +18046,7 @@
         revision = 0,
         rendering = false,
         ready = false,
-        datasetReady = false,
-        datasetRelease
+        datasetReady = false
       let mapBootResolved = false,
         presentationStarted = false
       async function completeInitialPresentation() {
@@ -18708,11 +18896,11 @@
 
       let themeRevision = 0
       function setTheme(name, persist = true) {
-        if (!['dark', 'gold', 'ice', 'jade'].includes(name)) return
+        if (!['dark', 'graphite', 'ice', 'silver'].includes(name)) return
         const ticket = ++themeRevision
         cssValues.clear()
         document.documentElement.dataset.theme = name
-        document.documentElement.dataset.mode = ['ice', 'jade'].includes(name) ? 'light' : 'dark'
+        document.documentElement.dataset.mode = ['ice', 'silver'].includes(name) ? 'light' : 'dark'
         $$('[data-theme-option]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.themeOption === name)))
         try {
           if (persist) localStorage.setItem('vbi-air-theme', name)
@@ -19274,9 +19462,9 @@
         $('#theme-options').replaceChildren(
           ...[
             ['dark', '深蓝', '#23475b'],
-            ['gold', '黑金', '#b8a471'],
+            ['graphite', '石墨'],
             ['ice', '冰蓝', '#bfd9ed'],
-            ['jade', '暖玉', '#cad8bf'],
+            ['silver', '银雾'],
           ].map(([key, label, color]) => {
             const b = document.createElement('button')
             b.className = 'theme-option'
@@ -19284,7 +19472,8 @@
             b.setAttribute('aria-pressed', String(document.documentElement.dataset.theme === key))
             const dot = document.createElement('i')
             dot.className = 'theme-swatch'
-            dot.style.setProperty('--swatch', color)
+            dot.dataset.swatch = key
+            if (color) dot.style.setProperty('--swatch', color)
             b.append(dot, document.createTextNode(label))
             on(b, 'click', () => setTheme(key))
             return b
@@ -19409,6 +19598,7 @@
         mainActivity.clear()
         modalActivity.clear()
         metrics.destroy()
+        segmentedControls.destroy()
         DashboardResources.dispose()
         document.documentElement.dataset.disposed = 'true'
         revision++
@@ -19581,10 +19771,12 @@
             width = Math.min(innerWidth - 24, Math.max(rect.width, select.id === 'country' ? 300 : 240)),
             height = Math.min(380, innerHeight - 32),
             below = innerHeight - rect.bottom - 12
+          const opensBelow = below >= Math.min(height, 240)
+          panel.style.setProperty('--popover-origin', opensBelow ? 'top left' : 'bottom left')
+          panel.style.setProperty('--popover-shift', opensBelow ? '-4px' : '4px')
           panel.style.width = width + 'px'
           panel.style.left = Math.min(innerWidth - width - 12, Math.max(12, rect.left)) + 'px'
-          panel.style.top =
-            (below >= Math.min(height, 240) ? rect.bottom + 8 : Math.max(12, rect.top - height - 8)) + 'px'
+          panel.style.top = (opensBelow ? rect.bottom + 8 : Math.max(12, rect.top - height - 8)) + 'px'
           panel.style.maxHeight = Math.min(height, below >= 240 ? below : rect.top - 20) + 'px'
         }
         function open() {

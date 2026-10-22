@@ -17,12 +17,12 @@ description: 创建富有空间感的交互式地图 Dashboard，联动地域、
 
 ### 主题预览
 
-| 主题 | 桌面                                   | 移动端                                     |
-| ---- | -------------------------------------- | ------------------------------------------ |
-| 冰蓝 | [预览](templates/template-ice-pc.png)  | [预览](templates/template-ice-mobile.png)  |
-| 暖玉 | [预览](templates/template-jade-pc.png) | [预览](templates/template-jade-mobile.png) |
-| 深蓝 | [预览](templates/template-dark-pc.png) | [预览](templates/template-dark-mobile.png) |
-| 黑金 | [预览](templates/template-gold-pc.png) | [预览](templates/template-gold-mobile.png) |
+| 主题 | 桌面                                       | 移动端                                         |
+| ---- | ------------------------------------------ | ---------------------------------------------- |
+| 冰蓝 | [预览](templates/template-ice-pc.png)      | [预览](templates/template-ice-mobile.png)      |
+| 银雾 | [预览](templates/template-silver-pc.png)   | [预览](templates/template-silver-mobile.png)   |
+| 深蓝 | [预览](templates/template-dark-pc.png)     | [预览](templates/template-dark-mobile.png)     |
+| 石墨 | [预览](templates/template-graphite-pc.png) | [预览](templates/template-graphite-mobile.png) |
 
 ## Step1：确定指标、范围与模板
 

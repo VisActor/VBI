@@ -10,7 +10,7 @@
 
 ## 材质与全局 token
 
-深蓝、黑金、冰蓝、暖玉是四套完整方案。所有颜色集中于根主题 token：`--bg/--bg-end`、`--ink/--strong/--muted/--faint`、`--accent/--accent-rgb`、`--glass/--inner/--glass-solid`、`--edge/--shine/--shadow/--glow`、`--map-*` 与六个来源等级语义色。渲染器读取这些 token，不在 CSS、Three.js、VChart 和 VTable 分别维护色板。
+深蓝、石墨、冰蓝、银雾是四套完整方案。所有颜色集中于根主题 token：`--bg/--bg-end`、`--ink/--strong/--muted/--faint`、`--accent/--accent-rgb`、`--glass/--inner/--glass-solid`、`--edge/--shine/--shadow/--glow`、`--map-*` 与六个来源等级语义色。渲染器读取这些 token，不在 CSS、Three.js、VChart 和 VTable 分别维护色板。
 
 双层容器分工：外壳使用约18px blur、透明色面、圆弧透光边缘与整体柔光；内卡使用约54%表面、细高光与清晰读数，不再逐卡重复背景模糊。浅色背景采用清透蓝灰或青玉，深色采用墨蓝与暖黑；两层不能使用完全相同的底色和阴影。设置、分析弹窗、hover 与控件共用材质。减少透明或不支持 backdrop-filter 时使用实色 token。
 
