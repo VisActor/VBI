@@ -861,18 +861,8 @@
         gap: 5px;
       }
       .motion-toggle {
-        display: grid;
-        place-items: center;
-        flex-shrink: 0;
-        width: 24px;
-        height: 24px;
-        border: 1px solid var(--divider);
-        border-radius: 6px;
-        color: var(--ink);
-        background: var(--glass-tile);
-      }
-      .motion-toggle:hover {
-        background: var(--glass-tile);
+        --query-control-size: 24px;
+        --query-icon-size: 12px;
       }
       .motion-toggle .icon {
         width: 12px;
@@ -935,17 +925,8 @@
         backdrop-filter: blur(14px);
       }
       .map-controls button {
-        width: 29px;
-        height: 29px;
-        display: grid;
-        place-items: center;
-        border-radius: 5px;
         font-size: 18px;
         font-weight: 300;
-        color: var(--ink);
-      }
-      .map-controls button:hover {
-        background: var(--glass-tile);
       }
       .map-controls .icon {
         width: 14px;
@@ -1285,10 +1266,6 @@
 
           background: var(--control-surface);
         }
-        .map-controls button {
-          width: 40px;
-          height: 40px;
-        }
         .map-meta {
           left: 16px;
           right: 16px;
@@ -1350,8 +1327,7 @@
           min-height: 36px;
         }
         .list-controls .motion-toggle {
-          width: 36px;
-          height: 36px;
+          --query-control-size: 36px;
         }
         .ring-body {
           gap: 8px;
@@ -24254,15 +24230,11 @@
         display: none;
       }
       .map-record-detail .record-close {
+        --query-control-size: 28px;
         position: absolute;
         right: 10px;
         top: 8px;
-        padding: 4px 8px;
-        border: 0;
-        background: transparent;
-        color: var(--muted);
         font-size: 22px;
-        cursor: pointer;
       }
       .map-record-detail h2 {
         margin: 0;
@@ -24513,7 +24485,7 @@
           panel.setAttribute('role', 'region')
           panel.setAttribute('aria-label', label)
           panel.innerHTML =
-            '<button type="button" class="record-close" aria-label="关闭详情">×</button><h2></h2><p class="record-meta"></p><div class="record-value"><strong></strong><span></span></div><dl></dl><a target="_blank" rel="noopener noreferrer">查看原始数据来源 ↗</a>'
+            '<button type="button" class="record-close control-icon" aria-label="关闭详情">×</button><h2></h2><p class="record-meta"></p><div class="record-value"><strong></strong><span></span></div><dl></dl><a target="_blank" rel="noopener noreferrer">查看原始数据来源 ↗</a>'
           document.body.append(panel)
           let previousFocus
           const closeButton = panel.querySelector('button')
@@ -25274,7 +25246,7 @@
             <button id="zoom-in" aria-label="放大地图">+</button>
             <button
               id="toggle-map-motion"
-              class="motion-toggle"
+              class="motion-toggle control-icon"
               aria-label="地图动效"
               aria-pressed="true"
               title="暂停地图动效"
@@ -25461,7 +25433,7 @@
                 </div>
                 <button
                   id="toggle-list-motion"
-                  class="motion-toggle"
+                  class="motion-toggle control-icon"
                   aria-label="列表自动滚动"
                   aria-pressed="true"
                   title="暂停自动滚动 · 悬停可临时暂停"
