@@ -117,14 +117,6 @@
         opacity: 1;
         cursor: progress;
       }
-      .refresh-button[aria-busy='true'] .icon {
-        animation: refresh-turn 1.2s linear infinite;
-      }
-      @keyframes refresh-turn {
-        to {
-          transform: rotate(360deg);
-        }
-      }
       button:focus-visible,
       a:focus-visible {
         outline: 1px solid var(--focus);
@@ -940,7 +932,6 @@
         background: var(--control-surface);
         border: 1px solid var(--divider);
         box-shadow: var(--glass-tile-shadow);
-        border-radius: 9px;
         backdrop-filter: blur(14px);
       }
       .map-controls button {
@@ -1833,16 +1824,10 @@
         z-index: 8;
       }
       .control-group {
-        display: flex;
         flex-wrap: wrap;
-        align-items: center;
         justify-content: flex-end;
-        gap: 2px;
-        padding: 3px;
         min-width: 0;
         border: 0;
-        border-radius: 9px;
-        background: var(--control-surface);
         box-shadow: none;
       }
       .control-button,
@@ -1881,29 +1866,6 @@
       }
       .control-group button::before {
         content: none;
-      }
-      :is(.topbar .refresh-button, .control-icon, .map-settings .settings-trigger) {
-        display: grid;
-        place-items: center;
-        width: 32px;
-        height: 32px;
-        padding: 0;
-        border: 0;
-        border-radius: 9px;
-        background: var(--control-surface);
-        box-shadow: none;
-        color: var(--control-ink);
-      }
-      :is(.topbar .refresh-button, .control-icon) {
-        flex: 0 0 32px;
-        min-height: 0;
-      }
-      :is(.topbar .refresh-button, .control-icon):hover {
-        color: var(--strong);
-      }
-      :is(.topbar .refresh-button, .control-icon) svg {
-        width: 15px;
-        height: 15px;
       }
       :is(.topbar, .ma-dialog) :is(button, select, summary):focus-visible {
         outline: 2px solid var(--focus);
@@ -1961,21 +1923,6 @@
         margin: 0;
         font-size: 14px;
         font-weight: 500;
-      }
-      .settings-close {
-        display: grid;
-        place-items: center;
-        width: 24px;
-        height: 24px;
-        padding: 0;
-        border: 0;
-        border-radius: 6px;
-        color: var(--muted);
-        background: transparent;
-        cursor: pointer;
-      }
-      .settings-close:hover {
-        background: var(--hover);
       }
       .settings-label {
         display: block;
@@ -2303,6 +2250,193 @@
         cursor: wait;
       }
     </style>
+    <script id="dashboard-interaction-runtime">
+      // Transient UI state only: query conditions remain in the scene's Builders.
+      window.DashboardUI = (() => {
+        const node = (value) => (typeof value === 'string' ? document.querySelector(value) : value)
+        const write = (text, value) => {
+          if (text.data !== value) text.data = value
+        }
+        const formats = new Map()
+        const format = (value, digits = 0, minimum = digits) => {
+          if (value == null || !Number.isFinite(Number(value))) return '—'
+          const key = `${minimum}:${digits}`
+          if (!formats.has(key))
+            formats.set(
+              key,
+              new Intl.NumberFormat('zh-CN', { minimumFractionDigits: minimum, maximumFractionDigits: digits }),
+            )
+          return formats.get(key).format(Number(value))
+        }
+        function createMetrics({ reducedMotion, duration = 600 }) {
+          const states = new Map()
+          let frame = 0
+          function settle() {
+            cancelAnimationFrame(frame)
+            frame = 0
+            for (const [element, state] of states) {
+              state.value = state.target
+              write(state.text, state.format(state.target))
+              element.dataset.animating = 'false'
+            }
+          }
+          function tick(now) {
+            frame = 0
+            let active = false
+            for (const [element, state] of states) {
+              if (element.dataset.animating !== 'true') continue
+              const progress =
+                reducedMotion.matches || document.hidden
+                  ? 1
+                  : Math.max(0, Math.min(1, (now - state.started) / duration))
+              state.value =
+                progress === 1 ? state.target : state.from + (state.target - state.from) * (1 - (1 - progress) ** 3)
+              write(state.text, state.format(state.value))
+              if (progress === 1) element.dataset.animating = 'false'
+              active ||= progress < 1
+            }
+            if (active) frame = requestAnimationFrame(tick)
+          }
+          function set(selector, value, unit = '', formatter) {
+            const element = node(selector)
+            const raw = value == null ? '' : String(value)
+            const target = raw.trim() && Number.isFinite(Number(value)) ? Number(value) : null
+            const digits = raw.includes('.') ? raw.split('.')[1].length : 0
+            const format = (next) => (next == null ? '—' : formatter ? formatter(next) : Number(next).toFixed(digits))
+            const label = format(target)
+            const previous = states.get(element)
+            if (previous?.label === label && previous?.unit === unit) return
+            let text = previous?.text
+            if (!text) {
+              text = document.createTextNode(label)
+              element.replaceChildren(text)
+            }
+            let unitNode = element.querySelector('small')
+            if (unit) {
+              if (!unitNode) {
+                unitNode = document.createElement('small')
+                element.append(unitNode)
+              }
+              if (unitNode.textContent !== unit) unitNode.textContent = unit
+            } else unitNode?.remove()
+            const from = previous?.value
+            const animate =
+              !reducedMotion.matches && !document.hidden && target != null && from != null && from !== target
+            const state = {
+              text,
+              label,
+              unit,
+              value: animate ? from : target,
+              from,
+              target,
+              format,
+              started: performance.now(),
+            }
+            states.set(element, state)
+            Object.assign(element.dataset, {
+              compact: String(label.length + unit.length >= 5),
+              digits: String(label.length),
+              metricValue: label,
+              animating: String(animate),
+            })
+            element.setAttribute('aria-label', `${label}${unit}`)
+            write(text, format(state.value))
+            if (animate && !frame) frame = requestAnimationFrame(tick)
+          }
+          const onVisibility = () => {
+            if (document.hidden) settle()
+          }
+          const onMotion = () => {
+            if (reducedMotion.matches) settle()
+          }
+          document.addEventListener('visibilitychange', onVisibility)
+          reducedMotion.addEventListener('change', onMotion)
+          return {
+            set,
+            settle,
+            clear(element) {
+              states.delete(node(element))
+            },
+            destroy() {
+              settle()
+              states.clear()
+              document.removeEventListener('visibilitychange', onVisibility)
+              reducedMotion.removeEventListener('change', onMotion)
+            },
+          }
+        }
+        function createActivity() {
+          let control,
+            frame,
+            timer,
+            resolveWait,
+            painted,
+            started = 0,
+            version = 0
+          const releaseWait = () => {
+            cancelAnimationFrame(frame)
+            clearTimeout(timer)
+            document.removeEventListener('visibilitychange', onVisibility)
+            resolveWait?.()
+            resolveWait = undefined
+          }
+          const onVisibility = () => {
+            if (document.hidden) releaseWait()
+          }
+          const clear = () => {
+            version++
+            releaseWait()
+            control?.removeAttribute('data-loading')
+            control?.removeAttribute('aria-busy')
+            control = undefined
+          }
+          return {
+            start(next) {
+              clear()
+              control = next
+              control?.setAttribute('data-loading', 'true')
+              control?.setAttribute('aria-busy', 'true')
+              started = performance.now()
+              painted = new Promise((resolve) => {
+                resolveWait = resolve
+                if (document.hidden) return releaseWait()
+                document.addEventListener('visibilitychange', onVisibility)
+                frame = requestAnimationFrame(() => {
+                  frame = requestAnimationFrame(releaseWait)
+                })
+              })
+            },
+            paint: () => painted,
+            async finish() {
+              const ticket = version
+              await painted
+              if (ticket !== version) return
+              const remaining = 200 - (performance.now() - started)
+              if (remaining > 0 && !document.hidden)
+                await new Promise((resolve) => {
+                  resolveWait = resolve
+                  document.addEventListener('visibilitychange', onVisibility)
+                  timer = setTimeout(releaseWait, remaining)
+                })
+              if (ticket === version) clear()
+            },
+            clear,
+          }
+        }
+        function createResize() {
+          const sizes = new WeakMap()
+          return (instance, host, table = false, width = host.clientWidth, height = host.clientHeight) => {
+            if (!instance) return
+            const key = `${width}:${height}`
+            if (!width || !height || sizes.get(instance) === key) return
+            sizes.set(instance, key)
+            if (table) instance.resize()
+            else instance.resize(width, height)
+          }
+        }
+        return { createMetrics, createActivity, createResize, format }
+      })()
+    </script>
     <script id="map-ui">
       /* Shared appearance controls, complete themes and startup UI.
        * Templates supply basemap metadata and business-layer callbacks. No data queries here. */
@@ -2395,7 +2529,7 @@
         function createSettings({ mount, basemaps, defaults, getBasemap, setBasemap, getMarkerMode, setMarkerMode }) {
           const matchesTheme = (style) => Boolean(style.dark) === (theme().mode === 'dark')
           const host = typeof mount === 'string' ? document.querySelector(mount) : mount
-          host.innerHTML = `<button type="button" class="settings-trigger" aria-label="地图设置" title="地图设置" aria-haspopup="dialog" aria-expanded="false" aria-controls="map-settings-panel">${gear}</button>`
+          host.innerHTML = `<button type="button" class="settings-trigger control-icon" aria-label="地图设置" title="地图设置" aria-haspopup="dialog" aria-expanded="false" aria-controls="map-settings-panel">${gear}</button>`
           const trigger = host.firstElementChild
           const panel = document.createElement('section')
           panel.id = 'map-settings-panel'
@@ -2403,7 +2537,7 @@
           panel.setAttribute('popover', 'auto')
           panel.setAttribute('role', 'dialog')
           panel.setAttribute('aria-labelledby', 'map-settings-title')
-          panel.innerHTML = `<header class="settings-head"><h2 id="map-settings-title">地图设置</h2><button class="settings-close" aria-label="关闭设置">${icon('<path d="m6 6 12 12M18 6 6 18"/>')}</button></header>
+          panel.innerHTML = `<header class="settings-head"><h2 id="map-settings-title">地图设置</h2><button class="settings-close control-icon" aria-label="关闭设置">${icon('<path d="m6 6 12 12M18 6 6 18"/>')}</button></header>
       <p class="settings-label" id="theme-label">主题</p>
       <div class="settings-themes" role="group" aria-labelledby="theme-label">${Object.entries(themes)
         .map(
@@ -23116,7 +23250,7 @@
         color: var(--muted);
         line-height: 1.7;
       }
-      .ma-dialog .ma-feedback:empty {
+      .ma-dialog .ma-feedback:empty:not([data-loading='true']) {
         display: none;
       }
       .ma-dialog .ma-selection > span {
@@ -23459,40 +23593,23 @@
           records = [],
           opener,
           previousOverflow,
-          loadingTimer,
-          chartSize = '',
-          tableSize = '',
+          chartType,
+          menuRows,
+          specKey,
+          baseSpec,
           tableTheme = '',
           renderQueue = Promise.resolve()
         const lifetime = new AbortController()
         const listen = (node, type, handler) => node.addEventListener(type, handler, { signal: lifetime.signal })
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-        const resizeChart = () => {
-          const node = dialog && find('chart'),
-            size = node && `${node.clientWidth}:${node.clientHeight}`
-          if (chart && node.clientWidth && node.clientHeight && size !== chartSize) {
-            chartSize = size
-            chart.resize(node.clientWidth, node.clientHeight)
-          }
-        }
-        const resizeTable = () => {
-          const node = dialog && find('table'),
-            size = node && `${node.clientWidth}:${node.clientHeight}`
-          if (table && node.clientWidth && node.clientHeight && size !== tableSize) {
-            tableSize = size
-            table.resize()
-          }
-        }
-        const animateReading = (node) => {
-          node.getAnimations().forEach((animation) => animation.cancel())
-          if (!reducedMotion.matches)
-            node.animate([{ opacity: 0.45 }, { opacity: 1 }], { duration: 180, easing: 'ease-out' })
-        }
-        const number = (value, digits = 1) =>
-          Number.isFinite(value) ? value.toLocaleString('zh-CN', { maximumFractionDigits: digits }) : '—'
+        const resize = DashboardUI.createResize()
+        const activity = DashboardUI.createActivity()
+        const metrics = DashboardUI.createMetrics({ reducedMotion, duration: 550 })
+        const number = DashboardUI.format
         const { element } = MapUI
-        const find = (name) => dialog.querySelector(`[data-ma="${name}"]`)
-        const button = (label, action, className = '') => {
+        const nodes = {}
+        const find = (name) => nodes[name]
+        const button = (label, action, className = 'query-control') => {
           const node = element('button', className, label)
           node.type = 'button'
           node.addEventListener('click', action)
@@ -23509,25 +23626,29 @@
 <p class="ma-feedback" data-ma="feedback" role="status"></p><button type="button" class="control-button" data-ma="retry" hidden>重新加载</button>
 <div class="ma-content" data-ma="content" hidden>
   <section class="ma-summary"><div><p class="ma-eyebrow" data-ma="value-label"></p><strong class="ma-value" data-ma="value"></strong></div><p class="ma-finding" data-ma="finding"></p></section>
-  <div class="ma-toolbar"><nav class="ma-modes control-group" aria-label="分析维度" data-ma="modes"></nav><div class="ma-selection" data-ma="selection" hidden><span data-ma="selected"></span><button type="button" class="control-button" data-ma="reset" aria-label="清除分组筛选">清除 ×</button></div><details class="ma-picker" data-ma="picker"><summary class="control-select" data-ma="picker-label">选择分组</summary><div class="ma-groups control-menu" data-ma="groups" role="group" aria-label="选择分组查看记录"></div></details></div>
+  <div class="ma-toolbar"><nav class="ma-modes control-group" aria-label="分析维度" data-ma="modes"></nav><div class="ma-selection" data-ma="selection" hidden><span data-ma="selected"></span><button type="button" class="control-button" data-ma="reset" aria-label="清除分组筛选">清除 ×</button></div><details class="ma-picker" data-ma="picker"><summary class="control-select" data-ma="picker-label"><span data-ma="picker-text">选择分组</span></summary><div class="ma-groups control-menu" data-ma="groups" role="group" aria-label="选择分组查看记录"></div></details></div>
   <section class="ma-chart-panel l-card"><div class="ma-panel-heading"><h3 class="panel-title" data-ma="chart-title"></h3></div><p class="ma-hint" data-ma="chart-hint"></p><div class="ma-chart" data-ma="chart" role="img"></div></section>
   <section class="ma-table-panel l-card"><div class="ma-panel-heading"><h3 class="panel-title">关联明细</h3><button type="button" class="control-button" data-ma="expand" aria-expanded="false">展开表格</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="分析明细表" tabindex="0"></div></section>
   <details class="ma-definition"><summary>统计口径与依据</summary><p data-ma="definition"></p><p data-ma="evidence"></p><p data-ma="grain"></p></details>
 </div></div></div>`
+          for (const node of dialog.querySelectorAll('[data-ma]')) nodes[node.dataset.ma] = node
+          dialog
+            .querySelectorAll('button,[data-ma="picker-label"]')
+            .forEach((node) => node.classList.add('query-control'))
           document.body.append(dialog)
           listen(find('close'), 'click', closeDialog)
-          listen(find('reset'), 'click', () => {
+          listen(find('reset'), 'click', (event) => {
             selection = undefined
             find('picker-label').focus({ preventScroll: true })
-            void refresh(false)
+            void refresh(false, event.currentTarget)
           })
-          listen(find('retry'), 'click', () => void refresh(true))
+          listen(find('retry'), 'click', (event) => void refresh(true, event.currentTarget))
           listen(find('expand'), 'click', () => {
             const expanded = dialog.classList.toggle('ma-expanded')
             find('expand').setAttribute('aria-expanded', String(expanded))
             find('expand').textContent = expanded ? '返回分析布局' : '展开表格'
-            resizeTable()
-            resizeChart()
+            resize(table, find('table'), true)
+            resize(chart, find('chart'))
           })
           listen(dialog, 'cancel', (event) => {
             event.preventDefault()
@@ -23549,8 +23670,8 @@
           })
           observer = new ResizeObserver(() => {
             if (dialog.open) {
-              resizeChart()
-              resizeTable()
+              resize(chart, find('chart'))
+              resize(table, find('table'), true)
             }
           })
           observer.observe(find('chart'))
@@ -23562,7 +23683,7 @@
             find('picker').open = false
             find('picker-label').focus({ preventScroll: true })
           }
-          void refresh(false)
+          void refresh(false, find('picker-label'))
         }
         function selectDimension(event) {
           if (!dialog?.open || find('groups').inert) return
@@ -23571,8 +23692,7 @@
             ?.flatMap((info) => info.data || [])
             .flatMap((data) => data.datum || [])
             .find((row) => row.key !== undefined)
-          if (datum && groupRows?.some((row) => String(row[dimension[0]]) === String(datum.key)))
-            selectGroup(String(datum.key))
+          if (datum && groupRows?.some((row) => row.key === String(datum.key))) selectGroup(String(datum.key))
         }
         function closeDialog() {
           if (!dialog?.open) return
@@ -23583,13 +23703,14 @@
           version++
           renderQueue = Promise.resolve()
           controller?.abort()
-          clearTimeout(loadingTimer)
+          activity.clear()
+          if (dialog) metrics.clear(find('value'))
           dialog?.getAnimations({ subtree: true }).forEach((animation) => animation.cancel())
           chart?.release()
           chart = undefined
           table?.release()
           table = undefined
-          chartSize = tableSize = ''
+          menuRows = specKey = baseSpec = chartType = undefined
           records = []
           context = undefined
           if (previousOverflow !== undefined) {
@@ -23618,34 +23739,47 @@
           }
         }
         function buildAnalysisSpec(group, metric, chartRows, chartTitle, selected) {
-          const spec = Builder.from({
-            theme: MapUI.theme().mode,
-            chartType: group[2] ? 'line' : 'bar',
-            dataset: chartRows.map((row) => ({ ...row, value: row.value / (metric.scale || 1) })),
-            dimensions: [{ id: 'key', alias: group[1], encoding: group[2] ? 'xAxis' : 'yAxis' }],
-            measures: [
-              {
-                id: 'value',
-                alias: chartTitle,
-                encoding: group[2] ? 'yAxis' : 'xAxis',
-                format: { type: 'number', fractionDigits: 1, suffix: metric.groupUnit ?? metric.unit ?? '' },
+          const key = JSON.stringify([
+            document.documentElement.dataset.theme,
+            group[0],
+            chartRows,
+            reducedMotion.matches,
+          ])
+          if (key !== specKey) {
+            baseSpec = Builder.from({
+              theme: MapUI.theme().mode,
+              chartType: group[2] ? 'line' : 'bar',
+              dataset: chartRows.map((row) => ({ ...row, value: row.value / (metric.scale || 1) })),
+              dimensions: [{ id: 'key', alias: group[1], encoding: group[2] ? 'xAxis' : 'yAxis' }],
+              measures: [
+                {
+                  id: 'value',
+                  alias: chartTitle,
+                  encoding: group[2] ? 'yAxis' : 'xAxis',
+                  format: { type: 'number', fractionDigits: 1, suffix: metric.groupUnit ?? metric.unit ?? '' },
+                },
+              ],
+              backgroundColor: 'transparent',
+              color: { colorScheme: [MapUI.token('--chart-ink')] },
+              legend: { enable: false },
+              label: { enable: false },
+              tooltip: { enable: false },
+              xAxis: { visible: true, zero: !group[2] },
+              yAxis: { visible: true, zero: !group[2] },
+              pointStyle: { pointVisible: true },
+              lineStyle: { lineSmooth: false },
+              animation: {
+                enable: !reducedMotion.matches,
+                params: {
+                  appear: { enable: true, duration: 220 },
+                  update: { enable: true, duration: 550, ease: 'cubicInOut' },
+                },
               },
-            ],
-            backgroundColor: 'transparent',
-            color: { colorScheme: [MapUI.token('--chart-ink')] },
-            legend: { enable: false },
-            label: { enable: false },
-            tooltip: { enable: false },
-            xAxis: { visible: true, zero: !group[2] },
-            yAxis: { visible: true, zero: !group[2] },
-            pointStyle: { pointVisible: true },
-            lineStyle: { lineSmooth: false },
-            animation: {
-              enable: !reducedMotion.matches,
-              params: { appear: { duration: 220 }, update: { duration: 220, ease: 'cubicOut' } },
-            },
-            barStyle: { barRadius: 3, barGradient: false },
-          }).build()
+              barStyle: { barRadius: 3, barGradient: false },
+            }).build()
+            specKey = key
+          }
+          const spec = { ...baseSpec }
           spec.padding = { top: 12, right: 20, bottom: 10, left: 4 }
           spec.stackCornerRadius = 0
           spec.barMaxWidth = 28
@@ -23689,7 +23823,10 @@
           return DashboardTable.options(options, find('table'))
         }
         let groupRows, totalRow
-        async function refresh(reload) {
+        async function refresh(reload, control) {
+          if (!dialog?.open) return
+          const hadContent = !find('content').hidden
+          activity.start(control)
           const ticket = ++version
           controller?.abort()
           controller = new AbortController()
@@ -23699,15 +23836,13 @@
             metric = context.metric,
             group = dimension,
             selected = selection
-          clearTimeout(loadingTimer)
           find('feedback').textContent = ''
-          loadingTimer = setTimeout(() => {
-            if (ticket === version && dialog.open) find('feedback').textContent = '正在更新…'
-          }, 160)
-          find('retry').hidden = true
+          find('feedback').dataset.loading = String(!hadContent)
+          find('feedback').setAttribute('aria-label', hadContent ? '' : '正在加载分析')
+          find('retry').hidden = control !== find('retry')
           find('content').setAttribute('aria-busy', 'true')
           find('groups').inert = true
-          find('selection').hidden = selected === undefined
+          find('selection').hidden = selected === undefined && control !== find('reset')
           find('selected').textContent = selected === undefined ? '' : `${group[1]}：${selected}`
           const extra =
             selected === undefined
@@ -23720,6 +23855,8 @@
                   },
                 ]
           try {
+            await activity.paint()
+            if (!dialog.open || ticket !== version) return
             const base = metric.conditions
             const selectedConditions = [...base, ...extra]
             const detailDimensions = model.detailDimensions
@@ -23732,92 +23869,102 @@
             ])
             if (!dialog.open || ticket !== version) return
             if (reload) {
-              groupRows = groups
               totalRow = total[0] || {}
+              groupRows = groups
+                .map((row) => ({
+                  key: String(row[group[0]]),
+                  value: metric.groupValue ? metric.groupValue(row) : metric.value(row),
+                }))
+                .filter((row) => Number.isFinite(row.value))
+              if (!group[2])
+                groupRows.sort((a, b) => b.value - a.value || a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
+              else groupRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
             }
             const current = selectedTotal?.[0] || totalRow
             const value = metric.value(current)
             const overall = metric.value(totalRow)
             const plotRows = groupRows
-              .map((row) => ({
-                key: String(row[group[0]]),
-                value: metric.groupValue ? metric.groupValue(row) : metric.value(row),
-              }))
-              .filter((row) => Number.isFinite(row.value))
-            if (!group[2])
-              plotRows.sort((a, b) => b.value - a.value || a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
-            else plotRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
             records = details
-            find('content').hidden = false
-            const detailScope = selected === undefined ? '当前范围' : `${group[1]}：${selected}`
-            find('value-label').textContent = detailScope
-            find('value-label').title = find('value-label').textContent
-            find('value').textContent = metric.format(value)
-            find('value').classList.toggle('ma-time-value', metric.valueKind === 'time')
-            find('value').dataset.value = Number.isFinite(value) ? String(value) : ''
-            const ranked = [...plotRows].sort((a, b) => b.value - a.value)
-            find('finding').textContent =
-              selected !== undefined
-                ? `总体 ${metric.format(overall)}`
-                : metric.finding
-                  ? metric.finding(current, plotRows)
-                  : ranked.length > 1 && ranked.every((row) => row.value === ranked[0].value)
-                    ? `各${group[1]}的${metric.title}均为 ${metric.format(ranked[0].value)}。`
-                    : ranked.length
-                      ? `${ranked[0].key}的${metric.measureTitle || metric.title}最高（${metric.format(ranked[0].value)}）${ranked.length > 1 ? `，${ranked.at(-1).key}最低（${metric.format(ranked.at(-1).value)}）` : ''}。`
-                      : '当前范围没有可分析的有效值。可返回看板调整筛选。'
-            for (const name of ['value', 'finding']) animateReading(find(name))
-            find('definition').textContent = metric.definition
-            find('evidence').textContent = '汇总由当前范围内的完整记录计算；表格滚动不改变汇总值。'
-            find('grain').textContent =
-              `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 表格包含当前范围的完整结果`
-            find('table-scope').textContent = `${detailScope} · ${number(records.length, 0)} 条记录`
-            find('table-scope').title = find('table-scope').textContent
-            find('table').setAttribute('aria-label', `关联明细，${detailScope}，${records.length} 条记录`)
-            const chartTitle = metric.groupTitle || metric.measureTitle || metric.title
-            find('chart-title').textContent = metric.groupTitle || (group[2] ? `${group[1]}趋势` : `${group[1]}比较`)
-            find('chart-hint').textContent = !group[2] && plotRows.length > 12 ? '前 12 组' : ''
-            find('picker-label').textContent = `选择${group[1]}`
-            find('picker').hidden = !plotRows.length
-            find('groups').replaceChildren(
-              ...plotRows.map((row) => {
-                const choice = button(
-                  `${row.key} · ${(metric.groupFormat || metric.format)(row.value)}`,
-                  () => selectGroup(row.key),
-                  'control-option',
-                )
-                choice.setAttribute('aria-pressed', String(selected === row.key))
-                return choice
-              }),
-            )
-            const chartRows = group[2] ? plotRows : plotRows.slice(0, 12)
-            // 菜单可选择 Top N 以外的分组；选中项仍须能在图中定位。
-            if (selected !== undefined && !chartRows.some((row) => row.key === selected)) {
-              const row = plotRows.find((row) => row.key === selected)
-              if (row) {
-                chartRows.splice(Math.max(0, chartRows.length - 1), 1, row)
-                find('chart-hint').textContent = '前 11 组及已选项'
-              }
-            }
-            // 提交串行化，切换或关闭后的旧查询与旧渲染都不能覆盖当前结果。
             renderQueue = renderQueue
               .catch(() => {})
               .then(async () => {
                 if (!dialog.open || ticket !== version) return
+                find('content').hidden = false
+                const detailScope = selected === undefined ? '当前范围' : `${group[1]}：${selected}`
+                find('value-label').textContent = detailScope
+                find('value-label').title = find('value-label').textContent
+                metrics.set(find('value'), value, '', metric.format)
+                find('value').classList.toggle('ma-time-value', metric.valueKind === 'time')
+                const ranked = [...plotRows].sort((a, b) => b.value - a.value)
+                find('finding').textContent =
+                  selected !== undefined
+                    ? `总体 ${metric.format(overall)}`
+                    : metric.finding
+                      ? metric.finding(current, plotRows)
+                      : ranked.length > 1 && ranked.every((row) => row.value === ranked[0].value)
+                        ? `各${group[1]}的${metric.title}均为 ${metric.format(ranked[0].value)}。`
+                        : ranked.length
+                          ? `${ranked[0].key}的${metric.measureTitle || metric.title}最高（${metric.format(ranked[0].value)}）${ranked.length > 1 ? `，${ranked.at(-1).key}最低（${metric.format(ranked.at(-1).value)}）` : ''}。`
+                          : '当前范围没有可分析的有效值。可返回看板调整筛选。'
+                find('definition').textContent = metric.definition
+                find('evidence').textContent = '汇总由当前范围内的完整记录计算；表格滚动不改变汇总值。'
+                find('grain').textContent =
+                  `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 表格包含当前范围的完整结果`
+                find('table-scope').textContent = `${detailScope} · ${number(records.length, 0)} 条记录`
+                find('table-scope').title = find('table-scope').textContent
+                find('table').setAttribute('aria-label', `关联明细，${detailScope}，${records.length} 条记录`)
+                const chartTitle = metric.groupTitle || metric.measureTitle || metric.title
+                find('chart-title').textContent =
+                  metric.groupTitle || (group[2] ? `${group[1]}趋势` : `${group[1]}比较`)
+                find('chart-hint').textContent = !group[2] && plotRows.length > 12 ? '前 12 组' : ''
+                find('picker-text').textContent = `选择${group[1]}`
+                find('picker').hidden = !plotRows.length
+                if (menuRows !== plotRows) {
+                  find('groups').replaceChildren(
+                    ...plotRows.map((row) => {
+                      const choice = button(
+                        `${row.key} · ${(metric.groupFormat || metric.format)(row.value)}`,
+                        () => selectGroup(row.key),
+                        'control-option',
+                      )
+                      choice.dataset.key = row.key
+                      return choice
+                    }),
+                  )
+                  menuRows = plotRows
+                }
+                for (const choice of find('groups').children)
+                  choice.setAttribute('aria-pressed', String(selected === choice.dataset.key))
+                const chartRows = group[2] ? plotRows : plotRows.slice(0, 12)
+                // 菜单可选择 Top N 以外的分组；选中项仍须能在图中定位。
+                if (selected !== undefined && !chartRows.some((row) => row.key === selected)) {
+                  const row = plotRows.find((row) => row.key === selected)
+                  if (row) {
+                    chartRows.splice(Math.max(0, chartRows.length - 1), 1, row)
+                    find('chart-hint').textContent = '前 11 组及已选项'
+                  }
+                }
+                // 提交串行化，切换或关闭后的旧查询与旧渲染都不能覆盖当前结果。
                 find('chart').dataset.empty = String(!chartRows.length)
                 if (!chartRows.length) {
                   chart?.release()
                   chart = undefined
-                  chartSize = ''
                 }
                 if (chartRows.length) {
                   const spec = buildAnalysisSpec(group, metric, chartRows, chartTitle, selected)
-                  if (chart) await chart.updateSpec(spec)
-                  else {
+                  if (chart) {
+                    const changed = chartType !== spec.type
+                    await chart.updateSpec(
+                      spec,
+                      false,
+                      { morph: !reducedMotion.matches, ...(!reducedMotion.matches && changed ? { reuse: false } : {}) },
+                      changed ? { change: true, reMake: true } : undefined,
+                    )
+                  } else {
                     chart = new VChart(spec, { dom: find('chart') })
                     chart.renderSync()
-                    chartSize = ''
                   }
+                  chartType = spec.type
                   if (!dialog.open || ticket !== version) return
                   // 切换图型后重新绑定到当前坐标系；同一次点击只走维度事件，避免二次切换。
                   chart.off('dimensionClick', selectDimension)
@@ -23838,24 +23985,29 @@
                   tableTheme = themeId
                   const options = buildTableOptions(detailDimensions, records)
                   table = new library.ListTable(find('table'), options)
-                  tableSize = `${find('table').clientWidth}:${find('table').clientHeight}`
                 }
                 if (!dialog.open || ticket !== version) return
-                if (existingTable) DashboardTable.setRecords(table, records)
-                resizeChart()
+                if (existingTable) DashboardTable.setRecords(table, records, { animate: false })
+                resize(chart, find('chart'))
                 find('feedback').textContent = records.length ? '' : '当前范围暂无明细记录。'
                 dialog.dataset.state = records.length ? 'ready' : 'empty'
               })
             await renderQueue
+            if (!dialog.open || ticket !== version) return
+            await activity.finish()
+            if (dialog.open && ticket === version) find('retry').hidden = true
           } catch (error) {
             if (ticket !== version || !dialog.open) return
             find('feedback').textContent = `分析未完成：${error.message}`
             find('retry').hidden = false
-            find('content').hidden = true
+            find('content').hidden = !hadContent
             dialog.dataset.state = 'error'
           } finally {
             if (ticket === version && dialog.open) {
-              clearTimeout(loadingTimer)
+              activity.clear()
+              delete find('feedback').dataset.loading
+              find('feedback').removeAttribute('aria-label')
+              find('selection').hidden = selection === undefined
               find('content').setAttribute('aria-busy', 'false')
               find('groups').inert = false
             }
@@ -23880,11 +24032,12 @@
           find('modes').replaceChildren(
             ...context.dimensions.map((group) => {
               const choice = button(group[1], () => {
+                if (dimension === group) return
                 dimension = group
                 selection = undefined
                 for (const sibling of find('modes').children)
                   sibling.setAttribute('aria-pressed', String(sibling === choice))
-                void refresh(true)
+                void refresh(true, choice)
               })
               choice.setAttribute('aria-pressed', String(group === dimension))
               return choice
@@ -23953,6 +24106,8 @@
         return () => {
           if (dialog?.open) closeDialog()
           cleanup()
+          activity.clear()
+          metrics.destroy()
           lifetime.abort()
           observer?.disconnect()
           dialog?.remove()
@@ -24177,101 +24332,6 @@
         const node = (value) => (typeof value === 'string' ? document.querySelector(value) : value)
         const wrapCoordinates = ([lng, lat], center = 0) => [lng + 360 * Math.round((center - lng) / 360), lat]
 
-        function createMetrics({ reducedMotion, duration = 600 }) {
-          const states = new Map()
-          let frame = 0
-          function settle() {
-            cancelAnimationFrame(frame)
-            frame = 0
-            for (const [element, state] of states) {
-              state.value = state.target
-              state.text.data = state.format(state.target)
-              element.dataset.animating = 'false'
-            }
-          }
-          function tick(now) {
-            frame = 0
-            let active = false
-            for (const [element, state] of states) {
-              if (element.dataset.animating !== 'true') continue
-              const progress =
-                reducedMotion.matches || document.hidden
-                  ? 1
-                  : Math.max(0, Math.min(1, (now - state.started) / duration))
-              state.value =
-                progress === 1 ? state.target : state.from + (state.target - state.from) * (1 - (1 - progress) ** 3)
-              state.text.data = state.format(state.value)
-              element.dataset.animating = String(progress < 1)
-              active ||= progress < 1
-            }
-            if (active) frame = requestAnimationFrame(tick)
-          }
-          function set(selector, value, unit = '', formatter) {
-            const element = node(selector)
-            const raw = value == null ? '' : String(value)
-            const target = raw.trim() && Number.isFinite(Number(value)) ? Number(value) : null
-            const digits = raw.includes('.') ? raw.split('.')[1].length : 0
-            const format = (next) => (next == null ? '—' : formatter ? formatter(next) : Number(next).toFixed(digits))
-            const label = format(target)
-            const previous = states.get(element)
-            if (previous?.label === label && previous?.unit === unit) return
-            let text = previous?.text
-            if (!text) {
-              text = document.createTextNode(label)
-              element.replaceChildren(text)
-            }
-            let unitNode = element.querySelector('small')
-            if (unit) {
-              if (!unitNode) {
-                unitNode = document.createElement('small')
-                element.append(unitNode)
-              }
-              unitNode.textContent = unit
-            } else unitNode?.remove()
-            const from = previous?.value
-            const animate =
-              !reducedMotion.matches && !document.hidden && target != null && from != null && from !== target
-            const state = {
-              text,
-              label,
-              unit,
-              value: animate ? from : target,
-              from,
-              target,
-              format,
-              started: performance.now(),
-            }
-            states.set(element, state)
-            Object.assign(element.dataset, {
-              compact: String(label.length + unit.length >= 5),
-              digits: String(label.length),
-              metricValue: label,
-              animating: String(animate),
-            })
-            element.setAttribute('aria-label', `${label}${unit}`)
-            text.data = format(state.value)
-            if (animate && !frame) frame = requestAnimationFrame(tick)
-          }
-          const onVisibility = () => {
-            if (document.hidden) settle()
-          }
-          const onMotion = () => {
-            if (reducedMotion.matches) settle()
-          }
-          document.addEventListener('visibilitychange', onVisibility)
-          reducedMotion.addEventListener('change', onMotion)
-          return {
-            set,
-            settle,
-            destroy() {
-              settle()
-              states.clear()
-              document.removeEventListener('visibilitychange', onVisibility)
-              reducedMotion.removeEventListener('change', onMotion)
-            },
-          }
-        }
-
         // Reconcile by identity to retain keyboard focus and scroll position during refreshes.
         function renderList({ container, rows, key, create, update, before = null, empty = '', onRemove = () => {} }) {
           container = node(container)
@@ -24317,7 +24377,7 @@
           host.setAttribute('aria-label', '当前筛选条件')
           const click = (event) => {
             const button = event.target.closest('[data-clear]')
-            if (button && host.contains(button)) onClear(button.dataset.clear)
+            if (button && host.contains(button)) onClear(button.dataset.clear, button)
           }
           host.addEventListener('click', click)
           return {
@@ -24329,6 +24389,7 @@
                 create: () => {
                   const button = document.createElement('button')
                   button.type = 'button'
+                  button.className = 'query-control'
                   return button
                 },
                 update: (button, [key, label]) => {
@@ -24508,7 +24569,7 @@
           }
         }
         return {
-          createMetrics,
+          createMetrics: DashboardUI.createMetrics,
           renderList,
           createFilterBar,
           bindNavigation,
@@ -24626,7 +24687,7 @@
             label.textContent = options.find((item) => item.value === next)?.label || '全球 · 全部国家'
             trigger.title = label.textContent
             trigger.setAttribute('aria-label', `国家或地区：${label.textContent}`)
-            render()
+            if (panel.matches(':popover-open')) render()
           },
           setDisabled(disabled) {
             trigger.disabled = disabled
@@ -24962,6 +25023,175 @@
         return { load, options, overview, setRecords }
       })()
     </script>
+
+    <style id="dashboard-query-controls">
+      :root {
+        --query-control-size: 32px;
+        --query-icon-size: 15px;
+        --query-control-ink: var(--control-ink);
+        --query-hover: var(--control-hover);
+        --query-track: var(--control-surface, var(--glass-control));
+        --query-active: var(--control-active, var(--glass-solid));
+        --query-ink: var(--control-selected, var(--strong));
+      }
+      .control-group {
+        display: flex;
+        align-items: center;
+        border-radius: 20px;
+        padding: 3px;
+        gap: 3px;
+        background: var(--query-track);
+      }
+      .control-group button {
+        background: transparent;
+        color: var(--query-control-ink);
+        transition:
+          background 180ms ease,
+          color 180ms ease;
+        border-radius: 17px;
+      }
+      .control-group button[aria-pressed='true'] {
+        background: var(--query-active);
+        color: var(--query-ink);
+        box-shadow: 0 2px 10px #26354410;
+      }
+      :is(.control-button, .control-select, .country-trigger) {
+        border-radius: 17px;
+      }
+      .query-control {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+      }
+      .query-control > svg:not(:last-child) {
+        margin-right: 6px;
+      }
+      :is(.country-trigger, .control-select).query-control::before {
+        content: '⌄';
+        order: 2;
+        margin-left: 6px;
+      }
+      .control-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        gap: 0;
+        width: auto;
+        min-width: var(--query-control-size);
+        height: var(--query-control-size);
+        padding: 0 8px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--query-track);
+        box-shadow: var(--glass-tile-shadow);
+        color: var(--query-control-ink);
+        line-height: 1;
+        transition:
+          background 180ms ease,
+          color 180ms ease,
+          box-shadow 180ms ease;
+      }
+      .control-icon:hover:not(:disabled),
+      .control-icon[aria-expanded='true'] {
+        background: var(--query-hover);
+        color: var(--query-ink);
+      }
+      .control-icon[aria-pressed='true'] {
+        background: var(--query-active);
+        color: var(--query-ink);
+      }
+      .control-icon > svg {
+        display: block;
+        flex: none;
+        width: var(--query-icon-size);
+        height: var(--query-icon-size);
+        margin: 0;
+      }
+      .query-control::after {
+        content: '';
+        order: 1;
+        flex: 0 0 auto;
+        box-sizing: border-box;
+        width: 0;
+        height: 12px;
+        margin-left: 0;
+        border: 0 solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          width 180ms ease,
+          margin-left 180ms ease,
+          border-width 180ms ease,
+          opacity 140ms ease;
+      }
+      .query-control[data-loading='true']::after {
+        width: 12px;
+        margin-left: 6px;
+        border-width: 2px;
+        opacity: 1;
+        animation: query-turn 1.1s linear infinite;
+      }
+      .query-control[data-loading='true'] {
+        opacity: 1;
+        cursor: progress;
+      }
+      .ma-feedback[data-loading='true'] {
+        display: block;
+        min-height: 18px;
+      }
+      .ma-feedback[data-loading='true']::before {
+        content: '';
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 2px solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        animation: query-turn 1.1s linear infinite;
+      }
+      .ma-selection[hidden] {
+        display: flex !important;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .control-group button:hover:not(:disabled):not([aria-pressed='true'], [aria-selected='true']) {
+        background: var(--query-hover);
+        color: var(--query-ink);
+      }
+      :is(.control-group button, .control-icon, .query-control):focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      .map-controls {
+        border-radius: 20px;
+      }
+      .map-controls .control-icon {
+        --query-control-size: 29px;
+      }
+      @media (max-width: 760px) {
+        .map-controls .control-icon {
+          --query-control-size: 40px;
+        }
+      }
+      @keyframes query-turn {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .query-control::after {
+          transition: none;
+        }
+        .query-control::after,
+        .ma-feedback::before {
+          animation: none !important;
+        }
+      }
+    </style>
   </head>
   <body data-state="loading" data-scene-ready="false" data-map-ready="false">
     <div id="loading"></div>
@@ -25010,7 +25240,13 @@
               </svg>
               <span>全球 · 全部国家</span>
             </button>
-            <button id="refresh-data" class="refresh-button" aria-label="刷新数据" title="刷新数据" disabled>
+            <button
+              id="refresh-data"
+              class="refresh-button control-icon"
+              aria-label="刷新数据"
+              title="刷新数据"
+              disabled
+            >
               <svg class="icon" aria-hidden="true"><use href="#refresh" /></svg>
             </button>
             <div class="map-settings" id="map-settings"></div>
@@ -25303,6 +25539,7 @@
       const focusCards = document.querySelectorAll('.event-focus .event-locate')
       const charts = new Map()
       const metrics = MapDashboard.createMetrics({ reducedMotion: motion })
+      const activity = DashboardUI.createActivity()
       const contentAnimations = new Map()
       const enteringCards = new Set()
       const UPDATE_MS = 600
@@ -25357,7 +25594,10 @@
       })
       let changeCountry = () => {},
         clearFilters = () => {}
-      const filterBar = MapDashboard.createFilterBar({ mount: '#filter-bar', onClear: (key) => clearFilters(key) })
+      const filterBar = MapDashboard.createFilterBar({
+        mount: '#filter-bar',
+        onClear: (key, control) => clearFilters(key, control),
+      })
       function syncFilterBar() {
         const chips = []
         if (selectedCountry) chips.push(['country', QuakeCountries.name(selectedCountry)])
@@ -25441,22 +25681,26 @@
       function updateText(node, text) {
         if (node.textContent === text) return
         node.textContent = text
-        softenChange(node)
       }
       function updatePressed(buttons, isPressed) {
         buttons.forEach((button) => button.setAttribute('aria-pressed', String(isPressed(button))))
       }
+      const resizeChart = DashboardUI.createResize()
       function resizeCharts() {
-        charts.forEach((chart, selector) => {
-          const container = $(selector)
-          const width = container.clientWidth,
-            height = container.clientHeight
-          if (chart.width === width && chart.height === height) return
-          chart.instance.resize(width, height)
-          Object.assign(chart, { width, height })
+        const measured = [...charts].map(([selector, chart]) => {
+          const host = $(selector)
+          return [chart.instance, host, host.clientWidth, host.clientHeight]
         })
+        for (const [instance, host, width, height] of measured) resizeChart(instance, host, false, width, height)
       }
-      function setBusy(value) {
+      document.querySelectorAll('.map-controls button').forEach((node) => node.classList.add('control-icon'))
+      document
+        .querySelectorAll('[data-window], [data-magnitude], [data-sort], #country-select, #refresh-data')
+        .forEach((node) => node.classList.add('query-control'))
+      function setBusy(value, control) {
+        if (disposed) return
+        if (value && ready) activity.start(control)
+        if (!value) activity.clear()
         busy = value
         syncFilterBar()
         countryPicker.setDisabled(value || !ready)
@@ -26470,6 +26714,7 @@
         cancelAnimationFrame(resizeFrame)
         for (const animation of contentAnimations.values()) animation.cancel()
         contentAnimations.clear()
+        activity.clear()
         clearCardEntrance()
         clearTimeout(listResumeTimer)
         document.removeEventListener('visibilitychange', syncMotion)
@@ -26761,7 +27006,7 @@
                     ? utc(value)
                     : '—'
                   : Number.isFinite(value)
-                    ? `${value.toLocaleString('zh-CN', { maximumFractionDigits: definition.unit === '次' || definition.unit === '个' ? 0 : 2 })} ${definition.unit}`
+                    ? `${DashboardUI.format(value, definition.unit === '次' || definition.unit === '个' ? 0 : 2, 0)} ${definition.unit}`
                     : '—',
             },
           }
@@ -27007,15 +27252,17 @@
           updateStatus()
           syncMotion()
         }
-        async function refresh(targetHours = hours) {
+        async function refresh(targetHours = hours, control) {
           if (busy || disposed) return
-          setBusy(true)
+          setBusy(true, control)
           loadingStage('读取 USGS 公开地震目录…')
           status('正在更新 USGS 公开地震目录…')
           request = new AbortController()
           const windowHours = Math.max(MONTH_HOURS, targetHours)
           const timeout = setTimeout(() => request.abort(), windowHours > MONTH_HOURS ? 90000 : 30000)
           try {
+            await activity.paint()
+            if (disposed) return
             const feed = await loadFeed(windowHours, request.signal)
             if (disposed) return
             const rawDataset = normalize(feed)
@@ -27039,17 +27286,21 @@
             fail(error)
           } finally {
             clearTimeout(timeout)
+            await activity.finish()
             setBusy(false)
           }
         }
-        async function updateFilters(change, rollback) {
-          setBusy(true)
+        async function updateFilters(change, rollback, control) {
+          setBusy(true, control)
           try {
+            await activity.paint()
+            if (disposed) return
             await change()
           } catch (error) {
             await rollback()
             fail(error)
           } finally {
+            await activity.finish()
             setBusy(false)
           }
         }
@@ -27069,9 +27320,10 @@
                 await render()
               } catch {}
             },
+            $('#country-select'),
           )
         }
-        clearFilters = async (key) => {
+        clearFilters = async (key, control) => {
           if (busy || !ready) return
           const previous = { hours, minimumMagnitude, selectedCountry }
           await updateFilters(
@@ -27088,6 +27340,7 @@
                 await render()
               } catch {}
             },
+            control,
           )
         }
         async function filter(button, kind) {
@@ -27096,7 +27349,7 @@
           const previous = { window: hours, magnitude: minimumMagnitude, sort: sortBy }
           if (value === previous[kind]) return
           if (kind === 'window' && value > loadedHours) {
-            await refresh(value)
+            await refresh(value, button)
             return
           }
           await updateFilters(
@@ -27122,11 +27375,12 @@
               hours = previous.window
               minimumMagnitude = previous.magnitude
             },
+            button,
           )
         }
         for (const [kind, buttons] of Object.entries(controls))
           buttons.forEach((button) => (button.onclick = () => filter(button, kind)))
-        $('#refresh-data').onclick = () => refresh()
+        $('#refresh-data').onclick = (event) => refresh(hours, event.currentTarget)
         observer = new ResizeObserver(() => {
           if (disposed || resizeFrame) return
           resizeFrame = requestAnimationFrame(() => {

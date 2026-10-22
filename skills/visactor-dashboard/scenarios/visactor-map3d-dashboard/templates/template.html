@@ -29,7 +29,6 @@
         --control-icon: 14px;
         --control-radius: 8px;
         --control-gap: 6px;
-        --font-ui: Inter, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif;
         --bg: #080c10;
         --bg-end: #0a1218;
         --ink: #cbd5de;
@@ -499,20 +498,6 @@
       #country {
         width: 216px;
       }
-      .icon-button {
-        display: grid;
-        place-items: center;
-        width: var(--control-height);
-        height: var(--control-height);
-        border-radius: var(--control-radius);
-        background: var(--inner);
-        border: 1px solid var(--edge);
-        color: var(--muted);
-      }
-      .icon-button:hover {
-        color: var(--strong);
-        background: rgb(var(--accent-rgb) / 0.1);
-      }
       .scope-chip {
         font-size: 11px;
         color: var(--muted);
@@ -556,14 +541,10 @@
         padding: 20px 21px;
         background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.025), transparent 70%), var(--glass);
         border: 1px solid var(--edge);
-        border-radius: var(--radius);
         overflow: hidden;
         box-shadow: var(--shadow);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-      }
-      .card:hover {
-        border-color: color-mix(in srgb, var(--accent) 26%, var(--edge));
       }
       .card-head {
         display: flex;
@@ -646,7 +627,6 @@
       }
       .distribution {
         flex: 1;
-        min-height: 95px;
       }
 
       .card-foot {
@@ -923,20 +903,6 @@
         display: flex;
         gap: 6px;
       }
-      .map-action button {
-        width: var(--control-height);
-        height: var(--control-height);
-        border-radius: var(--control-radius);
-        color: var(--muted);
-        display: grid;
-        place-items: center;
-        background: var(--inner);
-        border: 1px solid var(--edge);
-      }
-      .map-action button[aria-pressed='true'] {
-        color: var(--accent);
-        border-color: rgb(var(--accent-rgb) / 0.3);
-      }
       .map-footer {
         position: absolute;
         bottom: 19px;
@@ -1199,16 +1165,6 @@
         font-size: 11px;
         color: var(--muted);
         margin-top: 4px;
-      }
-      .close-button {
-        width: var(--control-height);
-        height: var(--control-height);
-        display: grid;
-        place-items: center;
-        border-radius: 50%;
-        color: var(--muted);
-        background: var(--inner);
-        flex-shrink: 0;
       }
       .analysis-summary {
         display: grid;
@@ -1600,7 +1556,6 @@
         }
         .map-card {
           order: 0;
-          height: clamp(470px, 73vw, 700px);
           flex: none;
         }
         .column {
@@ -1688,7 +1643,6 @@
           border-radius: 20px;
         }
         .map-heading {
-          right: 17px;
           top: 18px;
         }
         .map-heading strong {
@@ -1931,9 +1885,6 @@
 
       .dialog {
         background: linear-gradient(145deg, rgb(var(--accent-rgb) / 0.035), transparent 46%), var(--glass-solid);
-      }
-      .analysis-dialog::backdrop {
-        background: rgb(3 10 15 / 0.68);
       }
       .card-head h2 {
         font-size: var(--font-card-title);
@@ -2311,9 +2262,6 @@
         .map-heading > div:first-child {
           visibility: hidden;
         }
-        .map-heading {
-          top: 16px;
-        }
         .column .card {
           padding: 18px 14px;
         }
@@ -2397,12 +2345,10 @@
         max-width: 100%;
         min-width: 100%;
         padding: 0 10px;
-        background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.06), transparent), var(--inner);
         border: 1px solid var(--edge);
         border-radius: var(--control-radius);
         text-align: left;
         color: var(--ink);
-        box-shadow: inset 0 1px 0 var(--shine);
         font-size: var(--control-font);
         transition:
           border-color 0.18s,
@@ -2434,13 +2380,10 @@
         padding: 6px;
         border: 1px solid var(--edge);
         border-radius: 12px;
-        background: var(--glass-solid);
-        background: color-mix(in srgb, var(--glass-solid) 94%, transparent);
         color: var(--ink);
         box-shadow:
           0 18px 55px #0004,
           inset 0 1px 0 var(--shine);
-        backdrop-filter: blur(18px);
         overflow: hidden;
       }
       .select-panel:popover-open {
@@ -2579,31 +2522,12 @@
         font: inherit;
       }
       .map-metrics {
-        display: flex;
-        align-items: center;
-        padding: 3px;
         border: 1px solid var(--edge);
-        border-radius: 10px;
-        background: var(--glass-solid);
-        box-shadow: var(--glass-shadow);
       }
       .map-metrics button {
-        background: transparent;
-        border-radius: 7px;
         min-height: var(--control-compact-height);
         padding: 4px 10px;
         font-size: var(--control-font);
-        transition:
-          background 0.2s,
-          color 0.2s;
-      }
-      .map-metrics button[aria-pressed='true'] {
-        background: var(--accent);
-        color: var(--glass-solid);
-      }
-      .map-metrics {
-        background: var(--glass-solid);
-        box-shadow: none;
       }
       #map-scale {
         flex-basis: 100%;
@@ -2758,12 +2682,12 @@
         border-color: var(--glass-edge-hover);
         box-shadow: var(--glass-hover-shadow);
       }
-      :is(.select-trigger, .icon-button, .map-action button) {
+      .select-trigger {
         background: var(--glass-control);
         border-color: var(--glass-divider);
         box-shadow: var(--glass-tile-shadow);
       }
-      :is(.select-trigger, .icon-button, .map-action button):hover {
+      .select-trigger:hover {
         background: var(--glass-control-hover);
       }
       .select-panel {
@@ -2883,6 +2807,164 @@
         color: var(--text-faint);
         font-size: 11px;
         font-weight: 400;
+      }
+    </style>
+
+    <style id="dashboard-query-controls">
+      :root {
+        --query-control-size: var(--control-height);
+        --query-icon-size: var(--control-icon);
+        --query-control-ink: var(--muted);
+        --query-hover: var(--glass-control-hover);
+        --query-track: var(--control-surface, var(--glass-control));
+        --query-active: var(--control-active, var(--glass-solid));
+        --query-ink: var(--control-selected, var(--strong));
+      }
+      .control-group {
+        display: flex;
+        align-items: center;
+        border-radius: 20px;
+        padding: 3px;
+        gap: 3px;
+        background: var(--query-track);
+      }
+      .control-group button {
+        background: transparent;
+        color: var(--query-control-ink);
+        transition:
+          background 180ms ease,
+          color 180ms ease;
+        border-radius: 17px;
+      }
+      .control-group button:is([aria-pressed='true'], [aria-selected='true']) {
+        background: var(--query-active);
+        color: var(--query-ink);
+        box-shadow: 0 2px 10px #26354410;
+      }
+      :is(.select-trigger, #analysis-clear, #analysis-retry, .table-expand) {
+        border-radius: 17px;
+      }
+      .query-control {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+      }
+      .query-control > svg:not(:last-child) {
+        margin-right: 6px;
+      }
+      .query-control > .select-chevron {
+        order: 2;
+        margin: 0 0 0 6px;
+      }
+      .control-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        gap: 0;
+        width: auto;
+        min-width: var(--query-control-size);
+        height: var(--query-control-size);
+        padding: 0 8px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--query-track);
+        box-shadow: var(--glass-tile-shadow);
+        color: var(--query-control-ink);
+        line-height: 1;
+        transition:
+          background 180ms ease,
+          color 180ms ease,
+          box-shadow 180ms ease;
+      }
+      .control-icon:hover:not(:disabled),
+      .control-icon[aria-expanded='true'] {
+        background: var(--query-hover);
+        color: var(--query-ink);
+      }
+      .control-icon[aria-pressed='true'] {
+        background: var(--query-active);
+        color: var(--query-ink);
+      }
+      .control-icon > svg {
+        display: block;
+        flex: none;
+        width: var(--query-icon-size);
+        height: var(--query-icon-size);
+        margin: 0;
+      }
+      .query-control::after {
+        content: '';
+        order: 1;
+        flex: 0 0 auto;
+        box-sizing: border-box;
+        width: 0;
+        height: 12px;
+        margin-left: 0;
+        border: 0 solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          width 180ms ease,
+          margin-left 180ms ease,
+          border-width 180ms ease,
+          opacity 140ms ease;
+      }
+      .query-control[data-loading='true']::after {
+        width: 12px;
+        margin-left: 6px;
+        border-width: 2px;
+        opacity: 1;
+        animation: query-turn 1.1s linear infinite;
+      }
+      .query-control[data-loading='true'] {
+        opacity: 1;
+        cursor: progress;
+      }
+      .query-search {
+        justify-content: flex-start;
+      }
+      .query-search[data-loading='true'] {
+        padding-right: 10px;
+      }
+      .analysis-loading[data-loading='true'] {
+        display: block;
+        min-height: 18px;
+      }
+      .analysis-loading[data-loading='true']::before {
+        content: '';
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 2px solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        animation: query-turn 1.1s linear infinite;
+      }
+      .control-group button:hover:not(:disabled):not([aria-pressed='true'], [aria-selected='true']) {
+        background: var(--query-hover);
+        color: var(--query-ink);
+      }
+      :is(.control-group button, .control-icon, .query-control):focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      @keyframes query-turn {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .query-control::after {
+          transition: none;
+        }
+        .query-control::after,
+        .analysis-loading::before {
+          animation: none !important;
+        }
       }
     </style>
   </head>
@@ -3020,7 +3102,7 @@
             </div>
           </div>
           <div class="map-toolbar">
-            <div id="map-metrics" class="map-metrics" role="group" aria-label="柱高指标">
+            <div id="map-metrics" class="map-metrics control-group" role="group" aria-label="柱高指标">
               <button data-map-metric="mean" aria-pressed="true">AQI 均值</button>
               <button data-map-metric="highRate" aria-pressed="false">超阈值占比</button>
             </div>
@@ -3041,7 +3123,7 @@
           </div>
           <div class="map-scope">
             <strong id="map-place">全球城市样本</strong>
-            <div id="quick-filters" class="quick-filters" role="group" aria-label="国家快捷筛选"></div>
+            <div id="quick-filters" class="quick-filters control-group" role="group" aria-label="国家快捷筛选"></div>
             <p id="map-scope-note">175 个国家 · 无采样时间信息</p>
           </div>
           <p class="status" id="status" role="status" aria-live="polite">准备数据…</p>
@@ -3180,7 +3262,7 @@
           </div>
         </section>
         <div class="analysis-controls dialog-reveal">
-          <div class="analysis-tabs" role="tablist" aria-label="分析视角">
+          <div class="analysis-tabs control-group" role="tablist" aria-label="分析视角">
             <button role="tab" data-view="country" aria-selected="true">国家比较</button
             ><button role="tab" data-view="category" aria-selected="false">来源等级</button
             ><button role="tab" data-view="numeric" aria-selected="false">数值分布</button
@@ -3199,12 +3281,14 @@
             <option value="inconsistent">AQI 与最大子指数不一致</option>
             <option value="categoryMismatch">来源等级与数值分箱不一致</option></select
           ><button class="pill" id="analysis-clear">清除局部选择</button
-          ><input
-            type="search"
-            id="analysis-search"
-            aria-label="搜索原始城市或国家"
-            placeholder="搜索原始城市或国家"
-          /><span class="analysis-loading" id="analysis-loading" role="status"></span>
+          ><span class="query-search query-control"
+            ><input
+              type="search"
+              id="analysis-search"
+              aria-label="搜索原始城市或国家"
+              placeholder="搜索原始城市或国家" /></span
+          ><span class="analysis-loading" id="analysis-loading" role="status"></span
+          ><button class="pill query-control" id="analysis-retry" hidden>重试</button>
         </div>
         <div class="analysis-grid dialog-reveal">
           <section class="analysis-chart-panel">
@@ -3251,6 +3335,193 @@
         <button id="loading-retry" type="button" hidden>重新加载</button>
       </div>
     </div>
+    <script id="dashboard-interaction-runtime">
+      // Transient UI state only: query conditions remain in the scene's Builders.
+      window.DashboardUI = (() => {
+        const node = (value) => (typeof value === 'string' ? document.querySelector(value) : value)
+        const write = (text, value) => {
+          if (text.data !== value) text.data = value
+        }
+        const formats = new Map()
+        const format = (value, digits = 0, minimum = digits) => {
+          if (value == null || !Number.isFinite(Number(value))) return '—'
+          const key = `${minimum}:${digits}`
+          if (!formats.has(key))
+            formats.set(
+              key,
+              new Intl.NumberFormat('zh-CN', { minimumFractionDigits: minimum, maximumFractionDigits: digits }),
+            )
+          return formats.get(key).format(Number(value))
+        }
+        function createMetrics({ reducedMotion, duration = 600 }) {
+          const states = new Map()
+          let frame = 0
+          function settle() {
+            cancelAnimationFrame(frame)
+            frame = 0
+            for (const [element, state] of states) {
+              state.value = state.target
+              write(state.text, state.format(state.target))
+              element.dataset.animating = 'false'
+            }
+          }
+          function tick(now) {
+            frame = 0
+            let active = false
+            for (const [element, state] of states) {
+              if (element.dataset.animating !== 'true') continue
+              const progress =
+                reducedMotion.matches || document.hidden
+                  ? 1
+                  : Math.max(0, Math.min(1, (now - state.started) / duration))
+              state.value =
+                progress === 1 ? state.target : state.from + (state.target - state.from) * (1 - (1 - progress) ** 3)
+              write(state.text, state.format(state.value))
+              if (progress === 1) element.dataset.animating = 'false'
+              active ||= progress < 1
+            }
+            if (active) frame = requestAnimationFrame(tick)
+          }
+          function set(selector, value, unit = '', formatter) {
+            const element = node(selector)
+            const raw = value == null ? '' : String(value)
+            const target = raw.trim() && Number.isFinite(Number(value)) ? Number(value) : null
+            const digits = raw.includes('.') ? raw.split('.')[1].length : 0
+            const format = (next) => (next == null ? '—' : formatter ? formatter(next) : Number(next).toFixed(digits))
+            const label = format(target)
+            const previous = states.get(element)
+            if (previous?.label === label && previous?.unit === unit) return
+            let text = previous?.text
+            if (!text) {
+              text = document.createTextNode(label)
+              element.replaceChildren(text)
+            }
+            let unitNode = element.querySelector('small')
+            if (unit) {
+              if (!unitNode) {
+                unitNode = document.createElement('small')
+                element.append(unitNode)
+              }
+              if (unitNode.textContent !== unit) unitNode.textContent = unit
+            } else unitNode?.remove()
+            const from = previous?.value
+            const animate =
+              !reducedMotion.matches && !document.hidden && target != null && from != null && from !== target
+            const state = {
+              text,
+              label,
+              unit,
+              value: animate ? from : target,
+              from,
+              target,
+              format,
+              started: performance.now(),
+            }
+            states.set(element, state)
+            Object.assign(element.dataset, {
+              compact: String(label.length + unit.length >= 5),
+              digits: String(label.length),
+              metricValue: label,
+              animating: String(animate),
+            })
+            element.setAttribute('aria-label', `${label}${unit}`)
+            write(text, format(state.value))
+            if (animate && !frame) frame = requestAnimationFrame(tick)
+          }
+          const onVisibility = () => {
+            if (document.hidden) settle()
+          }
+          const onMotion = () => {
+            if (reducedMotion.matches) settle()
+          }
+          document.addEventListener('visibilitychange', onVisibility)
+          reducedMotion.addEventListener('change', onMotion)
+          return {
+            set,
+            settle,
+            clear(element) {
+              states.delete(node(element))
+            },
+            destroy() {
+              settle()
+              states.clear()
+              document.removeEventListener('visibilitychange', onVisibility)
+              reducedMotion.removeEventListener('change', onMotion)
+            },
+          }
+        }
+        function createActivity() {
+          let control,
+            frame,
+            timer,
+            resolveWait,
+            painted,
+            started = 0,
+            version = 0
+          const releaseWait = () => {
+            cancelAnimationFrame(frame)
+            clearTimeout(timer)
+            document.removeEventListener('visibilitychange', onVisibility)
+            resolveWait?.()
+            resolveWait = undefined
+          }
+          const onVisibility = () => {
+            if (document.hidden) releaseWait()
+          }
+          const clear = () => {
+            version++
+            releaseWait()
+            control?.removeAttribute('data-loading')
+            control?.removeAttribute('aria-busy')
+            control = undefined
+          }
+          return {
+            start(next) {
+              clear()
+              control = next
+              control?.setAttribute('data-loading', 'true')
+              control?.setAttribute('aria-busy', 'true')
+              started = performance.now()
+              painted = new Promise((resolve) => {
+                resolveWait = resolve
+                if (document.hidden) return releaseWait()
+                document.addEventListener('visibilitychange', onVisibility)
+                frame = requestAnimationFrame(() => {
+                  frame = requestAnimationFrame(releaseWait)
+                })
+              })
+            },
+            paint: () => painted,
+            async finish() {
+              const ticket = version
+              await painted
+              if (ticket !== version) return
+              const remaining = 200 - (performance.now() - started)
+              if (remaining > 0 && !document.hidden)
+                await new Promise((resolve) => {
+                  resolveWait = resolve
+                  document.addEventListener('visibilitychange', onVisibility)
+                  timer = setTimeout(releaseWait, remaining)
+                })
+              if (ticket === version) clear()
+            },
+            clear,
+          }
+        }
+        function createResize() {
+          const sizes = new WeakMap()
+          return (instance, host, table = false, width = host.clientWidth, height = host.clientHeight) => {
+            if (!instance) return
+            const key = `${width}:${height}`
+            if (!width || !height || sizes.get(instance) === key) return
+            sizes.set(instance, key)
+            if (table) instance.resize()
+            else instance.resize(width, height)
+          }
+        }
+        return { createMetrics, createActivity, createResize, format }
+      })()
+    </script>
     <script id="dashboard-loading-runtime">
       // Start before dependencies. CDN candidates own their retries; only terminal failures reach fail().
       window.DashboardLoading = (() => {
@@ -17507,11 +17778,23 @@
     </script>
     <script type="module">
       // DOM helpers, display metadata and application state.
-      const $ = (s) => document.querySelector(s),
-        $$ = (s) => [...document.querySelectorAll(s)]
+      const nodes = new Map()
+      const $ = (selector) => {
+        let node = nodes.get(selector)
+        if (!node?.isConnected) {
+          node = document.querySelector(selector)
+          if (node) nodes.set(selector, node)
+        }
+        return node
+      }
+      const $$ = (selector) => [...document.querySelectorAll(selector)]
       const geo = JSON.parse($('#geography-data').textContent),
         events = new AbortController(),
         reduced = matchMedia('(prefers-reduced-motion: reduce)')
+      const metrics = DashboardUI.createMetrics({ reducedMotion: reduced, duration: 540 })
+      const mainActivity = DashboardUI.createActivity(),
+        modalActivity = DashboardUI.createActivity()
+      const resizeChart = DashboardUI.createResize()
       const catNames = [
           'Good',
           'Moderate',
@@ -17598,15 +17881,19 @@
         animations = new Set(),
         objectURLs = new Set(),
         dialogEpoch = new WeakMap()
-      const fmt = (n, d = 0) =>
-        n == null || !Number.isFinite(Number(n))
-          ? '—'
-          : Number(n).toLocaleString('zh-CN', { maximumFractionDigits: d, minimumFractionDigits: d })
-      const pct = (a, b) => (b ? (100 * a) / b : null),
-        css = (name) =>
-          getComputedStyle(document.documentElement)
-            .getPropertyValue('--' + name)
-            .trim()
+      const fmt = DashboardUI.format
+      const cssValues = new Map()
+      const pct = (a, b) => (b ? (100 * a) / b : null)
+      const css = (name) => {
+        if (!cssValues.has(name))
+          cssValues.set(
+            name,
+            getComputedStyle(document.documentElement)
+              .getPropertyValue('--' + name)
+              .trim(),
+          )
+        return cssValues.get(name)
+      }
       const mode = () => document.documentElement.dataset.mode
       const motionMs = (name) => parseFloat(css('motion-' + name))
       const countryNames = new Intl.DisplayNames(['zh-CN'], { type: 'region', style: 'short' })
@@ -17791,23 +18078,7 @@
         return a
       }
       function updateNumber(id, value, decimals = 0, suffix = '') {
-        const node = $('#' + id)
-        const old = node.textContent
-        node.replaceChildren(document.createTextNode(fmt(value, decimals)))
-        if (suffix) {
-          const small = document.createElement('small')
-          small.textContent = suffix
-          node.append(small)
-        }
-        if (ready && old !== node.textContent)
-          play(
-            node,
-            [
-              { opacity: 0.45, transform: 'translateY(5px)' },
-              { opacity: 1, transform: 'none' },
-            ],
-            { duration: 540, easing: 'cubic-bezier(.18,.75,.2,1)' },
-          )
+        metrics.set($('#' + id), value, suffix, (next) => fmt(next, decimals))
       }
       // Builders own aggregation, percentile, ordering, HAVING and result limits.
       // VBI query construction and immutable-snapshot query cache.
@@ -18040,7 +18311,8 @@
           })
         return spec
       }
-      const overviewCharts = new Map()
+      const overviewCharts = new Map(),
+        overviewKeys = new Map()
       const overviewHosts = ['range-chart', 'pollutant-chart', 'ranking-chart', 'category-chart']
       const chartDatum = (datum) => datum?.__OriginalData__ || datum
 
@@ -18139,12 +18411,23 @@
           host.innerHTML = '<div class="empty-text">暂无可比较样本</div>'
           return
         }
+        const key = JSON.stringify([
+          document.documentElement.dataset.theme,
+          items,
+          type,
+          valueName,
+          options,
+          reduced.matches,
+          presentationStarted && !dashboardEntering,
+        ])
+        if (existing && overviewKeys.get(id) === key) return
         const spec = overviewSpec(items, type, valueName, options)
         spec.tooltip.parentElement = host.closest('.card')
         spec.tooltip.confine = true
         spec.autoFit = false
         spec.width = host.clientWidth
         spec.height = host.clientHeight
+        overviewKeys.set(id, key)
         if (existing) existing.updateSpecSync(spec)
         else {
           host.replaceChildren()
@@ -18309,7 +18592,10 @@
           completeInitialPresentation()
         }
       }
-      function requestMain() {
+      const queryControl = (control) => (control?.tagName === 'SELECT' ? selectControls.get(control)?.trigger : control)
+      function requestMain(control) {
+        if (disposed) return
+        if (ready) mainActivity.start(queryControl(control))
         revision++
         if (rendering || disposed) return
         rendering = true
@@ -18317,8 +18603,18 @@
           try {
             while (!disposed) {
               const ticket = revision
-              await refreshMain(ticket)
-              if (ticket === revision) break
+              await mainActivity.paint()
+              if (disposed || ticket !== revision) continue
+              try {
+                await refreshMain(ticket)
+              } catch (error) {
+                if (ticket === revision) throw error
+                else continue
+              }
+              if (ticket === revision) {
+                await mainActivity.finish()
+                if (ticket === revision) break
+              }
             }
           } catch (error) {
             if (!disposed) {
@@ -18329,15 +18625,17 @@
               }
             }
           } finally {
+            mainActivity.clear()
             rendering = false
           }
         })
       }
-      function setCountry(value, focus = false) {
+      function setCountry(value, focus = false, control = $('#country')) {
+        if (disposed || value === currentCountry) return
         currentCountry = value
         $('#country').value = value
         if (focus) globe?.focus(value)
-        requestMain()
+        requestMain(control)
       }
       // Entrance, theme and dialog motion.
       function entrance() {
@@ -18407,6 +18705,7 @@
       function setTheme(name, persist = true) {
         if (!['dark', 'gold', 'ice', 'jade'].includes(name)) return
         const ticket = ++themeRevision
+        cssValues.clear()
         document.documentElement.dataset.theme = name
         document.documentElement.dataset.mode = ['ice', 'jade'].includes(name) ? 'light' : 'dark'
         $$('[data-theme-option]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.themeOption === name)))
@@ -18491,6 +18790,10 @@
         cancelDialogAnimations(dialog)
         if (id === 'analysis-dialog') {
           modalRevision++
+          modalActivity.clear()
+          metrics.clear($('#analysis-value'))
+          analysisGroupKey = analysisSpecKey = ''
+          analysisSpecBase = undefined
           cancelModalFrameWaits()
           modalState = undefined
           analysisChart?.release()
@@ -18595,11 +18898,13 @@
         $('#analysis-title').textContent = def.title
         $('#analysis-scope').textContent =
           `${currentCountry ? countryLabel(currentCountry) : '全部国家与未标注记录'} · ${def.intrinsic ? 'AQI >100 · ' : ''}城市样本快照${extra.city ? ' · ' + extra.city : ''}`
+        metrics.clear($('#analysis-value'))
+        analysisGroupKey = analysisSpecKey = ''
         $('#analysis-value').textContent = '—'
-        $('#analysis-finding').textContent = '正在计算当前范围…'
+        $('#analysis-finding').textContent = ''
         $('#analysis-definition').textContent = def.definition
         $('#analysis-chart').replaceChildren()
-        $('#analysis-record-count').textContent = '读取完整结果…'
+        $('#analysis-record-count').textContent = ''
         $('#analysis-table').replaceChildren()
         $('#analysis-group').replaceChildren(new Option('全部分组', ''))
         $('#min-samples').value =
@@ -18620,33 +18925,55 @@
         $('#min-samples').hidden = modalState.view !== 'country'
         $('#analysis-group').setAttribute('aria-label', modalState.view === 'pollutant' ? '选择子指数' : '选择分析分组')
       }
-      function requestModal() {
+      function requestModal(control) {
+        if (disposed || !modalState) return
         modalRevision++
-        if (!disposed && modalState) $('#analysis-loading').textContent = '计算中…'
-        if (modalRunning || disposed) return
+        modalActivity.start(queryControl(control))
+        $('#analysis-dialog').setAttribute('aria-busy', 'true')
+        $('#analysis-loading').textContent = ''
+        $('#analysis-loading').dataset.loading = String(modalState.first)
+        $('#analysis-loading').setAttribute('aria-label', modalState.first ? '正在加载分析' : '')
+        $('#analysis-retry').hidden = control !== $('#analysis-retry')
+        if (modalRunning) return
         modalRunning = true
         void (async () => {
           try {
-            await afterModalPaint()
             while (!disposed && modalState && $('#analysis-dialog').open) {
               const ticket = modalRevision,
                 state = modalState
-              await renderModal(ticket, state)
-              if (ticket === modalRevision) break
+              await modalActivity.paint()
+              if (!modalIsCurrent(ticket, state)) continue
+              try {
+                await renderModal(ticket, state)
+              } catch (error) {
+                if (modalIsCurrent(ticket, state)) throw error
+                else continue
+              }
+              if (ticket === modalRevision) {
+                await modalActivity.finish()
+                if (ticket === modalRevision) {
+                  $('#analysis-retry').hidden = true
+                  break
+                }
+              }
               await yieldBrowserTask()
             }
           } catch (error) {
             if (!disposed && modalState) {
-              $('#analysis-loading').textContent = '分析失败，可关闭重试'
+              $('#analysis-loading').textContent = `分析失败：${error.message}`
+              $('#analysis-retry').hidden = false
               console.error(error)
             }
           } finally {
+            modalActivity.clear()
+            $('#analysis-dialog').setAttribute('aria-busy', 'false')
+            delete $('#analysis-loading').dataset.loading
+            $('#analysis-loading').removeAttribute('aria-label')
             modalRunning = false
           }
         })()
       }
       async function renderModal(ticket, state) {
-        $('#analysis-loading').textContent = '计算中…'
         const base = modalBaseConditions(),
           local = localConditions(),
           dim = state.view === 'country' ? 'countryKey' : state.view === 'category' ? 'category' : 'numericBin',
@@ -18683,8 +19010,6 @@
         modalRaw = records
         const items = renderAnalysisSummary(state, s, groups.rows, ranked.rows, records)
         syncSelectControls()
-        await yieldBrowserTask()
-        if (!modalIsCurrent(ticket, state)) return
         await drawAnalysisChart(items)
         if (!modalIsCurrent(ticket, state)) return
         await yieldBrowserTask()
@@ -18701,15 +19026,16 @@
           if (!modalIsCurrent(ticket, state)) return
         }
         if (analysisTableRecords !== modalRaw) {
-          analysisTable.clearSelected()
-          analysisTable.options.animationAppear = false
-          analysisTable.setRecords(modalRaw)
+          DashboardTable.setRecords(analysisTable, modalRaw, { animate: false })
           analysisTableRecords = modalRaw
         }
-        $('#analysis-loading').textContent = '已更新'
+        $('#analysis-loading').textContent = ''
         state.first = false
         syncSelectControls()
       }
+      let analysisGroupKey = '',
+        analysisSpecKey = '',
+        analysisSpecBase
       function renderAnalysisSummary(state, summary, groups, ranked, records) {
         const labels =
           state.view === 'country'
@@ -18719,10 +19045,14 @@
               : (r) => r.group
         const options = state.view === 'pollutant' ? pollutantProfiles : groups.map((r) => ({ ...r, label: labels(r) }))
         const selection = $('#analysis-group')
-        selection.replaceChildren(
-          new Option('全部分组', ''),
-          ...options.map((r) => new Option(`${r.label}${r.n == null ? '' : ` · n=${fmt(r.n)}`}`, r.group)),
-        )
+        const groupKey = JSON.stringify(options)
+        if (analysisGroupKey !== groupKey) {
+          selection.replaceChildren(
+            new Option('全部分组', ''),
+            ...options.map((r) => new Option(`${r.label}${r.n == null ? '' : ` · n=${fmt(r.n)}`}`, r.group)),
+          )
+          analysisGroupKey = groupKey
+        }
         selection.value = state.group
         let items
         if (state.view === 'pollutant')
@@ -18779,12 +19109,9 @@
                 : state.view === 'pollutant' && state.group
                   ? pollutantLabels[state.group] + ' 子指数均值'
                   : '总 AQI 样本均值'
-        $('#analysis-value').replaceChildren(
-          document.createTextNode(fmt(value, ['coverage', 'categories', 'risk'].includes(state.metric) ? 0 : 1)),
+        metrics.set($('#analysis-value'), value, metricDefs[state.metric].unit, (next) =>
+          fmt(next, ['coverage', 'categories', 'risk'].includes(state.metric) ? 0 : 1),
         )
-        const unit = document.createElement('small')
-        unit.textContent = metricDefs[state.metric].unit
-        $('#analysis-value').append(unit)
         $('#analysis-finding-title').textContent = summary.n
           ? `${fmt(summary.n)} 条样本 · ${state.group ? options.find((r) => r.group === state.group)?.label || state.group : '完整范围'}`
           : '当前条件没有记录'
@@ -18813,13 +19140,24 @@
           return
         }
         if (!analysisChart) $('#analysis-chart').replaceChildren()
-        const spec = seedSpec(
+        const key = JSON.stringify([
+          document.documentElement.dataset.theme,
           items,
-          'bar',
-          (modalState?.view === 'country' && modalState?.metric !== 'coverage') || modalState?.view === 'pollutant'
-            ? 'AQI 均值'
-            : '样本数',
-        )
+          modalState?.view,
+          modalState?.metric,
+          reduced.matches,
+        ])
+        if (key !== analysisSpecKey) {
+          analysisSpecBase = seedSpec(
+            items,
+            'bar',
+            (modalState?.view === 'country' && modalState?.metric !== 'coverage') || modalState?.view === 'pollutant'
+              ? 'AQI 均值'
+              : '样本数',
+          )
+          analysisSpecKey = key
+        }
+        const spec = { ...analysisSpecBase, bar: { ...analysisSpecBase.bar }, padding: { ...analysisSpecBase.padding } }
         if (spec.bar) {
           spec.bar.style = {
             ...spec.bar.style,
@@ -18851,7 +19189,7 @@
             const key = datum?.groupKey
             if (key) {
               modalState.group = modalState.group === key ? '' : key
-              requestModal()
+              requestModal($('#analysis-group'))
             }
           })
         }
@@ -18876,12 +19214,16 @@
       }
       // UI event wiring, grouped by responsibility.
       function bindUI() {
+        $$('.icon-button, .close-button, .map-action button').forEach((node) => node.classList.add('control-icon'))
         bindOverviewControls()
         bindDialogs()
         bindAppearanceControls()
         bindAnalysisControls()
         bindMotionPreference()
         initSelectControls()
+        $$('.control-group button, .pill, #analysis-clear, #reset-scope').forEach((node) =>
+          node.classList.add('query-control'),
+        )
       }
       function bindOverviewControls() {
         on($('#ranking-actions'), 'click', (event) => {
@@ -18892,8 +19234,8 @@
         })
         for (const name of Object.keys(metricDefs))
           on($(`[data-analysis=${name}]`), 'click', (e) => openAnalysis(name, e.currentTarget))
-        on($('#country'), 'change', (e) => setCountry(e.target.value, true))
-        on($('#reset-scope'), 'click', () => setCountry(''))
+        on($('#country'), 'change', (e) => setCountry(e.target.value, true, e.currentTarget))
+        on($('#reset-scope'), 'click', (e) => setCountry('', false, e.currentTarget))
         on($('#map-home'), 'click', () => globe?.home())
         on($('#rotate'), 'click', () => globe?.toggle())
         on($('#rotation-switch'), 'click', () => globe?.toggle())
@@ -18966,23 +19308,23 @@
         )
         $$('[data-view]').forEach((b) =>
           on(b, 'click', () => {
-            if (!modalState) return
+            if (!modalState || modalState.view === b.dataset.view) return
             modalState.view = b.dataset.view
             modalState.group = modalState.view === 'pollutant' ? 'pm25' : ''
             syncAnalysisTabs()
-            requestModal()
+            requestModal(b)
           }),
         )
         on($('#analysis-group'), 'change', (e) => {
           modalState.group = e.target.value
-          requestModal()
+          requestModal(e.currentTarget)
         })
-        on($('#min-samples'), 'change', () => requestModal())
+        on($('#min-samples'), 'change', (e) => requestModal(e.currentTarget))
         on($('#quality-filter'), 'change', (e) => {
           modalState.quality = e.target.value
           modalState.group = ''
           $('#min-samples').value = '1'
-          requestModal()
+          requestModal(e.currentTarget)
         })
         let searchTimer
         on($('#analysis-search'), 'keydown', (e) => {
@@ -18999,12 +19341,12 @@
           searchTimer = setTimeout(() => {
             if (modalState === state && !disposed) {
               modalState.search = value
-              requestModal()
+              requestModal($('#analysis-search').parentElement)
             }
           }, 220)
         })
         on(events.signal, 'abort', () => clearTimeout(searchTimer))
-        on($('#analysis-clear'), 'click', () => {
+        on($('#analysis-clear'), 'click', (event) => {
           modalState.group = ''
           modalState.quality = ''
           modalState.city = undefined
@@ -19012,13 +19354,14 @@
           $('#quality-filter').value = ''
           modalState.search = ''
           $('#analysis-search').value = ''
-          requestModal()
+          requestModal(event.currentTarget)
         })
         on($('#table-expand'), 'click', () => {
           const expanded = $('.analysis-table-panel').classList.toggle('expanded')
           $('#table-expand').textContent = expanded ? '收起 ↙' : '展开 ↗'
           requestAnimationFrame(() => analysisTable?.resize())
         })
+        on($('#analysis-retry'), 'click', (e) => requestModal(e.currentTarget))
         on($('#export-records'), 'click', exportRaw)
       }
       function bindMotionPreference() {
@@ -19058,6 +19401,9 @@
         if (disposed) return
         disposed = true
         DashboardLoading.dispose()
+        mainActivity.clear()
+        modalActivity.clear()
+        metrics.destroy()
         DashboardResources.dispose()
         document.documentElement.dataset.disposed = 'true'
         revision++
@@ -19076,6 +19422,8 @@
         globe?.dispose()
         overviewCharts.forEach((chart) => chart.release())
         overviewCharts.clear()
+        overviewKeys.clear()
+        nodes.clear()
         analysisChart?.release()
         analysisTable?.release()
         activeBuilders.forEach((b) => b.doc.destroy())
@@ -19105,7 +19453,7 @@
         wrap.className = 'select-control'
         wrap.dataset.for = select.id
         trigger.type = 'button'
-        trigger.className = 'select-trigger'
+        trigger.className = 'select-trigger query-control'
         trigger.setAttribute('role', 'combobox')
         trigger.setAttribute('aria-haspopup', 'listbox')
         trigger.setAttribute('aria-expanded', 'false')
@@ -19133,7 +19481,11 @@
         wrap.append(trigger, panel)
         select.classList.add('select-native-state')
         let active = 0,
-          options = []
+          options = [],
+          activeItem,
+          renderedKey = '',
+          optionRows = [],
+          optionsDirty = true
         const close = () => {
           if (panel.matches(':popover-open')) panel.hidePopover()
           trigger.setAttribute('aria-expanded', 'false')
@@ -19141,24 +19493,33 @@
         function sync() {
           wrap.hidden = select.hidden
           trigger.disabled = select.disabled
-          label.textContent = select.selectedOptions[0]?.textContent || '请选择'
+          const text = select.selectedOptions[0]?.textContent || '请选择'
+          if (label.textContent !== text) label.textContent = text
           trigger.title = label.textContent
           if (wrap.hidden || trigger.disabled) close()
           if (panel.matches(':popover-open')) render()
         }
         function choose(option) {
           if (!option || option.disabled) return
-          select.value = option.value
-          select.dispatchEvent(new Event('change', { bubbles: true }))
-          sync()
           close()
+          if (select.value !== option.value) {
+            select.value = option.value
+            select.dispatchEvent(new Event('change', { bubbles: true }))
+          }
           trigger.focus()
         }
         function render() {
           const term = search.value.trim().toLocaleLowerCase()
-          options = [...select.options].filter((o) =>
-            (o.textContent + ' ' + o.value).toLocaleLowerCase().includes(term),
-          )
+          const key = `${select.value}|${term}`
+          if (!optionsDirty && key === renderedKey) return
+          if (optionsDirty)
+            optionRows = [...select.options].map((option) => ({
+              option,
+              search: (option.textContent + ' ' + option.value).toLocaleLowerCase(),
+            }))
+          optionsDirty = false
+          renderedKey = key
+          options = optionRows.filter((row) => row.search.includes(term)).map((row) => row.option)
           list.replaceChildren()
           active = Math.max(
             0,
@@ -19169,6 +19530,7 @@
             item.type = 'button'
             item.className = 'select-option'
             item.id = select.id + '-option-' + i
+            item.dataset.index = i
             item.tabIndex = -1
             item.setAttribute('role', 'option')
             item.setAttribute('aria-selected', String(option.selected))
@@ -19187,11 +19549,6 @@
               check.setAttribute('aria-hidden', 'true')
               item.append(check)
             }
-            item.addEventListener('click', () => choose(option))
-            item.addEventListener('pointermove', () => {
-              active = i
-              highlight(false)
-            })
             list.append(item)
           }
           if (!options.length) {
@@ -19203,9 +19560,12 @@
           highlight(false)
         }
         function highlight(scroll) {
-          const items = [...list.querySelectorAll('[role=option]')]
-          items.forEach((el, i) => (el.dataset.active = String(i === active)))
-          const item = items[active]
+          const item = options.length ? list.children[active] : undefined
+          if (activeItem !== item) {
+            activeItem?.removeAttribute('data-active')
+            if (item) item.dataset.active = 'true'
+            activeItem = item
+          }
           if (item) {
             trigger.setAttribute('aria-activedescendant', item.id)
             if (scroll) item.scrollIntoView({ block: 'nearest' })
@@ -19234,6 +19594,17 @@
           else list.querySelector('[role=option]')?.focus()
           list.querySelector('[aria-selected=true]')?.scrollIntoView({ block: 'nearest' })
         }
+        on(list, 'click', (event) => {
+          const item = event.target.closest('[data-index]')
+          if (item) choose(options[Number(item.dataset.index)])
+        })
+        on(list, 'pointermove', (event) => {
+          const item = event.target.closest('[data-index]')
+          if (item && Number(item.dataset.index) !== active) {
+            active = Number(item.dataset.index)
+            highlight(false)
+          }
+        })
         on(trigger, 'click', () => (panel.matches(':popover-open') ? close() : open()))
         on(trigger, 'keydown', (e) => {
           if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) {
@@ -19288,12 +19659,16 @@
             sync()
           },
         })
-        const observer = new MutationObserver(sync)
+        const observer = new MutationObserver(() => {
+          optionsDirty = true
+          sync()
+        })
         observer.observe(select, {
           childList: true,
           subtree: true,
           attributes: true,
-          attributeFilter: ['disabled', 'hidden', 'selected'],
+          attributeFilter: ['disabled', 'hidden', 'selected', 'value', 'label'],
+          characterData: true,
         })
         events.signal.addEventListener(
           'abort',
@@ -19305,7 +19680,7 @@
           },
           { once: true },
         )
-        selectControls.set(select, { sync, close })
+        selectControls.set(select, { sync, close, trigger })
         sync()
       }
       let quickFilterSignature = ''
@@ -19322,21 +19697,26 @@
         const signature = currentCountry + '|' + candidates.map((r) => r.country).join('|')
         if (signature === quickFilterSignature) return
         quickFilterSignature = signature
-        container.replaceChildren(
-          ...[{ country: '', n: source.length }, ...candidates].map((row) => {
-            const button = document.createElement('button')
+        const existing = new Map([...container.children].map((button) => [button.dataset.country, button]))
+        for (const [index, row] of [{ country: '', n: source.length }, ...candidates].entries()) {
+          let button = existing.get(row.country)
+          if (!button) {
+            button = document.createElement('button')
             button.type = 'button'
-            button.className = 'quick-country'
-            button.textContent = row.country ? countryLabel(row.country) : '全球'
-            button.setAttribute('aria-pressed', String(currentCountry === row.country))
-            button.title = `${row.country || '全部国家与未标注记录'} · ${fmt(row.n)}条样本`
+            button.className = 'quick-country query-control'
+            button.dataset.country = row.country
             on(button, 'click', () => {
-              setCountry(row.country, true)
-              if (!row.country) globe?.home()
+              setCountry(button.dataset.country, true, button)
+              if (!button.dataset.country) globe?.home()
             })
-            return button
-          }),
-        )
+          }
+          existing.delete(row.country)
+          button.textContent = row.country ? countryLabel(row.country) : '全球'
+          button.setAttribute('aria-pressed', String(currentCountry === row.country))
+          button.title = `${row.country || '全部国家与未标注记录'} · ${fmt(row.n)}条样本`
+          if (container.children[index] !== button) container.insertBefore(button, container.children[index] || null)
+        }
+        for (const button of existing.values()) button.remove()
       }
 
       // Globe shader programs: atmosphere, country borders and batched sample points.
@@ -21476,14 +21856,23 @@ void main() {
             .map((key) => new Option(countryLabel(key), key)),
           new Option('未标注国家', '__missing__'),
         )
-        resizeObserver = new ResizeObserver(() => {
-          for (const id of overviewHosts) {
-            const host = $('#' + id)
-            if (host.clientWidth && host.clientHeight)
-              overviewCharts.get(id)?.resize(host.clientWidth, host.clientHeight)
+        resizeObserver = new ResizeObserver((entries) => {
+          cssValues.clear()
+          const measured = entries.map(({ target }) => [target, target.clientWidth, target.clientHeight])
+          for (const [host, width, height] of measured) {
+            if (!width || !height) continue
+            resizeChart(
+              host.id === 'analysis-chart'
+                ? analysisChart
+                : host.id === 'analysis-table'
+                  ? analysisTable
+                  : overviewCharts.get(host.id),
+              host,
+              host.id === 'analysis-table',
+              width,
+              height,
+            )
           }
-          analysisChart?.resize($('#analysis-chart').clientWidth, $('#analysis-chart').clientHeight)
-          analysisTable?.resize()
         })
         overviewHosts.forEach((id) => resizeObserver.observe($('#' + id)))
         resizeObserver.observe($('#analysis-chart'))
