@@ -8,10 +8,12 @@
     <title>全球空气质量 · 国家与城市样本观察</title>
     <script>
       try {
-        const t = localStorage.getItem('vbi-air-theme')
-        if (['dark', 'gold', 'ice', 'jade'].includes(t)) {
+        const saved = localStorage.getItem('vbi-air-theme')
+        const t = { jade: 'silver', gold: 'graphite' }[saved] || saved
+        if (['dark', 'graphite', 'ice', 'silver'].includes(t)) {
           document.documentElement.dataset.theme = t
-          document.documentElement.dataset.mode = ['ice', 'jade'].includes(t) ? 'light' : 'dark'
+          document.documentElement.dataset.mode = ['ice', 'silver'].includes(t) ? 'light' : 'dark'
+          if (t !== saved) localStorage.setItem('vbi-air-theme', t)
         }
       } catch {}
     </script>
@@ -29,7 +31,6 @@
         --control-icon: 14px;
         --control-radius: 8px;
         --control-gap: 6px;
-        --font-ui: Inter, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif;
         --bg: #080c10;
         --bg-end: #0a1218;
         --ink: #cbd5de;
@@ -53,10 +54,8 @@
         --unhealthy: #ed8279;
         --very: #bb8ed5;
         --hazard: #bc7394;
-        --radius: 18px;
-        --duration: 380ms;
         --ease: cubic-bezier(0.18, 0.75, 0.2, 1);
-        --glass-radius: 19px;
+        --glass-radius: calc(var(--rail-radius) - var(--rail-padding) - 1px);
         --glass-surface: rgb(16 29 40 / 0.54);
         --glass-fallback: var(--glass-solid);
         --glass-filter: blur(14px) saturate(1.08) brightness(1.02);
@@ -115,13 +114,13 @@
           rgb(255 255 255 / 0.08) 58%,
           rgb(238 246 250 / 0.22)
         );
-        --glass-edge: rgb(255 255 255 / 0.8);
-        --glass-edge-hover: rgb(255 255 255 / 0.92);
+        --glass-edge: rgb(255 255 255 / 0.42);
+        --glass-edge-hover: rgb(255 255 255 / 0.62);
         --glass-shadow:
-          0 5px 15px -10px rgb(41 77 96 / 0.17), inset 0 1px 0 rgb(255 255 255 / 0.98),
+          0 5px 15px -10px rgb(41 77 96 / 0.17), inset 0 1px 0 rgb(255 255 255 / 0.48),
           inset 0 -1px 0 rgb(132 161 176 / 0.08);
-        --glass-hover-shadow: 0 7px 20px -10px rgb(41 77 96 / 0.22), inset 0 1px 0 white;
-        --glass-inset: radial-gradient(ellipse at 7% 0%, rgb(255 255 255 / 0.22), transparent 55%);
+        --glass-hover-shadow: 0 7px 20px -10px rgb(41 77 96 / 0.22), inset 0 1px 0 rgb(255 255 255 / 0.62);
+        --glass-inset: radial-gradient(ellipse at 7% 0%, rgb(255 255 255 / 0.1), transparent 55%);
         --glass-inset-shadow: inset 1px 0 0 rgb(255 255 255 / 0.35), inset -1px 0 0 rgb(255 255 255 / 0.1);
         --glass-tile: linear-gradient(145deg, rgb(255 255 255 / 0.48), rgb(255 255 255 / 0.2));
         --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 0.68), 0 5px 16px -12px rgb(40 51 62 / 0.12);
@@ -141,21 +140,6 @@
           0 24px 60px -23px rgb(35 71 91 / 0.24), inset 0 1px 0 rgb(255 255 255 / 0.5),
           inset 1px 0 0 rgb(255 255 255 / 0.2);
         --glass-filter: blur(12px) saturate(1.08);
-      }
-      :root[data-theme='gold'] {
-        --bg: #100e0d;
-        --bg-end: #191512;
-        --ink: #ded5cf;
-        --strong: #fff5ed;
-        --muted: #b0a196;
-        --faint: #8a786b;
-        --accent: #e8b68d;
-        --accent-rgb: 232 182 141;
-        --glass-solid: #211b17;
-        --edge: rgb(239 213 192 / 0.12);
-        --shine: rgb(255 227 202 / 0.16);
-        --glow: rgb(190 113 66 / 0.07);
-        --chart-track: rgb(212 186 159 / 0.12);
       }
       :root[data-theme='ice'] {
         --bg: #e4edf3;
@@ -180,30 +164,6 @@
         --unhealthy: #be5f5d;
         --very: #9463ad;
         --hazard: #9c506f;
-      }
-      :root[data-theme='jade'] {
-        --bg: #e8efed;
-        --bg-end: #dbe7e1;
-        --ink: #3d5148;
-        --strong: #23463e;
-        --muted: #5d7870;
-        --faint: #819084;
-        --accent: #458b77;
-        --accent-rgb: 69 139 119;
-        --inner: rgb(42 77 57 / 0.035);
-        --glass-solid: #f3f8f5;
-        --edge: rgb(45 83 61 / 0.12);
-        --shine: rgb(255 255 255 / 0.95);
-        --shadow: 0 15px 32px #325b6817, inset 0 1px 0 #ffffffef;
-        --glow: rgb(76 129 96 / 0.07);
-        --chart-track: rgb(45 90 65 / 0.1);
-        --danger: #b05f44;
-        --good: #3b9282;
-        --moderate: #a78b45;
-        --sensitive: #c28246;
-        --unhealthy: #bd6b62;
-        --very: #986eae;
-        --hazard: #a15e78;
       }
       /* Geographic optics: one base palette and explicit theme overrides; no business values. */
       :root {
@@ -239,12 +199,12 @@
         --map-night-strength: 1.6;
         --map-specular: #193b49;
       }
-      :root[data-theme='gold'] {
-        --map-outline: #b6c2bb;
-        --map-grid: #657b83;
-        --map-halo: #afcfd9;
-        --map-water: 7 37 49;
-        --map-night-color: #ffd38b;
+      :root[data-theme='graphite'] {
+        --map-outline: #9aafa6;
+        --map-grid: #66756e;
+        --map-halo: #b1c4b9;
+        --map-water: 28 42 44;
+        --map-night-color: #ddd3b5;
       }
       :root[data-theme='ice'] {
         --map-ambient-strength: 1.5;
@@ -266,17 +226,17 @@
         --map-cloud-light: 0.65;
         --map-specular: #b3ccc4;
       }
-      :root[data-theme='jade'] {
+      :root[data-theme='silver'] {
         --map-ambient-strength: 1.5;
         --map-key-strength: 1.8;
-        --map-outline: #527b80;
+        --map-outline: #647886;
         --map-border-opacity: 0.62;
-        --map-grid: #60877e;
-        --map-halo: #9cddd3;
+        --map-grid: #82919d;
+        --map-halo: #b3c6d5;
         --map-water: 127 174 178;
-        --map-ambient: #f5faf3;
-        --map-key: #fff9ed;
-        --map-rim: #b9dbe1;
+        --map-ambient: #f4f6f8;
+        --map-key: #ffffff;
+        --map-rim: #d2dce4;
         --map-cloud-opacity: 0.58;
         --map-atmosphere-strength: 0.12;
         --map-surface-haze: 0.45;
@@ -284,7 +244,7 @@
         --map-shadow-floor: 0.82;
         --map-cloud-floor: 0.7;
         --map-cloud-light: 0.65;
-        --map-specular: #afcbbd;
+        --map-specular: #bdc8d1;
       }
 
       /* Geographic data layer: continuous magnitude colors, separate from AQI health categories. */
@@ -297,14 +257,14 @@
         --map-column-edge: #8deaff;
         --map-column-cap: #d9fcff;
       }
-      :root[data-theme='gold'] {
-        --map-field-land: #485366;
-        --map-field-ocean: #121e2d;
-        --map-hex-strength: 0.32;
-        --map-column-low: #ae8b55;
-        --map-column-high: #efd09a;
-        --map-column-edge: #f0cb8d;
-        --map-column-cap: #fff0d3;
+      :root[data-theme='graphite'] {
+        --map-field-land: #526760;
+        --map-field-ocean: #283c3a;
+        --map-hex-strength: 0.26;
+        --map-column-low: #708b83;
+        --map-column-high: #b5cbbe;
+        --map-column-edge: #bed1c5;
+        --map-column-cap: #e7f0e9;
       }
       :root[data-theme='ice'] {
         --map-field-land: #b6d2df;
@@ -315,14 +275,23 @@
         --map-column-edge: #236d91;
         --map-column-cap: #bdeaf5;
       }
-      :root[data-theme='jade'] {
-        --map-field-land: #bbd6cc;
-        --map-field-ocean: #97b9b1;
-        --map-hex-strength: 0.16;
-        --map-column-low: #367f6a;
-        --map-column-high: #196b61;
-        --map-column-edge: #267866;
-        --map-column-cap: #c3f2dd;
+      :root[data-theme='silver'] {
+        --map-field-land: #cbd3dc;
+        --map-field-ocean: #aab9c6;
+        --map-hex-strength: 0.13;
+        --map-column-low: #617d94;
+        --map-column-high: #354f67;
+        --map-column-edge: #536e86;
+        --map-column-cap: #dbe5ed;
+      }
+      :root[data-theme='silver'] {
+        --danger: #b75c3d;
+        --good: #358f83;
+        --moderate: #ac8541;
+        --sensitive: #c27d41;
+        --unhealthy: #be5f5d;
+        --very: #9463ad;
+        --hazard: #9c506f;
       }
     </style>
     <style id="dashboard-layout">
@@ -499,20 +468,6 @@
       #country {
         width: 216px;
       }
-      .icon-button {
-        display: grid;
-        place-items: center;
-        width: var(--control-height);
-        height: var(--control-height);
-        border-radius: var(--control-radius);
-        background: var(--inner);
-        border: 1px solid var(--edge);
-        color: var(--muted);
-      }
-      .icon-button:hover {
-        color: var(--strong);
-        background: rgb(var(--accent-rgb) / 0.1);
-      }
       .scope-chip {
         font-size: 11px;
         color: var(--muted);
@@ -556,14 +511,10 @@
         padding: 20px 21px;
         background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.025), transparent 70%), var(--glass);
         border: 1px solid var(--edge);
-        border-radius: var(--radius);
         overflow: hidden;
         box-shadow: var(--shadow);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-      }
-      .card:hover {
-        border-color: color-mix(in srgb, var(--accent) 26%, var(--edge));
       }
       .card-head {
         display: flex;
@@ -646,7 +597,6 @@
       }
       .distribution {
         flex: 1;
-        min-height: 95px;
       }
 
       .card-foot {
@@ -923,20 +873,6 @@
         display: flex;
         gap: 6px;
       }
-      .map-action button {
-        width: var(--control-height);
-        height: var(--control-height);
-        border-radius: var(--control-radius);
-        color: var(--muted);
-        display: grid;
-        place-items: center;
-        background: var(--inner);
-        border: 1px solid var(--edge);
-      }
-      .map-action button[aria-pressed='true'] {
-        color: var(--accent);
-        border-color: rgb(var(--accent-rgb) / 0.3);
-      }
       .map-footer {
         position: absolute;
         bottom: 19px;
@@ -1200,16 +1136,6 @@
         color: var(--muted);
         margin-top: 4px;
       }
-      .close-button {
-        width: var(--control-height);
-        height: var(--control-height);
-        display: grid;
-        place-items: center;
-        border-radius: 50%;
-        color: var(--muted);
-        background: var(--inner);
-        flex-shrink: 0;
-      }
       .analysis-summary {
         display: grid;
         grid-template-columns: auto 1fr;
@@ -1248,22 +1174,9 @@
         height: 31px;
         font-size: 11px;
       }
-      .analysis-tabs {
-        display: flex;
-        gap: 4px;
-        background: var(--inner);
-        border-radius: 10px;
-        padding: 3px;
-      }
       .analysis-tabs button {
         padding: 5px 12px;
         font-size: 11px;
-        color: var(--muted);
-        border-radius: 7px;
-      }
-      .analysis-tabs button[aria-selected='true'] {
-        background: rgb(var(--accent-rgb) / 0.15);
-        color: var(--strong);
       }
       .analysis-grid {
         flex: 1;
@@ -1600,7 +1513,6 @@
         }
         .map-card {
           order: 0;
-          height: clamp(470px, 73vw, 700px);
           flex: none;
         }
         .column {
@@ -1688,7 +1600,6 @@
           border-radius: 20px;
         }
         .map-heading {
-          right: 17px;
           top: 18px;
         }
         .map-heading strong {
@@ -1932,9 +1843,6 @@
       .dialog {
         background: linear-gradient(145deg, rgb(var(--accent-rgb) / 0.035), transparent 46%), var(--glass-solid);
       }
-      .analysis-dialog::backdrop {
-        background: rgb(3 10 15 / 0.68);
-      }
       .card-head h2 {
         font-size: var(--font-card-title);
       }
@@ -2002,34 +1910,16 @@
         font-size: 10px;
       }
       .quick-filters {
-        display: flex;
-        gap: 3px;
-        align-items: center;
-        padding: 3px;
-        border: 1px solid var(--edge);
-        border-radius: 10px;
-        background: var(--glass-solid);
-        box-shadow: 0 8px 24px #0002;
         pointer-events: auto;
       }
       .quick-country {
         min-height: var(--control-compact-height);
         padding: 4px 11px;
-        border-radius: 7px;
         font-size: 11px;
-        color: var(--muted);
-        transition:
-          background 0.2s,
-          color 0.2s;
       }
       .quick-country:hover {
         color: var(--strong);
         background: var(--inner);
-      }
-      .quick-country[aria-pressed='true'] {
-        background: var(--accent);
-        color: var(--bg);
-        box-shadow: 0 3px 8px rgb(var(--accent-rgb) / 0.2);
       }
       @media (max-height: 780px) and (min-width: 981px) {
         #map {
@@ -2060,7 +1950,7 @@
         bottom: 64px;
       }
       :root[data-theme='ice'] .globe-label,
-      :root[data-theme='jade'] .globe-label {
+      :root[data-theme='silver'] .globe-label {
         --map-label-bg: rgb(247 251 249 / 0.92);
         --map-label-ink: #3a5d62;
         --map-label-strong: #1e3b40;
@@ -2311,9 +2201,6 @@
         .map-heading > div:first-child {
           visibility: hidden;
         }
-        .map-heading {
-          top: 16px;
-        }
         .column .card {
           padding: 18px 14px;
         }
@@ -2353,9 +2240,6 @@
         }
         .header {
           padding: 7px 4px;
-        }
-        .quick-filters {
-          gap: 2px;
         }
         .quick-country {
           padding: 7px 10px;
@@ -2397,26 +2281,13 @@
         max-width: 100%;
         min-width: 100%;
         padding: 0 10px;
-        background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.06), transparent), var(--inner);
-        border: 1px solid var(--edge);
-        border-radius: var(--control-radius);
         text-align: left;
-        color: var(--ink);
-        box-shadow: inset 0 1px 0 var(--shine);
         font-size: var(--control-font);
-        transition:
-          border-color 0.18s,
-          background 0.18s;
       }
       .select-trigger > span {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-      }
-      .select-trigger:hover,
-      .select-trigger[aria-expanded='true'] {
-        border-color: rgb(var(--accent-rgb) / 0.5);
-        background: rgb(var(--accent-rgb) / 0.08);
       }
       .select-chevron {
         width: var(--control-icon);
@@ -2434,20 +2305,16 @@
         padding: 6px;
         border: 1px solid var(--edge);
         border-radius: 12px;
-        background: var(--glass-solid);
-        background: color-mix(in srgb, var(--glass-solid) 94%, transparent);
         color: var(--ink);
         box-shadow:
           0 18px 55px #0004,
           inset 0 1px 0 var(--shine);
-        backdrop-filter: blur(18px);
         overflow: hidden;
       }
       .select-panel:popover-open {
         display: flex;
         flex-direction: column;
         gap: 7px;
-        animation: select-appear 0.14s ease-out;
       }
       .select-search {
         width: 100%;
@@ -2500,21 +2367,6 @@
         font-size: 12px;
         color: var(--muted);
       }
-      @keyframes select-appear {
-        from {
-          opacity: 0;
-          transform: translateY(-4px);
-        }
-        to {
-          opacity: 1;
-          transform: none;
-        }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .select-panel:popover-open {
-          animation: none;
-        }
-      }
       @media (max-width: 600px) {
         .select-control[data-for='country'] {
           flex: 1;
@@ -2552,12 +2404,7 @@
         }
       }
 
-      /* Atmospheric highlights must not reduce the country control's text contrast. */
-      .header .select-trigger {
-        background: var(--glass-solid);
-      }
-
-      /* Map controls reuse the existing surface tokens; cards are unchanged. */
+      /* Scene-specific control placement and dimensions; material is shared below. */
       .map-toolbar {
         position: absolute;
         z-index: 4;
@@ -2578,32 +2425,10 @@
         color: var(--ink);
         font: inherit;
       }
-      .map-metrics {
-        display: flex;
-        align-items: center;
-        padding: 3px;
-        border: 1px solid var(--edge);
-        border-radius: 10px;
-        background: var(--glass-solid);
-        box-shadow: var(--glass-shadow);
-      }
       .map-metrics button {
-        background: transparent;
-        border-radius: 7px;
         min-height: var(--control-compact-height);
         padding: 4px 10px;
         font-size: var(--control-font);
-        transition:
-          background 0.2s,
-          color 0.2s;
-      }
-      .map-metrics button[aria-pressed='true'] {
-        background: var(--accent);
-        color: var(--glass-solid);
-      }
-      .map-metrics {
-        background: var(--glass-solid);
-        box-shadow: none;
       }
       #map-scale {
         flex-basis: 100%;
@@ -2758,14 +2583,6 @@
         border-color: var(--glass-edge-hover);
         box-shadow: var(--glass-hover-shadow);
       }
-      :is(.select-trigger, .icon-button, .map-action button) {
-        background: var(--glass-control);
-        border-color: var(--glass-divider);
-        box-shadow: var(--glass-tile-shadow);
-      }
-      :is(.select-trigger, .icon-button, .map-action button):hover {
-        background: var(--glass-control-hover);
-      }
       .select-panel {
         background: var(--glass-popover);
         backdrop-filter: none;
@@ -2883,6 +2700,381 @@
         color: var(--text-faint);
         font-size: 11px;
         font-weight: 400;
+      }
+    </style>
+
+    <style id="dashboard-query-controls">
+      :root {
+        --query-control-size: var(--control-height);
+        --query-icon-size: var(--control-icon);
+        --query-control-ink: var(--ink);
+        --query-hover: color-mix(in srgb, var(--strong) 7%, transparent);
+        --query-track: color-mix(in srgb, var(--glass-fallback) 62%, transparent);
+        --query-active: rgb(255 255 255 / 14%);
+        --query-ink: var(--strong);
+        --query-edge: rgb(255 255 255 / 14%);
+        --query-highlight: rgb(255 255 255 / 18%);
+        --query-shadow: 0 3px 10px -4px rgb(0 0 0 / 24%);
+        --query-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      :root[data-mode='light'] {
+        --query-active: rgb(255 255 255 / 84%);
+        --query-edge: rgb(255 255 255 / 58%);
+        --query-highlight: rgb(255 255 255 / 88%);
+        --query-shadow: 0 3px 10px -4px rgb(35 54 70 / 18%);
+      }
+      .control-group {
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        align-items: center;
+        border: 0;
+        border-radius: calc(var(--query-control-size) / 2 + 3px);
+        padding: 3px;
+        gap: 3px;
+        background: var(--query-track);
+        box-shadow:
+          inset 0 0 0 1px var(--query-edge),
+          var(--query-shadow);
+      }
+      .control-group::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: var(--segment-width, 0px);
+        height: var(--segment-height, 0px);
+        transform: translate(var(--segment-x, 0px), var(--segment-y, 0px));
+        border-radius: 999px;
+        background: var(--query-active);
+        box-shadow:
+          inset 0 1px 0 var(--query-highlight),
+          var(--query-shadow);
+        pointer-events: none;
+        opacity: 0;
+      }
+      .control-group[data-segmented='true']::before {
+        opacity: 1;
+        transition:
+          transform 280ms var(--query-ease),
+          width 180ms var(--query-ease);
+      }
+      .control-group button {
+        position: relative;
+        border: 0;
+        box-shadow: none;
+        background: transparent;
+        color: var(--query-control-ink);
+        border-radius: 999px;
+      }
+      .control-group button:is([aria-pressed='true'], [aria-selected='true']) {
+        background: var(--query-active);
+        color: var(--query-ink);
+        box-shadow: var(--query-shadow);
+      }
+      .control-group[data-segmented='true'] button:is([aria-pressed='true'], [aria-selected='true']) {
+        background: transparent;
+        box-shadow: none;
+      }
+      :is(.select-trigger, #analysis-clear, #analysis-retry, .table-expand),
+      .control-icon {
+        border: 0;
+        border-radius: 999px;
+        background: var(--query-track);
+        color: var(--query-control-ink);
+        box-shadow:
+          inset 0 0 0 1px var(--query-edge),
+          var(--query-shadow);
+      }
+      .control-group button,
+      :is(.select-trigger, #analysis-clear, #analysis-retry, .table-expand) {
+        transition:
+          background 160ms ease,
+          color 160ms ease,
+          scale 180ms var(--query-ease);
+      }
+      .control-group,
+      :is(.control-icon, .select-trigger) {
+        backdrop-filter: blur(12px) saturate(1.12);
+        -webkit-backdrop-filter: blur(12px) saturate(1.12);
+      }
+      .query-control,
+      .control-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+      }
+      .query-control > svg:not(:last-child) {
+        margin-right: 6px;
+      }
+      .query-control > .select-chevron {
+        order: 2;
+        margin: 0 0 0 6px;
+      }
+      .control-icon {
+        flex: 0 0 auto;
+        width: auto;
+        min-width: var(--query-control-size);
+        height: var(--query-control-size);
+        padding: 0;
+        line-height: 1;
+        transition:
+          padding 180ms ease,
+          background 180ms ease,
+          color 180ms ease,
+          box-shadow 180ms ease,
+          scale 180ms var(--query-ease);
+      }
+      .control-icon[data-loading='true'] {
+        padding: 0 8px;
+      }
+      .control-icon[aria-expanded='true'] {
+        background: var(--query-hover);
+        color: var(--query-ink);
+      }
+      .control-icon[aria-pressed='true'] {
+        background: var(--query-active);
+        color: var(--query-ink);
+      }
+      .control-icon > svg {
+        display: block;
+        flex: none;
+        width: var(--query-icon-size);
+        height: var(--query-icon-size);
+        margin: 0;
+      }
+      .query-control::after {
+        content: '';
+        order: 1;
+        flex: 0 0 auto;
+        box-sizing: border-box;
+        width: 0;
+        height: 12px;
+        margin-left: 0;
+        border: 0 solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          width 180ms ease,
+          margin-left 180ms ease,
+          border-width 180ms ease,
+          opacity 140ms ease;
+      }
+      .query-control[data-loading='true']::after {
+        width: 12px;
+        margin-left: 6px;
+        border-width: 2px;
+        opacity: 1;
+        animation: query-turn 1.1s linear infinite;
+      }
+      .query-control[data-loading='true'] {
+        opacity: 1;
+        cursor: progress;
+      }
+      .query-search {
+        justify-content: flex-start;
+      }
+      .query-search[data-loading='true'] {
+        padding-right: 10px;
+      }
+      .analysis-loading[data-loading='true'] {
+        display: block;
+        min-height: 18px;
+      }
+      .analysis-loading[data-loading='true']::before {
+        content: '';
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 2px solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        animation: query-turn 1.1s linear infinite;
+      }
+      :is(.control-group button, .control-icon, .query-control):focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+      :is(.control-group button, .control-icon, .query-control):active:not(:disabled) {
+        scale: 0.97;
+      }
+      :is(.control-group button, .control-icon, .query-control):disabled {
+        cursor: default;
+      }
+      @media (hover: hover) {
+        .control-icon:hover:not(:disabled),
+        .control-group button:hover:not(:disabled):not([aria-pressed='true'], [aria-selected='true']),
+        :is(.select-trigger, #analysis-clear, #analysis-retry, .table-expand):hover:not(:disabled) {
+          background: var(--query-hover);
+          color: var(--query-ink);
+        }
+      }
+      /* Controls on an existing glass surface use a fill, without a second blur pass. */
+      :is(.dialog, .column) :is(.control-group, .control-icon, .query-control) {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      .select-panel:popover-open {
+        transform-origin: var(--popover-origin, top right);
+        animation: control-reveal 220ms var(--query-ease) backwards;
+      }
+      @keyframes control-reveal {
+        from {
+          opacity: 0;
+          transform: translateY(var(--popover-shift, -4px)) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @media (prefers-reduced-transparency: reduce) {
+        :is(.control-group, .control-icon, .select-trigger, #analysis-clear, #analysis-retry, .table-expand) {
+          background: var(--glass-fallback);
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+        }
+      }
+      @media (prefers-contrast: more) {
+        :is(.control-group, .control-icon, .select-trigger, #analysis-clear, #analysis-retry, .table-expand) {
+          box-shadow: inset 0 0 0 1px var(--query-control-ink);
+        }
+        .control-group::before {
+          box-shadow: inset 0 0 0 1px var(--query-ink);
+        }
+      }
+      @keyframes query-turn {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .control-group::before,
+        .control-group button,
+        .query-control,
+        .query-control::after,
+        .control-icon {
+          transition: none !important;
+          scale: none;
+        }
+        .select-panel:popover-open,
+        .query-control::after,
+        .analysis-loading::before {
+          animation: none !important;
+        }
+      }
+    </style>
+    <style id="dashboard-neutral-themes">
+      /* Shared 2D/3D neutral palettes. Scene data encodings remain in their own tokens. */
+      :root[data-theme='silver'] {
+        --bg: #eef0f3;
+        --bg-end: #e1e6eb;
+        --ink: #333b45;
+        --strong: #1f242c;
+        --muted: #626e7b;
+        --faint: #75808d;
+        --accent: #45647d;
+        --accent-rgb: 69 100 125;
+        --glass-solid: #fafbfc;
+        --glass-surface: rgb(250 251 252 / 54%);
+        --glass-contrast-surface: rgb(250 251 252 / 86%);
+        --glass-popover: rgb(250 251 252 / 96%);
+        --edge: rgb(58 68 80 / 12%);
+        --shine: rgb(255 255 255 / 88%);
+        --inner: rgb(58 68 80 / 3.5%);
+        --glow: rgb(69 100 125 / 4%);
+        --chart-track: rgb(58 68 80 / 10%);
+        --glass-filter: blur(14px) saturate(1.02);
+        --glass-sheen: linear-gradient(145deg, rgb(255 255 255 / 28%), rgb(255 255 255 / 6%) 60%);
+        --glass-edge: rgb(255 255 255 / 58%);
+        --glass-edge-hover: rgb(255 255 255 / 78%);
+        --glass-shadow: 0 6px 20px -12px rgb(31 36 44 / 20%), inset 0 1px 0 rgb(255 255 255 / 60%);
+        --glass-hover-shadow: 0 8px 24px -12px rgb(31 36 44 / 24%), inset 0 1px 0 rgb(255 255 255 / 78%);
+        --glass-inset: linear-gradient(145deg, rgb(255 255 255 / 16%), rgb(238 240 243 / 6%));
+        --glass-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 32%);
+        --glass-tile: linear-gradient(145deg, rgb(255 255 255 / 44%), rgb(250 251 252 / 22%));
+        --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 58%);
+        --glass-reflection: rgb(255 255 255 / 12%);
+        --glass-highlight: rgb(255 255 255 / 6%);
+        --glass-scrim: rgb(31 36 44 / 30%);
+        --glass-dialog-shadow: 0 24px 88px rgb(31 36 44 / 24%), inset 0 1px 0 var(--glass-edge);
+        --rail-background: linear-gradient(145deg, rgb(255 255 255 / 18%), rgb(225 230 235 / 12%) 60%);
+        --rail-edge: rgb(255 255 255 / 42%);
+        --rail-shadow: 0 24px 60px -24px rgb(31 36 44 / 24%), inset 0 1px 0 rgb(255 255 255 / 56%);
+        --control-active: rgb(255 255 255 / 84%);
+        --control-selected: var(--strong);
+        --query-shadow: 0 3px 10px -4px rgb(31 36 44 / 18%);
+      }
+      :root[data-theme='graphite'] {
+        --bg: #17191b;
+        --bg-end: #1f2326;
+        --ink: #e2e6e3;
+        --strong: #f1f2f0;
+        --muted: #adb3b0;
+        --faint: #8d9992;
+        --accent: #a5b8ac;
+        --accent-rgb: 165 184 172;
+        --glass-solid: #25282b;
+        --glass-surface: rgb(37 40 43 / 60%);
+        --glass-contrast-surface: rgb(37 40 43 / 88%);
+        --glass-popover: rgb(43 47 50 / 98%);
+        --edge: rgb(221 228 224 / 12%);
+        --shine: rgb(255 255 255 / 14%);
+        --inner: rgb(255 255 255 / 3%);
+        --glow: rgb(165 184 172 / 3%);
+        --chart-track: rgb(221 228 224 / 10%);
+        --glass-filter: blur(14px) saturate(0.96);
+        --glass-sheen: linear-gradient(145deg, rgb(255 255 255 / 6%), rgb(255 255 255 / 1%) 60%);
+        --glass-edge: rgb(230 235 232 / 16%);
+        --glass-edge-hover: rgb(230 235 232 / 26%);
+        --glass-shadow: 0 6px 20px -12px rgb(0 0 0 / 38%), inset 0 1px 0 rgb(255 255 255 / 12%);
+        --glass-hover-shadow: 0 8px 24px -12px rgb(0 0 0 / 46%), inset 0 1px 0 rgb(255 255 255 / 18%);
+        --glass-inset: linear-gradient(145deg, rgb(255 255 255 / 3%), rgb(23 25 27 / 4%));
+        --glass-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 6%);
+        --glass-tile: linear-gradient(145deg, rgb(230 235 232 / 7%), rgb(230 235 232 / 3%));
+        --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 9%);
+        --glass-reflection: rgb(255 255 255 / 8%);
+        --glass-highlight: rgb(255 255 255 / 4%);
+        --glass-scrim: rgb(0 0 0 / 54%);
+        --glass-dialog-shadow: 0 24px 88px rgb(0 0 0 / 46%), inset 0 1px 0 var(--glass-edge);
+        --rail-background: linear-gradient(145deg, rgb(230 235 232 / 6%), rgb(23 25 27 / 28%) 60%);
+        --rail-edge: rgb(230 235 232 / 14%);
+        --rail-shadow: 0 24px 60px -24px rgb(0 0 0 / 48%), inset 0 1px 0 rgb(255 255 255 / 14%);
+        --control-active: rgb(255 255 255 / 14%);
+        --control-selected: var(--strong);
+        --query-shadow: 0 3px 10px -4px rgb(0 0 0 / 24%);
+      }
+      :root[data-theme='silver'],
+      :root[data-theme='graphite'] {
+        --page-surface: var(--bg);
+        --glass-fallback: var(--glass-solid);
+        --popover-surface: var(--glass-popover);
+        --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--glass-solid));
+        --focus: var(--accent);
+        --line: var(--edge);
+        --divider: var(--edge);
+        --glass-divider: var(--edge);
+        --shadow: var(--glass-shadow);
+        --glass-tile-hover-shadow: var(--glass-hover-shadow);
+        --dialog-scrim: var(--glass-scrim);
+        --track: var(--chart-track);
+        --hover: color-mix(in srgb, var(--ink) 6%, transparent);
+        --control-hover: var(--hover);
+        --control-surface: color-mix(in srgb, var(--glass-solid) 68%, transparent);
+        --control-ink: var(--muted);
+        --control-selected-muted: var(--muted);
+        --chart-ink: var(--accent);
+        --meter-fill: var(--accent);
+        --rail-filter: blur(18px) saturate(1.02);
+      }
+      .theme-swatch[data-swatch='silver'] {
+        background: linear-gradient(135deg, #fafbfc 50%, #45647d 50%);
+      }
+      .theme-swatch[data-swatch='graphite'] {
+        background: linear-gradient(135deg, #25282b 50%, #a5b8ac 50%);
       }
     </style>
   </head>
@@ -3020,7 +3212,7 @@
             </div>
           </div>
           <div class="map-toolbar">
-            <div id="map-metrics" class="map-metrics" role="group" aria-label="柱高指标">
+            <div id="map-metrics" class="map-metrics control-group" role="group" aria-label="柱高指标">
               <button data-map-metric="mean" aria-pressed="true">AQI 均值</button>
               <button data-map-metric="highRate" aria-pressed="false">超阈值占比</button>
             </div>
@@ -3041,7 +3233,7 @@
           </div>
           <div class="map-scope">
             <strong id="map-place">全球城市样本</strong>
-            <div id="quick-filters" class="quick-filters" role="group" aria-label="国家快捷筛选"></div>
+            <div id="quick-filters" class="quick-filters control-group" role="group" aria-label="国家快捷筛选"></div>
             <p id="map-scope-note">175 个国家 · 无采样时间信息</p>
           </div>
           <p class="status" id="status" role="status" aria-live="polite">准备数据…</p>
@@ -3180,7 +3372,7 @@
           </div>
         </section>
         <div class="analysis-controls dialog-reveal">
-          <div class="analysis-tabs" role="tablist" aria-label="分析视角">
+          <div class="analysis-tabs control-group" role="tablist" aria-label="分析视角">
             <button role="tab" data-view="country" aria-selected="true">国家比较</button
             ><button role="tab" data-view="category" aria-selected="false">来源等级</button
             ><button role="tab" data-view="numeric" aria-selected="false">数值分布</button
@@ -3199,12 +3391,14 @@
             <option value="inconsistent">AQI 与最大子指数不一致</option>
             <option value="categoryMismatch">来源等级与数值分箱不一致</option></select
           ><button class="pill" id="analysis-clear">清除局部选择</button
-          ><input
-            type="search"
-            id="analysis-search"
-            aria-label="搜索原始城市或国家"
-            placeholder="搜索原始城市或国家"
-          /><span class="analysis-loading" id="analysis-loading" role="status"></span>
+          ><span class="query-search query-control"
+            ><input
+              type="search"
+              id="analysis-search"
+              aria-label="搜索原始城市或国家"
+              placeholder="搜索原始城市或国家" /></span
+          ><span class="analysis-loading" id="analysis-loading" role="status"></span
+          ><button class="pill query-control" id="analysis-retry" hidden>重试</button>
         </div>
         <div class="analysis-grid dialog-reveal">
           <section class="analysis-chart-panel">
@@ -3251,6 +3445,276 @@
         <button id="loading-retry" type="button" hidden>重新加载</button>
       </div>
     </div>
+    <script id="dashboard-interaction-runtime">
+      // Transient UI state only: query conditions remain in the scene's Builders.
+      window.DashboardUI = (() => {
+        const node = (value) => (typeof value === 'string' ? document.querySelector(value) : value)
+        const write = (text, value) => {
+          if (text.data !== value) text.data = value
+        }
+        const formats = new Map()
+        const format = (value, digits = 0, minimum = digits) => {
+          if (value == null || !Number.isFinite(Number(value))) return '—'
+          const key = `${minimum}:${digits}`
+          if (!formats.has(key))
+            formats.set(
+              key,
+              new Intl.NumberFormat('zh-CN', { minimumFractionDigits: minimum, maximumFractionDigits: digits }),
+            )
+          return formats.get(key).format(Number(value))
+        }
+        function createMetrics({ reducedMotion, duration = 600 }) {
+          const states = new Map()
+          let frame = 0
+          function settle() {
+            cancelAnimationFrame(frame)
+            frame = 0
+            for (const [element, state] of states) {
+              state.value = state.target
+              write(state.text, state.format(state.target))
+              element.dataset.animating = 'false'
+            }
+          }
+          function tick(now) {
+            frame = 0
+            let active = false
+            for (const [element, state] of states) {
+              if (element.dataset.animating !== 'true') continue
+              const progress =
+                reducedMotion.matches || document.hidden
+                  ? 1
+                  : Math.max(0, Math.min(1, (now - state.started) / duration))
+              state.value =
+                progress === 1 ? state.target : state.from + (state.target - state.from) * (1 - (1 - progress) ** 3)
+              write(state.text, state.format(state.value))
+              if (progress === 1) element.dataset.animating = 'false'
+              active ||= progress < 1
+            }
+            if (active) frame = requestAnimationFrame(tick)
+          }
+          function set(selector, value, unit = '', formatter) {
+            const element = node(selector)
+            const raw = value == null ? '' : String(value)
+            const target = raw.trim() && Number.isFinite(Number(value)) ? Number(value) : null
+            const digits = raw.includes('.') ? raw.split('.')[1].length : 0
+            const format = (next) => (next == null ? '—' : formatter ? formatter(next) : Number(next).toFixed(digits))
+            const label = format(target)
+            const previous = states.get(element)
+            if (previous?.label === label && previous?.unit === unit) return
+            let text = previous?.text
+            if (!text) {
+              text = document.createTextNode(label)
+              element.replaceChildren(text)
+            }
+            let unitNode = element.querySelector('small')
+            if (unit) {
+              if (!unitNode) {
+                unitNode = document.createElement('small')
+                element.append(unitNode)
+              }
+              if (unitNode.textContent !== unit) unitNode.textContent = unit
+            } else unitNode?.remove()
+            const from = previous?.value
+            const animate =
+              !reducedMotion.matches && !document.hidden && target != null && from != null && from !== target
+            const state = {
+              text,
+              label,
+              unit,
+              value: animate ? from : target,
+              from,
+              target,
+              format,
+              started: performance.now(),
+            }
+            states.set(element, state)
+            Object.assign(element.dataset, {
+              compact: String(label.length + unit.length >= 5),
+              digits: String(label.length),
+              metricValue: label,
+              animating: String(animate),
+            })
+            element.setAttribute('aria-label', `${label}${unit}`)
+            write(text, format(state.value))
+            if (animate && !frame) frame = requestAnimationFrame(tick)
+          }
+          const onVisibility = () => {
+            if (document.hidden) settle()
+          }
+          const onMotion = () => {
+            if (reducedMotion.matches) settle()
+          }
+          document.addEventListener('visibilitychange', onVisibility)
+          reducedMotion.addEventListener('change', onMotion)
+          return {
+            set,
+            settle,
+            clear(element) {
+              states.delete(node(element))
+            },
+            destroy() {
+              settle()
+              states.clear()
+              document.removeEventListener('visibilitychange', onVisibility)
+              reducedMotion.removeEventListener('change', onMotion)
+            },
+          }
+        }
+        function createActivity() {
+          let control,
+            frame,
+            timer,
+            resolveWait,
+            painted,
+            started = 0,
+            version = 0
+          const releaseWait = () => {
+            cancelAnimationFrame(frame)
+            clearTimeout(timer)
+            document.removeEventListener('visibilitychange', onVisibility)
+            resolveWait?.()
+            resolveWait = undefined
+          }
+          const onVisibility = () => {
+            if (document.hidden) releaseWait()
+          }
+          const clear = () => {
+            version++
+            releaseWait()
+            control?.removeAttribute('data-loading')
+            control?.removeAttribute('aria-busy')
+            control = undefined
+          }
+          return {
+            start(next) {
+              clear()
+              control = next
+              control?.setAttribute('data-loading', 'true')
+              control?.setAttribute('aria-busy', 'true')
+              started = performance.now()
+              painted = new Promise((resolve) => {
+                resolveWait = resolve
+                if (document.hidden) return releaseWait()
+                document.addEventListener('visibilitychange', onVisibility)
+                frame = requestAnimationFrame(() => {
+                  frame = requestAnimationFrame(releaseWait)
+                })
+              })
+            },
+            paint: () => painted,
+            async finish() {
+              const ticket = version
+              await painted
+              if (ticket !== version) return
+              const remaining = 200 - (performance.now() - started)
+              if (remaining > 0 && !document.hidden)
+                await new Promise((resolve) => {
+                  resolveWait = resolve
+                  document.addEventListener('visibilitychange', onVisibility)
+                  timer = setTimeout(releaseWait, remaining)
+                })
+              if (ticket === version) clear()
+            },
+            clear,
+          }
+        }
+        function createResize() {
+          const sizes = new WeakMap()
+          return (instance, host, table = false, width = host.clientWidth, height = host.clientHeight) => {
+            if (!instance) return
+            const key = `${width}:${height}`
+            if (!width || !height || sizes.get(instance) === key) return
+            sizes.set(instance, key)
+            if (table) instance.resize()
+            else instance.resize(width, height)
+          }
+        }
+        // Observe only control groups; chart/metric mutations do not schedule layout work.
+        function createControls(root = document) {
+          const groups = new Map([...root.querySelectorAll('.control-group')].map((group) => [group, new Set()]))
+          let frame = 0
+          const schedule = () => {
+            if (!frame && !document.hidden) frame = requestAnimationFrame(update)
+          }
+          const resize = new ResizeObserver(schedule)
+          const mutations = new MutationObserver((records) => {
+            if (records.some((record) => record.type === 'childList')) observeButtons()
+            schedule()
+          })
+          function observeButtons() {
+            for (const [group, previous] of groups) {
+              const buttons = new Set(group.querySelectorAll(':scope > button'))
+              for (const button of previous) if (!buttons.has(button)) resize.unobserve(button)
+              for (const button of buttons) if (!previous.has(button)) resize.observe(button)
+              groups.set(group, buttons)
+            }
+          }
+          function update() {
+            frame = 0
+            // Read all geometry first. offset* remains stable during dialog/press transforms.
+            const layouts = [...groups.keys()].map((group) => {
+              const active =
+                group.querySelector(':scope > button[data-loading="true"]') ||
+                group.querySelector(':scope > button:is([aria-pressed="true"], [aria-selected="true"])')
+              const box = active?.offsetWidth
+                ? [active.offsetLeft, active.offsetTop, active.offsetWidth, active.offsetHeight]
+                : null
+              // Keep a widening end button visible on compact, scrollable tracks.
+              const scroll =
+                box && group.clientWidth
+                  ? Math.max(
+                      0,
+                      Math.min(box[0] - 3, Math.max(group.scrollLeft, box[0] + box[2] + 3 - group.clientWidth)),
+                    )
+                  : group.scrollLeft
+              return [group, box, scroll]
+            })
+            for (const [group, box, scroll] of layouts) {
+              if (group.scrollLeft !== scroll) group.scrollLeft = scroll
+              if (box)
+                ['x', 'y', 'width', 'height'].forEach((key, i) => {
+                  const value = `${box[i]}px`
+                  if (group.style.getPropertyValue(`--segment-${key}`) !== value)
+                    group.style.setProperty(`--segment-${key}`, value)
+                })
+              const visible = box ? 'true' : 'false'
+              if (group.dataset.segmented !== visible) group.dataset.segmented = visible
+            }
+          }
+          for (const group of groups.keys()) {
+            resize.observe(group)
+            mutations.observe(group, {
+              subtree: true,
+              childList: true,
+              attributes: true,
+              attributeFilter: ['aria-pressed', 'aria-selected', 'data-loading', 'hidden'],
+            })
+          }
+          observeButtons()
+          schedule()
+          const visibility = () => {
+            cancelAnimationFrame(frame)
+            frame = 0
+            if (!document.hidden) schedule()
+          }
+          document.addEventListener('visibilitychange', visibility)
+          return {
+            destroy() {
+              cancelAnimationFrame(frame)
+              resize.disconnect()
+              mutations.disconnect()
+              document.removeEventListener('visibilitychange', visibility)
+              for (const group of groups.keys()) {
+                delete group.dataset.segmented
+                for (const key of ['x', 'y', 'width', 'height']) group.style.removeProperty(`--segment-${key}`)
+              }
+              groups.clear()
+            },
+          }
+        }
+        return { createMetrics, createActivity, createResize, createControls, format }
+      })()
+    </script>
     <script id="dashboard-loading-runtime">
       // Start before dependencies. CDN candidates own their retries; only terminal failures reach fail().
       window.DashboardLoading = (() => {
@@ -17507,11 +17971,24 @@
     </script>
     <script type="module">
       // DOM helpers, display metadata and application state.
-      const $ = (s) => document.querySelector(s),
-        $$ = (s) => [...document.querySelectorAll(s)]
+      const nodes = new Map()
+      const $ = (selector) => {
+        let node = nodes.get(selector)
+        if (!node?.isConnected) {
+          node = document.querySelector(selector)
+          if (node) nodes.set(selector, node)
+        }
+        return node
+      }
+      const $$ = (selector) => [...document.querySelectorAll(selector)]
       const geo = JSON.parse($('#geography-data').textContent),
         events = new AbortController(),
         reduced = matchMedia('(prefers-reduced-motion: reduce)')
+      const metrics = DashboardUI.createMetrics({ reducedMotion: reduced, duration: 540 })
+      const mainActivity = DashboardUI.createActivity(),
+        modalActivity = DashboardUI.createActivity()
+      const segmentedControls = DashboardUI.createControls()
+      const resizeChart = DashboardUI.createResize()
       const catNames = [
           'Good',
           'Moderate',
@@ -17569,8 +18046,7 @@
         revision = 0,
         rendering = false,
         ready = false,
-        datasetReady = false,
-        datasetRelease
+        datasetReady = false
       let mapBootResolved = false,
         presentationStarted = false
       async function completeInitialPresentation() {
@@ -17598,15 +18074,19 @@
         animations = new Set(),
         objectURLs = new Set(),
         dialogEpoch = new WeakMap()
-      const fmt = (n, d = 0) =>
-        n == null || !Number.isFinite(Number(n))
-          ? '—'
-          : Number(n).toLocaleString('zh-CN', { maximumFractionDigits: d, minimumFractionDigits: d })
-      const pct = (a, b) => (b ? (100 * a) / b : null),
-        css = (name) =>
-          getComputedStyle(document.documentElement)
-            .getPropertyValue('--' + name)
-            .trim()
+      const fmt = DashboardUI.format
+      const cssValues = new Map()
+      const pct = (a, b) => (b ? (100 * a) / b : null)
+      const css = (name) => {
+        if (!cssValues.has(name))
+          cssValues.set(
+            name,
+            getComputedStyle(document.documentElement)
+              .getPropertyValue('--' + name)
+              .trim(),
+          )
+        return cssValues.get(name)
+      }
       const mode = () => document.documentElement.dataset.mode
       const motionMs = (name) => parseFloat(css('motion-' + name))
       const countryNames = new Intl.DisplayNames(['zh-CN'], { type: 'region', style: 'short' })
@@ -17791,23 +18271,7 @@
         return a
       }
       function updateNumber(id, value, decimals = 0, suffix = '') {
-        const node = $('#' + id)
-        const old = node.textContent
-        node.replaceChildren(document.createTextNode(fmt(value, decimals)))
-        if (suffix) {
-          const small = document.createElement('small')
-          small.textContent = suffix
-          node.append(small)
-        }
-        if (ready && old !== node.textContent)
-          play(
-            node,
-            [
-              { opacity: 0.45, transform: 'translateY(5px)' },
-              { opacity: 1, transform: 'none' },
-            ],
-            { duration: 540, easing: 'cubic-bezier(.18,.75,.2,1)' },
-          )
+        metrics.set($('#' + id), value, suffix, (next) => fmt(next, decimals))
       }
       // Builders own aggregation, percentile, ordering, HAVING and result limits.
       // VBI query construction and immutable-snapshot query cache.
@@ -18040,7 +18504,8 @@
           })
         return spec
       }
-      const overviewCharts = new Map()
+      const overviewCharts = new Map(),
+        overviewKeys = new Map()
       const overviewHosts = ['range-chart', 'pollutant-chart', 'ranking-chart', 'category-chart']
       const chartDatum = (datum) => datum?.__OriginalData__ || datum
 
@@ -18139,12 +18604,23 @@
           host.innerHTML = '<div class="empty-text">暂无可比较样本</div>'
           return
         }
+        const key = JSON.stringify([
+          document.documentElement.dataset.theme,
+          items,
+          type,
+          valueName,
+          options,
+          reduced.matches,
+          presentationStarted && !dashboardEntering,
+        ])
+        if (existing && overviewKeys.get(id) === key) return
         const spec = overviewSpec(items, type, valueName, options)
         spec.tooltip.parentElement = host.closest('.card')
         spec.tooltip.confine = true
         spec.autoFit = false
         spec.width = host.clientWidth
         spec.height = host.clientHeight
+        overviewKeys.set(id, key)
         if (existing) existing.updateSpecSync(spec)
         else {
           host.replaceChildren()
@@ -18309,7 +18785,10 @@
           completeInitialPresentation()
         }
       }
-      function requestMain() {
+      const queryControl = (control) => (control?.tagName === 'SELECT' ? selectControls.get(control)?.trigger : control)
+      function requestMain(control) {
+        if (disposed) return
+        if (ready) mainActivity.start(queryControl(control))
         revision++
         if (rendering || disposed) return
         rendering = true
@@ -18317,8 +18796,18 @@
           try {
             while (!disposed) {
               const ticket = revision
-              await refreshMain(ticket)
-              if (ticket === revision) break
+              await mainActivity.paint()
+              if (disposed || ticket !== revision) continue
+              try {
+                await refreshMain(ticket)
+              } catch (error) {
+                if (ticket === revision) throw error
+                else continue
+              }
+              if (ticket === revision) {
+                await mainActivity.finish()
+                if (ticket === revision) break
+              }
             }
           } catch (error) {
             if (!disposed) {
@@ -18329,15 +18818,17 @@
               }
             }
           } finally {
+            mainActivity.clear()
             rendering = false
           }
         })
       }
-      function setCountry(value, focus = false) {
+      function setCountry(value, focus = false, control = $('#country')) {
+        if (disposed || value === currentCountry) return
         currentCountry = value
         $('#country').value = value
         if (focus) globe?.focus(value)
-        requestMain()
+        requestMain(control)
       }
       // Entrance, theme and dialog motion.
       function entrance() {
@@ -18405,10 +18896,11 @@
 
       let themeRevision = 0
       function setTheme(name, persist = true) {
-        if (!['dark', 'gold', 'ice', 'jade'].includes(name)) return
+        if (!['dark', 'graphite', 'ice', 'silver'].includes(name)) return
         const ticket = ++themeRevision
+        cssValues.clear()
         document.documentElement.dataset.theme = name
-        document.documentElement.dataset.mode = ['ice', 'jade'].includes(name) ? 'light' : 'dark'
+        document.documentElement.dataset.mode = ['ice', 'silver'].includes(name) ? 'light' : 'dark'
         $$('[data-theme-option]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.themeOption === name)))
         try {
           if (persist) localStorage.setItem('vbi-air-theme', name)
@@ -18491,6 +18983,10 @@
         cancelDialogAnimations(dialog)
         if (id === 'analysis-dialog') {
           modalRevision++
+          modalActivity.clear()
+          metrics.clear($('#analysis-value'))
+          analysisGroupKey = analysisSpecKey = ''
+          analysisSpecBase = undefined
           cancelModalFrameWaits()
           modalState = undefined
           analysisChart?.release()
@@ -18595,11 +19091,13 @@
         $('#analysis-title').textContent = def.title
         $('#analysis-scope').textContent =
           `${currentCountry ? countryLabel(currentCountry) : '全部国家与未标注记录'} · ${def.intrinsic ? 'AQI >100 · ' : ''}城市样本快照${extra.city ? ' · ' + extra.city : ''}`
+        metrics.clear($('#analysis-value'))
+        analysisGroupKey = analysisSpecKey = ''
         $('#analysis-value').textContent = '—'
-        $('#analysis-finding').textContent = '正在计算当前范围…'
+        $('#analysis-finding').textContent = ''
         $('#analysis-definition').textContent = def.definition
         $('#analysis-chart').replaceChildren()
-        $('#analysis-record-count').textContent = '读取完整结果…'
+        $('#analysis-record-count').textContent = ''
         $('#analysis-table').replaceChildren()
         $('#analysis-group').replaceChildren(new Option('全部分组', ''))
         $('#min-samples').value =
@@ -18620,33 +19118,55 @@
         $('#min-samples').hidden = modalState.view !== 'country'
         $('#analysis-group').setAttribute('aria-label', modalState.view === 'pollutant' ? '选择子指数' : '选择分析分组')
       }
-      function requestModal() {
+      function requestModal(control) {
+        if (disposed || !modalState) return
         modalRevision++
-        if (!disposed && modalState) $('#analysis-loading').textContent = '计算中…'
-        if (modalRunning || disposed) return
+        modalActivity.start(queryControl(control))
+        $('#analysis-dialog').setAttribute('aria-busy', 'true')
+        $('#analysis-loading').textContent = ''
+        $('#analysis-loading').dataset.loading = String(modalState.first)
+        $('#analysis-loading').setAttribute('aria-label', modalState.first ? '正在加载分析' : '')
+        $('#analysis-retry').hidden = control !== $('#analysis-retry')
+        if (modalRunning) return
         modalRunning = true
         void (async () => {
           try {
-            await afterModalPaint()
             while (!disposed && modalState && $('#analysis-dialog').open) {
               const ticket = modalRevision,
                 state = modalState
-              await renderModal(ticket, state)
-              if (ticket === modalRevision) break
+              await modalActivity.paint()
+              if (!modalIsCurrent(ticket, state)) continue
+              try {
+                await renderModal(ticket, state)
+              } catch (error) {
+                if (modalIsCurrent(ticket, state)) throw error
+                else continue
+              }
+              if (ticket === modalRevision) {
+                await modalActivity.finish()
+                if (ticket === modalRevision) {
+                  $('#analysis-retry').hidden = true
+                  break
+                }
+              }
               await yieldBrowserTask()
             }
           } catch (error) {
             if (!disposed && modalState) {
-              $('#analysis-loading').textContent = '分析失败，可关闭重试'
+              $('#analysis-loading').textContent = `分析失败：${error.message}`
+              $('#analysis-retry').hidden = false
               console.error(error)
             }
           } finally {
+            modalActivity.clear()
+            $('#analysis-dialog').setAttribute('aria-busy', 'false')
+            delete $('#analysis-loading').dataset.loading
+            $('#analysis-loading').removeAttribute('aria-label')
             modalRunning = false
           }
         })()
       }
       async function renderModal(ticket, state) {
-        $('#analysis-loading').textContent = '计算中…'
         const base = modalBaseConditions(),
           local = localConditions(),
           dim = state.view === 'country' ? 'countryKey' : state.view === 'category' ? 'category' : 'numericBin',
@@ -18683,8 +19203,6 @@
         modalRaw = records
         const items = renderAnalysisSummary(state, s, groups.rows, ranked.rows, records)
         syncSelectControls()
-        await yieldBrowserTask()
-        if (!modalIsCurrent(ticket, state)) return
         await drawAnalysisChart(items)
         if (!modalIsCurrent(ticket, state)) return
         await yieldBrowserTask()
@@ -18701,15 +19219,16 @@
           if (!modalIsCurrent(ticket, state)) return
         }
         if (analysisTableRecords !== modalRaw) {
-          analysisTable.clearSelected()
-          analysisTable.options.animationAppear = false
-          analysisTable.setRecords(modalRaw)
+          DashboardTable.setRecords(analysisTable, modalRaw, { animate: false })
           analysisTableRecords = modalRaw
         }
-        $('#analysis-loading').textContent = '已更新'
+        $('#analysis-loading').textContent = ''
         state.first = false
         syncSelectControls()
       }
+      let analysisGroupKey = '',
+        analysisSpecKey = '',
+        analysisSpecBase
       function renderAnalysisSummary(state, summary, groups, ranked, records) {
         const labels =
           state.view === 'country'
@@ -18719,10 +19238,14 @@
               : (r) => r.group
         const options = state.view === 'pollutant' ? pollutantProfiles : groups.map((r) => ({ ...r, label: labels(r) }))
         const selection = $('#analysis-group')
-        selection.replaceChildren(
-          new Option('全部分组', ''),
-          ...options.map((r) => new Option(`${r.label}${r.n == null ? '' : ` · n=${fmt(r.n)}`}`, r.group)),
-        )
+        const groupKey = JSON.stringify(options)
+        if (analysisGroupKey !== groupKey) {
+          selection.replaceChildren(
+            new Option('全部分组', ''),
+            ...options.map((r) => new Option(`${r.label}${r.n == null ? '' : ` · n=${fmt(r.n)}`}`, r.group)),
+          )
+          analysisGroupKey = groupKey
+        }
         selection.value = state.group
         let items
         if (state.view === 'pollutant')
@@ -18779,12 +19302,9 @@
                 : state.view === 'pollutant' && state.group
                   ? pollutantLabels[state.group] + ' 子指数均值'
                   : '总 AQI 样本均值'
-        $('#analysis-value').replaceChildren(
-          document.createTextNode(fmt(value, ['coverage', 'categories', 'risk'].includes(state.metric) ? 0 : 1)),
+        metrics.set($('#analysis-value'), value, metricDefs[state.metric].unit, (next) =>
+          fmt(next, ['coverage', 'categories', 'risk'].includes(state.metric) ? 0 : 1),
         )
-        const unit = document.createElement('small')
-        unit.textContent = metricDefs[state.metric].unit
-        $('#analysis-value').append(unit)
         $('#analysis-finding-title').textContent = summary.n
           ? `${fmt(summary.n)} 条样本 · ${state.group ? options.find((r) => r.group === state.group)?.label || state.group : '完整范围'}`
           : '当前条件没有记录'
@@ -18813,13 +19333,24 @@
           return
         }
         if (!analysisChart) $('#analysis-chart').replaceChildren()
-        const spec = seedSpec(
+        const key = JSON.stringify([
+          document.documentElement.dataset.theme,
           items,
-          'bar',
-          (modalState?.view === 'country' && modalState?.metric !== 'coverage') || modalState?.view === 'pollutant'
-            ? 'AQI 均值'
-            : '样本数',
-        )
+          modalState?.view,
+          modalState?.metric,
+          reduced.matches,
+        ])
+        if (key !== analysisSpecKey) {
+          analysisSpecBase = seedSpec(
+            items,
+            'bar',
+            (modalState?.view === 'country' && modalState?.metric !== 'coverage') || modalState?.view === 'pollutant'
+              ? 'AQI 均值'
+              : '样本数',
+          )
+          analysisSpecKey = key
+        }
+        const spec = { ...analysisSpecBase, bar: { ...analysisSpecBase.bar }, padding: { ...analysisSpecBase.padding } }
         if (spec.bar) {
           spec.bar.style = {
             ...spec.bar.style,
@@ -18851,7 +19382,7 @@
             const key = datum?.groupKey
             if (key) {
               modalState.group = modalState.group === key ? '' : key
-              requestModal()
+              requestModal($('#analysis-group'))
             }
           })
         }
@@ -18876,12 +19407,16 @@
       }
       // UI event wiring, grouped by responsibility.
       function bindUI() {
+        $$('.icon-button, .close-button, .map-action button').forEach((node) => node.classList.add('control-icon'))
         bindOverviewControls()
         bindDialogs()
         bindAppearanceControls()
         bindAnalysisControls()
         bindMotionPreference()
         initSelectControls()
+        $$('.control-group button, .pill, #analysis-clear, #reset-scope').forEach((node) =>
+          node.classList.add('query-control'),
+        )
       }
       function bindOverviewControls() {
         on($('#ranking-actions'), 'click', (event) => {
@@ -18892,8 +19427,8 @@
         })
         for (const name of Object.keys(metricDefs))
           on($(`[data-analysis=${name}]`), 'click', (e) => openAnalysis(name, e.currentTarget))
-        on($('#country'), 'change', (e) => setCountry(e.target.value, true))
-        on($('#reset-scope'), 'click', () => setCountry(''))
+        on($('#country'), 'change', (e) => setCountry(e.target.value, true, e.currentTarget))
+        on($('#reset-scope'), 'click', (e) => setCountry('', false, e.currentTarget))
         on($('#map-home'), 'click', () => globe?.home())
         on($('#rotate'), 'click', () => globe?.toggle())
         on($('#rotation-switch'), 'click', () => globe?.toggle())
@@ -18927,9 +19462,9 @@
         $('#theme-options').replaceChildren(
           ...[
             ['dark', '深蓝', '#23475b'],
-            ['gold', '黑金', '#b8a471'],
+            ['graphite', '石墨'],
             ['ice', '冰蓝', '#bfd9ed'],
-            ['jade', '暖玉', '#cad8bf'],
+            ['silver', '银雾'],
           ].map(([key, label, color]) => {
             const b = document.createElement('button')
             b.className = 'theme-option'
@@ -18937,7 +19472,8 @@
             b.setAttribute('aria-pressed', String(document.documentElement.dataset.theme === key))
             const dot = document.createElement('i')
             dot.className = 'theme-swatch'
-            dot.style.setProperty('--swatch', color)
+            dot.dataset.swatch = key
+            if (color) dot.style.setProperty('--swatch', color)
             b.append(dot, document.createTextNode(label))
             on(b, 'click', () => setTheme(key))
             return b
@@ -18966,23 +19502,23 @@
         )
         $$('[data-view]').forEach((b) =>
           on(b, 'click', () => {
-            if (!modalState) return
+            if (!modalState || modalState.view === b.dataset.view) return
             modalState.view = b.dataset.view
             modalState.group = modalState.view === 'pollutant' ? 'pm25' : ''
             syncAnalysisTabs()
-            requestModal()
+            requestModal(b)
           }),
         )
         on($('#analysis-group'), 'change', (e) => {
           modalState.group = e.target.value
-          requestModal()
+          requestModal(e.currentTarget)
         })
-        on($('#min-samples'), 'change', () => requestModal())
+        on($('#min-samples'), 'change', (e) => requestModal(e.currentTarget))
         on($('#quality-filter'), 'change', (e) => {
           modalState.quality = e.target.value
           modalState.group = ''
           $('#min-samples').value = '1'
-          requestModal()
+          requestModal(e.currentTarget)
         })
         let searchTimer
         on($('#analysis-search'), 'keydown', (e) => {
@@ -18999,12 +19535,12 @@
           searchTimer = setTimeout(() => {
             if (modalState === state && !disposed) {
               modalState.search = value
-              requestModal()
+              requestModal($('#analysis-search').parentElement)
             }
           }, 220)
         })
         on(events.signal, 'abort', () => clearTimeout(searchTimer))
-        on($('#analysis-clear'), 'click', () => {
+        on($('#analysis-clear'), 'click', (event) => {
           modalState.group = ''
           modalState.quality = ''
           modalState.city = undefined
@@ -19012,13 +19548,14 @@
           $('#quality-filter').value = ''
           modalState.search = ''
           $('#analysis-search').value = ''
-          requestModal()
+          requestModal(event.currentTarget)
         })
         on($('#table-expand'), 'click', () => {
           const expanded = $('.analysis-table-panel').classList.toggle('expanded')
           $('#table-expand').textContent = expanded ? '收起 ↙' : '展开 ↗'
           requestAnimationFrame(() => analysisTable?.resize())
         })
+        on($('#analysis-retry'), 'click', (e) => requestModal(e.currentTarget))
         on($('#export-records'), 'click', exportRaw)
       }
       function bindMotionPreference() {
@@ -19058,6 +19595,10 @@
         if (disposed) return
         disposed = true
         DashboardLoading.dispose()
+        mainActivity.clear()
+        modalActivity.clear()
+        metrics.destroy()
+        segmentedControls.destroy()
         DashboardResources.dispose()
         document.documentElement.dataset.disposed = 'true'
         revision++
@@ -19076,6 +19617,8 @@
         globe?.dispose()
         overviewCharts.forEach((chart) => chart.release())
         overviewCharts.clear()
+        overviewKeys.clear()
+        nodes.clear()
         analysisChart?.release()
         analysisTable?.release()
         activeBuilders.forEach((b) => b.doc.destroy())
@@ -19105,7 +19648,7 @@
         wrap.className = 'select-control'
         wrap.dataset.for = select.id
         trigger.type = 'button'
-        trigger.className = 'select-trigger'
+        trigger.className = 'select-trigger query-control'
         trigger.setAttribute('role', 'combobox')
         trigger.setAttribute('aria-haspopup', 'listbox')
         trigger.setAttribute('aria-expanded', 'false')
@@ -19133,7 +19676,11 @@
         wrap.append(trigger, panel)
         select.classList.add('select-native-state')
         let active = 0,
-          options = []
+          options = [],
+          activeItem,
+          renderedKey = '',
+          optionRows = [],
+          optionsDirty = true
         const close = () => {
           if (panel.matches(':popover-open')) panel.hidePopover()
           trigger.setAttribute('aria-expanded', 'false')
@@ -19141,24 +19688,33 @@
         function sync() {
           wrap.hidden = select.hidden
           trigger.disabled = select.disabled
-          label.textContent = select.selectedOptions[0]?.textContent || '请选择'
+          const text = select.selectedOptions[0]?.textContent || '请选择'
+          if (label.textContent !== text) label.textContent = text
           trigger.title = label.textContent
           if (wrap.hidden || trigger.disabled) close()
           if (panel.matches(':popover-open')) render()
         }
         function choose(option) {
           if (!option || option.disabled) return
-          select.value = option.value
-          select.dispatchEvent(new Event('change', { bubbles: true }))
-          sync()
           close()
+          if (select.value !== option.value) {
+            select.value = option.value
+            select.dispatchEvent(new Event('change', { bubbles: true }))
+          }
           trigger.focus()
         }
         function render() {
           const term = search.value.trim().toLocaleLowerCase()
-          options = [...select.options].filter((o) =>
-            (o.textContent + ' ' + o.value).toLocaleLowerCase().includes(term),
-          )
+          const key = `${select.value}|${term}`
+          if (!optionsDirty && key === renderedKey) return
+          if (optionsDirty)
+            optionRows = [...select.options].map((option) => ({
+              option,
+              search: (option.textContent + ' ' + option.value).toLocaleLowerCase(),
+            }))
+          optionsDirty = false
+          renderedKey = key
+          options = optionRows.filter((row) => row.search.includes(term)).map((row) => row.option)
           list.replaceChildren()
           active = Math.max(
             0,
@@ -19169,6 +19725,7 @@
             item.type = 'button'
             item.className = 'select-option'
             item.id = select.id + '-option-' + i
+            item.dataset.index = i
             item.tabIndex = -1
             item.setAttribute('role', 'option')
             item.setAttribute('aria-selected', String(option.selected))
@@ -19187,11 +19744,6 @@
               check.setAttribute('aria-hidden', 'true')
               item.append(check)
             }
-            item.addEventListener('click', () => choose(option))
-            item.addEventListener('pointermove', () => {
-              active = i
-              highlight(false)
-            })
             list.append(item)
           }
           if (!options.length) {
@@ -19203,9 +19755,12 @@
           highlight(false)
         }
         function highlight(scroll) {
-          const items = [...list.querySelectorAll('[role=option]')]
-          items.forEach((el, i) => (el.dataset.active = String(i === active)))
-          const item = items[active]
+          const item = options.length ? list.children[active] : undefined
+          if (activeItem !== item) {
+            activeItem?.removeAttribute('data-active')
+            if (item) item.dataset.active = 'true'
+            activeItem = item
+          }
           if (item) {
             trigger.setAttribute('aria-activedescendant', item.id)
             if (scroll) item.scrollIntoView({ block: 'nearest' })
@@ -19216,10 +19771,12 @@
             width = Math.min(innerWidth - 24, Math.max(rect.width, select.id === 'country' ? 300 : 240)),
             height = Math.min(380, innerHeight - 32),
             below = innerHeight - rect.bottom - 12
+          const opensBelow = below >= Math.min(height, 240)
+          panel.style.setProperty('--popover-origin', opensBelow ? 'top left' : 'bottom left')
+          panel.style.setProperty('--popover-shift', opensBelow ? '-4px' : '4px')
           panel.style.width = width + 'px'
           panel.style.left = Math.min(innerWidth - width - 12, Math.max(12, rect.left)) + 'px'
-          panel.style.top =
-            (below >= Math.min(height, 240) ? rect.bottom + 8 : Math.max(12, rect.top - height - 8)) + 'px'
+          panel.style.top = (opensBelow ? rect.bottom + 8 : Math.max(12, rect.top - height - 8)) + 'px'
           panel.style.maxHeight = Math.min(height, below >= 240 ? below : rect.top - 20) + 'px'
         }
         function open() {
@@ -19234,6 +19791,17 @@
           else list.querySelector('[role=option]')?.focus()
           list.querySelector('[aria-selected=true]')?.scrollIntoView({ block: 'nearest' })
         }
+        on(list, 'click', (event) => {
+          const item = event.target.closest('[data-index]')
+          if (item) choose(options[Number(item.dataset.index)])
+        })
+        on(list, 'pointermove', (event) => {
+          const item = event.target.closest('[data-index]')
+          if (item && Number(item.dataset.index) !== active) {
+            active = Number(item.dataset.index)
+            highlight(false)
+          }
+        })
         on(trigger, 'click', () => (panel.matches(':popover-open') ? close() : open()))
         on(trigger, 'keydown', (e) => {
           if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) {
@@ -19288,12 +19856,16 @@
             sync()
           },
         })
-        const observer = new MutationObserver(sync)
+        const observer = new MutationObserver(() => {
+          optionsDirty = true
+          sync()
+        })
         observer.observe(select, {
           childList: true,
           subtree: true,
           attributes: true,
-          attributeFilter: ['disabled', 'hidden', 'selected'],
+          attributeFilter: ['disabled', 'hidden', 'selected', 'value', 'label'],
+          characterData: true,
         })
         events.signal.addEventListener(
           'abort',
@@ -19305,7 +19877,7 @@
           },
           { once: true },
         )
-        selectControls.set(select, { sync, close })
+        selectControls.set(select, { sync, close, trigger })
         sync()
       }
       let quickFilterSignature = ''
@@ -19322,21 +19894,26 @@
         const signature = currentCountry + '|' + candidates.map((r) => r.country).join('|')
         if (signature === quickFilterSignature) return
         quickFilterSignature = signature
-        container.replaceChildren(
-          ...[{ country: '', n: source.length }, ...candidates].map((row) => {
-            const button = document.createElement('button')
+        const existing = new Map([...container.children].map((button) => [button.dataset.country, button]))
+        for (const [index, row] of [{ country: '', n: source.length }, ...candidates].entries()) {
+          let button = existing.get(row.country)
+          if (!button) {
+            button = document.createElement('button')
             button.type = 'button'
-            button.className = 'quick-country'
-            button.textContent = row.country ? countryLabel(row.country) : '全球'
-            button.setAttribute('aria-pressed', String(currentCountry === row.country))
-            button.title = `${row.country || '全部国家与未标注记录'} · ${fmt(row.n)}条样本`
+            button.className = 'quick-country query-control'
+            button.dataset.country = row.country
             on(button, 'click', () => {
-              setCountry(row.country, true)
-              if (!row.country) globe?.home()
+              setCountry(button.dataset.country, true, button)
+              if (!button.dataset.country) globe?.home()
             })
-            return button
-          }),
-        )
+          }
+          existing.delete(row.country)
+          button.textContent = row.country ? countryLabel(row.country) : '全球'
+          button.setAttribute('aria-pressed', String(currentCountry === row.country))
+          button.title = `${row.country || '全部国家与未标注记录'} · ${fmt(row.n)}条样本`
+          if (container.children[index] !== button) container.insertBefore(button, container.children[index] || null)
+        }
+        for (const button of existing.values()) button.remove()
       }
 
       // Globe shader programs: atmosphere, country borders and batched sample points.
@@ -21476,14 +22053,23 @@ void main() {
             .map((key) => new Option(countryLabel(key), key)),
           new Option('未标注国家', '__missing__'),
         )
-        resizeObserver = new ResizeObserver(() => {
-          for (const id of overviewHosts) {
-            const host = $('#' + id)
-            if (host.clientWidth && host.clientHeight)
-              overviewCharts.get(id)?.resize(host.clientWidth, host.clientHeight)
+        resizeObserver = new ResizeObserver((entries) => {
+          cssValues.clear()
+          const measured = entries.map(({ target }) => [target, target.clientWidth, target.clientHeight])
+          for (const [host, width, height] of measured) {
+            if (!width || !height) continue
+            resizeChart(
+              host.id === 'analysis-chart'
+                ? analysisChart
+                : host.id === 'analysis-table'
+                  ? analysisTable
+                  : overviewCharts.get(host.id),
+              host,
+              host.id === 'analysis-table',
+              width,
+              height,
+            )
           }
-          analysisChart?.resize($('#analysis-chart').clientWidth, $('#analysis-chart').clientHeight)
-          analysisTable?.resize()
         })
         overviewHosts.forEach((id) => resizeObserver.observe($('#' + id)))
         resizeObserver.observe($('#analysis-chart'))
