@@ -1,6 +1,6 @@
 # 查询与渲染
 
-从 [visual-query](../SKILL.md) 按需阅读，适用于单图、指标卡、表格和 Dashboard。浏览器模块加载与完整示例见 [HTML 接入](html-integration.md)，页面资源关系与联动见 [组合与联动](composition.md)。下面片段假定已导入 VBI、VQuery、VSeed 的 Builder / registerAll 及所需渲染器，并准备好相应数据源、Builder 与容器。
+从 [visual-query](../guide.md) 按需阅读，适用于单图、指标卡、表格和 Dashboard。浏览器模块加载与完整示例见 [HTML 接入](html-integration.md)，页面资源关系与联动见 [组合与联动](composition.md)。下面片段假定已导入 VBI、VQuery、VSeed 的 Builder / registerAll 及所需渲染器，并准备好相应数据源、Builder 与容器。
 
 ## 1. 固定构建链路，逐层检查结果
 
@@ -56,7 +56,7 @@ VBI.connectors.register(connectorId, {
 
 本例用 `hasDataset()` 兼容已有数据集；存储行为以使用版本和选项为准，启用 IndexedDB 持久化时也要处理刷新后保留的数据集。更新时同时传入 `schema` 和 `source`，查询连接在 `finally` 中释放。
 
-数据库、本地文件或上游 HTTP 通过 [server-runtime](../../server-runtime/SKILL.md) 提供同源查询，Connector 按 [页面与服务协议](../../server-runtime/references/protocol.md)传输 Builder 生成的查询 DSL、返回 dataset。数据库 SQL 交给 VQuery 编译及驱动执行；文件解析使用 VQuery 的数据源能力。接入层可做类型和字段映射，业务聚合由查询层执行。页面若还直接读取原始数组计算标签、前沿或参考值，这些依赖也需要随数据源一起处理；仅替换连接器不会自动替换页面闭包中的数据。
+数据库、本地文件或上游 HTTP 通过 [server-runtime](../../server-runtime/guide.md) 提供同源查询，Connector 按 [页面与服务协议](../../server-runtime/references/protocol.md)传输 Builder 生成的查询 DSL、返回 dataset。数据库 SQL 交给 VQuery 编译及驱动执行；文件解析使用 VQuery 的数据源能力。接入层可做类型和字段映射，业务聚合由查询层执行。页面若还直接读取原始数组计算标签、前沿或参考值，这些依赖也需要随数据源一起处理；仅替换连接器不会自动替换页面闭包中的数据。
 
 **验证：** 检查首次加载、刷新后的更新，以及筛选后返回的数据；确认连接器没有忽略传入的查询条件。
 
@@ -147,7 +147,7 @@ Pareto 前沿的计算范围、参考模型选择、派生指标公式属于分�
 
 `await chart.buildVSeed()` 返回包含 `dataset` 的 VSeed DSL；`connector.query()` 仅返回 `{ dataset }`，`buildVQuery()` 仅生成查询配置。统一调用链不要求增加新的 `query()` 包装 API，也不表示必须将全部图表合成一条查询。
 
-VSeed Builder 将 seed 构建为 VChart / VTable 的配置，绘制、坐标轴、命中与透视布局由对应渲染器完成。需要异步准备的 VSeed 配置先按 [VSeed 子技能](../../../api/vseed/SKILL.md)调用 `prepare()`。自定义 HTML 指标消费查询结果，无需创建 Canvas。
+VSeed Builder 将 seed 构建为 VChart / VTable 的配置，绘制、坐标轴、命中与透视布局由对应渲染器完成。需要异步准备的 VSeed 配置先按 [VSeed API 指南](../../api/vseed/guide.md)调用 `prepare()`。自定义 HTML 指标消费查询结果，无需创建 Canvas。
 
 同类视图复用实例：VChart 使用 `await instance.updateSpec(spec)`，VTable 使用 `await instance.updateOption(options)`；渲染器类型发生变化时释放旧实例，再创建匹配的实例。首次创建 VChart 后按需绑定 `chart.instance`，通过公开接口连接图表事件。同一轮结果同时更新图形、指标与范围说明，字段 ID、系列和分类键保持稳定。
 
@@ -159,4 +159,4 @@ VSeed Builder 将 seed 构建为 VChart / VTable 的配置，绘制、坐标轴�
 
 ## 集成回归检查
 
-在实际宿主页面中，查询与渲染行为按 [验证与交付](../SKILL.md#验证与交付)进行浏览器验收。
+在实际宿主页面中，查询与渲染行为按 [验证与交付](../guide.md#验证与交付)进行浏览器验收。

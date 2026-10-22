@@ -1,6 +1,6 @@
 # 页面与服务协议
 
-运行方式与来源选择见 [server-runtime](../SKILL.md)。所有数据源对页面提供相同协议，页面通过 VBI Connector 对接。
+运行方式与来源选择见 [server-runtime](../guide.md)。所有数据源对页面提供相同协议，页面通过 VBI Connector 对接。
 
 ## 会话与请求
 
@@ -22,7 +22,7 @@ const query = async (queries, signal) => {
 }
 ```
 
-`context.schema` 提供真实字段与类型；用 `context.sourceId` 注册 Connector。`query()` 传入 Builder 生成的 DSL，结果保持字段 ID，不发送 SQL、文件路径、上游 URL 或凭据。完整 Builder 与 Connector API 通过 [VBI](../../../api/vbi/SKILL.md)和 [VQuery](../../../api/vquery/SKILL.md)子技能查阅。
+`context.schema` 提供真实字段与类型；用 `context.sourceId` 注册 Connector。`query()` 传入 Builder 生成的 DSL，结果保持字段 ID，不发送 SQL、文件路径、上游 URL 或凭据。完整 Builder 与 Connector API 通过 [VBI](../../api/vbi/guide.md)和 [VQuery](../../api/vquery/guide.md)API 文档查阅。
 
 ## 接口与约束
 

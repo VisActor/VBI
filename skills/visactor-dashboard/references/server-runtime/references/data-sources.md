@@ -1,6 +1,6 @@
 # 文件与 HTTP 数据源
 
-来源选择、安装和启动见 [server-runtime](../SKILL.md)，页面协议见 [protocol](protocol.md)。以下命令在 `scripts/runtime/` 目录执行。环境变量也可写入本目录 `.env`，不要把包含鉴权信息的示例复制到 HTML。
+来源选择、安装和启动见 [server-runtime](../guide.md)，页面协议见 [protocol](protocol.md)。以下命令在 `scripts/runtime/` 目录执行。环境变量也可写入本目录 `.env`，不要把包含鉴权信息的示例复制到 HTML。
 
 ## 通用配置
 
@@ -60,6 +60,6 @@ export async function createSource(env) {
 }
 ```
 
-`connectToSource` 和 `executeQueries` 表示待按实际驱动实现的边界，不是 runtime 内置函数。复用 [VQuery 子技能](../../../api/vquery/SKILL.md)的查询/SQL 编译能力；需要将校验错误返回 400 时使用 runtime 的 `errors.mjs` 导出的 `QueryError`，其消息应只包含可公开的校验说明。
+`connectToSource` 和 `executeQueries` 表示待按实际驱动实现的边界，不是 runtime 内置函数。复用 [VQuery API 指南](../../api/vquery/guide.md)的查询/SQL 编译能力；需要将校验错误返回 400 时使用 runtime 的 `errors.mjs` 导出的 `QueryError`，其消息应只包含可公开的校验说明。
 
 适配器自行处理分页、请求签名、协议映射、快照一致性、超时和连接释放；支持其他数据库时使用对应驱动并绑定参数。对齐 Builder 的字段 ID、过滤、聚合与结果顺序。不得把上游返回的一页数据标记为全量或声称内置 MySQL 驱动支持其他数据库。

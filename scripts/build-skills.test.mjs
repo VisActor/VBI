@@ -17,7 +17,7 @@ const archiveNames = scenes.flatMap((scene) => [scene, scene.replace(/^visactor-
 
 test('CLI builds archives from the calling repository', (t) => {
   const { repoRoot, source } = fixture(t)
-  assert.equal(fs.existsSync(path.join(source, 'api')), false)
+  assert.equal(fs.existsSync(path.join(source, 'references/api')), false)
   const output = execFileSync(process.execPath, [fileURLToPath(new URL('./build-skills.mjs', import.meta.url))], {
     cwd: repoRoot,
     encoding: 'utf8',
@@ -56,7 +56,10 @@ test('CLI builds archives from the calling repository', (t) => {
     const archive = path.join(repoRoot, 'dist/skills', `${name}.zip`)
     const downloaded = extract(t, archive)
     for (const pkg of ['vbi', 'vquery', 'vseed']) {
-      assert.match(fs.readFileSync(path.join(downloaded, name, 'api', pkg, 'index.md'), 'utf8'), /initialApi/)
+      assert.match(
+        fs.readFileSync(path.join(downloaded, name, 'references', 'api', pkg, 'index.md'), 'utf8'),
+        /initialApi/,
+      )
     }
   }
 })
@@ -93,24 +96,24 @@ function fixture(t) {
       JSON.stringify({ compilerOptions: { target: 'ES2022' }, include: ['src'] }),
     )
     write(repoRoot, `packages/${name}/src/index.ts`, 'export const initialApi = true')
-    write(repoRoot, `scripts/skill-api/${name}.md`, '[Index](index.md) · [Root](../../SKILL.md)\n')
+    write(repoRoot, `scripts/skill-api/${name}.md`, '[Index](index.md) · [Root](../../../SKILL.md)\n')
   }
   fs.appendFileSync(
     path.join(repoRoot, 'packages/vseed/src/index.ts'),
     '\nexport const zChart = { parse: (value: string) => value }\n',
   )
   for (const name of ['visual-query', 'server-runtime']) {
-    write(source, `references/${name}/SKILL.md`, `[Root](../../SKILL.md) · [API](../../api/vbi/SKILL.md)\n`)
+    write(source, `references/${name}/guide.md`, `[Root](../../SKILL.md) · [API](../api/vbi/guide.md)\n`)
   }
   write(source, 'references/server-runtime/scripts/runtime/.env.example', 'VBI_PORT=4317\n')
   write(source, 'references/server-runtime/scripts/runtime/server.mjs', 'export const port = 4317\n')
-  write(source, 'references/metric-analysis/SKILL.md', '[Query](../visual-query/SKILL.md)\n')
+  write(source, 'references/metric-analysis/guide.md', '[Query](../visual-query/guide.md)\n')
   for (const name of scenes) {
-    const scene = `references/${name}`
+    const scene = `scenarios/${name}`
     write(
       source,
       `${scene}/SKILL.md`,
-      `---\nname: ${name}\ndescription: Example dashboard\n---\n\n[Layout](references/layout.md) · [Query](../visual-query/SKILL.md) · [Analysis](../metric-analysis/SKILL.md) · [Server](../server-runtime/SKILL.md) · [API](../../api/vquery/SKILL.md)\n`,
+      `---\nname: ${name}\ndescription: Example dashboard\n---\n\n[Layout](references/layout.md) · [Query](../../references/visual-query/guide.md) · [Analysis](../../references/metric-analysis/guide.md) · [Server](../../references/server-runtime/guide.md) · [API](../../references/api/vquery/guide.md)\n`,
     )
     write(source, `${scene}/agents/openai.yaml`, `interface:\n  display_name: '${name}'\n`)
     write(
@@ -165,7 +168,7 @@ test('builds self-contained scene archives with rewritten references and unchang
     packages.map(({ name }) => name),
     archiveNames,
   )
-  assert.deepEqual(new Map([...contents(source)].filter(([file]) => !file.startsWith('api/'))), before)
+  assert.deepEqual(new Map([...contents(source)].filter(([file]) => !file.startsWith('references/api/'))), before)
   assert.deepEqual(fs.readdirSync(path.join(repoRoot, 'skills')), ['visactor-dashboard'])
   for (const { name, archive, files } of packages) {
     assert.equal(archive, path.join(repoRoot, 'dist/skills', `${name}.zip`))
@@ -175,6 +178,10 @@ test('builds self-contained scene archives with rewritten references and unchang
     const resources = contents(root)
     assert.equal(resources.size, files)
     assert.ok(resources.has('SKILL.md'))
+    assert.deepEqual(
+      [...resources.keys()].filter((file) => file.endsWith('SKILL.md')),
+      ['SKILL.md'],
+    )
     assert.match(resources.get('SKILL.md').toString(), new RegExp(`^---\\nname: ${name}\\n`))
     if (!name.startsWith('visactor-')) {
       const prefixed = `visactor-${name}`
@@ -194,10 +201,10 @@ test('builds self-contained scene archives with rewritten references and unchang
     assert.ok(resources.has('agents/openai.yaml'))
     assert.ok(resources.has('references/server-runtime/scripts/runtime/.env.example'))
     assert.ok(resources.has('references/server-runtime/scripts/runtime/server.mjs'))
-    assert.ok(resources.has('references/metric-analysis/SKILL.md'))
-    assert.equal(resources.has('api/vseed/schemas.md'), false)
-    assert.doesNotMatch(resources.get('api/vseed/index.md').toString(), /schemas\.md|zChart/)
-    for (const scene of scenes) assert.equal(fs.existsSync(path.join(root, 'references', scene)), false)
+    assert.ok(resources.has('references/metric-analysis/guide.md'))
+    assert.equal(resources.has('references/api/vseed/schemas.md'), false)
+    assert.doesNotMatch(resources.get('references/api/vseed/index.md').toString(), /schemas\.md|zChart/)
+    for (const scene of scenes) assert.equal(fs.existsSync(path.join(root, 'scenarios', scene)), false)
     assert.deepEqual(resources.get('templates/preview.png'), Buffer.from([0, 1, 127, 255]))
     for (const [file, data] of resources) {
       assert.ok(!data.includes('Do not distribute'), file)
@@ -217,15 +224,15 @@ test('builds self-contained scene archives with rewritten references and unchang
 test('rebuilds deterministically and replaces obsolete archive contents', async (t) => {
   const { repoRoot, source } = fixture(t)
   const first = (await buildSkills({ repoRoot })).map(({ archive }) => fs.readFileSync(archive))
-  fs.utimesSync(path.join(source, 'references/visactor-light-dashboard/SKILL.md'), new Date(), new Date())
+  fs.utimesSync(path.join(source, 'scenarios/visactor-light-dashboard/SKILL.md'), new Date(), new Date())
   assert.deepEqual(
     (await buildSkills({ repoRoot })).map(({ archive }) => fs.readFileSync(archive)),
     first,
   )
-  write(source, 'references/visactor-light-dashboard/templates/obsolete.txt', 'old')
+  write(source, 'scenarios/visactor-light-dashboard/templates/obsolete.txt', 'old')
   await buildSkills({ repoRoot })
-  fs.unlinkSync(path.join(source, 'references/visactor-light-dashboard/templates/obsolete.txt'))
-  write(source, 'references/visactor-light-dashboard/templates/example.html', '<p>Updated template</p>')
+  fs.unlinkSync(path.join(source, 'scenarios/visactor-light-dashboard/templates/obsolete.txt'))
+  write(source, 'scenarios/visactor-light-dashboard/templates/example.html', '<p>Updated template</p>')
   write(repoRoot, 'dist/skills/unrelated.txt', 'Preserve unrelated outputs')
   const packages = await buildSkills({ repoRoot })
   const downloaded = extract(t, packages[0].archive)
@@ -243,8 +250,8 @@ test('preserves previous archives when a scene has an unbundled reference', asyn
   await buildSkills({ repoRoot })
   const output = path.join(repoRoot, 'dist/skills')
   const previous = contents(output)
-  write(source, 'references/visactor-light-dashboard/templates/example.html', 'New template')
-  write(source, 'references/visactor-map2d-dashboard/references/layout.md', '[Missing resource](missing.md)')
+  write(source, 'scenarios/visactor-light-dashboard/templates/example.html', 'New template')
+  write(source, 'scenarios/visactor-map2d-dashboard/references/layout.md', '[Missing resource](missing.md)')
   await assert.rejects(() => buildSkills({ repoRoot }), /Unbundled skill reference/)
   assert.deepEqual(contents(output), previous)
 })
@@ -255,11 +262,14 @@ test('rejects reverse and cross-scene dependencies while preserving previous arc
       const { repoRoot, source } = fixture(t)
       const previous = (await buildSkills({ repoRoot })).map(({ archive }) => fs.readFileSync(archive))
       // A nested document and normalized path ensure the check covers entire skill directories.
-      write(
-        source,
-        `references/${owner}/references/dependency.md`,
-        `[Forbidden](../../${dependency}/references/../SKILL.md#entry)`,
-      )
+      const sceneOwner = scenes.includes(owner)
+      const file = sceneOwner
+        ? `scenarios/${owner}/references/dependency.md`
+        : `references/${owner}/references/dependency.md`
+      const href = sceneOwner
+        ? `../../${dependency}/references/../SKILL.md#entry`
+        : `../../../scenarios/${dependency}/references/../SKILL.md#entry`
+      write(source, file, `[Forbidden](${href})`)
       await assert.rejects(
         () => buildSkills({ repoRoot }),
         new RegExp(`Forbidden skill dependency: ${owner} → ${dependency}`),
@@ -275,8 +285,8 @@ test('rejects reverse and cross-scene dependencies while preserving previous arc
 test('regenerates changed and missing APIs before every archive build', async (t) => {
   const { repoRoot, source } = fixture(t)
   await buildSkills({ repoRoot })
-  write(source, 'api/vbi/obsolete.md', 'Stale API')
-  fs.rmSync(path.join(source, 'api/vseed'), { recursive: true })
+  write(source, 'references/api/vbi/obsolete.md', 'Stale API')
+  fs.rmSync(path.join(source, 'references/api/vseed'), { recursive: true })
   for (const pkg of ['vbi', 'vquery', 'vseed']) {
     write(repoRoot, `packages/${pkg}/src/index.ts`, 'export const updatedApi = true')
     write(repoRoot, `scripts/skill-api/${pkg}.md`, '# Updated workflow\n')
@@ -290,19 +300,19 @@ test('regenerates changed and missing APIs before every archive build', async (t
       progress.push(event)
       // Notifications must arrive before work, not be replayed after the build.
       assert.deepEqual(contents(output), previous)
-      const index = fs.readFileSync(path.join(source, 'api/vbi/index.md'), 'utf8')
+      const index = fs.readFileSync(path.join(source, 'references/api/vbi/index.md'), 'utf8')
       assert.match(index, event.step <= 8 ? /initialApi/ : /updatedApi/)
     },
   })
   assert.equal(progress.length, progress[0].total)
   for (const { name, archive } of packages) {
     const root = path.join(extract(t, archive), name)
-    assert.equal(fs.existsSync(path.join(root, 'api/vbi/obsolete.md')), false)
+    assert.equal(fs.existsSync(path.join(root, 'references/api/vbi/obsolete.md')), false)
     for (const pkg of ['vbi', 'vquery', 'vseed']) {
-      const index = fs.readFileSync(path.join(root, 'api', pkg, 'index.md'), 'utf8')
+      const index = fs.readFileSync(path.join(root, 'references', 'api', pkg, 'index.md'), 'utf8')
       assert.match(index, /updatedApi/)
       assert.doesNotMatch(index, /initialApi/)
-      assert.match(fs.readFileSync(path.join(root, 'api', pkg, 'SKILL.md'), 'utf8'), /Updated workflow/)
+      assert.match(fs.readFileSync(path.join(root, 'references', 'api', pkg, 'guide.md'), 'utf8'), /Updated workflow/)
     }
   }
 })
@@ -312,7 +322,7 @@ test('preserves previous archives and API docs when API generation fails', async
   await buildSkills({ repoRoot })
   const output = path.join(repoRoot, 'dist/skills')
   const previous = contents(output)
-  const api = contents(path.join(source, 'api'))
+  const api = contents(path.join(source, 'references/api'))
   write(repoRoot, 'packages/vbi/src/index.ts', 'export const updatedApi = true')
   fs.unlinkSync(path.join(repoRoot, 'packages/vquery/src/index.ts'))
   const progress = []
@@ -320,18 +330,18 @@ test('preserves previous archives and API docs when API generation fails', async
   assert.equal(progress.at(-1).message, '生成 vquery API')
   assert.ok(progress.at(-1).step < progress.at(-1).total)
   assert.deepEqual(contents(output), previous)
-  assert.deepEqual(contents(path.join(source, 'api')), api)
+  assert.deepEqual(contents(path.join(source, 'references/api')), api)
 })
 
 test('rejects missing required resources and symlinks without publishing incomplete archives', async (t) => {
-  for (const missing of ['SKILL.md', 'references/visactor-light-dashboard/SKILL.md', 'references/server-runtime']) {
+  for (const missing of ['SKILL.md', 'scenarios/visactor-light-dashboard/SKILL.md', 'references/server-runtime']) {
     const { repoRoot, source } = fixture(t)
     fs.rmSync(path.join(source, missing), { recursive: true })
     await assert.rejects(() => buildSkills({ repoRoot }), /ENOENT|Missing/)
     assert.equal(fs.existsSync(path.join(repoRoot, 'dist/skills')), false)
   }
   const { repoRoot, source } = fixture(t)
-  fs.symlinkSync(path.join(source, 'SKILL.md'), path.join(source, 'references/visactor-light-dashboard/linked.md'))
+  fs.symlinkSync(path.join(source, 'SKILL.md'), path.join(source, 'scenarios/visactor-light-dashboard/linked.md'))
   await assert.rejects(() => buildSkills({ repoRoot }), /Unsupported skill resource/)
   assert.equal(fs.existsSync(path.join(repoRoot, 'dist/skills')), false)
 })

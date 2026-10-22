@@ -1,6 +1,6 @@
 # 页面组合与联动
 
-从 [visual-query](../SKILL.md) 按需阅读。单图查询、字段映射与渲染实例见 [查询与渲染](query-and-render.md)；本文负责多个分析与视图之间的关系、筛选作用域、刷新及恢复。
+从 [visual-query](../guide.md) 按需阅读。单图查询、字段映射与渲染实例见 [查询与渲染](query-and-render.md)；本文负责多个分析与视图之间的关系、筛选作用域、刷新及恢复。
 
 ## 资源关系与布局
 
@@ -20,7 +20,7 @@ dashboard.chart.add((widget) => {
 })
 ```
 
-新增组件提供 `lg` 布局；`setLayouts()` 在组件集合的 `add` / `update` 回调中提交。在集合回调外调用它不会写入 Dashboard 布局。完整接口通过 [VBI 子技能](../../../api/vbi/SKILL.md)中的 Dashboard Builder API 查阅。
+新增组件提供 `lg` 布局；`setLayouts()` 在组件集合的 `add` / `update` 回调中提交。在集合回调外调用它不会写入 Dashboard 布局。完整接口通过 [VBI API 指南](../../api/vbi/guide.md)中的 Dashboard Builder API 查阅。
 
 UI 从 `dashboard.build().layout[breakpoint]` 读取布局，按 `widgetId` 找到容器，将 `x/y/w/h` 映射为 CSS Grid 的列、行和跨度。列数、行高及断点对应的样式由宿主明确配置，CSS 与 DSL 的断点要保持一致；各场景模板的具体网格比例按当前任务选择。
 
@@ -45,7 +45,7 @@ Insight 中保存的文本或图片引用应由 UI 读取并展示。不要同�
 
 全局与局部分析口径不同的场景，在标题、说明或控件附近明确表达。
 
-原始行范围通过 `whereFilter` 表达，聚合后的分组筛选通过 `havingFilter` 表达；Connector 执行收到的查询条件，不忽略条件返回整表，也不在页面事件中重复聚合。具体筛选 API 按需查阅 [VBI](../../../api/vbi/SKILL.md) 与 [VQuery](../../../api/vquery/SKILL.md)。
+原始行范围通过 `whereFilter` 表达，聚合后的分组筛选通过 `havingFilter` 表达；Connector 执行收到的查询条件，不忽略条件返回整表，也不在页面事件中重复聚合。具体筛选 API 按需查阅 [VBI](../../api/vbi/guide.md) 与 [VQuery](../../api/vquery/guide.md)。
 
 多个筛选共同存在时，保存所管理条件的 ID，并通过 `whereFilter.update()` / `remove()` 或条件分组维护自己的部分。只有调用方拥有全部筛选条件时才适合 `clear()` 后重建，避免清除恢复配置中的其他条件。控件初始值也应从恢复后的状态读取，不能在首次渲染时用默认值覆盖已保存筛选。
 

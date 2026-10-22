@@ -180,7 +180,7 @@ function snapshot(root) {
 test('documents public declarations, aliases, overloads, defaults and workspace re-exports from source', async (t) => {
   const root = fixture(t)
   await buildSkillApi({ repoRoot: root })
-  const api = path.join(root, 'skills/visactor-dashboard/api')
+  const api = path.join(root, 'skills/visactor-dashboard/references/api')
   const client = fs.readFileSync(path.join(api, 'vbi/chart-builder.md'), 'utf8')
   assert.match(client, /Public client documentation/)
   assert.match(client, /readonly model: Model/)
@@ -208,7 +208,7 @@ test('documents public declarations, aliases, overloads, defaults and workspace 
 test('keeps conditional exports distinct and documents inherited public members', async (t) => {
   const root = fixture(t)
   await buildSkillApi({ repoRoot: root })
-  const api = path.join(root, 'skills/visactor-dashboard/api/vquery')
+  const api = path.join(root, 'skills/visactor-dashboard/references/api/vquery')
   const index = fs.readFileSync(path.join(api, 'index.md'), 'utf8')
   const exportConditions = (name) =>
     index
@@ -236,26 +236,26 @@ test('updates the canonical API, removes stale content and preserves manual skil
   assert.deepEqual(snapshot(skillsRoot), first)
 
   for (const skill of skillNames) {
-    write(root, `skills/${skill}/api/vbi/obsolete.md`, 'Stale page without a marker.\n')
-    write(root, `skills/${skill}/api/vbi/old/data.json`, '{"stale":true}\n')
-    write(root, `skills/${skill}/api/vquery/SKILL.md`, 'Diverged workflow copy.\n')
-    write(root, `skills/${skill}/api/vseed/schemas.md`, 'Obsolete schema declarations.\n')
+    write(root, `skills/${skill}/references/api/vbi/obsolete.md`, 'Stale page without a marker.\n')
+    write(root, `skills/${skill}/references/api/vbi/old/data.json`, '{"stale":true}\n')
+    write(root, `skills/${skill}/references/api/vquery/guide.md`, 'Diverged workflow copy.\n')
+    write(root, `skills/${skill}/references/api/vseed/schemas.md`, 'Obsolete schema declarations.\n')
   }
   write(root, 'packages/vbi/src/index.ts', 'export const nextApi = true')
   write(root, 'scripts/skill-api/vquery.md', '# Updated query workflow\n')
   await buildSkillApi({ repoRoot: root })
-  const canonical = snapshot(path.join(skillsRoot, 'visactor-dashboard/api'))
+  const canonical = snapshot(path.join(skillsRoot, 'visactor-dashboard/references/api'))
   for (const skill of skillNames) {
-    const api = path.join(skillsRoot, skill, 'api')
+    const api = path.join(skillsRoot, skill, 'references', 'api')
     assert.deepEqual(snapshot(api), canonical)
     assert.equal(fs.existsSync(path.join(api, 'vbi/chart-builder.md')), false)
     assert.equal(fs.existsSync(path.join(api, 'vbi/obsolete.md')), false)
     assert.equal(fs.existsSync(path.join(api, 'vbi/old')), false)
     assert.equal(fs.existsSync(path.join(api, 'vseed/schemas.md')), false)
     assert.match(fs.readFileSync(path.join(api, 'vbi/index.md'), 'utf8'), /nextApi/)
-    assert.match(fs.readFileSync(path.join(api, 'vquery/SKILL.md'), 'utf8'), /Updated query workflow/)
+    assert.match(fs.readFileSync(path.join(api, 'vquery/guide.md'), 'utf8'), /Updated query workflow/)
     for (const name of packageNames) {
-      assert.ok(fs.existsSync(path.join(api, name, 'SKILL.md')))
+      assert.ok(fs.existsSync(path.join(api, name, 'guide.md')))
       assert.ok(fs.existsSync(path.join(api, name, 'index.md')))
       assert.equal(fs.existsSync(path.join(api, name, 'api')), false)
       assert.equal(fs.existsSync(path.join(skillsRoot, skill, 'references', name)), false)
@@ -324,7 +324,7 @@ test('published API guides work in standalone downloads without repository maint
   fs.appendFileSync(path.join(root, 'packages/vbi/src/index.ts'), "\nexport * from './vbi'\n")
   for (const skill of skillNames) {
     for (const reference of ['visual-query', 'server-runtime']) {
-      write(root, `skills/${skill}/references/${reference}/SKILL.md`, `# ${reference}\n`)
+      write(root, `skills/${skill}/references/${reference}/guide.md`, `# ${reference}\n`)
     }
   }
   await buildSkillApi({ repoRoot: root })
@@ -333,11 +333,11 @@ test('published API guides work in standalone downloads without repository maint
   for (const skill of skillNames) {
     const standalone = path.join(downloads, skill)
     fs.cpSync(path.join(root, 'skills', skill), standalone, { recursive: true })
-    for (const [name, content] of snapshot(path.join(standalone, 'api'))) {
+    for (const [name, content] of snapshot(path.join(standalone, 'references', 'api'))) {
       assert.doesNotMatch(content, /pnpm build:skill-api|scripts\/skill-api|cd skills\//, name)
       for (const [, href] of content.matchAll(/\]\(([^)\s]+)\)/g)) {
         if (href.startsWith('#') || href.includes(':')) continue
-        const target = path.resolve(standalone, 'api', path.dirname(name), href.split('#')[0])
+        const target = path.resolve(standalone, 'references', 'api', path.dirname(name), href.split('#')[0])
         assert.ok(target.startsWith(standalone + path.sep), `${name}: ${href} escapes the download`)
         assert.ok(fs.existsSync(target), `${name}: ${href} is missing from the download`)
       }
