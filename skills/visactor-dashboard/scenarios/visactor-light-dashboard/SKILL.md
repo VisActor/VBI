@@ -37,7 +37,7 @@ description: 创建小而美的交互式 Dashboard，以指标、趋势、排行
 
 1. 按 [visual-query](../../references/visual-query/guide.md)接入数据和图表。模板接入方式见[模板接入](references/template-integration.md)。
 2. 优先复用已有数据接入，其余情况按[数据接入判断](../../references/server-runtime/guide.md#数据接入判断)选择。
-3. 筛选后同步更新图表、指标、明细和核心发现。复用图表实例，用 `updateSpec()` 更新，图表和数值都要有过渡动画。
+3. 筛选变化后让本次点击的筛选选项在文字右侧转圈，并显示“正在更新数据…”等待反馈，保留原布局与筛选操作；新范围的图表、指标、明细和核心发现就绪后收起，失败时提供重试。复用图表实例，用 `updateSpec()` 更新，图表和数值都要有过渡动画。
 4. hover 主图时更新已声明的关联指标，hover 小图时只更新所属卡片；标题、数值、单位与范围保持一致。移出后恢复汇总，核心发现仍展示当前筛选范围的结论。
 5. 用 Dashboard DSL 保存布局和资源引用。状态恢复与页面销毁按[组合指南](../../references/visual-query/references/composition.md)处理。
 6. 用户开启减少动态效果时，直接显示最终状态。

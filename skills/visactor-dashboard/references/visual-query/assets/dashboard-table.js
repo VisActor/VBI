@@ -154,9 +154,9 @@ window.DashboardTable = (() => {
     )}px`
     return resolved
   }
-  function setRecords(table, records) {
+  function setRecords(table, records, { animate = true } = {}) {
     table.clearSelected()
-    table.options.animationAppear = animation()
+    table.options.animationAppear = animate ? animation() : false
     table.setRecords(records)
   }
   return { load, options, overview, setRecords }

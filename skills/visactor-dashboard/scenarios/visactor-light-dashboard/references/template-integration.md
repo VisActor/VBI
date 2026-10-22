@@ -85,12 +85,13 @@
 
 每份模板 HTML 是该页面样式与脚本的维护入口，直接编辑其中的内嵌实现。不要在 light-dashboard 中另建 `assets/`、抽取独立 CSS/JS 维护源或增加生成同步层。页面内部按职责分段，业务模块维护配置、查询、图形定义与联动。
 
-| HTML 内嵌标记               | 负责内容                         |
-| --------------------------- | -------------------------------- |
-| `dashboard-loading-runtime` | 初始化等待、就绪门槛、失败与重试 |
-| `dashboard-motion-runtime`  | 入场、数字过渡、卡片倾斜及清理   |
-| `metric-analysis-runtime`   | 指标分析弹窗与交互生命周期       |
-| `metric-analysis-style`     | 弹窗样式与动效                   |
+| HTML 内嵌标记               | 负责内容                                        |
+| --------------------------- | ----------------------------------------------- |
+| `dashboard-controls-style`  | 主页与弹窗的胶囊、菜单、按钮及 loading 宽度过渡 |
+| `dashboard-loading-runtime` | 初始化与筛选等待、就绪门槛、失败与重试          |
+| `dashboard-motion-runtime`  | 入场、数字过渡、卡片倾斜及清理                  |
+| `metric-analysis-runtime`   | 指标分析弹窗与交互生命周期                      |
+| `metric-analysis-style`     | 弹窗样式与动效                                  |
 
 `DashboardMotion({ reducedMotion, metricUnit })` 返回页面需要的呈现方法；`metricUnit` 只供行业模板保留数字与单位分排，其余模板使用原有纯文本。页面退出调用 `disposeMotion()`，不直接访问动画内部状态。业务查询、缓存、数据口径与主题仍留在页面中。
 

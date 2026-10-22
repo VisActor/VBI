@@ -93,28 +93,6 @@
         cursor: pointer;
         border: 0;
       }
-      .segment {
-        display: inline-flex;
-        flex-wrap: wrap;
-        gap: 3px;
-        padding: 3px;
-        border-radius: 20px;
-      }
-      .segment button {
-        padding: 7px 12px;
-        border-radius: 17px;
-        background: transparent;
-        color: var(--muted);
-        font-size: 12px;
-      }
-      .segment button[aria-pressed='true'] {
-        background: #fff;
-        color: var(--ink);
-      }
-      .segment button:hover {
-        color: var(--ink);
-        background: #ffffff80;
-      }
       button:disabled {
         cursor: wait;
         opacity: 0.6;
@@ -220,6 +198,55 @@
       body[data-state='error'] .dashboard-loading-track {
         visibility: hidden;
       }
+      /* 筛选取数保留原阅读面，使用轻量状态卡反馈更新。 */
+      #dashboard-content {
+        transition: opacity 160ms ease;
+      }
+      body[data-refreshing='true'] #dashboard-content {
+        opacity: 0.55;
+      }
+      .dashboard-loading[data-mode='refresh'] {
+        inset: auto 20px max(20px, env(safe-area-inset-bottom)) auto;
+        max-width: calc(100vw - 40px);
+        padding: 0;
+        pointer-events: none;
+      }
+      .dashboard-loading[data-mode='refresh'] .dashboard-loading-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: auto;
+        padding: 14px 18px;
+        border-radius: 16px;
+        backdrop-filter: blur(18px);
+        pointer-events: auto;
+      }
+      .dashboard-loading[data-mode='refresh'] .dashboard-loading-orbit {
+        flex: 0 0 auto;
+        width: 18px;
+        height: 18px;
+        margin: 0;
+      }
+      .dashboard-loading[data-mode='refresh'] h2 {
+        margin: 0;
+        font-size: 13px;
+        letter-spacing: 0;
+      }
+      .dashboard-loading[data-mode='refresh'] p,
+      .dashboard-loading[data-mode='refresh'] .dashboard-loading-track,
+      .dashboard-loading[data-mode='refresh'][data-state='error'] .dashboard-loading-orbit {
+        display: none;
+      }
+      .dashboard-loading[data-mode='refresh'] #dashboard-loading-retry {
+        flex: 0 0 auto;
+        margin: 0;
+        padding: 5px 10px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #dashboard-content {
+          transition: none;
+        }
+      }
       @keyframes dashboard-loading-turn {
         to {
           transform: rotate(360deg);
@@ -231,12 +258,6 @@
         }
         to {
           transform: translateX(360%);
-        }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .dashboard-loading-orbit,
-        .dashboard-loading-track::after {
-          animation: none;
         }
       }
       /* 主页 VTable 使用无边框阅读面；选中与键盘焦点继续使用各自的 token。 */
@@ -465,9 +486,6 @@
         align-self: center;
         gap: 8px;
       }
-      #filters .segment {
-        flex-wrap: nowrap;
-      }
       .hero-value .unit {
         font-size: 0.4em;
         letter-spacing: 0;
@@ -538,15 +556,6 @@
         #filters {
           gap: 6px;
           flex-wrap: nowrap;
-        }
-        #filters .segment {
-          gap: 1px;
-          padding: 3px;
-        }
-        #filters .segment button {
-          padding: 7px 8px;
-          font-size: 10px;
-          white-space: nowrap;
         }
         .hero {
           min-height: 470px;
@@ -732,13 +741,6 @@
       }
       .hero-bottom .metric-unit {
         font-size: var(--metric-tertiary-unit-size);
-      }
-      .segment {
-        background: #ffffff70;
-        border: 1px solid #ffffffa0;
-      }
-      .segment button[aria-pressed='true'] {
-        box-shadow: 0 2px 10px #26354410;
       }
       details {
         background: #ffffff85;
@@ -1072,6 +1074,8 @@
       @media (prefers-reduced-motion: reduce) {
         .ma-dialog,
         .ma-dialog *,
+        .ma-dialog *::before,
+        .ma-dialog *::after,
         .ma-dialog::backdrop {
           animation: none !important;
           transition: none !important;
@@ -1110,23 +1114,6 @@
       .ma-dialog p {
         margin: 0;
       }
-      .ma-dialog button {
-        font: inherit;
-        font-size: 12px;
-        line-height: 1.4;
-        border: 0;
-        background: var(--glass-control);
-        color: var(--muted);
-        border-radius: 9px;
-        padding: 7px 10px;
-        cursor: pointer;
-        box-shadow: none;
-        transform: none;
-      }
-      .ma-dialog button:hover {
-        background: var(--glass-control-hover);
-        color: var(--ink);
-      }
       .ma-dialog button:focus-visible,
       .ma-dialog summary:focus-visible {
         outline: 2px solid var(--focus-ring);
@@ -1135,10 +1122,6 @@
       .ma-dialog button:disabled {
         opacity: 0.4;
         cursor: default;
-      }
-      .ma-dialog button[aria-pressed='true'] {
-        background: color-mix(in srgb, var(--ma-accent) 24%, rgb(255 255 255 / 68%));
-        color: var(--ink);
       }
       .ma-dialog button.ma-close {
         display: grid;
@@ -1182,11 +1165,6 @@
         align-items: center;
         gap: 12px;
       }
-      .ma-dialog .ma-modes {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-      }
       .ma-dialog .ma-selection {
         min-width: 0;
         height: 28px;
@@ -1195,11 +1173,6 @@
         gap: 7px;
         font-size: 12px;
         color: var(--text-secondary);
-      }
-      .ma-dialog .ma-selection button {
-        border: 0;
-        padding: 5px 6px;
-        color: var(--text-faint);
       }
       .ma-dialog .ma-feedback {
         position: absolute;
@@ -1213,13 +1186,24 @@
       .ma-dialog .ma-feedback:empty {
         display: none;
       }
+      .ma-dialog .ma-feedback[data-loading='true'] {
+        display: block;
+      }
+      .ma-dialog .ma-feedback[data-loading='true']::before {
+        content: '';
+        display: block;
+        width: 18px;
+        height: 18px;
+        margin: 24px auto;
+        border: 2px solid color-mix(in srgb, var(--ink) 16%, white);
+        border-right-color: var(--ink);
+        border-radius: 50%;
+        animation: dashboard-loading-turn 1.1s linear infinite;
+      }
       .ma-dialog .ma-selection > span {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-      }
-      .ma-dialog .ma-selection button {
-        flex: none;
       }
       .ma-dialog .ma-content {
         display: grid;
@@ -1303,24 +1287,6 @@
         background: transparent;
         min-width: 0;
       }
-      .ma-dialog .ma-picker > summary {
-        list-style: none;
-        font-size: 12px;
-        color: var(--text-secondary);
-        cursor: pointer;
-        padding: 7px 10px;
-        line-height: 1.4;
-        border: 0;
-        border-radius: 9px;
-        background: var(--glass-control);
-      }
-      .ma-dialog .ma-picker > summary::-webkit-details-marker {
-        display: none;
-      }
-      .ma-dialog .ma-picker > summary::after {
-        content: '⌄';
-        margin-left: 8px;
-      }
       .ma-dialog .ma-groups {
         position: absolute;
         top: calc(100% + 6px);
@@ -1337,10 +1303,6 @@
         border: 1px solid var(--glass-edge);
         border-radius: 12px;
         box-shadow: 0 8px 30px #1520301a;
-      }
-      .ma-dialog .ma-groups button {
-        text-align: left;
-        border-color: transparent;
       }
       .ma-dialog .ma-definition {
         grid-column: 1 / -1;
@@ -1692,14 +1654,165 @@
           )}px`
           return resolved
         }
-        function setRecords(table, records) {
+        function setRecords(table, records, { animate = true } = {}) {
           table.clearSelected()
-          table.options.animationAppear = animation()
+          table.options.animationAppear = animate ? animation() : false
           table.setRecords(records)
         }
         return { load, options, overview, setRecords }
       })()
     </script>
+    <style id="dashboard-controls-style">
+      /* 主页与分析弹窗共用仓库履约观察的玻璃胶囊控件。 */
+      :root {
+        --control-track: #ffffff70;
+        --control-edge: #ffffffa0;
+        --control-surface: #fff;
+        --control-hover: #ffffff80;
+        --control-shadow: 0 2px 10px #26354410;
+      }
+      #filters {
+        flex-wrap: wrap;
+        max-width: 100%;
+      }
+      :is(#filters, .ma-dialog) .segment {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 3px;
+        max-width: 100%;
+        padding: 3px;
+        border: 1px solid var(--control-edge);
+        border-radius: 20px;
+        background: var(--control-track);
+      }
+      .ma-dialog .ma-modes {
+        justify-self: start;
+      }
+      .ma-dialog .ma-close {
+        border-radius: 50%;
+        background: var(--control-track);
+      }
+      .ma-dialog .ma-close:hover {
+        background: var(--control-surface);
+        color: var(--ink);
+      }
+      :is(#filters, .ma-dialog) .segment button,
+      .ma-dialog :is(button:not(.ma-close), .ma-picker > summary) {
+        display: inline-flex;
+        flex: none;
+        align-items: center;
+        justify-content: center;
+        padding: 7px 12px;
+        border: 0;
+        border-radius: 17px;
+        background: var(--control-surface);
+        color: var(--muted);
+        font: 12px / 1.4 var(--font-ui);
+        white-space: nowrap;
+        cursor: pointer;
+        transition:
+          background-color 160ms ease,
+          color 160ms ease,
+          box-shadow 160ms ease;
+      }
+      :is(#filters, .ma-dialog) .segment button {
+        background: transparent;
+        box-shadow: none;
+      }
+      :is(#filters, .ma-dialog) .segment button[aria-pressed='true'] {
+        background: var(--control-surface);
+        color: var(--ink);
+        box-shadow: var(--control-shadow);
+      }
+      :is(#filters, .ma-dialog) .segment button:not([aria-pressed='true']):hover,
+      .ma-dialog :is(button:not(.ma-close), .ma-picker > summary):hover {
+        background: var(--control-hover);
+        color: var(--ink);
+      }
+      :is(#filters, .ma-dialog) :is(button, summary):focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 3px;
+      }
+      .ma-dialog .ma-picker > summary {
+        list-style: none;
+        box-shadow: var(--control-shadow);
+      }
+      .ma-dialog .ma-picker > summary::-webkit-details-marker {
+        display: none;
+      }
+      .ma-dialog .ma-picker-chevron {
+        order: 2;
+        flex: none;
+        width: 12px;
+        margin-left: 6px;
+        text-align: center;
+      }
+      .ma-dialog .ma-groups button {
+        justify-content: flex-start;
+        width: 100%;
+        border-radius: 12px;
+        background: transparent;
+        white-space: normal;
+        text-align: left;
+      }
+      .ma-dialog .ma-groups button[aria-pressed='true'] {
+        background: var(--control-surface);
+        color: var(--ink);
+        box-shadow: var(--control-shadow);
+      }
+      #filters .segment button::after,
+      .ma-dialog .ma-modes button::after,
+      .ma-dialog :is([data-ma='reset'], [data-ma='retry'], .ma-picker > summary)::after {
+        content: '';
+        display: inline-block;
+        order: 1;
+        flex: 0 0 auto;
+        box-sizing: border-box;
+        width: 0;
+        height: 12px;
+        margin-left: 0;
+        border: 0 solid color-mix(in srgb, var(--ink) 16%, white);
+        border-right-color: var(--ink);
+        border-radius: 50%;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          width 180ms ease,
+          margin-left 180ms ease,
+          border-width 180ms ease,
+          opacity 140ms ease;
+      }
+      #filters .segment button[data-loading='true']::after,
+      .ma-dialog [data-loading='true'][aria-busy='true']::after {
+        width: 12px;
+        margin-left: 6px;
+        border-width: 2px;
+        opacity: 1;
+        animation: dashboard-loading-turn 1.1s linear infinite;
+      }
+      @media (max-width: 600px) {
+        :is(#filters, .ma-dialog) .segment {
+          gap: 1px;
+        }
+        :is(#filters, .ma-dialog) .segment button {
+          padding: 7px 8px;
+          font-size: 10px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        :is(#filters, .ma-dialog) :is(button, summary),
+        :is(#filters, .ma-dialog) ::after {
+          transition: none !important;
+        }
+        #filters .segment button[data-loading='true']::after,
+        .ma-dialog [data-loading='true'][aria-busy='true']::after,
+        .dashboard-loading-orbit,
+        .dashboard-loading-track::after {
+          animation: none;
+        }
+      }
+    </style>
   </head>
   <body data-state="loading" data-initialized="false" data-entrance="pending" data-template="industry" data-skin="soft">
     <div class="shell" inert aria-busy="true">
@@ -1860,6 +1973,64 @@
       window.DashboardLoading = (() => {
         const layer = document.querySelector('#dashboard-loading')
         const screen = document.querySelector('body > .shell')
+        const content = document.querySelector('#dashboard-content')
+        const title = document.querySelector('#dashboard-loading-title')
+        const retryButton = document.querySelector('#dashboard-loading-retry')
+        let refreshing = false,
+          refreshStarted = 0,
+          refreshFrame,
+          refreshTimer,
+          finishRefreshPaint,
+          finishRefreshWait,
+          retryRefresh,
+          trigger,
+          refreshPaint = Promise.resolve()
+        const stopRefreshWaiting = () => {
+          cancelAnimationFrame(refreshFrame)
+          finishRefreshPaint?.()
+          clearTimeout(refreshTimer)
+          finishRefreshWait?.()
+        }
+        const setTrigger = (button) => {
+          trigger?.removeAttribute('data-loading')
+          trigger?.removeAttribute('aria-busy')
+          trigger = button
+          if (refreshing) {
+            trigger?.setAttribute('data-loading', 'true')
+            trigger?.setAttribute('aria-busy', 'true')
+          }
+        }
+        const setRefreshing = (busy) => {
+          trigger?.setAttribute('data-loading', String(busy))
+          trigger?.setAttribute('aria-busy', String(busy))
+          document.body.dataset.refreshing = String(busy)
+          document.querySelector('#filters').setAttribute('aria-busy', String(busy))
+          content.inert = busy
+          content.setAttribute('aria-busy', String(busy))
+        }
+        const refresh = (retry) => {
+          if (phase !== 'ready') return
+          retryRefresh = retry
+          if (refreshing) return
+          refreshing = true
+          refreshStarted = performance.now()
+          layer.dataset.mode = 'refresh'
+          layer.dataset.state = 'loading'
+          title.textContent = '正在更新数据…'
+          layer.removeAttribute('title')
+          retryButton.hidden = true
+          layer.hidden = false
+          layer.inert = false
+          layer.removeAttribute('aria-hidden')
+          setRefreshing(true)
+          // 先让等待反馈绘制一帧，再执行可能占用主线程的本地查询。
+          refreshPaint = new Promise((resolve) => {
+            finishRefreshPaint = resolve
+            refreshFrame = requestAnimationFrame(() => {
+              refreshFrame = requestAnimationFrame(resolve)
+            })
+          })
+        }
         let phase = 'loading',
           frame,
           waitTimer,
@@ -1878,6 +2049,17 @@
           finishWait?.()
         }
         const fail = (message) => {
+          if (phase === 'ready') {
+            refreshing = false
+            stopRefreshWaiting()
+            setRefreshing(false)
+            layer.dataset.state = 'error'
+            title.textContent = '更新失败，请重试'
+            layer.title = message
+            retryButton.textContent = '重试'
+            retryButton.hidden = false
+            return
+          }
           if (phase !== 'loading') return
           phase = 'error'
           clearTimeout(deadline)
@@ -1895,15 +2077,40 @@
         const dispose = (event) => {
           if (event.persisted) return
           phase = 'disposed'
+          refreshing = false
+          stopRefreshWaiting()
+          setTrigger(undefined)
+          layer.hidden = true
           clearTimeout(deadline)
           stopWaiting()
           window.removeEventListener('error', onScriptError, true)
           window.removeEventListener('pagehide', dispose)
         }
         window.addEventListener('pagehide', dispose)
-        document.querySelector('#dashboard-loading-retry').onclick = () => location.reload()
+        retryButton.onclick = () => (phase === 'ready' ? retryRefresh?.() : location.reload())
         const reveal = async (isCurrent) => {
-          if (phase === 'ready') return isCurrent()
+          if (phase === 'ready') {
+            if (refreshing) {
+              await refreshPaint
+              if (phase !== 'ready' || !isCurrent()) return false
+              const remaining = 200 - (performance.now() - refreshStarted)
+              if (remaining > 0)
+                await new Promise((resolve) => {
+                  finishRefreshWait = resolve
+                  refreshTimer = setTimeout(resolve, remaining)
+                })
+              if (phase !== 'ready' || !isCurrent()) return false
+              refreshing = false
+              stopRefreshWaiting()
+              setRefreshing(false)
+              setTrigger(undefined)
+              layer.hidden = true
+              layer.inert = true
+              layer.setAttribute('aria-hidden', 'true')
+              layer.removeAttribute('title')
+            }
+            return phase === 'ready' && isCurrent()
+          }
           if (phase !== 'loading') return false
           const started = await painted
           if (phase !== 'loading' || !isCurrent()) return false
@@ -1925,7 +2132,7 @@
           document.body.dataset.initialized = 'true'
           return true
         }
-        return { reveal, fail }
+        return { reveal, fail, refresh, setTrigger, paint: () => refreshPaint }
       })()
     </script>
     <noscript>
@@ -2214,8 +2421,14 @@
           opener,
           previousOverflow,
           loadingTimer,
+          loadingControl,
+          loadingFrame,
+          finishLoadingPaint,
           chartSize = '',
+          chartType,
           tableSize = '',
+          menuSignature = '',
+          reading,
           renderQueue = Promise.resolve()
         const listeners = []
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -2235,10 +2448,30 @@
             table.resize()
           }
         }
-        const animateReading = (node) => {
-          node.getAnimations().forEach((animation) => animation.cancel())
-          if (!reducedMotion.matches)
-            node.animate([{ opacity: 0.45 }, { opacity: 1 }], { duration: 180, easing: 'ease-out' })
+        const updateReading = (target, format) => {
+          const node = find('value')
+          const from = reading?.value
+          cancelAnimationFrame(reading?.frame)
+          const state = { value: from, target, format, frame: 0 }
+          reading = state
+          node.dataset.value = Number.isFinite(target) ? String(target) : ''
+          const write = (value) => {
+            state.value = value
+            const text = format(value)
+            if (node.textContent !== text) node.textContent = text
+          }
+          if (reducedMotion.matches || !Number.isFinite(from) || !Number.isFinite(target) || from === target) {
+            write(target)
+            return
+          }
+          const started = performance.now()
+          const tick = (now) => {
+            const progress = Math.min(1, (now - started) / 550)
+            const eased = progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2
+            write(from + (target - from) * eased)
+            state.frame = progress < 1 ? requestAnimationFrame(tick) : 0
+          }
+          state.frame = requestAnimationFrame(tick)
         }
         const number = (value, digits = 1) =>
           Number.isFinite(value) ? value.toLocaleString('zh-CN', { maximumFractionDigits: digits }) : '—'
@@ -2255,6 +2488,19 @@
           node.addEventListener('click', action)
           return node
         }
+        const stopControlLoading = () => {
+          loadingControl?.removeAttribute('data-loading')
+          loadingControl?.removeAttribute('aria-busy')
+          loadingControl = undefined
+          cancelAnimationFrame(loadingFrame)
+          finishLoadingPaint?.()
+        }
+        const startControlLoading = (control) => {
+          stopControlLoading()
+          loadingControl = control
+          control?.setAttribute('data-loading', 'true')
+          control?.setAttribute('aria-busy', 'true')
+        }
         function createDialog() {
           if (dialog) return
           dialog = element('dialog', 'ma-dialog')
@@ -2266,19 +2512,19 @@
       <p class="ma-feedback" data-ma="feedback" role="status"></p><button type="button" data-ma="retry" hidden>重新加载</button>
       <div class="ma-content" data-ma="content" hidden>
         <section class="ma-summary"><div><p class="ma-eyebrow" data-ma="value-label"></p><strong class="ma-value" data-ma="value"></strong></div><p class="ma-finding" data-ma="finding"></p></section>
-        <div class="ma-toolbar"><nav class="ma-modes" aria-label="分析维度" data-ma="modes"></nav><div class="ma-selection" data-ma="selection" hidden><span data-ma="selected"></span><button type="button" data-ma="reset" aria-label="清除分组筛选">清除 ×</button></div><details class="ma-picker" data-ma="picker"><summary data-ma="picker-label">选择分组</summary><div class="ma-groups" data-ma="groups" role="group" aria-label="选择分组查看记录"></div></details></div>
+        <div class="ma-toolbar"><nav class="ma-modes segment" aria-label="分析维度" data-ma="modes"></nav><div class="ma-selection" data-ma="selection" hidden><span data-ma="selected"></span><button type="button" data-ma="reset" aria-label="清除分组筛选">清除 ×</button></div><details class="ma-picker" data-ma="picker"><summary data-ma="picker-label"><span data-ma="picker-text">选择分组</span><span class="ma-picker-chevron" aria-hidden="true">⌄</span></summary><div class="ma-groups" data-ma="groups" role="group" aria-label="选择分组查看记录"></div></details></div>
         <section class="ma-chart-panel"><div class="ma-panel-heading"><h3 data-ma="chart-title"></h3></div><p class="ma-hint" data-ma="chart-hint"></p><div class="ma-chart" data-ma="chart" role="img"></div></section>
         <section class="ma-table-panel"><div class="ma-panel-heading"><h3>关联明细</h3><button type="button" data-ma="expand" aria-expanded="false">展开表格</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="分析明细表" tabindex="0"></div></section>
         <details class="ma-definition"><summary>统计口径与依据</summary><p data-ma="definition"></p><p data-ma="evidence"></p><p data-ma="grain"></p></details>
       </div></div></div>`
           document.body.append(dialog)
           find('close').addEventListener('click', closeDialog)
-          find('reset').addEventListener('click', () => {
+          find('reset').addEventListener('click', (event) => {
             selection = undefined
             find('picker-label').focus({ preventScroll: true })
-            void refresh(false)
+            void refresh(false, event.currentTarget)
           })
-          find('retry').addEventListener('click', () => void refresh(true))
+          find('retry').addEventListener('click', (event) => void refresh(true, event.currentTarget))
           find('expand').addEventListener('click', () => {
             const expanded = dialog.classList.toggle('ma-expanded')
             find('expand').setAttribute('aria-expanded', String(expanded))
@@ -2319,7 +2565,7 @@
             find('picker').open = false
             find('picker-label').focus({ preventScroll: true })
           }
-          void refresh(false)
+          void refresh(false, find('picker-label'))
         }
         function selectDimension(event) {
           if (!dialog?.open || find('groups').inert) return
@@ -2340,6 +2586,8 @@
           // 退场开始就让旧查询失效，但保留当前 Canvas 直到画面退场完成。
           version++
           controller?.abort()
+          cancelAnimationFrame(reading?.frame)
+          stopControlLoading()
           clearTimeout(loadingTimer)
           if (reducedMotion.matches) return completeClose()
           const current = getComputedStyle(dialog)
@@ -2361,6 +2609,8 @@
           version++
           renderQueue = Promise.resolve()
           controller?.abort()
+          cancelAnimationFrame(reading?.frame)
+          stopControlLoading()
           clearTimeout(loadingTimer)
           if (dialog) {
             delete dialog.dataset.contentEnter
@@ -2372,6 +2622,9 @@
           table?.release()
           table = undefined
           chartSize = tableSize = ''
+          chartType = undefined
+          menuSignature = ''
+          reading = undefined
           records = []
           context = undefined
           if (previousOverflow !== undefined) {
@@ -2426,7 +2679,10 @@
             lineStyle: { lineSmooth: false },
             animation: {
               enable: !reducedMotion.matches,
-              params: { appear: { duration: 220 }, update: { duration: 220, ease: 'cubicOut' } },
+              params: {
+                appear: { enable: true, effects: ['growth'], duration: 550, ease: 'cubicInOut' },
+                update: { enable: true, duration: 550, ease: 'cubicInOut' },
+              },
             },
             barStyle: { barRadius: 3, barGradient: false },
           }).build()
@@ -2478,9 +2734,12 @@
           return DashboardTable.options(options, find('table'))
         }
         let groupRows, totalRow, priorRow
-        async function refresh(reload) {
+        async function refresh(reload, control) {
           if (!dialog?.open || dialog.dataset.closing === 'true') return
           const ticket = ++version
+          startControlLoading(control)
+          const started = performance.now()
+          const hadContent = !find('content').hidden
           controller?.abort()
           controller = new AbortController()
           const signal = controller.signal
@@ -2491,19 +2750,27 @@
             selected = selection
           clearTimeout(loadingTimer)
           find('feedback').textContent = ''
-          loadingTimer = setTimeout(() => {
-            if (ticket === version && dialog.open) find('feedback').textContent = '正在更新…'
-          }, 160)
-          find('retry').hidden = true
+          find('feedback').dataset.loading = String(!hadContent)
+          find('feedback').setAttribute('aria-label', hadContent ? '' : '正在加载分析')
+          find('retry').hidden = control !== find('retry')
           find('content').setAttribute('aria-busy', 'true')
           find('groups').inert = true
-          find('selection').hidden = selected === undefined
-          find('selected').textContent = selected === undefined ? '' : `${group[1]}：${selected}`
+          const clearing = control === find('reset')
+          find('selection').hidden = selected === undefined && !clearing
+          if (!clearing) find('selected').textContent = selected === undefined ? '' : `${group[1]}：${selected}`
           const extra =
             selected === undefined
               ? []
               : [{ field: group[0], value: group[3] === 'number' ? Number(selected) : selected }]
           try {
+            if (control)
+              await new Promise((resolve) => {
+                finishLoadingPaint = resolve
+                loadingFrame = requestAnimationFrame(() => {
+                  loadingFrame = requestAnimationFrame(resolve)
+                })
+              })
+            if (!dialog.open || ticket !== version) return
             const base = metric.conditions
             const selectedConditions =
               selected !== undefined && metric.selectionConditions
@@ -2557,66 +2824,72 @@
               plotRows.sort((a, b) => b.value - a.value || a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
             else plotRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
             records = details.map((row) => ({ ...row }))
-            find('content').hidden = false
-            find('value-label').textContent =
-              selected === undefined
-                ? metric.previous
-                  ? '当前比较范围'
-                  : model.detailScope || '当前范围'
-                : `${group[1]}：${selected}`
-            find('value-label').title = find('value-label').textContent
-            find('value').textContent = metric.format(value)
-            find('value').dataset.value = Number.isFinite(value) ? String(value) : ''
-            const ranked = [...plotRows].sort((a, b) => b.value - a.value)
-            find('finding').textContent =
-              selected !== undefined
-                ? `总体 ${metric.format(overall)}`
-                : metric.finding
-                  ? metric.finding(current, baseline, plotRows)
-                  : ranked.length > 1 && ranked.every((row) => row.value === ranked[0].value)
-                    ? `各${group[1]}的${metric.title}均为 ${metric.format(ranked[0].value)}。`
-                    : ranked.length
-                      ? `${ranked[0].key}的${metric.title}最高（${metric.format(ranked[0].value)}）${ranked.length > 1 ? `，${ranked.at(-1).key}最低（${metric.format(ranked.at(-1).value)}）` : ''}。`
-                      : '当前范围没有可分析的有效值。可返回看板调整筛选。'
-            for (const name of ['value', 'finding']) animateReading(find(name))
-            find('definition').textContent = metric.definition
-            find('evidence').textContent = metric.evidence
-              ? metric.evidence(current, baseline)
-              : '汇总由当前范围内的完整记录计算；表格滚动不改变汇总值。'
-            find('grain').textContent =
-              `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 表格包含当前范围的完整结果`
-            const detailScope = selected === undefined ? model.detailScope || '当前范围' : `${group[1]}：${selected}`
-            find('table-scope').textContent = `${detailScope} · ${number(records.length, 0)} 条记录`
-            find('table-scope').title = find('table-scope').textContent
-            find('table').setAttribute('aria-label', `关联明细，${detailScope}，${records.length} 条记录`)
-            const chartTitle = metric.groupTitle || metric.title
-            find('chart-title').textContent = metric.groupTitle || (group[2] ? `${group[1]}趋势` : `${group[1]}比较`)
-            find('chart-hint').textContent = !group[2] && plotRows.length > 12 ? '前 12 组' : ''
-            find('picker-label').textContent = `选择${group[1]}`
-            find('picker').hidden = !plotRows.length
-            find('groups').replaceChildren(
-              ...plotRows.map((row) => {
-                const choice = button(`${row.key} · ${(metric.groupFormat || metric.format)(row.value)}`, () =>
-                  selectGroup(row.key),
-                )
-                choice.setAttribute('aria-pressed', String(selected === row.key))
-                return choice
-              }),
-            )
-            const chartRows = group[2] ? plotRows : plotRows.slice(0, 12)
-            // 菜单可选择 Top N 以外的分组；选中项仍须能在图中定位。
-            if (selected !== undefined && !chartRows.some((row) => row.key === selected)) {
-              const row = plotRows.find((row) => row.key === selected)
-              if (row) {
-                chartRows.splice(Math.max(0, chartRows.length - 1), 1, row)
-                find('chart-hint').textContent = '前 11 组及已选项'
-              }
-            }
             // 提交串行化，切换或关闭后的旧查询与旧渲染都不能覆盖当前结果。
             renderQueue = renderQueue
               .catch(() => {})
               .then(async () => {
                 if (!dialog.open || ticket !== version) return
+                find('content').hidden = false
+                find('value-label').textContent =
+                  selected === undefined
+                    ? metric.previous
+                      ? '当前比较范围'
+                      : model.detailScope || '当前范围'
+                    : `${group[1]}：${selected}`
+                find('value-label').title = find('value-label').textContent
+                updateReading(value, metric.format)
+                const ranked = [...plotRows].sort((a, b) => b.value - a.value)
+                find('finding').textContent =
+                  selected !== undefined
+                    ? `总体 ${metric.format(overall)}`
+                    : metric.finding
+                      ? metric.finding(current, baseline, plotRows)
+                      : ranked.length > 1 && ranked.every((row) => row.value === ranked[0].value)
+                        ? `各${group[1]}的${metric.title}均为 ${metric.format(ranked[0].value)}。`
+                        : ranked.length
+                          ? `${ranked[0].key}的${metric.title}最高（${metric.format(ranked[0].value)}）${ranked.length > 1 ? `，${ranked.at(-1).key}最低（${metric.format(ranked.at(-1).value)}）` : ''}。`
+                          : '当前范围没有可分析的有效值。可返回看板调整筛选。'
+                find('definition').textContent = metric.definition
+                find('evidence').textContent = metric.evidence
+                  ? metric.evidence(current, baseline)
+                  : '汇总由当前范围内的完整记录计算；表格滚动不改变汇总值。'
+                find('grain').textContent =
+                  `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 表格包含当前范围的完整结果`
+                const detailScope =
+                  selected === undefined ? model.detailScope || '当前范围' : `${group[1]}：${selected}`
+                find('table-scope').textContent = `${detailScope} · ${number(records.length, 0)} 条记录`
+                find('table-scope').title = find('table-scope').textContent
+                find('table').setAttribute('aria-label', `关联明细，${detailScope}，${records.length} 条记录`)
+                const chartTitle = metric.groupTitle || metric.title
+                find('chart-title').textContent =
+                  metric.groupTitle || (group[2] ? `${group[1]}趋势` : `${group[1]}比较`)
+                find('chart-hint').textContent = !group[2] && plotRows.length > 12 ? '前 12 组' : ''
+                find('picker-text').textContent = `选择${group[1]}`
+                find('picker').hidden = !plotRows.length
+                const nextMenu = JSON.stringify([group[0], plotRows])
+                if (nextMenu !== menuSignature) {
+                  find('groups').replaceChildren(
+                    ...plotRows.map((row) => {
+                      const choice = button(`${row.key} · ${(metric.groupFormat || metric.format)(row.value)}`, () =>
+                        selectGroup(row.key),
+                      )
+                      choice.dataset.key = row.key
+                      return choice
+                    }),
+                  )
+                  menuSignature = nextMenu
+                }
+                for (const choice of find('groups').children)
+                  choice.setAttribute('aria-pressed', String(selected === choice.dataset.key))
+                const chartRows = group[2] ? plotRows : plotRows.slice(0, 12)
+                // 菜单可选择 Top N 以外的分组；选中项仍须能在图中定位。
+                if (selected !== undefined && !chartRows.some((row) => row.key === selected)) {
+                  const row = plotRows.find((row) => row.key === selected)
+                  if (row) {
+                    chartRows.splice(Math.max(0, chartRows.length - 1), 1, row)
+                    find('chart-hint').textContent = '前 11 组及已选项'
+                  }
+                }
                 find('chart').dataset.empty = String(!chartRows.length)
                 if (!chartRows.length) {
                   chart?.release()
@@ -2625,12 +2898,23 @@
                 }
                 if (chartRows.length) {
                   const spec = buildAnalysisSpec(group, metric, chartRows, chartTitle, selected)
-                  if (chart) await chart.updateSpec(spec)
-                  else {
+                  if (chart) {
+                    const changedType = chartType !== spec.type
+                    await chart.updateSpec(
+                      spec,
+                      false,
+                      {
+                        morph: !reducedMotion.matches,
+                        ...(!reducedMotion.matches && changedType ? { reuse: false } : {}),
+                      },
+                      changedType ? { change: true, reMake: true } : undefined,
+                    )
+                  } else {
                     chart = new VChart(spec, { dom: find('chart') })
                     chart.renderSync()
                     chartSize = ''
                   }
+                  chartType = spec.type
                   if (!dialog.open || ticket !== version) return
                   // 切换图型后重新绑定到当前坐标系；同一次点击只走维度事件，避免二次切换。
                   chart.off('dimensionClick', selectDimension)
@@ -2648,22 +2932,35 @@
                   tableSize = `${find('table').clientWidth}:${find('table').clientHeight}`
                 }
                 if (!dialog.open || ticket !== version) return
-                if (existingTable) DashboardTable.setRecords(table, records)
+                if (existingTable) DashboardTable.setRecords(table, records, { animate: false })
                 resizeChart()
                 find('feedback').textContent = records.length ? '' : '当前范围暂无明细记录。'
                 dialog.dataset.state = records.length ? 'ready' : 'empty'
-                dialog.dataset.contentEnter = 'true'
+                if (dialog.dataset.contentEnter !== 'true') dialog.dataset.contentEnter = 'true'
               })
             await renderQueue
+            if (!dialog.open || ticket !== version) return
+            clearTimeout(loadingTimer)
+            const remaining = control ? 200 - (performance.now() - started) : 0
+            if (remaining > 0 && dialog.open && ticket === version)
+              await new Promise((resolve) => {
+                finishLoadingPaint = resolve
+                loadingTimer = setTimeout(resolve, remaining)
+              })
           } catch (error) {
             if (ticket !== version || !dialog.open) return
             find('feedback').textContent = `分析未完成：${error.message}`
             find('retry').hidden = false
-            find('content').hidden = true
+            find('content').hidden = !hadContent
             dialog.dataset.state = 'error'
           } finally {
             if (ticket === version && dialog.open) {
               clearTimeout(loadingTimer)
+              stopControlLoading()
+              delete find('feedback').dataset.loading
+              find('feedback').removeAttribute('aria-label')
+              find('selection').hidden = selection === undefined
+              if (dialog.dataset.state !== 'error') find('retry').hidden = true
               find('content').setAttribute('aria-busy', 'false')
               find('groups').inert = false
             }
@@ -2690,11 +2987,12 @@
           find('modes').replaceChildren(
             ...context.dimensions.map((group) => {
               const choice = button(group[1], () => {
+                if (dimension === group) return
                 dimension = group
                 selection = undefined
                 for (const sibling of find('modes').children)
                   sibling.setAttribute('aria-pressed', String(sibling === choice))
-                void refresh(true)
+                void refresh(true, choice)
               })
               choice.setAttribute('aria-pressed', String(group === dimension))
               return choice
@@ -2717,6 +3015,11 @@
         }
         const onOverlayMotionChange = () => {
           if (!reducedMotion.matches || !dialog?.open) return
+          if (reading) {
+            cancelAnimationFrame(reading.frame)
+            reading.value = reading.target
+            find('value').textContent = reading.format(reading.target)
+          }
           if (dialog.dataset.closing === 'true') completeClose()
           else dialog.getAnimations({ subtree: true }).forEach((animation) => animation.cancel())
         }
@@ -3209,6 +3512,8 @@
         instances.forEach((instance) => instance.hideTooltip())
       }
       function requestRender() {
+        if (disposed) return
+        DashboardLoading.refresh(requestRender)
         revision++
         clearHover()
         if (queued || disposed) return
@@ -3226,6 +3531,8 @@
         while (completed !== revision && !disposed) {
           const current = revision
           try {
+            await DashboardLoading.paint()
+            if (disposed || current !== revision) continue
             const entries = await Promise.all(
               [...queries].map(async ([key, chart]) => {
                 const seed = await chart.buildVSeed()
@@ -3427,6 +3734,7 @@
         document.querySelectorAll('[data-filter]').forEach((button) =>
           button.addEventListener('click', () => {
             if (button.getAttribute('aria-pressed') === 'true') return
+            DashboardLoading.setTrigger(button)
             state[button.dataset.filter] = button.dataset.value
             document
               .querySelectorAll(`[data-filter="${button.dataset.filter}"]`)
