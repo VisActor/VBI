@@ -88,8 +88,6 @@
       button {
         font: inherit;
         color: inherit;
-      }
-      button {
         cursor: pointer;
         border: 0;
       }
@@ -332,10 +330,6 @@
       #main-plot {
         width: 100%;
       }
-      #main-plot-empty {
-        padding: 70px 0;
-        text-align: center;
-      }
       .dates {
         display: flex;
         justify-content: space-between;
@@ -423,24 +417,11 @@
         display: none !important;
       }
       @media (max-width: 600px) {
-        .shell {
-          padding: 24px 16px;
-        }
-        .topbar {
-          margin-bottom: 28px;
-        }
         .card {
           padding: 20px;
-          border-radius: 18px;
         }
         .heading {
           gap: 14px;
-        }
-        .hero-bottom {
-          gap: 12px;
-        }
-        .hero-bottom > div + div {
-          padding-left: 12px;
         }
       }
       @media (prefers-reduced-motion: reduce) {
@@ -452,10 +433,6 @@
         .metric-card {
           transform: none;
         }
-      }
-
-      :root {
-        --border: #e5eaee;
       }
       .brand {
         display: flex;
@@ -486,13 +463,6 @@
         align-self: center;
         gap: 8px;
       }
-      .hero-value .unit {
-        font-size: 0.4em;
-        letter-spacing: 0;
-        margin-left: 6px;
-        font-weight: 500;
-        color: var(--muted);
-      }
       .small-note {
         margin-top: 6px;
         min-height: 20px;
@@ -500,9 +470,6 @@
       #ring-value {
         font-size: 19px;
         letter-spacing: -0.03em;
-      }
-      .chapter {
-        display: none;
       }
       #main-plot {
         inset: 0 0 24px;
@@ -523,12 +490,6 @@
         position: absolute;
         inset: 70px 0 auto;
       }
-      .table-caption {
-        text-align: left;
-        padding: 16px 0 4px;
-        max-width: 100%;
-        white-space: normal;
-      }
       .comparison {
         min-height: 20px;
       }
@@ -548,7 +509,6 @@
       @media (max-width: 600px) {
         .topbar {
           gap: 10px;
-          margin-bottom: 28px;
         }
         .topbar > .muted {
           font-size: 10px;
@@ -557,27 +517,12 @@
           gap: 6px;
           flex-wrap: nowrap;
         }
-        .hero {
-          min-height: 470px;
-        }
-        .hero-value {
-          font-size: 44px;
-        }
-        .hero-bottom strong {
-          font-size: 21px;
-        }
-        .hero-figure {
-          min-height: 220px;
-        }
         .hero-bottom {
           margin-top: 18px;
           padding-top: 18px;
         }
         .card-slot {
           grid-column: 1/-1 !important;
-        }
-        #conclusion {
-          font-size: 14px;
         }
       }
       .hero-figure {
@@ -587,7 +532,6 @@
       :root {
         --accent: #588fbd;
         --accent-ink: #3b607f;
-        --background-start: #d8e7f4;
         --metric-primary-size: 60px;
         --metric-secondary-size: 28px;
         --metric-tertiary-size: 22px;
@@ -747,10 +691,6 @@
         border-radius: 20px;
         margin-top: 24px;
       }
-      .table-caption {
-        line-height: 1.85;
-        padding-bottom: 14px;
-      }
       footer a {
         color: var(--ink);
         text-decoration-color: var(--accent);
@@ -865,8 +805,6 @@
           inset 0 1px 0 rgb(255 255 255 / 76%), inset 0 -1px 0 rgb(255 255 255 / 16%);
         --glass-tile: linear-gradient(145deg, rgb(255 255 255 / 48%), rgb(255 255 255 / 20%));
         --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 68%), 0 5px 16px -12px rgb(40 51 62 / 12%);
-        --glass-control: rgb(255 255 255 / 48%);
-        --glass-control-hover: rgb(255 255 255 / 76%);
         --glass-divider: rgb(104 122 143 / 12%);
         --overlay-duration: 720ms;
         --overlay-easing: cubic-bezier(0.22, 1, 0.36, 1);
@@ -1654,19 +1592,22 @@
       })()
     </script>
     <style id="dashboard-controls-style">
-      /* 主页与分析弹窗共用仓库履约观察的玻璃胶囊控件。 */
+      /* 单层玻璃轨道与连续选中面；内容层保留稳定阅读底色。 */
       :root {
-        --control-track: #ffffff70;
-        --control-edge: #ffffffa0;
-        --control-surface: #fff;
+        --control-track: rgb(255 255 255 / 48%);
+        --control-edge: rgb(255 255 255 / 72%);
+        --control-surface: rgb(255 255 255 / 92%);
         --control-hover: #ffffff80;
-        --control-shadow: 0 2px 10px #26354410;
+        --control-sheen: linear-gradient(155deg, rgb(255 255 255 / 60%), rgb(255 255 255 / 6%) 65%);
+        --control-shadow: 0 2px 8px rgb(38 53 68 / 9%), inset 0 1px 0 rgb(255 255 255 / 90%);
       }
       #filters {
         flex-wrap: wrap;
         max-width: 100%;
       }
       :is(#filters, .ma-dialog) .segment {
+        position: relative;
+        isolation: isolate;
         display: inline-flex;
         flex-wrap: wrap;
         align-items: center;
@@ -1675,7 +1616,34 @@
         padding: 3px;
         border: 1px solid var(--control-edge);
         border-radius: 20px;
-        background: var(--control-track);
+        background: var(--control-sheen), var(--control-track);
+        box-shadow:
+          inset 0 1px 0 rgb(255 255 255 / 46%),
+          0 3px 12px -8px rgb(38 53 68 / 14%);
+        backdrop-filter: blur(12px) saturate(1.12);
+        -webkit-backdrop-filter: blur(12px) saturate(1.12);
+      }
+      :is(#filters, .ma-dialog) .segment-indicator {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: inherit;
+        background: var(--control-sheen), var(--control-surface);
+        box-shadow:
+          var(--control-shadow),
+          inset 0 -1px 0 rgb(38 53 68 / 4%);
+        transform-origin: top left;
+        pointer-events: none;
+      }
+      /* 弹窗已有玻璃底面，内部轨道不重复模糊。 */
+      .ma-dialog .segment {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      :is(#filters, .ma-dialog) .segment button:active .segment-indicator {
+        box-shadow:
+          0 1px 4px rgb(38 53 68 / 7%),
+          inset 0 1px 3px rgb(38 53 68 / 9%);
       }
       .ma-dialog .ma-modes {
         justify-self: start;
@@ -1690,6 +1658,7 @@
       }
       :is(#filters, .ma-dialog) .segment button,
       .ma-dialog :is(button:not(.ma-close), .ma-picker > summary) {
+        position: relative;
         display: inline-flex;
         flex: none;
         align-items: center;
@@ -1702,6 +1671,7 @@
         font: 12px / 1.4 var(--font-ui);
         white-space: nowrap;
         cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
         transition:
           background-color 160ms ease,
           color 160ms ease,
@@ -1716,8 +1686,17 @@
         color: var(--ink);
         box-shadow: var(--control-shadow);
       }
+      :is(#filters, .ma-dialog) .segment[data-glass='true'] button[aria-pressed='true'] {
+        background: transparent;
+        box-shadow: none;
+      }
+      :is(#filters, .ma-dialog) .segment button:active,
+      .ma-dialog :is(button:not(.ma-close), .ma-picker > summary):active {
+        background-color: rgb(255 255 255 / 72%);
+        box-shadow: inset 0 1px 4px rgb(38 53 68 / 9%);
+      }
       :is(#filters, .ma-dialog) .segment button:not([aria-pressed='true']):hover,
-      .ma-dialog :is(button:not(.ma-close), .ma-picker > summary):hover {
+      .ma-dialog :is(button:not(.ma-close):not([aria-pressed='true']), .ma-picker > summary):hover {
         background: var(--control-hover);
         color: var(--ink);
       }
@@ -1782,6 +1761,32 @@
         opacity: 1;
         animation: dashboard-loading-turn 1.1s linear infinite;
       }
+      .ma-dialog .ma-picker[open] .ma-groups {
+        transform-origin: top right;
+        animation: control-menu-enter 180ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      @keyframes control-menu-enter {
+        from {
+          opacity: 0;
+          transform: translateY(-4px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        :is(#filters, .ma-dialog) .segment {
+          background: var(--glass-fallback);
+        }
+      }
+      @media (prefers-reduced-transparency: reduce) {
+        :is(#filters, .ma-dialog) .segment {
+          background: var(--glass-fallback);
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+        }
+      }
       @media (max-width: 600px) {
         :is(#filters, .ma-dialog) .segment {
           gap: 1px;
@@ -1798,6 +1803,7 @@
         }
         #filters .segment button[data-loading='true']::after,
         .ma-dialog [data-loading='true'][aria-busy='true']::after,
+        .ma-dialog .ma-picker[open] .ma-groups,
         .dashboard-loading-orbit,
         .dashboard-loading-track::after {
           animation: none;
@@ -1842,7 +1848,6 @@
           </div>
           <div id="hero-slot" class="card-slot" data-width="7" data-tall="true" data-enter="2">
             <section id="hero-card" class="card hero categorical" aria-labelledby="primary-title">
-              <p class="chapter">01 · 餐食热量</p>
               <h2 id="primary-title">发运记录数</h2>
               <strong id="primary" class="metric hero-value">—</strong>
               <p id="primary-note" class="comparison"></p>
@@ -1873,7 +1878,6 @@
           </div>
           <div id="one-slot" class="card-slot" data-width="5" data-tall="false" data-enter="3">
             <section class="card metric-card small-card" aria-labelledby="title-one">
-              <p class="chapter"></p>
               <h2 id="title-one">未按时送达占比</h2>
               <div class="small-body">
                 <strong id="metric-one" class="metric small-value">—</strong>
@@ -1894,7 +1898,6 @@
           </div>
           <div id="two-slot" class="card-slot" data-width="5" data-tall="true" data-enter="4">
             <section class="card metric-card small-card" aria-labelledby="title-two">
-              <p class="chapter"></p>
               <h2 id="title-two">平均客户评分</h2>
               <div class="small-body">
                 <strong id="metric-two" class="metric small-value">—</strong>
@@ -1912,7 +1915,6 @@
           </div>
           <div id="three-slot" class="card-slot" data-width="12" data-tall="false" data-enter="5">
             <section class="card metric-card small-card" aria-labelledby="title-three">
-              <p class="chapter"></p>
               <h2 id="title-three">平均客服呼叫</h2>
               <div class="small-body">
                 <strong id="metric-three" class="metric small-value">—</strong>
@@ -2056,9 +2058,9 @@
           clearTimeout(deadline)
           stopWaiting()
           document.body.dataset.state = 'error'
-          document.querySelector('#dashboard-loading-title').textContent = '暂时无法打开看板'
+          title.textContent = '暂时无法打开看板'
           document.querySelector('#dashboard-loading-message').textContent = message
-          document.querySelector('#dashboard-loading-retry').hidden = false
+          retryButton.hidden = false
         }
         const onScriptError = (event) => {
           if (event.target?.tagName === 'SCRIPT') fail('页面依赖加载失败，请检查网络后重新加载。')
@@ -2410,12 +2412,78 @@
             [finePointer, 'change', reset],
           ]
           events.forEach(([target, type, handler, options]) => target.addEventListener(type, handler, options))
-          return {
-            reset,
-            dispose() {
-              events.forEach(([target, type, handler, options]) => target.removeEventListener(type, handler, options))
-              cancelAnimationFrame(frame)
-            },
+          return () => {
+            events.forEach(([target, type, handler, options]) => target.removeEventListener(type, handler, options))
+            cancelAnimationFrame(frame)
+          }
+        }
+        // 选中面依附按钮尺寸，loading 伸缩与换行无需逐帧测量。
+        function bindControls(root) {
+          const states = (root.matches('.segment') ? [root] : [...root.querySelectorAll('.segment')]).map((group) => {
+            const indicator = document.createElement('span')
+            indicator.className = 'segment-indicator'
+            indicator.setAttribute('aria-hidden', 'true')
+            group.dataset.glass = 'true'
+            return { group, indicator, animation: undefined }
+          })
+          function update() {
+            // 先读取所有变更位置，再迁移选中面；中途切换从当前画面接续。
+            const changes = states.flatMap((state) => {
+              const next = state.group.querySelector('button[aria-pressed="true"]')
+              if (state.indicator.parentElement === next) return []
+              const moving = next && state.indicator.isConnected && !reducedMotion.matches
+              return [
+                {
+                  state,
+                  next,
+                  from: moving && state.indicator.getBoundingClientRect(),
+                  to: moving && next.getBoundingClientRect(),
+                  width: moving && next.offsetWidth,
+                  height: moving && next.offsetHeight,
+                },
+              ]
+            })
+            for (const { state, next, from, to, width, height } of changes) {
+              state.animation?.cancel()
+              if (!next) {
+                state.indicator.remove()
+                continue
+              }
+              next.prepend(state.indicator)
+              if (!from?.width || !to?.width || !to.height) continue
+              const sx = to.width / width,
+                sy = to.height / height
+              state.animation = state.indicator.animate(
+                [
+                  {
+                    transform: `translate(${(from.x - to.x) / sx}px, ${(from.y - to.y) / sy}px) scale(${from.width / to.width}, ${from.height / to.height})`,
+                  },
+                  { transform: 'none' },
+                ],
+                { duration: 320, easing: 'cubic-bezier(.22,1,.36,1)' },
+              )
+            }
+          }
+          const observer = new MutationObserver(update)
+          observer.observe(root, {
+            subtree: true,
+            childList: true,
+            attributes: true,
+            attributeFilter: ['aria-pressed'],
+          })
+          const finish = () => {
+            if (reducedMotion.matches) states.forEach((state) => state.animation?.cancel())
+          }
+          reducedMotion.addEventListener('change', finish)
+          update()
+          return () => {
+            observer.disconnect()
+            reducedMotion.removeEventListener('change', finish)
+            states.forEach(({ group, indicator, animation }) => {
+              animation?.cancel()
+              indicator.remove()
+              delete group.dataset.glass
+            })
           }
         }
         function disposeMotion() {
@@ -2432,6 +2500,7 @@
           finishMetricAnimations,
           formatNumber,
           bindCardTilt,
+          bindControls,
           disposeMotion,
         }
       }
@@ -2450,9 +2519,8 @@
         getContext,
         ready,
       }) {
-        let dialog, context, active, dimension, selection, chart, table, observer, controller
+        let dialog, context, dimension, selection, chart, table, observer, controller
         let version = 0,
-          records = [],
           opener,
           previousOverflow,
           loadingTimer,
@@ -2478,16 +2546,10 @@
           }
         }
         const number = (value, digits = 1) => motion.formatNumber(value, digits, 0)
-        const element = (tag, className, text) => {
-          const node = document.createElement(tag)
-          if (className) node.className = className
-          if (text !== undefined) node.textContent = text
-          return node
-        }
         const nodes = {}
-        const find = (name) => nodes[name]
-        const button = (label, action, className = '') => {
-          const node = element('button', className, label)
+        const button = (label, action) => {
+          const node = document.createElement('button')
+          node.textContent = label
           node.type = 'button'
           node.addEventListener('click', action)
           return node
@@ -2507,9 +2569,9 @@
         }
         function createDialog() {
           if (dialog) return
-          dialog = element('dialog', 'ma-dialog')
+          dialog = document.createElement('dialog')
+          dialog.className = 'ma-dialog'
           dialog.setAttribute('aria-labelledby', 'ma-title')
-          dialog.style.setProperty('--ma-accent', accent)
           dialog.innerHTML = `<div class="ma-shell">
       <header class="ma-header"><div><h2 id="ma-title"></h2><p class="ma-scope" data-ma="scope"></p></div><button type="button" class="ma-close" aria-label="关闭指标分析" data-ma="close">×</button></header>
       <div class="ma-body">
@@ -2523,57 +2585,58 @@
       </div></div></div>`
           for (const node of dialog.querySelectorAll('[data-ma]')) nodes[node.dataset.ma] = node
           document.body.append(dialog)
-          find('close').addEventListener('click', closeDialog)
-          find('reset').addEventListener('click', (event) => {
+          listeners.push(motion.bindControls(nodes.modes))
+          nodes.close.addEventListener('click', closeDialog)
+          nodes.reset.addEventListener('click', (event) => {
             selection = undefined
-            find('picker-label').focus({ preventScroll: true })
+            nodes['picker-label'].focus({ preventScroll: true })
             void refresh(false, event.currentTarget)
           })
-          find('retry').addEventListener('click', (event) => void refresh(true, event.currentTarget))
-          find('expand').addEventListener('click', () => {
+          nodes.retry.addEventListener('click', (event) => void refresh(true, event.currentTarget))
+          nodes.expand.addEventListener('click', () => {
             const expanded = dialog.classList.toggle('ma-expanded')
-            find('expand').setAttribute('aria-expanded', String(expanded))
-            find('expand').textContent = expanded ? '返回分析布局' : '展开表格'
-            resize(table, find('table'))
-            resize(chart, find('chart'))
+            nodes.expand.setAttribute('aria-expanded', String(expanded))
+            nodes.expand.textContent = expanded ? '返回分析布局' : '展开表格'
+            resize(table, nodes.table)
+            resize(chart, nodes.chart)
           })
           dialog.addEventListener('cancel', (event) => {
             event.preventDefault()
             closeDialog()
           })
           dialog.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && find('picker').open) {
+            if (event.key === 'Escape' && nodes.picker.open) {
               event.preventDefault()
               event.stopPropagation()
-              find('picker').open = false
-              find('picker-label').focus()
+              nodes.picker.open = false
+              nodes['picker-label'].focus()
             }
           })
           dialog.addEventListener('click', (event) => {
-            if (!find('picker').contains(event.target)) find('picker').open = false
+            if (!nodes.picker.contains(event.target)) nodes.picker.open = false
           })
           dialog.addEventListener('close', () => {
             if (!dialog.open && context) cleanup()
           })
           observer = new ResizeObserver(() => {
             if (dialog.open) {
-              resize(chart, find('chart'))
-              resize(table, find('table'))
+              resize(chart, nodes.chart)
+              resize(table, nodes.table)
             }
           })
-          observer.observe(find('chart'))
-          observer.observe(find('table'))
+          observer.observe(nodes.chart)
+          observer.observe(nodes.table)
         }
         function selectGroup(key) {
           selection = selection === key ? undefined : key
-          if (find('picker').open) {
-            find('picker').open = false
-            find('picker-label').focus({ preventScroll: true })
+          if (nodes.picker.open) {
+            nodes.picker.open = false
+            nodes['picker-label'].focus({ preventScroll: true })
           }
-          void refresh(false, find('picker-label'))
+          void refresh(false, nodes['picker-label'])
         }
         function selectDimension(event) {
-          if (!dialog?.open || find('groups').inert) return
+          if (!dialog?.open || nodes.groups.inert) return
           // 与原生 crosshair 使用同一维度命中，不要求鼠标或手指落在线条上。
           const datum = event.dimensionInfo
             ?.flatMap((info) => info.data || [])
@@ -2588,11 +2651,7 @@
         function closeDialog() {
           if (!dialog?.open || dialog.dataset.closing === 'true') return
           // 退场开始就让旧查询失效，但保留当前 Canvas 直到画面退场完成。
-          version++
-          controller?.abort()
-          if (dialog) motion.cancelMetric(find('value'))
-          stopControlLoading()
-          clearTimeout(loadingTimer)
+          cancelRefresh()
           if (reducedMotion.matches) return completeClose()
           const current = getComputedStyle(dialog)
           const from = { opacity: current.opacity, transform: current.transform }
@@ -2609,13 +2668,16 @@
             })
             .catch(() => {})
         }
-        function cleanup() {
+        function cancelRefresh() {
           version++
-          renderQueue = Promise.resolve()
           controller?.abort()
-          if (dialog) motion.cancelMetric(find('value'))
+          if (dialog) motion.cancelMetric(nodes.value)
           stopControlLoading()
           clearTimeout(loadingTimer)
+        }
+        function cleanup() {
+          cancelRefresh()
+          renderQueue = Promise.resolve()
           if (dialog) {
             delete dialog.dataset.contentEnter
             delete dialog.dataset.closing
@@ -2627,7 +2689,6 @@
           table = undefined
           chartType = undefined
           menuRows = analysisSpec = analysisKey = undefined
-          records = []
           context = undefined
           if (previousOverflow !== undefined) {
             document.body.style.overflow = previousOverflow
@@ -2738,33 +2799,52 @@
           }))
           options.tooltip = { ...options.tooltip, parentElement: dialog, confine: true }
           options.defaultColWidth = 130
-          return DashboardTable.options(options, find('table'))
+          return DashboardTable.options(options, nodes.table)
+        }
+        function renderGroupPicker(group, metric, rows, selected) {
+          nodes['picker-text'].textContent = `选择${group[1]}`
+          nodes.picker.hidden = !rows.length
+          if (rows !== menuRows) {
+            nodes.groups.replaceChildren(
+              ...rows.map((row) => {
+                const choice = button(`${row.key} · ${(metric.groupFormat || metric.format)(row.value)}`, () =>
+                  selectGroup(row.key),
+                )
+                choice.dataset.key = row.key
+                return choice
+              }),
+            )
+            menuRows = rows
+          }
+          for (const choice of nodes.groups.children)
+            choice.setAttribute('aria-pressed', String(selected === choice.dataset.key))
         }
         let groupRows, totalRow, priorRow
         async function refresh(reload, control) {
           if (!dialog?.open || dialog.dataset.closing === 'true') return
           const ticket = ++version
+          const isCurrent = () => dialog.open && ticket === version
           startControlLoading(control)
           const started = performance.now()
-          const hadContent = !find('content').hidden
+          const hadContent = !nodes.content.hidden
           controller?.abort()
           controller = new AbortController()
           const signal = controller.signal
           dialog.dataset.state = 'loading'
           const model = context,
-            metric = active,
+            metric = context.metric,
             group = dimension,
             selected = selection
           clearTimeout(loadingTimer)
-          find('feedback').textContent = ''
-          find('feedback').dataset.loading = String(!hadContent)
-          find('feedback').setAttribute('aria-label', hadContent ? '' : '正在加载分析')
-          find('retry').hidden = control !== find('retry')
-          find('content').setAttribute('aria-busy', 'true')
-          find('groups').inert = true
-          const clearing = control === find('reset')
-          find('selection').hidden = selected === undefined && !clearing
-          if (!clearing) find('selected').textContent = selected === undefined ? '' : `${group[1]}：${selected}`
+          nodes.feedback.textContent = ''
+          nodes.feedback.dataset.loading = String(!hadContent)
+          nodes.feedback.setAttribute('aria-label', hadContent ? '' : '正在加载分析')
+          nodes.retry.hidden = control !== nodes.retry
+          nodes.content.setAttribute('aria-busy', 'true')
+          nodes.groups.inert = true
+          const clearing = control === nodes.reset
+          nodes.selection.hidden = selected === undefined && !clearing
+          if (!clearing) nodes.selected.textContent = selected === undefined ? '' : `${group[1]}：${selected}`
           const extra =
             selected === undefined
               ? []
@@ -2777,7 +2857,7 @@
                   loadingFrame = requestAnimationFrame(resolve)
                 })
               })
-            if (!dialog.open || ticket !== version) return
+            if (!isCurrent()) return
             const base = metric.conditions
             const selectedConditions =
               selected !== undefined && metric.selectionConditions
@@ -2809,7 +2889,7 @@
                 ? query([], previousConditions, metric.measures, signal)
                 : undefined,
             ])
-            if (!dialog.open || ticket !== version) return
+            if (!isCurrent()) return
             if (reload) {
               totalRow = total[0] || {}
               priorRow = prior?.[0] || {}
@@ -2828,23 +2908,22 @@
             const value = metric.value(current, baseline)
             const overall = metric.value(totalRow, priorRow)
             const plotRows = groupRows
-            records = details
             // 提交串行化，切换或关闭后的旧查询与旧渲染都不能覆盖当前结果。
             renderQueue = renderQueue
               .catch(() => {})
               .then(async () => {
-                if (!dialog.open || ticket !== version) return
-                find('content').hidden = false
-                find('value-label').textContent =
+                if (!isCurrent()) return
+                nodes.content.hidden = false
+                nodes['value-label'].textContent =
                   selected === undefined
                     ? metric.previous
                       ? '当前比较范围'
                       : model.detailScope || '当前范围'
                     : `${group[1]}：${selected}`
-                find('value-label').title = find('value-label').textContent
-                motion.animateReading(find('value'), value, metric.format)
+                nodes['value-label'].title = nodes['value-label'].textContent
+                motion.animateReading(nodes.value, value, metric.format)
                 const ranked = selected === undefined ? [...plotRows].sort((a, b) => b.value - a.value) : []
-                find('finding').textContent =
+                nodes.finding.textContent =
                   selected !== undefined
                     ? `总体 ${metric.format(overall)}`
                     : metric.finding
@@ -2854,47 +2933,31 @@
                         : ranked.length
                           ? `${ranked[0].key}的${metric.title}最高（${metric.format(ranked[0].value)}）${ranked.length > 1 ? `，${ranked.at(-1).key}最低（${metric.format(ranked.at(-1).value)}）` : ''}。`
                           : '当前范围没有可分析的有效值。可返回看板调整筛选。'
-                find('definition').textContent = metric.definition
-                find('evidence').textContent = metric.evidence
+                nodes.definition.textContent = metric.definition
+                nodes.evidence.textContent = metric.evidence
                   ? metric.evidence(current, baseline)
                   : '汇总由当前范围内的完整记录计算；表格滚动不改变汇总值。'
-                find('grain').textContent =
-                  `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 表格包含当前范围的完整结果`
+                nodes.grain.textContent = `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 表格包含当前范围的完整结果`
                 const detailScope =
                   selected === undefined ? model.detailScope || '当前范围' : `${group[1]}：${selected}`
-                find('table-scope').textContent = `${detailScope} · ${number(records.length, 0)} 条记录`
-                find('table-scope').title = find('table-scope').textContent
-                find('table').setAttribute('aria-label', `关联明细，${detailScope}，${records.length} 条记录`)
+                nodes['table-scope'].textContent = `${detailScope} · ${number(details.length, 0)} 条记录`
+                nodes['table-scope'].title = nodes['table-scope'].textContent
+                nodes.table.setAttribute('aria-label', `关联明细，${detailScope}，${details.length} 条记录`)
                 const chartTitle = metric.groupTitle || metric.title
-                find('chart-title').textContent =
+                nodes['chart-title'].textContent =
                   metric.groupTitle || (group[2] ? `${group[1]}趋势` : `${group[1]}比较`)
-                find('chart-hint').textContent = !group[2] && plotRows.length > 12 ? '前 12 组' : ''
-                find('picker-text').textContent = `选择${group[1]}`
-                find('picker').hidden = !plotRows.length
-                if (plotRows !== menuRows) {
-                  find('groups').replaceChildren(
-                    ...plotRows.map((row) => {
-                      const choice = button(`${row.key} · ${(metric.groupFormat || metric.format)(row.value)}`, () =>
-                        selectGroup(row.key),
-                      )
-                      choice.dataset.key = row.key
-                      return choice
-                    }),
-                  )
-                  menuRows = plotRows
-                }
-                for (const choice of find('groups').children)
-                  choice.setAttribute('aria-pressed', String(selected === choice.dataset.key))
+                nodes['chart-hint'].textContent = !group[2] && plotRows.length > 12 ? '前 12 组' : ''
+                renderGroupPicker(group, metric, plotRows, selected)
                 const chartRows = group[2] ? plotRows : plotRows.slice(0, 12)
                 // 菜单可选择 Top N 以外的分组；选中项仍须能在图中定位。
                 if (selected !== undefined && !chartRows.some((row) => row.key === selected)) {
                   const row = plotRows.find((row) => row.key === selected)
                   if (row) {
                     chartRows.splice(Math.max(0, chartRows.length - 1), 1, row)
-                    find('chart-hint').textContent = '前 11 组及已选项'
+                    nodes['chart-hint'].textContent = '前 11 组及已选项'
                   }
                 }
-                find('chart').dataset.empty = String(!chartRows.length)
+                nodes.chart.dataset.empty = String(!chartRows.length)
                 if (!chartRows.length) {
                   chart?.release()
                   chart = undefined
@@ -2913,58 +2976,58 @@
                       changedType ? { change: true, reMake: true } : undefined,
                     )
                   } else {
-                    chart = new VChart(spec, { dom: find('chart') })
+                    chart = new VChart(spec, { dom: nodes.chart })
                     chart.renderSync()
                   }
                   chartType = spec.type
-                  if (!dialog.open || ticket !== version) return
+                  if (!isCurrent()) return
                   // 切换图型后重新绑定到当前坐标系；同一次点击只走维度事件，避免二次切换。
                   chart.off('dimensionClick', selectDimension)
                   chart.on('dimensionClick', selectDimension)
                 }
-                find('chart').setAttribute(
+                nodes.chart.setAttribute(
                   'aria-label',
                   `${chartTitle}，${selected === undefined ? '未选择分组' : `已选择${selected}`}，也可通过选择${group[1]}菜单联动明细`,
                 )
                 // 同一指标的表结构不变：筛选和翻页仅替换记录，避免重建表头及重算列宽。
                 const existingTable = !!table
                 if (!table) {
-                  const options = buildTableOptions(detailDimensions, detailMeasures, records)
-                  table = new library.ListTable(find('table'), options)
-                  sizes.set(table, `${find('table').clientWidth}:${find('table').clientHeight}`)
+                  const options = buildTableOptions(detailDimensions, detailMeasures, details)
+                  table = new library.ListTable(nodes.table, options)
+                  sizes.set(table, `${nodes.table.clientWidth}:${nodes.table.clientHeight}`)
                 }
-                if (!dialog.open || ticket !== version) return
-                if (existingTable) DashboardTable.setRecords(table, records, { animate: false })
-                resize(chart, find('chart'))
-                find('feedback').textContent = records.length ? '' : '当前范围暂无明细记录。'
-                dialog.dataset.state = records.length ? 'ready' : 'empty'
+                if (!isCurrent()) return
+                if (existingTable) DashboardTable.setRecords(table, details, { animate: false })
+                resize(chart, nodes.chart)
+                nodes.feedback.textContent = details.length ? '' : '当前范围暂无明细记录。'
+                dialog.dataset.state = details.length ? 'ready' : 'empty'
                 if (dialog.dataset.contentEnter !== 'true') dialog.dataset.contentEnter = 'true'
               })
             await renderQueue
-            if (!dialog.open || ticket !== version) return
+            if (!isCurrent()) return
             clearTimeout(loadingTimer)
             const remaining = control ? 200 - (performance.now() - started) : 0
-            if (remaining > 0 && dialog.open && ticket === version)
+            if (remaining > 0)
               await new Promise((resolve) => {
                 finishLoadingPaint = resolve
                 loadingTimer = setTimeout(resolve, remaining)
               })
           } catch (error) {
-            if (ticket !== version || !dialog.open) return
-            find('feedback').textContent = `分析未完成：${error.message}`
-            find('retry').hidden = false
-            find('content').hidden = !hadContent
+            if (!isCurrent()) return
+            nodes.feedback.textContent = `分析未完成：${error.message}`
+            nodes.retry.hidden = false
+            nodes.content.hidden = !hadContent
             dialog.dataset.state = 'error'
           } finally {
-            if (ticket === version && dialog.open) {
+            if (isCurrent()) {
               clearTimeout(loadingTimer)
               stopControlLoading()
-              delete find('feedback').dataset.loading
-              find('feedback').removeAttribute('aria-label')
-              find('selection').hidden = selection === undefined
-              if (dialog.dataset.state !== 'error') find('retry').hidden = true
-              find('content').setAttribute('aria-busy', 'false')
-              find('groups').inert = false
+              delete nodes.feedback.dataset.loading
+              nodes.feedback.removeAttribute('aria-label')
+              nodes.selection.hidden = selection === undefined
+              if (dialog.dataset.state !== 'error') nodes.retry.hidden = true
+              nodes.content.setAttribute('aria-busy', 'false')
+              nodes.groups.inert = false
             }
           }
         }
@@ -2973,26 +3036,25 @@
           createDialog()
           delete dialog.dataset.contentEnter
           context = getContext(index)
-          active = context.metric
           dimension = context.dimensions[0]
           selection = undefined
           groupRows = undefined
           opener = trigger
           dialog.classList.remove('ma-expanded')
-          find('expand').textContent = '展开表格'
-          find('expand').setAttribute('aria-expanded', 'false')
-          find('content').hidden = true
+          nodes.expand.textContent = '展开表格'
+          nodes.expand.setAttribute('aria-expanded', 'false')
+          nodes.content.hidden = true
           dialog.querySelector('.ma-definition').open = false
-          find('picker').open = false
-          dialog.querySelector('#ma-title').textContent = active.title
-          find('scope').textContent = context.scope
-          find('modes').replaceChildren(
+          nodes.picker.open = false
+          dialog.querySelector('#ma-title').textContent = context.metric.title
+          nodes.scope.textContent = context.scope
+          nodes.modes.replaceChildren(
             ...context.dimensions.map((group) => {
               const choice = button(group[1], () => {
                 if (dimension === group) return
                 dimension = group
                 selection = undefined
-                for (const sibling of find('modes').children)
+                for (const sibling of nodes.modes.children)
                   sibling.setAttribute('aria-pressed', String(sibling === choice))
                 void refresh(true, choice)
               })
@@ -3011,7 +3073,7 @@
           const y = Math.max(12, Math.min(88, ((origin.top + origin.height / 2 - top) / dialog.offsetHeight) * 100))
           dialog.style.setProperty('--overlay-origin', `${x}% ${y}%`)
           dialog.querySelector('.ma-body').scrollTop = 0
-          find('close').focus()
+          nodes.close.focus()
           void refresh(true)
         }
         const onOverlayMotionChange = () => {
@@ -3090,8 +3152,10 @@
       const { revealComponents, finishEntrance, animateMetric, finishMetricAnimations, bindCardTilt, disposeMotion } =
         motion
       const formatNumber = motion.formatNumber
-      const tilts = [...document.querySelectorAll('.metric-card')].map(bindCardTilt)
-      subscriptions.push(() => tilts.forEach((tilt) => tilt.dispose()))
+      subscriptions.push(
+        motion.bindControls($('#filters')),
+        ...[...document.querySelectorAll('.metric-card')].map(bindCardTilt),
+      )
 
       const PAGE = {
         ...JSON.parse($('#page-config').textContent),
@@ -3788,12 +3852,6 @@
         const snapshot = { ...state }
         const format = (value, i) => (Number.isFinite(value) ? formats[i](value) : '—')
         const base = conditionsFor('totals', snapshot)
-        let metric,
-          dimensions,
-          detailDimensions,
-          detailScope,
-          grain = '每行一条来源记录',
-          scope = view.scope
         const ratioValue =
           (field, denominator, factor = 1) =>
           (row) =>
@@ -3815,7 +3873,7 @@
           const numerator = measures.find((item) => item[0] === definition.field)
           numerator[1] = `${title}分子（汇总前原值）`
         }
-        metric = {
+        const metric = {
           title,
           measures,
           conditions: base,
@@ -3839,7 +3897,7 @@
               ? `分子 ${numberForAnalysis(row[definition.field])}；分母 ${numberForAnalysis(row[definition.denominator])}。${PAGE.derivedNote}`
               : PAGE.derivedNote,
         }
-        dimensions = [
+        const dimensions = [
           ['g', PAGE.groupTitle, PAGE.temporal],
           [
             's',
@@ -3848,7 +3906,7 @@
           ],
         ]
         if (index === 0 || index === 5) dimensions.reverse()
-        detailDimensions = [
+        const detailDimensions = [
           ['id', '来源记录 ID'],
           ['g', PAGE.groupTitle],
           ['s', PAGE.secondaryTitle],
@@ -3859,9 +3917,8 @@
           rowLimit: sourceData.rows.length,
           dimensions,
           detailDimensions,
-          grain,
-          detailScope,
-          scope,
+          grain: '每行一条来源记录',
+          scope: view.scope,
           metric,
         }
       }

@@ -89,11 +89,11 @@
 | --------------------------- | ----------------------------------------------- |
 | `dashboard-controls-style`  | 主页与弹窗的胶囊、菜单、按钮及 loading 宽度过渡 |
 | `dashboard-loading-runtime` | 初始化与筛选等待、就绪门槛、失败与重试          |
-| `dashboard-motion-runtime`  | 入场、数字过渡、卡片倾斜及清理                  |
+| `dashboard-motion-runtime`  | 入场、数字过渡、选中面移动、卡片倾斜及清理      |
 | `metric-analysis-runtime`   | 指标分析弹窗与交互生命周期                      |
 | `metric-analysis-style`     | 弹窗样式与动效                                  |
 
-`DashboardMotion({ reducedMotion, metricUnit })` 负责页面与分析弹窗的读数动画和数字格式器；同一帧合并更新，保留各读数的时长、缓动与当前值。`metricUnit` 只供行业模板保留数字与单位分排，其余模板使用原有纯文本。将同一 `motion` 对象传给 `bindMetricAnalysis()`；关闭弹窗取消其读数，页面退出调用 `disposeMotion()`。卡片倾斜只监听自身外层命中区；图表先统一测量尺寸，仅在变化时 resize。业务查询、数据口径与主题仍留在页面中。
+`DashboardMotion({ reducedMotion, metricUnit })` 负责页面与分析弹窗的读数动画和数字格式器；同一帧合并更新，保留各读数的时长、缓动与当前值。`metricUnit` 只供行业模板保留数字与单位分排，其余模板使用原有纯文本。将同一 `motion` 对象传给 `bindMetricAnalysis()`；关闭弹窗取消其读数，页面退出调用 `disposeMotion()`。`bindControls()` 观察筛选组的 `aria-pressed` 与选项更替，用同一个装饰面接续选中动画；装饰面依附按钮，宽度变化与换行由 CSS 布局处理，无常驻帧循环或尺寸观察器。主页显式传入筛选根节点，弹窗创建后传入维度组；`bindControls()`、`bindCardTilt()` 与 `bindMetricAnalysis()` 都返回清理函数，由各自宿主订阅集中释放。`disposeMotion()` 仅清理数字和入场动画，不查询页面控件或管理业务订阅。卡片倾斜只监听自身外层命中区；图表先统一测量尺寸，仅在变化时 resize。分析弹窗由 `renderGroupPicker()` 维护分组选项，`cancelRefresh()` 统一取消查询和等待反馈；刷新版本检查保留在每次异步提交边界。业务查询、数据口径与主题仍留在页面中。
 
 修改跨模板行为时，直接更新涉及的 HTML，并逐份验证；保留各模板的数据口径、布局和交互差异。
 

@@ -13,7 +13,9 @@
 
 ## 视觉标准
 
-24 份模板统一以[仓库履约观察](../templates/template-logistics-fulfillment.html)为基准，实际样式由每份 HTML 的 `dashboard-controls-style` 维护，主页和分析弹窗共用同一套规则。外层为 20px 圆角、3px 内边距和间距、半透明白底及细白边；选中项为 17px 圆角、白底与轻阴影，桌面文字 12px、内边距 7px / 12px。其他模板的业务布局、数据与主题沿用各自配置。
+24 份模板统一以[仓库履约观察](../templates/template-logistics-fulfillment.html)为基准，实际样式由每份 HTML 的 `dashboard-controls-style` 维护，主页和分析弹窗共用同一套规则。外层为 20px 圆角、3px 内边距和间距、半透明白底及细白边；选中项为 17px 圆角、白底与轻阴影，桌面文字 12px、内边距 7px / 12px。轨道单层模糊，叠加方向一致的细微高光；内部选中面仅用填充与轻阴影；弹窗轨道复用弹窗的玻璃底面，不重复模糊。其他模板的业务布局、数据与主题沿用各自配置。
+
+选中面以约 320ms 连续移动到新选项，中途切换从当前姿态接续。`DashboardMotion.bindControls()` 将同一个选中面迁移到当前按钮，其尺寸随按钮自然变化，loading 伸缩和窄屏换行无需逐帧测量；`aria-pressed` 仍是选择状态来源。轻微内缘光与按压阴影提供反馈，文字不缩放；菜单从触发器下方轻量展开。
 
 只让本次点击、触发取数的控件在文字右侧显示 loading。图标平时宽度与间距均为 0，点击后用 180ms 平滑展开到 12px 图标及 6px 间距；完成、失败或关闭时收起。连续切换只保留最新控件的状态，菜单选择后的转圈显示在可见触发器上。弹窗不重复显示“正在更新”文字；首次打开、空结果和错误分别提供适合的反馈。减少动态效果时直接切换到最终宽度并停止旋转。
 
@@ -26,7 +28,7 @@
 | Select 触发器 | 与胶囊选项一致的 17px 圆角、浅色表面，内边距约 7–10px / 10–14px；短标签加右侧向下图标，间距约 8px。整块可点击，无下划线、无浏览器默认大箭头。                                                              |
 | Select 浮层   | 与触发器间隔约 6px，通常右边缘对齐；实色阅读面、1px 浅边框、10–12px 圆角和柔和阴影。起始宽约 280px，按内容调整，不能窄于触发器或超出可用边界。                                                             |
 | 选项行        | 整行命中，左对齐，约 8–12px 内边距、7–8px 圆角。可显示「分组 · 数值 单位」，数值来自当前查询范围；无需为每行再加说明或分隔线。hover 用淡灰底，已选项保留稳定底色和选中标记，焦点使用清晰轮廓，三者可区分。 |
-| 字号与反馈    | 沿用工具栏字号，通常 12–14px；触屏目标高度至少约 44px。状态切换约 120–180ms，过渡颜色、阴影和轻量透明度；loading 额外平滑展开图标宽度，不缩放工具栏；减少动态效果时关闭过渡。                              |
+| 字号与反馈    | 沿用工具栏字号，通常 12–14px；触屏目标高度至少约 44px。颜色与按压反馈约 160ms、选中面移动约 320ms；loading 平滑展开图标宽度，文字与工具栏不缩放；减少动态效果时关闭过渡。                                  |
 
 控件可见高度与命中高度分别处理：桌面紧凑控件可约 30–36px，触屏通过外围留白或独立的内层视觉面提供至少约 44px 的命中区，不必将整块可见底色加高。命中区不能与相邻控件重叠，焦点轮廓和打开浮层的位置仍须清楚。
 
@@ -61,78 +63,7 @@
 </header>
 ```
 
-```css
-.heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-.filter-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  min-width: 0;
-  margin: 0 0 0 auto;
-  padding: 0;
-  border: 0;
-}
-.segment {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 3px;
-  padding: 3px;
-  border: 1px solid var(--filter-border, #ffffffa0);
-  border-radius: 999px;
-  background: var(--filter-surface, #ffffff70);
-}
-.segment button {
-  min-height: 32px;
-  padding: 7px 12px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--muted);
-  font: inherit;
-  font-size: 12px;
-  cursor: pointer;
-  transition:
-    background-color 150ms,
-    color 150ms,
-    box-shadow 150ms;
-}
-.segment button:not([aria-pressed='true']):not(:disabled):hover {
-  background: #ffffff80;
-  color: var(--ink);
-}
-.segment button[aria-pressed='true'] {
-  background: var(--filter-active, #fff);
-  color: var(--ink);
-  box-shadow: 0 2px 5px #2436440a;
-}
-.segment button:focus-visible {
-  outline: 2px solid #6c8eb5;
-  outline-offset: 3px;
-}
-.segment button:disabled {
-  cursor: wait;
-  opacity: 0.6;
-}
-@media (pointer: coarse) {
-  .segment button {
-    min-height: 44px;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .segment button {
-    transition: none;
-  }
-}
-```
-
-此片段沿用模板的颜色变量，将两个全局筛选分组放在同一标题行右侧；空间不足时整个筛选区换到下一行，仍尽量让两个分组并排。按钮保留 `type="button"`、`aria-pressed`、Tab / Enter 操作与可见焦点，首次初始化时可禁用所在 `fieldset`，后续筛选等待保留操作并显示更新状态。每个单选分组切换后只有一个按钮选中；默认选项从当前 DSL 读取，只有新建配置才采用演示默认值。
+此片段只示意字段结构；完整外观与连续选中面直接继承模板的 `dashboard-controls-style` 和 `DashboardMotion.bindControls()`。两个全局筛选分组放在同一标题行右侧；空间不足时整个筛选区换到下一行，仍尽量让两个分组并排。按钮保留 `type="button"`、`aria-pressed`、Tab / Enter 操作与可见焦点，首次初始化时可禁用所在 `fieldset`，后续筛选等待保留操作并显示更新状态。每个单选分组切换后只有一个按钮选中；默认选项从当前 DSL 读取，只有新建配置才采用演示默认值。
 
 ## Select 实现与状态
 
