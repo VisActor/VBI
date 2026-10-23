@@ -16,19 +16,27 @@
           if (t !== saved) localStorage.setItem('vbi-air-theme', t)
         }
       } catch {}
+      try {
+        const saved = localStorage.getItem('vbi-map-glass-strength')
+        const value = saved?.trim() ? Number(saved) : NaN
+        document.documentElement.style.setProperty(
+          '--glass-strength',
+          Number.isFinite(value) ? Math.round(Math.max(0, Math.min(100, value))) : 60,
+        )
+      } catch {}
     </script>
     <style id="dashboard-design-tokens">
-      /* Foundation → mode optics → theme hue. All renderers read this single token authority. */
+      /* Scene foundation and theme hue; dashboard-material owns shared mode optics. */
       :root {
         --font-page-title: 21px;
         --font-card-title: 12px;
         --font-metric: 48px;
         --font-secondary-metric: 38px;
         --font-chart: 11px;
-        --control-height: 30px;
+        --control-height: 32px;
         --control-compact-height: 26px;
         --control-font: 11px;
-        --control-icon: 14px;
+        --control-icon: 15px;
         --control-radius: 8px;
         --control-gap: 6px;
         --bg: #080c10;
@@ -55,91 +63,15 @@
         --very: #bb8ed5;
         --hazard: #bc7394;
         --ease: cubic-bezier(0.18, 0.75, 0.2, 1);
-        --glass-radius: calc(var(--rail-radius) - var(--rail-padding) - 1px);
-        --glass-surface: rgb(16 29 40 / 0.54);
-        --glass-fallback: var(--glass-solid);
-        --glass-filter: blur(14px) saturate(1.08) brightness(1.02);
-        --glass-sheen: linear-gradient(
-          135deg,
-          rgb(220 239 255 / 0.08),
-          rgb(220 239 255 / 0.015) 55%,
-          rgb(var(--accent-rgb) / 0.035)
-        );
-        --glass-background: var(--glass-sheen), var(--glass-surface);
-        --glass-edge: rgb(214 234 250 / 0.18);
-        --glass-edge-hover: rgb(var(--accent-rgb) / 0.34);
-        --glass-shadow:
-          0 5px 16px -10px rgb(0 0 0 / 0.28), inset 0 1px 0 rgb(231 246 255 / 0.12), inset 0 -1px 0 rgb(1 11 19 / 0.14);
-        --glass-hover-shadow: 0 20px 48px -12px rgb(0 5 14 / 0.42), inset 0 1px 1px rgb(225 242 255 / 0.22);
-        --glass-inset: radial-gradient(ellipse at 7% 0%, rgb(228 243 255 / 0.045), transparent 55%);
-        --glass-inset-shadow: inset 1px 0 0 rgb(225 242 255 / 0.035), inset -1px 0 0 rgb(var(--accent-rgb) / 0.035);
-        --glass-tile: linear-gradient(145deg, rgb(220 236 255 / 0.035), rgb(8 19 33 / 0.04));
-        --glass-tile-shadow: inset 0 1px 0 rgb(225 242 255 / 0.04);
-        --glass-control: linear-gradient(145deg, rgb(210 231 250 / 0.06), rgb(210 231 250 / 0.015));
-        --glass-control-hover: rgb(var(--accent-rgb) / 0.1);
-        --glass-divider: rgb(190 213 233 / 0.12);
-        --glass-popover: color-mix(in srgb, var(--glass-solid) 98%, transparent);
-        --glass-dialog-shadow: 0 30px 100px rgb(0 5 14 / 0.42), inset 0 1px 0 var(--glass-edge);
-        --glass-scrim: rgb(3 10 15 / 0.68);
-        --motion-card-duration: 2400ms;
-        --motion-card-stagger: 300ms;
-        --motion-globe-duration: 1900ms;
         --motion-dialog-duration: 450ms;
         --motion-section-duration: 1500ms;
         --motion-section-stagger: 190ms;
         --motion-section-delay: 100ms;
         --rail-width: 316px;
         --rail-padding: 12px;
-        --rail-radius: 28px;
         --stage-pad: 20px;
         --stage-gap: 28px;
         --stage-inset: calc(var(--stage-pad) + var(--rail-width) + var(--stage-gap));
-        --rail-filter: blur(18px) saturate(1.1);
-        --rail-background: linear-gradient(
-          145deg,
-          rgb(184 220 239 / 0.065),
-          rgb(9 20 31 / 0.26) 50%,
-          rgb(var(--accent-rgb) / 0.055)
-        );
-        --rail-edge: rgb(211 236 250 / 0.13);
-        --rail-shadow:
-          0 28px 60px -24px rgb(0 7 15 / 0.5), inset 0 1px 0 rgb(235 249 255 / 0.16),
-          inset 1px 0 0 rgb(231 249 255 / 0.035);
-      }
-      :root[data-mode='light'] {
-        --glass-surface: rgb(250 253 255 / 0.54);
-        --glass-sheen: linear-gradient(
-          145deg,
-          rgb(255 255 255 / 0.35),
-          rgb(255 255 255 / 0.08) 58%,
-          rgb(238 246 250 / 0.22)
-        );
-        --glass-edge: rgb(255 255 255 / 0.42);
-        --glass-edge-hover: rgb(255 255 255 / 0.62);
-        --glass-shadow:
-          0 5px 15px -10px rgb(41 77 96 / 0.17), inset 0 1px 0 rgb(255 255 255 / 0.48),
-          inset 0 -1px 0 rgb(132 161 176 / 0.08);
-        --glass-hover-shadow: 0 7px 20px -10px rgb(41 77 96 / 0.22), inset 0 1px 0 rgb(255 255 255 / 0.62);
-        --glass-inset: radial-gradient(ellipse at 7% 0%, rgb(255 255 255 / 0.1), transparent 55%);
-        --glass-inset-shadow: inset 1px 0 0 rgb(255 255 255 / 0.35), inset -1px 0 0 rgb(255 255 255 / 0.1);
-        --glass-tile: linear-gradient(145deg, rgb(255 255 255 / 0.48), rgb(255 255 255 / 0.2));
-        --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 0.68), 0 5px 16px -12px rgb(40 51 62 / 0.12);
-        --glass-control: linear-gradient(145deg, rgb(255 255 255 / 0.48), rgb(255 255 255 / 0.16));
-        --glass-control-hover: rgb(255 255 255 / 0.76);
-        --glass-divider: rgb(104 122 143 / 0.13);
-        --glass-dialog-shadow: 0 24px 88px rgb(28 51 65 / 0.24), inset 0 1px 0 var(--glass-edge);
-        --glass-scrim: rgb(25 46 59 / 0.38);
-        --rail-background: linear-gradient(
-          140deg,
-          rgb(255 255 255 / 0.12),
-          rgb(221 232 238 / 0.12) 53%,
-          rgb(255 255 255 / 0.16)
-        );
-        --rail-edge: rgb(255 255 255 / 0.34);
-        --rail-shadow:
-          0 24px 60px -23px rgb(35 71 91 / 0.24), inset 0 1px 0 rgb(255 255 255 / 0.5),
-          inset 1px 0 0 rgb(255 255 255 / 0.2);
-        --glass-filter: blur(12px) saturate(1.08);
       }
       :root[data-theme='ice'] {
         --bg: #e4edf3;
@@ -151,7 +83,6 @@
         --accent: #367f97;
         --accent-rgb: 54 127 151;
         --inner: rgb(31 65 90 / 0.035);
-        --glass-solid: #f4f8fa;
         --edge: rgb(30 63 87 / 0.11);
         --shine: rgb(255 255 255 / 0.95);
         --shadow: 0 15px 32px #325b6817, inset 0 1px 0 #ffffffef;
@@ -172,7 +103,7 @@
         --map-relief-gradient: 0.022;
         --map-bump-scale: 0.045;
         --map-outline: #7abed8;
-        --map-grid: #507080;
+        --map-grid: #8caec0;
         --map-halo: #38dfff;
         --map-water: 4 39 61;
         --map-ambient: #bfd5e3;
@@ -183,7 +114,7 @@
         --map-label-strong: #f2f7fb;
         --map-label-edge: rgb(175 217 235 / 0.2);
         --map-cloud-opacity: 0.8;
-        --map-grid-opacity: 0.018;
+        --map-grid-opacity: 0.18;
         --map-border-opacity: 0.48;
         --map-border-hover-opacity: 0.84;
         --map-border-selected-opacity: 0.98;
@@ -201,7 +132,7 @@
       }
       :root[data-theme='graphite'] {
         --map-outline: #9aafa6;
-        --map-grid: #66756e;
+        --map-grid: #a1aaa5;
         --map-halo: #b1c4b9;
         --map-water: 28 42 44;
         --map-night-color: #ddd3b5;
@@ -212,6 +143,7 @@
         --map-outline: #527b80;
         --map-border-opacity: 0.62;
         --map-grid: #608795;
+        --map-grid-opacity: 0.2;
         --map-halo: #6ed8ee;
         --map-water: 127 174 178;
         --map-ambient: #f5faf3;
@@ -231,7 +163,8 @@
         --map-key-strength: 1.8;
         --map-outline: #647886;
         --map-border-opacity: 0.62;
-        --map-grid: #82919d;
+        --map-grid: #6c7f8d;
+        --map-grid-opacity: 0.2;
         --map-halo: #b3c6d5;
         --map-water: 127 174 178;
         --map-ambient: #f4f6f8;
@@ -410,28 +343,6 @@
         align-items: center;
         gap: 16px;
       }
-      .identity-mark {
-        width: 36px;
-        height: 36px;
-        border: 1px solid var(--edge);
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        position: relative;
-        color: var(--accent);
-        background: var(--inner);
-      }
-      .identity-mark:after {
-        content: '';
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background: var(--accent);
-        position: absolute;
-        right: -1px;
-        top: 5px;
-        box-shadow: 0 0 12px var(--accent);
-      }
       h1 {
         font-size: var(--font-page-title);
         line-height: 1.25;
@@ -491,6 +402,7 @@
         gap: 20px;
       }
       .column {
+        --material-inset: var(--rail-padding);
         display: grid;
         min-height: 0;
         transform-origin: left center;
@@ -509,12 +421,8 @@
         display: flex;
         flex-direction: column;
         padding: 20px 21px;
-        background: linear-gradient(135deg, rgb(var(--accent-rgb) / 0.025), transparent 70%), var(--glass);
-        border: 1px solid var(--edge);
+
         overflow: hidden;
-        box-shadow: var(--shadow);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
       }
       .card-head {
         display: flex;
@@ -531,26 +439,41 @@
         color: var(--ink);
       }
       .analysis-button {
-        color: var(--muted);
-        display: grid;
-        place-items: center;
-        width: 28px;
+        color: inherit;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        max-width: 100%;
         height: 28px;
         border-radius: 5px;
-        flex-shrink: 0;
         background: transparent;
         border: 0;
+        text-align: left;
+        transition: color 180ms ease;
       }
       .analysis-button:hover:not(:disabled) {
+        color: var(--strong);
+      }
+      .analysis-button:hover:not(:disabled) .icon,
+      .analysis-button:focus-visible .icon {
         color: var(--accent);
+      }
+      .analysis-button:disabled {
+        opacity: 1;
+      }
+      .analysis-button:disabled .icon {
+        opacity: 0.35;
       }
       .analysis-button .icon {
         width: 18px;
         height: 18px;
+        color: var(--muted);
+        flex: none;
         stroke-width: 1.6;
         stroke-linecap: round;
         stroke-linejoin: round;
         pointer-events: none;
+        transition: color 180ms ease;
       }
       /* Primary metric and numeric distribution */
       .metric {
@@ -868,11 +791,6 @@
         color: var(--muted);
         margin-top: 4px;
       }
-      .map-action {
-        pointer-events: auto;
-        display: flex;
-        gap: 6px;
-      }
       .map-footer {
         position: absolute;
         bottom: 19px;
@@ -985,10 +903,6 @@
       .loading-card {
         width: min(100%, 328px);
         padding: 32px 28px 28px;
-        border: 1px solid var(--glass-edge);
-        border-radius: 24px;
-        background: var(--glass-background);
-        box-shadow: var(--glass-shadow);
         text-align: center;
       }
       .loading-orbit {
@@ -1035,13 +949,13 @@
         border: 1px solid var(--glass-edge);
         border-radius: 9px;
         color: var(--ink);
-        background: var(--glass-control);
+        background: var(--query-track);
         font: inherit;
         font-size: 12px;
         cursor: pointer;
       }
       #loading-retry:hover {
-        background: var(--glass-control-hover);
+        background: var(--query-hover);
       }
       body[data-state='error'] .loading-track {
         visibility: hidden;
@@ -1091,15 +1005,7 @@
       }
       /* Analysis dialog and its content regions */
       .dialog {
-        color: var(--ink);
         padding: 0;
-        border: 1px solid var(--edge);
-        border-radius: 20px;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-        box-shadow:
-          0 30px 120px #0006,
-          inset 0 1px 0 var(--shine);
         overflow: hidden;
         max-width: none;
       }
@@ -1141,9 +1047,7 @@
         grid-template-columns: auto 1fr;
         align-items: center;
         gap: 28px;
-        background: var(--inner);
-        border: 1px solid var(--edge);
-        border-radius: 16px;
+
         padding: 17px 20px;
         flex-shrink: 0;
       }
@@ -1191,9 +1095,7 @@
         flex-direction: column;
         min-height: 0;
         min-width: 0;
-        border: 1px solid var(--edge);
-        background: var(--inner);
-        border-radius: 16px;
+
         padding: 16px;
       }
       .section-head {
@@ -1288,26 +1190,7 @@
         gap: 7px;
       }
       .theme-option {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 9px 10px;
-        border: 1px solid var(--edge);
-        background: var(--inner);
-        border-radius: 9px;
         text-align: left;
-        font-size: 11px;
-      }
-      .theme-option[aria-pressed='true'] {
-        border-color: var(--accent);
-        box-shadow: inset 0 0 0 1px rgb(var(--accent-rgb) / 0.12);
-      }
-      .theme-swatch {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        box-shadow: inset 0 0 0 1px #ffffff30;
-        background: var(--swatch);
       }
       .settings-row {
         display: flex;
@@ -1317,36 +1200,10 @@
         font-size: 11px;
         color: var(--muted);
       }
-      .switch {
-        width: 35px;
-        height: 19px;
-        border-radius: 12px;
-        background: var(--chart-track);
-        padding: 3px;
-        transition: background 0.2s;
-      }
-      .switch:after {
-        content: '';
-        display: block;
-        width: 13px;
-        height: 13px;
-        border-radius: 50%;
-        background: var(--muted);
-        transition: transform 0.3s;
-      }
-      .switch[aria-checked='true'] {
-        background: rgb(var(--accent-rgb) / 0.3);
-      }
-      .switch[aria-checked='true']:after {
-        background: var(--accent);
-        transform: translateX(16px);
-      }
       .settings-reset {
         font-size: 11px;
-        color: var(--muted);
+
         padding: 8px;
-        border: 1px solid var(--edge);
-        border-radius: var(--control-radius);
       }
       .settings-foot {
         font-size: 11px;
@@ -1576,10 +1433,6 @@
         .identity {
           gap: 12px;
         }
-        .identity-mark {
-          width: 32px;
-          height: 32px;
-        }
 
         .caption {
           font-size: 10px;
@@ -1730,19 +1583,6 @@
         }
       }
       /* Accessibility and unsupported-backdrop fallbacks */
-      @media (prefers-reduced-transparency: reduce) {
-        .card,
-        .dialog {
-          background: var(--glass-solid);
-          backdrop-filter: none;
-        }
-      }
-      @supports not (backdrop-filter: blur(1px)) {
-        .card,
-        .dialog {
-          background: var(--glass-solid);
-        }
-      }
       @media (prefers-reduced-motion: reduce) {
         *,
         *:before,
@@ -1910,6 +1750,9 @@
         font-size: 10px;
       }
       .quick-filters {
+        max-width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
         pointer-events: auto;
       }
       .quick-country {
@@ -1967,28 +1810,12 @@
       /* Shared instrument-tray shell; desktop placement and mobile flow follow below. */
       .column {
         padding: var(--rail-padding);
-        border: 1px solid var(--rail-edge);
-        border-radius: var(--rail-radius);
+
         gap: 12px;
         isolation: isolate;
       }
-      .column:before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        border-radius: inherit;
-        pointer-events: none;
-        background: var(--rail-background);
-        box-shadow: var(--rail-shadow);
-        backdrop-filter: var(--rail-filter);
-        -webkit-backdrop-filter: var(--rail-filter);
-      }
       .column .card {
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
         padding: 20px 19px;
-        border-radius: var(--glass-radius);
       }
       /* Desktop: full-viewport underlay and floating trays */
       @media (min-width: 981px) {
@@ -2047,10 +1874,6 @@
         .identity {
           gap: 10px;
         }
-        .identity-mark {
-          width: 32px;
-          height: 32px;
-        }
         h1 {
           letter-spacing: 1px;
         }
@@ -2068,14 +1891,6 @@
         }
         .map-heading > div:first-child {
           display: none;
-        }
-        .map-action {
-          flex-direction: column;
-          gap: 8px;
-        }
-        .map-action button {
-          width: var(--control-height);
-          height: var(--control-height);
         }
         .map-footer {
           left: var(--stage-inset);
@@ -2125,10 +1940,6 @@
         }
         .controls {
           margin-left: 0;
-        }
-        .identity-mark {
-          width: 26px;
-          height: 26px;
         }
 
         .caption {
@@ -2245,13 +2056,6 @@
           padding: 7px 10px;
         }
       }
-      @media (prefers-reduced-transparency: reduce) {
-        .column:before {
-          background: var(--glass-fallback);
-          backdrop-filter: none;
-          -webkit-backdrop-filter: none;
-        }
-      }
 
       /* Desktop header: stacked controls in the central safe region */
 
@@ -2271,6 +2075,15 @@
       }
       .select-control[data-for='country'] {
         width: 196px;
+      }
+      @media (max-width: 600px) {
+        .controls {
+          gap: 6px;
+        }
+        .select-control[data-for='country'] {
+          flex: 1 1 132px;
+          width: auto;
+        }
       }
       .select-trigger {
         display: flex;
@@ -2303,12 +2116,6 @@
         inset: auto;
         margin: 0;
         padding: 6px;
-        border: 1px solid var(--edge);
-        border-radius: 12px;
-        color: var(--ink);
-        box-shadow:
-          0 18px 55px #0004,
-          inset 0 1px 0 var(--shine);
         overflow: hidden;
       }
       .select-panel:popover-open {
@@ -2377,7 +2184,7 @@
         }
       }
 
-      :is(.icon-button, .map-action button, .close-button) .icon {
+      :is(.icon-button, .close-button) .icon {
         width: var(--control-icon);
         height: var(--control-icon);
       }
@@ -2387,15 +2194,11 @@
           --control-compact-height: 38px;
           --control-icon: 16px;
         }
-        .select-option,
-        .theme-option {
+        .select-option {
           min-height: 44px;
         }
         .settings-row {
           min-height: 44px;
-        }
-        .switch {
-          position: relative;
         }
         .switch::before {
           content: '';
@@ -2534,9 +2337,6 @@
           bottom: 135px;
           right: 14px;
         }
-        .map-action {
-          flex-direction: column;
-        }
         .map-card {
           height: 560px;
         }
@@ -2554,74 +2354,6 @@
         height: 5px;
         border-radius: 3px;
         background: linear-gradient(90deg, var(--map-column-low), var(--map-column-high));
-      }
-    </style>
-    <style id="dashboard-material">
-      /* One material implementation. Theme hue and light/dark optics live in dashboard-design-tokens. */
-      :is(.card, .quick-filters, .select-panel, .settings-dialog) {
-        background: var(--glass-background);
-        border-color: var(--glass-edge);
-        box-shadow: var(--glass-shadow);
-        backdrop-filter: var(--glass-filter);
-        -webkit-backdrop-filter: var(--glass-filter);
-      }
-      .card {
-        border-radius: var(--glass-radius);
-        isolation: isolate;
-      }
-      .card:before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        border-radius: inherit;
-        pointer-events: none;
-        background: var(--glass-inset);
-        box-shadow: var(--glass-inset-shadow);
-      }
-      .card:hover {
-        border-color: var(--glass-edge-hover);
-        box-shadow: var(--glass-hover-shadow);
-      }
-      .select-panel {
-        background: var(--glass-popover);
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-      }
-      .settings-dialog {
-        background: var(--glass-popover);
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-      }
-      .analysis-dialog {
-        background: var(--glass-fallback);
-        border-color: var(--glass-edge);
-        box-shadow: var(--glass-dialog-shadow);
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-      }
-      .analysis-dialog::backdrop {
-        background: var(--glass-scrim);
-      }
-      :is(.analysis-summary, .analysis-chart-panel, .analysis-table-panel) {
-        background: var(--glass-tile);
-        border-color: var(--glass-divider);
-        box-shadow: var(--glass-tile-shadow);
-      }
-      @media (prefers-reduced-transparency: reduce) {
-        :is(.card, .quick-filters, .select-panel, .settings-dialog, .analysis-dialog) {
-          background: var(--glass-fallback);
-          backdrop-filter: none;
-          -webkit-backdrop-filter: none;
-        }
-        .card:before {
-          background: none;
-        }
-      }
-      @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-        :is(.card, .quick-filters, .select-panel, .settings-dialog, .analysis-dialog) {
-          background: var(--glass-fallback);
-        }
       }
     </style>
     <style id="dashboard-table-tokens">
@@ -2703,26 +2435,356 @@
       }
     </style>
 
-    <style id="dashboard-query-controls">
+    <style id="dashboard-neutral-themes">
+      :root[data-theme='silver'],
+      :root[data-theme='graphite'] {
+        --divider: var(--edge);
+        --shadow: var(--glass-shadow);
+        --track: var(--chart-track);
+      }
+    </style>
+    <style id="dashboard-material">
+      /* Page surfaces and controls. Theme supplies hue; mode owns optics. */
       :root {
-        --query-control-size: var(--control-height);
-        --query-icon-size: var(--control-icon);
+        --glass-strength: 60;
+        --motion-map-duration: 600ms;
+        --motion-globe-duration: 2000ms;
+        --motion-globe-start-scale: 0.2;
+        --motion-column-duration: 1400ms;
+        --motion-card-duration: 850ms;
+        --motion-stage-gap: 100ms;
+        --motion-controls-duration: 450ms;
+        --motion-enter-easing: cubic-bezier(0.22, 1, 0.36, 1);
+        --query-control-size: var(--control-height, 32px);
+        --query-icon-size: var(--control-icon, 15px);
+        --material-radius: 28px;
+        --material-inset: 12px;
+        --material-card-radius: max(10px, calc(var(--material-radius) - var(--material-inset) - 1px));
+        --material-blur: calc(12px + var(--glass-strength) * 0.1px);
+        --material-filter: blur(var(--material-blur)) saturate(1.22);
+        --material-control-filter: blur(calc(6px + var(--glass-strength) * 0.06px)) saturate(1.3);
+        --material-sheen:
+          radial-gradient(100% 80px at 5% 0%, var(--material-light), transparent 72%),
+          linear-gradient(145deg, transparent 42%, var(--material-glow));
+        --material-lip: inset 0 1px 0.5px -0.5px var(--material-rim), inset 0 -1px 0.5px -0.5px var(--material-shade);
+        --material-card-sheen: linear-gradient(155deg, var(--material-card-light), transparent 52%);
+        --material-card-background: var(--material-card-sheen), var(--material-card-fill);
+        --glass-fallback: var(--glass-solid);
+        --glass-surface: color-mix(in srgb, var(--glass-solid) var(--material-opacity), transparent);
+        --glass-background: var(--material-sheen), var(--glass-surface);
+        --glass-contrast-surface: color-mix(in srgb, var(--glass-solid) 94%, transparent);
+        --glass-popover: color-mix(in srgb, var(--glass-solid) var(--material-popover-opacity), transparent);
+        --glass-edge: rgb(255 255 255 / var(--material-edge-opacity));
+        /* Directional light defines the shell; content cards keep quiet, borderless fills. */
+        --material-surface-edge: transparent;
+        --glass-shadow: var(--material-lip), var(--material-shadow);
+        --glass-inset-shadow: none;
+        --glass-tile: var(--material-soft-fill);
+        --glass-tile-shadow: var(--glass-inset-shadow);
+        --glass-tile-hover-shadow: var(--glass-inset-shadow);
+        --glass-reflection: rgb(255 255 255 / var(--material-highlight));
+        --glass-highlight: rgb(255 255 255 / var(--material-card-highlight));
+        --rail-background: var(--glass-background);
+        --rail-edge: var(--glass-edge);
+        --rail-shadow: var(--glass-shadow);
+        --popover-surface: var(--glass-popover);
+        --dialog-scrim: var(--glass-scrim);
+        --control-surface: var(--query-track);
+        --control-active: var(--query-active);
+        --control-selected: var(--strong);
+        --control-hover: var(--query-hover);
         --query-control-ink: var(--ink);
-        --query-hover: color-mix(in srgb, var(--strong) 7%, transparent);
-        --query-track: color-mix(in srgb, var(--glass-fallback) 62%, transparent);
-        --query-active: rgb(255 255 255 / 14%);
         --query-ink: var(--strong);
-        --query-edge: rgb(255 255 255 / 14%);
-        --query-highlight: rgb(255 255 255 / 18%);
-        --query-shadow: 0 3px 10px -4px rgb(0 0 0 / 24%);
+        --query-track: color-mix(in srgb, var(--glass-solid) var(--material-control-opacity), transparent);
+        --query-hover: color-mix(in srgb, var(--query-track), var(--query-active) 28%);
+        --query-highlight: rgb(255 255 255 / var(--material-highlight));
+        --query-shadow: var(--material-control-shadow);
         --query-ease: cubic-bezier(0.22, 1, 0.36, 1);
       }
-      :root[data-mode='light'] {
-        --query-active: rgb(255 255 255 / 84%);
-        --query-edge: rgb(255 255 255 / 58%);
-        --query-highlight: rgb(255 255 255 / 88%);
-        --query-shadow: 0 3px 10px -4px rgb(35 54 70 / 18%);
+      /* Explicit dark and light optics, independent of the four theme palettes. */
+      :root[data-mode='dark'] {
+        color-scheme: dark;
+        --material-opacity: calc(42% + var(--glass-strength) * 0.32%);
+        --material-control-opacity: calc(32% + var(--glass-strength) * 0.28%);
+        --material-popover-opacity: calc(78% + var(--glass-strength) * 0.16%);
+        --material-edge-opacity: calc(0.08 + var(--glass-strength) * 0.0008);
+        --material-highlight: calc(0.1 + var(--glass-strength) * 0.0008);
+        --material-light: rgb(255 255 255 / calc(0.07 + var(--glass-strength) * 0.0004));
+        --material-glow: color-mix(in srgb, var(--accent) 4%, transparent);
+        --material-rim: rgb(255 255 255 / calc(0.16 + var(--glass-strength) * 0.001));
+        --material-shade: rgb(0 0 0 / 30%);
+        --material-press-light: rgb(255 255 255 / 12%);
+        --material-card-highlight: 0.018;
+        --material-soft-fill: rgb(255 255 255 / calc(0.018 + var(--glass-strength) * 0.0002));
+        --material-card-fill: rgb(255 255 255 / calc(0.038 + var(--glass-strength) * 0.00045));
+        --material-card-light: rgb(255 255 255 / calc(0.025 + var(--glass-strength) * 0.00025));
+        --material-card-shadow: inset 0 1px 0.5px -0.5px rgb(255 255 255 / 10%), 0 4px 10px -6px rgb(0 0 0 / 46%);
+        --material-shadow: 0 18px 44px -20px rgb(0 0 0 / 50%), 0 2px 6px -3px rgb(0 0 0 / 30%);
+        --material-control-shadow: 0 4px 12px -8px rgb(0 0 0 / 48%);
+        --glass-scrim: rgb(0 5 14 / 54%);
+        --query-active: rgb(255 255 255 / 14%);
       }
+      :root[data-mode='light'] {
+        color-scheme: light;
+        --material-opacity: calc(30% + var(--glass-strength) * 0.34%);
+        --material-control-opacity: calc(28% + var(--glass-strength) * 0.3%);
+        --material-popover-opacity: calc(82% + var(--glass-strength) * 0.12%);
+        --material-edge-opacity: calc(0.26 + var(--glass-strength) * 0.0014);
+        --material-highlight: calc(0.44 + var(--glass-strength) * 0.0014);
+        --material-light: rgb(255 255 255 / calc(0.26 + var(--glass-strength) * 0.0014));
+        --material-glow: color-mix(in srgb, var(--accent) 2%, transparent);
+        --material-rim: rgb(255 255 255 / calc(0.62 + var(--glass-strength) * 0.002));
+        --material-shade: rgb(31 50 65 / 12%);
+        --material-press-light: rgb(255 255 255 / 40%);
+        --material-card-highlight: 0.16;
+        --material-soft-fill: color-mix(
+          in srgb,
+          var(--glass-solid) calc(10% + var(--glass-strength) * 0.12%),
+          transparent
+        );
+        --material-card-fill: rgb(255 255 255 / calc(0.4 + var(--glass-strength) * 0.0025));
+        --material-card-light: rgb(255 255 255 / calc(0.18 + var(--glass-strength) * 0.001));
+        --material-card-shadow: inset 0 1px 0.5px -0.5px rgb(255 255 255 / 80%), 0 3px 8px -4px rgb(31 50 65 / 18%);
+        --material-shadow: 0 18px 44px -22px rgb(31 50 65 / 30%), 0 2px 8px -4px rgb(31 50 65 / 16%);
+        --material-control-shadow: 0 4px 12px -8px rgb(31 50 65 / 30%);
+        --glass-scrim: rgb(31 50 65 / 30%);
+        --query-active: rgb(255 255 255 / 84%);
+      }
+      /* Neutral theme palettes; business and map encodings keep their own tokens. */
+      :root[data-theme='silver'] {
+        --bg: #eef0f3;
+        --bg-end: #e1e6eb;
+        --ink: #333b45;
+        --strong: #1f242c;
+        --muted: #626e7b;
+        --faint: #75808d;
+        --accent: #45647d;
+        --accent-rgb: 69 100 125;
+        --glass-solid: #fafbfc;
+        --edge: rgb(58 68 80 / 12%);
+        --shine: rgb(255 255 255 / 88%);
+        --inner: rgb(58 68 80 / 3.5%);
+        --glow: rgb(69 100 125 / 4%);
+        --chart-track: rgb(58 68 80 / 10%);
+        --control-selected: var(--strong);
+      }
+      :root[data-theme='graphite'] {
+        --bg: #17191b;
+        --bg-end: #1f2326;
+        --ink: #e2e6e3;
+        --strong: #f1f2f0;
+        --muted: #adb3b0;
+        --faint: #8d9992;
+        --accent: #a5b8ac;
+        --accent-rgb: 165 184 172;
+        --glass-solid: #25282b;
+        --edge: rgb(221 228 224 / 12%);
+        --shine: rgb(255 255 255 / 14%);
+        --inner: rgb(255 255 255 / 3%);
+        --glow: rgb(165 184 172 / 3%);
+        --chart-track: rgb(221 228 224 / 10%);
+        --control-selected: var(--strong);
+      }
+      /* Scene-neutral surface hues; geographic and business colors stay in theme tokens. */
+      :root[data-theme='dark'] {
+        --glass-solid: #121b23;
+      }
+      :root[data-theme='ice'] {
+        --glass-solid: #f4f8fa;
+      }
+
+      :root :is(.material-shell, .material-popover, .material-reading) {
+        --material-card-radius: max(10px, calc(var(--material-radius) - var(--material-inset) - 1px));
+        color: var(--ink);
+        background: var(--glass-background);
+        border: 1px solid var(--material-surface-edge);
+        border-radius: var(--material-radius);
+        box-shadow: var(--glass-shadow);
+        backdrop-filter: var(--material-filter);
+        -webkit-backdrop-filter: var(--material-filter);
+      }
+      :root .material-popover {
+        --material-radius: 22px;
+        background: var(--material-sheen), var(--glass-popover);
+      }
+      :root .material-reading {
+        background: var(--glass-contrast-surface);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      :root :is(.material-card, .material-tile) {
+        background: var(--material-card-background);
+        border-color: transparent;
+        border-radius: var(--material-card-radius);
+        box-shadow: var(--material-card-shadow);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      :root .material-tile {
+        border-radius: max(8px, calc(var(--material-card-radius) - 4px));
+      }
+      :root .material-option {
+        color: var(--muted);
+        background: var(--material-soft-fill);
+        border: 1px solid transparent;
+        border-radius: 10px;
+        box-shadow: none;
+      }
+      :root .material-theme {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+        min-height: 36px;
+        padding: 9px 10px;
+        font-size: 11px;
+      }
+      .material-theme .theme-swatch {
+        width: 16px;
+        height: 16px;
+        flex: none;
+        border: 1px solid var(--divider, var(--edge));
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--swatch-surface) 50%, var(--swatch-accent) 50%);
+      }
+      .theme-swatch[data-swatch='dark'] {
+        --swatch-surface: #121b23;
+        --swatch-accent: #b0c4e8;
+      }
+      .theme-swatch[data-swatch='ice'] {
+        --swatch-surface: #f4f8fa;
+        --swatch-accent: #4f81b4;
+      }
+      .theme-swatch[data-swatch='silver'] {
+        --swatch-surface: #fafbfc;
+        --swatch-accent: #45647d;
+      }
+      .theme-swatch[data-swatch='graphite'] {
+        --swatch-surface: #25282b;
+        --swatch-accent: #a5b8ac;
+      }
+      :root .material-option[aria-pressed='true'] {
+        color: var(--strong);
+        background: var(--query-active);
+        border-color: var(--glass-edge);
+        box-shadow: var(--glass-inset-shadow);
+      }
+      .material-switch {
+        width: 35px;
+        height: 19px;
+        border-radius: 999px;
+        background: var(--chart-track, var(--track));
+        padding: 3px;
+        transition: background 180ms ease;
+      }
+      .material-switch::after {
+        content: '';
+        display: block;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: var(--muted);
+        transition: transform 220ms var(--query-ease);
+      }
+      .material-switch[aria-checked='true'] {
+        background: color-mix(in srgb, var(--accent) 30%, transparent);
+      }
+      .material-switch[aria-checked='true']::after {
+        background: var(--accent);
+        transform: translateX(16px);
+      }
+
+      /* A native range keeps keyboard, touch and assistive technology behavior intact. */
+      .material-setting {
+        display: grid;
+        gap: 8px;
+        min-width: 0;
+        margin-block: 4px 18px;
+      }
+      .material-setting label,
+      .material-setting-ends {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .material-setting label {
+        color: var(--ink);
+        font-size: 11px;
+      }
+      .material-setting output {
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .material-setting-ends {
+        color: var(--muted);
+        font-size: 10px;
+      }
+      .material-range {
+        appearance: none;
+        -webkit-appearance: none;
+        display: block;
+        width: 100%;
+        height: 28px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        cursor: pointer;
+        touch-action: pan-y;
+      }
+      .material-range::-webkit-slider-runnable-track {
+        height: 5px;
+        border-radius: 999px;
+        background: linear-gradient(
+          to right,
+          var(--accent) var(--range-progress),
+          var(--chart-track, var(--track)) var(--range-progress)
+        );
+      }
+      .material-range::-moz-range-track {
+        height: 5px;
+        border-radius: 999px;
+        background: linear-gradient(
+          to right,
+          var(--accent) var(--range-progress),
+          var(--chart-track, var(--track)) var(--range-progress)
+        );
+      }
+      .material-range::-webkit-slider-thumb {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        margin-top: -6.5px;
+        border: 1px solid var(--glass-edge);
+        border-radius: 50%;
+        background: color-mix(in srgb, white 92%, var(--glass-solid));
+        box-shadow: var(--query-shadow);
+      }
+      .material-range::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border: 1px solid var(--glass-edge);
+        border-radius: 50%;
+        background: color-mix(in srgb, white 92%, var(--glass-solid));
+        box-shadow: var(--query-shadow);
+      }
+      .material-range:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      @media (pointer: coarse) {
+        :root .material-theme {
+          min-height: 44px;
+        }
+        .material-range {
+          height: 44px;
+        }
+      }
+
+      /* Shared controls: selection, loading, focus and anchored menus. */
       .control-group {
         position: relative;
         isolation: isolate;
@@ -2732,10 +2794,8 @@
         border-radius: calc(var(--query-control-size) / 2 + 3px);
         padding: 3px;
         gap: 3px;
-        background: var(--query-track);
-        box-shadow:
-          inset 0 0 0 1px var(--query-edge),
-          var(--query-shadow);
+        background: var(--material-sheen), var(--query-track);
+        box-shadow: var(--material-lip), var(--query-shadow);
       }
       .control-group::before {
         content: '';
@@ -2776,27 +2836,27 @@
         background: transparent;
         box-shadow: none;
       }
-      :is(.select-trigger, #analysis-clear, #analysis-retry, .table-expand),
-      .control-icon {
+      :is(.control-button, .control-select, .country-trigger, .select-trigger),
+      .control-icon,
+      :root .material-action {
         border: 0;
         border-radius: 999px;
-        background: var(--query-track);
+        background: var(--material-sheen), var(--query-track);
         color: var(--query-control-ink);
-        box-shadow:
-          inset 0 0 0 1px var(--query-edge),
-          var(--query-shadow);
+        box-shadow: var(--material-lip), var(--query-shadow);
       }
       .control-group button,
-      :is(.select-trigger, #analysis-clear, #analysis-retry, .table-expand) {
+      :is(.control-button, .control-select, .country-trigger, .select-trigger, .material-action) {
         transition:
-          background 160ms ease,
+          background-color 160ms ease,
           color 160ms ease,
+          box-shadow 180ms ease,
           scale 180ms var(--query-ease);
       }
       .control-group,
-      :is(.control-icon, .select-trigger) {
-        backdrop-filter: blur(12px) saturate(1.12);
-        -webkit-backdrop-filter: blur(12px) saturate(1.12);
+      :is(.control-icon, .control-button, .control-select, .country-trigger) {
+        backdrop-filter: var(--material-control-filter);
+        -webkit-backdrop-filter: var(--material-control-filter);
       }
       .query-control,
       .control-icon {
@@ -2808,10 +2868,7 @@
       .query-control > svg:not(:last-child) {
         margin-right: 6px;
       }
-      .query-control > .select-chevron {
-        order: 2;
-        margin: 0 0 0 6px;
-      }
+
       .control-icon {
         flex: 0 0 auto;
         width: auto;
@@ -2821,7 +2878,7 @@
         line-height: 1;
         transition:
           padding 180ms ease,
-          background 180ms ease,
+          background-color 180ms ease,
           color 180ms ease,
           box-shadow 180ms ease,
           scale 180ms var(--query-ease);
@@ -2830,11 +2887,11 @@
         padding: 0 8px;
       }
       .control-icon[aria-expanded='true'] {
-        background: var(--query-hover);
+        background-color: var(--query-hover);
         color: var(--query-ink);
       }
       .control-icon[aria-pressed='true'] {
-        background: var(--query-active);
+        background-color: var(--query-active);
         color: var(--query-ink);
       }
       .control-icon > svg {
@@ -2843,6 +2900,51 @@
         width: var(--query-icon-size);
         height: var(--query-icon-size);
         margin: 0;
+      }
+      .header .icon-button {
+        position: relative;
+      }
+      .header .icon-button::before {
+        content: attr(aria-label);
+        position: absolute;
+        z-index: 8;
+        top: calc(100% + 9px);
+        left: 50%;
+        padding: 7px 10px;
+        border: 1px solid var(--edge);
+        border-radius: 9px;
+        background: var(--glass-contrast-surface);
+        color: var(--strong);
+        box-shadow: var(--material-shadow);
+        font: 11px/1.4 var(--font-ui);
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        translate: -50% -4px;
+        transition:
+          opacity 140ms ease,
+          translate 140ms ease;
+      }
+      .header .icon-button:last-child::before {
+        left: auto;
+        right: 0;
+        translate: 0 -4px;
+      }
+      .header .icon-button:focus-visible::before {
+        opacity: 1;
+        translate: -50% 0;
+      }
+      .header .icon-button:last-child:focus-visible::before {
+        translate: 0 0;
+      }
+      @media (hover: hover) {
+        .header .icon-button:hover:not(:disabled)::before {
+          opacity: 1;
+          translate: -50% 0;
+        }
+        .header .icon-button:last-child:hover::before {
+          translate: 0 0;
+        }
       }
       .query-control::after {
         content: '';
@@ -2874,17 +2976,11 @@
         opacity: 1;
         cursor: progress;
       }
-      .query-search {
-        justify-content: flex-start;
-      }
-      .query-search[data-loading='true'] {
-        padding-right: 10px;
-      }
-      .analysis-loading[data-loading='true'] {
+      .query-feedback[data-loading='true'] {
         display: block;
         min-height: 18px;
       }
-      .analysis-loading[data-loading='true']::before {
+      .query-feedback[data-loading='true']::before {
         content: '';
         display: inline-block;
         width: 14px;
@@ -2899,6 +2995,10 @@
         outline-offset: 3px;
       }
       :is(.control-group button, .control-icon, .query-control):active:not(:disabled) {
+        background-color: var(--query-active);
+        box-shadow:
+          inset 0 0 16px var(--material-press-light),
+          var(--material-lip);
         scale: 0.97;
       }
       :is(.control-group button, .control-icon, .query-control):disabled {
@@ -2907,17 +3007,21 @@
       @media (hover: hover) {
         .control-icon:hover:not(:disabled),
         .control-group button:hover:not(:disabled):not([aria-pressed='true'], [aria-selected='true']),
-        :is(.select-trigger, #analysis-clear, #analysis-retry, .table-expand):hover:not(:disabled) {
-          background: var(--query-hover);
+        :is(.control-button, .control-select, .country-trigger, .select-trigger, .material-action):hover:not(
+            :disabled
+          ) {
+          background-color: var(--query-hover);
           color: var(--query-ink);
         }
       }
       /* Controls on an existing glass surface use a fill, without a second blur pass. */
-      :is(.dialog, .column) :is(.control-group, .control-icon, .query-control) {
+      :is(.material-shell, .material-popover, .material-reading, .material-card)
+        :is(.control-group, .control-icon, .query-control) {
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
       }
-      .select-panel:popover-open {
+      :root .material-popover:is(:popover-open, [open]),
+      :is(.control-menu:popover-open, details[open] > .control-menu) {
         transform-origin: var(--popover-origin, top right);
         animation: control-reveal 220ms var(--query-ease) backwards;
       }
@@ -2931,24 +3035,82 @@
           transform: none;
         }
       }
+      @keyframes query-turn {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .query-control > .select-chevron {
+        order: 2;
+        margin: 0 0 0 6px;
+      }
+      .query-search {
+        justify-content: flex-start;
+      }
+      .query-search[data-loading='true'] {
+        padding-right: 10px;
+      }
+      @media (hover: hover) {
+        .material-option:hover:not([aria-pressed='true']) {
+          background-color: var(--query-hover);
+          color: var(--strong);
+        }
+      }
+      /* Reduced transparency wins over the slider; content never depends on blur for contrast. */
       @media (prefers-reduced-transparency: reduce) {
-        :is(.control-group, .control-icon, .select-trigger, #analysis-clear, #analysis-retry, .table-expand) {
-          background: var(--glass-fallback);
-          backdrop-filter: none;
-          -webkit-backdrop-filter: none;
+        :root {
+          --material-filter: none;
+          --material-control-filter: none;
+          --material-sheen: none;
+          --material-card-sheen: none;
+          --glass-surface: var(--glass-solid);
+          --glass-popover: var(--glass-solid);
+          --glass-contrast-surface: var(--glass-solid);
+          --query-track: var(--glass-solid);
+        }
+      }
+      @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        :root {
+          --material-filter: none;
+          --material-control-filter: none;
+          --material-sheen: none;
+          --material-card-sheen: none;
+          --glass-surface: var(--glass-solid);
+          --glass-popover: var(--glass-solid);
+          --query-track: var(--glass-solid);
         }
       }
       @media (prefers-contrast: more) {
-        :is(.control-group, .control-icon, .select-trigger, #analysis-clear, #analysis-retry, .table-expand) {
+        :is(
+          .control-group,
+          .control-icon,
+          .control-button,
+          .control-select,
+          .country-trigger,
+          .select-trigger,
+          .material-action
+        ) {
           box-shadow: inset 0 0 0 1px var(--query-control-ink);
         }
         .control-group::before {
           box-shadow: inset 0 0 0 1px var(--query-ink);
         }
-      }
-      @keyframes query-turn {
-        to {
-          transform: rotate(360deg);
+        :root[data-mode] {
+          --material-sheen: none;
+          --material-card-sheen: none;
+          --material-lip: 0 0 0 transparent;
+          --material-card-shadow: 0 0 0 1px var(--muted);
+          --material-filter: none;
+          --material-control-filter: none;
+          --glass-edge: var(--muted);
+          --material-surface-edge: var(--muted);
+          --glass-surface: var(--glass-solid);
+          --glass-popover: var(--glass-solid);
+          --glass-contrast-surface: var(--glass-solid);
+          --query-track: var(--glass-solid);
+        }
+        .material-range {
+          outline-offset: 3px;
         }
       }
       @media (prefers-reduced-motion: reduce) {
@@ -2956,125 +3118,21 @@
         .control-group button,
         .query-control,
         .query-control::after,
-        .control-icon {
+        .control-icon,
+        .header .icon-button::before {
           transition: none !important;
           scale: none;
         }
-        .select-panel:popover-open,
+        .material-popover,
+        :is(.control-menu:popover-open, details[open] > .control-menu),
         .query-control::after,
-        .analysis-loading::before {
+        .query-feedback::before {
           animation: none !important;
         }
-      }
-    </style>
-    <style id="dashboard-neutral-themes">
-      /* Shared 2D/3D neutral palettes. Scene data encodings remain in their own tokens. */
-      :root[data-theme='silver'] {
-        --bg: #eef0f3;
-        --bg-end: #e1e6eb;
-        --ink: #333b45;
-        --strong: #1f242c;
-        --muted: #626e7b;
-        --faint: #75808d;
-        --accent: #45647d;
-        --accent-rgb: 69 100 125;
-        --glass-solid: #fafbfc;
-        --glass-surface: rgb(250 251 252 / 54%);
-        --glass-contrast-surface: rgb(250 251 252 / 86%);
-        --glass-popover: rgb(250 251 252 / 96%);
-        --edge: rgb(58 68 80 / 12%);
-        --shine: rgb(255 255 255 / 88%);
-        --inner: rgb(58 68 80 / 3.5%);
-        --glow: rgb(69 100 125 / 4%);
-        --chart-track: rgb(58 68 80 / 10%);
-        --glass-filter: blur(14px) saturate(1.02);
-        --glass-sheen: linear-gradient(145deg, rgb(255 255 255 / 28%), rgb(255 255 255 / 6%) 60%);
-        --glass-edge: rgb(255 255 255 / 58%);
-        --glass-edge-hover: rgb(255 255 255 / 78%);
-        --glass-shadow: 0 6px 20px -12px rgb(31 36 44 / 20%), inset 0 1px 0 rgb(255 255 255 / 60%);
-        --glass-hover-shadow: 0 8px 24px -12px rgb(31 36 44 / 24%), inset 0 1px 0 rgb(255 255 255 / 78%);
-        --glass-inset: linear-gradient(145deg, rgb(255 255 255 / 16%), rgb(238 240 243 / 6%));
-        --glass-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 32%);
-        --glass-tile: linear-gradient(145deg, rgb(255 255 255 / 44%), rgb(250 251 252 / 22%));
-        --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 58%);
-        --glass-reflection: rgb(255 255 255 / 12%);
-        --glass-highlight: rgb(255 255 255 / 6%);
-        --glass-scrim: rgb(31 36 44 / 30%);
-        --glass-dialog-shadow: 0 24px 88px rgb(31 36 44 / 24%), inset 0 1px 0 var(--glass-edge);
-        --rail-background: linear-gradient(145deg, rgb(255 255 255 / 18%), rgb(225 230 235 / 12%) 60%);
-        --rail-edge: rgb(255 255 255 / 42%);
-        --rail-shadow: 0 24px 60px -24px rgb(31 36 44 / 24%), inset 0 1px 0 rgb(255 255 255 / 56%);
-        --control-active: rgb(255 255 255 / 84%);
-        --control-selected: var(--strong);
-        --query-shadow: 0 3px 10px -4px rgb(31 36 44 / 18%);
-      }
-      :root[data-theme='graphite'] {
-        --bg: #17191b;
-        --bg-end: #1f2326;
-        --ink: #e2e6e3;
-        --strong: #f1f2f0;
-        --muted: #adb3b0;
-        --faint: #8d9992;
-        --accent: #a5b8ac;
-        --accent-rgb: 165 184 172;
-        --glass-solid: #25282b;
-        --glass-surface: rgb(37 40 43 / 60%);
-        --glass-contrast-surface: rgb(37 40 43 / 88%);
-        --glass-popover: rgb(43 47 50 / 98%);
-        --edge: rgb(221 228 224 / 12%);
-        --shine: rgb(255 255 255 / 14%);
-        --inner: rgb(255 255 255 / 3%);
-        --glow: rgb(165 184 172 / 3%);
-        --chart-track: rgb(221 228 224 / 10%);
-        --glass-filter: blur(14px) saturate(0.96);
-        --glass-sheen: linear-gradient(145deg, rgb(255 255 255 / 6%), rgb(255 255 255 / 1%) 60%);
-        --glass-edge: rgb(230 235 232 / 16%);
-        --glass-edge-hover: rgb(230 235 232 / 26%);
-        --glass-shadow: 0 6px 20px -12px rgb(0 0 0 / 38%), inset 0 1px 0 rgb(255 255 255 / 12%);
-        --glass-hover-shadow: 0 8px 24px -12px rgb(0 0 0 / 46%), inset 0 1px 0 rgb(255 255 255 / 18%);
-        --glass-inset: linear-gradient(145deg, rgb(255 255 255 / 3%), rgb(23 25 27 / 4%));
-        --glass-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 6%);
-        --glass-tile: linear-gradient(145deg, rgb(230 235 232 / 7%), rgb(230 235 232 / 3%));
-        --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 9%);
-        --glass-reflection: rgb(255 255 255 / 8%);
-        --glass-highlight: rgb(255 255 255 / 4%);
-        --glass-scrim: rgb(0 0 0 / 54%);
-        --glass-dialog-shadow: 0 24px 88px rgb(0 0 0 / 46%), inset 0 1px 0 var(--glass-edge);
-        --rail-background: linear-gradient(145deg, rgb(230 235 232 / 6%), rgb(23 25 27 / 28%) 60%);
-        --rail-edge: rgb(230 235 232 / 14%);
-        --rail-shadow: 0 24px 60px -24px rgb(0 0 0 / 48%), inset 0 1px 0 rgb(255 255 255 / 14%);
-        --control-active: rgb(255 255 255 / 14%);
-        --control-selected: var(--strong);
-        --query-shadow: 0 3px 10px -4px rgb(0 0 0 / 24%);
-      }
-      :root[data-theme='silver'],
-      :root[data-theme='graphite'] {
-        --page-surface: var(--bg);
-        --glass-fallback: var(--glass-solid);
-        --popover-surface: var(--glass-popover);
-        --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--glass-solid));
-        --focus: var(--accent);
-        --line: var(--edge);
-        --divider: var(--edge);
-        --glass-divider: var(--edge);
-        --shadow: var(--glass-shadow);
-        --glass-tile-hover-shadow: var(--glass-hover-shadow);
-        --dialog-scrim: var(--glass-scrim);
-        --track: var(--chart-track);
-        --hover: color-mix(in srgb, var(--ink) 6%, transparent);
-        --control-hover: var(--hover);
-        --control-surface: color-mix(in srgb, var(--glass-solid) 68%, transparent);
-        --control-ink: var(--muted);
-        --control-selected-muted: var(--muted);
-        --chart-ink: var(--accent);
-        --meter-fill: var(--accent);
-        --rail-filter: blur(18px) saturate(1.02);
-      }
-      .theme-swatch[data-swatch='silver'] {
-        background: linear-gradient(135deg, #fafbfc 50%, #45647d 50%);
-      }
-      .theme-swatch[data-swatch='graphite'] {
-        background: linear-gradient(135deg, #25282b 50%, #a5b8ac 50%);
+        .material-switch,
+        .material-switch::after {
+          transition: none;
+        }
       }
     </style>
   </head>
@@ -3085,27 +3143,25 @@
           <path d="M6 18 18 6M6 6h12v12" />
         </symbol>
         <symbol id="i-settings" viewBox="0 0 24 24">
-          <path d="M4 7h16M4 17h16" />
-          <circle cx="9" cy="7" r="3" />
-          <circle cx="15" cy="17" r="3" />
+          <path
+            d="m9.5 3-.7 2.2-2 .9-2.1-.5-2 3.4 1.5 1.7v2.6L2.7 15l2 3.4 2.2-.5 1.9.9.7 2.2h5l.7-2.2 2-.9 2.1.5 2-3.4-1.5-1.7v-2.6L21.3 9l-2-3.4-2.2.5-1.9-.9-.7-2.2Z"
+          />
+          <circle cx="12" cy="12" r="3" />
         </symbol>
         <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6" /></symbol>
         <symbol id="i-home" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="7" />
+          <circle cx="12" cy="12" r="2" />
           <path d="M12 1v5m0 12v5M1 12h5m12 0h5" />
         </symbol>
-        <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M4 9a8 8 0 1 1 0 6M4 3v6h6" /></symbol>
+        <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 8a8 8 0 1 0 0 8M20 3v5h-5" /></symbol>
+        <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z" /></symbol>
+        <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" /></symbol>
       </defs>
     </svg>
     <div class="app" inert aria-busy="true">
       <header class="header">
         <div class="identity">
-          <span class="identity-mark" aria-hidden="true"
-            ><svg class="icon" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="8" />
-              <ellipse cx="12" cy="12" rx="3.5" ry="8" />
-              <path d="M4 12h16" /></svg
-          ></span>
           <div>
             <h1>全球空气质量</h1>
             <p class="caption">全球城市样本 · 空气质量观察</p>
@@ -3114,8 +3170,12 @@
         <div class="controls">
           <span class="scope-chip" id="scope-label">全样本</span
           ><select id="country" aria-label="国家范围" disabled>
-            <option value="">全部国家与未标注记录</option></select
-          ><button class="icon-button" id="reset-scope" aria-label="返回全部样本" title="返回全部样本" disabled>
+            <option value="">全部</option></select
+          ><button class="icon-button" id="refresh-data" aria-label="刷新样本统计" disabled>
+            <svg class="icon"><use href="#i-refresh" /></svg></button
+          ><button class="icon-button" id="rotate" aria-label="暂停地球动效" aria-pressed="true">
+            <svg class="icon"><use href="#i-pause" /></svg></button
+          ><button class="icon-button" id="map-home" aria-label="重置地球视角">
             <svg class="icon"><use href="#i-home" /></svg></button
           ><button
             class="icon-button"
@@ -3123,27 +3183,28 @@
             aria-label="外观设置"
             aria-haspopup="dialog"
             aria-expanded="false"
-            title="外观设置"
           >
             <svg class="icon"><use href="#i-settings" /></svg>
           </button>
         </div>
       </header>
       <main class="dashboard">
-        <div class="column left" data-enter="left">
-          <section class="card" data-card="aqi">
+        <div class="column left material-shell" data-enter="left">
+          <section class="card material-card" data-card="aqi">
             <div class="card-head">
-              <h2>样本 AQI 均值</h2>
-              <button
-                class="analysis-button"
-                data-analysis="aqi"
-                disabled
-                aria-label="深入分析样本 AQI 均值"
-                aria-haspopup="dialog"
-                title="深入分析"
-              >
-                <svg class="icon"><use href="#i-analyze" /></svg>
-              </button>
+              <h2 aria-labelledby="aqi-title">
+                <button
+                  class="analysis-button"
+                  data-analysis="aqi"
+                  disabled
+                  aria-label="深入分析样本 AQI 均值"
+                  aria-haspopup="dialog"
+                  title="深入分析"
+                >
+                  <span id="aqi-title">样本 AQI 均值</span
+                  ><svg class="icon" aria-hidden="true"><use href="#i-analyze" /></svg>
+                </button>
+              </h2>
             </div>
             <div class="metric-line">
               <div class="metric" id="mean">—<small>AQI</small></div>
@@ -3154,19 +3215,21 @@
             </div>
             <p class="card-foot" id="mean-note">城市样本等权 · 数值分布</p>
           </section>
-          <section class="card" data-card="risk">
+          <section class="card material-card" data-card="risk">
             <div class="card-head">
-              <h2>AQI ＞ 100 的样本</h2>
-              <button
-                class="analysis-button"
-                data-analysis="risk"
-                disabled
-                aria-label="深入分析AQI 大于100"
-                aria-haspopup="dialog"
-                title="深入分析"
-              >
-                <svg class="icon"><use href="#i-analyze" /></svg>
-              </button>
+              <h2 aria-labelledby="risk-title">
+                <button
+                  class="analysis-button"
+                  data-analysis="risk"
+                  disabled
+                  aria-label="深入分析 AQI 大于 100 的样本"
+                  aria-haspopup="dialog"
+                  title="深入分析"
+                >
+                  <span id="risk-title">AQI ＞ 100 的样本</span
+                  ><svg class="icon" aria-hidden="true"><use href="#i-analyze" /></svg>
+                </button>
+              </h2>
             </div>
             <div class="risk-number" id="risk">—<small>%</small></div>
             <p class="micro" id="risk-count">—</p>
@@ -3176,19 +3239,21 @@
               <div><strong id="very-risk">—</strong><small id="very-share">—</small></div>
             </div>
           </section>
-          <section class="card" data-card="pollutants">
+          <section class="card material-card" data-card="pollutants">
             <div class="card-head">
-              <h2>四项污染物子指数</h2>
-              <button
-                class="analysis-button"
-                data-analysis="pollutants"
-                disabled
-                aria-label="深入分析四项子指数"
-                aria-haspopup="dialog"
-                title="深入分析"
-              >
-                <svg class="icon"><use href="#i-analyze" /></svg>
-              </button>
+              <h2 aria-labelledby="pollutants-title">
+                <button
+                  class="analysis-button"
+                  data-analysis="pollutants"
+                  disabled
+                  aria-label="深入分析四项污染物子指数"
+                  aria-haspopup="dialog"
+                  title="深入分析"
+                >
+                  <span id="pollutants-title">四项污染物子指数</span
+                  ><svg class="icon" aria-hidden="true"><use href="#i-analyze" /></svg>
+                </button>
+              </h2>
             </div>
             <div class="overview-chart pollutant-chart" id="pollutants">
               <div class="chart-canvas" id="pollutant-chart"></div>
@@ -3202,13 +3267,6 @@
             <div>
               <strong>国家样本 · 空间分布</strong>
               <p>真实地形 · 高程视觉夸张 35×</p>
-            </div>
-            <div class="map-action">
-              <button id="rotate" aria-label="播放或暂停地球动效" title="慢转与循环光效" aria-pressed="false">
-                <svg class="icon"><use href="#i-rotate" /></svg></button
-              ><button id="map-home" aria-label="重置地球视角" title="重置地球视角">
-                <svg class="icon"><use href="#i-home" /></svg>
-              </button>
             </div>
           </div>
           <div class="map-toolbar">
@@ -3246,20 +3304,22 @@
             <span id="map-surface-note">国家代表位置 · 蜂窝仅装饰</span>
           </div>
         </section>
-        <div class="column right" data-enter="right">
-          <section class="card" data-card="coverage">
+        <div class="column right material-shell" data-enter="right">
+          <section class="card material-card" data-card="coverage">
             <div class="card-head">
-              <h2>数据覆盖</h2>
-              <button
-                class="analysis-button"
-                data-analysis="coverage"
-                disabled
-                aria-label="深入分析样本覆盖"
-                aria-haspopup="dialog"
-                title="深入分析"
-              >
-                <svg class="icon"><use href="#i-analyze" /></svg>
-              </button>
+              <h2 aria-labelledby="coverage-title">
+                <button
+                  class="analysis-button"
+                  data-analysis="coverage"
+                  disabled
+                  aria-label="深入分析样本覆盖"
+                  aria-haspopup="dialog"
+                  title="深入分析"
+                >
+                  <span id="coverage-title">数据覆盖</span
+                  ><svg class="icon" aria-hidden="true"><use href="#i-analyze" /></svg>
+                </button>
+              </h2>
             </div>
             <div class="coverage-number"><span id="countries">—</span><small>个国家</small></div>
             <div class="coverage-total"><span>城市样本</span><strong id="samples">—</strong></div>
@@ -3267,19 +3327,21 @@
               <span>国家未标注</span><b id="missing">—</b><span id="missing-share">—</span>
             </div>
           </section>
-          <section class="card" data-card="ranking">
+          <section class="card material-card" data-card="ranking">
             <div class="card-head">
-              <h2 id="ranking-title">国家均值 · Top 5</h2>
-              <button
-                class="analysis-button"
-                data-analysis="ranking"
-                disabled
-                aria-label="深入分析国家比较"
-                aria-haspopup="dialog"
-                title="深入分析"
-              >
-                <svg class="icon"><use href="#i-analyze" /></svg>
-              </button>
+              <h2 aria-labelledby="ranking-title">
+                <button
+                  class="analysis-button"
+                  data-analysis="ranking"
+                  disabled
+                  aria-label="深入分析国家比较"
+                  aria-haspopup="dialog"
+                  title="深入分析"
+                >
+                  <span id="ranking-title">国家均值 · Top 5</span
+                  ><svg class="icon" aria-hidden="true"><use href="#i-analyze" /></svg>
+                </button>
+              </h2>
             </div>
             <p class="micro" id="ranking-note">至少 30 个样本 · 同时展示 n</p>
             <div class="overview-chart ranking-chart" id="ranking">
@@ -3287,19 +3349,21 @@
               <div class="chart-keyboard" id="ranking-actions" aria-label="国家或城市排行操作"></div>
             </div>
           </section>
-          <section class="card" data-card="categories">
+          <section class="card material-card" data-card="categories">
             <div class="card-head">
-              <h2>来源 AQI 等级</h2>
-              <button
-                class="analysis-button"
-                data-analysis="categories"
-                disabled
-                aria-label="深入分析来源等级"
-                aria-haspopup="dialog"
-                title="深入分析"
-              >
-                <svg class="icon"><use href="#i-analyze" /></svg>
-              </button>
+              <h2 aria-labelledby="categories-title">
+                <button
+                  class="analysis-button"
+                  data-analysis="categories"
+                  disabled
+                  aria-label="深入分析来源等级"
+                  aria-haspopup="dialog"
+                  title="深入分析"
+                >
+                  <span id="categories-title">来源 AQI 等级</span
+                  ><svg class="icon" aria-hidden="true"><use href="#i-analyze" /></svg>
+                </button>
+              </h2>
             </div>
             <div class="category-layout">
               <div class="category-plot">
@@ -3313,7 +3377,7 @@
         </div>
       </main>
     </div>
-    <dialog class="dialog settings-dialog" id="settings-dialog" aria-labelledby="settings-title">
+    <dialog class="dialog settings-dialog material-popover" id="settings-dialog" aria-labelledby="settings-title">
       <div class="settings-body">
         <div class="dialog-head">
           <h2 id="settings-title">外观设置</h2>
@@ -3322,10 +3386,15 @@
           </button>
         </div>
         <div class="theme-grid" id="theme-options"></div>
+        <div class="material-setting">
+          <label for="glass-strength">玻璃强度<output for="glass-strength"></output></label
+          ><input class="material-range" id="glass-strength" type="range" min="0" max="100" step="1" value="60" />
+          <div class="material-setting-ends" aria-hidden="true"><span>通透</span><span>凝实</span></div>
+        </div>
         <div class="settings-row">
           <span>地球慢转与光效</span
           ><button
-            class="switch"
+            class="switch material-switch"
             id="rotation-switch"
             role="switch"
             aria-label="地球慢转与光效"
@@ -3335,7 +3404,7 @@
         <div class="settings-row">
           <span>蜂窝底纹</span
           ><button
-            class="switch"
+            class="switch material-switch"
             id="surface-switch"
             role="switch"
             aria-label="蜂窝底纹，关闭显示自然地貌"
@@ -3344,13 +3413,13 @@
           ></button>
         </div>
         <p id="surface-description" class="settings-foot">蜂窝底纹 · 装饰纹理，不代表统计网格</p>
-        <button class="settings-reset" id="appearance-reset">恢复默认外观</button>
+        <button class="settings-reset material-action" id="appearance-reset">恢复默认外观</button>
         <p class="settings-foot">
           外观自动保存。范围与地图视角独立保留。<br />减少动态效果时暂停慢转、光流、脉冲和翻转。
         </p>
       </div>
     </dialog>
-    <dialog class="dialog analysis-dialog" id="analysis-dialog" aria-labelledby="analysis-title">
+    <dialog class="dialog analysis-dialog material-reading" id="analysis-dialog" aria-labelledby="analysis-title">
       <div class="dialog-shell">
         <header class="dialog-head dialog-reveal">
           <div>
@@ -3361,7 +3430,7 @@
             <svg class="icon"><use href="#i-close" /></svg>
           </button>
         </header>
-        <section class="analysis-summary dialog-reveal">
+        <section class="analysis-summary dialog-reveal material-card">
           <div>
             <p class="micro analysis-value-label" id="analysis-value-label">当前指标</p>
             <div class="metric" id="analysis-value">—</div>
@@ -3390,29 +3459,30 @@
             <option value="missingCity">城市缺失</option>
             <option value="inconsistent">AQI 与最大子指数不一致</option>
             <option value="categoryMismatch">来源等级与数值分箱不一致</option></select
-          ><button class="pill" id="analysis-clear">清除局部选择</button
+          ><button class="pill material-action" id="analysis-clear">清除局部选择</button
           ><span class="query-search query-control"
             ><input
               type="search"
               id="analysis-search"
               aria-label="搜索原始城市或国家"
               placeholder="搜索原始城市或国家" /></span
-          ><span class="analysis-loading" id="analysis-loading" role="status"></span
-          ><button class="pill query-control" id="analysis-retry" hidden>重试</button>
+          ><span class="analysis-loading query-feedback" id="analysis-loading" role="status"></span
+          ><button class="pill query-control material-action" id="analysis-retry" hidden>重试</button>
         </div>
         <div class="analysis-grid dialog-reveal">
-          <section class="analysis-chart-panel">
+          <section class="analysis-chart-panel material-card">
             <div class="section-head">
               <h3 id="analysis-chart-title">国家样本均值</h3>
               <span id="analysis-chart-note">完整样本计算</span>
             </div>
             <div id="analysis-chart"></div>
           </section>
-          <section class="analysis-table-panel">
+          <section class="analysis-table-panel material-card">
             <div class="section-head">
               <h3>原始记录</h3>
-              <span id="analysis-record-count">—</span><button class="table-expand" id="export-records">导出 CSV</button
-              ><button class="table-expand" id="table-expand">展开 ↗</button>
+              <span id="analysis-record-count">—</span
+              ><button class="table-expand material-action" id="export-records">导出 CSV</button
+              ><button class="table-expand material-action" id="table-expand">展开 ↗</button>
             </div>
             <div id="analysis-table" tabindex="0" aria-label="当前范围完整原始记录"></div>
           </section>
@@ -3437,7 +3507,7 @@
       </div>
     </dialog>
     <div id="loader" class="loader" role="status" aria-live="polite">
-      <div class="loading-card">
+      <div class="loading-card material-shell">
         <div class="loading-orbit" aria-hidden="true"></div>
         <h2 id="loading-title">正在准备看板</h2>
         <p id="loader-text">正在加载数据与图表，请稍候…</p>
@@ -18256,7 +18326,7 @@
       let dashboardEntering = false
       function syncModalPresentation() {
         if (disposed) return
-        globe?.setPresentationPaused?.(dashboardEntering || $$('.dialog').some((dialog) => dialog.open))
+        globe?.setPresentationPaused?.(!presentationStarted || $$('.dialog').some((dialog) => dialog.open))
       }
       function play(node, keyframes, options) {
         if (reduced.matches || disposed) return
@@ -18696,6 +18766,10 @@
         renderCategoryLegend(summary)
         $('#pm-note').textContent = `PM2.5 最高占比 ${fmt(pct(summary.pmLeader, summary.n), 1)}%（含并列）`
         $('#ranking-title').textContent = currentCountry ? '城市样本 · AQI Top 5' : '国家均值 · Top 5'
+        $('[data-analysis=ranking]').setAttribute(
+          'aria-label',
+          currentCountry ? '深入分析城市样本比较' : '深入分析国家比较',
+        )
         $('#ranking-note').textContent = currentCountry ? '原始城市样本 · 非当前实时值' : 'AQI 均值 · 至少 30 个样本'
         syncSelectControls()
       }
@@ -18780,7 +18854,7 @@
           ready = true
           document.body.dataset.ready = 'true'
           $('#country').disabled = false
-          $('#reset-scope').disabled = false
+          $('#refresh-data').disabled = false
           $$('.analysis-button').forEach((b) => (b.disabled = false))
           completeInitialPresentation()
         }
@@ -18832,63 +18906,75 @@
       }
       // Entrance, theme and dialog motion.
       function entrance() {
-        if (reduced.matches || disposed) return
-        dashboardEntering = true
+        if (disposed) return
         syncModalPresentation()
-        const left = $$('.column.left .card'),
-          right = $$('.column.right .card'),
-          cards = []
-        for (let rank = 0; rank < Math.max(left.length, right.length); rank++) {
-          if (left[rank]) cards.push([left[rank], -1])
-          if (right[rank]) cards.push([right[rank], 1])
-        }
-        const finished = []
-        for (const [index, [node, sign]] of cards.entries()) {
+        if (reduced.matches) return
+        dashboardEntering = true
+        const easing = css('motion-enter-easing')
+        const cardDuration = motionMs('card-duration')
+        const stageGap = motionMs('stage-gap')
+        const firstCardDelay = motionMs('globe-duration') + motionMs('column-duration') + stageGap
+        const secondCardDelay = firstCardDelay + cardDuration + stageGap
+        const chromeDelay = secondCardDelay + cardDuration + stageGap
+        play($('[data-enter=map]'), [{ opacity: 0 }, { opacity: 1 }], {
+          duration: motionMs('map-duration'),
+          easing: 'ease-out',
+          fill: 'both',
+        })
+        const canvas = $('#map canvas')
+        if (canvas)
+          play(canvas, [{ transform: `scale(${css('motion-globe-start-scale')})` }, { transform: 'scale(1)' }], {
+            duration: motionMs('globe-duration'),
+            easing: 'cubic-bezier(0.2, 0.55, 0.35, 1)',
+            fill: 'both',
+          })
+        const surfaces = [
+          [$('.column.left'), -1],
+          [$('.column.right'), 1],
+        ]
+        const finished = surfaces.map(([node, sign], index) => {
           node.inert = true
+          node.style.willChange = 'transform, opacity'
           node.style.transformOrigin = sign < 0 ? 'left center' : 'right center'
           const animation = play(
             node,
             [
-              { opacity: 0, transform: `perspective(1600px) translateY(8px) rotateY(${sign * 86}deg) rotateX(3deg)` },
+              { opacity: 0, transform: `perspective(1600px) rotateY(${sign * 86}deg)` },
               { opacity: 1, transform: 'none' },
             ],
             {
-              duration: motionMs('card-duration'),
-              delay: index * motionMs('card-stagger'),
-              easing: 'cubic-bezier(.22,.58,.2,1)',
+              duration: cardDuration,
+              delay: index ? secondCardDelay : firstCardDelay,
+              easing,
               fill: 'both',
             },
           )
-          if (animation)
-            finished.push(
-              animation.finished
-                .catch(() => {})
-                .finally(() => {
-                  node.inert = false
-                  node.style.transformOrigin = ''
-                }),
-            )
-          else node.inert = false
-        }
-        const map = $('[data-enter=map]')
-        if (map)
-          play(
-            map,
+          const finish = () => {
+            node.inert = false
+            node.style.removeProperty('will-change')
+            node.style.removeProperty('transform-origin')
+          }
+          if (!animation) return finish()
+          return animation.finished.catch(() => {}).finally(finish)
+        })
+        const chrome = [$('.header'), ...$$('.map-card > :not(#map)'), $('.globe-labels')].filter(Boolean)
+        const chromeFinished = chrome.map((node) => {
+          node.inert = true
+          const animation = play(
+            node,
             [
-              { opacity: 0.18, transform: 'scale(.975)' },
+              { opacity: 0, transform: 'translateY(-6px)' },
               { opacity: 1, transform: 'none' },
             ],
-            { duration: motionMs('globe-duration'), easing: 'cubic-bezier(.22,.58,.2,1)', fill: 'both' },
+            { duration: motionMs('controls-duration'), delay: chromeDelay, easing, fill: 'both' },
           )
-        play(
-          $('.header'),
-          [
-            { opacity: 0, transform: 'translateY(-6px)' },
-            { opacity: 1, transform: 'none' },
-          ],
-          { duration: 900, easing: 'ease-out', fill: 'both' },
-        )
-        void Promise.allSettled(finished).then(() => {
+          const finish = () => {
+            node.inert = false
+          }
+          if (!animation) return finish()
+          return animation.finished.catch(() => {}).finally(finish)
+        })
+        void Promise.allSettled([...finished, ...chromeFinished]).then(() => {
           dashboardEntering = false
           syncModalPresentation()
         })
@@ -18935,6 +19021,10 @@
         cancelDialogAnimations(dialog)
         globe?.setPresentationPaused?.(true)
         if (!dialog.open) dialog.showModal()
+        if (dialog.classList.contains('material-popover')) {
+          syncSelectControls()
+          return
+        }
         play(
           dialog,
           [
@@ -18943,17 +19033,14 @@
           ],
           { duration: motionMs('dialog-duration'), easing: 'cubic-bezier(.18,.64,.23,1)' },
         )
-        const sections =
-          dialog.id === 'analysis-dialog'
-            ? [
-                '.dialog-head',
-                '.analysis-summary',
-                '.analysis-controls',
-                '.analysis-chart-panel',
-                '.analysis-table-panel',
-                '.analysis-notes',
-              ].map((selector) => dialog.querySelector(selector))
-            : [...dialog.querySelector('.settings-body').children]
+        const sections = [
+          '.dialog-head',
+          '.analysis-summary',
+          '.analysis-controls',
+          '.analysis-chart-panel',
+          '.analysis-table-panel',
+          '.analysis-notes',
+        ].map((selector) => dialog.querySelector(selector))
         for (const [index, node] of sections.entries())
           if (node)
             play(
@@ -19407,14 +19494,14 @@
       }
       // UI event wiring, grouped by responsibility.
       function bindUI() {
-        $$('.icon-button, .close-button, .map-action button').forEach((node) => node.classList.add('control-icon'))
+        $$('.icon-button, .close-button').forEach((node) => node.classList.add('control-icon'))
         bindOverviewControls()
         bindDialogs()
         bindAppearanceControls()
         bindAnalysisControls()
         bindMotionPreference()
         initSelectControls()
-        $$('.control-group button, .pill, #analysis-clear, #reset-scope').forEach((node) =>
+        $$('.control-group button, .pill, #analysis-clear, #refresh-data').forEach((node) =>
           node.classList.add('query-control'),
         )
       }
@@ -19428,7 +19515,7 @@
         for (const name of Object.keys(metricDefs))
           on($(`[data-analysis=${name}]`), 'click', (e) => openAnalysis(name, e.currentTarget))
         on($('#country'), 'change', (e) => setCountry(e.target.value, true, e.currentTarget))
-        on($('#reset-scope'), 'click', (e) => setCountry('', false, e.currentTarget))
+        on($('#refresh-data'), 'click', (e) => requestMain(e.currentTarget))
         on($('#map-home'), 'click', () => globe?.home())
         on($('#rotate'), 'click', () => globe?.toggle())
         on($('#rotation-switch'), 'click', () => globe?.toggle())
@@ -19459,27 +19546,56 @@
         }
       }
       function bindAppearanceControls() {
+        const root = document.documentElement
+        const glassInput = $('#glass-strength')
+        const glassOutput = $('output[for="glass-strength"]')
+        let glassFrame = 0
+        const setGlassStrength = (value, persist = false) => {
+          const n = value == null || String(value).trim() === '' ? NaN : Number(value)
+          const strength = Number.isFinite(n) ? Math.round(Math.max(0, Math.min(100, n))) : 60
+          glassInput.value = strength
+          glassInput.style.setProperty('--range-progress', `${strength}%`)
+          glassInput.setAttribute('aria-valuetext', `${strength}%，通透到凝实`)
+          glassOutput.value = `${strength}%`
+          if (!glassFrame)
+            glassFrame = requestAnimationFrame(() => {
+              glassFrame = 0
+              root.style.setProperty('--glass-strength', glassInput.value)
+            })
+          if (persist) {
+            try {
+              localStorage.setItem('vbi-map-glass-strength', String(strength))
+            } catch {}
+          }
+        }
+        on(glassInput, 'input', () => setGlassStrength(glassInput.value))
+        on(glassInput, 'change', () => setGlassStrength(glassInput.value, true))
+        on(window, 'storage', (event) => {
+          if (event.key === 'vbi-map-glass-strength') setGlassStrength(event.newValue)
+        })
+        events.signal.addEventListener('abort', () => cancelAnimationFrame(glassFrame), { once: true })
+        setGlassStrength(root.style.getPropertyValue('--glass-strength'))
         $('#theme-options').replaceChildren(
           ...[
-            ['dark', '深蓝', '#23475b'],
+            ['dark', '深蓝'],
             ['graphite', '石墨'],
-            ['ice', '冰蓝', '#bfd9ed'],
+            ['ice', '冰蓝'],
             ['silver', '银雾'],
-          ].map(([key, label, color]) => {
+          ].map(([key, label]) => {
             const b = document.createElement('button')
-            b.className = 'theme-option'
+            b.className = 'theme-option material-option material-theme'
             b.dataset.themeOption = key
             b.setAttribute('aria-pressed', String(document.documentElement.dataset.theme === key))
             const dot = document.createElement('i')
             dot.className = 'theme-swatch'
             dot.dataset.swatch = key
-            if (color) dot.style.setProperty('--swatch', color)
             b.append(dot, document.createTextNode(label))
             on(b, 'click', () => setTheme(key))
             return b
           }),
         )
         on($('#appearance-reset'), 'click', () => {
+          setGlassStrength(60, true)
           setTheme('ice')
           globe?.setSurface('hex')
         })
@@ -19654,7 +19770,7 @@
         trigger.setAttribute('aria-expanded', 'false')
         trigger.setAttribute('aria-label', select.getAttribute('aria-label') || '选择国家')
         panel.id = select.id + '-panel'
-        panel.className = 'select-panel'
+        panel.className = 'select-panel control-menu material-popover'
         panel.setAttribute('popover', 'auto')
         trigger.setAttribute('aria-controls', select.id + '-list')
         list.id = select.id + '-list'
@@ -19886,11 +20002,16 @@
         const container = $('#quick-filters')
         if (!container || !allCountries.length) return
         const candidates = allCountries.filter((r) => r.country !== '__missing__').slice(0, 3)
-        if (currentCountry && !candidates.some((r) => r.country === currentCountry))
+        const pinned = ['China', 'Singapore']
+        if (currentCountry && !pinned.includes(currentCountry) && !candidates.some((r) => r.country === currentCountry))
           candidates[2] = allCountries.find((r) => r.country === currentCountry) || {
             country: currentCountry,
             n: cache?.summary.n,
           }
+        for (const country of pinned) {
+          const row = allCountries.find((r) => r.country === country)
+          if (row && !candidates.some((r) => r.country === country)) candidates.push(row)
+        }
         const signature = currentCountry + '|' + candidates.map((r) => r.country).join('|')
         if (signature === quickFilterSignature) return
         quickFilterSignature = signature
@@ -19910,7 +20031,7 @@
           existing.delete(row.country)
           button.textContent = row.country ? countryLabel(row.country) : '全球'
           button.setAttribute('aria-pressed', String(currentCountry === row.country))
-          button.title = `${row.country || '全部国家与未标注记录'} · ${fmt(row.n)}条样本`
+          button.title = `${row.country ? countryLabel(row.country) : '全部国家与未标注记录'} · ${fmt(row.n)}条样本`
           if (container.children[index] !== button) container.insertBefore(button, container.children[index] || null)
         }
         for (const button of existing.values()) button.remove()
@@ -21016,7 +21137,7 @@ void main() {
             rowSignature = ''
           let drawing = false,
             lost = false,
-            presentationPaused = false,
+            presentationPaused = true,
             auto = true,
             hoverPaused = false,
             mapSurface = 'hex',
@@ -21024,7 +21145,7 @@ void main() {
             mapMetric = 'mean',
             growthStart = 0,
             growthPending = false,
-            growthDuration = 1400
+            growthDuration = motionMs('column-duration')
           let lastTime = 0,
             focusTween,
             frozenAt = 0,
@@ -21483,8 +21604,8 @@ void main() {
               updateDataLayer(false)
               startHeights.array.fill(0)
               startHeights.needsUpdate = true
-              growthDuration = 1400
-              // Begin only after the first card entrance; loading and GPU work consume no animation time.
+              growthDuration = motionMs('column-duration')
+              // The first growth waits for the globe's scale entrance; container flips never pause it.
               growthPending = !reduced.matches
               growthStart = 0
               columnUniforms.progress.value = growthPending ? 0 : 1
@@ -21537,6 +21658,11 @@ void main() {
               }
             }
             lastTime = time
+            if (pendingPointer) {
+              const event = pendingPointer
+              pendingPointer = undefined
+              handlePointerMove(event)
+            }
             controls.enableDamping = !reduced.matches && !focusTween
             controls.autoRotate =
               auto && !hoverPaused && !down && !reduced.matches && !presentationPaused && !focusTween
@@ -21553,7 +21679,7 @@ void main() {
               if (progress === 1) focusTween = undefined
             }
             if (growthStart && !presentationPaused) {
-              const progress = Math.min(1, (time - growthStart) / growthDuration)
+              const progress = Math.max(0, Math.min(1, (time - growthStart) / growthDuration))
               columnUniforms.progress.value = 1 - Math.pow(1 - progress, 3)
               projectionDirty = true
               if (progress === 1) growthStart = 0
@@ -21563,11 +21689,6 @@ void main() {
             if (canAnimateEffects()) effectTime.value += Math.min(gap, 80) / 1000
             ringMaterial.uniforms.motion.value = reduced.matches ? 0 : 1
             if (updateLightRig()) diagnostics.lightUpdates++
-            if (pendingPointer) {
-              const event = pendingPointer
-              pendingPointer = undefined
-              handlePointerMove(event)
-            }
             backdropCache.render({
               stable: hasSelectedPoint() && !controls.autoRotate && !focusTween && !down && !changed && !growthStart,
             })
@@ -21624,7 +21745,8 @@ void main() {
             updatePausedClock()
             if (!value && growthPending && presentationStarted) {
               growthPending = false
-              growthStart = reduced.matches ? 0 : performance.now()
+              const delay = diagnostics.dataBuilds === 1 ? motionMs('globe-duration') : 0
+              growthStart = reduced.matches ? 0 : performance.now() + delay
               columnUniforms.progress.value = growthStart ? 0 : 1
               projectionDirty = true
             }
@@ -21663,7 +21785,10 @@ void main() {
           }
           function syncRotationButtons() {
             const requested = !effectsPaused && (auto || recordsByCountry.has(selection))
-            $('#rotate').setAttribute('aria-pressed', String(requested))
+            const button = $('#rotate')
+            button.setAttribute('aria-pressed', String(requested))
+            button.setAttribute('aria-label', requested ? '暂停地球动效' : '播放地球动效')
+            button.querySelector('use').setAttribute('href', requested ? '#i-pause' : '#i-play')
             $('#rotation-switch').setAttribute('aria-checked', String(requested))
           }
           function toggle() {
@@ -21721,6 +21846,20 @@ void main() {
             placeLabels()
             invalidate()
           }
+          function pointerOverGlobe(event, box = renderer.domElement.getBoundingClientRect()) {
+            if (!box.width || !box.height) return false
+            pointer.set(
+              ((event.clientX - box.left) / box.width) * 2 - 1,
+              1 - ((event.clientY - box.top) / box.height) * 2,
+            )
+            camera.updateMatrixWorld()
+            raycaster.setFromCamera(pointer, camera)
+            const distance = relative.copy(sphere.position).sub(raycaster.ray.origin).dot(raycaster.ray.direction)
+            const perpendicular = Math.max(0, relative.lengthSq() - distance * distance)
+            if (distance <= 0 || perpendicular > terrain.maximumRadius ** 2) return false
+            // Constant-time interior/exterior checks; only the terrain silhouette needs a mesh hit.
+            return perpendicular < radius * radius * 0.99 || raycaster.intersectObject(sphere, false).length > 0
+          }
           function pick(event, box = renderer.domElement.getBoundingClientRect()) {
             updateProjection()
             const u = (event.clientX - box.left) / box.width,
@@ -21760,14 +21899,16 @@ void main() {
             tooltip.hidden = true
             renderer.domElement.style.cursor = down ? 'grabbing' : 'grab'
           }
-          listen(renderer.domElement, 'pointerenter', () => {
-            hoverPaused = true
-            syncMotion()
-          })
+          const queuePointer = (event) => {
+            if (down) return
+            pendingPointer = { clientX: event.clientX, clientY: event.clientY }
+            invalidate()
+          }
+          listen(renderer.domElement, 'pointerenter', queuePointer)
           listen(renderer.domElement, 'pointerdown', (event) => {
-            hoverPaused = true
-            syncMotion()
             down = { x: event.clientX, y: event.clientY }
+            hoverPaused = pointerOverGlobe(event)
+            syncMotion()
             focusTween = undefined
             clearHover()
             renderer.domElement.style.cursor = 'grabbing'
@@ -21780,16 +21921,20 @@ void main() {
               const record = pick(event)
               if (record) setCountry(record.country, true)
             }
+            queuePointer(event)
           })
           listen(renderer.domElement, 'pointercancel', () => {
             down = undefined
+            hoverPaused = false
             clearHover()
+            syncMotion()
           })
           function handlePointerMove(event) {
             diagnostics.hoverSamples++
             if (down) return
             const box = renderer.domElement.getBoundingClientRect()
             const record = pick(event, box)
+            hoverPaused = Boolean(record) || pointerOverGlobe(event, box)
             if (!record) {
               if (hovered) {
                 clearHover()
@@ -21820,9 +21965,7 @@ void main() {
           }
           listen(renderer.domElement, 'pointermove', (event) => {
             diagnostics.hoverEvents++
-            if (down) return
-            pendingPointer = { clientX: event.clientX, clientY: event.clientY }
-            invalidate()
+            queuePointer(event)
           })
           listen(renderer.domElement, 'pointerleave', () => {
             hoverPaused = false
@@ -22047,7 +22190,7 @@ void main() {
 
       function initializeDashboardView() {
         $('#country').replaceChildren(
-          new Option('全部国家与未标注记录', ''),
+          new Option('全部', ''),
           ...Object.keys(geo.lookup)
             .sort((a, b) => countryLabel(a).localeCompare(countryLabel(b), 'zh-CN'))
             .map((key) => new Option(countryLabel(key), key)),
@@ -22156,7 +22299,6 @@ void main() {
             if (currentCountry) globe.focus(currentCountry)
           }
           syncModalPresentation()
-          play(globe.renderer.domElement, [{ opacity: 0 }, { opacity: 1 }], { duration: 900, easing: 'ease-out' })
         } catch (error) {
           if (!disposed) {
             fallback(`三维引擎不可用：${error.message}。国家选择和指标分析仍可使用。`)
@@ -22166,7 +22308,7 @@ void main() {
           removePending()
           events.signal.removeEventListener('abort', removePending)
           mapBootResolved = true
-          // Wait for the first map frame before releasing the loader and the six card turns.
+          // Wait for the first map frame before revealing the map and its two trays.
           await afterModalPaint()
           completeInitialPresentation()
         }

@@ -57,6 +57,14 @@
         select(Object.hasOwn(definitions, saved) ? saved : defaultTheme, { persist: false })
         window.MapTheme = { definitions, defaultTheme, current: () => definitions[root.dataset.theme], select }
       })()
+      try {
+        const saved = localStorage.getItem('vbi-map-glass-strength')
+        const value = saved?.trim() ? Number(saved) : NaN
+        document.documentElement.style.setProperty(
+          '--glass-strength',
+          Number.isFinite(value) ? Math.round(Math.max(0, Math.min(100, value))) : 60,
+        )
+      } catch {}
     </script>
     <link rel="icon" href="data:," />
     <title>全球地震观测</title>
@@ -75,7 +83,6 @@
         font-synthesis: none;
         --update-duration: 600ms;
         --update-easing: cubic-bezier(0.22, 1, 0.36, 1);
-        --card-enter-duration: 1600ms;
         --gutter: 20px;
         --sidebar: clamp(286px, 22vw, 348px);
         --dock: clamp(202px, 24vh, 254px);
@@ -156,18 +163,15 @@
         background: var(--page-surface);
         z-index: -3;
         opacity: 0;
-        transition: opacity 800ms ease;
+        transition: opacity var(--motion-map-duration) ease-out;
       }
       body[data-map-ready='true'] #map {
         opacity: 1;
       }
-      body[data-map-ready='false'] .map-effects {
-        visibility: hidden;
+      body[data-scene-ready='true'][data-map-ready='true'] #map {
+        animation: map-enter var(--motion-map-duration) ease-out backwards;
       }
-      body[data-scene-ready='true'] :is(.topbar, .map-controls, .map-meta, .page-footer) {
-        animation: controls-enter 500ms ease calc(80ms + 2 * var(--card-enter-duration)) both;
-      }
-      @keyframes controls-enter {
+      @keyframes map-enter {
         from {
           opacity: 0;
           visibility: hidden;
@@ -177,11 +181,36 @@
           visibility: visible;
         }
       }
-      /* Share flip timing; each card defines its hinge and entrance order. */
+      body[data-map-ready='false'] .map-effects {
+        visibility: hidden;
+      }
+      body[data-scene-ready='true'] :is(.topbar, .map-controls, .map-meta, .page-footer) {
+        animation: controls-enter var(--motion-controls-duration) var(--motion-enter-easing)
+          calc(var(--motion-map-zoom-duration) + var(--motion-card-duration) * 2 + var(--motion-stage-gap) * 3)
+          backwards;
+      }
+      body[data-scene-ready='true'] .map-signal {
+        animation: map-enter var(--motion-controls-duration) var(--motion-enter-easing)
+          calc(var(--motion-map-zoom-duration) + var(--motion-card-duration) * 2 + var(--motion-stage-gap) * 3)
+          backwards;
+      }
+      @keyframes controls-enter {
+        from {
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-6px);
+        }
+        to {
+          opacity: 1;
+          visibility: visible;
+          transform: none;
+        }
+      }
+      /* The map starts first; only the two containers flip, carrying their contents. */
       body[data-scene-ready='true'] .sidebar,
       body[data-scene-ready='true'] .bottom {
-        animation: card-enter var(--card-enter-duration) var(--update-easing) backwards;
-        animation-delay: calc(80ms + var(--card-order, 0) * var(--card-enter-duration));
+        animation: card-enter var(--motion-card-duration) var(--motion-enter-easing) backwards;
+        animation-delay: calc(var(--motion-map-zoom-duration) + var(--motion-stage-gap));
       }
       body[data-scene-ready='true'] .sidebar {
         --card-axis: 0, 1, 0;
@@ -189,11 +218,13 @@
       }
       body[data-scene-ready='true'] .bottom {
         --card-axis: 1, 0, 0;
-        --card-order: 1;
+        animation-delay: calc(
+          var(--motion-map-zoom-duration) + var(--motion-card-duration) + var(--motion-stage-gap) * 2
+        );
         transform-origin: center bottom;
       }
       body[data-scene-ready='true'] .glass::after {
-        animation: glass-reflection var(--card-enter-duration) ease-out backwards;
+        animation: glass-reflection var(--motion-card-duration) ease-out backwards;
         animation-delay: inherit;
       }
       @keyframes glass-reflection {
@@ -355,12 +386,6 @@
       .glass,
       .loading-card {
         position: relative;
-        background: var(--glass-background);
-        border: 0;
-        border-radius: 20px;
-        box-shadow: var(--glass-shadow);
-        backdrop-filter: var(--glass-filter);
-        -webkit-backdrop-filter: var(--glass-filter);
       }
       .glass::after {
         content: '';
@@ -436,15 +461,16 @@
         gap: 6px;
       }
       .overview-grid > div {
-        background: var(--glass-tile);
+        background: var(--material-card-background);
         border: 0;
-        box-shadow: var(--glass-tile-shadow);
+        box-shadow: var(--material-card-shadow);
         border-radius: 11px;
         padding: 10px 9px;
         min-width: 0;
       }
       .overview-grid > div:first-child {
-        background: radial-gradient(ellipse at 5% 0%, var(--glass-highlight), transparent 70%), var(--glass-tile);
+        background:
+          radial-gradient(ellipse at 5% 0%, var(--glass-highlight), transparent 70%), var(--material-card-background);
       }
       .metric-label {
         color: var(--muted);
@@ -501,16 +527,17 @@
       .progress-grid > div {
         position: relative;
         min-width: 0;
-        background: var(--glass-tile);
+        background: var(--material-card-background);
         border: 0;
-        box-shadow: var(--glass-tile-shadow);
+        box-shadow: var(--material-card-shadow);
         border-radius: 8px;
         padding: 8px 9px;
         overflow: hidden;
       }
       .progress-grid .progress-main {
         grid-row: span 2;
-        background: radial-gradient(ellipse at 5% 0%, var(--glass-highlight), transparent 70%), var(--glass-tile);
+        background:
+          radial-gradient(ellipse at 5% 0%, var(--glass-highlight), transparent 70%), var(--material-card-background);
       }
       .progress-main .metric-number {
         font-size: 34px;
@@ -1387,46 +1414,25 @@
       }
     </style>
     <style id="map-ui-styles">
-      /* Complete theme tokens; data-mode is derived from the selected theme. */
+      /* Scene palette and layout; dashboard-material owns shared mode optics. */
       :root[data-mode='light'] {
-        color-scheme: light;
-        --glass-surface: rgb(255 255 255 / 30%);
-        --glass-fallback: #f5f5f5;
-        --glass-radius: 20px;
-        --glass-filter: blur(14px) saturate(1.08) brightness(1.02);
-        --glass-shadow:
-          0 18px 48px -12px rgb(0 0 0 / 12%), 0 4px 16px -4px rgb(0 0 0 / 5%), inset 0 6px 20px rgb(255 255 255 / 12%),
-          inset 0 -8px 22px rgb(255 255 255 / 3%);
-        --glass-inset: linear-gradient(145deg, rgb(255 255 255 / 20%), rgb(244 247 249 / 10%));
-        --glass-tile: linear-gradient(145deg, rgb(255 255 255 / 38%), rgb(241 245 248 / 20%));
-        --glass-contrast-surface: rgb(255 255 255 / 82%);
         --ink: #383838;
         --strong: #555;
         --muted: #767676;
         --faint: #929292;
-        --line: #e5e5e5;
         --page-surface: #d5d5d5;
+        --map-grid: #608795;
+        --map-grid-opacity: 0.16;
         --popover-surface: rgb(248 248 248 / 92%);
         --hover: rgb(255 255 255 / 24%);
         --track: rgb(90 90 90 / 10%);
         --divider: rgb(100 100 100 / 12%);
-        --glass-reflection: rgb(255 255 255 / 14%);
-        --glass-highlight: rgb(255 255 255 / 6%);
-        --glass-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 8%);
-        --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 12%);
-        --glass-tile-hover-shadow: inset 0 0 0 1px rgb(255 255 255 / 65%), 0 8px 22px -10px rgb(45 59 71 / 22%);
-        --control-surface: linear-gradient(145deg, rgb(240 244 246 / 92%), rgb(224 232 236 / 90%));
-        --control-active: linear-gradient(145deg, rgb(255 255 255 / 96%), rgb(255 255 255 / 72%));
         --control-ink: #666;
         --control-selected: #343a40;
-        --control-hover: rgb(255 255 255 / 48%);
         --event-shadow: rgb(35 62 80 / 28%);
         --dialog-scrim: rgb(70 70 70 / 27%);
       }
       :root[data-theme='ice'] {
-        --glass-surface: rgb(244 249 255 / 34%);
-        --glass-fallback: #f2f7fb;
-        --glass-contrast-surface: rgb(244 249 255 / 82%);
         --ink: #354454;
         --strong: #34485a;
         --muted: #6f7c88;
@@ -1434,7 +1440,6 @@
         --accent: #4f81b4;
         --accent-soft: #e5eef7;
         --focus: #345f89;
-        --line: #dce6ef;
         --page-surface: #d4e2ec;
         --popover-surface: rgb(245 249 253 / 94%);
         --track: rgb(79 112 146 / 10%);
@@ -1455,56 +1460,25 @@
         --flight-head: #4f81b4;
       }
       :root[data-mode='dark'] {
-        color-scheme: dark;
-        --glass-surface: rgb(8 19 32 / 38%);
-        --glass-fallback: #162333;
-        --glass-filter: blur(14px) saturate(1.12) brightness(1.04);
-        --glass-shadow:
-          0 18px 48px -12px rgb(0 5 14 / 38%), 0 4px 16px -4px rgb(0 5 14 / 18%),
-          inset 0 6px 20px rgb(224 238 255 / 6%), inset 0 -8px 22px rgb(124 162 202 / 3%);
-        --glass-inset: linear-gradient(145deg, rgb(204 225 250 / 3%), rgb(5 14 26 / 8%));
-        --glass-tile: linear-gradient(145deg, rgb(220 236 255 / 8%), rgb(8 19 33 / 5%));
-        --glass-radius: 20px;
-        --glass-contrast-surface: rgb(8 19 32 / 80%);
         --ink: #dde0e7;
         --strong: #e2e5ec;
         --muted: #939baa;
         --faint: #828da4;
         --accent: #b8c7df;
         --accent-soft: #28374b;
-        --line: #354154;
         --page-surface: #080d16;
+        --map-grid: #a8b5d0;
+        --map-grid-opacity: 0.14;
         --popover-surface: rgb(17 29 45 / 94%);
         --hover: rgb(172 204 241 / 5%);
         --track: rgb(177 185 202 / 6%);
         --divider: rgb(177 185 202 / 12%);
         --focus: #c2cfe2;
-        --glass-reflection: rgb(218 236 255 / 10%);
-        --glass-highlight: rgb(203 226 255 / 6%);
-        --glass-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 8%);
-        --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 12%);
-        --glass-tile-hover-shadow: 0 10px 26px -10px rgb(0 5 14 / 26%), inset 0 6px 20px rgb(225 239 255 / 7%);
-        --control-surface: linear-gradient(145deg, rgb(34 45 61 / 92%), rgb(20 31 46 / 90%));
-        --control-active: linear-gradient(145deg, rgb(187 204 229 / 22%), rgb(139 163 196 / 12%));
         --control-ink: #b8c2d2;
         --control-selected: #eef2f8;
-        --control-hover: rgb(200 216 240 / 9%);
         --chart-ink: #b0c4e8;
         --meter-fill: #a2adc4;
         --dialog-scrim: rgb(0 5 14 / 48%);
-      }
-      .theme-swatch {
-        width: 14px;
-        height: 14px;
-        flex: none;
-        border: 1px solid var(--divider);
-        border-radius: 50%;
-      }
-      .theme-swatch[data-swatch='ice'] {
-        background: linear-gradient(135deg, #f2f7fb 50%, #4f81b4 50%);
-      }
-      .theme-swatch[data-swatch='dark'] {
-        background: linear-gradient(135deg, #162333 50%, #b0c4e8 50%);
       }
       .settings-map-option[aria-pressed='true'] small {
         color: var(--control-selected-muted);
@@ -1536,13 +1510,6 @@
       }
       body {
         background: var(--page-surface);
-        --glass-background: var(--glass-surface);
-      }
-      /* Preserve matching vector scenes; protect contrast over opposite tones and mixed-relief imagery. */
-      :root[data-mode='light'] body[data-basemap-tone='dark'],
-      :root[data-mode='dark'] body[data-basemap-tone='light'],
-      body[data-basemap-source='tiles'] {
-        --glass-surface: var(--glass-contrast-surface);
       }
       body[data-basemap-tone='light'] {
         --map-ink: #383838;
@@ -1561,7 +1528,6 @@
         --overlay-easing: cubic-bezier(0.22, 1, 0.36, 1);
       }
       .ma-dialog[open],
-      .settings-panel:not([hidden]),
       .map-record-detail:not([hidden]) {
         animation: overlay-enter var(--overlay-duration) var(--overlay-easing) backwards;
       }
@@ -1570,7 +1536,6 @@
       }
       .ma-dialog[open] .ma-header,
       .ma-dialog[open] .ma-content > *,
-      .settings-panel:not([hidden]) > *,
       .map-record-detail:not([hidden]) > :not(.record-close) {
         animation: overlay-content-enter 360ms var(--overlay-easing) backwards;
         animation-delay: calc(70ms + var(--overlay-order, 0) * var(--overlay-stagger));
@@ -1589,27 +1554,6 @@
       }
       .ma-definition {
         --overlay-order: 5;
-      }
-      .settings-panel > :nth-child(2) {
-        --overlay-order: 1;
-      }
-      .settings-panel > :nth-child(3) {
-        --overlay-order: 2;
-      }
-      .settings-panel > :nth-child(4) {
-        --overlay-order: 3;
-      }
-      .settings-panel > :nth-child(5) {
-        --overlay-order: 4;
-      }
-      .settings-panel > :nth-child(6) {
-        --overlay-order: 5;
-      }
-      .settings-panel > :nth-child(7) {
-        --overlay-order: 6;
-      }
-      .settings-panel > :nth-child(8) {
-        --overlay-order: 7;
       }
       .map-record-detail .record-meta {
         --overlay-order: 1;
@@ -1666,24 +1610,11 @@
       .ma-dialog,
       .map-record-detail {
         color: var(--ink);
-        border: 1px solid var(--line);
-        border-radius: var(--glass-radius);
-        background: var(--glass-background);
-        box-shadow: var(--glass-shadow);
-        backdrop-filter: var(--glass-filter);
-        -webkit-backdrop-filter: var(--glass-filter);
       }
       .l-card {
         color: var(--ink);
-        background: var(--glass-inset);
-        border: 0;
-        box-shadow: var(--glass-inset-shadow);
       }
-      .l-tile {
-        background: var(--glass-tile);
-        border: 0;
-        box-shadow: var(--glass-tile-shadow);
-      }
+
       .topbar {
         z-index: 8;
       }
@@ -1729,7 +1660,6 @@
         pointer-events: auto;
       }
       .settings-panel {
-        background: var(--popover-surface);
         position: fixed;
         z-index: 50;
         margin: 0;
@@ -1774,29 +1704,14 @@
         font: inherit;
         cursor: pointer;
       }
-      .settings-themes button,
       .settings-markers button {
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 7px;
         padding: 9px;
-        border: 0;
-        border-radius: 8px;
-        color: var(--muted);
-        background: var(--glass-inset);
       }
-      .settings-themes svg {
-        width: 14px;
-        height: 14px;
-      }
-      .settings-themes [aria-pressed='true'],
-      .settings-markers [aria-pressed='true'],
-      .settings-map-option[aria-pressed='true'] {
-        background: var(--control-active);
-        color: var(--control-selected);
-        box-shadow: inset 0 0 0 1px var(--divider);
-      }
+
       .settings-maps {
         max-height: min(396px, max(120px, calc(100dvh - 400px)));
         overflow-y: auto;
@@ -1807,16 +1722,11 @@
         gap: 6px;
       }
       .settings-map-option {
-        border: 0;
-        border-radius: 9px;
-        background: var(--glass-inset);
         padding: 6px;
-        color: var(--ink);
+
         text-align: left;
       }
-      .settings-map-option:hover {
-        background: var(--hover);
-      }
+
       .settings-map-option[hidden] {
         display: none;
       }
@@ -1861,11 +1771,8 @@
       }
       .settings-reset {
         flex-shrink: 0;
-        border: 0;
-        border-radius: 6px;
+
         padding: 7px 9px;
-        color: var(--muted);
-        background: var(--glass-inset);
       }
       .settings-reset:hover {
         color: var(--ink);
@@ -1907,24 +1814,6 @@
       .footer {
         color: var(--muted);
         background: transparent;
-      }
-      @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-        .l-shell,
-        .settings-panel,
-        .ma-dialog,
-        .map-record-detail {
-          background: var(--glass-fallback);
-        }
-      }
-      @media (prefers-reduced-transparency: reduce) {
-        .l-shell,
-        .settings-panel,
-        .ma-dialog,
-        .map-record-detail {
-          background: var(--glass-fallback);
-          backdrop-filter: none;
-          -webkit-backdrop-filter: none;
-        }
       }
       .settings-map-option[data-map-style='seismic'] img {
         filter: grayscale(1) brightness(0.6);
@@ -2083,6 +1972,7 @@
         cursor: wait;
       }
       :root[data-theme='silver'] {
+        --map-grid: #6c7f8d;
         --depth-shallow: #8fa5bb;
         --depth-intermediate: #617d94;
         --depth-deep: #435e74;
@@ -2094,6 +1984,7 @@
         --event-stroke: #fafbfc;
       }
       :root[data-theme='graphite'] {
+        --map-grid: #a1aaa5;
         --depth-shallow: #708b83;
         --depth-intermediate: #a5b8ac;
         --depth-deep: #d0ddd3;
@@ -2471,7 +2362,7 @@
           const trigger = host.firstElementChild
           const panel = document.createElement('section')
           panel.id = 'map-settings-panel'
-          panel.className = 'settings-panel'
+          panel.className = 'settings-panel material-popover'
           panel.setAttribute('popover', 'auto')
           panel.setAttribute('role', 'dialog')
           panel.setAttribute('aria-labelledby', 'map-settings-title')
@@ -2480,18 +2371,47 @@
       <div class="settings-themes" role="group" aria-labelledby="theme-label">${Object.entries(themes)
         .map(
           ([id, definition]) =>
-            `<button type="button" data-theme-choice="${id}"><i class="theme-swatch" data-swatch="${id}" aria-hidden="true"></i>${definition.label}</button>`,
+            `<button type="button" class="material-option material-theme" data-theme-choice="${id}"><i class="theme-swatch" data-swatch="${id}" aria-hidden="true"></i>${definition.label}</button>`,
         )
         .join('')}</div>
+      <div class="material-setting"><label for="glass-strength">玻璃强度<output for="glass-strength"></output></label><input class="material-range" id="glass-strength" type="range" min="0" max="100" step="1" value="60"><div class="material-setting-ends" aria-hidden="true"><span>通透</span><span>凝实</span></div></div>
       <p class="settings-label" id="marker-label">标记点</p>
-      <div class="settings-markers" role="group" aria-labelledby="marker-label"><button type="button" data-marker-choice="2d">2D</button><button type="button" data-marker-choice="3d">3D</button></div>
+      <div class="settings-markers" role="group" aria-labelledby="marker-label"><button type="button" class="material-option" data-marker-choice="2d">2D</button><button type="button" class="material-option" data-marker-choice="3d">3D</button></div>
       <p class="settings-label" id="basemap-label">底图</p><div class="settings-maps" role="group" aria-labelledby="basemap-label"></div>
-      <footer class="settings-footer"><p class="settings-status" id="basemap-status" role="status"></p><button type="button" class="settings-reset">恢复默认</button></footer>`
+      <footer class="settings-footer"><p class="settings-status" id="basemap-status" role="status"></p><button type="button" class="settings-reset material-action">恢复默认</button></footer>`
           document.body.append(panel)
+          const glassInput = panel.querySelector('#glass-strength')
+          const glassOutput = panel.querySelector('output[for="glass-strength"]')
+          let glassFrame = 0
+          const setGlassStrength = (value, persist = false) => {
+            const n = value == null || String(value).trim() === '' ? NaN : Number(value)
+            const strength = Number.isFinite(n) ? Math.round(Math.max(0, Math.min(100, n))) : 60
+            glassInput.value = strength
+            glassInput.style.setProperty('--range-progress', `${strength}%`)
+            glassInput.setAttribute('aria-valuetext', `${strength}%，通透到凝实`)
+            glassOutput.value = `${strength}%`
+            if (!glassFrame)
+              glassFrame = requestAnimationFrame(() => {
+                glassFrame = 0
+                root.style.setProperty('--glass-strength', glassInput.value)
+              })
+            if (persist) {
+              try {
+                localStorage.setItem('vbi-map-glass-strength', String(strength))
+              } catch {}
+            }
+          }
+          const syncGlassStrength = (event) => {
+            if (event.key === 'vbi-map-glass-strength') setGlassStrength(event.newValue)
+          }
+          glassInput.oninput = () => setGlassStrength(glassInput.value)
+          glassInput.onchange = () => setGlassStrength(glassInput.value, true)
+          window.addEventListener('storage', syncGlassStrength)
+          setGlassStrength(root.style.getPropertyValue('--glass-strength'))
           const options = panel.querySelector('.settings-maps')
           for (const style of basemaps) {
             const button = document.createElement('button')
-            button.className = 'settings-map-option'
+            button.className = 'settings-map-option material-option'
             button.dataset.mapStyle = style.id
             button.dataset.mapTheme = style.dark ? 'dark' : 'light'
             button.innerHTML = `${style.preview ? `<div class="settings-map-preview"><img data-src="${escape(style.preview)}" alt="" loading="lazy"></div>` : ''}<strong>${escape(style.name)}</strong><small>${escape(style.note || '')}</small>`
@@ -2574,6 +2494,7 @@
           panel.addEventListener('click', async (event) => {
             if (event.target.closest('.settings-close')) return close(true)
             if (event.target.closest('.settings-reset')) {
+              setGlassStrength(60, true)
               applyTheme(defaults.theme)
               setMarkerMode('2d')
               options.scrollTop = 0
@@ -2610,6 +2531,8 @@
           return {
             sync,
             destroy() {
+              cancelAnimationFrame(glassFrame)
+              window.removeEventListener('storage', syncGlassStrength)
               close()
               document.removeEventListener('keydown', escapeKey, true)
               document.removeEventListener('pointerdown', outside)
@@ -2626,7 +2549,7 @@
           layer.className = 'loading'
           layer.setAttribute('role', 'status')
           layer.setAttribute('aria-live', 'polite')
-          layer.innerHTML = `<div class="loading-card l-shell">
+          layer.innerHTML = `<div class="loading-card l-shell material-shell">
       <div class="loading-orbit" aria-hidden="true"></div>
       <h2 id="loading-title">${escape(title)}</h2>
       <p id="loading-message">${escape(message)}</p>
@@ -9621,206 +9544,6 @@
                 ],
               },
               openmaptiles: { type: 'vector', url: 'https://tiles.openfreemap.org/planet' },
-              'seismic-grid': {
-                type: 'geojson',
-                data: {
-                  type: 'FeatureCollection',
-                  features: [
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [-180, -75],
-                          [-180, 80],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [-150, -75],
-                          [-150, 80],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [-120, -75],
-                          [-120, 80],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [-90, -75],
-                          [-90, 80],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [-60, -75],
-                          [-60, 80],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [-30, -75],
-                          [-30, 80],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [0, -75],
-                          [0, 80],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [30, -75],
-                          [30, 80],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [60, -75],
-                          [60, 80],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [90, -75],
-                          [90, 80],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [120, -75],
-                          [120, 80],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [150, -75],
-                          [150, 80],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [-180, -60],
-                          [0, -60],
-                          [180, -60],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [-180, -30],
-                          [0, -30],
-                          [180, -30],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [-180, 0],
-                          [0, 0],
-                          [180, 0],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [-180, 30],
-                          [0, 30],
-                          [180, 30],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [-180, 60],
-                          [0, 60],
-                          [180, 60],
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
             },
             layers: [
               { id: 'background', type: 'background', paint: { 'background-color': '#0a101d' } },
@@ -9836,12 +9559,6 @@
                   'raster-opacity': 0.68,
                   'raster-fade-duration': 300,
                 },
-              },
-              {
-                id: 'graticule',
-                type: 'line',
-                source: 'seismic-grid',
-                paint: { 'line-color': '#a8b5d0', 'line-width': 0.5, 'line-opacity': 0.075 },
               },
               {
                 id: 'boundaries',
@@ -9921,201 +9638,6 @@
                 ],
               },
               openmaptiles: { type: 'vector', url: 'https://tiles.openfreemap.org/planet' },
-              'supermarket-grid': {
-                type: 'geojson',
-                data: {
-                  type: 'FeatureCollection',
-                  features: [
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [60, 0],
-                          [60, 65],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [70, 0],
-                          [70, 65],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [80, 0],
-                          [80, 65],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [90, 0],
-                          [90, 65],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [100, 0],
-                          [100, 65],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [110, 0],
-                          [110, 65],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [120, 0],
-                          [120, 65],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [130, 0],
-                          [130, 65],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [140, 0],
-                          [140, 65],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [150, 0],
-                          [150, 65],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [60, 0],
-                          [150, 0],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [60, 10],
-                          [150, 10],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [60, 20],
-                          [150, 20],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [60, 30],
-                          [150, 30],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [60, 40],
-                          [150, 40],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [60, 50],
-                          [150, 50],
-                        ],
-                      },
-                    },
-                    {
-                      type: 'Feature',
-                      properties: {},
-                      geometry: {
-                        type: 'LineString',
-                        coordinates: [
-                          [60, 60],
-                          [150, 60],
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
             },
             layers: [
               { id: 'background', type: 'background', paint: { 'background-color': '#181a1c' } },
@@ -10130,12 +9652,6 @@
                   'raster-brightness-max': 0.72,
                   'raster-opacity': 0.82,
                 },
-              },
-              {
-                id: 'grid-lines',
-                type: 'line',
-                source: 'supermarket-grid',
-                paint: { 'line-color': '#a1a4a9', 'line-width': 0.5, 'line-opacity': 0.09 },
               },
               {
                 id: 'boundaries',
@@ -23106,11 +22622,8 @@
           transform 180ms ease;
       }
       .ma-dialog {
-        background: var(--popover-surface);
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
         color: var(--ink);
-        border-radius: 20px;
+
         padding: 0;
         width: min(1120px, calc(100vw - 48px));
         max-width: none;
@@ -23367,7 +22880,6 @@
           width: calc(100vw - 16px);
           height: calc(100dvh - 16px);
           max-height: calc(100dvh - 16px);
-          border-radius: 16px;
         }
         .ma-dialog .ma-shell {
           max-height: calc(100dvh - 18px);
@@ -23575,17 +23087,17 @@
         const loadTable = DashboardTable.load
         function createDialog() {
           if (dialog) return
-          dialog = element('dialog', 'ma-dialog')
+          dialog = element('dialog', 'ma-dialog material-reading')
           dialog.setAttribute('aria-labelledby', 'ma-title')
           dialog.innerHTML = `<div class="ma-shell">
 <header class="ma-header"><div><h2 id="ma-title"></h2><p class="ma-scope" data-ma="scope"></p></div><button type="button" class="ma-close control-icon" aria-label="关闭指标分析" data-ma="close">×</button></header>
 <div class="ma-body">
-<p class="ma-feedback" data-ma="feedback" role="status"></p><button type="button" class="control-button" data-ma="retry" hidden>重新加载</button>
+<p class="ma-feedback query-feedback" data-ma="feedback" role="status"></p><button type="button" class="control-button" data-ma="retry" hidden>重新加载</button>
 <div class="ma-content" data-ma="content" hidden>
   <section class="ma-summary"><div><p class="ma-eyebrow" data-ma="value-label"></p><strong class="ma-value" data-ma="value"></strong></div><p class="ma-finding" data-ma="finding"></p></section>
-  <div class="ma-toolbar"><nav class="ma-modes control-group" aria-label="分析维度" data-ma="modes"></nav><div class="ma-selection" data-ma="selection" hidden><span data-ma="selected"></span><button type="button" class="control-button" data-ma="reset" aria-label="清除分组筛选">清除 ×</button></div><details class="ma-picker" data-ma="picker"><summary class="control-select" data-ma="picker-label"><span data-ma="picker-text">选择分组</span></summary><div class="ma-groups control-menu" data-ma="groups" role="group" aria-label="选择分组查看记录"></div></details></div>
-  <section class="ma-chart-panel l-card"><div class="ma-panel-heading"><h3 class="panel-title" data-ma="chart-title"></h3></div><p class="ma-hint" data-ma="chart-hint"></p><div class="ma-chart" data-ma="chart" role="img"></div></section>
-  <section class="ma-table-panel l-card"><div class="ma-panel-heading"><h3 class="panel-title">关联明细</h3><button type="button" class="control-button" data-ma="expand" aria-expanded="false">展开表格</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="分析明细表" tabindex="0"></div></section>
+  <div class="ma-toolbar"><nav class="ma-modes control-group" aria-label="分析维度" data-ma="modes"></nav><div class="ma-selection" data-ma="selection" hidden><span data-ma="selected"></span><button type="button" class="control-button" data-ma="reset" aria-label="清除分组筛选">清除 ×</button></div><details class="ma-picker" data-ma="picker"><summary class="control-select" data-ma="picker-label"><span data-ma="picker-text">选择分组</span></summary><div class="ma-groups control-menu material-popover" data-ma="groups" role="group" aria-label="选择分组查看记录"></div></details></div>
+  <section class="ma-chart-panel l-card material-card"><div class="ma-panel-heading"><h3 class="panel-title" data-ma="chart-title"></h3></div><p class="ma-hint" data-ma="chart-hint"></p><div class="ma-chart" data-ma="chart" role="img"></div></section>
+  <section class="ma-table-panel l-card material-card"><div class="ma-panel-heading"><h3 class="panel-title">关联明细</h3><button type="button" class="control-button" data-ma="expand" aria-expanded="false">展开表格</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="分析明细表" tabindex="0"></div></section>
   <details class="ma-definition"><summary>统计口径与依据</summary><p data-ma="definition"></p><p data-ma="evidence"></p><p data-ma="grain"></p></details>
 </div></div></div>`
           for (const node of dialog.querySelectorAll('[data-ma]')) nodes[node.dataset.ma] = node
@@ -24110,11 +23622,6 @@
       }
       .control-menu {
         padding: 6px;
-        border: 1px solid var(--divider);
-        border-radius: 12px;
-        background: var(--glass-fallback);
-        color: var(--muted);
-        box-shadow: 0 12px 36px var(--dialog-scrim);
       }
       .country-picker {
         position: fixed;
@@ -24459,7 +23966,7 @@
         }
         function createDetail({ label, onClose = () => {} }) {
           const panel = document.createElement('section')
-          panel.className = 'map-record-detail'
+          panel.className = 'map-record-detail material-popover'
           panel.hidden = true
           panel.setAttribute('role', 'region')
           panel.setAttribute('aria-label', label)
@@ -24535,7 +24042,7 @@
         const lifetime = new AbortController()
         const listen = (node, type, callback) => node.addEventListener(type, callback, { signal: lifetime.signal })
         const panel = document.createElement('div')
-        panel.className = 'country-picker control-menu'
+        panel.className = 'country-picker control-menu material-popover'
         panel.id = `${trigger.id}-panel`
         panel.setAttribute('popover', 'auto')
         panel.innerHTML =
@@ -24980,25 +24487,393 @@
     </script>
 
     <style id="dashboard-query-controls">
+      :is(.country-trigger, .control-select).query-control::before {
+        content: '⌄';
+        order: 2;
+        margin-left: 6px;
+      }
+      .sidebar {
+        --material-inset: var(--sidebar-padding);
+      }
+      .map-controls {
+        border-radius: 20px;
+      }
+      .map-controls .control-icon {
+        --query-control-size: 29px;
+      }
+      @media (max-width: 760px) {
+        .top-nav.control-group {
+          --query-segment-padding: 6px;
+          --query-segment-height: 36px;
+          flex-wrap: nowrap;
+          justify-content: flex-start;
+          max-width: 100%;
+          overflow-x: auto;
+          scrollbar-width: none;
+        }
+        .map-controls .control-icon {
+          --query-control-size: 40px;
+        }
+      }
+    </style>
+    <style id="dashboard-neutral-themes">
+      :root[data-theme='silver'],
+      :root[data-theme='graphite'] {
+        --page-surface: var(--bg);
+        --popover-surface: var(--glass-popover);
+        --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--glass-solid));
+        --focus: var(--accent);
+        --divider: var(--edge);
+        --dialog-scrim: var(--glass-scrim);
+        --track: var(--chart-track);
+        --hover: color-mix(in srgb, var(--ink) 6%, transparent);
+        --control-ink: var(--muted);
+        --control-selected-muted: var(--muted);
+        --chart-ink: var(--accent);
+        --meter-fill: var(--accent);
+      }
+    </style>
+    <style id="dashboard-material">
+      /* Page surfaces and controls. Theme supplies hue; mode owns optics. */
       :root {
-        --query-control-size: 32px;
-        --query-icon-size: 15px;
+        --glass-strength: 60;
+        --motion-map-duration: 600ms;
+        --motion-map-zoom-duration: 2000ms;
+        --motion-map-zoom-offset: 0.65;
+        --motion-card-duration: 850ms;
+        --motion-stage-gap: 100ms;
+        --motion-controls-duration: 450ms;
+        --motion-enter-easing: cubic-bezier(0.22, 1, 0.36, 1);
+        --query-control-size: var(--control-height, 32px);
+        --query-icon-size: var(--control-icon, 15px);
+        --material-radius: 28px;
+        --material-inset: 12px;
+        --material-card-radius: max(10px, calc(var(--material-radius) - var(--material-inset) - 1px));
+        --material-blur: calc(12px + var(--glass-strength) * 0.1px);
+        --material-filter: blur(var(--material-blur)) saturate(1.22);
+        --material-control-filter: blur(calc(6px + var(--glass-strength) * 0.06px)) saturate(1.3);
+        --material-sheen:
+          radial-gradient(100% 80px at 5% 0%, var(--material-light), transparent 72%),
+          linear-gradient(145deg, transparent 42%, var(--material-glow));
+        --material-lip: inset 0 1px 0.5px -0.5px var(--material-rim), inset 0 -1px 0.5px -0.5px var(--material-shade);
+        --material-card-sheen: linear-gradient(155deg, var(--material-card-light), transparent 52%);
+        --material-card-background: var(--material-card-sheen), var(--material-card-fill);
+        --glass-fallback: var(--glass-solid);
+        --glass-surface: color-mix(in srgb, var(--glass-solid) var(--material-opacity), transparent);
+        --glass-background: var(--material-sheen), var(--glass-surface);
+        --glass-contrast-surface: color-mix(in srgb, var(--glass-solid) 94%, transparent);
+        --glass-popover: color-mix(in srgb, var(--glass-solid) var(--material-popover-opacity), transparent);
+        --glass-edge: rgb(255 255 255 / var(--material-edge-opacity));
+        /* Directional light defines the shell; content cards keep quiet, borderless fills. */
+        --material-surface-edge: transparent;
+        --glass-shadow: var(--material-lip), var(--material-shadow);
+        --glass-inset-shadow: none;
+        --glass-tile: var(--material-soft-fill);
+        --glass-tile-shadow: var(--glass-inset-shadow);
+        --glass-tile-hover-shadow: var(--glass-inset-shadow);
+        --glass-reflection: rgb(255 255 255 / var(--material-highlight));
+        --glass-highlight: rgb(255 255 255 / var(--material-card-highlight));
+        --rail-background: var(--glass-background);
+        --rail-edge: var(--glass-edge);
+        --rail-shadow: var(--glass-shadow);
+        --popover-surface: var(--glass-popover);
+        --dialog-scrim: var(--glass-scrim);
+        --control-surface: var(--query-track);
+        --control-active: var(--query-active);
+        --control-selected: var(--strong);
+        --control-hover: var(--query-hover);
         --query-control-ink: var(--ink);
-        --query-hover: color-mix(in srgb, var(--strong) 7%, transparent);
-        --query-track: color-mix(in srgb, var(--glass-fallback) 62%, transparent);
-        --query-active: rgb(255 255 255 / 14%);
         --query-ink: var(--strong);
-        --query-edge: rgb(255 255 255 / 14%);
-        --query-highlight: rgb(255 255 255 / 18%);
-        --query-shadow: 0 3px 10px -4px rgb(0 0 0 / 24%);
+        --query-track: color-mix(in srgb, var(--glass-solid) var(--material-control-opacity), transparent);
+        --query-hover: color-mix(in srgb, var(--query-track), var(--query-active) 28%);
+        --query-highlight: rgb(255 255 255 / var(--material-highlight));
+        --query-shadow: var(--material-control-shadow);
         --query-ease: cubic-bezier(0.22, 1, 0.36, 1);
       }
-      :root[data-mode='light'] {
-        --query-active: rgb(255 255 255 / 84%);
-        --query-edge: rgb(255 255 255 / 58%);
-        --query-highlight: rgb(255 255 255 / 88%);
-        --query-shadow: 0 3px 10px -4px rgb(35 54 70 / 18%);
+      /* Explicit dark and light optics, independent of the four theme palettes. */
+      :root[data-mode='dark'] {
+        color-scheme: dark;
+        --material-opacity: calc(42% + var(--glass-strength) * 0.32%);
+        --material-control-opacity: calc(32% + var(--glass-strength) * 0.28%);
+        --material-popover-opacity: calc(78% + var(--glass-strength) * 0.16%);
+        --material-edge-opacity: calc(0.08 + var(--glass-strength) * 0.0008);
+        --material-highlight: calc(0.1 + var(--glass-strength) * 0.0008);
+        --material-light: rgb(255 255 255 / calc(0.07 + var(--glass-strength) * 0.0004));
+        --material-glow: color-mix(in srgb, var(--accent) 4%, transparent);
+        --material-rim: rgb(255 255 255 / calc(0.16 + var(--glass-strength) * 0.001));
+        --material-shade: rgb(0 0 0 / 30%);
+        --material-press-light: rgb(255 255 255 / 12%);
+        --material-card-highlight: 0.018;
+        --material-soft-fill: rgb(255 255 255 / calc(0.018 + var(--glass-strength) * 0.0002));
+        --material-card-fill: rgb(255 255 255 / calc(0.038 + var(--glass-strength) * 0.00045));
+        --material-card-light: rgb(255 255 255 / calc(0.025 + var(--glass-strength) * 0.00025));
+        --material-card-shadow: inset 0 1px 0.5px -0.5px rgb(255 255 255 / 10%), 0 4px 10px -6px rgb(0 0 0 / 46%);
+        --material-shadow: 0 18px 44px -20px rgb(0 0 0 / 50%), 0 2px 6px -3px rgb(0 0 0 / 30%);
+        --material-control-shadow: 0 4px 12px -8px rgb(0 0 0 / 48%);
+        --glass-scrim: rgb(0 5 14 / 54%);
+        --query-active: rgb(255 255 255 / 14%);
       }
+      :root[data-mode='light'] {
+        color-scheme: light;
+        --material-opacity: calc(30% + var(--glass-strength) * 0.34%);
+        --material-control-opacity: calc(28% + var(--glass-strength) * 0.3%);
+        --material-popover-opacity: calc(82% + var(--glass-strength) * 0.12%);
+        --material-edge-opacity: calc(0.26 + var(--glass-strength) * 0.0014);
+        --material-highlight: calc(0.44 + var(--glass-strength) * 0.0014);
+        --material-light: rgb(255 255 255 / calc(0.26 + var(--glass-strength) * 0.0014));
+        --material-glow: color-mix(in srgb, var(--accent) 2%, transparent);
+        --material-rim: rgb(255 255 255 / calc(0.62 + var(--glass-strength) * 0.002));
+        --material-shade: rgb(31 50 65 / 12%);
+        --material-press-light: rgb(255 255 255 / 40%);
+        --material-card-highlight: 0.16;
+        --material-soft-fill: color-mix(
+          in srgb,
+          var(--glass-solid) calc(10% + var(--glass-strength) * 0.12%),
+          transparent
+        );
+        --material-card-fill: rgb(255 255 255 / calc(0.4 + var(--glass-strength) * 0.0025));
+        --material-card-light: rgb(255 255 255 / calc(0.18 + var(--glass-strength) * 0.001));
+        --material-card-shadow: inset 0 1px 0.5px -0.5px rgb(255 255 255 / 80%), 0 3px 8px -4px rgb(31 50 65 / 18%);
+        --material-shadow: 0 18px 44px -22px rgb(31 50 65 / 30%), 0 2px 8px -4px rgb(31 50 65 / 16%);
+        --material-control-shadow: 0 4px 12px -8px rgb(31 50 65 / 30%);
+        --glass-scrim: rgb(31 50 65 / 30%);
+        --query-active: rgb(255 255 255 / 84%);
+      }
+      /* Neutral theme palettes; business and map encodings keep their own tokens. */
+      :root[data-theme='silver'] {
+        --bg: #eef0f3;
+        --bg-end: #e1e6eb;
+        --ink: #333b45;
+        --strong: #1f242c;
+        --muted: #626e7b;
+        --faint: #75808d;
+        --accent: #45647d;
+        --accent-rgb: 69 100 125;
+        --glass-solid: #fafbfc;
+        --edge: rgb(58 68 80 / 12%);
+        --shine: rgb(255 255 255 / 88%);
+        --inner: rgb(58 68 80 / 3.5%);
+        --glow: rgb(69 100 125 / 4%);
+        --chart-track: rgb(58 68 80 / 10%);
+        --control-selected: var(--strong);
+      }
+      :root[data-theme='graphite'] {
+        --bg: #17191b;
+        --bg-end: #1f2326;
+        --ink: #e2e6e3;
+        --strong: #f1f2f0;
+        --muted: #adb3b0;
+        --faint: #8d9992;
+        --accent: #a5b8ac;
+        --accent-rgb: 165 184 172;
+        --glass-solid: #25282b;
+        --edge: rgb(221 228 224 / 12%);
+        --shine: rgb(255 255 255 / 14%);
+        --inner: rgb(255 255 255 / 3%);
+        --glow: rgb(165 184 172 / 3%);
+        --chart-track: rgb(221 228 224 / 10%);
+        --control-selected: var(--strong);
+      }
+      /* Scene-neutral surface hues; geographic and business colors stay in theme tokens. */
+      :root[data-theme='dark'] {
+        --glass-solid: #121b23;
+      }
+      :root[data-theme='ice'] {
+        --glass-solid: #f4f8fa;
+      }
+
+      :root :is(.material-shell, .material-popover, .material-reading) {
+        --material-card-radius: max(10px, calc(var(--material-radius) - var(--material-inset) - 1px));
+        color: var(--ink);
+        background: var(--glass-background);
+        border: 1px solid var(--material-surface-edge);
+        border-radius: var(--material-radius);
+        box-shadow: var(--glass-shadow);
+        backdrop-filter: var(--material-filter);
+        -webkit-backdrop-filter: var(--material-filter);
+      }
+      :root .material-popover {
+        --material-radius: 22px;
+        background: var(--material-sheen), var(--glass-popover);
+      }
+      :root .material-reading {
+        background: var(--glass-contrast-surface);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      :root :is(.material-card, .material-tile) {
+        background: var(--material-card-background);
+        border-color: transparent;
+        border-radius: var(--material-card-radius);
+        box-shadow: var(--material-card-shadow);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      :root .material-tile {
+        border-radius: max(8px, calc(var(--material-card-radius) - 4px));
+      }
+      :root .material-option {
+        color: var(--muted);
+        background: var(--material-soft-fill);
+        border: 1px solid transparent;
+        border-radius: 10px;
+        box-shadow: none;
+      }
+      :root .material-theme {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+        min-height: 36px;
+        padding: 9px 10px;
+        font-size: 11px;
+      }
+      .material-theme .theme-swatch {
+        width: 16px;
+        height: 16px;
+        flex: none;
+        border: 1px solid var(--divider, var(--edge));
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--swatch-surface) 50%, var(--swatch-accent) 50%);
+      }
+      .theme-swatch[data-swatch='dark'] {
+        --swatch-surface: #121b23;
+        --swatch-accent: #b0c4e8;
+      }
+      .theme-swatch[data-swatch='ice'] {
+        --swatch-surface: #f4f8fa;
+        --swatch-accent: #4f81b4;
+      }
+      .theme-swatch[data-swatch='silver'] {
+        --swatch-surface: #fafbfc;
+        --swatch-accent: #45647d;
+      }
+      .theme-swatch[data-swatch='graphite'] {
+        --swatch-surface: #25282b;
+        --swatch-accent: #a5b8ac;
+      }
+      :root .material-option[aria-pressed='true'] {
+        color: var(--strong);
+        background: var(--query-active);
+        border-color: var(--glass-edge);
+        box-shadow: var(--glass-inset-shadow);
+      }
+      .material-switch {
+        width: 35px;
+        height: 19px;
+        border-radius: 999px;
+        background: var(--chart-track, var(--track));
+        padding: 3px;
+        transition: background 180ms ease;
+      }
+      .material-switch::after {
+        content: '';
+        display: block;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: var(--muted);
+        transition: transform 220ms var(--query-ease);
+      }
+      .material-switch[aria-checked='true'] {
+        background: color-mix(in srgb, var(--accent) 30%, transparent);
+      }
+      .material-switch[aria-checked='true']::after {
+        background: var(--accent);
+        transform: translateX(16px);
+      }
+
+      /* A native range keeps keyboard, touch and assistive technology behavior intact. */
+      .material-setting {
+        display: grid;
+        gap: 8px;
+        min-width: 0;
+        margin-block: 4px 18px;
+      }
+      .material-setting label,
+      .material-setting-ends {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .material-setting label {
+        color: var(--ink);
+        font-size: 11px;
+      }
+      .material-setting output {
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .material-setting-ends {
+        color: var(--muted);
+        font-size: 10px;
+      }
+      .material-range {
+        appearance: none;
+        -webkit-appearance: none;
+        display: block;
+        width: 100%;
+        height: 28px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        cursor: pointer;
+        touch-action: pan-y;
+      }
+      .material-range::-webkit-slider-runnable-track {
+        height: 5px;
+        border-radius: 999px;
+        background: linear-gradient(
+          to right,
+          var(--accent) var(--range-progress),
+          var(--chart-track, var(--track)) var(--range-progress)
+        );
+      }
+      .material-range::-moz-range-track {
+        height: 5px;
+        border-radius: 999px;
+        background: linear-gradient(
+          to right,
+          var(--accent) var(--range-progress),
+          var(--chart-track, var(--track)) var(--range-progress)
+        );
+      }
+      .material-range::-webkit-slider-thumb {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        margin-top: -6.5px;
+        border: 1px solid var(--glass-edge);
+        border-radius: 50%;
+        background: color-mix(in srgb, white 92%, var(--glass-solid));
+        box-shadow: var(--query-shadow);
+      }
+      .material-range::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border: 1px solid var(--glass-edge);
+        border-radius: 50%;
+        background: color-mix(in srgb, white 92%, var(--glass-solid));
+        box-shadow: var(--query-shadow);
+      }
+      .material-range:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      @media (pointer: coarse) {
+        :root .material-theme {
+          min-height: 44px;
+        }
+        .material-range {
+          height: 44px;
+        }
+      }
+
+      /* Shared controls: selection, loading, focus and anchored menus. */
       .control-group {
         position: relative;
         isolation: isolate;
@@ -25008,10 +24883,8 @@
         border-radius: calc(var(--query-control-size) / 2 + 3px);
         padding: 3px;
         gap: 3px;
-        background: var(--query-track);
-        box-shadow:
-          inset 0 0 0 1px var(--query-edge),
-          var(--query-shadow);
+        background: var(--material-sheen), var(--query-track);
+        box-shadow: var(--material-lip), var(--query-shadow);
       }
       .control-group::before {
         content: '';
@@ -25052,27 +24925,27 @@
         background: transparent;
         box-shadow: none;
       }
-      :is(.control-button, .control-select, .country-trigger),
-      .control-icon {
+      :is(.control-button, .control-select, .country-trigger, .select-trigger),
+      .control-icon,
+      :root .material-action {
         border: 0;
         border-radius: 999px;
-        background: var(--query-track);
+        background: var(--material-sheen), var(--query-track);
         color: var(--query-control-ink);
-        box-shadow:
-          inset 0 0 0 1px var(--query-edge),
-          var(--query-shadow);
+        box-shadow: var(--material-lip), var(--query-shadow);
       }
       .control-group button,
-      :is(.control-button, .control-select, .country-trigger) {
+      :is(.control-button, .control-select, .country-trigger, .select-trigger, .material-action) {
         transition:
-          background 160ms ease,
+          background-color 160ms ease,
           color 160ms ease,
+          box-shadow 180ms ease,
           scale 180ms var(--query-ease);
       }
       .control-group,
       :is(.control-icon, .control-button, .control-select, .country-trigger) {
-        backdrop-filter: blur(12px) saturate(1.12);
-        -webkit-backdrop-filter: blur(12px) saturate(1.12);
+        backdrop-filter: var(--material-control-filter);
+        -webkit-backdrop-filter: var(--material-control-filter);
       }
       .query-control,
       .control-icon {
@@ -25084,11 +24957,7 @@
       .query-control > svg:not(:last-child) {
         margin-right: 6px;
       }
-      :is(.country-trigger, .control-select).query-control::before {
-        content: '⌄';
-        order: 2;
-        margin-left: 6px;
-      }
+
       .control-icon {
         flex: 0 0 auto;
         width: auto;
@@ -25098,7 +24967,7 @@
         line-height: 1;
         transition:
           padding 180ms ease,
-          background 180ms ease,
+          background-color 180ms ease,
           color 180ms ease,
           box-shadow 180ms ease,
           scale 180ms var(--query-ease);
@@ -25107,11 +24976,11 @@
         padding: 0 8px;
       }
       .control-icon[aria-expanded='true'] {
-        background: var(--query-hover);
+        background-color: var(--query-hover);
         color: var(--query-ink);
       }
       .control-icon[aria-pressed='true'] {
-        background: var(--query-active);
+        background-color: var(--query-active);
         color: var(--query-ink);
       }
       .control-icon > svg {
@@ -25151,11 +25020,11 @@
         opacity: 1;
         cursor: progress;
       }
-      .ma-feedback[data-loading='true'] {
+      .query-feedback[data-loading='true'] {
         display: block;
         min-height: 18px;
       }
-      .ma-feedback[data-loading='true']::before {
+      .query-feedback[data-loading='true']::before {
         content: '';
         display: inline-block;
         width: 14px;
@@ -25170,6 +25039,10 @@
         outline-offset: 3px;
       }
       :is(.control-group button, .control-icon, .query-control):active:not(:disabled) {
+        background-color: var(--query-active);
+        box-shadow:
+          inset 0 0 16px var(--material-press-light),
+          var(--material-lip);
         scale: 0.97;
       }
       :is(.control-group button, .control-icon, .query-control):disabled {
@@ -25178,17 +25051,21 @@
       @media (hover: hover) {
         .control-icon:hover:not(:disabled),
         .control-group button:hover:not(:disabled):not([aria-pressed='true'], [aria-selected='true']),
-        :is(.control-button, .control-select, .country-trigger):hover:not(:disabled) {
-          background: var(--query-hover);
+        :is(.control-button, .control-select, .country-trigger, .select-trigger, .material-action):hover:not(
+            :disabled
+          ) {
+          background-color: var(--query-hover);
           color: var(--query-ink);
         }
       }
       /* Controls on an existing glass surface use a fill, without a second blur pass. */
-      :is(.ma-dialog, .settings-panel, .glass, .map-controls) :is(.control-group, .control-icon, .query-control) {
+      :is(.material-shell, .material-popover, .material-reading, .material-card)
+        :is(.control-group, .control-icon, .query-control) {
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
       }
-      :is(.country-picker:popover-open, .ma-picker[open] .ma-groups) {
+      :root .material-popover:is(:popover-open, [open]),
+      :is(.control-menu:popover-open, details[open] > .control-menu) {
         transform-origin: var(--popover-origin, top right);
         animation: control-reveal 220ms var(--query-ease) backwards;
       }
@@ -25202,44 +25079,82 @@
           transform: none;
         }
       }
+      @keyframes query-turn {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .query-control > .select-chevron {
+        order: 2;
+        margin: 0 0 0 6px;
+      }
+      .query-search {
+        justify-content: flex-start;
+      }
+      .query-search[data-loading='true'] {
+        padding-right: 10px;
+      }
+      @media (hover: hover) {
+        .material-option:hover:not([aria-pressed='true']) {
+          background-color: var(--query-hover);
+          color: var(--strong);
+        }
+      }
+      /* Reduced transparency wins over the slider; content never depends on blur for contrast. */
       @media (prefers-reduced-transparency: reduce) {
-        :is(.control-group, .control-icon, .control-button, .control-select, .country-trigger) {
-          background: var(--glass-fallback);
-          backdrop-filter: none;
-          -webkit-backdrop-filter: none;
+        :root {
+          --material-filter: none;
+          --material-control-filter: none;
+          --material-sheen: none;
+          --material-card-sheen: none;
+          --glass-surface: var(--glass-solid);
+          --glass-popover: var(--glass-solid);
+          --glass-contrast-surface: var(--glass-solid);
+          --query-track: var(--glass-solid);
+        }
+      }
+      @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        :root {
+          --material-filter: none;
+          --material-control-filter: none;
+          --material-sheen: none;
+          --material-card-sheen: none;
+          --glass-surface: var(--glass-solid);
+          --glass-popover: var(--glass-solid);
+          --query-track: var(--glass-solid);
         }
       }
       @media (prefers-contrast: more) {
-        :is(.control-group, .control-icon, .control-button, .control-select, .country-trigger) {
+        :is(
+          .control-group,
+          .control-icon,
+          .control-button,
+          .control-select,
+          .country-trigger,
+          .select-trigger,
+          .material-action
+        ) {
           box-shadow: inset 0 0 0 1px var(--query-control-ink);
         }
         .control-group::before {
           box-shadow: inset 0 0 0 1px var(--query-ink);
         }
-      }
-      .map-controls {
-        border-radius: 20px;
-      }
-      .map-controls .control-icon {
-        --query-control-size: 29px;
-      }
-      @media (max-width: 760px) {
-        .top-nav.control-group {
-          --query-segment-padding: 6px;
-          --query-segment-height: 36px;
-          flex-wrap: nowrap;
-          justify-content: flex-start;
-          max-width: 100%;
-          overflow-x: auto;
-          scrollbar-width: none;
+        :root[data-mode] {
+          --material-sheen: none;
+          --material-card-sheen: none;
+          --material-lip: 0 0 0 transparent;
+          --material-card-shadow: 0 0 0 1px var(--muted);
+          --material-filter: none;
+          --material-control-filter: none;
+          --glass-edge: var(--muted);
+          --material-surface-edge: var(--muted);
+          --glass-surface: var(--glass-solid);
+          --glass-popover: var(--glass-solid);
+          --glass-contrast-surface: var(--glass-solid);
+          --query-track: var(--glass-solid);
         }
-        .map-controls .control-icon {
-          --query-control-size: 40px;
-        }
-      }
-      @keyframes query-turn {
-        to {
-          transform: rotate(360deg);
+        .material-range {
+          outline-offset: 3px;
         }
       }
       @media (prefers-reduced-motion: reduce) {
@@ -25251,121 +25166,16 @@
           transition: none !important;
           scale: none;
         }
-        :is(.country-picker:popover-open, .ma-picker[open] .ma-groups),
+        .material-popover,
+        :is(.control-menu:popover-open, details[open] > .control-menu),
         .query-control::after,
-        .ma-feedback::before {
+        .query-feedback::before {
           animation: none !important;
         }
-      }
-    </style>
-    <style id="dashboard-neutral-themes">
-      /* Shared 2D/3D neutral palettes. Scene data encodings remain in their own tokens. */
-      :root[data-theme='silver'] {
-        --bg: #eef0f3;
-        --bg-end: #e1e6eb;
-        --ink: #333b45;
-        --strong: #1f242c;
-        --muted: #626e7b;
-        --faint: #75808d;
-        --accent: #45647d;
-        --accent-rgb: 69 100 125;
-        --glass-solid: #fafbfc;
-        --glass-surface: rgb(250 251 252 / 54%);
-        --glass-contrast-surface: rgb(250 251 252 / 86%);
-        --glass-popover: rgb(250 251 252 / 96%);
-        --edge: rgb(58 68 80 / 12%);
-        --shine: rgb(255 255 255 / 88%);
-        --inner: rgb(58 68 80 / 3.5%);
-        --glow: rgb(69 100 125 / 4%);
-        --chart-track: rgb(58 68 80 / 10%);
-        --glass-filter: blur(14px) saturate(1.02);
-        --glass-sheen: linear-gradient(145deg, rgb(255 255 255 / 28%), rgb(255 255 255 / 6%) 60%);
-        --glass-edge: rgb(255 255 255 / 58%);
-        --glass-edge-hover: rgb(255 255 255 / 78%);
-        --glass-shadow: 0 6px 20px -12px rgb(31 36 44 / 20%), inset 0 1px 0 rgb(255 255 255 / 60%);
-        --glass-hover-shadow: 0 8px 24px -12px rgb(31 36 44 / 24%), inset 0 1px 0 rgb(255 255 255 / 78%);
-        --glass-inset: linear-gradient(145deg, rgb(255 255 255 / 16%), rgb(238 240 243 / 6%));
-        --glass-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 32%);
-        --glass-tile: linear-gradient(145deg, rgb(255 255 255 / 44%), rgb(250 251 252 / 22%));
-        --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 58%);
-        --glass-reflection: rgb(255 255 255 / 12%);
-        --glass-highlight: rgb(255 255 255 / 6%);
-        --glass-scrim: rgb(31 36 44 / 30%);
-        --glass-dialog-shadow: 0 24px 88px rgb(31 36 44 / 24%), inset 0 1px 0 var(--glass-edge);
-        --rail-background: linear-gradient(145deg, rgb(255 255 255 / 18%), rgb(225 230 235 / 12%) 60%);
-        --rail-edge: rgb(255 255 255 / 42%);
-        --rail-shadow: 0 24px 60px -24px rgb(31 36 44 / 24%), inset 0 1px 0 rgb(255 255 255 / 56%);
-        --control-active: rgb(255 255 255 / 84%);
-        --control-selected: var(--strong);
-        --query-shadow: 0 3px 10px -4px rgb(31 36 44 / 18%);
-      }
-      :root[data-theme='graphite'] {
-        --bg: #17191b;
-        --bg-end: #1f2326;
-        --ink: #e2e6e3;
-        --strong: #f1f2f0;
-        --muted: #adb3b0;
-        --faint: #8d9992;
-        --accent: #a5b8ac;
-        --accent-rgb: 165 184 172;
-        --glass-solid: #25282b;
-        --glass-surface: rgb(37 40 43 / 60%);
-        --glass-contrast-surface: rgb(37 40 43 / 88%);
-        --glass-popover: rgb(43 47 50 / 98%);
-        --edge: rgb(221 228 224 / 12%);
-        --shine: rgb(255 255 255 / 14%);
-        --inner: rgb(255 255 255 / 3%);
-        --glow: rgb(165 184 172 / 3%);
-        --chart-track: rgb(221 228 224 / 10%);
-        --glass-filter: blur(14px) saturate(0.96);
-        --glass-sheen: linear-gradient(145deg, rgb(255 255 255 / 6%), rgb(255 255 255 / 1%) 60%);
-        --glass-edge: rgb(230 235 232 / 16%);
-        --glass-edge-hover: rgb(230 235 232 / 26%);
-        --glass-shadow: 0 6px 20px -12px rgb(0 0 0 / 38%), inset 0 1px 0 rgb(255 255 255 / 12%);
-        --glass-hover-shadow: 0 8px 24px -12px rgb(0 0 0 / 46%), inset 0 1px 0 rgb(255 255 255 / 18%);
-        --glass-inset: linear-gradient(145deg, rgb(255 255 255 / 3%), rgb(23 25 27 / 4%));
-        --glass-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 6%);
-        --glass-tile: linear-gradient(145deg, rgb(230 235 232 / 7%), rgb(230 235 232 / 3%));
-        --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 9%);
-        --glass-reflection: rgb(255 255 255 / 8%);
-        --glass-highlight: rgb(255 255 255 / 4%);
-        --glass-scrim: rgb(0 0 0 / 54%);
-        --glass-dialog-shadow: 0 24px 88px rgb(0 0 0 / 46%), inset 0 1px 0 var(--glass-edge);
-        --rail-background: linear-gradient(145deg, rgb(230 235 232 / 6%), rgb(23 25 27 / 28%) 60%);
-        --rail-edge: rgb(230 235 232 / 14%);
-        --rail-shadow: 0 24px 60px -24px rgb(0 0 0 / 48%), inset 0 1px 0 rgb(255 255 255 / 14%);
-        --control-active: rgb(255 255 255 / 14%);
-        --control-selected: var(--strong);
-        --query-shadow: 0 3px 10px -4px rgb(0 0 0 / 24%);
-      }
-      :root[data-theme='silver'],
-      :root[data-theme='graphite'] {
-        --page-surface: var(--bg);
-        --glass-fallback: var(--glass-solid);
-        --popover-surface: var(--glass-popover);
-        --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--glass-solid));
-        --focus: var(--accent);
-        --line: var(--edge);
-        --divider: var(--edge);
-        --glass-divider: var(--edge);
-        --shadow: var(--glass-shadow);
-        --glass-tile-hover-shadow: var(--glass-hover-shadow);
-        --dialog-scrim: var(--glass-scrim);
-        --track: var(--chart-track);
-        --hover: color-mix(in srgb, var(--ink) 6%, transparent);
-        --control-hover: var(--hover);
-        --control-surface: color-mix(in srgb, var(--glass-solid) 68%, transparent);
-        --control-ink: var(--muted);
-        --control-selected-muted: var(--muted);
-        --chart-ink: var(--accent);
-        --meter-fill: var(--accent);
-        --rail-filter: blur(18px) saturate(1.02);
-      }
-      .theme-swatch[data-swatch='silver'] {
-        background: linear-gradient(135deg, #fafbfc 50%, #45647d 50%);
-      }
-      .theme-swatch[data-swatch='graphite'] {
-        background: linear-gradient(135deg, #25282b 50%, #a5b8ac 50%);
+        .material-switch,
+        .material-switch::after {
+          transition: none;
+        }
       }
     </style>
   </head>
@@ -25479,7 +25289,7 @@
             <div class="map-note" id="map-message">圆点大小表示震级 · 点击查看来源记录</div>
           </div>
         </div>
-        <aside class="sidebar glass l-shell" aria-label="当前范围地震统计">
+        <aside class="sidebar glass l-shell material-shell" aria-label="当前范围地震统计">
           <div class="sidebar-content">
             <div class="observation-panel">
               <section>
@@ -25550,7 +25360,7 @@
                 <h2 class="section-title">重点事件</h2>
               </div>
               <div class="event-stack">
-                <article class="event-card event-focus l-tile" id="strongest-event">
+                <article class="event-card event-focus l-tile material-tile" id="strongest-event">
                   <h3>范围内最强事件</h3>
 
                   <button type="button" class="event-locate" aria-label="定位当前范围最强地震" disabled>
@@ -25566,7 +25376,7 @@
                     <p class="event-coordinates">当前目录记录</p>
                   </button>
                 </article>
-                <article class="event-card event-focus l-tile" id="latest-event">
+                <article class="event-card event-focus l-tile material-tile" id="latest-event">
                   <h3>最近发生事件</h3>
 
                   <button type="button" class="event-locate" aria-label="定位当前范围最新地震" disabled>
@@ -25586,8 +25396,8 @@
             </section>
           </div>
         </aside>
-        <section class="bottom glass l-shell" aria-label="地震目录分析">
-          <article class="analysis-card l-card">
+        <section class="bottom glass l-shell material-shell" aria-label="地震目录分析">
+          <article class="analysis-card l-card material-card">
             <div class="panel-head">
               <h2 class="panel-title">震级分布</h2>
             </div>
@@ -25598,7 +25408,7 @@
               <div class="bar-labels" id="bar-labels"></div>
             </div>
           </article>
-          <article class="analysis-card l-card">
+          <article class="analysis-card l-card material-card">
             <div class="panel-head">
               <h2 class="panel-title">震源深度分布</h2>
             </div>
@@ -25627,7 +25437,7 @@
               </div>
             </div>
           </article>
-          <article class="analysis-card event-panel l-card">
+          <article class="analysis-card event-panel l-card material-card">
             <div class="panel-head">
               <h2 class="panel-title">事件明细</h2>
               <div class="list-controls">
@@ -25705,6 +25515,7 @@
         ['network-count', 'networks', '个'],
       ]
       const motion = matchMedia('(prefers-reduced-motion: reduce)')
+      const motionMs = (name) => parseFloat(MapUI.token('--motion-' + name))
       const stackedLayout = matchMedia('(max-width: 1000px), (max-height: 600px)')
       // These controls remain in place when data and list rows are updated.
       const controls = {
@@ -25738,7 +25549,7 @@
         listPointerDown = false
       let mapLoaded = false,
         signalMarker
-      let map, mapError, observer, timer, request
+      let map, mapError, observer, timer, request, entranceCamera
       let mappedEvents, mappedFocus
       let eventIndex = new Map()
       let closeQuery = async () => {}
@@ -25817,7 +25628,9 @@
         if (!mapLoaded) return
         basemapRenderer.apply(value)
         updateMapAccent()
-        for (const id of ['graticule', 'boundaries', 'roads']) {
+        map.setPaintProperty('graticule', 'line-color', MapUI.token('--map-grid'))
+        map.setPaintProperty('graticule', 'line-opacity', Number(MapUI.token('--map-grid-opacity')))
+        for (const id of ['boundaries', 'roads']) {
           map.setLayoutProperty(id, 'visibility', style.vector ? 'none' : 'visible')
         }
         for (const id of ['country-labels', 'city-labels']) {
@@ -26244,7 +26057,10 @@
         } else listFrame = requestAnimationFrame(scrollListFrame)
       }
       function syncMotion() {
-        if (motion.matches) clearCardEntrance()
+        if (motion.matches) {
+          if (entranceCamera) map.jumpTo(entranceCamera)
+          clearCardEntrance()
+        }
         if (document.hidden) {
           cancelAnimationFrame(mapEffectsFrame)
           mapEffectsFrame = 0
@@ -26259,22 +26075,40 @@
         button.title = motion.matches ? '跟随系统减少动态效果设置' : mapMotionEnabled ? '暂停地图动效' : '开启地图动效'
         syncListMotion()
       }
+      function prepareMapEntrance() {
+        if (!map || mapError || motion.matches || document.hidden) return
+        entranceCamera = { center: map.getCenter(), zoom: map.getZoom(), padding: map.getPadding() }
+        map.jumpTo({
+          zoom: Math.max(map.getMinZoom(), entranceCamera.zoom - Number(MapUI.token('--motion-map-zoom-offset'))),
+        })
+      }
+      function enterMap() {
+        if (!entranceCamera || disposed) return
+        map.once('moveend', () => (entranceCamera = null))
+        map.easeTo({
+          ...entranceCamera,
+          duration: motion.matches || document.hidden ? 0 : motionMs('map-zoom-duration'),
+        })
+      }
       function prepareCardEntrance() {
         if (motion.matches || document.hidden) return
         // Prepare only the flipping surfaces; keep their contents still until they settle.
         for (const card of document.querySelectorAll('.sidebar, .bottom')) {
           enteringCards.add(card)
+          card.inert = true
           card.style.willChange = 'transform, opacity'
         }
       }
       function clearCardEntrance() {
         for (const card of enteringCards) {
+          card.inert = false
           card.style.removeProperty('will-change')
         }
         enteringCards.clear()
       }
       function onCardEntranceEnd(event) {
         if (event.animationName !== 'card-enter' || !enteringCards.delete(event.target)) return
+        event.target.inert = false
         event.target.style.removeProperty('will-change')
         if (!enteringCards.size && !disposed) syncMotion()
       }
@@ -26318,6 +26152,7 @@
         document.addEventListener('visibilitychange', syncMotion)
         document.addEventListener('animationend', onCardEntranceEnd)
         document.addEventListener('animationcancel', onCardEntranceEnd)
+        window.addEventListener('dashboard-ready', enterMap, { once: true })
         motion.addEventListener('change', onMotionChange)
         syncMotion()
       }
@@ -26524,8 +26359,8 @@
             geometry: {
               type: 'LineString',
               coordinates: [
-                [longitude, -75],
-                [longitude, 80],
+                [longitude, -85],
+                [longitude, 85],
               ],
             },
           })
@@ -26570,7 +26405,11 @@
                 id: 'graticule',
                 type: 'line',
                 source: 'graticule',
-                paint: { 'line-color': '#a8b5d0', 'line-width': 0.5, 'line-opacity': 0.075 },
+                paint: {
+                  'line-color': MapUI.token('--map-grid'),
+                  'line-width': 0.6,
+                  'line-opacity': Number(MapUI.token('--map-grid-opacity')),
+                },
               },
               {
                 id: 'boundaries',
@@ -26898,6 +26737,7 @@
         document.removeEventListener('visibilitychange', syncMotion)
         document.removeEventListener('animationend', onCardEntranceEnd)
         document.removeEventListener('animationcancel', onCardEntranceEnd)
+        window.removeEventListener('dashboard-ready', enterMap)
         motion.removeEventListener('change', onMotionChange)
         request?.abort()
         clearInterval(timer)
@@ -27414,6 +27254,7 @@
             prepare: () => {
               map?.resize()
               resizeCharts()
+              prepareMapEntrance()
             },
             afterMap: () => {
               if (mapLoaded && map?.loaded()) document.body.dataset.mapReady = 'true'

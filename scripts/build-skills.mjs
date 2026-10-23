@@ -109,7 +109,7 @@ function prepareSkill(sourceRoot, scene, name, staging) {
   return { name, archive, files: entries.length }
 }
 
-export async function buildSkills({ repoRoot = repoDirectory, onProgress = () => {} } = {}) {
+export async function buildSkills({ repoRoot = repoDirectory, check = false, onProgress = () => {} } = {}) {
   let step = 0
   const total = skillApiStageCount + packages.length + 1
   const progress = (message) => onProgress({ step: ++step, total, message })
@@ -122,14 +122,36 @@ export async function buildSkills({ repoRoot = repoDirectory, onProgress = () =>
       progress(`检查资源并打包 ${name}.zip`)
       return prepareSkill(sourceRoot, scene, name, staging)
     })
-    progress('写入分发产物 dist/skills')
+    progress(`${check ? '校验' : '写入'}分发产物 dist/skills`)
     const output = path.resolve(repoRoot, 'dist/skills')
+    const expected = new Set(archives.map(({ name }) => `${name}.zip`))
+    const obsolete = fs.existsSync(output)
+      ? fs
+          .readdirSync(output, { withFileTypes: true })
+          .filter((entry) => entry.isFile() && entry.name.endsWith('.zip') && !expected.has(entry.name))
+          .map((entry) => entry.name)
+      : []
+    if (check) {
+      const stale = archives
+        .filter(({ name, archive }) => {
+          const target = path.join(output, `${name}.zip`)
+          return !fs.existsSync(target) || !fs.readFileSync(target).equals(fs.readFileSync(archive))
+        })
+        .map(({ name }) => `${name}.zip`)
+      if (stale.length || obsolete.length)
+        throw new Error(
+          `Skill artifacts are stale or missing: ${[...stale, ...obsolete].join(', ')}. Run pnpm build:skills.`,
+        )
+      return archives.map(({ name, files }) => ({ name, archive: path.join(output, `${name}.zip`), files }))
+    }
     fs.mkdirSync(output, { recursive: true })
-    return archives.map(({ name, archive, files }) => {
+    const results = archives.map(({ name, archive, files }) => {
       const target = path.join(output, `${name}.zip`)
       fs.copyFileSync(archive, target)
       return { name, archive: target, files }
     })
+    for (const name of obsolete) fs.unlinkSync(path.join(output, name))
+    return results
   } finally {
     fs.rmSync(staging, { recursive: true, force: true })
   }
@@ -138,6 +160,7 @@ export async function buildSkills({ repoRoot = repoDirectory, onProgress = () =>
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   const packages = await buildSkills({
     repoRoot: process.cwd(),
+    check: process.argv.includes('--check'),
     onProgress: ({ step, total, message }) => console.log(`[build:skills] [${step}/${total}] ${message}`),
   })
   for (const { name, archive, files } of packages)

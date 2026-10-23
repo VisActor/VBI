@@ -234,6 +234,7 @@ test('rebuilds deterministically and replaces obsolete archive contents', async 
   fs.unlinkSync(path.join(source, 'scenarios/visactor-light-dashboard/templates/obsolete.txt'))
   write(source, 'scenarios/visactor-light-dashboard/templates/example.html', '<p>Updated template</p>')
   write(repoRoot, 'dist/skills/unrelated.txt', 'Preserve unrelated outputs')
+  write(repoRoot, 'dist/skills/obsolete-dashboard.zip', 'Old distribution')
   const packages = await buildSkills({ repoRoot })
   const downloaded = extract(t, packages[0].archive)
   assert.equal(fs.existsSync(path.join(downloaded, 'visactor-light-dashboard/templates/obsolete.txt')), false)
@@ -242,7 +243,30 @@ test('rebuilds deterministically and replaces obsolete archive contents', async 
     '<p>Updated template</p>',
   )
   assert.deepEqual(fs.readFileSync(packages[2].archive), first[2])
+  assert.equal(fs.existsSync(path.join(repoRoot, 'dist/skills/obsolete-dashboard.zip')), false)
   assert.equal(fs.readFileSync(path.join(repoRoot, 'dist/skills/unrelated.txt'), 'utf8'), 'Preserve unrelated outputs')
+})
+
+test('detects missing, stale and obsolete ZIPs without overwriting distribution outputs', async (t) => {
+  const { repoRoot, source } = fixture(t)
+  await assert.rejects(() => buildSkills({ repoRoot, check: true }), /stale or missing/)
+  const output = path.join(repoRoot, 'dist/skills')
+  assert.equal(fs.existsSync(output), false)
+  await buildSkills({ repoRoot })
+  const previous = contents(output)
+  await buildSkills({ repoRoot, check: true })
+  assert.deepEqual(contents(output), previous)
+
+  write(source, 'scenarios/visactor-map2d-dashboard/templates/example.html', '<p>Latest map</p>')
+  await assert.rejects(() => buildSkills({ repoRoot, check: true }), /map2d-dashboard\.zip/)
+  assert.deepEqual(contents(output), previous)
+  await buildSkills({ repoRoot })
+  await buildSkills({ repoRoot, check: true })
+
+  write(repoRoot, 'dist/skills/obsolete-dashboard.zip', 'Old distribution')
+  const withObsolete = contents(output)
+  await assert.rejects(() => buildSkills({ repoRoot, check: true }), /obsolete-dashboard\.zip/)
+  assert.deepEqual(contents(output), withObsolete)
 })
 
 test('preserves previous archives when a scene has an unbundled reference', async (t) => {

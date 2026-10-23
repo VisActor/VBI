@@ -41,7 +41,7 @@ const visibleRecords = pointRows.map((row) => {
 
 | 职责           | 现有入口                                                                           | 适配方式                                                                                                                                             |
 | -------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 通用外观与启动 | `map-ui-styles`、`map-ui`、`MapUI.createAppearance`、`MapUI.loading`               | 保留完整主题与语义 token、共享浮层材质、分段入场、控件和启动机制；`MapUI.theme()`派生渲染明暗，调整业务文案与回调。                                  |
+| 通用外观与启动 | `map-ui-styles`、`map-ui`、`MapUI.createAppearance`、`MapUI.loading`               | 保留完整主题与语义 token、共享浮层材质、分段入场、控件和启动机制；`MapUI.theme()`派生渲染明暗；`prepareMapEntrance` / `enterMap` 仅负责首次相机入场，时序见[L-Card](L-card.md#入场节奏)。                                  |
 | 表格主题与更新 | `dashboard-table-tokens`、`dashboard-table-runtime`、`DashboardTable`              | 复用[公共表格资源](../../../references/visual-query/references/table-theme.md)，主题切换原位更新 VTable；业务列、数据与查询仍由地图模板维护。        |
 | 底图           | `basemap-assets`、`map-basemaps`、`MapBasemaps.createRenderer`                     | 保留资源与渲染机制；新增资源按[地图接入](open-street-map.md)，不修改嵌入的第三方运行时。                                                             |
 | 源数据与字段   | `loadFeed`、`normalize`、`SOURCE_ID`、`schema`、`refresh`                          | 替换来源、字段及 Connector ID；同步调整数据集更新与释放路径。数据接入按 [server-runtime](../../../references/server-runtime/guide.md#数据接入判断)。 |
@@ -65,7 +65,11 @@ const visibleRecords = pointRows.map((row) => {
 
 ## 控件与增量更新
 
-`dashboard-neutral-themes` 在 2D、3D 模板中保持同一份配色与材质定义：银雾为中性灰白与灰蓝强调，石墨为炭灰与灰绿强调。场景只适配底图、连续数据色阶和风险语义色，不在控件内另写色板。2D 默认深蓝、3D 默认冰蓝；原 `jade` / `gold` 存储值迁移为 `silver` / `graphite`，无效值或存储不可用仍使用原默认主题。
+本模板的内联 `dashboard-material` 维护中性主题配色 token，`dashboard-neutral-themes` 保留场景消费适配：银雾为中性灰白与灰蓝强调，石墨为炭灰与灰绿强调。场景只适配底图、连续数据色阶和风险语义色，不在控件内另写色板。2D 默认深蓝、3D 默认冰蓝；原 `jade` / `gold` 存储值迁移为 `silver` / `graphite`，无效值或存储不可用仍使用原默认主题。
+
+四主题及可选底图共用一层全球30°经纬网，位于底图上方、事件与地名下方；配色与透明度读取 `--map-grid` / `--map-grid-opacity`。切换底图保留网格，不依赖供应商自带的局部网格，不重复叠线。与3D保持相同经纬间隔，深浅模式分别控制对比度。
+
+玻璃强度、深浅光学和组件表面直接维护在本模板的内联 CSS。滑块标记放在设置面板内，由`MapUI` 设置面板管理；连续输入合并到一帧，提交保存到 `vbi-map-glass-strength`，同源页面同步，恢复外观回到60，销毁时清理帧和事件。材质调整不触发查询或地图更新；保持单 HTML，不增加外置材质资源、通用运行时或同步脚本。
 
 `dashboard-query-controls` 与内联 `DashboardUI` 统一主页和分析的控件、加载、数字与尺寸更新，模板复制后仍为单文件。分段选择复用 `.control-group`，图标操作复用 `.control-icon`，不能只给部分业务控件追加外观覆盖。筛选将可见触发控件传给刷新入口；只在该控件文字右侧显示 spinner，闲置宽度为零，出现/收起平滑展开。先让 loading 绘制，再开始查询；保留旧结果，失败显示原因和重试，完成、取消、关闭与后台切换均结束等待。首次分析可用独立 spinner，不重复显示“正在更新”文案。
 

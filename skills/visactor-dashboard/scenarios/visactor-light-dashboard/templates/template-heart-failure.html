@@ -11,8 +11,8 @@
         box-sizing: border-box;
       }
       :root {
-        --ink: #28333e;
-        --muted: #64717e;
+        --ink: #25303b;
+        --muted: #5d6875;
         --up: #12815e;
         --down: #c64a3f;
       }
@@ -102,7 +102,7 @@
       }
       button:focus-visible,
       summary:focus-visible {
-        outline: 2px solid #6c8eb5;
+        outline: 2px solid var(--focus-ring);
         outline-offset: 4px;
       }
       .dashboard {
@@ -577,15 +577,16 @@
         }
       }
       :root {
-        --accent: #b4a6d5;
-        --accent-ink: #806a9d;
+        --accent: #7664c3;
+        --accent-ink: #4c3c85;
+        --background-base: #f6f4fb;
+        --background-glow: #eae3f8;
       }
       body {
-        background: #f2f0f5;
+        background: var(--background-base);
       }
       body::before {
-        background:
-          radial-gradient(ellipse at 90% 15%, #e8e2f0, transparent 60%), linear-gradient(150deg, #f6f5f8, #edeaf2);
+        background: radial-gradient(ellipse at 90% 15%, var(--background-glow), transparent 60%);
       }
       .card {
         border-radius: 24px;
@@ -606,9 +607,9 @@
     <style id="dashboard-material">
       /* 与地图模板共用玻璃层次；每个阅读面只做一次背景模糊。 */
       :root {
-        --chart-track: #eeeaf5;
+        --chart-track: #e7ebf0;
         --glass-surface: rgb(255 255 255 / 46%);
-        --glass-fallback: #f8fafc;
+        --glass-fallback: var(--background-base);
         --glass-filter: blur(14px) saturate(1.08) brightness(1.02);
         --glass-sheen: linear-gradient(145deg, rgb(255 255 255 / 32%), rgb(255 255 255 / 4%) 58%);
         --glass-background: var(--glass-sheen), var(--glass-surface);
@@ -1080,7 +1081,7 @@
       }
       .ma-dialog .ma-chart[data-empty='true']::after {
         content: '暂无可展示数据';
-        color: #8b96a4;
+        color: var(--text-secondary);
         font-size: 12px;
       }
       .ma-dialog.ma-expanded .ma-table-panel {
@@ -2317,6 +2318,7 @@
         Builder,
         VChart,
         accent,
+        labelColor,
         motion,
         entries,
         getContext,
@@ -2541,8 +2543,8 @@
               legend: { enable: false },
               label: { enable: false },
               tooltip: { enable: false },
-              xAxis: { visible: true, zero: !group[2] },
-              yAxis: { visible: true, zero: !group[2] },
+              xAxis: { visible: true, zero: !group[2], ...(labelColor ? { label: { labelColor } } : {}) },
+              yAxis: { visible: true, zero: !group[2], ...(labelColor ? { label: { labelColor } } : {}) },
               pointStyle: { pointVisible: true },
               lineStyle: { lineSmooth: false },
               animation: {
@@ -2958,9 +2960,9 @@
       )
 
       const PAGE = {
-        mode: 'metrics',
         accent: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
         track: getComputedStyle(document.documentElement).getPropertyValue('--chart-track').trim(),
+        labelColor: getComputedStyle(document.documentElement).getPropertyValue('--muted').trim(),
         labels: ['样本人数', '记录死亡事件占比', '平均射血分数', '平均血清肌酐'],
         formats: [
           [0, ' 人'],
@@ -3241,20 +3243,28 @@
           label: {
             enable: main && categorical,
             labelPosition: 'outside',
-            labelColor: '#59636f',
+            labelColor: PAGE.labelColor,
             labelColorSmartInvert: false,
             labelStroke: false,
           },
           legend: { enable: false },
-          xAxis: { visible: main && categorical && type === 'column', zero: type !== 'area' },
-          yAxis: { visible: (main && categorical) || (type === 'bar' && !main), zero: type !== 'area' },
+          xAxis: {
+            visible: main && categorical && type === 'column',
+            zero: type !== 'area',
+            label: { labelColor: PAGE.labelColor },
+          },
+          yAxis: {
+            visible: (main && categorical) || (type === 'bar' && !main),
+            zero: type !== 'area',
+            label: { labelColor: PAGE.labelColor },
+          },
           crosshairLine: { labelVisible: false },
           crosshairRect: { labelVisible: false },
           tooltip: { enable: true },
           pointStyle: { pointVisible: false },
           lineStyle: { lineWidth: main ? 2.5 : 1.6, lineSmooth: true },
-          areaStyle: { areaColorOpacity: 0.2, areaGradient: true },
-          barStyle: { barRadius: 3, barColor: PAGE.accent, barColorOpacity: 0.8, barGradient: false },
+          areaStyle: { areaColorOpacity: 0.14, areaGradient: true },
+          barStyle: { barRadius: 3, barColor: PAGE.accent, barColorOpacity: 1, barGradient: false },
           innerRadius: 0.77,
           outerRadius: 0.98,
           pieStyle: { pieBorderWidth: 0, pieHoverEffect: 'opacity' },
@@ -3268,8 +3278,14 @@
                 bottom: main && categorical ? 4 : 0,
                 left: main && categorical ? 0 : 3,
               }
-        // 图形与指标保留更新动画；标签直接显示真实读数，避免 resize 时从虚构的 0 计数。
-        if (main && categorical) spec.label = { ...spec.label, animation: false }
+        // 标签直接显示真实值；被布局放入柱体时只调整文字颜色，不添加描边。
+        if (main && categorical)
+          spec.label = {
+            ...spec.label,
+            animation: false,
+            smartInvert: true,
+            style: { ...spec.label.style, lineWidth: 0 },
+          }
         if (['bar', 'column'].includes(type)) spec.stackCornerRadius = 0
         return spec
       }
@@ -3561,7 +3577,7 @@
             .map((layout, index) => ({ layout, index }))
             .sort((a, b) => a.layout.y - b.layout.y || a.layout.x - b.layout.x)
             .map(({ index }) => {
-              const h = index === 0 ? 8 : PAGE.mode === 'story' && index !== 3 ? 5 : 3
+              const h = index === 0 ? 8 : 3
               const layout = { x: 0, y: nextMobileRow, w: 12, h }
               nextMobileRow += h
               return [index, layout]
@@ -3615,6 +3631,7 @@
             Builder,
             VChart,
             accent: PAGE.accent,
+            labelColor: PAGE.labelColor,
             ready: () => !rendering && !!view && ['ready', 'empty'].includes(document.body.dataset.state),
             getContext: metricAnalysisContext,
             entries: [

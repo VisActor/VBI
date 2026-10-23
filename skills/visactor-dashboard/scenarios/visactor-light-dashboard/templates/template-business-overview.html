@@ -2199,6 +2199,7 @@
         Builder,
         VChart,
         accent,
+        labelColor,
         motion,
         entries,
         getContext,
@@ -2423,8 +2424,8 @@
               legend: { enable: false },
               label: { enable: false },
               tooltip: { enable: false },
-              xAxis: { visible: true, zero: !group[2] },
-              yAxis: { visible: true, zero: !group[2] },
+              xAxis: { visible: true, zero: !group[2], ...(labelColor ? { label: { labelColor } } : {}) },
+              yAxis: { visible: true, zero: !group[2], ...(labelColor ? { label: { labelColor } } : {}) },
               pointStyle: { pointVisible: true },
               lineStyle: { lineSmooth: false },
               animation: {
