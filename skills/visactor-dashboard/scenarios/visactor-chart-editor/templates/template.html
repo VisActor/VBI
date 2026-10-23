@@ -167,20 +167,23 @@
       .forma-brand {
         justify-content: flex-start;
         font-weight: 650;
-        font-size: 16px;
+        font-size: 14px;
         letter-spacing: -0.3px;
-        gap: 11px;
+        gap: 8px;
       }
       .forma-mark {
         display: grid;
         place-items: center;
         background: var(--ink);
         color: var(--surface);
-        width: 28px;
-        height: 28px;
-        border-radius: 10px;
+        width: 24px;
+        height: 24px;
+        border-radius: 8px;
         box-shadow: 0 2px 5px var(--glass-shadow);
-        font-size: 20px;
+      }
+      .forma-mark svg {
+        width: 18px;
+        height: 18px;
       }
       .forma-settings-trigger,
       .forma-settings-close {
@@ -429,12 +432,12 @@
         box-shadow: 0 2px 8px -5px var(--glass-shadow);
       }
       .forma-toolbar {
-        margin-top: 22px;
+        margin-top: 16px;
         flex-shrink: 0;
         display: flex;
         align-items: center;
-        gap: 10px;
-        min-height: 42px;
+        gap: 8px;
+        min-height: 36px;
         background: none;
         border: 0;
         overflow: visible;
@@ -454,19 +457,19 @@
         -webkit-backdrop-filter: blur(18px) saturate(1.12);
       }
       .forma-chart-picker {
-        flex: 0 0 156px;
-        padding: 4px;
+        flex: 0 0 140px;
+        padding: 3px;
       }
       .forma-chart-picker .ant-btn {
         width: 100% !important;
         max-width: 100%;
-        padding: 0 12px !important;
-        gap: 6px !important;
+        padding: 0 10px !important;
+        gap: 5px !important;
       }
       .forma-chart-picker .ant-btn > span:first-child {
-        width: 16px !important;
-        height: 16px !important;
-        font-size: 14px !important;
+        width: 14px !important;
+        height: 14px !important;
+        font-size: 12px !important;
       }
       .forma-toolbar > div {
         flex: 1;
@@ -475,7 +478,7 @@
       .forma-toolbar > .forma-actions {
         display: flex;
         flex: 0 0 auto;
-        padding: 4px;
+        padding: 3px;
         gap: 2px;
       }
       .forma-toolbar > div:not(.forma-actions) {
@@ -484,8 +487,8 @@
         overflow: visible !important;
       }
       .forma-toolbar > div:not(.forma-actions) > div > div {
-        padding: 4px;
-        gap: 4px !important;
+        padding: 3px;
+        gap: 3px !important;
       }
       .forma-toolbar .ant-space-compact {
         gap: 2px;
@@ -497,18 +500,18 @@
         box-shadow: none;
       }
       .forma-toolbar .ant-btn {
-        min-width: 32px;
-        height: 32px !important;
+        min-width: 28px;
+        height: 28px !important;
         border-radius: 999px !important;
-        font-size: 13px;
-        padding: 0 8px;
+        font-size: 12px;
+        padding: 0 6px;
         transition:
           background 160ms ease,
           color 160ms ease,
           transform 160ms ease;
       }
       .forma-toolbar .ant-btn-icon-only {
-        width: 32px;
+        width: 28px;
         padding: 0;
       }
       .forma-toolbar .ant-btn-default:not(:disabled):hover {
@@ -521,23 +524,24 @@
         transform: scale(0.97);
       }
       .forma-toolbar .ant-input-number {
-        height: 32px;
-        border-radius: 12px;
+        width: 80px !important;
+        height: 28px;
+        border-radius: 10px;
       }
       .forma-toolbar .ant-input-number-input {
-        height: 30px;
-        font-size: 13px;
+        height: 26px;
+        font-size: 12px;
       }
       .forma-toolbar .forma-settings-trigger {
-        flex: 0 0 42px;
-        width: 42px;
-        height: 42px;
+        flex: 0 0 36px;
+        width: 36px;
+        height: 36px;
         border-radius: 50%;
         color: var(--ink);
       }
       .forma-toolbar .forma-settings-trigger svg {
-        width: 17px;
-        height: 17px;
+        width: 15px;
+        height: 15px;
       }
       .forma-toolbar .forma-settings-trigger:hover,
       .forma-toolbar .forma-settings-trigger[aria-expanded='true'] {
@@ -722,7 +726,7 @@
         transition: flex-basis 180ms ease;
       }
       .forma-chart-picker:has([data-pending='true']) {
-        flex-basis: 176px;
+        flex-basis: 160px;
       }
       .forma-theme-option.forma-feedback[data-pending='true'] {
         width: var(--feedback-width) !important;
@@ -769,7 +773,7 @@
         .forma-toolbar {
           flex-wrap: wrap;
           gap: 8px;
-          margin-top: 20px;
+          margin-top: 16px;
         }
         .forma-chart-picker {
           flex: 1 1 130px;
@@ -796,9 +800,9 @@
           width: 44px;
         }
         .forma-toolbar .forma-settings-trigger {
-          flex-basis: 54px;
-          width: 54px;
-          height: 54px;
+          flex-basis: 52px;
+          width: 52px;
+          height: 52px;
         }
         .forma-toolbar .ant-input-number {
           width: 56px !important;
