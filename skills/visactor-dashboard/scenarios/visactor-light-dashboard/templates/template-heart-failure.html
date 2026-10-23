@@ -2309,6 +2309,109 @@
         }
       }
     </script>
+    <script id="dashboard-analysis-runtime">
+      'use strict'
+
+      // 只消费 Builder 查询结果；统计口径、问题和可核查的下一步由页面配置。
+      window.DashboardAnalysis = function DashboardAnalysis(config, number) {
+        const count = (row) => (Number.isFinite(row?.[config.countField]) ? row[config.countField] : 0)
+        const value = (row) => {
+          const numerator = row?.[config.field]
+          if (!Number.isFinite(numerator)) return undefined
+          if (!config.denominator) return numerator
+          const denominator = row[config.denominator]
+          if (!(denominator > 0)) return undefined
+          return ((config.complement ? denominator - numerator : numerator) / denominator) * (config.factor || 1)
+        }
+        const format = (value) =>
+          Number.isFinite(value)
+            ? `${number(value / (config.scale || 1), config.digits ?? 1)}${config.unit || ''}`
+            : '—'
+        const dimensionLabel = (field, value) => config.valueLabels?.[field]?.[value] ?? String(value ?? '未记录')
+        const rows = (data, dimensions) =>
+          data
+            .map((source) => {
+              const values = dimensions.map(([field]) => source[field])
+              const labels = dimensions.map(([field], index) => dimensionLabel(field, values[index]))
+              return {
+                key: JSON.stringify(values),
+                label: labels.join(' / '),
+                x: labels[1],
+                y: labels[0],
+                values,
+                source,
+                count: count(source),
+                value: value(source),
+              }
+            })
+            .filter((row) => row.count > 0 && Number.isFinite(row.value))
+        const gap = (current, baseline) => {
+          if (!Number.isFinite(current) || !Number.isFinite(baseline)) return '暂无可比基准'
+          const delta = current - baseline
+          if (Math.abs(delta / (config.scale || 1)) < 10 ** -(config.digits ?? 1) / 2) return '与当前范围基本持平'
+          return `较当前范围${delta > 0 ? '高' : '低'} ${config.factor === 100 && config.unit === '%' ? `${number(Math.abs(delta), 1)} 个百分点` : format(Math.abs(delta))}`
+        }
+        const observation = (row, baseline) =>
+          `${row.label}：${config.label} ${format(row.value)}，${gap(row.value, baseline)}；${config.countLabel || '来源记录'} ${number(row.count, 0)}`
+        const summary = (groups, cross, total) => {
+          const baseline = value(total)
+          if (!count(total) || !Number.isFinite(baseline))
+            return {
+              conclusion: '当前筛选没有足够的有效记录支持这项分析。',
+              evidence: ['可调整筛选范围，或核对缺失字段与分母。'],
+            }
+          const segments = rows(groups, [config.dimensions[0]])
+          const cells = rows(cross, config.dimensions)
+          const weight = (row) =>
+            config.kind === 'rate'
+              ? (row.count * row.value) / (config.factor || 100)
+              : Math.abs(row.value - baseline) * row.count
+          const focus = [...segments].sort((a, b) => weight(b) - weight(a) || b.count - a.count)[0]
+          const contrast = [...cells].sort(
+            (a, b) => Math.abs(b.value - baseline) * b.count - Math.abs(a.value - baseline) * a.count,
+          )[0]
+          const ranked = [...segments].sort((a, b) => a.value - b.value)
+          const spread =
+            ranked.length > 1
+              ? `分组范围 ${format(ranked[0].value)}—${format(ranked.at(-1).value)}；分别涉及 ${number(ranked[0].count, 0)} 与 ${number(ranked.at(-1).count, 0)} 条来源记录。`
+              : '当前筛选仅有一个有效分组，不能据此比较组间差异。'
+          return {
+            conclusion:
+              config.kind === 'rate' && baseline === 0
+                ? `当前范围${config.label}为 ${format(0)}，${config.countLabel || '来源记录'} ${number(count(total), 0)}；没有已记录的事件差异支持分组排序。`
+                : focus
+                  ? `${config.kind === 'rate' ? '事件记录较集中的分组为' : '结合差异与记录量，可先核对'} ${focus.label}，${config.label} ${format(focus.value)}，${gap(focus.value, baseline)}${config.kind === 'rate' ? `；该组占当前事件记录的 ${number((weight(focus) / ((count(total) * baseline) / (config.factor || 100))) * 100, 1)}%` : `；涉及 ${number(focus.count, 0)} 条来源记录`}。`
+                  : `当前范围${config.label} ${format(baseline)}。`,
+            evidence: [
+              `当前范围${config.label} ${format(baseline)}，${config.countLabel || '来源记录'} ${number(count(total), 0)}。${spread}`,
+              contrast && cells.length > 1
+                ? `按差异与记录量联合定位，可先核对 ${observation(contrast, baseline)}。`
+                : '当前范围的交叉分组不足，可扩大筛选后继续比较。',
+              `下一步：${config.action}`,
+            ],
+          }
+        }
+        const finding = (current, total, selectedLabel) => {
+          const baseline = value(total),
+            currentValue = value(current)
+          return selectedLabel
+            ? `${config.label} ${format(currentValue)}，${gap(currentValue, baseline)}；${config.countLabel || '来源记录'} ${number(count(current), 0)}。分组差异用于核查，不表示因果。`
+            : `当前范围${config.label} ${format(baseline)}；${config.countLabel || '来源记录'} ${number(count(total), 0)}。${config.action}`
+        }
+        const chartRows = (data, selected) => {
+          const x = [...new Set(data.map((row) => row.x))].slice(0, 8)
+          const allY = [...new Set(data.map((row) => row.y))]
+          const y = config.dimensions[0][2] ? allY.slice(-12) : allY.slice(0, 12)
+          const chosen = data.find((row) => row.key === selected)
+          if (chosen) {
+            if (!x.includes(chosen.x)) x.splice(Math.max(0, x.length - 1), 1, chosen.x)
+            if (!y.includes(chosen.y)) y.splice(Math.max(0, y.length - 1), 1, chosen.y)
+          }
+          return data.filter((row) => x.includes(row.x) && y.includes(row.y))
+        }
+        return { ...config, count, value, format, dimensionLabel, rows, gap, summary, finding, chartRows }
+      }
+    </script>
     <script id="metric-analysis-runtime">
       'use strict'
 
@@ -2441,13 +2544,18 @@
           void refresh(false, nodes['picker-label'])
         }
         function selectDimension(event) {
-          if (!dialog?.open || nodes.groups.inert) return
+          if (!dialog?.open || nodes.groups.inert || dimension?.[0].startsWith('__')) return
           // 与原生 crosshair 使用同一维度命中，不要求鼠标或手指落在线条上。
           const datum = event.dimensionInfo
             ?.flatMap((info) => info.data || [])
             .flatMap((data) => data.datum || [])
             .find((row) => row.key !== undefined)
           if (datum && groupRows?.some((row) => row.key === String(datum.key))) selectGroup(String(datum.key))
+        }
+        function selectDiagnostic(event) {
+          if (!dialog?.open || nodes.groups.inert || !dimension?.[0].startsWith('__')) return
+          const key = event.datum?.key
+          if (key !== undefined && groupRows?.some((row) => row.key === key)) selectGroup(key)
         }
         function completeClose() {
           if (dialog?.open) dialog.close()
@@ -2523,7 +2631,125 @@
             builder.doc.destroy()
           }
         }
+        function buildDiagnosticSpec(group, chartRows, selected) {
+          const analysis = context.analysis
+          const matrix = group[0] === '__cross'
+          const key = JSON.stringify([group[0], chartRows, reducedMotion.matches])
+          if (key !== analysisKey) {
+            analysisSpec = Builder.from({
+              chartType: matrix ? 'heatmap' : 'scatter',
+              dataset: chartRows.map((row) => ({
+                ...row,
+                value: row.value / (analysis.scale || 1),
+                colorValue: row.value / (analysis.scale || 1),
+              })),
+              dimensions: matrix
+                ? [
+                    { id: 'x', alias: analysis.dimensions[1][1], encoding: 'xAxis' },
+                    { id: 'y', alias: analysis.dimensions[0][1], encoding: 'yAxis' },
+                  ]
+                : [{ id: 'label', alias: analysis.dimensions[0][1], encoding: 'detail' }],
+              measures: [
+                ...(matrix
+                  ? []
+                  : [
+                      {
+                        id: 'count',
+                        alias: analysis.countLabel || '来源记录数',
+                        encoding: 'xAxis',
+                        format: { type: 'number', fractionDigits: 0 },
+                      },
+                    ]),
+                ...(matrix
+                  ? [
+                      {
+                        id: 'colorValue',
+                        alias: analysis.label,
+                        encoding: 'color',
+                        format: { type: 'number', fractionDigits: analysis.digits ?? 1, suffix: analysis.unit || '' },
+                      },
+                    ]
+                  : []),
+                {
+                  id: 'value',
+                  alias: analysis.label,
+                  encoding: matrix ? 'label' : 'yAxis',
+                  format: { type: 'number', fractionDigits: analysis.digits ?? 1, suffix: analysis.unit || '' },
+                },
+                ...(matrix
+                  ? [
+                      {
+                        id: 'count',
+                        alias: analysis.countLabel || '来源记录数',
+                        encoding: 'tooltip',
+                        format: { type: 'number', fractionDigits: 0 },
+                      },
+                    ]
+                  : []),
+              ],
+              backgroundColor: 'transparent',
+              color: { colorScheme: [accent], linearColorScheme: ['#f1f4f8', accent] },
+              legend: { enable: false },
+              label: {
+                enable: matrix,
+                showValue: false,
+                showDimension: false,
+                labelFontSize: 11,
+                labelStroke: false,
+                labelColorSmartInvert: true,
+                labelOverlap: true,
+              },
+              tooltip: { enable: true },
+              xAxis: { visible: true, zero: true },
+              yAxis: { visible: true, zero: true },
+              size: 10,
+              animation: {
+                enable: !reducedMotion.matches,
+                params: { appear: { enable: false }, update: { enable: true, duration: 550, ease: 'cubicInOut' } },
+              },
+            }).build()
+            // label 编码补进 tooltip 时会重复颜色指标，只保留一次指标值。
+            if (matrix)
+              analysisSpec.tooltip.mark.content = analysisSpec.tooltip.mark.content.filter(
+                (item) => item.key !== analysis.label,
+              )
+            analysisSpec.animation = !reducedMotion.matches
+            analysisSpec.padding = { top: 16, right: 22, bottom: 10, left: 6 }
+            for (const axis of analysisSpec.axes || []) {
+              axis.label = {
+                ...axis.label,
+                style: { ...axis.label?.style, fill: labelColor || '#64717e', fontSize: 11 },
+              }
+              if (!matrix)
+                axis.title = {
+                  visible: true,
+                  text: axis.orient === 'bottom' ? analysis.countLabel || '来源记录数' : analysis.label,
+                  style: { fill: labelColor || '#64717e', fontSize: 11 },
+                }
+            }
+            const baseline = analysis.value(totalRow)
+            if (!matrix && Number.isFinite(baseline))
+              analysisSpec.markLine = {
+                y: baseline / (analysis.scale || 1),
+                line: { style: { stroke: accent, lineDash: [4, 4], lineWidth: 1 } },
+                label: { text: '当前范围基准', style: { fill: labelColor || '#64717e', fontSize: 10 } },
+              }
+            analysisKey = key
+          }
+          const mark = matrix ? 'cell' : 'point'
+          return {
+            ...analysisSpec,
+            [mark]: {
+              ...analysisSpec[mark],
+              style: {
+                ...analysisSpec[mark]?.style,
+                fillOpacity: (datum) => (selected === undefined || datum.key === selected ? 1 : 0.24),
+              },
+            },
+          }
+        }
         function buildAnalysisSpec(group, metric, chartRows, chartTitle, selected) {
+          if (group[0].startsWith('__') && context.analysis) return buildDiagnosticSpec(group, chartRows, selected)
           const key = JSON.stringify([group[0], chartRows, reducedMotion.matches])
           if (key !== analysisKey) {
             analysisSpec = Builder.from({
@@ -2542,7 +2768,7 @@
               color: { colorScheme: [accent] },
               legend: { enable: false },
               label: { enable: false },
-              tooltip: { enable: false },
+              tooltip: { enable: true },
               xAxis: { visible: true, zero: !group[2], ...(labelColor ? { label: { labelColor } } : {}) },
               yAxis: { visible: true, zero: !group[2], ...(labelColor ? { label: { labelColor } } : {}) },
               pointStyle: { pointVisible: true },
@@ -2607,13 +2833,15 @@
           return DashboardTable.options(options, nodes.table)
         }
         function renderGroupPicker(group, metric, rows, selected) {
-          nodes['picker-text'].textContent = `选择${group[1]}`
+          nodes['picker-text'].textContent =
+            group[0] === '__cross' ? '选择组合' : group[0] === '__scale' ? '选择分组' : `选择${group[1]}`
           nodes.picker.hidden = !rows.length
           if (rows !== menuRows) {
             nodes.groups.replaceChildren(
               ...rows.map((row) => {
-                const choice = button(`${row.key} · ${(metric.groupFormat || metric.format)(row.value)}`, () =>
-                  selectGroup(row.key),
+                const choice = button(
+                  `${row.label || row.key} · ${(metric.groupFormat || metric.format)(row.value)}${row.count === undefined ? '' : ` · ${context.analysis?.countLabel || '来源记录数'} ${number(row.count, 0)}`}`,
+                  () => selectGroup(row.key),
                 )
                 choice.dataset.key = row.key
                 return choice
@@ -2640,6 +2868,30 @@
             metric = context.metric,
             group = dimension,
             selected = selection
+          const analysis = model.analysis
+          const diagnostic = !!analysis && group[0].startsWith('__')
+          const dimensions = diagnostic
+            ? group[0] === '__cross'
+              ? analysis.dimensions
+              : [analysis.dimensions[0]]
+            : [group]
+          const plotMetric = diagnostic
+            ? {
+                ...metric,
+                title: analysis.label,
+                format: analysis.format,
+                groupFormat: analysis.format,
+                scale: analysis.scale,
+                digits: analysis.digits,
+                unit: analysis.unit,
+              }
+            : metric
+          const measures = [
+            ...new Map(
+              [...metric.measures, ...(analysis?.measures || [])].map((measure) => [measure[0], measure]),
+            ).values(),
+          ]
+          const selectedLabel = groupRows?.find((row) => row.key === selected)?.label || selected
           clearTimeout(loadingTimer)
           nodes.feedback.textContent = ''
           nodes.feedback.dataset.loading = String(!hadContent)
@@ -2649,7 +2901,7 @@
           nodes.groups.inert = true
           const clearing = control === nodes.reset
           nodes.selection.hidden = selected === undefined && !clearing
-          if (!clearing) nodes.selected.textContent = selected === undefined ? '' : `${group[1]}：${selected}`
+          if (!clearing) nodes.selected.textContent = selected === undefined ? '' : `${group[1]}：${selectedLabel}`
           const extra =
             selected === undefined
               ? []
@@ -2664,49 +2916,65 @@
               })
             if (!isCurrent()) return
             const base = metric.conditions
-            const selectedConditions =
+            let selectedConditions =
               selected !== undefined && metric.selectionConditions
                 ? metric.selectionConditions(group, selected)
                 : [...base, ...extra]
-            const previousConditions =
+            let previousConditions =
               selected !== undefined && metric.previousSelectionConditions
                 ? metric.previousSelectionConditions(group, selected)
                 : [...(metric.previous || []), ...extra]
-            const detailDimensions = model.detailDimensions.filter(([field]) => !metric.detailExclude?.includes(field))
-            const detailMeasures = metric.measures.filter(([field]) => !detailDimensions.some(([key]) => field === key))
+            if (diagnostic && selected !== undefined) {
+              const values = JSON.parse(selected)
+              const extraConditions = dimensions.map(([field], index) => ({ field, value: values[index] }))
+              selectedConditions = metric.selectionConditions
+                ? [...metric.selectionConditions(dimensions[0], values[0]), ...extraConditions.slice(1)]
+                : [...base, ...extraConditions]
+              previousConditions = metric.previousSelectionConditions
+                ? [...metric.previousSelectionConditions(dimensions[0], values[0]), ...extraConditions.slice(1)]
+                : [...(metric.previous || []), ...extraConditions]
+            }
+            const detailDimensions = [
+              ...new Map(
+                [...model.detailDimensions, ...(analysis?.dimensions || [])].map((item) => [item[0], item]),
+              ).values(),
+            ].filter(([field]) => !metric.detailExclude?.includes(field))
+            const detailMeasures = measures.filter(([field]) => !detailDimensions.some(([key]) => field === key))
             const [library, details, groups, total, prior, selectedTotal, selectedPrior] = await Promise.all([
               DashboardTable.load(),
               query(detailDimensions, selectedConditions, detailMeasures, signal),
               reload
                 ? query(
-                    [group],
+                    dimensions,
                     typeof metric.groupConditions === 'function'
-                      ? metric.groupConditions(group)
+                      ? metric.groupConditions(dimensions[0])
                       : metric.groupConditions || base,
-                    metric.measures,
+                    measures,
                     signal,
                   )
                 : undefined,
-              reload ? query([], base, metric.measures, signal) : undefined,
-              reload && metric.previous ? query([], metric.previous, metric.measures, signal) : undefined,
-              selected !== undefined ? query([], selectedConditions, metric.measures, signal) : undefined,
-              selected !== undefined && metric.previous
-                ? query([], previousConditions, metric.measures, signal)
-                : undefined,
+              reload ? query([], base, measures, signal) : undefined,
+              reload && metric.previous ? query([], metric.previous, measures, signal) : undefined,
+              selected !== undefined ? query([], selectedConditions, measures, signal) : undefined,
+              selected !== undefined && metric.previous ? query([], previousConditions, measures, signal) : undefined,
             ])
             if (!isCurrent()) return
             if (reload) {
               totalRow = total[0] || {}
               priorRow = prior?.[0] || {}
-              groupRows = groups
-                .map((row) => ({
-                  key: String(row[group[0]]),
-                  value: metric.groupValue ? metric.groupValue(row, priorRow) : metric.value(row, priorRow),
-                }))
-                .filter((row) => Number.isFinite(row.value))
-              if (!group[2])
+              groupRows = diagnostic
+                ? analysis.rows(groups, dimensions)
+                : groups
+                    .map((row) => ({
+                      source: row,
+                      count: analysis?.count(row),
+                      key: String(row[group[0]]),
+                      value: metric.groupValue ? metric.groupValue(row, priorRow) : metric.value(row, priorRow),
+                    }))
+                    .filter((row) => Number.isFinite(row.value))
+              if (!diagnostic && !group[2])
                 groupRows.sort((a, b) => b.value - a.value || a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
-              else groupRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
+              else if (!diagnostic) groupRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
             }
             const current = selectedTotal?.[0] || totalRow
             const baseline = selectedPrior?.[0] || priorRow
@@ -2724,7 +2992,7 @@
                     ? metric.previous
                       ? '当前比较范围'
                       : model.detailScope || '当前范围'
-                    : `${group[1]}：${selected}`
+                    : `${group[1]}：${selectedLabel}`
                 nodes['value-label'].title = nodes['value-label'].textContent
                 motion.animateReading(nodes.value, value, metric.format)
                 const ranked = selected === undefined ? [...plotRows].sort((a, b) => b.value - a.value) : []
@@ -2738,48 +3006,72 @@
                         : ranked.length
                           ? `${ranked[0].key}的${metric.title}最高（${metric.format(ranked[0].value)}）${ranked.length > 1 ? `，${ranked.at(-1).key}最低（${metric.format(ranked.at(-1).value)}）` : ''}。`
                           : '当前范围没有可分析的有效值。可返回看板调整筛选。'
+                if (analysis && (diagnostic || !metric.finding))
+                  nodes.finding.textContent = analysis.finding(current, totalRow, selectedLabel)
                 nodes.definition.textContent = metric.definition
                 nodes.evidence.textContent = metric.evidence
                   ? metric.evidence(current, baseline)
                   : '汇总由当前范围内的完整记录计算；表格滚动不改变汇总值。'
-                nodes.grain.textContent = `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 表格包含当前范围的完整结果`
+                if (analysis)
+                  nodes.evidence.textContent += ` 分析问题：${analysis.question}。交叉组合按所显示的两个字段同时筛选；首页的交叉核查候选按“差异绝对值 × 来源记录量”定位，不表示收益或统计显著性。各均值使用字段自身有效值，记录量不代表每个字段均有效。`
+                nodes.grain.textContent = `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selectedLabel}`} · 表格包含当前范围的完整结果`
                 const detailScope =
-                  selected === undefined ? model.detailScope || '当前范围' : `${group[1]}：${selected}`
+                  selected === undefined ? model.detailScope || '当前范围' : `${group[1]}：${selectedLabel}`
                 nodes['table-scope'].textContent = `${detailScope} · ${number(details.length, 0)} 条记录`
                 nodes['table-scope'].title = nodes['table-scope'].textContent
                 nodes.table.setAttribute('aria-label', `关联明细，${detailScope}，${details.length} 条记录`)
-                const chartTitle = metric.groupTitle || metric.title
-                nodes['chart-title'].textContent =
-                  metric.groupTitle || (group[2] ? `${group[1]}趋势` : `${group[1]}比较`)
+                const chartTitle = diagnostic ? analysis.label : metric.groupTitle || metric.title
+                nodes['chart-title'].textContent = diagnostic
+                  ? `${group[0] === '__cross' ? analysis.dimensions.map((item) => item[1]).join(' × ') : '规模与表现'} · ${analysis.label}`
+                  : metric.groupTitle || (group[2] ? `${group[1]}趋势` : `${group[1]}比较`)
                 nodes['chart-hint'].textContent = !group[2] && plotRows.length > 12 ? '前 12 组' : ''
-                renderGroupPicker(group, metric, plotRows, selected)
-                const chartRows = group[2] ? plotRows : plotRows.slice(0, 12)
+                renderGroupPicker(group, plotMetric, plotRows, selected)
+                const chartRows = diagnostic
+                  ? group[0] === '__cross'
+                    ? analysis.chartRows(plotRows, selected)
+                    : [...plotRows]
+                  : group[2]
+                    ? plotRows
+                    : plotRows.slice(0, 12)
                 // 菜单可选择 Top N 以外的分组；选中项仍须能在图中定位。
-                if (selected !== undefined && !chartRows.some((row) => row.key === selected)) {
+                if (!diagnostic && selected !== undefined && !chartRows.some((row) => row.key === selected)) {
                   const row = plotRows.find((row) => row.key === selected)
                   if (row) {
                     chartRows.splice(Math.max(0, chartRows.length - 1), 1, row)
                     nodes['chart-hint'].textContent = '前 11 组及已选项'
                   }
                 }
+                if (diagnostic)
+                  nodes['chart-hint'].textContent =
+                    group[0] === '__cross'
+                      ? `颜色越深表示${analysis.label}越高；显示 ${chartRows.length}/${plotRows.length} 个有效组合，完整组合见菜单。`
+                      : `横轴为${analysis.countLabel || '来源记录数'}，纵轴为${analysis.label}；虚线为当前范围基准，点选核对记录。`
                 nodes.chart.dataset.empty = String(!chartRows.length)
                 if (!chartRows.length) {
                   chart?.release()
                   chart = undefined
                 }
                 if (chartRows.length) {
-                  const spec = buildAnalysisSpec(group, metric, chartRows, chartTitle, selected)
+                  const spec = buildAnalysisSpec(group, plotMetric, chartRows, chartTitle, selected)
+                  // 原生 HTML tooltip 必须挂在 dialog 顶层内，才能显示在遮罩上。
+                  spec.tooltip = { ...spec.tooltip, parentElement: dialog, confine: true }
                   if (chart) {
                     const changedType = chartType !== spec.type
+                    // 点、矩形与矩阵单元不做跨图元形变，避免无效路径；同图型仍平滑更新。
+                    const crossMarks =
+                      changedType && [chartType, spec.type].some((type) => type === 'scatter' || type === 'heatmap')
+                    const morph = !reducedMotion.matches && !crossMarks
                     await chart.updateSpec(
                       spec,
                       false,
                       {
-                        morph: !reducedMotion.matches,
-                        ...(!reducedMotion.matches && changedType ? { reuse: false } : {}),
+                        morph,
+                        ...(morph && changedType ? { reuse: false } : {}),
                       },
                       changedType ? { change: true, reMake: true } : undefined,
                     )
+                    if (isCurrent() && crossMarks && !reducedMotion.matches)
+                      nodes.chart.animate([{ opacity: 0.75 }, { opacity: 1 }], { duration: 220, easing: 'ease-out' })
                   } else {
                     chart = new VChart(spec, { dom: nodes.chart })
                     chart.renderSync()
@@ -2789,10 +3081,12 @@
                   // 切换图型后重新绑定到当前坐标系；同一次点击只走维度事件，避免二次切换。
                   chart.off('dimensionClick', selectDimension)
                   chart.on('dimensionClick', selectDimension)
+                  chart.off('click', selectDiagnostic)
+                  chart.on('click', selectDiagnostic)
                 }
                 nodes.chart.setAttribute(
                   'aria-label',
-                  `${chartTitle}，${selected === undefined ? '未选择分组' : `已选择${selected}`}，也可通过选择${group[1]}菜单联动明细`,
+                  `${chartTitle}，${selected === undefined ? '未选择分组' : `已选择${selectedLabel}`}，也可通过选择${group[1]}菜单联动明细`,
                 )
                 // 同一指标的表结构不变：筛选和翻页仅替换记录，避免重建表头及重算列宽。
                 const existingTable = !!table
@@ -2841,6 +3135,8 @@
           createDialog()
           delete dialog.dataset.contentEnter
           context = getContext(index)
+          if (context.analysis)
+            context.dimensions = [...context.dimensions, ['__scale', '规模与表现'], ['__cross', '交叉定位']]
           dimension = context.dimensions[0]
           selection = undefined
           groupRows = undefined
@@ -3021,6 +3317,39 @@
         columns: ['年龄组（岁）', '样本人数', '记录死亡事件', '事件占比', '平均射血分数', '平均肌酐（mg/dL）'],
       }
 
+      const analysis = DashboardAnalysis(
+        {
+          countField: 'id',
+          countLabel: '来源记录数',
+          scale: 1,
+          digits: 1,
+          measures: PAGE.queries.totals.measures,
+          field: 'death',
+          denominator: 'id',
+          factor: 100,
+          kind: 'rate',
+          unit: '%',
+          label: '记录死亡事件占比',
+          question: '事件数量与事件占比指向同一年龄组吗？',
+          dimensions: [
+            ['age_band', '年龄组'],
+            ['pressure', '高血压状态', false, 'number'],
+          ],
+          valueLabels: { pressure: { 0: '无高血压', 1: '有高血压' } },
+          action:
+            '先在相近随访时长下核对年龄组与高血压状态，结合射血分数和肌酐分布继续验证；该队列不能用于临床阈值或个体风险判断。',
+        },
+        formatNumber,
+      )
+      PAGE.aliases = {
+        ...PAGE.aliases,
+        ...Object.fromEntries(analysis.dimensions.map(([field, label]) => [field, label])),
+      }
+      PAGE.queries.analysisGroups = { dimensions: [analysis.dimensions[0][0]], measures: analysis.measures }
+      PAGE.queries.analysisCross = {
+        dimensions: analysis.dimensions.map(([field]) => field),
+        measures: analysis.measures,
+      }
       function prepareRows(source) {
         return source.rows.map((values, index) => {
           const r = Object.fromEntries(source.columns.map((key, i) => [key, values[i]]))
@@ -3067,20 +3396,18 @@
         }
         const current = metrics(total)
         const points = groups.map((r) => ({ key: r.age_band, label: `${r.age_band} 岁`, metrics: metrics(r) }))
+        const findings = analysis.summary(result.analysisGroups, result.analysisCross, total)
+        findings.evidence.splice(
+          1,
+          0,
+          `平均随访 ${formatNumber(total.followup)} 天；不同随访长度的事件占比不能视为统一时点死亡率。`,
+        )
         const scope = `${count(total.id || 0)} 份记录 · ${state.age === 'younger' ? '60 岁以下' : state.age ? '60 岁及以上' : '全部年龄'} · ${state.pressure === '1' ? '有高血压' : state.pressure === '0' ? '无高血压' : '全部高血压状态'}`
         return {
           metrics: current,
           scope,
           empty: !(total.id > 0),
-          conclusion:
-            total.id > 0
-              ? `${count(total.id)} 份样本中记录 ${count(total.death)} 例死亡事件，占 ${formatNumber(current.values[1])}%；平均射血分数 ${formatNumber(total.ef)}%。`
-              : '当前筛选暂无记录。',
-          evidence: [
-            `样本人数：${count(total.id || 0)}；平均年龄：${formatNumber(total.age)} 岁。`,
-            `记录死亡事件占比：${formatNumber(current.values[1])}%；平均随访时长：${formatNumber(total.followup)} 天。`,
-            `平均血清肌酐：${formatNumber(total.creatinine, 2)} mg/dL。不同随访时长下的事件占比不等同于统一时点死亡率。`,
-          ],
+          ...findings,
           axisLabels: [],
           table: groups.map((r) => [
             r.age_band,
@@ -3459,6 +3786,7 @@
       function createQuery(key, definition) {
         const chart = vbi.chart.create(vbi.chart.createEmpty(PAGE.connectorId))
         chart.chartType.changeChartType(definition.type || 'table')
+        chart.limit.setLimit(sourceData.rows.length)
         for (const field of definition.dimensions || [])
           chart.dimensions.add(field, (node) => node.setAlias(PAGE.aliases[field] || field).setSort({ order: 'asc' }))
         for (const [field, alias, func] of definition.measures)
@@ -3518,6 +3846,7 @@
         }
       }
       function renderInsight() {
+        $('#insight-title').textContent = analysis.question
         const [conclusion, scope, ...evidence] = insight.build().content.split('\n')
         $('#conclusion').textContent = conclusion
         $('#insight-scope').textContent = scope
@@ -3710,6 +4039,7 @@
 
         return {
           connectorId: PAGE.connectorId,
+          analysis,
           rowLimit: sourceData.rows.length,
           dimensions,
           detailDimensions,

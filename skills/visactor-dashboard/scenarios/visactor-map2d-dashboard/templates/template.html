@@ -9,7 +9,9 @@
   metric-analysis: analysis dialog, its query lifecycle and resources.
   map-dashboard / map-detail-styles: shared controls, navigation, recovery and record details.
   Final application script: source data, business filters, map overlays and page lifecycle.
-  Maintain map modules directly in this HTML. Shared table tokens/runtime reuse
+  dashboard-material / dashboard-interaction-runtime / map-glass-controls:
+  maintain glass surfaces, common UI interactions and pickers directly in this HTML.
+  Shared table tokens/runtime reuse
   references/visual-query/assets/.
   Maintain this standard template; do not edit embedded vendor bundles.
 -->
@@ -163,7 +165,6 @@
         background: var(--page-surface);
         z-index: -3;
         opacity: 0;
-        transition: opacity var(--motion-map-duration) ease-out;
       }
       body[data-map-ready='true'] #map {
         opacity: 1;
@@ -1414,6 +1415,10 @@
       }
     </style>
     <style id="map-ui-styles">
+      :root {
+        --motion-map-zoom-duration: 2000ms;
+        --motion-map-zoom-offset: 0.65;
+      }
       /* Scene palette and layout; dashboard-material owns shared mode optics. */
       :root[data-mode='light'] {
         --ink: #383838;
@@ -1483,7 +1488,6 @@
       .settings-map-option[aria-pressed='true'] small {
         color: var(--control-selected-muted);
       }
-      .country-option[aria-selected='true'],
       .ma-title-icon::after {
         color: var(--accent);
       }
@@ -2358,7 +2362,7 @@
         function createSettings({ mount, basemaps, defaults, getBasemap, setBasemap, getMarkerMode, setMarkerMode }) {
           const matchesTheme = (style) => Boolean(style.dark) === (theme().mode === 'dark')
           const host = typeof mount === 'string' ? document.querySelector(mount) : mount
-          host.innerHTML = `<button type="button" class="settings-trigger control-icon" aria-label="地图设置" title="地图设置" aria-haspopup="dialog" aria-expanded="false" aria-controls="map-settings-panel">${gear}</button>`
+          host.innerHTML = `<button type="button" class="settings-trigger control-icon" data-tooltip aria-label="地图设置" title="地图设置" aria-haspopup="dialog" aria-expanded="false" aria-controls="map-settings-panel">${gear}</button>`
           const trigger = host.firstElementChild
           const panel = document.createElement('section')
           panel.id = 'map-settings-panel'
@@ -2380,34 +2384,8 @@
       <p class="settings-label" id="basemap-label">底图</p><div class="settings-maps" role="group" aria-labelledby="basemap-label"></div>
       <footer class="settings-footer"><p class="settings-status" id="basemap-status" role="status"></p><button type="button" class="settings-reset material-action">恢复默认</button></footer>`
           document.body.append(panel)
-          const glassInput = panel.querySelector('#glass-strength')
-          const glassOutput = panel.querySelector('output[for="glass-strength"]')
-          let glassFrame = 0
-          const setGlassStrength = (value, persist = false) => {
-            const n = value == null || String(value).trim() === '' ? NaN : Number(value)
-            const strength = Number.isFinite(n) ? Math.round(Math.max(0, Math.min(100, n))) : 60
-            glassInput.value = strength
-            glassInput.style.setProperty('--range-progress', `${strength}%`)
-            glassInput.setAttribute('aria-valuetext', `${strength}%，通透到凝实`)
-            glassOutput.value = `${strength}%`
-            if (!glassFrame)
-              glassFrame = requestAnimationFrame(() => {
-                glassFrame = 0
-                root.style.setProperty('--glass-strength', glassInput.value)
-              })
-            if (persist) {
-              try {
-                localStorage.setItem('vbi-map-glass-strength', String(strength))
-              } catch {}
-            }
-          }
-          const syncGlassStrength = (event) => {
-            if (event.key === 'vbi-map-glass-strength') setGlassStrength(event.newValue)
-          }
-          glassInput.oninput = () => setGlassStrength(glassInput.value)
-          glassInput.onchange = () => setGlassStrength(glassInput.value, true)
-          window.addEventListener('storage', syncGlassStrength)
-          setGlassStrength(root.style.getPropertyValue('--glass-strength'))
+          const glassStrength = MapGlassControls.bindStrength(panel)
+          const setGlassStrength = glassStrength.set
           const options = panel.querySelector('.settings-maps')
           for (const style of basemaps) {
             const button = document.createElement('button')
@@ -2531,8 +2509,8 @@
           return {
             sync,
             destroy() {
-              cancelAnimationFrame(glassFrame)
-              window.removeEventListener('storage', syncGlassStrength)
+              glassStrength.destroy()
+
               close()
               document.removeEventListener('keydown', escapeKey, true)
               document.removeEventListener('pointerdown', outside)
@@ -22631,10 +22609,6 @@
         max-height: calc(100dvh - 48px);
         overflow: hidden;
       }
-      .ma-dialog::backdrop {
-        background: var(--dialog-scrim);
-        backdrop-filter: blur(5px);
-      }
       .ma-dialog .ma-shell {
         display: flex;
         flex-direction: column;
@@ -23056,7 +23030,7 @@
     <script id="metric-analysis">
       // Map analysis presentation. Queries use public VBI Builders.
       window.bindMapMetricAnalysis = function ({ vbi, Builder, VChart, entries, getContext, ready }) {
-        let dialog, context, dimension, selection, chart, table, observer, controller
+        let dialog, context, dimension, selection, selectedRecord, chart, table, observer, controller
         let version = 0,
           records = [],
           opener,
@@ -23094,10 +23068,10 @@
 <div class="ma-body">
 <p class="ma-feedback query-feedback" data-ma="feedback" role="status"></p><button type="button" class="control-button" data-ma="retry" hidden>重新加载</button>
 <div class="ma-content" data-ma="content" hidden>
-  <section class="ma-summary"><div><p class="ma-eyebrow" data-ma="value-label"></p><strong class="ma-value" data-ma="value"></strong></div><p class="ma-finding" data-ma="finding"></p></section>
+  <section class="ma-summary"><div><p class="ma-eyebrow" data-ma="value-label"></p><strong class="ma-value" data-ma="value"></strong></div><div><p class="ma-finding" data-ma="finding"></p><p class="ma-hint" data-ma="next"></p></div></section>
   <div class="ma-toolbar"><nav class="ma-modes control-group" aria-label="分析维度" data-ma="modes"></nav><div class="ma-selection" data-ma="selection" hidden><span data-ma="selected"></span><button type="button" class="control-button" data-ma="reset" aria-label="清除分组筛选">清除 ×</button></div><details class="ma-picker" data-ma="picker"><summary class="control-select" data-ma="picker-label"><span data-ma="picker-text">选择分组</span></summary><div class="ma-groups control-menu material-popover" data-ma="groups" role="group" aria-label="选择分组查看记录"></div></details></div>
   <section class="ma-chart-panel l-card material-card"><div class="ma-panel-heading"><h3 class="panel-title" data-ma="chart-title"></h3></div><p class="ma-hint" data-ma="chart-hint"></p><div class="ma-chart" data-ma="chart" role="img"></div></section>
-  <section class="ma-table-panel l-card material-card"><div class="ma-panel-heading"><h3 class="panel-title">关联明细</h3><button type="button" class="control-button" data-ma="expand" aria-expanded="false">展开表格</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="分析明细表" tabindex="0"></div></section>
+  <section class="ma-table-panel l-card material-card"><div class="ma-panel-heading"><h3 class="panel-title">关联明细</h3><button type="button" class="control-button" data-ma="locate" hidden disabled>定位所选事件</button><button type="button" class="control-button" data-ma="expand" aria-expanded="false">展开表格</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="分析明细表" tabindex="0"></div></section>
   <details class="ma-definition"><summary>统计口径与依据</summary><p data-ma="definition"></p><p data-ma="evidence"></p><p data-ma="grain"></p></details>
 </div></div></div>`
           for (const node of dialog.querySelectorAll('[data-ma]')) nodes[node.dataset.ma] = node
@@ -23113,6 +23087,13 @@
             void refresh(false, event.currentTarget)
           })
           listen(find('retry'), 'click', (event) => void refresh(true, event.currentTarget))
+          listen(find('locate'), 'click', () => {
+            if (!selectedRecord || !context?.locate) return
+            const record = selectedRecord,
+              locate = context.locate
+            closeDialog()
+            locate(record)
+          })
           listen(find('expand'), 'click', () => {
             const expanded = dialog.classList.toggle('ma-expanded')
             find('expand').setAttribute('aria-expanded', String(expanded))
@@ -23182,6 +23163,7 @@
           table = undefined
           menuRows = specKey = baseSpec = chartType = undefined
           records = []
+          selectedRecord = undefined
           context = undefined
           if (previousOverflow !== undefined) {
             document.body.style.overflow = previousOverflow
@@ -23189,14 +23171,22 @@
           }
           opener?.focus({ preventScroll: true })
         }
-        async function query(dimensions, conditions, measures, signal) {
+        async function query(dimensions, conditions, measures, signal, queue = false) {
           if (context.empty) return []
           const builder = MapQueries.create(vbi, context.connectorId, {
             dimensions: dimensions.map(([field, label]) => [field, 'column', label]),
             measures,
             limit: context.rowLimit,
           })
-          builder.dimensions.findAll().forEach((node) => node.setSort({ order: 'asc' }))
+          builder.dimensions.findAll().forEach((node) => {
+            const field = node.getField()
+            if (!queue || field === 'magnitude' || field === 'time') node.setSort({ order: queue ? 'desc' : 'asc' })
+          })
+          if (context.metric.review && dimensions.length === 1)
+            builder.measures
+              .findAll()
+              .find((node) => node.getField() === 'is_pending')
+              ?.setSort({ order: 'desc' })
           for (const condition of conditions)
             builder.whereFilter.add(condition.field, (node) =>
               node.setOperator(condition.operator || 'eq').setValue(condition.value),
@@ -23209,8 +23199,10 @@
           }
         }
         function buildAnalysisSpec(group, metric, chartRows, chartTitle, selected) {
+          const review = metric.review && group[0] !== 'status'
           const key = JSON.stringify([
             document.documentElement.dataset.theme,
+            review,
             group[0],
             chartRows,
             reducedMotion.matches,
@@ -23218,9 +23210,22 @@
           if (key !== specKey) {
             baseSpec = Builder.from({
               theme: MapUI.theme().mode,
-              chartType: group[2] ? 'line' : 'bar',
-              dataset: chartRows.map((row) => ({ ...row, value: row.value / (metric.scale || 1) })),
-              dimensions: [{ id: 'key', alias: group[1], encoding: group[2] ? 'xAxis' : 'yAxis' }],
+              chartType: review ? 'barPercent' : group[2] ? 'line' : 'bar',
+              dataset: review
+                ? chartRows.flatMap((row) => [
+                    { key: row.key, series: '已审核', value: row.is_reviewed },
+                    { key: row.key, series: '待审核', value: row.is_pending },
+                    {
+                      key: row.key,
+                      series: '状态未知',
+                      value: Math.max(0, row.event_count - row.is_reviewed - row.is_pending),
+                    },
+                  ])
+                : chartRows.map((row) => ({ ...row, value: row.value / (metric.scale || 1) })),
+              dimensions: [
+                { id: 'key', alias: group[1], encoding: group[2] ? 'xAxis' : 'yAxis' },
+                ...(review ? [{ id: 'series', alias: '审核状态', encoding: 'color' }] : []),
+              ],
               measures: [
                 {
                   id: 'value',
@@ -23230,8 +23235,12 @@
                 },
               ],
               backgroundColor: 'transparent',
-              color: { colorScheme: [MapUI.token('--chart-ink')] },
-              legend: { enable: false },
+              color: {
+                colorScheme: review
+                  ? [MapUI.token('--chart-ink'), MapUI.token('--event-high'), MapUI.token('--muted')]
+                  : [MapUI.token('--chart-ink')],
+              },
+              legend: { enable: review },
               label: { enable: false },
               tooltip: { enable: false },
               xAxis: { visible: true, zero: !group[2] },
@@ -23329,10 +23338,14 @@
             if (!dialog.open || ticket !== version) return
             const base = metric.conditions
             const selectedConditions = [...base, ...extra]
+            const queue = metric.review && group[0] === 'network'
+            const detailConditions = queue
+              ? [...selectedConditions, { field: 'is_pending', value: 1 }]
+              : selectedConditions
             const detailDimensions = model.detailDimensions
             const [library, details, groups, total, selectedTotal] = await Promise.all([
               loadTable(),
-              query(detailDimensions, selectedConditions, [], signal),
+              query(detailDimensions, detailConditions, [], signal, queue),
               reload ? query([group], base, metric.measures, signal) : undefined,
               reload ? query([], base, metric.measures, signal) : undefined,
               selected !== undefined ? query([], selectedConditions, metric.measures, signal) : undefined,
@@ -23342,13 +23355,19 @@
               totalRow = total[0] || {}
               groupRows = groups
                 .map((row) => ({
+                  ...row,
                   key: String(row[group[0]]),
-                  value: metric.groupValue ? metric.groupValue(row) : metric.value(row),
+                  value:
+                    metric.review && group[0] === 'status'
+                      ? row.event_count
+                      : metric.groupValue
+                        ? metric.groupValue(row)
+                        : metric.value(row),
                 }))
                 .filter((row) => Number.isFinite(row.value))
-              if (!group[2])
+              if (!metric.review && !group[2])
                 groupRows.sort((a, b) => b.value - a.value || a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
-              else groupRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
+              else if (group[2]) groupRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
             }
             const current = selectedTotal?.[0] || totalRow
             const value = metric.value(current)
@@ -23361,39 +23380,56 @@
                 if (!dialog.open || ticket !== version) return
                 find('content').hidden = false
                 const detailScope = selected === undefined ? '当前范围' : `${group[1]}：${selected}`
-                find('value-label').textContent = detailScope
+                find('value-label').textContent = queue ? `比较基准 · ${detailScope}` : detailScope
                 find('value-label').title = find('value-label').textContent
                 metrics.set(find('value'), value, '', metric.format)
+                find('next').textContent = metric.next ? metric.next(current, { group, selected }) : ''
+                find('next').hidden = !metric.next
+                find('locate').hidden = !model.locate
+                selectedRecord = queue ? records[0] : undefined
+                find('locate').disabled = !selectedRecord
+                find('locate').textContent = selectedRecord ? '定位首条待复核事件' : '选择明细后定位'
                 find('value').classList.toggle('ma-time-value', metric.valueKind === 'time')
                 const ranked = [...plotRows].sort((a, b) => b.value - a.value)
-                find('finding').textContent =
-                  selected !== undefined
+                find('finding').textContent = metric.finding
+                  ? metric.finding(current, plotRows, { group, selected, overall: totalRow })
+                  : selected !== undefined
                     ? `总体 ${metric.format(overall)}`
-                    : metric.finding
-                      ? metric.finding(current, plotRows)
-                      : ranked.length > 1 && ranked.every((row) => row.value === ranked[0].value)
-                        ? `各${group[1]}的${metric.title}均为 ${metric.format(ranked[0].value)}。`
-                        : ranked.length
-                          ? `${ranked[0].key}的${metric.measureTitle || metric.title}最高（${metric.format(ranked[0].value)}）${ranked.length > 1 ? `，${ranked.at(-1).key}最低（${metric.format(ranked.at(-1).value)}）` : ''}。`
-                          : '当前范围没有可分析的有效值。可返回看板调整筛选。'
+                    : ranked.length > 1 && ranked.every((row) => row.value === ranked[0].value)
+                      ? `各${group[1]}的${metric.title}均为 ${metric.format(ranked[0].value)}。`
+                      : ranked.length
+                        ? `${ranked[0].key}的${metric.measureTitle || metric.title}最高（${metric.format(ranked[0].value)}）${ranked.length > 1 ? `，${ranked.at(-1).key}最低（${metric.format(ranked.at(-1).value)}）` : ''}。`
+                        : '当前范围没有可分析的有效值。可返回看板调整筛选。'
                 find('definition').textContent = metric.definition
                 find('evidence').textContent = '汇总由当前范围内的完整记录计算；表格滚动不改变汇总值。'
                 find('grain').textContent =
                   `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 表格包含当前范围的完整结果`
-                find('table-scope').textContent = `${detailScope} · ${number(records.length, 0)} 条记录`
+                find('table-scope').textContent =
+                  `${queue ? '待复核 · automatic · 震级／时间降序 · ' : ''}${detailScope} · ${number(records.length, 0)} 条记录`
                 find('table-scope').title = find('table-scope').textContent
                 find('table').setAttribute('aria-label', `关联明细，${detailScope}，${records.length} 条记录`)
-                const chartTitle = metric.groupTitle || metric.measureTitle || metric.title
-                find('chart-title').textContent =
-                  metric.groupTitle || (group[2] ? `${group[1]}趋势` : `${group[1]}比较`)
-                find('chart-hint').textContent = !group[2] && plotRows.length > 12 ? '前 12 组' : ''
+                const chartTitle = metric.review
+                  ? group[0] === 'status'
+                    ? '审核状态事件数'
+                    : '同组事件审核结构'
+                  : metric.groupTitle || metric.measureTitle || metric.title
+                find('chart-title').textContent = metric.review
+                  ? `${group[1]} · ${chartTitle}`
+                  : metric.groupTitle || (group[2] ? `${group[1]}趋势` : `${group[1]}比较`)
+                find('chart-hint').textContent = metric.review
+                  ? group[0] === 'status'
+                    ? '同一打开时快照；automatic 为待审核，其他状态单列'
+                    : '每组以该组全部事件为100%；样本量可从分组菜单核对，结构差异不表示网络质量差'
+                  : !group[2] && plotRows.length > 12
+                    ? '前 12 组'
+                    : ''
                 find('picker-text').textContent = `选择${group[1]}`
                 find('picker').hidden = !plotRows.length
                 if (menuRows !== plotRows) {
                   find('groups').replaceChildren(
                     ...plotRows.map((row) => {
                       const choice = button(
-                        `${row.key} · ${(metric.groupFormat || metric.format)(row.value)}`,
+                        `${row.key} · ${metric.review ? `n=${number(row.event_count, 0)} · 待审核 ${number(row.is_pending, 0)}` : (metric.groupFormat || metric.format)(row.value)}`,
                         () => selectGroup(row.key),
                         'control-option',
                       )
@@ -23455,6 +23491,16 @@
                   tableTheme = themeId
                   const options = buildTableOptions(detailDimensions, records)
                   table = new library.ListTable(find('table'), options)
+                  const chooseRecord = ({ col, row }) => {
+                    if (!context?.locate || row < 1) return
+                    selectedRecord = table.getRecordByCell(col, row)
+                    find('locate').disabled = !selectedRecord?.event_id
+                    find('locate').textContent = selectedRecord?.event_id
+                      ? `定位 ${selectedRecord.event_id}`
+                      : '选择明细后定位'
+                  }
+                  table.on('click_cell', chooseRecord)
+                  table.on('selected_cell', chooseRecord)
                 }
                 if (!dialog.open || ticket !== version) return
                 if (existingTable) DashboardTable.setRecords(table, records, { animate: false })
@@ -23501,7 +23547,7 @@
           find('scope').textContent = context.scope
           find('modes').replaceChildren(
             ...context.dimensions.map((group) => {
-              const choice = button(group[1], () => {
+              const choice = button(context.modeLabels?.[group[0]] || group[1], () => {
                 if (dimension === group) return
                 dimension = group
                 selection = undefined
@@ -23587,114 +23633,16 @@
     </script>
 
     <style id="map-country-styles">
-      /* Country selector, matching the analysis picker. */
       .country-trigger,
       .control-select {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
         height: 32px;
         max-width: 190px;
         padding: 0 10px;
-        font: inherit;
         font-size: 11px;
-        cursor: pointer;
-        white-space: nowrap;
       }
-      .country-trigger svg {
-        width: 15px;
-        height: 15px;
-        flex: none;
-      }
-      .country-trigger span {
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .country-trigger::after,
       .control-select::after {
         content: '⌄';
         margin-left: 5px;
-      }
-      .country-trigger[aria-expanded='true'],
-      .control-select:hover,
-      .ma-picker[open] .control-select {
-        color: var(--strong);
-      }
-      .control-menu {
-        padding: 6px;
-      }
-      .country-picker {
-        position: fixed;
-        inset: auto;
-        margin: 0;
-        box-sizing: border-box;
-        width: 280px;
-        max-width: calc(100vw - 24px);
-        font: inherit;
-      }
-      .country-picker::backdrop {
-        background: transparent;
-      }
-      .country-search {
-        box-sizing: border-box;
-        width: 100%;
-        padding: 10px 12px;
-        margin: 0 0 6px;
-        border: 1px solid var(--divider);
-        border-radius: 9px;
-        background: transparent;
-        color: var(--strong);
-        font: inherit;
-        font-size: 12px;
-      }
-      .country-options {
-        overflow: auto;
-        max-height: min(310px, 45vh);
-        overscroll-behavior: contain;
-      }
-      .country-option,
-      .control-option {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        box-sizing: border-box;
-        width: 100%;
-        min-height: 38px;
-        padding: 9px 12px;
-        border: 0;
-        border-radius: 8px;
-        background: transparent;
-        text-align: left;
-        color: var(--muted);
-        font: inherit;
-        font-size: 12px;
-        cursor: pointer;
-      }
-      :is(.country-option, .control-option):is(:hover, :focus-visible, [aria-selected='true'], [aria-pressed='true']) {
-        background: var(--control-surface);
-        color: var(--strong);
-        box-shadow: none;
-      }
-      .country-option[aria-selected='true']::after {
-        content: '✓';
-        font-size: 12px;
-      }
-      .country-option:focus-visible,
-      .country-search:focus-visible {
-        outline: 1px solid var(--control-ink);
-        outline-offset: -2px;
-      }
-      .country-empty {
-        padding: 12px;
-        margin: 0;
-        font-size: 12px;
-      }
-      .country-scope-note {
-        font-size: 10px;
-        color: var(--faint);
-        margin: 6px 0 0;
-        line-height: 1.5;
       }
     </style>
     <style id="map-detail-styles">
@@ -24037,132 +23985,367 @@
         }
       })()
     </script>
-    <script id="map-country-script">
-      window.MapCountryPicker = function ({ trigger, options, onChange, note = '' }) {
-        const lifetime = new AbortController()
-        const listen = (node, type, callback) => node.addEventListener(type, callback, { signal: lifetime.signal })
-        const panel = document.createElement('div')
-        panel.className = 'country-picker control-menu material-popover'
-        panel.id = `${trigger.id}-panel`
-        panel.setAttribute('popover', 'auto')
-        panel.innerHTML =
-          '<input class="country-search" type="search" placeholder="搜索国家 / 地区" aria-label="搜索国家或地区" autocomplete="off"><div class="country-options" role="listbox" aria-label="国家或地区"></div><p class="country-empty" role="status" hidden>没有匹配的国家或地区</p>'
-        if (note) {
-          const hint = document.createElement('p')
-          hint.className = 'country-scope-note'
-          hint.textContent = note
-          panel.append(hint)
-        }
-        document.body.append(panel)
-        const search = panel.querySelector('input'),
-          list = panel.querySelector('[role="listbox"]')
-        const label = trigger.querySelector('span')
-        let value = ''
-        trigger.setAttribute('aria-controls', panel.id)
-        trigger.setAttribute('aria-haspopup', 'listbox')
-        trigger.setAttribute('aria-expanded', 'false')
-        function render() {
-          const term = search.value.trim().toLocaleLowerCase()
-          const matches = options.filter((item) => `${item.label} ${item.value}`.toLocaleLowerCase().includes(term))
-          list.replaceChildren(
-            ...matches.map((item) => {
-              const button = document.createElement('button')
-              button.type = 'button'
-              button.className = 'country-option'
-              button.setAttribute('role', 'option')
-              button.setAttribute('aria-selected', String(value === item.value))
-              button.tabIndex = -1
-              button.dataset.value = item.value
-              button.textContent = item.label
-              return button
-            }),
-          )
-          panel.querySelector('.country-empty').hidden = !!matches.length
-        }
-        function position() {
-          const box = trigger.getBoundingClientRect()
-          const width = panel.offsetWidth,
-            height = panel.offsetHeight
-          panel.style.setProperty(
-            '--popover-origin',
-            box.bottom + 8 + height <= innerHeight - 12 ? 'top right' : 'bottom right',
-          )
-          panel.style.left = `${Math.max(12, Math.min(innerWidth - width - 12, box.right - width))}px`
-          panel.style.top = `${Math.max(12, Math.min(box.bottom + 8, innerHeight - height - 12))}px`
-        }
-        function open() {
-          if (trigger.disabled) return
-          search.value = ''
-          render()
-          panel.showPopover()
-          position()
-          search.focus()
-        }
-        function close(focus = false) {
-          panel.hidePopover()
-          if (focus) trigger.focus()
-        }
-        listen(trigger, 'click', () => (panel.matches(':popover-open') ? close() : open()))
-        listen(trigger, 'keydown', (event) => {
-          if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-            event.preventDefault()
-            open()
+    <script id="map-glass-controls">
+      // UI adapters only. Hosts own filters, queries, map navigation and appearance effects.
+      window.MapGlassControls = (() => {
+        const strengthKey = 'vbi-map-glass-strength'
+        function bindStrength(scope, { signal } = {}) {
+          const root = document.documentElement
+          const input = scope.querySelector('.material-range')
+          const output = scope.querySelector('output[for="' + input.id + '"]')
+          const lifetime = new AbortController()
+          let frame = 0
+          function set(value, persist = false) {
+            const n = value == null || String(value).trim() === '' ? NaN : Number(value)
+            const strength = Number.isFinite(n) ? Math.round(Math.max(0, Math.min(100, n))) : 60
+            input.value = strength
+            input.style.setProperty('--range-progress', `${strength}%`)
+            input.setAttribute('aria-valuetext', `${strength}%，通透到凝实`)
+            output.value = `${strength}%`
+            if (!frame)
+              frame = requestAnimationFrame(() => {
+                frame = 0
+                root.style.setProperty('--glass-strength', input.value)
+              })
+            if (persist) {
+              try {
+                localStorage.setItem(strengthKey, String(strength))
+              } catch {}
+            }
           }
-        })
-        listen(panel, 'toggle', () => trigger.setAttribute('aria-expanded', String(panel.matches(':popover-open'))))
-        listen(search, 'input', () => {
-          render()
-          position()
-        })
-        listen(list, 'click', (event) => {
-          const option = event.target.closest('[role="option"]')
-          if (!option) return
-          close(true)
-          if (option.dataset.value !== value) onChange(option.dataset.value)
-        })
-        listen(panel, 'keydown', (event) => {
-          const buttons = [...list.children],
-            index = buttons.indexOf(document.activeElement)
-          if (event.key === 'Tab') {
-            close(true)
-          } else if (event.key === 'Escape') {
-            event.preventDefault()
-            close(true)
-          } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-            event.preventDefault()
-            const next = event.key === 'ArrowDown' ? index + 1 : index < 0 ? buttons.length - 1 : index - 1
-            buttons[(next + buttons.length) % buttons.length]?.focus()
-          } else if (event.target !== search && (event.key === 'Home' || event.key === 'End')) {
-            event.preventDefault()
-            buttons[event.key === 'Home' ? 0 : buttons.length - 1]?.focus()
-          } else if (event.target === search && event.key === 'Enter') {
-            event.preventDefault()
-            buttons[0]?.click()
-          }
-        })
-        listen(window, 'resize', () => {
-          if (panel.matches(':popover-open')) position()
-        })
-        const picker = {
-          setValue(next) {
-            value = next
-            label.textContent = options.find((item) => item.value === next)?.label || '全球 · 全部国家'
-            trigger.title = label.textContent
-            trigger.setAttribute('aria-label', `国家或地区：${label.textContent}`)
-            if (panel.matches(':popover-open')) render()
-          },
-          setDisabled(disabled) {
-            trigger.disabled = disabled
-            if (disabled) close()
-          },
-          destroy() {
+          const listen = (node, type, callback) => node.addEventListener(type, callback, { signal: lifetime.signal })
+          listen(input, 'input', () => set(input.value))
+          listen(input, 'change', () => set(input.value, true))
+          listen(window, 'storage', (event) => {
+            if (event.key === strengthKey) set(event.newValue)
+          })
+          const destroy = () => {
             lifetime.abort()
-            panel.remove()
-          },
+            cancelAnimationFrame(frame)
+          }
+          if (signal?.aborted) destroy()
+          else signal?.addEventListener('abort', destroy, { once: true })
+          set(root.style.getPropertyValue('--glass-strength'))
+          return { set, destroy }
         }
-        picker.setValue('')
-        return picker
-      }
+
+        function createPicker({
+          trigger,
+          options,
+          value = '',
+          onChange,
+          note = '',
+          placeholder = '搜索国家 / 地区',
+          searchable = true,
+          width = 300,
+          signal,
+        }) {
+          const lifetime = new AbortController()
+          const listen = (node, type, callback) => node.addEventListener(type, callback, { signal: lifetime.signal })
+          const panel = document.createElement('div')
+          panel.className = 'material-picker control-menu material-popover'
+          panel.id = `${trigger.id}-panel`
+          panel.setAttribute('popover', 'auto')
+          const search = document.createElement('input')
+          search.className = 'material-search'
+          search.type = 'search'
+          search.placeholder = placeholder
+          search.autocomplete = 'off'
+          search.setAttribute('role', 'combobox')
+          search.setAttribute('aria-label', placeholder)
+          search.setAttribute('aria-autocomplete', 'list')
+          const list = document.createElement('div')
+          list.id = `${trigger.id}-list`
+          list.className = 'material-options'
+          list.setAttribute('role', 'listbox')
+          list.setAttribute('aria-label', trigger.getAttribute('aria-label') || '选择选项')
+          search.setAttribute('aria-controls', list.id)
+          const empty = document.createElement('p')
+          empty.className = 'material-empty'
+          empty.textContent = '没有匹配的选项'
+          empty.setAttribute('role', 'status')
+          panel.append(search, list, empty)
+          if (note) {
+            const hint = document.createElement('p')
+            hint.className = 'material-picker-note'
+            hint.textContent = note
+            panel.append(hint)
+          }
+          const accessibleLabel = trigger.getAttribute('aria-label') || '选择选项'
+          const label = trigger.querySelector('span') || document.createElement('span')
+          if (!label.parentNode) trigger.append(label)
+          const chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+          chevron.setAttribute('class', 'material-chevron')
+          chevron.setAttribute('viewBox', '0 0 24 24')
+          chevron.setAttribute('aria-hidden', 'true')
+          chevron.innerHTML = '<path d="m7 10 5 5 5-5"/>'
+          trigger.append(chevron)
+          trigger.type = 'button'
+          trigger.classList.add('select-trigger', 'query-control')
+          trigger.setAttribute('aria-controls', list.id)
+          trigger.setAttribute('aria-haspopup', 'listbox')
+          trigger.setAttribute('aria-expanded', 'false')
+          trigger.after(panel)
+          let current = value,
+            rows = [],
+            active = -1
+          const allOptions = () => (typeof options === 'function' ? options() : options)
+          const isOpen = () => panel.matches(':popover-open')
+          function highlight(scroll = false) {
+            for (const [index, item] of [...list.children].entries()) item.dataset.active = String(index === active)
+            const item = list.children[active]
+            for (const node of [trigger, search]) {
+              if (item) node.setAttribute('aria-activedescendant', item.id)
+              else node.removeAttribute('aria-activedescendant')
+            }
+            if (scroll) item?.scrollIntoView({ block: 'nearest' })
+          }
+          function render() {
+            const term = search.value.trim().toLocaleLowerCase()
+            rows = allOptions().filter((item) =>
+              `${item.label} ${item.value} ${item.description || ''}`.toLocaleLowerCase().includes(term),
+            )
+            list.replaceChildren(
+              ...rows.map((item, index) => {
+                const button = document.createElement('button')
+                button.type = 'button'
+                button.className = 'material-choice'
+                button.id = `${trigger.id}-option-${index}`
+                button.dataset.index = index
+                button.setAttribute('role', 'option')
+                button.setAttribute('aria-selected', String(item.value === current))
+                button.tabIndex = -1
+                button.disabled = Boolean(item.disabled)
+                const title = document.createElement('span')
+                title.textContent = item.label
+                button.append(title)
+                if (item.description && item.description !== item.label) {
+                  const description = document.createElement('small')
+                  description.textContent = item.description
+                  button.append(description)
+                }
+                return button
+              }),
+            )
+            empty.hidden = rows.length > 0
+            active = rows.findIndex((item) => item.value === current && !item.disabled)
+            if (active < 0) active = rows.findIndex((item) => !item.disabled)
+            highlight()
+          }
+          function position() {
+            const rect = trigger.getBoundingClientRect()
+            const viewport = window.visualViewport
+            const left = viewport?.offsetLeft || 0,
+              top = viewport?.offsetTop || 0
+            const w = viewport?.width || innerWidth,
+              h = viewport?.height || innerHeight
+            const panelWidth = Math.min(w - 24, Math.max(rect.width, width))
+            const below = top + h - rect.bottom - 20,
+              above = rect.top - top - 20
+            const opensBelow = below >= Math.min(300, panel.scrollHeight) || below >= above
+            const available = Math.max(0, opensBelow ? below : above)
+            panel.style.width = `${panelWidth}px`
+            panel.style.maxHeight = `${Math.min(380, available)}px`
+            panel.style.left = `${Math.max(left + 12, Math.min(left + w - panelWidth - 12, rect.left))}px`
+            panel.style.top = `${opensBelow ? rect.bottom + 8 : Math.max(top + 12, rect.top - Math.min(panel.scrollHeight, available, 380) - 8)}px`
+            panel.style.setProperty('--popover-origin', opensBelow ? 'top left' : 'bottom left')
+            panel.style.setProperty('--popover-shift', opensBelow ? '-4px' : '4px')
+          }
+          function close(focus = false) {
+            if (isOpen()) panel.hidePopover()
+            trigger.setAttribute('aria-expanded', 'false')
+            if (focus) trigger.focus()
+          }
+          function open() {
+            if (trigger.disabled) return
+            search.value = ''
+            search.hidden = !searchable || allOptions().length <= 8
+            render()
+            panel.showPopover()
+            trigger.setAttribute('aria-expanded', 'true')
+            search.setAttribute('aria-expanded', 'true')
+            position()
+            if (search.hidden) list.children[active]?.focus()
+            else search.focus({ preventScroll: true })
+            highlight(true)
+          }
+          function choose(index) {
+            const item = rows[index]
+            if (!item || item.disabled) return
+            close(true)
+            if (item.value !== current) onChange(item.value, trigger)
+          }
+          listen(trigger, 'click', () => (isOpen() ? close() : open()))
+          listen(trigger, 'keydown', (event) => {
+            if (['ArrowDown', 'ArrowUp'].includes(event.key)) {
+              event.preventDefault()
+              open()
+            }
+          })
+          listen(search, 'input', () => {
+            render()
+            position()
+          })
+          listen(list, 'click', (event) => {
+            const item = event.target.closest('[data-index]')
+            if (item) choose(Number(item.dataset.index))
+          })
+          listen(list, 'pointermove', (event) => {
+            const item = event.target.closest('[data-index]')
+            if (item && !item.disabled) {
+              active = Number(item.dataset.index)
+              highlight()
+            }
+          })
+          listen(panel, 'keydown', (event) => {
+            if (event.key === 'Escape') {
+              event.preventDefault()
+              event.stopPropagation()
+              close(true)
+              return
+            }
+            if (event.key === 'Tab') {
+              close()
+              return
+            }
+            if (event.key === 'Enter') {
+              event.preventDefault()
+              choose(active)
+              return
+            }
+            if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
+              if (event.target === search && ['Home', 'End'].includes(event.key)) return
+              event.preventDefault()
+              const enabled = rows.map((item, index) => (item.disabled ? -1 : index)).filter((index) => index >= 0)
+              const index = enabled.indexOf(active)
+              active =
+                event.key === 'Home'
+                  ? enabled[0]
+                  : event.key === 'End'
+                    ? enabled.at(-1)
+                    : enabled[Math.max(0, Math.min(enabled.length - 1, index + (event.key === 'ArrowDown' ? 1 : -1)))]
+              highlight(true)
+              if (search.hidden) list.children[active]?.focus()
+            }
+          })
+          listen(panel, 'toggle', () => {
+            trigger.setAttribute('aria-expanded', String(isOpen()))
+            search.setAttribute('aria-expanded', String(isOpen()))
+            if (!isOpen()) for (const node of [trigger, search]) node.removeAttribute('aria-activedescendant')
+          })
+          const reposition = () => {
+            if (isOpen()) position()
+          }
+          listen(window, 'resize', reposition)
+          if (window.visualViewport) {
+            listen(visualViewport, 'resize', reposition)
+            listen(visualViewport, 'scroll', reposition)
+          }
+          function setValue(next) {
+            current = next
+            label.textContent = allOptions().find((item) => item.value === next)?.label || '请选择'
+            trigger.title = label.textContent
+            trigger.setAttribute('aria-label', `${accessibleLabel}：${label.textContent}`)
+            if (isOpen()) render()
+          }
+          function destroy() {
+            lifetime.abort()
+            close()
+            panel.remove()
+            chevron.remove()
+          }
+          if (signal?.aborted) destroy()
+          else signal?.addEventListener('abort', destroy, { once: true })
+          setValue(value)
+          return {
+            trigger,
+            setValue,
+            setDisabled(disabled) {
+              trigger.disabled = disabled
+              if (disabled) close()
+            },
+            close,
+            destroy,
+          }
+        }
+
+        function createSelect(select, { placeholder = '搜索选项', describe = () => '', signal } = {}) {
+          const lifetime = new AbortController()
+          const wrap = document.createElement('div')
+          wrap.className = 'select-control'
+          wrap.dataset.for = select.id
+          const trigger = document.createElement('button')
+          trigger.id = `${select.id}-trigger`
+          trigger.setAttribute('aria-label', select.getAttribute('aria-label') || '选择选项')
+          wrap.append(trigger)
+          select.after(wrap)
+          const wasHidden = select.classList.contains('select-native-state')
+          select.classList.add('select-native-state')
+          const picker = createPicker({
+            trigger,
+            placeholder,
+            options: () =>
+              [...select.options].map((option) => ({
+                value: option.value,
+                label: option.textContent,
+                description: describe(option),
+                disabled: option.disabled,
+              })),
+            value: select.value,
+            onChange(value) {
+              select.value = value
+              select.dispatchEvent(new Event('change', { bubbles: true }))
+            },
+          })
+          function sync() {
+            wrap.hidden = select.hidden
+            picker.setDisabled(select.disabled)
+            picker.setValue(select.value)
+            if (wrap.hidden) picker.close()
+          }
+          select.addEventListener('change', sync, { signal: lifetime.signal })
+          const descriptor = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value')
+          const ownDescriptor = Object.getOwnPropertyDescriptor(select, 'value')
+          Object.defineProperty(select, 'value', {
+            configurable: true,
+            get() {
+              return descriptor.get.call(this)
+            },
+            set(value) {
+              descriptor.set.call(this, value)
+              sync()
+            },
+          })
+          const observer = new MutationObserver(sync)
+          observer.observe(select, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            characterData: true,
+            attributeFilter: ['disabled', 'hidden', 'selected', 'value', 'label'],
+          })
+          let destroyed = false
+          function destroy() {
+            if (destroyed) return
+            destroyed = true
+            lifetime.abort()
+            observer.disconnect()
+            picker.destroy()
+            if (ownDescriptor) Object.defineProperty(select, 'value', ownDescriptor)
+            else delete select.value
+            if (!wasHidden) select.classList.remove('select-native-state')
+            wrap.remove()
+          }
+          if (signal?.aborted) destroy()
+          else signal?.addEventListener('abort', destroy, { once: true })
+          sync()
+          return { sync, trigger, close: picker.close, destroy }
+        }
+        return { createPicker, createSelect, bindStrength }
+      })()
+    </script>
+    <script id="map-country-script">
+      window.MapCountryPicker = (config) => MapGlassControls.createPicker(config)
     </script>
 
     <script id="quake-country-geography">
@@ -24538,8 +24721,6 @@
       :root {
         --glass-strength: 60;
         --motion-map-duration: 600ms;
-        --motion-map-zoom-duration: 2000ms;
-        --motion-map-zoom-offset: 0.65;
         --motion-card-duration: 850ms;
         --motion-stage-gap: 100ms;
         --motion-controls-duration: 450ms;
@@ -24562,7 +24743,7 @@
         --glass-surface: color-mix(in srgb, var(--glass-solid) var(--material-opacity), transparent);
         --glass-background: var(--material-sheen), var(--glass-surface);
         --glass-contrast-surface: color-mix(in srgb, var(--glass-solid) 94%, transparent);
-        --glass-popover: color-mix(in srgb, var(--glass-solid) var(--material-popover-opacity), transparent);
+        --glass-popover: var(--glass-surface);
         --glass-edge: rgb(255 255 255 / var(--material-edge-opacity));
         /* Directional light defines the shell; content cards keep quiet, borderless fills. */
         --material-surface-edge: transparent;
@@ -24595,7 +24776,6 @@
         color-scheme: dark;
         --material-opacity: calc(42% + var(--glass-strength) * 0.32%);
         --material-control-opacity: calc(32% + var(--glass-strength) * 0.28%);
-        --material-popover-opacity: calc(78% + var(--glass-strength) * 0.16%);
         --material-edge-opacity: calc(0.08 + var(--glass-strength) * 0.0008);
         --material-highlight: calc(0.1 + var(--glass-strength) * 0.0008);
         --material-light: rgb(255 255 255 / calc(0.07 + var(--glass-strength) * 0.0004));
@@ -24617,7 +24797,6 @@
         color-scheme: light;
         --material-opacity: calc(30% + var(--glass-strength) * 0.34%);
         --material-control-opacity: calc(28% + var(--glass-strength) * 0.3%);
-        --material-popover-opacity: calc(82% + var(--glass-strength) * 0.12%);
         --material-edge-opacity: calc(0.26 + var(--glass-strength) * 0.0014);
         --material-highlight: calc(0.44 + var(--glass-strength) * 0.0014);
         --material-light: rgb(255 255 255 / calc(0.26 + var(--glass-strength) * 0.0014));
@@ -24626,11 +24805,8 @@
         --material-shade: rgb(31 50 65 / 12%);
         --material-press-light: rgb(255 255 255 / 40%);
         --material-card-highlight: 0.16;
-        --material-soft-fill: color-mix(
-          in srgb,
-          var(--glass-solid) calc(10% + var(--glass-strength) * 0.12%),
-          transparent
-        );
+        --material-soft-opacity: calc(10% + var(--glass-strength) * 0.12%);
+        --material-soft-fill: color-mix(in srgb, var(--glass-solid) var(--material-soft-opacity), transparent);
         --material-card-fill: rgb(255 255 255 / calc(0.4 + var(--glass-strength) * 0.0025));
         --material-card-light: rgb(255 255 255 / calc(0.18 + var(--glass-strength) * 0.001));
         --material-card-shadow: inset 0 1px 0.5px -0.5px rgb(255 255 255 / 80%), 0 3px 8px -4px rgb(31 50 65 / 18%);
@@ -24694,10 +24870,10 @@
       }
       :root .material-popover {
         --material-radius: 22px;
-        background: var(--material-sheen), var(--glass-popover);
       }
-      :root .material-reading {
-        background: var(--glass-contrast-surface);
+      :root .material-reading::backdrop {
+        /* The shell owns the blur; the backdrop only separates the active dialog. */
+        background: var(--glass-scrim);
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
       }
@@ -24925,7 +25101,7 @@
         background: transparent;
         box-shadow: none;
       }
-      :is(.control-button, .control-select, .country-trigger, .select-trigger),
+      :is(.control-button, .control-select, .select-trigger),
       .control-icon,
       :root .material-action {
         border: 0;
@@ -24935,7 +25111,7 @@
         box-shadow: var(--material-lip), var(--query-shadow);
       }
       .control-group button,
-      :is(.control-button, .control-select, .country-trigger, .select-trigger, .material-action) {
+      :is(.control-button, .control-select, .select-trigger, .material-action) {
         transition:
           background-color 160ms ease,
           color 160ms ease,
@@ -24943,7 +25119,7 @@
           scale 180ms var(--query-ease);
       }
       .control-group,
-      :is(.control-icon, .control-button, .control-select, .country-trigger) {
+      :is(.control-icon, .control-button, .control-select, .select-trigger) {
         backdrop-filter: var(--material-control-filter);
         -webkit-backdrop-filter: var(--material-control-filter);
       }
@@ -25051,9 +25227,7 @@
       @media (hover: hover) {
         .control-icon:hover:not(:disabled),
         .control-group button:hover:not(:disabled):not([aria-pressed='true'], [aria-selected='true']),
-        :is(.control-button, .control-select, .country-trigger, .select-trigger, .material-action):hover:not(
-            :disabled
-          ) {
+        :is(.control-button, .control-select, .select-trigger, .material-action):hover:not(:disabled) {
           background-color: var(--query-hover);
           color: var(--query-ink);
         }
@@ -25177,6 +25351,233 @@
           transition: none;
         }
       }
+
+      /* One picker surface for country and analysis choices in both map scenes. */
+      .control-menu {
+        padding: 6px;
+      }
+      .select-native-state {
+        display: none !important;
+      }
+      .select-trigger,
+      .control-select {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        min-width: 0;
+        height: var(--query-control-size);
+        padding: 0 12px;
+        font: inherit;
+        font-size: var(--control-font, 11px);
+        white-space: nowrap;
+        cursor: pointer;
+      }
+      .select-control > .select-trigger {
+        width: 100%;
+      }
+      .select-trigger > span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .select-trigger > svg:first-child:not(.material-chevron) {
+        width: 15px;
+        height: 15px;
+        flex: none;
+      }
+      .material-chevron {
+        flex: none;
+        width: 15px;
+        height: 15px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.5;
+        transition: rotate 180ms var(--query-ease);
+      }
+      .select-trigger[aria-expanded='true'] .material-chevron {
+        rotate: 180deg;
+      }
+      :root .material-picker {
+        position: fixed;
+        inset: auto;
+        margin: 0;
+        padding: 7px;
+        box-sizing: border-box;
+        overflow: hidden;
+        font: inherit;
+      }
+      .material-picker:popover-open {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .material-picker::backdrop {
+        background: transparent;
+      }
+      :root .material-search {
+        appearance: none;
+        box-sizing: border-box;
+        flex: none;
+        width: 100%;
+        min-width: 0;
+        height: var(--query-control-size);
+        margin: 0;
+        padding: 0 12px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--material-soft-fill);
+        box-shadow: var(--material-lip);
+        color: var(--query-ink);
+        font: inherit;
+        font-size: var(--control-font, 12px);
+        outline: none;
+      }
+      .material-search::placeholder {
+        color: var(--muted);
+        opacity: 1;
+      }
+      :root .material-search:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: -2px;
+      }
+      .material-options {
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: var(--edge) transparent;
+      }
+      .material-choice,
+      .control-option {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 3px;
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 36px;
+        margin: 0;
+        padding: 9px 32px 9px 12px;
+        border: 0;
+        border-radius: 16px;
+        background: transparent;
+        color: var(--query-control-ink);
+        box-shadow: none;
+        font: inherit;
+        font-size: var(--control-font, 12px);
+        text-align: left;
+        cursor: pointer;
+      }
+      .material-choice > span {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+      }
+      .material-choice small {
+        color: var(--muted);
+        font-size: 0.88em;
+      }
+      .material-choice:is([data-active='true'], :focus-visible):not(:disabled),
+      .control-option:is(:hover, :focus-visible) {
+        background: var(--query-hover);
+      }
+      .material-choice[aria-selected='true'],
+      .control-option[aria-pressed='true'] {
+        background: var(--query-active);
+        color: var(--query-ink);
+        box-shadow: var(--material-lip), var(--query-shadow);
+      }
+      .material-choice[aria-selected='true']::after {
+        content: '✓';
+        position: absolute;
+        right: 12px;
+        top: 10px;
+        color: var(--query-ink);
+      }
+      .material-choice:focus-visible,
+      .control-option:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: -2px;
+      }
+      .material-choice:disabled {
+        opacity: 0.45;
+        cursor: default;
+      }
+      .material-empty {
+        margin: 0;
+        padding: 14px 12px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .material-picker-note {
+        flex: none;
+        margin: 0;
+        padding: 6px;
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.5;
+      }
+      @media (pointer: coarse) {
+        .material-choice,
+        .control-option {
+          min-height: 44px;
+        }
+        :root .material-search {
+          height: 44px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .material-chevron {
+          transition: none;
+        }
+      }
+
+      .control-icon[data-tooltip] {
+        position: relative;
+      }
+      .control-icon[data-tooltip]::before {
+        content: attr(aria-label);
+        position: absolute;
+        z-index: 8;
+        top: calc(100% + 9px);
+        left: 50%;
+        padding: 7px 10px;
+        border: 1px solid var(--edge);
+        border-radius: 9px;
+        background: var(--glass-contrast-surface);
+        color: var(--strong);
+        box-shadow: var(--material-shadow);
+        font: 11px/1.4 var(--font-ui);
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        translate: -50% -4px;
+        transition:
+          opacity 140ms ease,
+          translate 140ms ease;
+      }
+      .control-icon[data-tooltip]:last-child::before {
+        left: auto;
+        right: 0;
+        translate: 0 -4px;
+      }
+      .control-icon[data-tooltip]:focus-visible::before {
+        opacity: 1;
+        translate: -50% 0;
+      }
+      .control-icon[data-tooltip]:last-child:focus-visible::before {
+        translate: 0 0;
+      }
+      @media (hover: hover) {
+        .control-icon[data-tooltip]:hover:not(:disabled)::before {
+          opacity: 1;
+          translate: -50% 0;
+        }
+        .control-icon[data-tooltip]:last-child:hover::before {
+          translate: 0 0;
+        }
+      }
     </style>
   </head>
   <body data-state="loading" data-scene-ready="false" data-map-ready="false">
@@ -25229,6 +25630,7 @@
             <button
               id="refresh-data"
               class="refresh-button control-icon"
+              data-tooltip
               aria-label="刷新数据"
               title="刷新数据"
               disabled
@@ -25833,6 +26235,8 @@
             has_felt: Number.isFinite(properties.felt) && properties.felt > 0 ? 1 : 0,
             is_automatic: properties.status === 'automatic' ? 1 : 0,
             is_reviewed: properties.status === 'reviewed' ? 1 : 0,
+            is_pending: properties.status === 'automatic' ? 1 : 0,
+            pending_strong: properties.status === 'automatic' && magnitude != null && magnitude >= 4.5 ? 1 : 0,
             is_recent: properties.time >= recentCutoff && properties.time <= generated ? 1 : 0,
           }
           const previous = unique.get(row.event_id)
@@ -26813,6 +27217,8 @@
           'has_felt',
           'is_automatic',
           'is_reviewed',
+          'is_pending',
+          'pending_strong',
           'is_recent',
         ]
         const schema = [
@@ -26898,12 +27304,28 @@
           definition: '当前范围有效震源深度的最大值；缺失值不当作 0。',
         })
         quakeMetric('#reviewed-percent', '.completion', '.metric-label', {
-          title: '已人工审核',
+          title: '目录复核 · 发现、检验与定位',
+          review: true,
           field: 'event_count',
           aggregate: 'sum',
           numerator: 'is_reviewed',
           unit: '%',
-          group: 'network',
+          group: 'status',
+          finding: (row, groups, { selected }) => {
+            const n = row.event_count || 0,
+              pending = row.is_pending || 0,
+              strong = row.is_strong || 0
+            if (!n) return '当前范围没有事件，无法判断审核结构。'
+            return `${selected ? selected + '：' : ''}${n.toLocaleString('zh-CN')} 次事件中，${pending.toLocaleString('zh-CN')} 次为 automatic（${DashboardUI.format((pending / n) * 100, 1)}%）；M≥4.5 的 ${strong} 次中有 ${row.pending_strong || 0} 次待审核${strong ? `（${DashboardUI.format(((row.pending_strong || 0) / strong) * 100, 1)}%）` : ''}。未知状态 ${Math.max(0, n - (row.is_reviewed || 0) - pending)} 次单列。${pending && strong && !row.pending_strong ? '待审核记录均低于M4.5或缺失震级，不能把全部待审核量当作较大震级事件积压。' : '需结合震级结构核对待审核量。'}审核状态与事件数不能解释灾害风险。`
+          },
+          next: (row, { group }) =>
+            group[0] === 'status'
+              ? '下一步：进入“检验证据”，按震级比较审核结构，检查待审核是否集中在特定震级。'
+              : group[0] === 'magnitude_band'
+                ? '下一步：进入“定位记录”，比较报告网络并查看 automatic 的完整队列，M≥4.5 记录排在前面；比例比较需结合 n，不能直接评价网络质量。'
+                : row.is_pending
+                  ? '下一步：队列按震级、时间降序；选择记录并定位，核对来源和审核状态。该队列仅供目录复核，不是风险评分。'
+                  : '当前分组没有 automatic 待复核记录；可返回其他网络核对。未知状态单列，不自动算待审核。',
           definition: '审核率 = 状态为 reviewed 的事件数 ÷ 同一范围总事件数；分组后分母为该组事件数，零分母显示 —。',
         })
         // Titles open analysis; event contents retain their own locate action.
@@ -26969,17 +27391,29 @@
           const definition = quakeAnalysis[index]
           const conditions = rangeConditions()
           conditions.push(...(definition.conditions || []))
-          const dimensions = [
+          let dimensions = [
             ['event_day', 'UTC 日期', true],
             ['magnitude_band', '震级分组'],
             ['depth_band', '深度分组'],
             ['network', '报告网络'],
             ['status', '审核状态'],
           ].filter(([field]) => field !== definition.field)
+          if (definition.review)
+            dimensions = [
+              ['status', '审核状态'],
+              ['magnitude_band', '震级分组'],
+              ['network', '报告网络'],
+            ]
           if (definition.group)
             dimensions.sort((a, b) => Number(b[0] === definition.group) - Number(a[0] === definition.group))
           const measures = [[definition.field, definition.title, definition.aggregate]]
           if (definition.numerator) measures.push([definition.numerator, '已审核事件', 'sum'])
+          if (definition.review)
+            measures.push(
+              ['is_pending', '待审核事件', 'sum'],
+              ['is_strong', 'M≥4.5事件', 'sum'],
+              ['pending_strong', '优先复核事件', 'sum'],
+            )
           if (definition.valueKind === 'time') measures.push(['event_count', '事件数', 'sum'])
           const value = (row) =>
             definition.numerator
@@ -26991,7 +27425,15 @@
                   ? 0
                   : undefined
                 : Number(row[definition.field])
+          const snapshot = definition.review ? new Map(eventIndex) : undefined
           return {
+            ...(definition.review && {
+              modeLabels: { status: '发现问题', magnitude_band: '检验证据', network: '定位记录' },
+              locate: (record) => {
+                const event = snapshot.get(record.event_id)
+                if (event) locate(event)
+              },
+            }),
             connectorId: SOURCE_ID,
             rowLimit: Math.max(1, sourceCount),
             empty: sourceCount === 0,

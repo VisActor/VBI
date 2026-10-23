@@ -18,11 +18,11 @@ VBI describes charts, dashboards, and insights as serializable DSLs. Its Builder
 
 ## Packages
 
-| Package                                                                        | What it does                                                          | npm                                                                                                                 |
-| ------------------------------------------------------------------------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Package                                                                        | What it does                                        | npm                                                                                                                 |
+| ------------------------------------------------------------------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | [@visactor/vbi](https://visactor.github.io/VBI/en-US/vbi/)                     | Manages chart, dashboard through headless Builders. | [![npm version](https://img.shields.io/npm/v/@visactor/vbi.svg)](https://www.npmjs.com/package/@visactor/vbi)       |
-| [@visactor/vquery](https://visactor.github.io/VBI/en-US/vquery/)               | Lightweight Query Engine                                        | [![npm version](https://img.shields.io/npm/v/@visactor/vquery.svg)](https://www.npmjs.com/package/@visactor/vquery) |
-| [@visactor/vseed](https://visactor.github.io/VBI/en-US/vseed/guide/quickStart) | Visualization Engine      | [![npm version](https://img.shields.io/npm/v/@visactor/vseed.svg)](https://www.npmjs.com/package/@visactor/vseed)   |
+| [@visactor/vquery](https://visactor.github.io/VBI/en-US/vquery/)               | Lightweight Query Engine                            | [![npm version](https://img.shields.io/npm/v/@visactor/vquery.svg)](https://www.npmjs.com/package/@visactor/vquery) |
+| [@visactor/vseed](https://visactor.github.io/VBI/en-US/vseed/guide/quickStart) | Visualization Engine                                | [![npm version](https://img.shields.io/npm/v/@visactor/vseed.svg)](https://www.npmjs.com/package/@visactor/vseed)   |
 
 ## Get started
 

@@ -1,4 +1,7 @@
 <!doctype html>
+<!-- Glass controls are maintained directly in this HTML:
+  dashboard-material / dashboard-interaction-runtime / map-glass-controls.
+  Scene and map behavior remain in their own modules. -->
 <html lang="zh-CN" data-theme="ice" data-mode="light">
   <head>
     <meta charset="utf-8" />
@@ -129,6 +132,8 @@
         --map-night-color: #ffe1a0;
         --map-night-strength: 1.6;
         --map-specular: #193b49;
+        --map-shininess: 50;
+        --map-atmosphere-radius: 1.045;
       }
       :root[data-theme='graphite'] {
         --map-outline: #9aafa6;
@@ -138,46 +143,50 @@
         --map-night-color: #ddd3b5;
       }
       :root[data-theme='ice'] {
-        --map-ambient-strength: 1.5;
-        --map-key-strength: 1.8;
+        --map-ambient-strength: 0.82;
+        --map-key-strength: 2.5;
         --map-outline: #527b80;
         --map-border-opacity: 0.62;
         --map-grid: #608795;
         --map-grid-opacity: 0.2;
-        --map-halo: #6ed8ee;
-        --map-water: 127 174 178;
-        --map-ambient: #f5faf3;
+        --map-halo: #6daec8;
+        --map-water: 81 126 148;
+        --map-ambient: #dbe8ef;
         --map-key: #fff9ed;
         --map-rim: #b9dbe1;
-        --map-cloud-opacity: 0.58;
-        --map-atmosphere-strength: 0.12;
-        --map-surface-haze: 0.45;
+        --map-cloud-opacity: 0.54;
+        --map-atmosphere-strength: 1;
+        --map-surface-haze: 0.18;
         --map-night-strength: 0;
-        --map-shadow-floor: 0.82;
-        --map-cloud-floor: 0.7;
-        --map-cloud-light: 0.65;
-        --map-specular: #b3ccc4;
+        --map-shadow-floor: 0.52;
+        --map-cloud-floor: 0.34;
+        --map-cloud-light: 1;
+        --map-specular: #8cb8ce;
+        --map-atmosphere-radius: 1.025;
+        --map-shininess: 88;
       }
       :root[data-theme='silver'] {
-        --map-ambient-strength: 1.5;
-        --map-key-strength: 1.8;
+        --map-ambient-strength: 0.9;
+        --map-key-strength: 2.35;
         --map-outline: #647886;
         --map-border-opacity: 0.62;
         --map-grid: #6c7f8d;
         --map-grid-opacity: 0.2;
-        --map-halo: #b3c6d5;
-        --map-water: 127 174 178;
-        --map-ambient: #f4f6f8;
+        --map-halo: #9aacc3;
+        --map-water: 104 127 148;
+        --map-ambient: #e1e7ef;
         --map-key: #ffffff;
         --map-rim: #d2dce4;
-        --map-cloud-opacity: 0.58;
-        --map-atmosphere-strength: 0.12;
-        --map-surface-haze: 0.45;
+        --map-cloud-opacity: 0.52;
+        --map-atmosphere-strength: 0.9;
+        --map-surface-haze: 0.16;
         --map-night-strength: 0;
-        --map-shadow-floor: 0.82;
-        --map-cloud-floor: 0.7;
-        --map-cloud-light: 0.65;
-        --map-specular: #bdc8d1;
+        --map-shadow-floor: 0.58;
+        --map-cloud-floor: 0.38;
+        --map-cloud-light: 0.92;
+        --map-specular: #b0c1d3;
+        --map-atmosphere-radius: 1.025;
+        --map-shininess: 96;
       }
 
       /* Geographic data layer: continuous magnitude colors, separate from AQI health categories. */
@@ -201,21 +210,21 @@
       }
       :root[data-theme='ice'] {
         --map-field-land: #b6d2df;
-        --map-field-ocean: #96b5c8;
+        --map-field-ocean: #618aa1;
         --map-hex-strength: 0.16;
-        --map-column-low: #367e98;
-        --map-column-high: #17618f;
-        --map-column-edge: #236d91;
-        --map-column-cap: #bdeaf5;
+        --map-column-low: #087da9;
+        --map-column-high: #25c9df;
+        --map-column-edge: #b4f5ff;
+        --map-column-cap: #ecffff;
       }
       :root[data-theme='silver'] {
         --map-field-land: #cbd3dc;
-        --map-field-ocean: #aab9c6;
+        --map-field-ocean: #768b9f;
         --map-hex-strength: 0.13;
-        --map-column-low: #617d94;
-        --map-column-high: #354f67;
-        --map-column-edge: #536e86;
-        --map-column-cap: #dbe5ed;
+        --map-column-low: #3478ad;
+        --map-column-high: #5abce4;
+        --map-column-edge: #d0efff;
+        --map-column-cap: #f1fbff;
       }
       :root[data-theme='silver'] {
         --danger: #b75c3d;
@@ -228,6 +237,11 @@
       }
     </style>
     <style id="dashboard-layout">
+      :root {
+        --motion-globe-duration: 2000ms;
+        --motion-globe-start-scale: 0.2;
+        --motion-column-duration: 1400ms;
+      }
       /* Layout cascade map
   1. Foundations and component defaults
   2. Responsive component adaptations and accessibility
@@ -1009,10 +1023,6 @@
         overflow: hidden;
         max-width: none;
       }
-      .dialog::backdrop {
-        background: rgb(4 14 25 / 0.6);
-        backdrop-filter: none;
-      }
       .analysis-dialog {
         width: min(1160px, calc(100vw - 56px));
         height: min(790px, calc(100dvh - 56px));
@@ -1667,10 +1677,6 @@
         }
       }
 
-      .select-search:focus-visible {
-        outline: none;
-        box-shadow: 0 0 0 1px rgb(var(--accent-rgb) / 0.55);
-      }
       .globe-label {
         background: var(--map-label-bg);
         color: var(--map-label-ink);
@@ -1680,9 +1686,6 @@
         color: var(--map-label-strong);
       }
 
-      .dialog {
-        background: linear-gradient(145deg, rgb(var(--accent-rgb) / 0.035), transparent 46%), var(--glass-solid);
-      }
       .card-head h2 {
         font-size: var(--font-card-title);
       }
@@ -2085,95 +2088,6 @@
           width: auto;
         }
       }
-      .select-trigger {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-        height: var(--control-height);
-        max-width: 100%;
-        min-width: 100%;
-        padding: 0 10px;
-        text-align: left;
-        font-size: var(--control-font);
-      }
-      .select-trigger > span {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .select-chevron {
-        width: var(--control-icon);
-        height: var(--control-icon);
-        color: var(--muted);
-        transition: transform 0.18s;
-      }
-      .select-trigger[aria-expanded='true'] .select-chevron {
-        transform: rotate(180deg);
-      }
-      .select-panel {
-        position: fixed;
-        inset: auto;
-        margin: 0;
-        padding: 6px;
-        overflow: hidden;
-      }
-      .select-panel:popover-open {
-        display: flex;
-        flex-direction: column;
-        gap: 7px;
-      }
-      .select-search {
-        width: 100%;
-        flex-shrink: 0 !important;
-        height: var(--control-height) !important;
-        border-radius: var(--control-radius) !important;
-        background: var(--inner) !important;
-        font-size: var(--control-font);
-      }
-      .select-options {
-        overflow-y: auto;
-        overscroll-behavior: contain;
-        scrollbar-width: thin;
-        scrollbar-color: var(--edge) transparent;
-        min-height: 0;
-      }
-      .select-option {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 2px;
-        width: 100%;
-        text-align: left;
-        border-radius: 6px;
-        padding: 7px 28px 7px 9px;
-        font-size: var(--control-font);
-        color: var(--ink);
-      }
-      .select-option small {
-        font-size: 10px;
-        color: var(--muted);
-      }
-      .select-option[data-active='true'] {
-        background: rgb(var(--accent-rgb) / 0.08);
-      }
-      .select-option[aria-selected='true'] {
-        background: rgb(var(--accent-rgb) / 0.13);
-        color: var(--accent);
-      }
-      .select-option b {
-        position: absolute;
-        right: 12px;
-        top: 10px;
-        font-weight: 500;
-      }
-      .select-empty {
-        padding: 20px 10px;
-        text-align: center;
-        font-size: 12px;
-        color: var(--muted);
-      }
       @media (max-width: 600px) {
         .select-control[data-for='country'] {
           flex: 1;
@@ -2194,9 +2108,7 @@
           --control-compact-height: 38px;
           --control-icon: 16px;
         }
-        .select-option {
-          min-height: 44px;
-        }
+
         .settings-row {
           min-height: 44px;
         }
@@ -2448,9 +2360,6 @@
       :root {
         --glass-strength: 60;
         --motion-map-duration: 600ms;
-        --motion-globe-duration: 2000ms;
-        --motion-globe-start-scale: 0.2;
-        --motion-column-duration: 1400ms;
         --motion-card-duration: 850ms;
         --motion-stage-gap: 100ms;
         --motion-controls-duration: 450ms;
@@ -2473,7 +2382,7 @@
         --glass-surface: color-mix(in srgb, var(--glass-solid) var(--material-opacity), transparent);
         --glass-background: var(--material-sheen), var(--glass-surface);
         --glass-contrast-surface: color-mix(in srgb, var(--glass-solid) 94%, transparent);
-        --glass-popover: color-mix(in srgb, var(--glass-solid) var(--material-popover-opacity), transparent);
+        --glass-popover: var(--glass-surface);
         --glass-edge: rgb(255 255 255 / var(--material-edge-opacity));
         /* Directional light defines the shell; content cards keep quiet, borderless fills. */
         --material-surface-edge: transparent;
@@ -2506,7 +2415,6 @@
         color-scheme: dark;
         --material-opacity: calc(42% + var(--glass-strength) * 0.32%);
         --material-control-opacity: calc(32% + var(--glass-strength) * 0.28%);
-        --material-popover-opacity: calc(78% + var(--glass-strength) * 0.16%);
         --material-edge-opacity: calc(0.08 + var(--glass-strength) * 0.0008);
         --material-highlight: calc(0.1 + var(--glass-strength) * 0.0008);
         --material-light: rgb(255 255 255 / calc(0.07 + var(--glass-strength) * 0.0004));
@@ -2528,7 +2436,6 @@
         color-scheme: light;
         --material-opacity: calc(30% + var(--glass-strength) * 0.34%);
         --material-control-opacity: calc(28% + var(--glass-strength) * 0.3%);
-        --material-popover-opacity: calc(82% + var(--glass-strength) * 0.12%);
         --material-edge-opacity: calc(0.26 + var(--glass-strength) * 0.0014);
         --material-highlight: calc(0.44 + var(--glass-strength) * 0.0014);
         --material-light: rgb(255 255 255 / calc(0.26 + var(--glass-strength) * 0.0014));
@@ -2537,11 +2444,8 @@
         --material-shade: rgb(31 50 65 / 12%);
         --material-press-light: rgb(255 255 255 / 40%);
         --material-card-highlight: 0.16;
-        --material-soft-fill: color-mix(
-          in srgb,
-          var(--glass-solid) calc(10% + var(--glass-strength) * 0.12%),
-          transparent
-        );
+        --material-soft-opacity: calc(10% + var(--glass-strength) * 0.12%);
+        --material-soft-fill: color-mix(in srgb, var(--glass-solid) var(--material-soft-opacity), transparent);
         --material-card-fill: rgb(255 255 255 / calc(0.4 + var(--glass-strength) * 0.0025));
         --material-card-light: rgb(255 255 255 / calc(0.18 + var(--glass-strength) * 0.001));
         --material-card-shadow: inset 0 1px 0.5px -0.5px rgb(255 255 255 / 80%), 0 3px 8px -4px rgb(31 50 65 / 18%);
@@ -2605,10 +2509,10 @@
       }
       :root .material-popover {
         --material-radius: 22px;
-        background: var(--material-sheen), var(--glass-popover);
       }
-      :root .material-reading {
-        background: var(--glass-contrast-surface);
+      :root .material-reading::backdrop {
+        /* The shell owns the blur; the backdrop only separates the active dialog. */
+        background: var(--glass-scrim);
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
       }
@@ -2836,7 +2740,7 @@
         background: transparent;
         box-shadow: none;
       }
-      :is(.control-button, .control-select, .country-trigger, .select-trigger),
+      :is(.control-button, .control-select, .select-trigger),
       .control-icon,
       :root .material-action {
         border: 0;
@@ -2846,7 +2750,7 @@
         box-shadow: var(--material-lip), var(--query-shadow);
       }
       .control-group button,
-      :is(.control-button, .control-select, .country-trigger, .select-trigger, .material-action) {
+      :is(.control-button, .control-select, .select-trigger, .material-action) {
         transition:
           background-color 160ms ease,
           color 160ms ease,
@@ -2854,7 +2758,7 @@
           scale 180ms var(--query-ease);
       }
       .control-group,
-      :is(.control-icon, .control-button, .control-select, .country-trigger) {
+      :is(.control-icon, .control-button, .control-select, .select-trigger) {
         backdrop-filter: var(--material-control-filter);
         -webkit-backdrop-filter: var(--material-control-filter);
       }
@@ -2900,51 +2804,6 @@
         width: var(--query-icon-size);
         height: var(--query-icon-size);
         margin: 0;
-      }
-      .header .icon-button {
-        position: relative;
-      }
-      .header .icon-button::before {
-        content: attr(aria-label);
-        position: absolute;
-        z-index: 8;
-        top: calc(100% + 9px);
-        left: 50%;
-        padding: 7px 10px;
-        border: 1px solid var(--edge);
-        border-radius: 9px;
-        background: var(--glass-contrast-surface);
-        color: var(--strong);
-        box-shadow: var(--material-shadow);
-        font: 11px/1.4 var(--font-ui);
-        white-space: nowrap;
-        pointer-events: none;
-        opacity: 0;
-        translate: -50% -4px;
-        transition:
-          opacity 140ms ease,
-          translate 140ms ease;
-      }
-      .header .icon-button:last-child::before {
-        left: auto;
-        right: 0;
-        translate: 0 -4px;
-      }
-      .header .icon-button:focus-visible::before {
-        opacity: 1;
-        translate: -50% 0;
-      }
-      .header .icon-button:last-child:focus-visible::before {
-        translate: 0 0;
-      }
-      @media (hover: hover) {
-        .header .icon-button:hover:not(:disabled)::before {
-          opacity: 1;
-          translate: -50% 0;
-        }
-        .header .icon-button:last-child:hover::before {
-          translate: 0 0;
-        }
       }
       .query-control::after {
         content: '';
@@ -3007,9 +2866,7 @@
       @media (hover: hover) {
         .control-icon:hover:not(:disabled),
         .control-group button:hover:not(:disabled):not([aria-pressed='true'], [aria-selected='true']),
-        :is(.control-button, .control-select, .country-trigger, .select-trigger, .material-action):hover:not(
-            :disabled
-          ) {
+        :is(.control-button, .control-select, .select-trigger, .material-action):hover:not(:disabled) {
           background-color: var(--query-hover);
           color: var(--query-ink);
         }
@@ -3118,8 +2975,7 @@
         .control-group button,
         .query-control,
         .query-control::after,
-        .control-icon,
-        .header .icon-button::before {
+        .control-icon {
           transition: none !important;
           scale: none;
         }
@@ -3132,6 +2988,233 @@
         .material-switch,
         .material-switch::after {
           transition: none;
+        }
+      }
+
+      /* One picker surface for country and analysis choices in both map scenes. */
+      .control-menu {
+        padding: 6px;
+      }
+      .select-native-state {
+        display: none !important;
+      }
+      .select-trigger,
+      .control-select {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        min-width: 0;
+        height: var(--query-control-size);
+        padding: 0 12px;
+        font: inherit;
+        font-size: var(--control-font, 11px);
+        white-space: nowrap;
+        cursor: pointer;
+      }
+      .select-control > .select-trigger {
+        width: 100%;
+      }
+      .select-trigger > span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .select-trigger > svg:first-child:not(.material-chevron) {
+        width: 15px;
+        height: 15px;
+        flex: none;
+      }
+      .material-chevron {
+        flex: none;
+        width: 15px;
+        height: 15px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.5;
+        transition: rotate 180ms var(--query-ease);
+      }
+      .select-trigger[aria-expanded='true'] .material-chevron {
+        rotate: 180deg;
+      }
+      :root .material-picker {
+        position: fixed;
+        inset: auto;
+        margin: 0;
+        padding: 7px;
+        box-sizing: border-box;
+        overflow: hidden;
+        font: inherit;
+      }
+      .material-picker:popover-open {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .material-picker::backdrop {
+        background: transparent;
+      }
+      :root .material-search {
+        appearance: none;
+        box-sizing: border-box;
+        flex: none;
+        width: 100%;
+        min-width: 0;
+        height: var(--query-control-size);
+        margin: 0;
+        padding: 0 12px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--material-soft-fill);
+        box-shadow: var(--material-lip);
+        color: var(--query-ink);
+        font: inherit;
+        font-size: var(--control-font, 12px);
+        outline: none;
+      }
+      .material-search::placeholder {
+        color: var(--muted);
+        opacity: 1;
+      }
+      :root .material-search:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: -2px;
+      }
+      .material-options {
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: var(--edge) transparent;
+      }
+      .material-choice,
+      .control-option {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 3px;
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 36px;
+        margin: 0;
+        padding: 9px 32px 9px 12px;
+        border: 0;
+        border-radius: 16px;
+        background: transparent;
+        color: var(--query-control-ink);
+        box-shadow: none;
+        font: inherit;
+        font-size: var(--control-font, 12px);
+        text-align: left;
+        cursor: pointer;
+      }
+      .material-choice > span {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+      }
+      .material-choice small {
+        color: var(--muted);
+        font-size: 0.88em;
+      }
+      .material-choice:is([data-active='true'], :focus-visible):not(:disabled),
+      .control-option:is(:hover, :focus-visible) {
+        background: var(--query-hover);
+      }
+      .material-choice[aria-selected='true'],
+      .control-option[aria-pressed='true'] {
+        background: var(--query-active);
+        color: var(--query-ink);
+        box-shadow: var(--material-lip), var(--query-shadow);
+      }
+      .material-choice[aria-selected='true']::after {
+        content: '✓';
+        position: absolute;
+        right: 12px;
+        top: 10px;
+        color: var(--query-ink);
+      }
+      .material-choice:focus-visible,
+      .control-option:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: -2px;
+      }
+      .material-choice:disabled {
+        opacity: 0.45;
+        cursor: default;
+      }
+      .material-empty {
+        margin: 0;
+        padding: 14px 12px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .material-picker-note {
+        flex: none;
+        margin: 0;
+        padding: 6px;
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.5;
+      }
+      @media (pointer: coarse) {
+        .material-choice,
+        .control-option {
+          min-height: 44px;
+        }
+        :root .material-search {
+          height: 44px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .material-chevron {
+          transition: none;
+        }
+      }
+
+      .control-icon[data-tooltip] {
+        position: relative;
+      }
+      .control-icon[data-tooltip]::before {
+        content: attr(aria-label);
+        position: absolute;
+        z-index: 8;
+        top: calc(100% + 9px);
+        left: 50%;
+        padding: 7px 10px;
+        border: 1px solid var(--edge);
+        border-radius: 9px;
+        background: var(--glass-contrast-surface);
+        color: var(--strong);
+        box-shadow: var(--material-shadow);
+        font: 11px/1.4 var(--font-ui);
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        translate: -50% -4px;
+        transition:
+          opacity 140ms ease,
+          translate 140ms ease;
+      }
+      .control-icon[data-tooltip]:last-child::before {
+        left: auto;
+        right: 0;
+        translate: 0 -4px;
+      }
+      .control-icon[data-tooltip]:focus-visible::before {
+        opacity: 1;
+        translate: -50% 0;
+      }
+      .control-icon[data-tooltip]:last-child:focus-visible::before {
+        translate: 0 0;
+      }
+      @media (hover: hover) {
+        .control-icon[data-tooltip]:hover:not(:disabled)::before {
+          opacity: 1;
+          translate: -50% 0;
+        }
+        .control-icon[data-tooltip]:last-child:hover::before {
+          translate: 0 0;
         }
       }
     </style>
@@ -3438,12 +3521,14 @@
           <div>
             <h3 id="analysis-finding-title">从整体到差异</h3>
             <p id="analysis-finding"></p>
+            <p class="micro" id="analysis-next"></p>
           </div>
         </section>
         <div class="analysis-controls dialog-reveal">
           <div class="analysis-tabs control-group" role="tablist" aria-label="分析视角">
             <button role="tab" data-view="country" aria-selected="true">国家比较</button
             ><button role="tab" data-view="category" aria-selected="false">来源等级</button
+            ><button role="tab" data-view="tail" aria-selected="false" hidden>尾部检验</button
             ><button role="tab" data-view="numeric" aria-selected="false">数值分布</button
             ><button role="tab" data-view="pollutant" aria-selected="false">子指数</button>
           </div>
@@ -3460,6 +3545,7 @@
             <option value="inconsistent">AQI 与最大子指数不一致</option>
             <option value="categoryMismatch">来源等级与数值分箱不一致</option></select
           ><button class="pill material-action" id="analysis-clear">清除局部选择</button
+          ><button class="pill material-action query-control" id="analysis-tail" hidden>核对尾部记录</button
           ><span class="query-search query-control"
             ><input
               type="search"
@@ -3480,6 +3566,7 @@
           <section class="analysis-table-panel material-card">
             <div class="section-head">
               <h3>原始记录</h3>
+              <button class="table-expand material-action" id="analysis-locate" disabled>选择记录后定位</button>
               <span id="analysis-record-count">—</span
               ><button class="table-expand material-action" id="export-records">导出 CSV</button
               ><button class="table-expand material-action" id="table-expand">展开 ↗</button>
@@ -3783,6 +3870,365 @@
           }
         }
         return { createMetrics, createActivity, createResize, createControls, format }
+      })()
+    </script>
+    <script id="map-glass-controls">
+      // UI adapters only. Hosts own filters, queries, map navigation and appearance effects.
+      window.MapGlassControls = (() => {
+        const strengthKey = 'vbi-map-glass-strength'
+        function bindStrength(scope, { signal } = {}) {
+          const root = document.documentElement
+          const input = scope.querySelector('.material-range')
+          const output = scope.querySelector('output[for="' + input.id + '"]')
+          const lifetime = new AbortController()
+          let frame = 0
+          function set(value, persist = false) {
+            const n = value == null || String(value).trim() === '' ? NaN : Number(value)
+            const strength = Number.isFinite(n) ? Math.round(Math.max(0, Math.min(100, n))) : 60
+            input.value = strength
+            input.style.setProperty('--range-progress', `${strength}%`)
+            input.setAttribute('aria-valuetext', `${strength}%，通透到凝实`)
+            output.value = `${strength}%`
+            if (!frame)
+              frame = requestAnimationFrame(() => {
+                frame = 0
+                root.style.setProperty('--glass-strength', input.value)
+              })
+            if (persist) {
+              try {
+                localStorage.setItem(strengthKey, String(strength))
+              } catch {}
+            }
+          }
+          const listen = (node, type, callback) => node.addEventListener(type, callback, { signal: lifetime.signal })
+          listen(input, 'input', () => set(input.value))
+          listen(input, 'change', () => set(input.value, true))
+          listen(window, 'storage', (event) => {
+            if (event.key === strengthKey) set(event.newValue)
+          })
+          const destroy = () => {
+            lifetime.abort()
+            cancelAnimationFrame(frame)
+          }
+          if (signal?.aborted) destroy()
+          else signal?.addEventListener('abort', destroy, { once: true })
+          set(root.style.getPropertyValue('--glass-strength'))
+          return { set, destroy }
+        }
+
+        function createPicker({
+          trigger,
+          options,
+          value = '',
+          onChange,
+          note = '',
+          placeholder = '搜索国家 / 地区',
+          searchable = true,
+          width = 300,
+          signal,
+        }) {
+          const lifetime = new AbortController()
+          const listen = (node, type, callback) => node.addEventListener(type, callback, { signal: lifetime.signal })
+          const panel = document.createElement('div')
+          panel.className = 'material-picker control-menu material-popover'
+          panel.id = `${trigger.id}-panel`
+          panel.setAttribute('popover', 'auto')
+          const search = document.createElement('input')
+          search.className = 'material-search'
+          search.type = 'search'
+          search.placeholder = placeholder
+          search.autocomplete = 'off'
+          search.setAttribute('role', 'combobox')
+          search.setAttribute('aria-label', placeholder)
+          search.setAttribute('aria-autocomplete', 'list')
+          const list = document.createElement('div')
+          list.id = `${trigger.id}-list`
+          list.className = 'material-options'
+          list.setAttribute('role', 'listbox')
+          list.setAttribute('aria-label', trigger.getAttribute('aria-label') || '选择选项')
+          search.setAttribute('aria-controls', list.id)
+          const empty = document.createElement('p')
+          empty.className = 'material-empty'
+          empty.textContent = '没有匹配的选项'
+          empty.setAttribute('role', 'status')
+          panel.append(search, list, empty)
+          if (note) {
+            const hint = document.createElement('p')
+            hint.className = 'material-picker-note'
+            hint.textContent = note
+            panel.append(hint)
+          }
+          const accessibleLabel = trigger.getAttribute('aria-label') || '选择选项'
+          const label = trigger.querySelector('span') || document.createElement('span')
+          if (!label.parentNode) trigger.append(label)
+          const chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+          chevron.setAttribute('class', 'material-chevron')
+          chevron.setAttribute('viewBox', '0 0 24 24')
+          chevron.setAttribute('aria-hidden', 'true')
+          chevron.innerHTML = '<path d="m7 10 5 5 5-5"/>'
+          trigger.append(chevron)
+          trigger.type = 'button'
+          trigger.classList.add('select-trigger', 'query-control')
+          trigger.setAttribute('aria-controls', list.id)
+          trigger.setAttribute('aria-haspopup', 'listbox')
+          trigger.setAttribute('aria-expanded', 'false')
+          trigger.after(panel)
+          let current = value,
+            rows = [],
+            active = -1
+          const allOptions = () => (typeof options === 'function' ? options() : options)
+          const isOpen = () => panel.matches(':popover-open')
+          function highlight(scroll = false) {
+            for (const [index, item] of [...list.children].entries()) item.dataset.active = String(index === active)
+            const item = list.children[active]
+            for (const node of [trigger, search]) {
+              if (item) node.setAttribute('aria-activedescendant', item.id)
+              else node.removeAttribute('aria-activedescendant')
+            }
+            if (scroll) item?.scrollIntoView({ block: 'nearest' })
+          }
+          function render() {
+            const term = search.value.trim().toLocaleLowerCase()
+            rows = allOptions().filter((item) =>
+              `${item.label} ${item.value} ${item.description || ''}`.toLocaleLowerCase().includes(term),
+            )
+            list.replaceChildren(
+              ...rows.map((item, index) => {
+                const button = document.createElement('button')
+                button.type = 'button'
+                button.className = 'material-choice'
+                button.id = `${trigger.id}-option-${index}`
+                button.dataset.index = index
+                button.setAttribute('role', 'option')
+                button.setAttribute('aria-selected', String(item.value === current))
+                button.tabIndex = -1
+                button.disabled = Boolean(item.disabled)
+                const title = document.createElement('span')
+                title.textContent = item.label
+                button.append(title)
+                if (item.description && item.description !== item.label) {
+                  const description = document.createElement('small')
+                  description.textContent = item.description
+                  button.append(description)
+                }
+                return button
+              }),
+            )
+            empty.hidden = rows.length > 0
+            active = rows.findIndex((item) => item.value === current && !item.disabled)
+            if (active < 0) active = rows.findIndex((item) => !item.disabled)
+            highlight()
+          }
+          function position() {
+            const rect = trigger.getBoundingClientRect()
+            const viewport = window.visualViewport
+            const left = viewport?.offsetLeft || 0,
+              top = viewport?.offsetTop || 0
+            const w = viewport?.width || innerWidth,
+              h = viewport?.height || innerHeight
+            const panelWidth = Math.min(w - 24, Math.max(rect.width, width))
+            const below = top + h - rect.bottom - 20,
+              above = rect.top - top - 20
+            const opensBelow = below >= Math.min(300, panel.scrollHeight) || below >= above
+            const available = Math.max(0, opensBelow ? below : above)
+            panel.style.width = `${panelWidth}px`
+            panel.style.maxHeight = `${Math.min(380, available)}px`
+            panel.style.left = `${Math.max(left + 12, Math.min(left + w - panelWidth - 12, rect.left))}px`
+            panel.style.top = `${opensBelow ? rect.bottom + 8 : Math.max(top + 12, rect.top - Math.min(panel.scrollHeight, available, 380) - 8)}px`
+            panel.style.setProperty('--popover-origin', opensBelow ? 'top left' : 'bottom left')
+            panel.style.setProperty('--popover-shift', opensBelow ? '-4px' : '4px')
+          }
+          function close(focus = false) {
+            if (isOpen()) panel.hidePopover()
+            trigger.setAttribute('aria-expanded', 'false')
+            if (focus) trigger.focus()
+          }
+          function open() {
+            if (trigger.disabled) return
+            search.value = ''
+            search.hidden = !searchable || allOptions().length <= 8
+            render()
+            panel.showPopover()
+            trigger.setAttribute('aria-expanded', 'true')
+            search.setAttribute('aria-expanded', 'true')
+            position()
+            if (search.hidden) list.children[active]?.focus()
+            else search.focus({ preventScroll: true })
+            highlight(true)
+          }
+          function choose(index) {
+            const item = rows[index]
+            if (!item || item.disabled) return
+            close(true)
+            if (item.value !== current) onChange(item.value, trigger)
+          }
+          listen(trigger, 'click', () => (isOpen() ? close() : open()))
+          listen(trigger, 'keydown', (event) => {
+            if (['ArrowDown', 'ArrowUp'].includes(event.key)) {
+              event.preventDefault()
+              open()
+            }
+          })
+          listen(search, 'input', () => {
+            render()
+            position()
+          })
+          listen(list, 'click', (event) => {
+            const item = event.target.closest('[data-index]')
+            if (item) choose(Number(item.dataset.index))
+          })
+          listen(list, 'pointermove', (event) => {
+            const item = event.target.closest('[data-index]')
+            if (item && !item.disabled) {
+              active = Number(item.dataset.index)
+              highlight()
+            }
+          })
+          listen(panel, 'keydown', (event) => {
+            if (event.key === 'Escape') {
+              event.preventDefault()
+              event.stopPropagation()
+              close(true)
+              return
+            }
+            if (event.key === 'Tab') {
+              close()
+              return
+            }
+            if (event.key === 'Enter') {
+              event.preventDefault()
+              choose(active)
+              return
+            }
+            if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
+              if (event.target === search && ['Home', 'End'].includes(event.key)) return
+              event.preventDefault()
+              const enabled = rows.map((item, index) => (item.disabled ? -1 : index)).filter((index) => index >= 0)
+              const index = enabled.indexOf(active)
+              active =
+                event.key === 'Home'
+                  ? enabled[0]
+                  : event.key === 'End'
+                    ? enabled.at(-1)
+                    : enabled[Math.max(0, Math.min(enabled.length - 1, index + (event.key === 'ArrowDown' ? 1 : -1)))]
+              highlight(true)
+              if (search.hidden) list.children[active]?.focus()
+            }
+          })
+          listen(panel, 'toggle', () => {
+            trigger.setAttribute('aria-expanded', String(isOpen()))
+            search.setAttribute('aria-expanded', String(isOpen()))
+            if (!isOpen()) for (const node of [trigger, search]) node.removeAttribute('aria-activedescendant')
+          })
+          const reposition = () => {
+            if (isOpen()) position()
+          }
+          listen(window, 'resize', reposition)
+          if (window.visualViewport) {
+            listen(visualViewport, 'resize', reposition)
+            listen(visualViewport, 'scroll', reposition)
+          }
+          function setValue(next) {
+            current = next
+            label.textContent = allOptions().find((item) => item.value === next)?.label || '请选择'
+            trigger.title = label.textContent
+            trigger.setAttribute('aria-label', `${accessibleLabel}：${label.textContent}`)
+            if (isOpen()) render()
+          }
+          function destroy() {
+            lifetime.abort()
+            close()
+            panel.remove()
+            chevron.remove()
+          }
+          if (signal?.aborted) destroy()
+          else signal?.addEventListener('abort', destroy, { once: true })
+          setValue(value)
+          return {
+            trigger,
+            setValue,
+            setDisabled(disabled) {
+              trigger.disabled = disabled
+              if (disabled) close()
+            },
+            close,
+            destroy,
+          }
+        }
+
+        function createSelect(select, { placeholder = '搜索选项', describe = () => '', signal } = {}) {
+          const lifetime = new AbortController()
+          const wrap = document.createElement('div')
+          wrap.className = 'select-control'
+          wrap.dataset.for = select.id
+          const trigger = document.createElement('button')
+          trigger.id = `${select.id}-trigger`
+          trigger.setAttribute('aria-label', select.getAttribute('aria-label') || '选择选项')
+          wrap.append(trigger)
+          select.after(wrap)
+          const wasHidden = select.classList.contains('select-native-state')
+          select.classList.add('select-native-state')
+          const picker = createPicker({
+            trigger,
+            placeholder,
+            options: () =>
+              [...select.options].map((option) => ({
+                value: option.value,
+                label: option.textContent,
+                description: describe(option),
+                disabled: option.disabled,
+              })),
+            value: select.value,
+            onChange(value) {
+              select.value = value
+              select.dispatchEvent(new Event('change', { bubbles: true }))
+            },
+          })
+          function sync() {
+            wrap.hidden = select.hidden
+            picker.setDisabled(select.disabled)
+            picker.setValue(select.value)
+            if (wrap.hidden) picker.close()
+          }
+          select.addEventListener('change', sync, { signal: lifetime.signal })
+          const descriptor = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value')
+          const ownDescriptor = Object.getOwnPropertyDescriptor(select, 'value')
+          Object.defineProperty(select, 'value', {
+            configurable: true,
+            get() {
+              return descriptor.get.call(this)
+            },
+            set(value) {
+              descriptor.set.call(this, value)
+              sync()
+            },
+          })
+          const observer = new MutationObserver(sync)
+          observer.observe(select, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            characterData: true,
+            attributeFilter: ['disabled', 'hidden', 'selected', 'value', 'label'],
+          })
+          let destroyed = false
+          function destroy() {
+            if (destroyed) return
+            destroyed = true
+            lifetime.abort()
+            observer.disconnect()
+            picker.destroy()
+            if (ownDescriptor) Object.defineProperty(select, 'value', ownDescriptor)
+            else delete select.value
+            if (!wasHidden) select.classList.remove('select-native-state')
+            wrap.remove()
+          }
+          if (signal?.aborted) destroy()
+          else signal?.addEventListener('abort', destroy, { once: true })
+          sync()
+          return { sync, trigger, close: picker.close, destroy }
+        }
+        return { createPicker, createSelect, bindStrength }
       })()
     </script>
     <script id="dashboard-loading-runtime">
@@ -18242,7 +18688,7 @@
       }))
       const metricDefs = {
         aqi: {
-          title: '样本 AQI · 分布与差异',
+          title: 'AQI 均值 · 普遍偏高还是尾部抬升？',
           defaultView: 'country',
           unit: 'AQI',
           definition:
@@ -18349,7 +18795,10 @@
         const b = VBI.chart.create(VBI.chart.createEmpty(connectorId))
         b.chartType.changeChartType('table')
         dimensions.forEach(([field, alias = field]) =>
-          b.dimensions.add(field, (n) => n.setAlias(alias).setEncoding('column')),
+          b.dimensions.add(field, (n) => {
+            n.setAlias(alias).setEncoding('column')
+            if (options.sortDimension === field) n.setSort({ order: options.order || 'asc' })
+          }),
         )
         measures.forEach(([field, alias, aggregate]) =>
           b.measures.add(field, (n) => {
@@ -18477,7 +18926,7 @@
       let countryTopFive = []
       function createMainBuilders() {
         return {
-          summary: makeBuilder([], summaryMeasures),
+          summary: makeBuilder([], [...summaryMeasures, ...percentileMeasures('aqi')]),
           categories: makeBuilder([['category', 'group']], [['rowCount', 'n', 'sum']]),
           bins: makeBuilder([['numericBin', 'group']], [['rowCount', 'n', 'sum']]),
           countries: makeBuilder([['countryKey', 'country']], [...groupMeasures, ['high', 'highRate', 'avg']], {
@@ -18551,6 +19000,16 @@
           },
           barStyle: { barColor: accent, barColorOpacity: 0.85, barRadius: 3, barGradient: false },
           tooltip: { enable: true },
+        }
+        if (type === 'scatter') {
+          seed.dimensions = [{ id: 'label', alias: '国家', encoding: 'detail' }]
+          seed.measures = [
+            { id: 'median', alias: '样本中位数', encoding: 'xAxis' },
+            { id: 'value', alias: '样本均值', encoding: 'yAxis' },
+            { id: 'n', alias: '样本数', encoding: 'size' },
+          ]
+          seed.xAxis = { visible: true, zero: true }
+          seed.yAxis = { visible: true, zero: true }
         }
         if (type === 'donut') {
           seed.innerRadius = 0.79
@@ -18785,7 +19244,11 @@
         $('#risk-count').textContent = `${fmt(summary.high)} / ${fmt(summary.n)} 条记录`
         $('#risk-fill').style.width = (pct(summary.high, summary.n) || 0) + '%'
         $('#missing-share').textContent = fmt(pct(summary.missingCountry, summary.n), 1) + '%'
-        $('#mean-note').textContent = currentCountry ? '当前国家内城市样本等权' : '城市样本等权 · AQI 数值分布'
+        $('#mean-note').textContent = summary.n
+          ? summary.mean === summary.median
+            ? '均值与中位数相同 · 可核对样本'
+            : `均值${summary.mean > summary.median ? '高于' : '低于'}中位数 ${fmt(Math.abs(summary.mean - summary.median), 1)} · 查看尾部检验`
+          : '当前范围暂无样本'
         $('#scope-label').textContent = currentCountry ? countryLabel(currentCountry) : '全样本'
         $('#country').value = currentCountry
         $('#map-place').textContent = currentCountry ? countryLabel(currentCountry) : '全球城市样本'
@@ -19139,7 +19602,7 @@
         const extra = modalBaseConditions()
         if (modalState.search) extra.push(['searchKey', '%' + modalState.search.toLowerCase().trim() + '%', 'like'])
         if (modalState.group) {
-          if (modalState.view === 'country') extra.push(['countryKey', modalState.group])
+          if (modalState.view === 'country' || modalState.view === 'tail') extra.push(['countryKey', modalState.group])
           if (modalState.view === 'category') extra.push(['category', modalState.group])
           if (modalState.view === 'numeric') extra.push(['numericBin', modalState.group])
         }
@@ -19171,6 +19634,7 @@
           group: '',
           quality: '',
           search: '',
+          tailOnly: false,
           ...extra,
           group: metric === 'pollutants' ? 'pm25' : '',
           first: true,
@@ -19182,6 +19646,8 @@
         analysisGroupKey = analysisSpecKey = ''
         $('#analysis-value').textContent = '—'
         $('#analysis-finding').textContent = ''
+        $('#analysis-next').textContent = ''
+        $('#analysis-locate').disabled = true
         $('#analysis-definition').textContent = def.definition
         $('#analysis-chart').replaceChildren()
         $('#analysis-record-count').textContent = ''
@@ -19196,13 +19662,19 @@
         showDialog($('#analysis-dialog'))
         requestModal()
       }
+      const hasAqiEvidence = (state) => state && ['aqi', 'ranking'].includes(state.metric)
       function syncAnalysisTabs() {
+        const diagnosis = hasAqiEvidence(modalState)
         $$('[data-view]').forEach((b) => {
+          b.hidden = b.dataset.view === 'tail' && !diagnosis
           const selected = b.dataset.view === modalState.view
           b.setAttribute('aria-selected', String(selected))
           b.tabIndex = selected ? 0 : -1
         })
         $('#min-samples').hidden = modalState.view !== 'country'
+        $('#analysis-group').hidden = modalState.view === 'tail'
+        $('#analysis-tail').hidden = !diagnosis
+        $('#analysis-tail').textContent = modalState.tailOnly ? '返回完整样本' : '核对高于 P90 的记录'
         $('#analysis-group').setAttribute('aria-label', modalState.view === 'pollutant' ? '选择子指数' : '选择分析分组')
       }
       function requestModal(control) {
@@ -19265,30 +19737,72 @@
             state.metric === 'risk' ||
             state.view === 'pollutant' ||
             state.metric === 'pollutants'
-        const [summary, groups, raw, ranked] = await Promise.all([
+        const diagnosis = hasAqiEvidence(state) && !['category', 'pollutant'].includes(state.view)
+        const reference = diagnosis
+          ? normalizeSummary(
+              (await tempView([], [...summaryMeasures, ...percentileMeasures('aqi')], state.country, local)).rows[0],
+            )
+          : undefined
+        if (!modalIsCurrent(ticket, state)) return
+        const cutoff = reference?.p90
+        const tailConditions = diagnosis && state.tailOnly && reference.n ? [...local, ['aqi', cutoff, 'gt']] : local
+        const comparisonMeasures = diagnosis ? [...groupMeasures, ...percentileMeasures('aqi')] : groupMeasures
+        const [summary, groups, raw, ranked, core] = await Promise.all([
           tempView(
             [],
             needsPercentiles ? [...summaryMeasures, ...percentileMeasures(field)] : summaryMeasures,
             state.country,
-            local,
+            tailConditions,
           ),
-          state.view === 'pollutant'
+          ['pollutant', 'tail'].includes(state.view)
             ? Promise.resolve({ rows: [] })
-            : tempView([[dim, 'group']], groupMeasures, state.country, base, false, { sort: 'n' }),
-          tempView([['id']], [], state.country, local, true),
+            : tempView(
+                [[dim, 'group']],
+                comparisonMeasures,
+                state.country,
+                [
+                  ...base,
+                  ...(state.search ? [['searchKey', '%' + state.search.toLowerCase().trim() + '%', 'like']] : []),
+                ],
+                false,
+                { sort: 'n' },
+              ),
+          tempView([['id'], ['aqi']], [], state.country, tailConditions, true, { sortDimension: 'aqi', order: 'desc' }),
           state.view === 'country'
-            ? tempView([[dim, 'group']], groupMeasures, state.country, base, false, {
-                sort: state.metric === 'coverage' ? 'n' : 'mean',
-                minimum,
-                limit: 12,
-              })
+            ? tempView(
+                [[dim, 'group']],
+                comparisonMeasures,
+                state.country,
+                [
+                  ...base,
+                  ...(state.search ? [['searchKey', '%' + state.search.toLowerCase().trim() + '%', 'like']] : []),
+                ],
+                false,
+                {
+                  sort: state.metric === 'coverage' ? 'n' : 'mean',
+                  minimum,
+                  limit: 12,
+                },
+              )
+            : Promise.resolve({ rows: [] }),
+          diagnosis && reference.n
+            ? tempView([], [...summaryMeasures, ...percentileMeasures('aqi')], state.country, [
+                ...local,
+                ['aqi', cutoff, 'lte'],
+              ])
             : Promise.resolve({ rows: [] }),
         ])
         if (!modalIsCurrent(ticket, state)) return
+        state.evidence = diagnosis ? { reference, core: normalizeSummary(core.rows[0]), cutoff } : undefined
+        state.selectedRecord = undefined
+        $('#analysis-locate').disabled = true
+        $('#analysis-locate').textContent = '选择记录后定位'
+        $('#analysis-locate').title = ''
         const s = normalizeSummary(summary.rows[0]),
           records = recordsFromIds(raw)
         modalRaw = records
         const items = renderAnalysisSummary(state, s, groups.rows, ranked.rows, records)
+        syncAnalysisTabs()
         syncSelectControls()
         await drawAnalysisChart(items)
         if (!modalIsCurrent(ticket, state)) return
@@ -19302,6 +19816,13 @@
           options.animationAppear = false
           options.autoFillWidth = false
           analysisTable = new window.VTable.ListTable($('#analysis-table'), options)
+          const chooseRecord = ({ col, row }) => {
+            if (!modalState || row < 1) return
+            const record = analysisTable.getRecordByCell(col, row)
+            if (record?.id) selectAnalysisRecord(record)
+          }
+          analysisTable.on('click_cell', chooseRecord)
+          analysisTable.on('selected_cell', chooseRecord)
           await yieldBrowserTask()
           if (!modalIsCurrent(ticket, state)) return
         }
@@ -19309,14 +19830,19 @@
           DashboardTable.setRecords(analysisTable, modalRaw, { animate: false })
           analysisTableRecords = modalRaw
         }
+        if (diagnosis && state.tailOnly && records.length) selectAnalysisRecord(records[0])
         $('#analysis-loading').textContent = ''
         state.first = false
         syncSelectControls()
       }
       let analysisGroupKey = '',
         analysisSpecKey = '',
-        analysisSpecBase
+        analysisSpecBase,
+        analysisChartType
       function renderAnalysisSummary(state, summary, groups, ranked, records) {
+        const scopeCountry = ['country', 'tail'].includes(state.view) && state.group ? state.group : state.country
+        $('#analysis-scope').textContent =
+          `${scopeCountry ? countryLabel(scopeCountry) : '全部'} · ${metricDefs[state.metric].intrinsic ? 'AQI>100 · ' : ''}城市样本快照${state.city ? ' · ' + state.city : ''}`
         const labels =
           state.view === 'country'
             ? (r) => countryLabel(r.group)
@@ -19335,7 +19861,15 @@
         }
         selection.value = state.group
         let items
-        if (state.view === 'pollutant')
+        if (state.view === 'tail') {
+          const { reference, core } = state.evidence
+          items = reference.n
+            ? [
+                { groupKey: 'reference', label: `原范围 · n=${fmt(reference.n)}`, value: reference.mean },
+                { groupKey: 'core', label: `AQI≤${fmt(state.evidence.cutoff)} · n=${fmt(core.n)}`, value: core.mean },
+              ]
+            : []
+        } else if (state.view === 'pollutant')
           items = options.map((r) => ({ groupKey: r.group, label: r.label, value: summary[r.group] ?? 0 }))
         else {
           let chosen =
@@ -19350,37 +19884,46 @@
           }
           items = chosen.map((r) => ({
             groupKey: r.group,
+            median: r.median,
+            n: r.n,
             label: state.view === 'country' ? `${labels(r)} · n=${fmt(r.n)}` : labels(r),
             value: state.view === 'country' && state.metric !== 'coverage' ? r.mean : r.n,
           }))
         }
         state.chartItems = items
         $('#analysis-chart-title').textContent =
-          state.view === 'country'
-            ? state.metric === 'coverage'
-              ? '国家样本覆盖量'
-              : '国家城市样本 AQI 均值'
-            : state.view === 'category'
-              ? '来源等级分布'
-              : state.view === 'numeric'
-                ? 'AQI 数值分布'
-                : '四项子指数均值'
+          state.view === 'tail'
+            ? '敏感性检验 · 保留／排除上尾样本的均值'
+            : hasAqiEvidence(state) && state.view === 'country'
+              ? '国家均值与中位数 · 点大小为 n'
+              : state.view === 'country'
+                ? state.metric === 'coverage'
+                  ? '国家样本覆盖量'
+                  : '国家城市样本 AQI 均值'
+                : state.view === 'category'
+                  ? '来源等级分布'
+                  : state.view === 'numeric'
+                    ? 'AQI 数值分布'
+                    : '四项子指数均值'
         $('#analysis-chart-note').textContent =
-          state.view === 'country'
-            ? `Top 12 · n≥${$('#min-samples').value}${state.group ? ' · 保留已选项' : ''}`
-            : state.view === 'category'
-              ? '使用来源分类原文'
-              : state.view === 'numeric'
-                ? '独立数值分箱，非来源等级'
-                : '同范围 · 不表示贡献份额'
+          state.view === 'tail'
+            ? 'P90来自原完整范围；排除严格高于P90的记录，实际排除比例受并列值影响'
+            : state.view === 'country'
+              ? `Top 12 · n≥${$('#min-samples').value}${state.group ? ' · 保留已选项' : ''}`
+              : state.view === 'category'
+                ? '使用来源分类原文'
+                : state.view === 'numeric'
+                  ? '独立数值分箱，非来源等级'
+                  : '同范围 · 不表示贡献份额'
         const value =
           state.metric === 'coverage' || state.metric === 'categories' || state.metric === 'risk'
             ? summary.n
             : state.view === 'pollutant' && state.group
               ? summary[state.group]
               : summary.mean
-        $('#analysis-value-label').textContent =
-          state.metric === 'coverage'
+        $('#analysis-value-label').textContent = state.tailOnly
+          ? '高于原范围 P90 的样本均值'
+          : state.metric === 'coverage'
             ? '当前有效记录'
             : state.metric === 'risk'
               ? '符合 AQI >100 的记录'
@@ -19393,7 +19936,7 @@
           fmt(next, ['coverage', 'categories', 'risk'].includes(state.metric) ? 0 : 1),
         )
         $('#analysis-finding-title').textContent = summary.n
-          ? `${fmt(summary.n)} 条样本 · ${state.group ? options.find((r) => r.group === state.group)?.label || state.group : '完整范围'}`
+          ? `${fmt(summary.n)} 条样本 · ${state.tailOnly ? '高于原P90' : state.group ? options.find((r) => r.group === state.group)?.label || countryLabel(state.group) : '完整范围'}`
           : '当前条件没有记录'
         let finding
         if (state.metric === 'coverage')
@@ -19408,8 +19951,26 @@
           finding = `AQI >100 的样本为 ${fmt(summary.high)} 条，占当前范围 ${fmt(pct(summary.high, summary.n), 1)}%。来源等级与数值分箱存在 ${fmt(summary.categoryMismatch)} 条差异，图表分别按原始分类或数值展示。`
         else
           finding = `样本均值 ${fmt(summary.mean, 1)}，中位数 ${fmt(summary.median, 1)}，P90 为 ${fmt(summary.p90)}。AQI >100 占 ${fmt(pct(summary.high, summary.n), 1)}%。分组均值须结合 n 与完整记录解读，不作人口暴露比较。`
+        if (state.evidence) {
+          const { reference: r, core: c, cutoff } = state.evidence
+          finding = !r.n
+            ? '当前条件没有样本，无法检验分布。'
+            : `原范围 n=${fmt(r.n)}：均值 ${fmt(r.mean, 1)}，中位数 ${fmt(r.median, 1)}，P90 ${fmt(cutoff)}；AQI>100 占 ${fmt(pct(r.high, r.n), 1)}%。排除 AQI>${fmt(cutoff)} 的 ${fmt(r.n - c.n)} 条（${fmt(pct(r.n - c.n, r.n), 1)}%）后，均值为 ${fmt(c.mean, 1)}（变化 ${fmt(c.mean - r.mean, 1)}）。这是尾部敏感性检验，不是数据清洗；完整原值保留。${state.tailOnly ? ` 当前明细仅含高于原P90的 ${fmt(records.length)} 条记录。` : ''}`
+        }
         $('#analysis-finding').textContent = finding
-        $('#analysis-record-count').textContent = `${fmt(records.length)} 条 · 完整结果`
+        $('#analysis-next').textContent = !state.evidence
+          ? ''
+          : !state.evidence.reference.n
+            ? '下一步：清除局部条件或补充样本；当前没有可核对记录。'
+            : state.tailOnly && !records.length
+              ? '当前没有严格高于原P90的记录；返回完整样本核对。少量样本或并列值不足以支持尾部判断。'
+              : state.tailOnly
+                ? '下一步：选择原始记录，核对 AQI、子指数与来源等级；可应用所属国家并定位。缺少采样日期、设计与人口，不能推断治理效果或总体暴露。'
+                : state.view === 'tail'
+                  ? '下一步：核对高于 P90 的记录，判断极端样本、等级或子指数差异是否需要复核；排除尾部后的结果不能直接替代原指标。'
+                  : '下一步：进入“尾部检验”，观察均值对高值记录是否敏感；国家样本量不同，排名不代表国家总体。'
+        $('#analysis-record-count').textContent =
+          `${fmt(records.length)} 条 · ${state.tailOnly ? '高于原P90' : '完整结果'}`
         return items
       }
       async function drawAnalysisChart(items) {
@@ -19430,14 +19991,54 @@
         if (key !== analysisSpecKey) {
           analysisSpecBase = seedSpec(
             items,
-            'bar',
-            (modalState?.view === 'country' && modalState?.metric !== 'coverage') || modalState?.view === 'pollutant'
+            hasAqiEvidence(modalState) && modalState.view === 'country' ? 'scatter' : 'bar',
+            (modalState?.view === 'country' && modalState?.metric !== 'coverage') ||
+              ['pollutant', 'tail'].includes(modalState?.view)
               ? 'AQI 均值'
               : '样本数',
           )
           analysisSpecKey = key
         }
-        const spec = { ...analysisSpecBase, bar: { ...analysisSpecBase.bar }, padding: { ...analysisSpecBase.padding } }
+        const scatter = analysisSpecBase.type === 'scatter'
+        const spec = { ...analysisSpecBase, padding: { ...analysisSpecBase.padding } }
+        if (scatter) {
+          const max = Math.max(
+            10,
+            Math.ceil((Math.max(...items.flatMap((item) => [item.median, item.value])) * 1.1) / 10) * 10,
+          )
+          spec.axes = analysisSpecBase.axes.map((axis) => ({
+            ...axis,
+            min: 0,
+            max,
+            title: {
+              ...axis.title,
+              visible: true,
+              text: axis.orient === 'bottom' ? '样本中位数（AQI）' : '样本均值（AQI）',
+              style: { ...axis.title?.style, fill: css('muted'), fontSize: 10, fontFamily: css('font-ui') },
+            },
+          }))
+          spec.point = {
+            ...analysisSpecBase.point,
+            style: {
+              ...analysisSpecBase.point?.style,
+              fillOpacity: (datum) => (!modalState?.group || datum.groupKey === modalState.group ? 0.94 : 0.28),
+            },
+          }
+          spec.tooltip = {
+            ...analysisSpecBase.tooltip,
+            parentElement: $('#analysis-dialog'),
+            confine: true,
+            mark: {
+              title: { visible: true, value: (datum) => datum.label },
+              content: [
+                { key: '样本中位数', value: (datum) => fmt(datum.median, 1) },
+                { key: '样本均值', value: (datum) => fmt(datum.value, 1) },
+                { key: '样本数 n', value: (datum) => fmt(datum.n) },
+              ],
+            },
+          }
+        }
+        if (!scatter && analysisSpecBase.bar) spec.bar = { ...analysisSpecBase.bar }
         if (spec.bar) {
           spec.bar.style = {
             ...spec.bar.style,
@@ -19446,7 +20047,7 @@
           }
         }
         spec.label = {
-          visible: true,
+          visible: !scatter,
           position: 'right',
           style: { fill: css('ink'), fontSize: 10, fontWeight: 400, stroke: false, lineWidth: 0 },
           formatMethod: (text, datum) =>
@@ -19459,20 +20060,39 @@
         }
         spec.padding.right = 42
         if (modalState?.first) spec.animation = false
-        if (analysisChart) await analysisChart.updateSpec(spec)
-        else {
+        if (analysisChart) {
+          const changed = analysisChartType !== spec.type
+          await analysisChart.updateSpec(
+            spec,
+            false,
+            { morph: !reduced.matches },
+            changed ? { change: true, reMake: true } : undefined,
+          )
+        } else {
           analysisChart = new window.VChart.default(spec, { dom: $('#analysis-chart') })
           analysisChart.renderSync()
           analysisChart.on('click', (params) => {
-            if (!modalState) return
+            if (!modalState || modalState.view === 'tail') return
             const datum = params.datum?.__OriginalData__ || params.datum
             const key = datum?.groupKey
             if (key) {
               modalState.group = modalState.group === key ? '' : key
+              modalState.tailOnly = false
               requestModal($('#analysis-group'))
             }
           })
         }
+        analysisChartType = spec.type
+      }
+      function selectAnalysisRecord(record) {
+        modalState.selectedRecord = record
+        const available = Boolean(geo.lookup[record.countryKey])
+        $('#analysis-locate').disabled = !available
+        $('#analysis-locate').textContent = available ? '应用国家并定位' : '未标注国家，无法定位'
+        $('#analysis-locate').title =
+          `${record.id} · ${record.city || '城市未填写'} · ${available ? countryLabel(record.countryKey) : '无国家位置'}`
+        $('#analysis-next').textContent =
+          `${record.id} · ${record.city || '城市未填写'}，AQI ${fmt(record.aqi)}。${available ? `下一步：应用 ${countryLabel(record.countryKey)} 范围并定位国家代表位置；没有城市坐标。` : '下一步：补充国家身份后才能定位；该记录仍保留在统计和明细中。'}`
       }
       function exportRaw() {
         if (!modalRaw.length) return
@@ -19494,7 +20114,10 @@
       }
       // UI event wiring, grouped by responsibility.
       function bindUI() {
-        $$('.icon-button, .close-button').forEach((node) => node.classList.add('control-icon'))
+        $$('.icon-button, .close-button').forEach((node) => {
+          node.classList.add('control-icon')
+          if (node.closest('.header')) node.dataset.tooltip = ''
+        })
         bindOverviewControls()
         bindDialogs()
         bindAppearanceControls()
@@ -19546,35 +20169,8 @@
         }
       }
       function bindAppearanceControls() {
-        const root = document.documentElement
-        const glassInput = $('#glass-strength')
-        const glassOutput = $('output[for="glass-strength"]')
-        let glassFrame = 0
-        const setGlassStrength = (value, persist = false) => {
-          const n = value == null || String(value).trim() === '' ? NaN : Number(value)
-          const strength = Number.isFinite(n) ? Math.round(Math.max(0, Math.min(100, n))) : 60
-          glassInput.value = strength
-          glassInput.style.setProperty('--range-progress', `${strength}%`)
-          glassInput.setAttribute('aria-valuetext', `${strength}%，通透到凝实`)
-          glassOutput.value = `${strength}%`
-          if (!glassFrame)
-            glassFrame = requestAnimationFrame(() => {
-              glassFrame = 0
-              root.style.setProperty('--glass-strength', glassInput.value)
-            })
-          if (persist) {
-            try {
-              localStorage.setItem('vbi-map-glass-strength', String(strength))
-            } catch {}
-          }
-        }
-        on(glassInput, 'input', () => setGlassStrength(glassInput.value))
-        on(glassInput, 'change', () => setGlassStrength(glassInput.value, true))
-        on(window, 'storage', (event) => {
-          if (event.key === 'vbi-map-glass-strength') setGlassStrength(event.newValue)
-        })
-        events.signal.addEventListener('abort', () => cancelAnimationFrame(glassFrame), { once: true })
-        setGlassStrength(root.style.getPropertyValue('--glass-strength'))
+        const glassStrength = MapGlassControls.bindStrength($('#settings-dialog'), { signal: events.signal })
+        const setGlassStrength = glassStrength.set
         $('#theme-options').replaceChildren(
           ...[
             ['dark', '深蓝'],
@@ -19601,11 +20197,12 @@
         })
       }
       function bindAnalysisControls() {
-        $$('[data-view]').forEach((b, index) =>
+        $$('[data-view]').forEach((b) =>
           on(b, 'keydown', (e) => {
             if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return
             e.preventDefault()
-            const tabs = $$('[data-view]'),
+            const tabs = $$('[data-view]').filter((tab) => !tab.hidden),
+              index = tabs.indexOf(b),
               next =
                 e.key === 'Home'
                   ? 0
@@ -19618,14 +20215,22 @@
         )
         $$('[data-view]').forEach((b) =>
           on(b, 'click', () => {
-            if (!modalState || modalState.view === b.dataset.view) return
+            if (!modalState || b.hidden || modalState.view === b.dataset.view) return
+            const previousView = modalState.view
             modalState.view = b.dataset.view
-            modalState.group = modalState.view === 'pollutant' ? 'pm25' : ''
+            modalState.tailOnly = false
+            modalState.group =
+              ['country', 'tail'].includes(modalState.view) && ['country', 'tail'].includes(previousView)
+                ? modalState.group
+                : modalState.view === 'pollutant'
+                  ? 'pm25'
+                  : ''
             syncAnalysisTabs()
             requestModal(b)
           }),
         )
         on($('#analysis-group'), 'change', (e) => {
+          modalState.tailOnly = false
           modalState.group = e.target.value
           requestModal(e.currentTarget)
         })
@@ -19657,6 +20262,7 @@
         })
         on(events.signal, 'abort', () => clearTimeout(searchTimer))
         on($('#analysis-clear'), 'click', (event) => {
+          modalState.tailOnly = false
           modalState.group = ''
           modalState.quality = ''
           modalState.city = undefined
@@ -19672,6 +20278,21 @@
           requestAnimationFrame(() => analysisTable?.resize())
         })
         on($('#analysis-retry'), 'click', (e) => requestModal(e.currentTarget))
+        on($('#analysis-tail'), 'click', (event) => {
+          if (!hasAqiEvidence(modalState)) return
+          modalState.tailOnly = !modalState.tailOnly
+          if (!['country', 'tail'].includes(modalState.view)) modalState.group = ''
+          modalState.view = 'tail'
+          syncAnalysisTabs()
+          requestModal(event.currentTarget)
+        })
+        on($('#analysis-locate'), 'click', () => {
+          const record = modalState?.selectedRecord
+          if (!record || !geo.lookup[record.countryKey]) return
+          closeDialog('analysis-dialog')
+          setCountry(record.countryKey, false)
+          globe?.focus(record.countryKey)
+        })
         on($('#export-records'), 'click', exportRaw)
       }
       function bindMotionPreference() {
@@ -19753,248 +20374,13 @@
           if (!selectControls.has(select)) createSelectControl(select)
         }
       }
-      // The hidden native select remains the source of truth for value and options.
       function createSelectControl(select) {
-        const wrap = document.createElement('div'),
-          trigger = document.createElement('button'),
-          label = document.createElement('span'),
-          panel = document.createElement('div'),
-          search = document.createElement('input'),
-          list = document.createElement('div')
-        wrap.className = 'select-control'
-        wrap.dataset.for = select.id
-        trigger.type = 'button'
-        trigger.className = 'select-trigger query-control'
-        trigger.setAttribute('role', 'combobox')
-        trigger.setAttribute('aria-haspopup', 'listbox')
-        trigger.setAttribute('aria-expanded', 'false')
-        trigger.setAttribute('aria-label', select.getAttribute('aria-label') || '选择国家')
-        panel.id = select.id + '-panel'
-        panel.className = 'select-panel control-menu material-popover'
-        panel.setAttribute('popover', 'auto')
-        trigger.setAttribute('aria-controls', select.id + '-list')
-        list.id = select.id + '-list'
-        list.className = 'select-options'
-        list.setAttribute('role', 'listbox')
-        list.setAttribute('aria-label', select.getAttribute('aria-label') || '国家')
-        search.type = 'search'
-        search.className = 'select-search'
-        search.placeholder = select.id === 'country' ? '搜索国家 / Country' : '搜索选项'
-        search.setAttribute('aria-label', search.placeholder)
-        trigger.append(label)
-        const chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-        chevron.setAttribute('class', 'icon select-chevron')
-        chevron.setAttribute('viewBox', '0 0 24 24')
-        chevron.innerHTML = '<path d="m7 10 5 5 5-5"/>'
-        trigger.append(chevron)
-        panel.append(search, list)
-        select.after(wrap)
-        wrap.append(trigger, panel)
-        select.classList.add('select-native-state')
-        let active = 0,
-          options = [],
-          activeItem,
-          renderedKey = '',
-          optionRows = [],
-          optionsDirty = true
-        const close = () => {
-          if (panel.matches(':popover-open')) panel.hidePopover()
-          trigger.setAttribute('aria-expanded', 'false')
-        }
-        function sync() {
-          wrap.hidden = select.hidden
-          trigger.disabled = select.disabled
-          const text = select.selectedOptions[0]?.textContent || '请选择'
-          if (label.textContent !== text) label.textContent = text
-          trigger.title = label.textContent
-          if (wrap.hidden || trigger.disabled) close()
-          if (panel.matches(':popover-open')) render()
-        }
-        function choose(option) {
-          if (!option || option.disabled) return
-          close()
-          if (select.value !== option.value) {
-            select.value = option.value
-            select.dispatchEvent(new Event('change', { bubbles: true }))
-          }
-          trigger.focus()
-        }
-        function render() {
-          const term = search.value.trim().toLocaleLowerCase()
-          const key = `${select.value}|${term}`
-          if (!optionsDirty && key === renderedKey) return
-          if (optionsDirty)
-            optionRows = [...select.options].map((option) => ({
-              option,
-              search: (option.textContent + ' ' + option.value).toLocaleLowerCase(),
-            }))
-          optionsDirty = false
-          renderedKey = key
-          options = optionRows.filter((row) => row.search.includes(term)).map((row) => row.option)
-          list.replaceChildren()
-          active = Math.max(
-            0,
-            options.findIndex((o) => o.selected),
-          )
-          for (const [i, option] of options.entries()) {
-            const item = document.createElement('button')
-            item.type = 'button'
-            item.className = 'select-option'
-            item.id = select.id + '-option-' + i
-            item.dataset.index = i
-            item.tabIndex = -1
-            item.setAttribute('role', 'option')
-            item.setAttribute('aria-selected', String(option.selected))
-            item.disabled = option.disabled
-            const title = document.createElement('span')
-            title.textContent = option.textContent
-            item.append(title)
-            if (select.id === 'country' && option.value && option.value !== '__missing__') {
-              const subtitle = document.createElement('small')
-              subtitle.textContent = option.value
-              item.append(subtitle)
-            }
-            if (option.selected) {
-              const check = document.createElement('b')
-              check.textContent = '✓'
-              check.setAttribute('aria-hidden', 'true')
-              item.append(check)
-            }
-            list.append(item)
-          }
-          if (!options.length) {
-            const empty = document.createElement('p')
-            empty.className = 'select-empty'
-            empty.textContent = '未找到匹配选项'
-            list.append(empty)
-          }
-          highlight(false)
-        }
-        function highlight(scroll) {
-          const item = options.length ? list.children[active] : undefined
-          if (activeItem !== item) {
-            activeItem?.removeAttribute('data-active')
-            if (item) item.dataset.active = 'true'
-            activeItem = item
-          }
-          if (item) {
-            trigger.setAttribute('aria-activedescendant', item.id)
-            if (scroll) item.scrollIntoView({ block: 'nearest' })
-          } else trigger.removeAttribute('aria-activedescendant')
-        }
-        function position() {
-          const rect = trigger.getBoundingClientRect(),
-            width = Math.min(innerWidth - 24, Math.max(rect.width, select.id === 'country' ? 300 : 240)),
-            height = Math.min(380, innerHeight - 32),
-            below = innerHeight - rect.bottom - 12
-          const opensBelow = below >= Math.min(height, 240)
-          panel.style.setProperty('--popover-origin', opensBelow ? 'top left' : 'bottom left')
-          panel.style.setProperty('--popover-shift', opensBelow ? '-4px' : '4px')
-          panel.style.width = width + 'px'
-          panel.style.left = Math.min(innerWidth - width - 12, Math.max(12, rect.left)) + 'px'
-          panel.style.top = (opensBelow ? rect.bottom + 8 : Math.max(12, rect.top - height - 8)) + 'px'
-          panel.style.maxHeight = Math.min(height, below >= 240 ? below : rect.top - 20) + 'px'
-        }
-        function open() {
-          if (trigger.disabled) return
-          search.value = ''
-          search.hidden = select.options.length <= 8
-          render()
-          panel.showPopover()
-          trigger.setAttribute('aria-expanded', 'true')
-          position()
-          if (!search.hidden) search.focus()
-          else list.querySelector('[role=option]')?.focus()
-          list.querySelector('[aria-selected=true]')?.scrollIntoView({ block: 'nearest' })
-        }
-        on(list, 'click', (event) => {
-          const item = event.target.closest('[data-index]')
-          if (item) choose(options[Number(item.dataset.index)])
+        const control = MapGlassControls.createSelect(select, {
+          placeholder: select.id === 'country' ? '搜索国家 / Country' : '搜索选项',
+          describe: (option) => (select.id === 'country' && option.value !== '__missing__' ? option.value : ''),
+          signal: events.signal,
         })
-        on(list, 'pointermove', (event) => {
-          const item = event.target.closest('[data-index]')
-          if (item && Number(item.dataset.index) !== active) {
-            active = Number(item.dataset.index)
-            highlight(false)
-          }
-        })
-        on(trigger, 'click', () => (panel.matches(':popover-open') ? close() : open()))
-        on(trigger, 'keydown', (e) => {
-          if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) {
-            e.preventDefault()
-            open()
-          }
-        })
-        on(search, 'input', () => {
-          render()
-          active = 0
-          highlight(false)
-        })
-        on(panel, 'keydown', (e) => {
-          if (e.key === 'Escape') {
-            e.preventDefault()
-            e.stopPropagation()
-            close()
-            trigger.focus()
-            return
-          }
-          if (['ArrowDown', 'ArrowUp', 'Home', 'End', 'Enter'].includes(e.key)) {
-            e.preventDefault()
-            if (e.key === 'Enter') choose(options[active])
-            else {
-              active =
-                e.key === 'Home'
-                  ? 0
-                  : e.key === 'End'
-                    ? options.length - 1
-                    : Math.max(0, Math.min(options.length - 1, active + (e.key === 'ArrowDown' ? 1 : -1)))
-              highlight(true)
-            }
-          }
-          if (e.key === 'Tab') close()
-        })
-        on(panel, 'toggle', () => {
-          trigger.setAttribute('aria-expanded', String(panel.matches(':popover-open')))
-          if (!panel.matches(':popover-open')) trigger.removeAttribute('aria-activedescendant')
-        })
-        on(select, 'change', sync)
-        on(window, 'resize', () => {
-          if (panel.matches(':popover-open')) position()
-        })
-        const descriptor = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value')
-        Object.defineProperty(select, 'value', {
-          configurable: true,
-          get() {
-            return descriptor.get.call(this)
-          },
-          set(value) {
-            descriptor.set.call(this, value)
-            sync()
-          },
-        })
-        const observer = new MutationObserver(() => {
-          optionsDirty = true
-          sync()
-        })
-        observer.observe(select, {
-          childList: true,
-          subtree: true,
-          attributes: true,
-          attributeFilter: ['disabled', 'hidden', 'selected', 'value', 'label'],
-          characterData: true,
-        })
-        events.signal.addEventListener(
-          'abort',
-          () => {
-            observer.disconnect()
-            close()
-            delete select.value
-            wrap.remove()
-          },
-          { once: true },
-        )
-        selectControls.set(select, { sync, close, trigger })
-        sync()
+        selectControls.set(select, control)
       }
       let quickFilterSignature = ''
       function syncSelectControls() {
@@ -20395,7 +20781,7 @@ void main() {
             y = Math.floor(pixel / surfaceWidth)
           const cloudX = Math.floor(((x / surfaceWidth + 0.0298) % 1) * 2048)
           const cloudY = Math.max(0, Math.min(1023, Math.floor((y / surfaceHeight - 0.001) * 1024)))
-          const shadow = 1 - (cloudPixels[(cloudY * 2048 + cloudX) * 4] / 255) * (tone === 'light' ? 0.05 : 0.14)
+          const shadow = 1 - (cloudPixels[(cloudY * 2048 + cloudX) * 4] / 255) * (tone === 'light' ? 0.1 : 0.14)
           for (let channel = 0; channel < 3; channel++) data[index + channel] *= shadow
           data[index + 3] = nightLinear[nightPixels[index]]
         }
@@ -20951,13 +21337,15 @@ void main() {
             bumpMap: heightTexture,
             bumpScale: parseFloat(css('map-bump-scale')),
             specular: css('map-specular'),
-            shininess: 50,
+            shininess: parseFloat(css('map-shininess')),
             emissive: css('map-night-color'),
             emissiveIntensity: parseFloat(css('map-night-strength')),
           })
           const effectTime = { value: 0 }
+          const lightTheme = { value: mode() === 'light' ? 1 : 0 }
           const surfaceUniforms = {
             dataMode: { value: 1 },
+            lightSurface: lightTheme,
             fieldLand: { value: new THREE.Color(css('map-field-land')) },
             fieldOcean: { value: new THREE.Color(css('map-field-ocean')) },
             hexStrength: { value: parseFloat(css('map-hex-strength')) },
@@ -20972,6 +21360,7 @@ void main() {
       uniform float atmosphereStrength;
       uniform float shadowFloor;
       uniform float dataMode;
+      uniform float lightSurface;
       uniform vec3 fieldLand;
       uniform vec3 fieldOcean;
       uniform float hexStrength;
@@ -21004,7 +21393,13 @@ void main() {
               `
         #include <specularmap_fragment>
         float water = step(diffuseColor.r * 1.18, diffuseColor.b) * step(diffuseColor.g * 1.03, diffuseColor.b);
-        specularStrength *= mix(0.02, 0.31, water);`,
+        // In light themes, use the existing geographic land mask for matte land and reflective water.
+        // Dark themes retain their original material response.
+        if (lightSurface > 0.5) {
+          specularStrength *= mix(0.42, 0.008, detailAtlas.g);
+        } else {
+          specularStrength *= mix(0.02, 0.31, water);
+        }`,
             )
             shader.fragmentShader = shader.fragmentShader.replace(
               '#include <opaque_fragment>',
@@ -21016,7 +21411,7 @@ void main() {
       #include <opaque_fragment>`,
             )
           }
-          material.customProgramCacheKey = () => 'earth-hex-relief-v4'
+          material.customProgramCacheKey = () => 'earth-hex-relief-v5'
           const sphere = new THREE.Mesh(buildTerrain(terrainWidths[quality]), material)
           scene.add(sphere)
           const ambient = new THREE.AmbientLight(css('map-ambient'), GLOBE_APPEARANCE.ambientStrength)
@@ -21061,6 +21456,8 @@ void main() {
             new THREE.SphereGeometry(terrain.maximumRadius * 1.045, 48, 32),
             glowMaterial,
           )
+          atmosphere.scale.setScalar(parseFloat(css('map-atmosphere-radius')) / 1.045)
+          glowMaterial.blending = mode() === 'light' ? THREE.NormalBlending : THREE.AdditiveBlending
           atmosphere.renderOrder = 2
           scene.add(atmosphere)
 
@@ -21199,6 +21596,7 @@ void main() {
           columnGeometry.setAttribute('endHeight', endHeights)
           columnGeometry.setAttribute('columnId', columnIds)
           const columnUniforms = {
+            lightTheme,
             progress: { value: 1 },
             selected: { value: -1 },
             hovered: { value: -1 },
@@ -21227,7 +21625,7 @@ void main() {
             )
             shader.fragmentShader =
               `uniform float selected; uniform float hovered; uniform float effectTime;
-              uniform vec3 edgeInk; uniform vec3 capInk;
+              uniform vec3 edgeInk; uniform vec3 capInk; uniform float lightTheme;
               varying float idColumn; varying float topColumn; varying float facingColumn;
               varying float heightColumn; varying float facetColumn;
 ` + shader.fragmentShader
@@ -21240,16 +21638,27 @@ void main() {
               float travel = fract(effectTime / 6. + idColumn * .618034);
               float lightBand = (1.-smoothstep(.02,.075,abs(heightColumn-travel)))
                 * smoothstep(0.,.15,travel) * (1.-smoothstep(.80,1.,travel)) * (1.-topColumn);
-              diffuseColor.rgb *= mix(.72,1.08,heightColumn);
-              diffuseColor.rgb = mix(diffuseColor.rgb, edgeInk, rib * .72);
-              diffuseColor.rgb = mix(diffuseColor.rgb, capInk, topColumn * .24);
-              diffuseColor.rgb += capInk * (lightBand * .24 + focus * (.035 + .035 * sin(effectTime * 1.745329)));
-              diffuseColor.a = mix(.86,.62,heightColumn) + rib * .26 + lightBand * .14;
-              diffuseColor.a = mix(diffuseColor.a,.96,topColumn);
-              diffuseColor.a *= selected < 0. ? 1. : mix(.62,1.,focus);`,
+              // Keep each mode's optical response independent; light terrain needs brighter, denser data.
+              if (lightTheme > .5) {
+                diffuseColor.rgb *= mix(.90,1.16,heightColumn);
+                diffuseColor.rgb = mix(diffuseColor.rgb, edgeInk, rib * .90);
+                diffuseColor.rgb = mix(diffuseColor.rgb, capInk, topColumn * .78);
+                diffuseColor.rgb += capInk * (lightBand * .38 + focus * (.035 + .035 * sin(effectTime * 1.745329)));
+                diffuseColor.a = mix(.98,.92,heightColumn) + rib * .26 + lightBand * .14;
+                diffuseColor.a = mix(diffuseColor.a,.99,topColumn);
+                diffuseColor.a *= selected < 0. ? 1. : mix(.82,1.,focus);
+              } else {
+                diffuseColor.rgb *= mix(.72,1.08,heightColumn);
+                diffuseColor.rgb = mix(diffuseColor.rgb, edgeInk, rib * .72);
+                diffuseColor.rgb = mix(diffuseColor.rgb, capInk, topColumn * .24);
+                diffuseColor.rgb += capInk * (lightBand * .24 + focus * (.035 + .035 * sin(effectTime * 1.745329)));
+                diffuseColor.a = mix(.86,.62,heightColumn) + rib * .26 + lightBand * .14;
+                diffuseColor.a = mix(diffuseColor.a,.96,topColumn);
+                diffuseColor.a *= selected < 0. ? 1. : mix(.62,1.,focus);
+              }`,
             )
           }
-          columnMaterial.customProgramCacheKey = () => 'country-crystal-columns-v2'
+          columnMaterial.customProgramCacheKey = () => 'country-crystal-columns-v3'
           const columns = new THREE.InstancedMesh(columnGeometry, columnMaterial, columnCapacity)
           columns.count = 0
           columns.frustumCulled = false
@@ -21815,6 +22224,10 @@ void main() {
             sphere.material.map = textures[mode()]
             sphere.material.bumpScale = parseFloat(css('map-bump-scale'))
             sphere.material.specular.set(css('map-specular'))
+            sphere.material.shininess = parseFloat(css('map-shininess'))
+            lightTheme.value = mode() === 'light' ? 1 : 0
+            atmosphere.scale.setScalar(parseFloat(css('map-atmosphere-radius')) / 1.045)
+            glowMaterial.blending = mode() === 'light' ? THREE.NormalBlending : THREE.AdditiveBlending
             sphere.material.emissive.set(css('map-night-color'))
             sphere.material.emissiveIntensity = parseFloat(css('map-night-strength'))
             surfaceUniforms.atmosphereColor.value.set(css('map-halo'))
