@@ -1,50 +1,28 @@
 ---
 name: visactor-map2d-dashboard
-description: 创建富有空间感的交互式地图 Dashboard，联动地域、指标与明细。适用于地域经营、事件追踪和地理分布分析。Powered by VisActor。
+description: 创建富有空间感的交互式地图 Dashboard，围绕地域差异、时空事件和业务问题组织分析、证据与后续行动。Powered by VisActor。
 ---
 
 # 地图 Dashboard
 
-用地图、悬浮指标和流畅动效呈现地域关系与业务发现。
-
 新建默认复制完整模板，先运行，再做最小业务适配。继承适用的材质、布局、地图动效、导航、联动和生命周期。用户指定风格或宿主约束优先；移除或重写能力时，记录原因及替代行为，并验证其余体验没有退化。
 
-修改已有页面时沿用宿主，只读取和验收受影响的部分。
+用真实空间数据帮助用户发现问题、检验证据并确定下一步。交付单个 HTML；新建从[完整模板](templates/template.html)起步，继承其地图、外观、控件和生命周期。修改已有页面时沿用宿主，只处理受影响的部分。用户指定的风格和业务目标优先，卡片数量与图表类型由分析任务决定。
 
-## 标准模板
+## 1. 确定问题与证据
 
-新建地图 Dashboard 统一从 [template.html](templates/template.html) 起步。模板以地震观测为示例，内嵌所需模块；时间筛选、事件定位、近期动效与原始记录按实际业务适配，刷新不等于新增事件。通用复用边界与修改入口见[适配指南](references/template-adaptation.md)。
+先明确谁要做什么判断、当前可采取什么行动。按[分析与决策](../../references/metric-analysis/guide.md)选择值得验证的问题，确定比较基准、计算口径、支持或推翻判断的证据及记录核对路径；按[空间分析](../../references/metric-analysis/map.md)检查地域覆盖、位置精度与聚合尺度。
 
-### 主题预览
+分析从真实数据能力出发：有可比时间才比较变化，有真实层级才下钻，有关系数据才画连线。结论随筛选重算，区分事实、假设和未知；数据不足时说明可支持的判断和需要补充的证据。普通样式或控件维护无需展开分析流程。
 
-| 主题 | 桌面                                       | 移动端                                         |
-| ---- | ------------------------------------------ | ---------------------------------------------- |
-| 冰蓝 | [预览](templates/template-ice-pc.png)      | [预览](templates/template-ice-mobile.png)      |
-| 银雾 | [预览](templates/template-silver-pc.png)   | [预览](templates/template-silver-mobile.png)   |
-| 深蓝 | [预览](templates/template-dark-pc.png)     | [预览](templates/template-dark-mobile.png)     |
-| 石墨 | [预览](templates/template-graphite-pc.png) | [预览](templates/template-graphite-mobile.png) |
+## 2. 接入并组织分析
 
-## Step1：确定指标、范围与模板
+- 先按[模板适配](references/template-adaptation.md)确认事实粒度、稳定 ID、字段映射与完整记录，再按[地图接入](references/open-street-map.md)确认坐标、地域身份和未定位记录。敏感数据源与地域口径沿用[确认规则](references/data-scope.md)。
+- 优先复用宿主接入，其余按[数据接入判断](../../references/server-runtime/guide.md#数据接入判断)选择。通过 [visual-query](../../references/visual-query/guide.md) 的 Builder → VQuery → VSeed → VChart / VTable 链路表达筛选、聚合与证据，地图消费同一查询范围。
+- 概览呈现主要发现和必要范围；有进一步问题的指标才提供分析入口。深入后增加比较、解释或检验，保留定位、图元选择、完整明细和返回路径。模板中的地震示例与默认最高／最低摘要需按任务适配。
 
-1. 明确页面要回答的问题、展示终端和地域范围。选出核心指标，确认单位、公式、事实粒度、报告时区与比较基准。
-2. 运行所选模板，查看默认态、图内直接联动与分析返回，作为适配后的对照基线。
-3. 按[地图接入](references/open-street-map.md)核对地域身份、层级与坐标。发现敏感数据或地域口径问题时，按[数据源与地域口径确认](references/data-scope.md)处理。
-4. 根据真实数据选择趋势、排行、构成与明细；没有历史不生成增长，没有父子关系不伪造下钻，没有依据不补造目标或事件。
-5. 为有进一步分析价值的指标规划入口，按[通用指标分析](../../references/metric-analysis/guide.md)确定默认问题与探索动线，按[地图分析补充](references/metric-analysis.md)处理地域范围与定位行为。
+## 3. 呈现与交付
 
-## Step2：接入数据与联动
+默认复用[布局与避让](references/layout.md)和[外观契约](references/L-card.md)，具体样式、主题与动画参数以 HTML 内的 token 和实现为准。图表为问题提供证据，地图保留连续可操作区域；深浅主题、窄屏、键盘、减少动态效果及失败恢复保持可用。
 
-1. 优先复用已有数据接入，其余按[数据接入判断](../../references/server-runtime/guide.md#数据接入判断)选择。按[字段与完整记录](references/template-adaptation.md#字段与完整记录)统一接入、查询和实体展示的字段契约。先验证页面加载与最小查询，再核对整体、一个地域及可用的时间范围。
-2. 按 [visual-query](../../references/visual-query/guide.md)完成 VBI Builder 查询 → VSeed 配置 → VChart / VTable 渲染；HTML 指标消费同一查询结果，地理底图交给地图引擎。
-3. 按[控件与联动](references/open-street-map.md#控件与联动)接通范围筛选、地图、指标和明细；保留适用的图元、图例和排行直接操作，标题进入分析不替代这些入口。
-4. 分析继承已确认范围，关闭后保留主页筛选与视野；原位更新、状态恢复、请求取消与清理按[组合指南](../../references/visual-query/references/composition.md)处理。
-
-## Step3：组织布局与视觉
-
-1. 按[布局](references/layout.md)分配地图与卡片空间，按 [L-Card](references/L-card.md)继承材质、控件和入场编排。底图细节、叠色、表面透明度与排印一起核对；有 blur 或 L 形轮廓不等于还原了体验。
-2. 首屏突出核心指标和简短发现；详细口径按需展开，保留影响解读的时间、范围、样本量等信息。业务图表与点标可替换，不为保留模板效果补造趋势、事件或连线。
-3. 改变底图或风格后，检查整页深浅主题、可读性与空间层次；不强制使用地貌或聚类。响应式与减少动态效果沿用宿主机制。
-
-## Step4：验收与交付
-
-按[验收标准](references/acceptance.md)对照实际页面与模板，验证首次体验和具体操作结果；交付时简述主动改变的能力、验证证据及未验证项。
+按[验收标准](references/acceptance.md)检查分析质量、数据一致性和实际操作，说明重要发现、支持的下一步及证据限制。源码检查与历史验收结果不能代替本次运行证据。

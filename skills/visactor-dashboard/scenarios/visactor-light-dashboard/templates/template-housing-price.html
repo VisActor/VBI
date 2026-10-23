@@ -2102,7 +2102,7 @@
     </noscript>
     <!-- 完整 CSV 以列名 + 类型化行数组内嵌；不请求外部数据文件。图表依赖沿用模板的固定版本 CDN。 -->
     <!-- prettier-ignore -->
-    <script id="page-config" type="application/json">{"labels":["平均房源价格","有空调房源占比","平均面积","平均浴室数"],"formats":[[1," 万",10000],[1,"%",1],[0," ft²",1],[1," 间",1],[0," 条",1],[1," 个",1],[0,"",1]],"initial":{"f1":"","f2":""},"sourceNote":"房源样本 · 卧室与配置","restoreLabel":"范围汇总 · 悬停或方向键查看卧室数量","layout":[{"x":0,"y":1,"w":12,"h":8},{"x":0,"y":9,"w":6,"h":4},{"x":6,"y":9,"w":3,"h":4},{"x":9,"y":9,"w":3,"h":4}],"schema":{"id":"string","m0":"number","flag":"number","m2":"number","m3":"number","m4":"number","g":"string","s":"string","f1":"string","f2":"string"},"aliases":{"g":"卧室数量","s":"装修状态"},"queries":{"groups":{"type":"bar","dimensions":["g"],"measures":[["id","记录数","countDistinct"],["flag","有空调房源","sum"],["m0","平均房源价格","avg"],["m2","平均面积","avg"],["m3","平均浴室数","avg"],["m4","平均车位数","avg"]]},"secondary":{"type":"column","dimensions":["s"],"measures":[["id","记录数","countDistinct"],["flag","有空调房源","sum"],["m0","平均房源价格","avg"],["m2","平均面积","avg"],["m3","平均浴室数","avg"],["m4","平均车位数","avg"]]},"totals":{"measures":[["id","记录数","countDistinct"],["flag","有空调房源","sum"],["m0","平均房源价格","avg"],["m2","平均面积","avg"],["m3","平均浴室数","avg"],["m4","平均车位数","avg"]]}},"connectorId":"vbi-industry-housing-1","columns":["卧室数量","记录数","平均房源价格","有空调房源占比","平均面积","平均浴室数"],"filters":[{"title":"临主路","field":"f1","options":[["","全部临主路"],["yes","是"],["no","否"]]},{"title":"优选区","field":"f2","options":[["","全部优选区"],["yes","是"],["no","否"]]}],"metrics":[{"field":"m0","aggregate":"avg"},{"field":"m2","aggregate":"avg"},{"field":"m3","aggregate":"avg"},{"field":"m4","aggregate":"avg"}],"hit":"有空调房源","miss":"无空调房源","groupTitle":"卧室数量","secondaryTitle":"装修状态","temporal":false,"groupOrder":[],"secondaryOrder":["已装修","半装修","未装修"],"auxiliaryTitle":"平均车位数","derivedNote":"占比以同范围记录数为分母；均值按原始有效记录计算，不平均分组均值。"}</script>
+    <script id="page-config" type="application/json">{"labels":["平均房源价格","有空调房源占比","平均面积","平均浴室数"],"formats":[[1," 万",10000],[1,"%",1],[0," ft²",1],[1," 间",1],[0," 条",1],[1," 个",1],[0,"",1]],"initial":{"f1":"","f2":""},"sourceNote":"房源样本 · 卧室与配置","restoreLabel":"范围汇总 · 悬停或方向键查看卧室数量","layout":[{"x":0,"y":1,"w":12,"h":8},{"x":0,"y":9,"w":6,"h":4},{"x":6,"y":9,"w":3,"h":4},{"x":9,"y":9,"w":3,"h":4}],"schema":{"id":"string","m0":"number","flag":"number","m2":"number","m3":"number","m4":"number","g":"string","s":"string","f1":"string","f2":"string"},"aliases":{"g":"卧室数量","s":"装修状态"},"queries":{"groups":{"type":"bar","dimensions":["g"],"measures":[["id","记录数","countDistinct"],["flag","有空调房源","sum"],["m0","平均房源价格","avg"],["m2","平均面积","avg"],["m3","平均浴室数","avg"],["m4","平均车位数","avg"]]},"secondary":{"type":"column","dimensions":["s"],"measures":[["id","记录数","countDistinct"],["flag","有空调房源","sum"],["m0","平均房源价格","avg"],["m2","平均面积","avg"],["m3","平均浴室数","avg"],["m4","平均车位数","avg"]]},"totals":{"measures":[["id","记录数","countDistinct"],["flag","有空调房源","sum"],["m0","平均房源价格","avg"],["m2","平均面积","avg"],["m3","平均浴室数","avg"],["m4","平均车位数","avg"]]}},"connectorId":"vbi-industry-housing-1","columns":["卧室数量","记录数","平均房源价格","有空调房源占比","平均面积","平均浴室数"],"filters":[{"title":"临主路","field":"f1","options":[["","全部临主路"],["yes","是"],["no","否"]]},{"title":"优选区","field":"f2","options":[["","全部优选区"],["yes","是"],["no","否"]]}],"metrics":[{"field":"m0","aggregate":"avg"},{"field":"m2","aggregate":"avg"},{"field":"m3","aggregate":"avg"},{"field":"m4","aggregate":"avg"}],"hit":"有空调房源","miss":"无空调房源","groupTitle":"卧室数量","secondaryTitle":"装修状态","temporal":false,"groupOrder":[],"secondaryOrder":["已装修","半装修","未装修"],"auxiliaryTitle":"平均车位数","derivedNote":"占比以同范围记录数为分母；均值按原始有效记录计算，不平均分组均值。","analysis":{"question":"价格差异是否来自房源配置？","field":"m0","label":"平均房源价格","action":"在相同卧室数量下比较装修状态，再核对面积、区位与配置；样本价格关系不等同于装修投资回报。","kind":"value","countField":"id","countLabel":"来源记录数","dimensions":[["g","卧室数量"],["s","装修状态"]],"unit":" 万","digits":1,"scale":10000}}</script>
     <!-- prettier-ignore -->
     <script id="source-data" type="application/json">{"filename":"Housing.csv","columns":["price","area","bedrooms","bathrooms","stories","mainroad","guestroom","basement","hotwaterheating","airconditioning","parking","prefarea","furnishingstatus"],"rows":[["13300000","7420","4","2","3","yes","no","no","no","yes","2","yes","furnished"],["12250000","8960","4","4","4","yes","no","no","no","yes","3","no","furnished"],["12250000","9960","3","2","2","yes","no","yes","no","no","2","yes","semi-furnished"],["12215000","7500","4","2","2","yes","no","yes","no","yes","3","yes","furnished"],["11410000","7420","4","1","2","yes","yes","yes","no","yes","2","no","furnished"],["10850000","7500","3","3","1","yes","no","yes","no","yes","2","yes","semi-furnished"],["10150000","8580","4","3","4","yes","no","no","no","yes","2","yes","semi-furnished"],["10150000","16200","5","3","2","yes","no","no","no","no","0","no","unfurnished"],["9870000","8100","4","1","2","yes","yes","yes","no","yes","2","yes","furnished"],["9800000","5750","3","2","4","yes","yes","no","no","yes","1","yes","unfurnished"],["9800000","13200","3","1","2","yes","no","yes","no","yes","2","yes","furnished"],["9681000","6000","4","3","2","yes","yes","yes","yes","no","2","no","semi-furnished"],["9310000","6550","4","2","2","yes","no","no","no","yes","1","yes","semi-furnished"],["9240000","3500","4","2","2","yes","no","no","yes","no","2","no","furnished"],["9240000","7800","3","2","2","yes","no","no","no","no","0","yes","semi-furnished"],["9100000","6000","4","1","2","yes","no","yes","no","no","2","no","semi-furnished"],["9100000","6600","4","2","2","yes","yes","yes","no","yes","1","yes","unfurnished"],["8960000","8500","3","2","4","yes","no","no","no","yes","2","no","furnished"],["8890000","4600","3","2","2","yes","yes","no","no","yes","2","no","furnished"],["8855000","6420","3","2","2","yes","no","no","no","yes","1","yes","semi-furnished"],["8750000","4320","3","1","2","yes","no","yes","yes","no","2","no","semi-furnished"],["8680000","7155","3","2","1","yes","yes","yes","no","yes","2","no","unfurnished"],["8645000","8050","3","1","1","yes","yes","yes","no","yes","1","no","furnished"],["8645000","4560","3","2","2","yes","yes","yes","no","yes","1","no","furnished"],["8575000","8800","3","2","2","yes","no","no","no","yes","2","no","furnished"],["8540000","6540","4","2","2","yes","yes","yes","no","yes","2","yes","furnished"],["8463000","6000","3","2","4","yes","yes","yes","no","yes","0","yes","semi-furnished"],["8400000","8875","3","1","1","yes","no","no","no","no","1","no","semi-furnished"],["8400000","7950","5","2","2","yes","no","yes","yes","no","2","no","unfurnished"],["8400000","5500","4","2","2","yes","no","yes","no","yes","1","yes","semi-furnished"],["8400000","7475","3","2","4","yes","no","no","no","yes","2","no","unfurnished"],["8400000","7000","3","1","4","yes","no","no","no","yes","2","no","semi-furnished"],["8295000","4880","4","2","2","yes","no","no","no","yes","1","yes","furnished"],["8190000","5960","3","3","2","yes","yes","yes","no","no","1","no","unfurnished"],["8120000","6840","5","1","2","yes","yes","yes","no","yes","1","no","furnished"],["8080940","7000","3","2","4","yes","no","no","no","yes","2","no","furnished"],["8043000","7482","3","2","3","yes","no","no","yes","no","1","yes","furnished"],["7980000","9000","4","2","4","yes","no","no","no","yes","2","no","furnished"],["7962500","6000","3","1","4","yes","yes","no","no","yes","2","no","unfurnished"],["7910000","6000","4","2","4","yes","no","no","no","yes","1","no","semi-furnished"],["7875000","6550","3","1","2","yes","no","yes","no","yes","0","yes","furnished"],["7840000","6360","3","2","4","yes","no","no","no","yes","0","yes","furnished"],["7700000","6480","3","2","4","yes","no","no","no","yes","2","no","unfurnished"],["7700000","6000","4","2","4","yes","no","no","no","no","2","no","semi-furnished"],["7560000","6000","4","2","4","yes","no","no","no","yes","1","no","furnished"],["7560000","6000","3","2","3","yes","no","no","no","yes","0","no","semi-furnished"],["7525000","6000","3","2","4","yes","no","no","no","yes","1","no","furnished"],["7490000","6600","3","1","4","yes","no","no","no","yes","3","yes","furnished"],["7455000","4300","3","2","2","yes","no","yes","no","no","1","no","unfurnished"],["7420000","7440","3","2","1","yes","yes","yes","no","yes","0","yes","semi-furnished"],["7420000","7440","3","2","4","yes","no","no","no","no","1","yes","unfurnished"],["7420000","6325","3","1","4","yes","no","no","no","yes","1","no","unfurnished"],["7350000","6000","4","2","4","yes","yes","no","no","yes","1","no","furnished"],["7350000","5150","3","2","4","yes","no","no","no","yes","2","no","semi-furnished"],["7350000","6000","3","2","2","yes","yes","no","no","yes","1","no","semi-furnished"],["7350000","6000","3","1","2","yes","no","no","no","yes","1","no","unfurnished"],["7343000","11440","4","1","2","yes","no","yes","no","no","1","yes","semi-furnished"],["7245000","9000","4","2","4","yes","yes","no","no","yes","1","yes","furnished"],["7210000","7680","4","2","4","yes","yes","no","no","yes","1","no","semi-furnished"],["7210000","6000","3","2","4","yes","yes","no","no","yes","1","no","furnished"],["7140000","6000","3","2","2","yes","yes","no","no","no","1","no","semi-furnished"],["7070000","8880","2","1","1","yes","no","no","no","yes","1","no","semi-furnished"],["7070000","6240","4","2","2","yes","no","no","no","yes","1","no","furnished"],["7035000","6360","4","2","3","yes","no","no","no","yes","2","yes","furnished"],["7000000","11175","3","1","1","yes","no","yes","no","yes","1","yes","furnished"],["6930000","8880","3","2","2","yes","no","yes","no","yes","1","no","furnished"],["6930000","13200","2","1","1","yes","no","yes","yes","no","1","no","furnished"],["6895000","7700","3","2","1","yes","no","no","no","no","2","no","unfurnished"],["6860000","6000","3","1","1","yes","no","no","no","yes","1","no","furnished"],["6790000","12090","4","2","2","yes","no","no","no","no","2","yes","furnished"],["6790000","4000","3","2","2","yes","no","yes","no","yes","0","yes","semi-furnished"],["6755000","6000","4","2","4","yes","no","no","no","yes","0","no","unfurnished"],["6720000","5020","3","1","4","yes","no","no","no","yes","0","yes","unfurnished"],["6685000","6600","2","2","4","yes","no","yes","no","no","0","yes","furnished"],["6650000","4040","3","1","2","yes","no","yes","yes","no","1","no","furnished"],["6650000","4260","4","2","2","yes","no","no","yes","no","0","no","semi-furnished"],["6650000","6420","3","2","3","yes","no","no","no","yes","0","yes","furnished"],["6650000","6500","3","2","3","yes","no","no","no","yes","0","yes","furnished"],["6650000","5700","3","1","1","yes","yes","yes","no","yes","2","yes","furnished"],["6650000","6000","3","2","3","yes","yes","no","no","yes","0","no","furnished"],["6629000","6000","3","1","2","yes","no","no","yes","no","1","yes","semi-furnished"],["6615000","4000","3","2","2","yes","no","yes","no","yes","1","no","semi-furnished"],["6615000","10500","3","2","1","yes","no","yes","no","yes","1","yes","furnished"],["6580000","6000","3","2","4","yes","no","no","no","yes","0","no","semi-furnished"],["6510000","3760","3","1","2","yes","no","no","yes","no","2","no","semi-furnished"],["6510000","8250","3","2","3","yes","no","no","no","yes","0","no","furnished"],["6510000","6670","3","1","3","yes","no","yes","no","no","0","yes","unfurnished"],["6475000","3960","3","1","1","yes","no","yes","no","no","2","no","semi-furnished"],["6475000","7410","3","1","1","yes","yes","yes","no","yes","2","yes","unfurnished"],["6440000","8580","5","3","2","yes","no","no","no","no","2","no","furnished"],["6440000","5000","3","1","2","yes","no","no","no","yes","0","no","semi-furnished"],["6419000","6750","2","1","1","yes","yes","yes","no","no","2","yes","furnished"],["6405000","4800","3","2","4","yes","yes","no","no","yes","0","no","furnished"],["6300000","7200","3","2","1","yes","no","yes","no","yes","3","no","semi-furnished"],["6300000","6000","4","2","4","yes","no","no","no","no","1","no","semi-furnished"],["6300000","4100","3","2","3","yes","no","no","no","yes","2","no","semi-furnished"],["6300000","9000","3","1","1","yes","no","yes","no","no","1","yes","furnished"],["6300000","6400","3","1","1","yes","yes","yes","no","yes","1","yes","semi-furnished"],["6293000","6600","3","2","3","yes","no","no","no","yes","0","yes","unfurnished"],["6265000","6000","4","1","3","yes","yes","yes","no","no","0","yes","unfurnished"],["6230000","6600","3","2","1","yes","no","yes","no","yes","0","yes","unfurnished"],["6230000","5500","3","1","3","yes","no","no","no","no","1","yes","unfurnished"],["6195000","5500","3","2","4","yes","yes","no","no","yes","1","no","semi-furnished"],["6195000","6350","3","2","3","yes","yes","no","no","yes","0","no","furnished"],["6195000","5500","3","2","1","yes","yes","yes","no","no","2","yes","furnished"],["6160000","4500","3","1","4","yes","no","no","no","yes","0","no","unfurnished"],["6160000","5450","4","2","1","yes","no","yes","no","yes","0","yes","semi-furnished"],["6125000","6420","3","1","3","yes","no","yes","no","no","0","yes","unfurnished"],["6107500","3240","4","1","3","yes","no","no","no","no","1","no","semi-furnished"],["6090000","6615","4","2","2","yes","yes","no","yes","no","1","no","semi-furnished"],["6090000","6600","3","1","1","yes","yes","yes","no","no","2","yes","semi-furnished"],["6090000","8372","3","1","3","yes","no","no","no","yes","2","no","unfurnished"],["6083000","4300","6","2","2","yes","no","no","no","no","0","no","furnished"],["6083000","9620","3","1","1","yes","no","yes","no","no","2","yes","furnished"],["6020000","6800","2","1","1","yes","yes","yes","no","no","2","no","furnished"],["6020000","8000","3","1","1","yes","yes","yes","no","yes","2","yes","semi-furnished"],["6020000","6900","3","2","1","yes","yes","yes","no","no","0","yes","unfurnished"],["5950000","3700","4","1","2","yes","yes","no","no","yes","0","no","furnished"],["5950000","6420","3","1","1","yes","no","yes","no","yes","0","yes","furnished"],["5950000","7020","3","1","1","yes","no","yes","no","yes","2","yes","semi-furnished"],["5950000","6540","3","1","1","yes","yes","yes","no","no","2","yes","furnished"],["5950000","7231","3","1","2","yes","yes","yes","no","yes","0","yes","semi-furnished"],["5950000","6254","4","2","1","yes","no","yes","no","no","1","yes","semi-furnished"],["5950000","7320","4","2","2","yes","no","no","no","no","0","no","furnished"],["5950000","6525","3","2","4","yes","no","no","no","no","1","no","furnished"],["5943000","15600","3","1","1","yes","no","no","no","yes","2","no","semi-furnished"],["5880000","7160","3","1","1","yes","no","yes","no","no","2","yes","unfurnished"],["5880000","6500","3","2","3","yes","no","no","no","yes","0","no","unfurnished"],["5873000","5500","3","1","3","yes","yes","no","no","yes","1","no","furnished"],["5873000","11460","3","1","3","yes","no","no","no","no","2","yes","semi-furnished"],["5866000","4800","3","1","1","yes","yes","yes","no","no","0","no","unfurnished"],["5810000","5828","4","1","4","yes","yes","no","no","no","0","no","semi-furnished"],["5810000","5200","3","1","3","yes","no","no","no","yes","0","no","semi-furnished"],["5810000","4800","3","1","3","yes","no","no","no","yes","0","no","unfurnished"],["5803000","7000","3","1","1","yes","no","yes","no","no","2","yes","semi-furnished"],["5775000","6000","3","2","4","yes","no","no","no","yes","0","no","unfurnished"],["5740000","5400","4","2","2","yes","no","no","no","yes","2","no","unfurnished"],["5740000","4640","4","1","2","yes","no","no","no","no","1","no","semi-furnished"],["5740000","5000","3","1","3","yes","no","no","no","yes","0","no","semi-furnished"],["5740000","6360","3","1","1","yes","yes","yes","no","yes","2","yes","furnished"],["5740000","5800","3","2","4","yes","no","no","no","yes","0","no","unfurnished"],["5652500","6660","4","2","2","yes","yes","yes","no","no","1","yes","semi-furnished"],["5600000","10500","4","2","2","yes","no","no","no","no","1","no","semi-furnished"],["5600000","4800","5","2","3","no","no","yes","yes","no","0","no","unfurnished"],["5600000","4700","4","1","2","yes","yes","yes","no","yes","1","no","furnished"],["5600000","5000","3","1","4","yes","no","no","no","no","0","no","furnished"],["5600000","10500","2","1","1","yes","no","no","no","no","1","no","semi-furnished"],["5600000","5500","3","2","2","yes","no","no","no","no","1","no","semi-furnished"],["5600000","6360","3","1","3","yes","no","no","no","no","0","yes","semi-furnished"],["5600000","6600","4","2","1","yes","no","yes","no","no","0","yes","semi-furnished"],["5600000","5136","3","1","2","yes","yes","yes","no","yes","0","yes","unfurnished"],["5565000","4400","4","1","2","yes","no","no","no","yes","2","yes","semi-furnished"],["5565000","5400","5","1","2","yes","yes","yes","no","yes","0","yes","furnished"],["5530000","3300","3","3","2","yes","no","yes","no","no","0","no","semi-furnished"],["5530000","3650","3","2","2","yes","no","no","no","no","2","no","semi-furnished"],["5530000","6100","3","2","1","yes","no","yes","no","no","2","yes","furnished"],["5523000","6900","3","1","1","yes","yes","yes","no","no","0","yes","semi-furnished"],["5495000","2817","4","2","2","no","yes","yes","no","no","1","no","furnished"],["5495000","7980","3","1","1","yes","no","no","no","no","2","no","semi-furnished"],["5460000","3150","3","2","1","yes","yes","yes","no","yes","0","no","furnished"],["5460000","6210","4","1","4","yes","yes","no","no","yes","0","no","furnished"],["5460000","6100","3","1","3","yes","yes","no","no","yes","0","yes","semi-furnished"],["5460000","6600","4","2","2","yes","yes","yes","no","no","0","yes","semi-furnished"],["5425000","6825","3","1","1","yes","yes","yes","no","yes","0","yes","semi-furnished"],["5390000","6710","3","2","2","yes","yes","yes","no","no","1","yes","furnished"],["5383000","6450","3","2","1","yes","yes","yes","yes","no","0","no","unfurnished"],["5320000","7800","3","1","1","yes","no","yes","no","yes","2","yes","unfurnished"],["5285000","4600","2","2","1","yes","no","no","no","yes","2","no","semi-furnished"],["5250000","4260","4","1","2","yes","no","yes","no","yes","0","no","furnished"],["5250000","6540","4","2","2","no","no","no","no","yes","0","no","semi-furnished"],["5250000","5500","3","2","1","yes","no","yes","no","no","0","no","semi-furnished"],["5250000","10269","3","1","1","yes","no","no","no","no","1","yes","semi-furnished"],["5250000","8400","3","1","2","yes","yes","yes","no","yes","2","yes","unfurnished"],["5250000","5300","4","2","1","yes","no","no","no","yes","0","yes","unfurnished"],["5250000","3800","3","1","2","yes","yes","yes","no","no","1","yes","unfurnished"],["5250000","9800","4","2","2","yes","yes","no","no","no","2","no","semi-furnished"],["5250000","8520","3","1","1","yes","no","no","no","yes","2","no","furnished"],["5243000","6050","3","1","1","yes","no","yes","no","no","0","yes","semi-furnished"],["5229000","7085","3","1","1","yes","yes","yes","no","no","2","yes","semi-furnished"],["5215000","3180","3","2","2","yes","no","no","no","no","2","no","semi-furnished"],["5215000","4500","4","2","1","no","no","yes","no","yes","2","no","semi-furnished"],["5215000","7200","3","1","2","yes","yes","yes","no","no","1","yes","furnished"],["5145000","3410","3","1","2","no","no","no","no","yes","0","no","semi-furnished"],["5145000","7980","3","1","1","yes","no","no","no","no","1","yes","semi-furnished"],["5110000","3000","3","2","2","yes","yes","yes","no","no","0","no","furnished"],["5110000","3000","3","1","2","yes","no","yes","no","no","0","no","unfurnished"],["5110000","11410","2","1","2","yes","no","no","no","no","0","yes","furnished"],["5110000","6100","3","1","1","yes","no","yes","no","yes","0","yes","semi-furnished"],["5075000","5720","2","1","2","yes","no","no","no","yes","0","yes","unfurnished"],["5040000","3540","2","1","1","no","yes","yes","no","no","0","no","semi-furnished"],["5040000","7600","4","1","2","yes","no","no","no","yes","2","no","furnished"],["5040000","10700","3","1","2","yes","yes","yes","no","no","0","no","semi-furnished"],["5040000","6600","3","1","1","yes","yes","yes","no","no","0","yes","furnished"],["5033000","4800","2","1","1","yes","yes","yes","no","no","0","no","semi-furnished"],["5005000","8150","3","2","1","yes","yes","yes","no","no","0","no","semi-furnished"],["4970000","4410","4","3","2","yes","no","yes","no","no","2","no","semi-furnished"],["4970000","7686","3","1","1","yes","yes","yes","yes","no","0","no","semi-furnished"],["4956000","2800","3","2","2","no","no","yes","no","yes","1","no","semi-furnished"],["4935000","5948","3","1","2","yes","no","no","no","yes","0","no","semi-furnished"],["4907000","4200","3","1","2","yes","no","no","no","no","1","no","furnished"],["4900000","4520","3","1","2","yes","no","yes","no","yes","0","no","semi-furnished"],["4900000","4095","3","1","2","no","yes","yes","no","yes","0","no","semi-furnished"],["4900000","4120","2","1","1","yes","no","yes","no","no","1","no","semi-furnished"],["4900000","5400","4","1","2","yes","no","no","no","no","0","no","semi-furnished"],["4900000","4770","3","1","1","yes","yes","yes","no","no","0","no","semi-furnished"],["4900000","6300","3","1","1","yes","no","no","no","yes","2","no","semi-furnished"],["4900000","5800","2","1","1","yes","yes","yes","no","yes","0","no","semi-furnished"],["4900000","3000","3","1","2","yes","no","yes","no","yes","0","no","semi-furnished"],["4900000","2970","3","1","3","yes","no","no","no","no","0","no","semi-furnished"],["4900000","6720","3","1","1","yes","no","no","no","no","0","no","unfurnished"],["4900000","4646","3","1","2","yes","yes","yes","no","no","2","no","semi-furnished"],["4900000","12900","3","1","1","yes","no","no","no","no","2","no","furnished"],["4893000","3420","4","2","2","yes","no","yes","no","yes","2","no","semi-furnished"],["4893000","4995","4","2","1","yes","no","yes","no","no","0","no","semi-furnished"],["4865000","4350","2","1","1","yes","no","yes","no","no","0","no","unfurnished"],["4830000","4160","3","1","3","yes","no","no","no","no","0","no","unfurnished"],["4830000","6040","3","1","1","yes","no","no","no","no","2","yes","semi-furnished"],["4830000","6862","3","1","2","yes","no","no","no","yes","2","yes","furnished"],["4830000","4815","2","1","1","yes","no","no","no","yes","0","yes","semi-furnished"],["4795000","7000","3","1","2","yes","no","yes","no","no","0","no","unfurnished"],["4795000","8100","4","1","4","yes","no","yes","no","yes","2","no","semi-furnished"],["4767000","3420","4","2","2","yes","no","no","no","no","0","no","semi-furnished"],["4760000","9166","2","1","1","yes","no","yes","no","yes","2","no","semi-furnished"],["4760000","6321","3","1","2","yes","no","yes","no","yes","1","no","furnished"],["4760000","10240","2","1","1","yes","no","no","no","yes","2","yes","unfurnished"],["4753000","6440","2","1","1","yes","no","no","no","yes","3","no","semi-furnished"],["4690000","5170","3","1","4","yes","no","no","no","yes","0","no","semi-furnished"],["4690000","6000","2","1","1","yes","no","yes","no","yes","1","no","furnished"],["4690000","3630","3","1","2","yes","no","no","no","no","2","no","semi-furnished"],["4690000","9667","4","2","2","yes","yes","yes","no","no","1","no","semi-furnished"],["4690000","5400","2","1","2","yes","no","no","no","no","0","yes","semi-furnished"],["4690000","4320","3","1","1","yes","no","no","no","no","0","yes","semi-furnished"],["4655000","3745","3","1","2","yes","no","yes","no","no","0","no","furnished"],["4620000","4160","3","1","1","yes","yes","yes","no","yes","0","no","unfurnished"],["4620000","3880","3","2","2","yes","no","yes","no","no","2","no","semi-furnished"],["4620000","5680","3","1","2","yes","yes","no","no","yes","1","no","semi-furnished"],["4620000","2870","2","1","2","yes","yes","yes","no","no","0","yes","semi-furnished"],["4620000","5010","3","1","2","yes","no","yes","no","no","0","no","semi-furnished"],["4613000","4510","4","2","2","yes","no","yes","no","no","0","no","semi-furnished"],["4585000","4000","3","1","2","yes","no","no","no","no","1","no","furnished"],["4585000","3840","3","1","2","yes","no","no","no","no","1","yes","semi-furnished"],["4550000","3760","3","1","1","yes","no","no","no","no","2","no","semi-furnished"],["4550000","3640","3","1","2","yes","no","no","no","yes","0","no","furnished"],["4550000","2550","3","1","2","yes","no","yes","no","no","0","no","furnished"],["4550000","5320","3","1","2","yes","yes","yes","no","no","0","yes","semi-furnished"],["4550000","5360","3","1","2","yes","no","no","no","no","2","yes","unfurnished"],["4550000","3520","3","1","1","yes","no","no","no","no","0","yes","semi-furnished"],["4550000","8400","4","1","4","yes","no","no","no","no","3","no","unfurnished"],["4543000","4100","2","2","1","yes","yes","yes","no","no","0","no","semi-furnished"],["4543000","4990","4","2","2","yes","yes","yes","no","no","0","yes","furnished"],["4515000","3510","3","1","3","yes","no","no","no","no","0","no","semi-furnished"],["4515000","3450","3","1","2","yes","no","yes","no","no","1","no","semi-furnished"],["4515000","9860","3","1","1","yes","no","no","no","no","0","no","semi-furnished"],["4515000","3520","2","1","2","yes","no","no","no","no","0","yes","furnished"],["4480000","4510","4","1","2","yes","no","no","no","yes","2","no","semi-furnished"],["4480000","5885","2","1","1","yes","no","no","no","yes","1","no","unfurnished"],["4480000","4000","3","1","2","yes","no","no","no","no","2","no","furnished"],["4480000","8250","3","1","1","yes","no","no","no","no","0","no","furnished"],["4480000","4040","3","1","2","yes","no","no","no","no","1","no","semi-furnished"],["4473000","6360","2","1","1","yes","no","yes","no","yes","1","no","furnished"],["4473000","3162","3","1","2","yes","no","no","no","yes","1","no","furnished"],["4473000","3510","3","1","2","yes","no","no","no","no","0","no","semi-furnished"],["4445000","3750","2","1","1","yes","yes","yes","no","no","0","no","semi-furnished"],["4410000","3968","3","1","2","no","no","no","no","no","0","no","semi-furnished"],["4410000","4900","2","1","2","yes","no","yes","no","no","0","no","semi-furnished"],["4403000","2880","3","1","2","yes","no","no","no","no","0","yes","semi-furnished"],["4403000","4880","3","1","1","yes","no","no","no","no","2","yes","unfurnished"],["4403000","4920","3","1","2","yes","no","no","no","no","1","no","semi-furnished"],["4382000","4950","4","1","2","yes","no","no","no","yes","0","no","semi-furnished"],["4375000","3900","3","1","2","yes","no","no","no","no","0","no","unfurnished"],["4340000","4500","3","2","3","yes","no","no","yes","no","1","no","furnished"],["4340000","1905","5","1","2","no","no","yes","no","no","0","no","semi-furnished"],["4340000","4075","3","1","1","yes","yes","yes","no","no","2","no","semi-furnished"],["4340000","3500","4","1","2","yes","no","no","no","no","2","no","furnished"],["4340000","6450","4","1","2","yes","no","no","no","no","0","no","semi-furnished"],["4319000","4032","2","1","1","yes","no","yes","no","no","0","no","furnished"],["4305000","4400","2","1","1","yes","no","no","no","no","1","no","semi-furnished"],["4305000","10360","2","1","1","yes","no","no","no","no","1","yes","semi-furnished"],["4277000","3400","3","1","2","yes","no","yes","no","no","2","yes","semi-furnished"],["4270000","6360","2","1","1","yes","no","no","no","no","0","no","furnished"],["4270000","6360","2","1","2","yes","no","no","no","no","0","no","unfurnished"],["4270000","4500","2","1","1","yes","no","no","no","yes","2","no","furnished"],["4270000","2175","3","1","2","no","yes","yes","no","yes","0","no","unfurnished"],["4270000","4360","4","1","2","yes","no","no","no","no","0","no","furnished"],["4270000","7770","2","1","1","yes","no","no","no","no","1","no","furnished"],["4235000","6650","3","1","2","yes","yes","no","no","no","0","no","semi-furnished"],["4235000","2787","3","1","1","yes","no","yes","no","no","0","yes","furnished"],["4200000","5500","3","1","2","yes","no","no","no","yes","0","no","unfurnished"],["4200000","5040","3","1","2","yes","no","yes","no","yes","0","no","unfurnished"],["4200000","5850","2","1","1","yes","yes","yes","no","no","2","no","semi-furnished"],["4200000","2610","4","3","2","no","no","no","no","no","0","no","semi-furnished"],["4200000","2953","3","1","2","yes","no","yes","no","yes","0","no","unfurnished"],["4200000","2747","4","2","2","no","no","no","no","no","0","no","semi-furnished"],["4200000","4410","2","1","1","no","no","no","no","no","1","no","unfurnished"],["4200000","4000","4","2","2","no","no","no","no","no","0","no","semi-furnished"],["4200000","2325","3","1","2","no","no","no","no","no","0","no","semi-furnished"],["4200000","4600","3","2","2","yes","no","no","no","yes","1","no","semi-furnished"],["4200000","3640","3","2","2","yes","no","yes","no","no","0","no","unfurnished"],["4200000","5800","3","1","1","yes","no","no","yes","no","2","no","semi-furnished"],["4200000","7000","3","1","1","yes","no","no","no","no","3","no","furnished"],["4200000","4079","3","1","3","yes","no","no","no","no","0","no","semi-furnished"],["4200000","3520","3","1","2","yes","no","no","no","no","0","yes","semi-furnished"],["4200000","2145","3","1","3","yes","no","no","no","no","1","yes","unfurnished"],["4200000","4500","3","1","1","yes","no","yes","no","no","0","no","furnished"],["4193000","8250","3","1","1","yes","no","yes","no","no","3","no","semi-furnished"],["4193000","3450","3","1","2","yes","no","no","no","no","1","no","semi-furnished"],["4165000","4840","3","1","2","yes","no","no","no","no","1","no","semi-furnished"],["4165000","4080","3","1","2","yes","no","no","no","no","2","no","semi-furnished"],["4165000","4046","3","1","2","yes","no","yes","no","no","1","no","semi-furnished"],["4130000","4632","4","1","2","yes","no","no","no","yes","0","no","semi-furnished"],["4130000","5985","3","1","1","yes","no","yes","no","no","0","no","semi-furnished"],["4123000","6060","2","1","1","yes","no","yes","no","no","1","no","semi-furnished"],["4098500","3600","3","1","1","yes","no","yes","no","yes","0","yes","furnished"],["4095000","3680","3","2","2","yes","no","no","no","no","0","no","semi-furnished"],["4095000","4040","2","1","2","yes","no","no","no","no","1","no","semi-furnished"],["4095000","5600","2","1","1","yes","no","no","no","yes","0","no","semi-furnished"],["4060000","5900","4","2","2","no","no","yes","no","no","1","no","unfurnished"],["4060000","4992","3","2","2","yes","no","no","no","no","2","no","unfurnished"],["4060000","4340","3","1","1","yes","no","no","no","no","0","no","semi-furnished"],["4060000","3000","4","1","3","yes","no","yes","no","yes","2","no","semi-furnished"],["4060000","4320","3","1","2","yes","no","no","no","no","2","yes","furnished"],["4025000","3630","3","2","2","yes","no","no","yes","no","2","no","semi-furnished"],["4025000","3460","3","2","1","yes","no","yes","no","yes","1","no","furnished"],["4025000","5400","3","1","1","yes","no","no","no","no","3","no","semi-furnished"],["4007500","4500","3","1","2","no","no","yes","no","yes","0","no","semi-furnished"],["4007500","3460","4","1","2","yes","no","no","no","yes","0","no","semi-furnished"],["3990000","4100","4","1","1","no","no","yes","no","no","0","no","unfurnished"],["3990000","6480","3","1","2","no","no","no","no","yes","1","no","semi-furnished"],["3990000","4500","3","2","2","no","no","yes","no","yes","0","no","semi-furnished"],["3990000","3960","3","1","2","yes","no","no","no","no","0","no","furnished"],["3990000","4050","2","1","2","yes","yes","yes","no","no","0","yes","unfurnished"],["3920000","7260","3","2","1","yes","yes","yes","no","no","3","no","furnished"],["3920000","5500","4","1","2","yes","yes","yes","no","no","0","no","semi-furnished"],["3920000","3000","3","1","2","yes","no","no","no","no","0","no","semi-furnished"],["3920000","3290","2","1","1","yes","no","no","yes","no","1","no","furnished"],["3920000","3816","2","1","1","yes","no","yes","no","yes","2","no","furnished"],["3920000","8080","3","1","1","yes","no","no","no","yes","2","no","semi-furnished"],["3920000","2145","4","2","1","yes","no","yes","no","no","0","yes","unfurnished"],["3885000","3780","2","1","2","yes","yes","yes","no","no","0","no","semi-furnished"],["3885000","3180","4","2","2","yes","no","no","no","no","0","no","furnished"],["3850000","5300","5","2","2","yes","no","no","no","no","0","no","semi-furnished"],["3850000","3180","2","2","1","yes","no","yes","no","no","2","no","semi-furnished"],["3850000","7152","3","1","2","yes","no","no","no","yes","0","no","furnished"],["3850000","4080","2","1","1","yes","no","no","no","no","0","no","semi-furnished"],["3850000","3850","2","1","1","yes","no","no","no","no","0","no","semi-furnished"],["3850000","2015","3","1","2","yes","no","yes","no","no","0","yes","semi-furnished"],["3850000","2176","2","1","2","yes","yes","no","no","no","0","yes","semi-furnished"],["3836000","3350","3","1","2","yes","no","no","no","no","0","no","unfurnished"],["3815000","3150","2","2","1","no","no","yes","no","no","0","no","semi-furnished"],["3780000","4820","3","1","2","yes","no","no","no","no","0","no","semi-furnished"],["3780000","3420","2","1","2","yes","no","no","yes","no","1","no","semi-furnished"],["3780000","3600","2","1","1","yes","no","no","no","no","0","no","semi-furnished"],["3780000","5830","2","1","1","yes","no","no","no","no","2","no","unfurnished"],["3780000","2856","3","1","3","yes","no","no","no","no","0","yes","furnished"],["3780000","8400","2","1","1","yes","no","no","no","no","1","no","furnished"],["3773000","8250","3","1","1","yes","no","no","no","no","2","no","furnished"],["3773000","2520","5","2","1","no","no","yes","no","yes","1","no","furnished"],["3773000","6930","4","1","2","no","no","no","no","no","1","no","furnished"],["3745000","3480","2","1","1","yes","no","no","no","no","0","yes","semi-furnished"],["3710000","3600","3","1","1","yes","no","no","no","no","1","no","unfurnished"],["3710000","4040","2","1","1","yes","no","no","no","no","0","no","semi-furnished"],["3710000","6020","3","1","1","yes","no","no","no","no","0","no","semi-furnished"],["3710000","4050","2","1","1","yes","no","no","no","no","0","no","furnished"],["3710000","3584","2","1","1","yes","no","no","yes","no","0","no","semi-furnished"],["3703000","3120","3","1","2","no","no","yes","yes","no","0","no","semi-furnished"],["3703000","5450","2","1","1","yes","no","no","no","no","0","no","furnished"],["3675000","3630","2","1","1","yes","no","yes","no","no","0","no","furnished"],["3675000","3630","2","1","1","yes","no","no","no","yes","0","no","unfurnished"],["3675000","5640","2","1","1","no","no","no","no","no","0","no","semi-furnished"],["3675000","3600","2","1","1","yes","no","no","no","no","0","no","furnished"],["3640000","4280","2","1","1","yes","no","no","no","yes","2","no","semi-furnished"],["3640000","3570","3","1","2","yes","no","yes","no","no","0","no","semi-furnished"],["3640000","3180","3","1","2","no","no","yes","no","no","0","no","semi-furnished"],["3640000","3000","2","1","2","yes","no","no","no","yes","0","no","furnished"],["3640000","3520","2","2","1","yes","no","yes","no","no","0","no","semi-furnished"],["3640000","5960","3","1","2","yes","yes","yes","no","no","0","no","unfurnished"],["3640000","4130","3","2","2","yes","no","no","no","no","2","no","semi-furnished"],["3640000","2850","3","2","2","no","no","yes","no","no","0","yes","unfurnished"],["3640000","2275","3","1","3","yes","no","no","yes","yes","0","yes","semi-furnished"],["3633000","3520","3","1","1","yes","no","no","no","no","2","yes","unfurnished"],["3605000","4500","2","1","1","yes","no","no","no","no","0","no","semi-furnished"],["3605000","4000","2","1","1","yes","no","no","no","no","0","yes","semi-furnished"],["3570000","3150","3","1","2","yes","no","yes","no","no","0","no","furnished"],["3570000","4500","4","2","2","yes","no","yes","no","no","2","no","furnished"],["3570000","4500","2","1","1","no","no","no","no","no","0","no","furnished"],["3570000","3640","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["3535000","3850","3","1","1","yes","no","no","no","no","2","no","unfurnished"],["3500000","4240","3","1","2","yes","no","no","no","yes","0","no","semi-furnished"],["3500000","3650","3","1","2","yes","no","no","no","no","0","no","unfurnished"],["3500000","4600","4","1","2","yes","no","no","no","no","0","no","semi-furnished"],["3500000","2135","3","2","2","no","no","no","no","no","0","no","unfurnished"],["3500000","3036","3","1","2","yes","no","yes","no","no","0","no","semi-furnished"],["3500000","3990","3","1","2","yes","no","no","no","no","0","no","semi-furnished"],["3500000","7424","3","1","1","no","no","no","no","no","0","no","unfurnished"],["3500000","3480","3","1","1","no","no","no","no","yes","0","no","unfurnished"],["3500000","3600","6","1","2","yes","no","no","no","no","1","no","unfurnished"],["3500000","3640","2","1","1","yes","no","no","no","no","1","no","semi-furnished"],["3500000","5900","2","1","1","yes","no","no","no","no","1","no","furnished"],["3500000","3120","3","1","2","yes","no","no","no","no","1","no","unfurnished"],["3500000","7350","2","1","1","yes","no","no","no","no","1","no","semi-furnished"],["3500000","3512","2","1","1","yes","no","no","no","no","1","yes","unfurnished"],["3500000","9500","3","1","2","yes","no","no","no","no","3","yes","unfurnished"],["3500000","5880","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["3500000","12944","3","1","1","yes","no","no","no","no","0","no","unfurnished"],["3493000","4900","3","1","2","no","no","no","no","no","0","no","unfurnished"],["3465000","3060","3","1","1","yes","no","no","no","no","0","no","unfurnished"],["3465000","5320","2","1","1","yes","no","no","no","no","1","yes","unfurnished"],["3465000","2145","3","1","3","yes","no","no","no","no","0","yes","furnished"],["3430000","4000","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["3430000","3185","2","1","1","yes","no","no","no","no","2","no","unfurnished"],["3430000","3850","3","1","1","yes","no","no","no","no","0","no","unfurnished"],["3430000","2145","3","1","3","yes","no","no","no","no","0","yes","furnished"],["3430000","2610","3","1","2","yes","no","yes","no","no","0","yes","unfurnished"],["3430000","1950","3","2","2","yes","no","yes","no","no","0","yes","unfurnished"],["3423000","4040","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["3395000","4785","3","1","2","yes","yes","yes","no","yes","1","no","furnished"],["3395000","3450","3","1","1","yes","no","yes","no","no","2","no","unfurnished"],["3395000","3640","2","1","1","yes","no","no","no","no","0","no","furnished"],["3360000","3500","4","1","2","yes","no","no","no","yes","2","no","unfurnished"],["3360000","4960","4","1","3","no","no","no","no","no","0","no","semi-furnished"],["3360000","4120","2","1","2","yes","no","no","no","no","0","no","unfurnished"],["3360000","4750","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["3360000","3720","2","1","1","no","no","no","no","yes","0","no","unfurnished"],["3360000","3750","3","1","1","yes","no","no","no","no","0","no","unfurnished"],["3360000","3100","3","1","2","no","no","yes","no","no","0","no","semi-furnished"],["3360000","3185","2","1","1","yes","no","yes","no","no","2","no","furnished"],["3353000","2700","3","1","1","no","no","no","no","no","0","no","furnished"],["3332000","2145","3","1","2","yes","no","yes","no","no","0","yes","furnished"],["3325000","4040","2","1","1","yes","no","no","no","no","1","no","unfurnished"],["3325000","4775","4","1","2","yes","no","no","no","no","0","no","unfurnished"],["3290000","2500","2","1","1","no","no","no","no","yes","0","no","unfurnished"],["3290000","3180","4","1","2","yes","no","yes","no","yes","0","no","unfurnished"],["3290000","6060","3","1","1","yes","yes","yes","no","no","0","no","furnished"],["3290000","3480","4","1","2","no","no","no","no","no","1","no","semi-furnished"],["3290000","3792","4","1","2","yes","no","no","no","no","0","no","semi-furnished"],["3290000","4040","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["3290000","2145","3","1","2","yes","no","yes","no","no","0","yes","furnished"],["3290000","5880","3","1","1","yes","no","no","no","no","1","no","unfurnished"],["3255000","4500","2","1","1","no","no","no","no","no","0","no","semi-furnished"],["3255000","3930","2","1","1","no","no","no","no","no","0","no","unfurnished"],["3234000","3640","4","1","2","yes","no","yes","no","no","0","no","unfurnished"],["3220000","4370","3","1","2","yes","no","no","no","no","0","no","unfurnished"],["3220000","2684","2","1","1","yes","no","no","no","yes","1","no","unfurnished"],["3220000","4320","3","1","1","no","no","no","no","no","1","no","unfurnished"],["3220000","3120","3","1","2","no","no","no","no","no","0","no","furnished"],["3150000","3450","1","1","1","yes","no","no","no","no","0","no","furnished"],["3150000","3986","2","2","1","no","yes","yes","no","no","1","no","unfurnished"],["3150000","3500","2","1","1","no","no","yes","no","no","0","no","semi-furnished"],["3150000","4095","2","1","1","yes","no","no","no","no","2","no","semi-furnished"],["3150000","1650","3","1","2","no","no","yes","no","no","0","no","unfurnished"],["3150000","3450","3","1","2","yes","no","yes","no","no","0","no","semi-furnished"],["3150000","6750","2","1","1","yes","no","no","no","no","0","no","semi-furnished"],["3150000","9000","3","1","2","yes","no","no","no","no","2","no","semi-furnished"],["3150000","3069","2","1","1","yes","no","no","no","no","1","no","unfurnished"],["3143000","4500","3","1","2","yes","no","no","no","yes","0","no","unfurnished"],["3129000","5495","3","1","1","yes","no","yes","no","no","0","no","unfurnished"],["3118850","2398","3","1","1","yes","no","no","no","no","0","yes","semi-furnished"],["3115000","3000","3","1","1","no","no","no","no","yes","0","no","unfurnished"],["3115000","3850","3","1","2","yes","no","no","no","no","0","no","unfurnished"],["3115000","3500","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["3087000","8100","2","1","1","yes","no","no","no","no","1","no","unfurnished"],["3080000","4960","2","1","1","yes","no","yes","no","yes","0","no","unfurnished"],["3080000","2160","3","1","2","no","no","yes","no","no","0","no","semi-furnished"],["3080000","3090","2","1","1","yes","yes","yes","no","no","0","no","unfurnished"],["3080000","4500","2","1","2","yes","no","no","yes","no","1","no","semi-furnished"],["3045000","3800","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["3010000","3090","3","1","2","no","no","no","no","no","0","no","semi-furnished"],["3010000","3240","3","1","2","yes","no","no","no","no","2","no","semi-furnished"],["3010000","2835","2","1","1","yes","no","no","no","no","0","no","semi-furnished"],["3010000","4600","2","1","1","yes","no","no","no","no","0","no","furnished"],["3010000","5076","3","1","1","no","no","no","no","no","0","no","unfurnished"],["3010000","3750","3","1","2","yes","no","no","no","no","0","no","unfurnished"],["3010000","3630","4","1","2","yes","no","no","no","no","3","no","semi-furnished"],["3003000","8050","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["2975000","4352","4","1","2","no","no","no","no","no","1","no","unfurnished"],["2961000","3000","2","1","2","yes","no","no","no","no","0","no","semi-furnished"],["2940000","5850","3","1","2","yes","no","yes","no","no","1","no","unfurnished"],["2940000","4960","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["2940000","3600","3","1","2","no","no","no","no","no","1","no","unfurnished"],["2940000","3660","4","1","2","no","no","no","no","no","0","no","unfurnished"],["2940000","3480","3","1","2","no","no","no","no","no","1","no","semi-furnished"],["2940000","2700","2","1","1","no","no","no","no","no","0","no","furnished"],["2940000","3150","3","1","2","no","no","no","no","no","0","no","unfurnished"],["2940000","6615","3","1","2","yes","no","no","no","no","0","no","semi-furnished"],["2870000","3040","2","1","1","no","no","no","no","no","0","no","unfurnished"],["2870000","3630","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["2870000","6000","2","1","1","yes","no","no","no","no","0","no","semi-furnished"],["2870000","5400","4","1","2","yes","no","no","no","no","0","no","unfurnished"],["2852500","5200","4","1","3","yes","no","no","no","no","0","no","unfurnished"],["2835000","3300","3","1","2","no","no","no","no","no","1","no","semi-furnished"],["2835000","4350","3","1","2","no","no","no","yes","no","1","no","unfurnished"],["2835000","2640","2","1","1","no","no","no","no","no","1","no","furnished"],["2800000","2650","3","1","2","yes","no","yes","no","no","1","no","unfurnished"],["2800000","3960","3","1","1","yes","no","no","no","no","0","no","furnished"],["2730000","6800","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["2730000","4000","3","1","2","yes","no","no","no","no","1","no","unfurnished"],["2695000","4000","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["2660000","3934","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["2660000","2000","2","1","2","yes","no","no","no","no","0","no","semi-furnished"],["2660000","3630","3","3","2","no","yes","no","no","no","0","no","unfurnished"],["2660000","2800","3","1","1","yes","no","no","no","no","0","no","unfurnished"],["2660000","2430","3","1","1","no","no","no","no","no","0","no","unfurnished"],["2660000","3480","2","1","1","yes","no","no","no","no","1","no","semi-furnished"],["2660000","4000","3","1","1","yes","no","no","no","no","0","no","semi-furnished"],["2653000","3185","2","1","1","yes","no","no","no","yes","0","no","unfurnished"],["2653000","4000","3","1","2","yes","no","no","no","yes","0","no","unfurnished"],["2604000","2910","2","1","1","no","no","no","no","no","0","no","unfurnished"],["2590000","3600","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["2590000","4400","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["2590000","3600","2","2","2","yes","no","yes","no","no","1","no","furnished"],["2520000","2880","3","1","1","no","no","no","no","no","0","no","unfurnished"],["2520000","3180","3","1","1","no","no","no","no","no","0","no","unfurnished"],["2520000","3000","2","1","2","yes","no","no","no","no","0","no","furnished"],["2485000","4400","3","1","2","yes","no","no","no","no","0","no","unfurnished"],["2485000","3000","3","1","2","no","no","no","no","no","0","no","semi-furnished"],["2450000","3210","3","1","2","yes","no","yes","no","no","0","no","unfurnished"],["2450000","3240","2","1","1","no","yes","no","no","no","1","no","unfurnished"],["2450000","3000","2","1","1","yes","no","no","no","no","1","no","unfurnished"],["2450000","3500","2","1","1","yes","yes","no","no","no","0","no","unfurnished"],["2450000","4840","2","1","2","yes","no","no","no","no","0","no","unfurnished"],["2450000","7700","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["2408000","3635","2","1","1","no","no","no","no","no","0","no","unfurnished"],["2380000","2475","3","1","2","yes","no","no","no","no","0","no","furnished"],["2380000","2787","4","2","2","yes","no","no","no","no","0","no","furnished"],["2380000","3264","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["2345000","3640","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["2310000","3180","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["2275000","1836","2","1","1","no","no","yes","no","no","0","no","semi-furnished"],["2275000","3970","1","1","1","no","no","no","no","no","0","no","unfurnished"],["2275000","3970","3","1","2","yes","no","yes","no","no","0","no","unfurnished"],["2240000","1950","3","1","1","no","no","no","yes","no","0","no","unfurnished"],["2233000","5300","3","1","1","no","no","no","no","yes","0","yes","unfurnished"],["2135000","3000","2","1","1","no","no","no","no","no","0","no","unfurnished"],["2100000","2400","3","1","2","yes","no","no","no","no","0","no","unfurnished"],["2100000","3000","4","1","2","yes","no","no","no","no","0","no","unfurnished"],["2100000","3360","2","1","1","yes","no","no","no","no","1","no","unfurnished"],["1960000","3420","5","1","2","no","no","no","no","no","0","no","unfurnished"],["1890000","1700","3","1","2","yes","no","no","no","no","0","no","unfurnished"],["1890000","3649","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["1855000","2990","2","1","1","no","no","no","no","no","1","no","unfurnished"],["1820000","3000","2","1","1","yes","no","yes","no","no","2","no","unfurnished"],["1767150","2400","3","1","1","no","no","no","no","no","0","no","semi-furnished"],["1750000","3620","2","1","1","yes","no","no","no","no","0","no","unfurnished"],["1750000","2910","3","1","1","no","no","no","no","no","0","no","furnished"],["1750000","3850","3","1","2","yes","no","no","no","no","0","no","unfurnished"]],"provenance":{"url":"https://www.kaggle.com/datasets/harishkumardatalab/housing-price-prediction","title":"Housing Price Prediction","version":1,"licenseAsListed":"CC0: Public Domain","csvSHA256":"a8ef508351b4d6e87b23a831cf316a3d53c794ed9d969c7b697a865a60a3d65f"}}</script>
     <script src="https://cdn.jsdelivr.net/npm/@visactor/vchart@2.1.7/build/index.min.js"></script>
@@ -2469,6 +2469,109 @@
         }
       }
     </script>
+    <script id="dashboard-analysis-runtime">
+      'use strict'
+
+      // 只消费 Builder 查询结果；统计口径、问题和可核查的下一步由页面配置。
+      window.DashboardAnalysis = function DashboardAnalysis(config, number) {
+        const count = (row) => (Number.isFinite(row?.[config.countField]) ? row[config.countField] : 0)
+        const value = (row) => {
+          const numerator = row?.[config.field]
+          if (!Number.isFinite(numerator)) return undefined
+          if (!config.denominator) return numerator
+          const denominator = row[config.denominator]
+          if (!(denominator > 0)) return undefined
+          return ((config.complement ? denominator - numerator : numerator) / denominator) * (config.factor || 1)
+        }
+        const format = (value) =>
+          Number.isFinite(value)
+            ? `${number(value / (config.scale || 1), config.digits ?? 1)}${config.unit || ''}`
+            : '—'
+        const dimensionLabel = (field, value) => config.valueLabels?.[field]?.[value] ?? String(value ?? '未记录')
+        const rows = (data, dimensions) =>
+          data
+            .map((source) => {
+              const values = dimensions.map(([field]) => source[field])
+              const labels = dimensions.map(([field], index) => dimensionLabel(field, values[index]))
+              return {
+                key: JSON.stringify(values),
+                label: labels.join(' / '),
+                x: labels[1],
+                y: labels[0],
+                values,
+                source,
+                count: count(source),
+                value: value(source),
+              }
+            })
+            .filter((row) => row.count > 0 && Number.isFinite(row.value))
+        const gap = (current, baseline) => {
+          if (!Number.isFinite(current) || !Number.isFinite(baseline)) return '暂无可比基准'
+          const delta = current - baseline
+          if (Math.abs(delta / (config.scale || 1)) < 10 ** -(config.digits ?? 1) / 2) return '与当前范围基本持平'
+          return `较当前范围${delta > 0 ? '高' : '低'} ${config.factor === 100 && config.unit === '%' ? `${number(Math.abs(delta), 1)} 个百分点` : format(Math.abs(delta))}`
+        }
+        const observation = (row, baseline) =>
+          `${row.label}：${config.label} ${format(row.value)}，${gap(row.value, baseline)}；${config.countLabel || '来源记录'} ${number(row.count, 0)}`
+        const summary = (groups, cross, total) => {
+          const baseline = value(total)
+          if (!count(total) || !Number.isFinite(baseline))
+            return {
+              conclusion: '当前筛选没有足够的有效记录支持这项分析。',
+              evidence: ['可调整筛选范围，或核对缺失字段与分母。'],
+            }
+          const segments = rows(groups, [config.dimensions[0]])
+          const cells = rows(cross, config.dimensions)
+          const weight = (row) =>
+            config.kind === 'rate'
+              ? (row.count * row.value) / (config.factor || 100)
+              : Math.abs(row.value - baseline) * row.count
+          const focus = [...segments].sort((a, b) => weight(b) - weight(a) || b.count - a.count)[0]
+          const contrast = [...cells].sort(
+            (a, b) => Math.abs(b.value - baseline) * b.count - Math.abs(a.value - baseline) * a.count,
+          )[0]
+          const ranked = [...segments].sort((a, b) => a.value - b.value)
+          const spread =
+            ranked.length > 1
+              ? `分组范围 ${format(ranked[0].value)}—${format(ranked.at(-1).value)}；分别涉及 ${number(ranked[0].count, 0)} 与 ${number(ranked.at(-1).count, 0)} 条来源记录。`
+              : '当前筛选仅有一个有效分组，不能据此比较组间差异。'
+          return {
+            conclusion:
+              config.kind === 'rate' && baseline === 0
+                ? `当前范围${config.label}为 ${format(0)}，${config.countLabel || '来源记录'} ${number(count(total), 0)}；没有已记录的事件差异支持分组排序。`
+                : focus
+                  ? `${config.kind === 'rate' ? '事件记录较集中的分组为' : '结合差异与记录量，可先核对'} ${focus.label}，${config.label} ${format(focus.value)}，${gap(focus.value, baseline)}${config.kind === 'rate' ? `；该组占当前事件记录的 ${number((weight(focus) / ((count(total) * baseline) / (config.factor || 100))) * 100, 1)}%` : `；涉及 ${number(focus.count, 0)} 条来源记录`}。`
+                  : `当前范围${config.label} ${format(baseline)}。`,
+            evidence: [
+              `当前范围${config.label} ${format(baseline)}，${config.countLabel || '来源记录'} ${number(count(total), 0)}。${spread}`,
+              contrast && cells.length > 1
+                ? `按差异与记录量联合定位，可先核对 ${observation(contrast, baseline)}。`
+                : '当前范围的交叉分组不足，可扩大筛选后继续比较。',
+              `下一步：${config.action}`,
+            ],
+          }
+        }
+        const finding = (current, total, selectedLabel) => {
+          const baseline = value(total),
+            currentValue = value(current)
+          return selectedLabel
+            ? `${config.label} ${format(currentValue)}，${gap(currentValue, baseline)}；${config.countLabel || '来源记录'} ${number(count(current), 0)}。分组差异用于核查，不表示因果。`
+            : `当前范围${config.label} ${format(baseline)}；${config.countLabel || '来源记录'} ${number(count(total), 0)}。${config.action}`
+        }
+        const chartRows = (data, selected) => {
+          const x = [...new Set(data.map((row) => row.x))].slice(0, 8)
+          const allY = [...new Set(data.map((row) => row.y))]
+          const y = config.dimensions[0][2] ? allY.slice(-12) : allY.slice(0, 12)
+          const chosen = data.find((row) => row.key === selected)
+          if (chosen) {
+            if (!x.includes(chosen.x)) x.splice(Math.max(0, x.length - 1), 1, chosen.x)
+            if (!y.includes(chosen.y)) y.splice(Math.max(0, y.length - 1), 1, chosen.y)
+          }
+          return data.filter((row) => x.includes(row.x) && y.includes(row.y))
+        }
+        return { ...config, count, value, format, dimensionLabel, rows, gap, summary, finding, chartRows }
+      }
+    </script>
     <script id="metric-analysis-runtime">
       'use strict'
 
@@ -2601,13 +2704,18 @@
           void refresh(false, nodes['picker-label'])
         }
         function selectDimension(event) {
-          if (!dialog?.open || nodes.groups.inert) return
+          if (!dialog?.open || nodes.groups.inert || dimension?.[0].startsWith('__')) return
           // 与原生 crosshair 使用同一维度命中，不要求鼠标或手指落在线条上。
           const datum = event.dimensionInfo
             ?.flatMap((info) => info.data || [])
             .flatMap((data) => data.datum || [])
             .find((row) => row.key !== undefined)
           if (datum && groupRows?.some((row) => row.key === String(datum.key))) selectGroup(String(datum.key))
+        }
+        function selectDiagnostic(event) {
+          if (!dialog?.open || nodes.groups.inert || !dimension?.[0].startsWith('__')) return
+          const key = event.datum?.key
+          if (key !== undefined && groupRows?.some((row) => row.key === key)) selectGroup(key)
         }
         function completeClose() {
           if (dialog?.open) dialog.close()
@@ -2683,7 +2791,125 @@
             builder.doc.destroy()
           }
         }
+        function buildDiagnosticSpec(group, chartRows, selected) {
+          const analysis = context.analysis
+          const matrix = group[0] === '__cross'
+          const key = JSON.stringify([group[0], chartRows, reducedMotion.matches])
+          if (key !== analysisKey) {
+            analysisSpec = Builder.from({
+              chartType: matrix ? 'heatmap' : 'scatter',
+              dataset: chartRows.map((row) => ({
+                ...row,
+                value: row.value / (analysis.scale || 1),
+                colorValue: row.value / (analysis.scale || 1),
+              })),
+              dimensions: matrix
+                ? [
+                    { id: 'x', alias: analysis.dimensions[1][1], encoding: 'xAxis' },
+                    { id: 'y', alias: analysis.dimensions[0][1], encoding: 'yAxis' },
+                  ]
+                : [{ id: 'label', alias: analysis.dimensions[0][1], encoding: 'detail' }],
+              measures: [
+                ...(matrix
+                  ? []
+                  : [
+                      {
+                        id: 'count',
+                        alias: analysis.countLabel || '来源记录数',
+                        encoding: 'xAxis',
+                        format: { type: 'number', fractionDigits: 0 },
+                      },
+                    ]),
+                ...(matrix
+                  ? [
+                      {
+                        id: 'colorValue',
+                        alias: analysis.label,
+                        encoding: 'color',
+                        format: { type: 'number', fractionDigits: analysis.digits ?? 1, suffix: analysis.unit || '' },
+                      },
+                    ]
+                  : []),
+                {
+                  id: 'value',
+                  alias: analysis.label,
+                  encoding: matrix ? 'label' : 'yAxis',
+                  format: { type: 'number', fractionDigits: analysis.digits ?? 1, suffix: analysis.unit || '' },
+                },
+                ...(matrix
+                  ? [
+                      {
+                        id: 'count',
+                        alias: analysis.countLabel || '来源记录数',
+                        encoding: 'tooltip',
+                        format: { type: 'number', fractionDigits: 0 },
+                      },
+                    ]
+                  : []),
+              ],
+              backgroundColor: 'transparent',
+              color: { colorScheme: [accent], linearColorScheme: ['#f1f4f8', accent] },
+              legend: { enable: false },
+              label: {
+                enable: matrix,
+                showValue: false,
+                showDimension: false,
+                labelFontSize: 11,
+                labelStroke: false,
+                labelColorSmartInvert: true,
+                labelOverlap: true,
+              },
+              tooltip: { enable: true },
+              xAxis: { visible: true, zero: true },
+              yAxis: { visible: true, zero: true },
+              size: 10,
+              animation: {
+                enable: !reducedMotion.matches,
+                params: { appear: { enable: false }, update: { enable: true, duration: 550, ease: 'cubicInOut' } },
+              },
+            }).build()
+            // label 编码补进 tooltip 时会重复颜色指标，只保留一次指标值。
+            if (matrix)
+              analysisSpec.tooltip.mark.content = analysisSpec.tooltip.mark.content.filter(
+                (item) => item.key !== analysis.label,
+              )
+            analysisSpec.animation = !reducedMotion.matches
+            analysisSpec.padding = { top: 16, right: 22, bottom: 10, left: 6 }
+            for (const axis of analysisSpec.axes || []) {
+              axis.label = {
+                ...axis.label,
+                style: { ...axis.label?.style, fill: labelColor || '#64717e', fontSize: 11 },
+              }
+              if (!matrix)
+                axis.title = {
+                  visible: true,
+                  text: axis.orient === 'bottom' ? analysis.countLabel || '来源记录数' : analysis.label,
+                  style: { fill: labelColor || '#64717e', fontSize: 11 },
+                }
+            }
+            const baseline = analysis.value(totalRow)
+            if (!matrix && Number.isFinite(baseline))
+              analysisSpec.markLine = {
+                y: baseline / (analysis.scale || 1),
+                line: { style: { stroke: accent, lineDash: [4, 4], lineWidth: 1 } },
+                label: { text: '当前范围基准', style: { fill: labelColor || '#64717e', fontSize: 10 } },
+              }
+            analysisKey = key
+          }
+          const mark = matrix ? 'cell' : 'point'
+          return {
+            ...analysisSpec,
+            [mark]: {
+              ...analysisSpec[mark],
+              style: {
+                ...analysisSpec[mark]?.style,
+                fillOpacity: (datum) => (selected === undefined || datum.key === selected ? 1 : 0.24),
+              },
+            },
+          }
+        }
         function buildAnalysisSpec(group, metric, chartRows, chartTitle, selected) {
+          if (group[0].startsWith('__') && context.analysis) return buildDiagnosticSpec(group, chartRows, selected)
           const key = JSON.stringify([group[0], chartRows, reducedMotion.matches])
           if (key !== analysisKey) {
             analysisSpec = Builder.from({
@@ -2702,7 +2928,7 @@
               color: { colorScheme: [accent] },
               legend: { enable: false },
               label: { enable: false },
-              tooltip: { enable: false },
+              tooltip: { enable: true },
               xAxis: { visible: true, zero: !group[2], ...(labelColor ? { label: { labelColor } } : {}) },
               yAxis: { visible: true, zero: !group[2], ...(labelColor ? { label: { labelColor } } : {}) },
               pointStyle: { pointVisible: true },
@@ -2767,13 +2993,15 @@
           return DashboardTable.options(options, nodes.table)
         }
         function renderGroupPicker(group, metric, rows, selected) {
-          nodes['picker-text'].textContent = `选择${group[1]}`
+          nodes['picker-text'].textContent =
+            group[0] === '__cross' ? '选择组合' : group[0] === '__scale' ? '选择分组' : `选择${group[1]}`
           nodes.picker.hidden = !rows.length
           if (rows !== menuRows) {
             nodes.groups.replaceChildren(
               ...rows.map((row) => {
-                const choice = button(`${row.key} · ${(metric.groupFormat || metric.format)(row.value)}`, () =>
-                  selectGroup(row.key),
+                const choice = button(
+                  `${row.label || row.key} · ${(metric.groupFormat || metric.format)(row.value)}${row.count === undefined ? '' : ` · ${context.analysis?.countLabel || '来源记录数'} ${number(row.count, 0)}`}`,
+                  () => selectGroup(row.key),
                 )
                 choice.dataset.key = row.key
                 return choice
@@ -2800,6 +3028,30 @@
             metric = context.metric,
             group = dimension,
             selected = selection
+          const analysis = model.analysis
+          const diagnostic = !!analysis && group[0].startsWith('__')
+          const dimensions = diagnostic
+            ? group[0] === '__cross'
+              ? analysis.dimensions
+              : [analysis.dimensions[0]]
+            : [group]
+          const plotMetric = diagnostic
+            ? {
+                ...metric,
+                title: analysis.label,
+                format: analysis.format,
+                groupFormat: analysis.format,
+                scale: analysis.scale,
+                digits: analysis.digits,
+                unit: analysis.unit,
+              }
+            : metric
+          const measures = [
+            ...new Map(
+              [...metric.measures, ...(analysis?.measures || [])].map((measure) => [measure[0], measure]),
+            ).values(),
+          ]
+          const selectedLabel = groupRows?.find((row) => row.key === selected)?.label || selected
           clearTimeout(loadingTimer)
           nodes.feedback.textContent = ''
           nodes.feedback.dataset.loading = String(!hadContent)
@@ -2809,7 +3061,7 @@
           nodes.groups.inert = true
           const clearing = control === nodes.reset
           nodes.selection.hidden = selected === undefined && !clearing
-          if (!clearing) nodes.selected.textContent = selected === undefined ? '' : `${group[1]}：${selected}`
+          if (!clearing) nodes.selected.textContent = selected === undefined ? '' : `${group[1]}：${selectedLabel}`
           const extra =
             selected === undefined
               ? []
@@ -2824,49 +3076,65 @@
               })
             if (!isCurrent()) return
             const base = metric.conditions
-            const selectedConditions =
+            let selectedConditions =
               selected !== undefined && metric.selectionConditions
                 ? metric.selectionConditions(group, selected)
                 : [...base, ...extra]
-            const previousConditions =
+            let previousConditions =
               selected !== undefined && metric.previousSelectionConditions
                 ? metric.previousSelectionConditions(group, selected)
                 : [...(metric.previous || []), ...extra]
-            const detailDimensions = model.detailDimensions.filter(([field]) => !metric.detailExclude?.includes(field))
-            const detailMeasures = metric.measures.filter(([field]) => !detailDimensions.some(([key]) => field === key))
+            if (diagnostic && selected !== undefined) {
+              const values = JSON.parse(selected)
+              const extraConditions = dimensions.map(([field], index) => ({ field, value: values[index] }))
+              selectedConditions = metric.selectionConditions
+                ? [...metric.selectionConditions(dimensions[0], values[0]), ...extraConditions.slice(1)]
+                : [...base, ...extraConditions]
+              previousConditions = metric.previousSelectionConditions
+                ? [...metric.previousSelectionConditions(dimensions[0], values[0]), ...extraConditions.slice(1)]
+                : [...(metric.previous || []), ...extraConditions]
+            }
+            const detailDimensions = [
+              ...new Map(
+                [...model.detailDimensions, ...(analysis?.dimensions || [])].map((item) => [item[0], item]),
+              ).values(),
+            ].filter(([field]) => !metric.detailExclude?.includes(field))
+            const detailMeasures = measures.filter(([field]) => !detailDimensions.some(([key]) => field === key))
             const [library, details, groups, total, prior, selectedTotal, selectedPrior] = await Promise.all([
               DashboardTable.load(),
               query(detailDimensions, selectedConditions, detailMeasures, signal),
               reload
                 ? query(
-                    [group],
+                    dimensions,
                     typeof metric.groupConditions === 'function'
-                      ? metric.groupConditions(group)
+                      ? metric.groupConditions(dimensions[0])
                       : metric.groupConditions || base,
-                    metric.measures,
+                    measures,
                     signal,
                   )
                 : undefined,
-              reload ? query([], base, metric.measures, signal) : undefined,
-              reload && metric.previous ? query([], metric.previous, metric.measures, signal) : undefined,
-              selected !== undefined ? query([], selectedConditions, metric.measures, signal) : undefined,
-              selected !== undefined && metric.previous
-                ? query([], previousConditions, metric.measures, signal)
-                : undefined,
+              reload ? query([], base, measures, signal) : undefined,
+              reload && metric.previous ? query([], metric.previous, measures, signal) : undefined,
+              selected !== undefined ? query([], selectedConditions, measures, signal) : undefined,
+              selected !== undefined && metric.previous ? query([], previousConditions, measures, signal) : undefined,
             ])
             if (!isCurrent()) return
             if (reload) {
               totalRow = total[0] || {}
               priorRow = prior?.[0] || {}
-              groupRows = groups
-                .map((row) => ({
-                  key: String(row[group[0]]),
-                  value: metric.groupValue ? metric.groupValue(row, priorRow) : metric.value(row, priorRow),
-                }))
-                .filter((row) => Number.isFinite(row.value))
-              if (!group[2])
+              groupRows = diagnostic
+                ? analysis.rows(groups, dimensions)
+                : groups
+                    .map((row) => ({
+                      source: row,
+                      count: analysis?.count(row),
+                      key: String(row[group[0]]),
+                      value: metric.groupValue ? metric.groupValue(row, priorRow) : metric.value(row, priorRow),
+                    }))
+                    .filter((row) => Number.isFinite(row.value))
+              if (!diagnostic && !group[2])
                 groupRows.sort((a, b) => b.value - a.value || a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
-              else groupRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
+              else if (!diagnostic) groupRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
             }
             const current = selectedTotal?.[0] || totalRow
             const baseline = selectedPrior?.[0] || priorRow
@@ -2884,7 +3152,7 @@
                     ? metric.previous
                       ? '当前比较范围'
                       : model.detailScope || '当前范围'
-                    : `${group[1]}：${selected}`
+                    : `${group[1]}：${selectedLabel}`
                 nodes['value-label'].title = nodes['value-label'].textContent
                 motion.animateReading(nodes.value, value, metric.format)
                 const ranked = selected === undefined ? [...plotRows].sort((a, b) => b.value - a.value) : []
@@ -2898,48 +3166,72 @@
                         : ranked.length
                           ? `${ranked[0].key}的${metric.title}最高（${metric.format(ranked[0].value)}）${ranked.length > 1 ? `，${ranked.at(-1).key}最低（${metric.format(ranked.at(-1).value)}）` : ''}。`
                           : '当前范围没有可分析的有效值。可返回看板调整筛选。'
+                if (analysis && (diagnostic || !metric.finding))
+                  nodes.finding.textContent = analysis.finding(current, totalRow, selectedLabel)
                 nodes.definition.textContent = metric.definition
                 nodes.evidence.textContent = metric.evidence
                   ? metric.evidence(current, baseline)
                   : '汇总由当前范围内的完整记录计算；表格滚动不改变汇总值。'
-                nodes.grain.textContent = `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selected}`} · 表格包含当前范围的完整结果`
+                if (analysis)
+                  nodes.evidence.textContent += ` 分析问题：${analysis.question}。交叉组合按所显示的两个字段同时筛选；首页的交叉核查候选按“差异绝对值 × 来源记录量”定位，不表示收益或统计显著性。各均值使用字段自身有效值，记录量不代表每个字段均有效。`
+                nodes.grain.textContent = `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selectedLabel}`} · 表格包含当前范围的完整结果`
                 const detailScope =
-                  selected === undefined ? model.detailScope || '当前范围' : `${group[1]}：${selected}`
+                  selected === undefined ? model.detailScope || '当前范围' : `${group[1]}：${selectedLabel}`
                 nodes['table-scope'].textContent = `${detailScope} · ${number(details.length, 0)} 条记录`
                 nodes['table-scope'].title = nodes['table-scope'].textContent
                 nodes.table.setAttribute('aria-label', `关联明细，${detailScope}，${details.length} 条记录`)
-                const chartTitle = metric.groupTitle || metric.title
-                nodes['chart-title'].textContent =
-                  metric.groupTitle || (group[2] ? `${group[1]}趋势` : `${group[1]}比较`)
+                const chartTitle = diagnostic ? analysis.label : metric.groupTitle || metric.title
+                nodes['chart-title'].textContent = diagnostic
+                  ? `${group[0] === '__cross' ? analysis.dimensions.map((item) => item[1]).join(' × ') : '规模与表现'} · ${analysis.label}`
+                  : metric.groupTitle || (group[2] ? `${group[1]}趋势` : `${group[1]}比较`)
                 nodes['chart-hint'].textContent = !group[2] && plotRows.length > 12 ? '前 12 组' : ''
-                renderGroupPicker(group, metric, plotRows, selected)
-                const chartRows = group[2] ? plotRows : plotRows.slice(0, 12)
+                renderGroupPicker(group, plotMetric, plotRows, selected)
+                const chartRows = diagnostic
+                  ? group[0] === '__cross'
+                    ? analysis.chartRows(plotRows, selected)
+                    : [...plotRows]
+                  : group[2]
+                    ? plotRows
+                    : plotRows.slice(0, 12)
                 // 菜单可选择 Top N 以外的分组；选中项仍须能在图中定位。
-                if (selected !== undefined && !chartRows.some((row) => row.key === selected)) {
+                if (!diagnostic && selected !== undefined && !chartRows.some((row) => row.key === selected)) {
                   const row = plotRows.find((row) => row.key === selected)
                   if (row) {
                     chartRows.splice(Math.max(0, chartRows.length - 1), 1, row)
                     nodes['chart-hint'].textContent = '前 11 组及已选项'
                   }
                 }
+                if (diagnostic)
+                  nodes['chart-hint'].textContent =
+                    group[0] === '__cross'
+                      ? `颜色越深表示${analysis.label}越高；显示 ${chartRows.length}/${plotRows.length} 个有效组合，完整组合见菜单。`
+                      : `横轴为${analysis.countLabel || '来源记录数'}，纵轴为${analysis.label}；虚线为当前范围基准，点选核对记录。`
                 nodes.chart.dataset.empty = String(!chartRows.length)
                 if (!chartRows.length) {
                   chart?.release()
                   chart = undefined
                 }
                 if (chartRows.length) {
-                  const spec = buildAnalysisSpec(group, metric, chartRows, chartTitle, selected)
+                  const spec = buildAnalysisSpec(group, plotMetric, chartRows, chartTitle, selected)
+                  // 原生 HTML tooltip 必须挂在 dialog 顶层内，才能显示在遮罩上。
+                  spec.tooltip = { ...spec.tooltip, parentElement: dialog, confine: true }
                   if (chart) {
                     const changedType = chartType !== spec.type
+                    // 点、矩形与矩阵单元不做跨图元形变，避免无效路径；同图型仍平滑更新。
+                    const crossMarks =
+                      changedType && [chartType, spec.type].some((type) => type === 'scatter' || type === 'heatmap')
+                    const morph = !reducedMotion.matches && !crossMarks
                     await chart.updateSpec(
                       spec,
                       false,
                       {
-                        morph: !reducedMotion.matches,
-                        ...(!reducedMotion.matches && changedType ? { reuse: false } : {}),
+                        morph,
+                        ...(morph && changedType ? { reuse: false } : {}),
                       },
                       changedType ? { change: true, reMake: true } : undefined,
                     )
+                    if (isCurrent() && crossMarks && !reducedMotion.matches)
+                      nodes.chart.animate([{ opacity: 0.75 }, { opacity: 1 }], { duration: 220, easing: 'ease-out' })
                   } else {
                     chart = new VChart(spec, { dom: nodes.chart })
                     chart.renderSync()
@@ -2949,10 +3241,12 @@
                   // 切换图型后重新绑定到当前坐标系；同一次点击只走维度事件，避免二次切换。
                   chart.off('dimensionClick', selectDimension)
                   chart.on('dimensionClick', selectDimension)
+                  chart.off('click', selectDiagnostic)
+                  chart.on('click', selectDiagnostic)
                 }
                 nodes.chart.setAttribute(
                   'aria-label',
-                  `${chartTitle}，${selected === undefined ? '未选择分组' : `已选择${selected}`}，也可通过选择${group[1]}菜单联动明细`,
+                  `${chartTitle}，${selected === undefined ? '未选择分组' : `已选择${selectedLabel}`}，也可通过选择${group[1]}菜单联动明细`,
                 )
                 // 同一指标的表结构不变：筛选和翻页仅替换记录，避免重建表头及重算列宽。
                 const existingTable = !!table
@@ -3001,6 +3295,8 @@
           createDialog()
           delete dialog.dataset.contentEnter
           context = getContext(index)
+          if (context.analysis)
+            context.dimensions = [...context.dimensions, ['__scale', '规模与表现'], ['__cross', '交叉定位']]
           dimension = context.dimensions[0]
           selection = undefined
           groupRows = undefined
@@ -3128,6 +3424,22 @@
         track: getComputedStyle(document.documentElement).getPropertyValue('--chart-track').trim(),
         labelColor: getComputedStyle(document.documentElement).getPropertyValue('--muted').trim(),
       }
+      const analysis = DashboardAnalysis(
+        {
+          ...PAGE.analysis,
+          measures: PAGE.queries.totals.measures,
+          valueLabels: Object.fromEntries(
+            PAGE.filters.map((filter) => [filter.field, Object.fromEntries(filter.options)]),
+          ),
+        },
+        formatNumber,
+      )
+      for (const [field, title] of analysis.dimensions) PAGE.aliases[field] = title
+      PAGE.queries.analysisGroups = { dimensions: [analysis.dimensions[0][0]], measures: analysis.measures }
+      PAGE.queries.analysisCross = {
+        dimensions: analysis.dimensions.map(([field]) => field),
+        measures: analysis.measures,
+      }
       function prepareRows(source) {
         const N = (r, key) => (r[key] === null || r[key] === '' ? null : Number(r[key]))
         const T = (r, key) => String(r[key] ?? '')
@@ -3210,11 +3522,6 @@
             .map((filter, i) => filter.options.find(([value]) => value === state[`f${i + 1}`])?.[1] || '全部')
             .join(' · ')
         const formatted = (value, index) => (Number.isFinite(value) ? formats[index](value) : '—')
-        const ranked = groups
-          .filter((row) => Number.isFinite(metricValue(PAGE.metrics[0], row)))
-          .sort((a, b) => metricValue(PAGE.metrics[0], b) - metricValue(PAGE.metrics[0], a))
-        const leader = ranked[0]
-        const ratioText = Number.isFinite(current.values[1]) ? `${formatNumber(current.values[1])}%` : '—'
         const secondaryTime = secondary.length > 1 && secondary.every((row) => /^\d{4}(-\d{2})?$/.test(row.s))
         const plot = (id, emptyId, rows, dimension, metricIndex, scope, type, main = false) => ({
           id,
@@ -3223,32 +3530,30 @@
           main,
           categorical: main && !PAGE.temporal,
           scope,
-          valueLabel: PAGE.labels[metricIndex],
+          valueLabel: main && PAGE.analysis.mainRate ? analysis.label : PAGE.labels[metricIndex],
           dimensionLabel: dimension === 'g' ? PAGE.groupTitle : PAGE.secondaryTitle,
-          digits: PAGE.formats[metricIndex][0],
-          unit: PAGE.formats[metricIndex][1],
+          digits: main && PAGE.analysis.mainRate ? analysis.digits : PAGE.formats[metricIndex][0],
+          unit: main && PAGE.analysis.mainRate ? analysis.unit : PAGE.formats[metricIndex][1],
           // Scale is a display-only conversion, applied after the query and ratio.
           rows: rows
             .map((row) => ({
               key: row[dimension],
               value:
-                metricValue(PAGE.metrics[metricIndex === 0 ? 0 : metricIndex - 1], row) / PAGE.formats[metricIndex][2],
+                main && PAGE.analysis.mainRate
+                  ? analysis.value(row) / (analysis.scale || 1)
+                  : metricValue(PAGE.metrics[metricIndex === 0 ? 0 : metricIndex - 1], row) /
+                    PAGE.formats[metricIndex][2],
             }))
             .filter((row) => Number.isFinite(row.value)),
-          points: dimension === 'g' ? points : secondaryPoints,
+          points: (dimension === 'g' ? points : secondaryPoints).filter((point) =>
+            rows.some((row) => row[dimension] === point.key),
+          ),
         })
         return {
           metrics: current,
           scope,
           empty: !(total.id > 0),
-          conclusion: leader
-            ? `${leader.g}的${PAGE.labels[0]}最高，为 ${formatted(metricValue(PAGE.metrics[0], leader), 0)}；${PAGE.hit}占所选记录的 ${ratioText}。`
-            : '当前筛选暂无可比较数据。',
-          evidence: [
-            `${PAGE.labels[0]}：${formatted(current.values[0], 0)}；${PAGE.hit}占比：${ratioText}（${count(total.flag || 0)} / ${count(total.id || 0)}）。`,
-            `${PAGE.labels[2]}：${formatted(current.values[2], 2)}；${PAGE.labels[3]}：${formatted(current.values[3], 3)}。`,
-            `${PAGE.auxiliaryTitle}：${formatted(current.values[5], 5)}。${PAGE.derivedNote}`,
-          ],
+          ...analysis.summary(result.analysisGroups, result.analysisCross, total),
           axisLabels:
             PAGE.temporal && groups.length
               ? [groups[0].g, groups[Math.floor((groups.length - 1) / 2)].g, groups.at(-1).g]
@@ -3265,7 +3570,20 @@
             ]
           }),
           plots: [
-            plot('main-plot', 'main-empty', groups, 'g', 0, 'all', PAGE.temporal ? 'area' : 'bar', true),
+            plot(
+              'main-plot',
+              'main-empty',
+              PAGE.mainLimit
+                ? [...groups]
+                    .sort((a, b) => metricValue(PAGE.metrics[0], b) - metricValue(PAGE.metrics[0], a))
+                    .slice(0, PAGE.mainLimit)
+                : groups,
+              'g',
+              0,
+              'all',
+              PAGE.temporal ? 'area' : 'bar',
+              true,
+            ),
             {
               id: 'ring-plot',
               emptyId: 'empty-one',
@@ -3348,7 +3666,9 @@
             animateMetric(selector, metrics.values[index], formats[index])
         })
         if (only === 'all') {
-          $('#primary-note').textContent = label || metrics.note
+          $('#primary-note').textContent = PAGE.analysis.mainRate
+            ? `${analysis.label}按${PAGE.groupTitle}比较 · ${label || `${count(metrics.values[4])} 条记录`}`
+            : `${label || metrics.note}${PAGE.mainLimit ? ' · 前12类，完整分组见明细' : ''}`
           $('#hover-scope').textContent = label ? `${label} · 局部查看` : PAGE.restoreLabel
           for (let index = 1; index <= 3; index++) $(`#note-${index}`).textContent = label || metrics.notes[index - 1]
           if (metrics.ringRows) {
@@ -3454,6 +3774,11 @@
       }
       async function drawPlot(definition) {
         const element = $(`#${definition.id}`)
+        if (definition.main)
+          element.setAttribute(
+            'aria-label',
+            `${definition.valueLabel}按${PAGE.groupTitle}比较；方向键查看，Esc恢复汇总`,
+          )
         const empty = $(`#${definition.emptyId}`)
         const hasData =
           definition.rows.some((row) => Number.isFinite(row.value)) &&
@@ -3622,6 +3947,7 @@
       function createQuery(key, definition) {
         const chart = vbi.chart.create(vbi.chart.createEmpty(PAGE.connectorId))
         chart.chartType.changeChartType(definition.type || 'table')
+        chart.limit.setLimit(sourceData.rows.length)
         for (const field of definition.dimensions || [])
           chart.dimensions.add(field, (node) => node.setAlias(PAGE.aliases[field] || field).setSort({ order: 'asc' }))
         for (const [field, alias, func] of definition.measures)
@@ -3681,6 +4007,7 @@
         }
       }
       function renderInsight() {
+        $('#insight-title').textContent = analysis.question
         const [conclusion, scope, ...evidence] = insight.build().content.split('\n')
         $('#conclusion').textContent = conclusion
         $('#insight-scope').textContent = scope
@@ -3895,6 +4222,7 @@
         ]
 
         return {
+          analysis,
           connectorId: PAGE.connectorId,
           rowLimit: sourceData.rows.length,
           dimensions,
