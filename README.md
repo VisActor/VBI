@@ -1,17 +1,36 @@
 # VBI
 
-VBI provides reusable packages and agent skills for AI-oriented business intelligence.
+Build AI-oriented business intelligence applications with reusable, headless building blocks.
 
-[![Changesets](https://github.com/VisActor/VSeed/actions/workflows/changesets.yml/badge.svg)](https://github.com/VisActor/VBI)
-[![Deploy to GitHub Pages](https://github.com/VisActor/VSeed/actions/workflows/deploy.yml/badge.svg)](https://visactor.github.io/VBI/)
+VBI describes charts, dashboards, and insights as serializable DSLs. Its Builders manage analysis configuration, while data connectors and rendering integrations let you bring your own data and UI.
 
-| Name                                                           | Description              | Test Coverage                                                                                                                                    | Npm Version                                                                                                         |
-| :------------------------------------------------------------- | :----------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------ |
-| [vbi](https://visactor.github.io/VBI)                          | HeadlessBI Interface     | [![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)](https://github.com/VisActor/VBI/actions/workflows/coverage.yml)      | [![npm Version](https://img.shields.io/npm/v/@visactor/vbi.svg)](https://www.npmjs.com/package/@visactor/vbi)       |
-| [vseed](https://visactor.github.io/VBI/vseed/guide/quickStart) | Visualization Engine     | [![Coverage](https://img.shields.io/badge/Coverage-91.61%25-brightgreen.svg)](https://github.com/VisActor/VSeed/actions/workflows/coverage.yml)  | [![npm Version](https://img.shields.io/npm/v/@visactor/vseed.svg)](https://www.npmjs.com/package/@visactor/vseed)   |
-| [vquery](https://visactor.github.io/VBI/VQuery)                | Lightweight Query Engine | [![Coverage](https://img.shields.io/badge/Coverage-100.00%25-brightgreen.svg)](https://github.com/VisActor/VSeed/actions/workflows/coverage.yml) | [![npm Version](https://img.shields.io/npm/v/@visactor/vquery.svg)](https://www.npmjs.com/package/@visactor/vquery) |
+[![CI](https://github.com/VisActor/VBI/actions/workflows/test.yml/badge.svg)](https://github.com/VisActor/VBI/actions/workflows/test.yml)
+[![Deploy to GitHub Pages](https://github.com/VisActor/VBI/actions/workflows/deploy.yml/badge.svg)](https://github.com/VisActor/VBI/actions/workflows/deploy.yml)
 
-## Install Skill
+**[View examples](https://visactor.github.io/VBI/en-US/examples/light-dashboard/) · [Try the playground](https://visactor.github.io/VBI/en-US/vbi/playground) · [Get started](https://visactor.github.io/VBI/en-US/vbi/)**
+
+## Explore examples
+
+- [Dashboard gallery](https://visactor.github.io/VBI/en-US/examples/light-dashboard/): browse interactive dashboards across different scenarios.
+- [Chart Builder examples](https://visactor.github.io/VBI/en-US/vbi/examples/chart/): see how to configure chart types, dimensions, measures, and filters.
+- [Dashboard Builder examples](https://visactor.github.io/VBI/en-US/vbi/examples/dashboard): combine charts and insights into a dashboard.
+- [Standard practice](https://visactor.github.io/VBI/en-US/vbi/practices/standard): explore an interactive analysis interface built on VBI.
+
+## Packages
+
+| Package                                                                        | What it does                                                          | npm                                                                                                                 |
+| ------------------------------------------------------------------------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| [@visactor/vbi](https://visactor.github.io/VBI/en-US/vbi/)                     | Manages chart, dashboard, and insight DSLs through headless Builders. | [![npm version](https://img.shields.io/npm/v/@visactor/vbi.svg)](https://www.npmjs.com/package/@visactor/vbi)       |
+| [@visactor/vquery](https://visactor.github.io/VBI/en-US/vquery/)               | Queries datasets for analysis.                                        | [![npm version](https://img.shields.io/npm/v/@visactor/vquery.svg)](https://www.npmjs.com/package/@visactor/vquery) |
+| [@visactor/vseed](https://visactor.github.io/VBI/en-US/vseed/guide/quickStart) | Builds VChart and VTable specifications from visualization DSLs.      | [![npm version](https://img.shields.io/npm/v/@visactor/vseed.svg)](https://www.npmjs.com/package/@visactor/vseed)   |
+
+## Get started
+
+Follow the [VBI quick start](https://visactor.github.io/VBI/en-US/vbi/#quick-start) to connect data, configure a chart with a Builder, and render it. You can also edit a working example in the [playground](https://visactor.github.io/VBI/en-US/vbi/playground).
+
+## Agent skill
+
+Install the VBI skill for coding agents:
 
 ```bash
 npx skills add visactor/vbi
