@@ -11,12 +11,12 @@
 
 地图就绪后的整段入场共4450ms，保持最终取景、布局与数据口径。
 
-| 阶段 | 时间范围 | Token |
-| --- | --- | --- |
-| 从较宽世界视野平滑推近 | 0–2000ms | `--motion-map-zoom-duration:2000ms`、`--motion-map-zoom-offset:0.65` |
-| 左侧容器整体翻入 | 2100–2950ms | `--motion-card-duration:850ms` |
-| 底部容器整体翻入 | 3050–3900ms | `--motion-card-duration:850ms` |
-| 标题、控件、重点事件标注与页脚淡入 | 4000–4450ms | `--motion-controls-duration:450ms` |
+| 阶段                               | 时间范围    | Token                                                                |
+| ---------------------------------- | ----------- | -------------------------------------------------------------------- |
+| 从较宽世界视野平滑推近             | 0–2000ms    | `--motion-map-zoom-duration:2000ms`、`--motion-map-zoom-offset:0.65` |
+| 左侧容器整体翻入                   | 2100–2950ms | `--motion-card-duration:850ms`                                       |
+| 底部容器整体翻入                   | 3050–3900ms | `--motion-card-duration:850ms`                                       |
+| 标题、控件、重点事件标注与页脚淡入 | 4000–4450ms | `--motion-controls-duration:450ms`                                   |
 
 三个界面区域进场前各留 `--motion-stage-gap:100ms`，延迟由 CSS 按前序阶段累加。地图渐显 `--motion-map-duration:600ms` 与镜头推近同时开始。相机使用原 MapLibre `easeTo`，从不低于最小缩放的较宽视野推近至原中心、缩放和留白；地图、经纬网、点标、涟漪和飞线共用真实投影，不重建地图或查询数据。准备较宽视野后再等待底图就绪，避免推近一开始露出尚未加载的瓦片。
 

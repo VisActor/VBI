@@ -26,13 +26,13 @@
 
 首屏入场在地图就绪后共5850ms，依次完成地球放大、柱子生长、左容器、右容器、标题与控件。所有时长在本模板 token 中维护，`entrance` 按前序阶段的结束时间累加延迟，不再单独维护卡片起点。
 
-| 阶段 | 时间范围 | Token |
-| --- | --- | --- |
-| 地球从20%放大至正常大小 | 0–2000ms | `--motion-globe-duration:2000ms`、`--motion-globe-start-scale:0.2` |
-| 柱子从零长到指标高度 | 2000–3400ms | `--motion-column-duration:1400ms` |
-| 左侧容器整体翻入 | 3500–4350ms | `--motion-card-duration:850ms` |
-| 右侧容器整体翻入 | 4450–5300ms | `--motion-card-duration:850ms` |
-| 标题、地图控件与说明淡入 | 5400–5850ms | `--motion-controls-duration:450ms` |
+| 阶段                     | 时间范围    | Token                                                              |
+| ------------------------ | ----------- | ------------------------------------------------------------------ |
+| 地球从20%放大至正常大小  | 0–2000ms    | `--motion-globe-duration:2000ms`、`--motion-globe-start-scale:0.2` |
+| 柱子从零长到指标高度     | 2000–3400ms | `--motion-column-duration:1400ms`                                  |
+| 左侧容器整体翻入         | 3500–4350ms | `--motion-card-duration:850ms`                                     |
+| 右侧容器整体翻入         | 4450–5300ms | `--motion-card-duration:850ms`                                     |
+| 标题、地图控件与说明淡入 | 5400–5850ms | `--motion-controls-duration:450ms`                                 |
 
 三个界面区域进场前各留 `--motion-stage-gap:100ms`；内部 Card 跟随容器，不单独翻转。地图的 `--motion-map-duration:600ms` 渐显与放大同时开始。地球只缩放画布，不改变相机、几何或布局尺寸；放大期间柱高保持零，生长复用单RAF与暂停时钟，指标切换仍沿用850ms原位更新。
 
