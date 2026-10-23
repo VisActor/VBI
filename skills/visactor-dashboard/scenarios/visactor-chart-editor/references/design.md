@@ -18,7 +18,7 @@
 
 设计参考 Apple [材质](https://developer.apple.com/design/human-interface-guidelines/materials)、[工具栏](https://developer.apple.com/design/human-interface-guidelines/toolbars)与[无障碍](https://developer.apple.com/design/human-interface-guidelines/accessibility)原则：玻璃用于操作层，内容层保持稳定对比度；Web 用 CSS 渐变、单层背景模糊与内缘高光近似材质，不模拟图表折射。
 
-查询或导出超过 150ms 时，仅触发控件显示文字右侧的旋转图标，并用 180ms 展开 / 收回宽度，空闲不占位；主题卡片在既有选中标记处反馈，保持网格稳定。等待期间保留已加载图表，完成或错误后清理控件状态；页面初次加载沿用独立加载层。反馈只由宿主 UI 管理，不写入 DSL。
+查询或导出超过 150ms 时，仅触发控件显示文字右侧的旋转图标，并用 180ms 展开 / 收回宽度，空闲不占位；主题卡片在既有选中标记处反馈，保持网格稳定。重新查询时保留已加载图表，绘图区置灰并显示“正在查询数据…”；结果交给渲染器后显示“正在绘制图表…”，完成或错误后撤下提示并清理控件状态。提示使用可访问状态区域，等待期间仅拦截旧图交互，字段和筛选仍可继续操作；页面初次加载沿用独立加载层。反馈只由宿主 UI 管理，不写入 DSL。
 
 Header 仅保留自绘四格几何占位标识和“自助式分析”（English 为 Self-service Analytics），不放外部品牌、工作空间路径或右侧标语。冰蓝 / 樱粉使用同色系浅至深色阶，朝霞使用灰紫至珊瑚粉的连续色盘；控件强调色单独保证可读性，不能将其覆盖到首个图表系列。预览从完整色盘等距抽取 4 色，图表使用完整色盘。
 

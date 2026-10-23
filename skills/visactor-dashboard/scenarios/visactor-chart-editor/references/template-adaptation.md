@@ -13,6 +13,8 @@
 
 `chart.dimensions` / `measures` 是字段配置数组，元素使用 `field`，按需加 `alias`、`encoding`、`aggregate`、`sort`，指标还支持 `format`。例如 `{"field":"revenue","aggregate":{"func":"sum"}}`。更换 schema 时也替换初始字段，不能保留演示字段。模板按用户要求移除 CSV 上传；默认使用内嵌数据，业务连接器由宿主接入。修改图型 / 指标不会擅自清除无关 HAVING 条件。
 
+查询通过 `builder.observeDeep` 订阅图表 DSL 的深层变化，字段、聚合、筛选、数据源配置与撤销重做变化后自动重新查询；绑定后显式触发首次查询，替换 Builder 或退出时用同一回调 `unobserveDeep`。同一事务通知一次，连续操作只提交最新请求，旧请求不得覆盖结果、缓存或提前结束 loading。
+
 查询由本地连接器 → VQuery 执行 → `builder.buildVSeed()` → VSeed Builder → VChart / VTable。渲染前不另写 JS 聚合、不本地 slice 冒充 limit、不从 DOM 反推领域状态。业务条件需要保存时直接写入完整 DSL。演示连接器 ID `localDataConnector` 已注册；动态源按公共接入能力适配。
 
 日期维度默认按日分组。`to_year` 至 `to_second` 的八种日期聚合返回维度标签，连接器保留字符串原值（年份也保留字符串）；数值指标仍按指标类型归一化。维护时运行 `DIM-02` 验收，检查八种粒度的日期单元格、销售额汇总和按日分组结果。
