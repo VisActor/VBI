@@ -13,6 +13,8 @@
 
 `chart.dimensions` / `measures` 是字段配置数组，元素使用 `field`，按需加 `alias`、`encoding`、`aggregate`、`sort`，指标还支持 `format`。例如 `{"field":"revenue","aggregate":{"func":"sum"}}`。更换 schema 时也替换初始字段，不能保留演示字段。模板按用户要求移除 CSV 上传；默认使用内嵌数据，业务连接器由宿主接入。修改图型 / 指标不会擅自清除无关 HAVING 条件。
 
+查询通过 `builder.observeDeep` 订阅图表 DSL 的深层变化，字段、聚合、筛选、数据源配置与撤销重做变化后自动重新查询；绑定后显式触发首次查询，替换 Builder 或退出时用同一回调 `unobserveDeep`。同一事务通知一次，连续操作只提交最新请求，旧请求不得覆盖结果、缓存或提前结束 loading。
+
 查询由本地连接器 → VQuery 执行 → `builder.buildVSeed()` → VSeed Builder → VChart / VTable。渲染前不另写 JS 聚合、不本地 slice 冒充 limit、不从 DOM 反推领域状态。业务条件需要保存时直接写入完整 DSL。演示连接器 ID `localDataConnector` 已注册；动态源按公共接入能力适配。
 
 日期维度默认按日分组。`to_year` 至 `to_second` 的八种日期聚合返回维度标签，连接器保留字符串原值（年份也保留字符串）；数值指标仍按指标类型归一化。维护时运行 `DIM-02` 验收，检查八种粒度的日期单元格、销售额汇总和按日分组结果。
@@ -25,7 +27,7 @@
 
 当前技能以完整的 `templates/template.html` 为可运行入口，不包含构建或测试工程。业务适配优先修改可读的配置、数据和 CSS；不要从压缩代码重写编辑器，也不要假设改动 Standard 源码后模板会自动更新。
 
-外壳样式、初始化与局部等待反馈直接维护完整 HTML 中的 CSS、`startup-runtime` 和 `control-feedback`，避免另一份启动脚本与交付文件分叉。需要改变核心运行时能力时，先确认仓库公开 API 与模板内嵌版本，再维护完整 HTML，保留 DOM、公开宿主接口、资源许可和实例生命周期，并按验收矩阵验证行为。
+外壳样式、初始化与局部等待反馈直接维护完整 HTML 中的 CSS、`startup-runtime` 和 `control-feedback`；设置弹层的定位、动画、焦点与监听清理由内嵌运行时的 `useEditorSettings` 集中管理，避免另一份启动脚本与交付文件分叉。需要改变核心运行时能力时，先确认仓库公开 API 与模板内嵌版本，再维护完整 HTML，保留 DOM、公开宿主接口、资源许可和实例生命周期，并按验收矩阵验证行为。
 
 渲染适配替换原因与 API 约束见[Standard 对照](standard-reference.md)。表格直接使用 Standard / VSeed 完整主题与 PivotChart 交互，不注入仅适用于平面 ListTable 的公共 DashboardTable 副本。其他体验必须通过[验收矩阵](standard-parity.md)，任何额外移除 / 重写在交付中记录原因、替代行为和验证证据。
 
@@ -57,7 +59,7 @@
 
 ## 数据与图片导出
 
-工具栏图型入口与其它按钮桌面为 32px 高，窄屏为 44px；数据、图片菜单采用原生 Ant Design Dropdown。导出属于宿主呈现能力，不改变 DSL 或渲染 spec。
+工具栏图型入口与其它按钮桌面为 28px 高，窄屏或粗指针触控设备为 44px；数据、图片菜单采用原生 Ant Design Dropdown。导出属于宿主呈现能力，不改变 DSL 或渲染 spec。
 
 CSV / Excel / 复制数据使用当前 VSeed 的查询结果和维度、指标元数据，按当前字段顺序输出别名列头，包含当前过滤、聚合、排序和 limit；不导出完整原始数据、不导出内部重塑字段。CSV 带 UTF-8 BOM、处理引号与换行，并将公式样式字符串作为文本；Excel 为真正的 `.xlsx`，保留数值类型。复制数据为带列头的 TSV，便于粘贴到表格。
 
