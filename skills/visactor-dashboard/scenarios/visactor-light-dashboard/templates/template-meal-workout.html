@@ -11,8 +11,8 @@
         box-sizing: border-box;
       }
       :root {
-        --ink: #28333e;
-        --muted: #64717e;
+        --ink: #25303b;
+        --muted: #5d6875;
         --up: #12815e;
         --down: #c64a3f;
       }
@@ -102,7 +102,7 @@
       }
       button:focus-visible,
       summary:focus-visible {
-        outline: 2px solid #6c8eb5;
+        outline: 2px solid var(--focus-ring);
         outline-offset: 4px;
       }
       .dashboard {
@@ -579,16 +579,18 @@
         }
       }
       :root {
-        --accent: #e4b18e;
-        --accent-ink: #a77755;
+        --accent: #c06c32;
+        --accent-ink: #884c22;
+        --background-base: #fbf7f1;
+        --background-glow: #f7e8d7;
       }
       body {
-        background: #f5f2ef;
+        background: var(--background-base);
       }
       body::before {
         background:
-          radial-gradient(ellipse at 15% 5%, #f4e8dc, transparent 60%),
-          radial-gradient(ellipse at 90% 80%, #e7e1ed, transparent 70%);
+          radial-gradient(ellipse at 15% 5%, var(--background-glow), transparent 60%),
+          radial-gradient(ellipse at 90% 80%, var(--background-base), transparent 70%);
       }
       .chapter {
         display: block;
@@ -642,9 +644,9 @@
     <style id="dashboard-material">
       /* 与地图模板共用玻璃层次；每个阅读面只做一次背景模糊。 */
       :root {
-        --chart-track: #f6e9df;
+        --chart-track: #e7ebf0;
         --glass-surface: rgb(255 255 255 / 46%);
-        --glass-fallback: #f8fafc;
+        --glass-fallback: var(--background-base);
         --glass-filter: blur(14px) saturate(1.08) brightness(1.02);
         --glass-sheen: linear-gradient(145deg, rgb(255 255 255 / 32%), rgb(255 255 255 / 4%) 58%);
         --glass-background: var(--glass-sheen), var(--glass-surface);
@@ -1116,7 +1118,7 @@
       }
       .ma-dialog .ma-chart[data-empty='true']::after {
         content: '暂无可展示数据';
-        color: #8b96a4;
+        color: var(--text-secondary);
         font-size: 12px;
       }
       .ma-dialog.ma-expanded .ma-table-panel {
@@ -2362,6 +2364,7 @@
         Builder,
         VChart,
         accent,
+        labelColor,
         motion,
         entries,
         getContext,
@@ -2586,8 +2589,8 @@
               legend: { enable: false },
               label: { enable: false },
               tooltip: { enable: false },
-              xAxis: { visible: true, zero: !group[2] },
-              yAxis: { visible: true, zero: !group[2] },
+              xAxis: { visible: true, zero: !group[2], ...(labelColor ? { label: { labelColor } } : {}) },
+              yAxis: { visible: true, zero: !group[2], ...(labelColor ? { label: { labelColor } } : {}) },
               pointStyle: { pointVisible: true },
               lineStyle: { lineSmooth: false },
               animation: {
@@ -3003,9 +3006,9 @@
       )
 
       const PAGE = {
-        mode: 'story',
         accent: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
         track: getComputedStyle(document.documentElement).getPropertyValue('--chart-track').trim(),
+        labelColor: getComputedStyle(document.documentElement).getPropertyValue('--muted').trim(),
         labels: ['平均餐食热量', '估算运动时长', '平均蛋白质', '餐食样本份数'],
         formats: [
           [0, ' kcal'],
@@ -3343,20 +3346,28 @@
           label: {
             enable: main && categorical,
             labelPosition: 'outside',
-            labelColor: '#59636f',
+            labelColor: PAGE.labelColor,
             labelColorSmartInvert: false,
             labelStroke: false,
           },
           legend: { enable: false },
-          xAxis: { visible: main && categorical && type === 'column', zero: type !== 'area' },
-          yAxis: { visible: (main && categorical) || (type === 'bar' && !main), zero: type !== 'area' },
+          xAxis: {
+            visible: main && categorical && type === 'column',
+            zero: type !== 'area',
+            label: { labelColor: PAGE.labelColor },
+          },
+          yAxis: {
+            visible: (main && categorical) || (type === 'bar' && !main),
+            zero: type !== 'area',
+            label: { labelColor: PAGE.labelColor },
+          },
           crosshairLine: { labelVisible: false },
           crosshairRect: { labelVisible: false },
           tooltip: { enable: true },
           pointStyle: { pointVisible: false },
           lineStyle: { lineWidth: main ? 2.5 : 1.6, lineSmooth: true },
-          areaStyle: { areaColorOpacity: 0.2, areaGradient: true },
-          barStyle: { barRadius: 3, barColor: PAGE.accent, barColorOpacity: 0.8, barGradient: false },
+          areaStyle: { areaColorOpacity: 0.14, areaGradient: true },
+          barStyle: { barRadius: 3, barColor: PAGE.accent, barColorOpacity: 1, barGradient: false },
           innerRadius: 0.77,
           outerRadius: 0.98,
           pieStyle: { pieBorderWidth: 0, pieHoverEffect: 'opacity' },
@@ -3370,8 +3381,14 @@
                 bottom: main && categorical ? 4 : 0,
                 left: main && categorical ? 0 : 3,
               }
-        // 图形与指标保留更新动画；标签直接显示真实读数，避免 resize 时从虚构的 0 计数。
-        if (main && categorical) spec.label = { ...spec.label, animation: false }
+        // 标签直接显示真实值；被布局放入柱体时只调整文字颜色，不添加描边。
+        if (main && categorical)
+          spec.label = {
+            ...spec.label,
+            animation: false,
+            smartInvert: true,
+            style: { ...spec.label.style, lineWidth: 0 },
+          }
         if (['bar', 'column'].includes(type)) spec.stackCornerRadius = 0
         return spec
       }
@@ -3663,7 +3680,7 @@
             .map((layout, index) => ({ layout, index }))
             .sort((a, b) => a.layout.y - b.layout.y || a.layout.x - b.layout.x)
             .map(({ index }) => {
-              const h = index === 0 ? 8 : PAGE.mode === 'story' && index !== 3 ? 5 : 3
+              const h = index === 0 ? 8 : index !== 3 ? 5 : 3
               const layout = { x: 0, y: nextMobileRow, w: 12, h }
               nextMobileRow += h
               return [index, layout]
@@ -3717,6 +3734,7 @@
             Builder,
             VChart,
             accent: PAGE.accent,
+            labelColor: PAGE.labelColor,
             ready: () => !rendering && !!view && ['ready', 'empty'].includes(document.body.dataset.state),
             getContext: metricAnalysisContext,
             entries: [

@@ -47,7 +47,7 @@
 | 表格主题与更新   | `dashboard-table-tokens`、`dashboard-table-runtime`、`DashboardTable`     | 共用[表格资源](../../../references/visual-query/references/table-theme.md)，保留完整结果、原位更新与主题同步；不逐页另写表格色板。 |
 | 主页明细生命周期 | `#overview-table`、`#overview-count`、`overviewTable`、`overviewObserver` | 保留记录数、短表收缩、容器内滚动、ResizeObserver 与 `pagehide` 释放；表格实例独立于 VChart 实例集合。                              |
 
-20 份行业模板将业务配置放在 `page-config`，运行时 `PAGE` 合并配置与 CSS 的 `--accent`、`--chart-track`；三份专题模板在模块内定义 `PAGE`，颜色同样读取 CSS。经营概览模板没有 `PAGE` 配置对象。主题、材质和字体的维护方式见[统一颜色变量](design.md#统一颜色变量)，不要假定所有模板都有同名业务配置或旧版配色切换函数。
+20 份行业模板将业务配置放在 `page-config`，运行时 `PAGE` 合并配置与 CSS 的 `--accent`、`--chart-track`；`metrics` 维护字段、聚合和比值关系，显示精度、单位与缩放统一由 `formats` 维护。三份专题模板在模块内定义 `PAGE`，颜色同样读取 CSS。经营概览模板没有 `PAGE` 配置对象。主题、材质和字体的维护方式见[统一颜色变量](design.md#统一颜色变量)，不要假定所有模板都有同名业务配置或旧版配色切换函数。
 
 图表视觉在页面内集中构建，再调用 `updateSpec()`。更换图形时保留或重新应用统一装饰，避免用手写 Spec 整体覆盖已构建结果，丢失透明背景、字体、标签和动画。最终检查传给渲染器的 Spec 与真实画面，不能只检查中间 seed，见[绘图表面要求](design.md#图表配色与页面同步)。
 

@@ -2319,6 +2319,7 @@
         Builder,
         VChart,
         accent,
+        labelColor,
         motion,
         entries,
         getContext,
@@ -2543,8 +2544,8 @@
               legend: { enable: false },
               label: { enable: false },
               tooltip: { enable: false },
-              xAxis: { visible: true, zero: !group[2] },
-              yAxis: { visible: true, zero: !group[2] },
+              xAxis: { visible: true, zero: !group[2], ...(labelColor ? { label: { labelColor } } : {}) },
+              yAxis: { visible: true, zero: !group[2], ...(labelColor ? { label: { labelColor } } : {}) },
               pointStyle: { pointVisible: true },
               lineStyle: { lineSmooth: false },
               animation: {
@@ -2960,7 +2961,6 @@
       )
 
       const PAGE = {
-        mode: 'focus',
         accent: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
         track: getComputedStyle(document.documentElement).getPropertyValue('--chart-track').trim(),
         labels: ['平均预期寿命', '首尾寿命变化', '覆盖国家', '平均受教育年限'],
@@ -3570,7 +3570,7 @@
             .map((layout, index) => ({ layout, index }))
             .sort((a, b) => a.layout.y - b.layout.y || a.layout.x - b.layout.x)
             .map(({ index }) => {
-              const h = index === 0 ? 8 : PAGE.mode === 'story' && index !== 3 ? 5 : 3
+              const h = index === 0 ? 8 : 3
               const layout = { x: 0, y: nextMobileRow, w: 12, h }
               nextMobileRow += h
               return [index, layout]
