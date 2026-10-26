@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.7.2
+
+### Patch Changes
+
+- e1209c5: Remove heatmap cell hover shadows to prevent cells from briefly disappearing during hover recovery animations. Keep the legacy hoverShadowColor configuration field accepted for compatibility and mark it as deprecated.
+
 ## 0.7.1
 
 ### Patch Changes
