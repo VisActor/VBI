@@ -15,7 +15,7 @@ export interface HeatmapCell {
    */
   cornerRadius?: number | null
   /**
-   * Hover shadow color
+   * @deprecated Heatmap cells no longer render hover shadows. Retained for configuration compatibility.
    */
   hoverShadowColor?: string | null
 }
