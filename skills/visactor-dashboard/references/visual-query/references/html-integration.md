@@ -47,7 +47,7 @@ region,channel,sales
 
 将下面代码保存为 `index.html`，直接用浏览器打开。它使用内置在 HTML 中的同一份销售明细，无需额外数据文件或数据请求，支持切换三种视图、按地区筛选，并显示当前 DSL 和查询结果。为便于核对，数据只有五行。
 
-下面的独立教程固定使用 VBI / VQuery / VSeed `0.6.4`，VChart `2.1.7`；教程另加入 VTable `1.23.1`，无需本地构建。固定版本可避免 `latest` 缓存使依赖版本不一致。
+下面的独立教程固定使用 VBI / VQuery / VSeed `0.7.2`，VChart `2.1.7`；教程另加入 VTable `1.23.1`，无需本地构建。固定版本可避免 `latest` 缓存使依赖版本不一致。
 
 VChart 的 `build/index.min.js` 和 VTable 的 `dist/vtable.min.js` 通过普通 `<script>` 加载，分别提供 `window.VChart.default` 和 `window.VTable`；VBI、VQuery、VSeed 使用 `+esm` 模块导出。VSeed 的动画模块会导入 VChart 的 `StreamLight`，因此还需在 ESM 模块加载前声明 import map，将该导入映射到已加载的 VChart bundle。这样页面与动画使用同一套渲染注册表，避免 jsDelivr `+esm` 拆分底层模块后出现 `applyAnimationState is not a function` 或文本图元未注册。升级版本时应同步检查映射中的 VChart URL。
 
@@ -151,9 +151,9 @@ VChart 的 `build/index.min.js` 和 VTable 的 `dist/vtable.min.js` 通过普通
         const { ListTable, PivotTable } = window.VTable
         const VChart = window.VChart.default
         const [{ VBI }, { VQuery }, { Builder, registerAll }] = await Promise.all([
-          import('https://cdn.jsdelivr.net/npm/@visactor/vbi@0.6.4/+esm'),
-          import('https://cdn.jsdelivr.net/npm/@visactor/vquery@0.6.4/dist/browser/esm/browser.js/+esm'),
-          import('https://cdn.jsdelivr.net/npm/@visactor/vseed@0.6.4/+esm'),
+          import('https://cdn.jsdelivr.net/npm/@visactor/vbi@0.7.2/+esm'),
+          import('https://cdn.jsdelivr.net/npm/@visactor/vquery@0.7.2/dist/browser/esm/browser.js/+esm'),
+          import('https://cdn.jsdelivr.net/npm/@visactor/vseed@0.7.2/+esm'),
         ])
         registerAll()
 

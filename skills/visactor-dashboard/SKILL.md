@@ -1,6 +1,6 @@
 ---
 name: visactor-dashboard
-description: 创建和修改交互式 Dashboard 看板与图表编辑器，涵盖经营指标、二维 / Three.js 三维地图、数据接入、图表配置、筛选联动与状态恢复，也支持 VBI、VQuery 和 VSeed 的独立能力集成。
+description: 创建和修改交互式 Dashboard、分析页面与图表编辑器，支持数据分析、按需深入探索、二维 / Three.js 三维地图及 VBI、VQuery、VSeed 集成。
 ---
 
 # VisActor Dashboard
@@ -22,15 +22,16 @@ description: 创建和修改交互式 Dashboard 看板与图表编辑器，涵�
 
 四个场景指南按需读取 visual-query 的查询、渲染和联动能力；布局与视觉按对应场景指南处理。场景之间不相互引用，共享能力也不反向依赖场景。
 
-| 任务                                    | 参考资料                                             |
-| --------------------------------------- | ---------------------------------------------------- |
-| 指标深入分析、渐进展开与明细核对        | [指标深入分析](references/metric-analysis/guide.md)  |
-| 查询、渲染、页面组合、筛选联动与刷新    | [visual-query](references/visual-query/guide.md)     |
-| 选择数据内嵌或服务端接入                | [server-runtime](references/server-runtime/guide.md) |
-| 分析配置、DSL / Builder、资源与保存恢复 | [vbi](references/api/vbi/guide.md)                   |
-| 数据集、查询、聚合筛选与 SQL 编译       | [vquery](references/api/vquery/guide.md)             |
-| 图表配置、主题、编码与 Spec 构建        | [vseed](references/api/vseed/guide.md)               |
+| 任务                                    | 参考资料                                                |
+| --------------------------------------- | ------------------------------------------------------- |
+| 选择分析方法、明确计算口径与验证证据    | [数据分析方法](references/data-analysis/guide.md)       |
+| 指标入口、Modal、局部探索与返回         | [深度分析交互](references/deep-analysis/interaction.md) |
+| 查询、渲染、页面组合、筛选联动与刷新    | [visual-query](references/visual-query/guide.md)        |
+| 选择数据内嵌或服务端接入                | [server-runtime](references/server-runtime/guide.md)    |
+| 分析配置、DSL / Builder、资源与保存恢复 | [vbi](references/api/vbi/guide.md)                      |
+| 数据集、查询、聚合筛选与 SQL 编译       | [vquery](references/api/vquery/guide.md)                |
+| 图表配置、主题、编码与 Spec 构建        | [vseed](references/api/vseed/guide.md)                  |
 
-单图、指标卡或表格直接读取 visual-query；为指标提供主动探索入口时补读 metric-analysis，保持主页简约，按用户动线展开分析；独立 API 任务直接读取对应指南。
+单图、指标卡或表格直接读取 visual-query；需要业务分析时从 data-analysis 按问题选择方法，需要主动探索入口时补读 deep-analysis。分析方法可独立于界面使用，普通悬停和样式修改无需加载完整分析流程；独立 API 任务直接读取对应指南。
 
 仅加载当前任务需要的资料，细化路由见 [activation-map.yaml](references/activation-map.yaml)。

@@ -16,4 +16,4 @@ SheetJS CE 0.20.3 mini 和完整 Apache 2.0 许可已内嵌在 `xlsx-runtime` �
 
 来源：[官方浏览器构建说明](https://docs.sheetjs.com/docs/getting-started/installation/standalone/)、[固定版本 mini 构建](https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.mini.min.js)、[许可](https://cdn.sheetjs.com/xlsx-0.20.3/package/LICENSE)。这些是维护来源，不是页面运行时依赖。升级时保留许可，并验证 Excel 数值、字符串与离线下载。
 
-VSeed 内含尚未发布的修正，不能直接换成缺少修正的发布包。未来外置资源前先确认版本和运行环境，并重新验收；当前技能不附带重新生成模板的构建脚本。
+VBI / VQuery / VSeed 版本为 0.7.2。升级时同步更新内嵌代码和来源清单，并验证 morph、热力图悬停及离线运行。

@@ -12,7 +12,7 @@
     "test:coverage": "node --experimental-test-coverage --test-coverage-include='**/runtime/*.mjs' --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100 --test test/*.test.mjs"
   },
   "dependencies": {
-    "mysql2": "3.15.3",
-    "@visactor/vquery": "0.7.0"
+    "@visactor/vquery": "0.7.2",
+    "mysql2": "3.15.3"
   }
 }

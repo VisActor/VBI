@@ -16,7 +16,7 @@ const packages = scenes.flatMap((scene) => [
   { scene, name: scene },
   { scene, name: scene.replace(/^visactor-/, '') },
 ])
-const sharedReferences = ['metric-analysis', 'visual-query', 'server-runtime']
+const sharedReferences = ['data-analysis', 'deep-analysis', 'visual-query', 'server-runtime']
 const excludedDirectories = new Set(['node_modules', '.git', '.turbo', 'coverage', 'dist', '__pycache__'])
 const archiveTime = new Date('1980-01-01T00:00:00Z')
 const slash = (value) => value.split(path.sep).join('/')

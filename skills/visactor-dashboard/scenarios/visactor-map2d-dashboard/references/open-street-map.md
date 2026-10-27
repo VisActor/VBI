@@ -1,6 +1,6 @@
 # 地图接入与空间语义
 
-优先沿用模板中的 MapLibre、底图和导航模块，修改入口见[模板适配](template-adaptation.md)。空间比较与判断见[地图分析](../../../references/metric-analysis/map.md)。
+优先沿用模板中的 MapLibre、底图和导航模块，修改入口见[模板适配](template-adaptation.md)。空间比较与判断见[地图分析](../../../references/data-analysis/map.md)。
 
 ## 位置数据
 

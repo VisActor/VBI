@@ -18,6 +18,6 @@
 
 复用 `buildChartSpec()` / `draw()` 或 `buildSpec()` / `drawPlot()`，保持查询结果、字段 ID、系列含义和图表实例。新图形按 [VSeed](../../../references/api/vseed/guide.md)配置，固定版本兼容见[模板接入](template-integration.md#固定版本与场景回归)。
 
-临时时间查看从当前查询索引读取，按声明的作用域更新读数和范围说明；退出恢复汇总，不覆盖全局发现。主图与小图的联动、键盘操作及清理见[指标联动](metric-card.md#与图表联动)，确认时间选择与明细核对见[指标深入分析](../../../references/metric-analysis/guide.md)。
+临时时间查看从当前查询索引读取，按声明的作用域更新读数和范围说明；退出恢复汇总，不覆盖全局发现。主图与小图的联动、键盘操作及清理见[指标联动](metric-card.md#与图表联动)，确认时间选择与明细核对见[指标深入分析](../../../references/deep-analysis/interaction.md)。
 
 布局变化后同步图表尺寸；空范围保留真实空状态。刷新、更新过渡与释放沿用模板和[共享刷新流程](../../../references/visual-query/references/composition.md#刷新订阅与生命周期)，检查项见[验收标准](acceptance.md)。

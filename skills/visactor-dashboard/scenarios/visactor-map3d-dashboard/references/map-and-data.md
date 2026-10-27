@@ -1,6 +1,6 @@
 # 空气质量示例数据与空间语义
 
-本篇记录[模板](../templates/template.html)的具体示例，替换业务时重新核对；以下数值和门槛不是其他业务的默认规则。分析方法见[共享指南](../../../references/metric-analysis/guide.md)和[空间分析](../../../references/metric-analysis/map.md)。
+本篇记录[模板](../templates/template.html)的具体示例，替换业务时重新核对；以下数值和门槛不是其他业务的默认规则。分析方法见[共享指南](../../../references/data-analysis/guide.md)和[空间分析](../../../references/data-analysis/map.md)。
 
 ## 来源与事实粒度
 
