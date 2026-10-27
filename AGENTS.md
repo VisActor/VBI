@@ -23,3 +23,5 @@ Acceptance criterion: if all UI components were removed, would the VBI capabilit
 
 Use `.agents/skills/development/SKILL.md` for code, test, build, or dependency changes.
 Skip it for changes limited to skills, prompts, or agent instructions.
+
+Skill documents and references describe current capabilities, usage, and constraints without narrating past changes, removals, or migrations.

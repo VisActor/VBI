@@ -25,7 +25,7 @@ pnpm build:skills --check
 
 每个 ZIP 包含同名技能根目录及其 `SKILL.md`、元数据、模板、公共查询与服务能力、API。
 根目录 `SKILL.md` 的 `name` 与 ZIP 文件名一致；每个不带前缀的 ZIP 与对应的 `visactor-` ZIP 复用同一场景资源。
-四个场景都包含 `metric-analysis`、`server-runtime`、`visual-query` 三份公共指南及 `references/api/`；二维地图场景另有自身的指标分析指南。共用指南和 API 入口均为 `guide.md`，不会被识别为独立技能。
+四个场景都包含 `data-analysis`、`deep-analysis`、`server-runtime`、`visual-query` 四类公共资料及 `references/api/`。`data-analysis/guide.md` 按问题路由到九种方法与空间分析；`deep-analysis/interaction.md` 负责分析入口、局部探索和返回。公共资料不含 `SKILL.md`，不会被识别为独立技能。
 场景文档链接在打包时重写；缺失或未打包的本地文档依赖会使构建失败。
 四个场景可以引用上述公共指南，公共指南禁止反向引用场景；四个场景禁止彼此引用。
 构建时检查本地 Markdown 链接的依赖方向，违规时终止构建并保留已有 ZIP。

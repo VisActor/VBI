@@ -107,13 +107,23 @@ function fixture(t) {
   }
   write(source, 'references/server-runtime/scripts/runtime/.env.example', 'VBI_PORT=4317\n')
   write(source, 'references/server-runtime/scripts/runtime/server.mjs', 'export const port = 4317\n')
-  write(source, 'references/metric-analysis/guide.md', '[Query](../visual-query/guide.md)\n')
+  write(
+    source,
+    'references/data-analysis/guide.md',
+    '[Contribution](contribution-analysis.md) · [Interaction](../deep-analysis/interaction.md)\n',
+  )
+  write(source, 'references/data-analysis/contribution-analysis.md', '[Query](../visual-query/guide.md)\n')
+  write(
+    source,
+    'references/deep-analysis/interaction.md',
+    '[Methods](../data-analysis/guide.md) · [Query](../visual-query/guide.md)\n',
+  )
   for (const name of scenes) {
     const scene = `scenarios/${name}`
     write(
       source,
       `${scene}/SKILL.md`,
-      `---\nname: ${name}\ndescription: Example dashboard\n---\n\n[Layout](references/layout.md) · [Query](../../references/visual-query/guide.md) · [Analysis](../../references/metric-analysis/guide.md) · [Server](../../references/server-runtime/guide.md) · [API](../../references/api/vquery/guide.md)\n`,
+      `---\nname: ${name}\ndescription: Example dashboard\n---\n\n[Layout](references/layout.md) · [Query](../../references/visual-query/guide.md) · [Analysis](../../references/data-analysis/guide.md) · [Interaction](../../references/deep-analysis/interaction.md) · [Server](../../references/server-runtime/guide.md) · [API](../../references/api/vquery/guide.md)\n`,
     )
     write(source, `${scene}/agents/openai.yaml`, `interface:\n  display_name: '${name}'\n`)
     write(
@@ -201,7 +211,9 @@ test('builds self-contained scene archives with rewritten references and unchang
     assert.ok(resources.has('agents/openai.yaml'))
     assert.ok(resources.has('references/server-runtime/scripts/runtime/.env.example'))
     assert.ok(resources.has('references/server-runtime/scripts/runtime/server.mjs'))
-    assert.ok(resources.has('references/metric-analysis/guide.md'))
+    assert.ok(resources.has('references/data-analysis/guide.md'))
+    assert.ok(resources.has('references/data-analysis/contribution-analysis.md'))
+    assert.ok(resources.has('references/deep-analysis/interaction.md'))
     assert.equal(resources.has('references/api/vseed/schemas.md'), false)
     assert.doesNotMatch(resources.get('references/api/vseed/index.md').toString(), /schemas\.md|zChart/)
     for (const scene of scenes) assert.equal(fs.existsSync(path.join(root, 'scenarios', scene)), false)
@@ -281,7 +293,7 @@ test('preserves previous archives when a scene has an unbundled reference', asyn
 })
 
 test('rejects reverse and cross-scene dependencies while preserving previous archives', async (t) => {
-  for (const owner of [...scenes, 'metric-analysis', 'server-runtime', 'visual-query']) {
+  for (const owner of [...scenes, 'data-analysis', 'deep-analysis', 'server-runtime', 'visual-query']) {
     for (const dependency of scenes.filter((name) => name !== owner)) {
       const { repoRoot, source } = fixture(t)
       const previous = (await buildSkills({ repoRoot })).map(({ archive }) => fs.readFileSync(archive))

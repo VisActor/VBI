@@ -11,7 +11,7 @@ description: 创建富有空间感的交互式地图 Dashboard，围绕地域差
 
 ## 1. 确定问题与证据
 
-先明确谁要做什么判断、当前可采取什么行动。按[分析与决策](../../references/metric-analysis/guide.md)选择值得验证的问题，确定比较基准、计算口径、支持或推翻判断的证据及记录核对路径；按[空间分析](../../references/metric-analysis/map.md)检查地域覆盖、位置精度与聚合尺度。
+先明确谁要做什么判断、当前可采取什么行动。按[分析与决策](../../references/data-analysis/guide.md)选择值得验证的问题，确定比较基准、计算口径、支持或推翻判断的证据及记录核对路径；按[空间分析](../../references/data-analysis/map.md)检查地域覆盖、位置精度与聚合尺度。
 
 分析从真实数据能力出发：有可比时间才比较变化，有真实层级才下钻，有关系数据才画连线。结论随筛选重算，区分事实、假设和未知；数据不足时说明可支持的判断和需要补充的证据。普通样式或控件维护无需展开分析流程。
 
@@ -19,7 +19,7 @@ description: 创建富有空间感的交互式地图 Dashboard，围绕地域差
 
 - 先按[模板适配](references/template-adaptation.md)确认事实粒度、稳定 ID、字段映射与完整记录，再按[地图接入](references/open-street-map.md)确认坐标、地域身份和未定位记录。敏感数据源与地域口径沿用[确认规则](references/data-scope.md)。
 - 优先复用宿主接入，其余按[数据接入判断](../../references/server-runtime/guide.md#数据接入判断)选择。通过 [visual-query](../../references/visual-query/guide.md) 的 Builder → VQuery → VSeed → VChart / VTable 链路表达筛选、聚合与证据，地图消费同一查询范围。
-- 概览呈现主要发现和必要范围；有进一步问题的指标才提供分析入口。深入后增加比较、解释或检验，保留定位、图元选择、完整明细和返回路径。模板中的地震示例与默认最高／最低摘要需按任务适配。
+- 概览呈现主要发现和必要范围；有进一步问题的指标按[深度分析交互](../../references/deep-analysis/interaction.md)提供入口。深入后增加比较、解释或检验，保留定位、图元选择、完整明细和返回路径。模板中的地震示例与默认最高／最低摘要需按任务适配。
 
 ## 3. 呈现与交付
 

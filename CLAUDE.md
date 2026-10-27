@@ -28,3 +28,5 @@ Coding, refactoring, software entropy control, generated artifact handling, sour
 of truth decisions, and validation gates all follow the development skill. Local
 `AGENTS.md` files only provide directory-specific additions and do not override the
 development skill.
+
+Skill documents and references describe current capabilities, usage, and constraints without narrating past changes, removals, or migrations.

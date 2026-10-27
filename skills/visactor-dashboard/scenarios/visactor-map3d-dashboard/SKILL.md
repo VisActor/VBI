@@ -11,7 +11,7 @@ description: 创建富有立体感的三维地图 Dashboard，在地球上分析
 
 ## 1. 确定问题与证据
 
-先明确使用者、待判断的问题与可采取的行动。按[分析与决策](../../references/metric-analysis/guide.md)选择比较基准、分析方法、验证证据和记录核对路径，按[空间分析](../../references/metric-analysis/map.md)检查位置、覆盖和地域尺度。普通外观维护只读取涉及的呈现指南。
+先明确使用者、待判断的问题与可采取的行动。按[分析与决策](../../references/data-analysis/guide.md)选择比较基准、分析方法、验证证据和记录核对路径，按[空间分析](../../references/data-analysis/map.md)检查位置、覆盖和地域尺度。普通外观维护只读取涉及的呈现指南。
 
 模板以城市 AQI 静态样本示范数据链路，字段、来源与限制见[地图与数据](references/map-and-data.md)。没有日期、人口和城市坐标时，只能分析来源样本的分布与差异；不生成时间趋势、人口暴露或虚构城市点位。更换业务后重新判断这些能力，结论随范围重算。
 
@@ -19,7 +19,7 @@ description: 创建富有立体感的三维地图 Dashboard，在地球上分析
 
 - 按[模板适配](references/template-adaptation.md)替换 schema、字段映射、指标与证据查询；优先复用已有接入，其余按 [server-runtime](../../references/server-runtime/guide.md)选择。
 - 使用 [visual-query](../../references/visual-query/guide.md) 的 Builder → VQuery → VSeed → VChart / VTable 链路。地球消费聚合结果，可保存的业务公式、关系与条件由 DSL / Builder 管理；相机、悬停与动效归呈现层。
-- 概览突出主要发现，深入分析增加分布、比较、解释或敏感性检验。图表类型由问题选择，有后续价值才开放入口；全量分组和证据可达，Top N 只限制展示。模板默认摘要不能作为分析深度的完成标准。
+- 概览突出主要发现，深入分析增加分布、比较、解释或敏感性检验。图表类型由问题选择，有后续价值才按[深度分析交互](../../references/deep-analysis/interaction.md)开放入口；全量分组和证据可达，Top N 只限制展示。模板默认摘要不能作为分析深度的完成标准。
 - 明确事实、假设与未知，给出证据支持的下一步；数据不足时说明缺口，不从样本排名直接推断原因或治理效果。
 
 ## 3. 呈现与交付

@@ -1,12 +1,12 @@
 # ChartEditor Morph 经验
 
-通用排查与验收方法见 [visual-query 的 Morph 经验](../../../references/visual-query/references/morph-transitions.md)。这里保留编辑器当前实现的边界，避免把历史方案当成现行逻辑。
+通用排查与验收方法见 [visual-query 的 Morph 经验](../../../references/visual-query/references/morph-transitions.md)。本篇说明编辑器的更新接口、数据身份与动画边界。
 
 ## 所有权与数据身份
 
 修正优先落在 VSeed 的 DSL、主题和管线；模板只管理实例更新，不二次改写生成的 spec 或引擎私有方法。`animation.morph` 可显式开关，内置深浅主题默认开启，图表显式配置优先；整体关闭动画与系统减少动态效果仍有更高优先级。
 
-`animationMorph` 引用已有 `DimensionKey`，不遍历或复制 `data.values`。完整维度身份在 `unfoldDimensions` 原有行遍历中生成：按字段名排序的原始维度元组，排除折叠指标。不同指标共享维度组，允许柱条与双轴拆分、合并；保留原生数据 key 和 mark key。
+`animationMorph` 引用已有 `DimensionKey`，不遍历或复制 `data.values`。完整维度身份在 `unfoldDimensions` 的行遍历中生成：按字段名排序的原始维度元组，排除折叠指标。不同指标共享维度组，允许柱条与双轴拆分、合并；保留原生数据 key 和 mark key。
 
 只有需要隔离几何结构的管线传入 chartType，例如雷达使用 `createReshapeWithEncoding('radar')` / `createPivotReshapeWithEncoding('radar')`。不要给所有图型都加独立前缀，否则跨图型的有效匹配会失效。
 
@@ -20,7 +20,7 @@ DSL chartType 改变时，通过 `updateSpec` 第四参数 `{ change: true, reMa
 
 ## 不适合路径变形的场景
 
-- 饼 / 环的非正值会形成零角度扇区；通用路径转换可能在中间帧生成大圆。VSeed 复用折叠统计判断，在这类输入下采用原生淡入，保留原数据、终态及显式动画配置。正值饼环继续支持路径变形。
+- 饼 / 环的非正值会形成零角度扇区；通用路径转换可能在中间帧生成大圆。VSeed 复用折叠统计判断，在这类输入下采用原生淡入，保留原数据、终态及显式动画配置。正值饼环支持路径变形。
 - 雷达的面和线不支持与点相同的路径 morph。热力格子只变成点会与独立出现的面叠加，产生奇怪飞入效果。雷达使用独立身份范围，跨结构切换协调淡入；显式 radial 动画仍保留。
 - 层级图的原生主体 mark 不一定启用 morph。旭日图与矩形树图保持原行为，不因终态正确就宣称支持相互路径变形。
 

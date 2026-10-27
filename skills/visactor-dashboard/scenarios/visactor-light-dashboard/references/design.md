@@ -8,22 +8,26 @@
 
 ## 参考色板
 
-经营概览（`#A8C7E8`）与全球寿命观察（`#9FBFDF`）保留两套蓝色基准；其余 22 份模板采用下列色阶。色号是 Dashboard 适配值，颜色分工参考 Apple 的[颜色](https://developer.apple.com/design/human-interface-guidelines/color)与[材质](https://developer.apple.com/design/human-interface-guidelines/materials)指南。
+经营概览使用草绿 `#4F8F76`，全球寿命观察使用 `#9FBFDF`，心衰与餐食运动分别使用鸢紫与杏橙。下列色阶用于业务适配。色号是 Dashboard 适配值，颜色分工参考 Apple 的[颜色](https://developer.apple.com/design/human-interface-guidelines/color)与[材质](https://developer.apple.com/design/human-interface-guidelines/materials)指南。
 
-| 色系     | 图形 `--accent` | 文字 `--accent-ink` | 底色 `--background-base` | 氛围 `--background-glow` |
-| -------- | --------------- | ------------------- | ------------------------ | ------------------------ |
-| 冰川蓝   | `#427FC0`       | `#214D7C`           | `#F3F7FC`                | `#DCE9F8`                |
-| 鸢尾紫   | `#7664C3`       | `#4C3C85`           | `#F6F4FB`                | `#EAE3F8`                |
-| 玫瑰粉   | `#BE658B`       | `#853E5C`           | `#FBF4F7`                | `#F7E3EC`                |
-| 杏橙     | `#C06C32`       | `#884C22`           | `#FBF7F1`                | `#F7E8D7`                |
-| 琥珀金   | `#A98427`       | `#725818`           | `#FAF8F1`                | `#F1E9CE`                |
-| 勃艮第红 | `#94506D`       | `#66334B`           | `#FAF4F7`                | `#F3E5EB`                |
+| 色系 | 图形 `--accent` | 文字 `--accent-ink` | 底色 `--background-base` | 氛围 `--background-glow` |
+| ---- | --------------- | ------------------- | ------------------------ | ------------------------ |
+| 浅蓝 | `#9FBFDF`       | `#526F8E`           | `#F0F2F5`                | `#DDD6ED`                |
+| 冰蓝 | `#427FC0`       | `#214D7C`           | `#F3F7FC`                | `#DCE9F8`                |
+| 鸢紫 | `#7664C3`       | `#4C3C85`           | `#F6F4FB`                | `#EAE3F8`                |
+| 玫粉 | `#BE658B`       | `#853E5C`           | `#FBF4F7`                | `#F7E3EC`                |
+| 草绿 | `#4F8F76`       | `#2F604D`           | `#F2F7F3`                | `#DCECE1`                |
+| 杏橙 | `#D18368`       | `#92513F`           | `#FBF7F5`                | `#F5E3DA`                |
+| 琥珀 | `#BA914A`       | `#7d6238`           | `#FAF8F4`                | `#F1E7D5`                |
+| 酒红 | `#94506D`       | `#66334B`           | `#FAF4F7`                | `#F3E5EB`                |
 
 图形、重点文字与背景分别控制强度，正文与表格使用稳定中性色。已有品牌和用户指定配色优先；没有明确需要时降低绿色主色的选择优先级。颜色同时配合文字、位置或图形表达，下降、亏损等保留业务语义，不随主题改写。
 
 ## 玻璃阅读面
 
-`dashboard-material` 维护页面、明细和弹窗的材质 token。继承其阅读面层次：指标卡清楚、底部明细更透明，弹窗隔开背后内容；嵌套图表与表格使用轻薄底面，不重复模糊。控件轨道与选中面见[筛选器](filter.md#视觉标准)。
+`dashboard-material` 统一 Card、Modal、菜单与控件的材质：近白灰色半透明底面、左上局部高光、轻微斜向染色，以及柔和的单层上沿高光。透明边框保留几何占位，背景裁切到内边界；轮廓由单层高光与分级柔和投影表达，不叠加下沿硬线。
+
+默认玻璃强度为 60%：主卡片底面为 60%，底部明细为 52%；Modal 与菜单共用约 50% 的浮层底面与 18px 背景模糊，筛选轨道为 40%。外观设置中的强度同时调整这些底面、局部高光与模糊，强度范围为 0–100，低值更通透，高值更凝实。筛选器自身使用轻量模糊；Modal 内的平铺与触发器只使用填色，图表与表格内层使用薄底，不叠加模糊。白色选中面、无外阴影和交互反馈见[筛选器](filter.md#视觉标准)。具体数值由 HTML token 维护。
 
 装饰应弱于内容。避免多层高彩度渐变、强光晕和反复透明叠色；模糊不能替代稳定底色和足够对比。背景装饰不拦截指针，文字与 Canvas 不随背景一起模糊。不支持模糊或用户减少透明效果时使用 `--glass-fallback`。
 
@@ -44,6 +48,29 @@ Canvas 颜色经适配器解析成渲染器支持的值，不能直接传入未�
 
 API 见 [VSeed](../../../references/api/vseed/guide.md)；固定版本兼容项见[模板回归](template-integration.md#固定版本与场景回归)。
 
-## 按需提供主题切换
+## 柱图的指标颜色编码
 
-模板没有内置配色选择器。用户需要切换时，更新 CSS token 后重新读取 Canvas 颜色，复用缓存结果和渲染实例，保留当前数据范围与表格状态。可保存的主题配置通过所属 DSL / Builder 管理，具体背景和绘制留在 UI。验收见[页面布局与视觉对照](acceptance.md#页面布局与视觉对照)。
+同色柱图用深浅辅助比较大小时，将同一真实指标分别声明为位置通道与 `color` 通道，使用 VSeed 的 `linearColorScheme` 生成连续色阶。色阶读取当前主题的 `--accent` 与 `--chart-accent-end`，主题切换后复用现有实例更新。示例：
+
+```js
+measures: [
+  { id: 'value', alias: '平均热量', encoding: 'xAxis' },
+  { id: 'value', alias: '平均热量', encoding: 'color' },
+]
+```
+
+`--accent-ink` 负责主题文字；`--chart-accent-end` 负责图表的连续色阶末端。两种暖色单独配置图形末端：杏橙为 `#C4755D`，琥珀为 `#AF813F`，背景分别采用浅杏白和暖象牙白；其余主题末端默认沿用文字色。不要为提高文字对比而把暖色图表压成棕黑色。
+
+横向 `bar` 使用 `xAxis`，纵向 `column` 使用 `yAxis`；同一字段的两次声明只负责通道映射，不复制查询或重算聚合。不要用固定 `barColor` 覆盖连续色标。迷你 column 的 `barGradient: true` 控制柱体内部从零基线到数值端的透明渐变，颜色端点继承数值色标，边框保持关闭。
+
+同值同色，空集和单值不伪造差异，Tooltip 不重复列出同一指标；负值与业务状态的语义色优先于连续色阶。色域来自真实数值，精确比较仍由长度、标签与 Tooltip 承担，不把微小色差写成显著差异。
+
+## 外观设置
+
+四份模板在标题右侧筛选器的最末尾提供 36px 三点按钮，打开锚定于按钮的玻璃浮窗。按钮使用中性次级图标色，并复用筛选控件的材质、指针高光、白色 hover、内阴影和按压回弹。浮窗包含本篇全部八种主题（名称均为两个字）、玻璃强度和“恢复默认外观”；支持外部关闭、Escape 与关闭后焦点返回。窄屏浮窗保持在视口内，内容可独立滚动。
+
+每份 HTML 通过根元素的 `data-dashboard`、`data-default-theme` 与 `data-default-glass` 明确身份和默认值：寿命为 `mist-blue`、心衰为 `iris`、餐食运动为 `apricot`、经营概览为 `sage`，默认强度均为 `60`。主题色板集中在内嵌 `DashboardAppearance`，CSS token 与颜色按钮消费同一配置。
+
+外观属于本地 UI 偏好，使用 `vbi-light-dashboard:<data-dashboard>:appearance` 独立保存到 localStorage，刷新时在内容绘制前恢复。恢复默认只重置当前模板外观，不改变业务筛选；存储不可用时仍可即时调整。可跨宿主恢复的分析条件继续由所属 DSL / Builder 管理。
+
+主题变化重新读取 Canvas 颜色，使用缓存数据和现有 VSeed 配置，经 `updateSpec` 更新图表、`updateTheme` 更新表格；不重新取数或卸载实例。玻璃滑块只更新 CSS 材质，不触发查询或图表重建。验收见[外观设置](acceptance.md#外观设置)。

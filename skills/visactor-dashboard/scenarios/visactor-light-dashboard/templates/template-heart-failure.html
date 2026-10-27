@@ -1,16 +1,278 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-dashboard="heart-failure" data-default-theme="iris" data-default-glass="60" data-theme="iris">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="color-scheme" content="light" />
     <link rel="icon" href="data:," />
     <title>心衰样本观察</title>
+    <script id="dashboard-appearance-runtime">
+      // Appearance preferences are local UI state; filters and query Builders remain with the page.
+      window.DashboardAppearance = (() => {
+        const root = document.documentElement
+        const themes = {
+          'mist-blue': {
+            label: '浅蓝',
+            accent: '#9fbfdf',
+            ink: '#526f8e',
+            base: '#f0f2f5',
+            start: '#e2eaf3',
+            glow: '#ddd6ed90',
+          },
+          'glacier-blue': {
+            label: '冰蓝',
+            accent: '#427fc0',
+            ink: '#214d7c',
+            base: '#f3f7fc',
+            start: '#dce9f8',
+            glow: '#dce9f890',
+          },
+          iris: {
+            label: '鸢紫',
+            accent: '#7664c3',
+            ink: '#4c3c85',
+            base: '#f6f4fb',
+            start: '#eae3f8',
+            glow: '#eae3f8',
+          },
+          rose: {
+            label: '玫粉',
+            accent: '#be658b',
+            ink: '#853e5c',
+            base: '#fbf4f7',
+            start: '#f7e3ec',
+            glow: '#f7e3ec90',
+          },
+          sage: {
+            label: '草绿',
+            accent: '#4f8f76',
+            ink: '#2f604d',
+            base: '#f2f7f3',
+            start: '#dcece1',
+            glow: '#e2ece290',
+          },
+          apricot: {
+            label: '杏橙',
+            accent: '#d18368',
+            ink: '#92513f',
+            chartEnd: '#c4755d',
+            base: '#fbf7f5',
+            start: '#f5e3da',
+            glow: '#f5e3da',
+          },
+          amber: {
+            label: '琥珀',
+            accent: '#ba914a',
+            ink: '#7d6238',
+            chartEnd: '#af813f',
+            base: '#faf8f4',
+            start: '#f1e7d5',
+            glow: '#f1e7d590',
+          },
+          burgundy: {
+            label: '酒红',
+            accent: '#94506d',
+            ink: '#66334b',
+            base: '#faf4f7',
+            start: '#f3e5eb',
+            glow: '#f3e5eb90',
+          },
+        }
+        const defaults = { theme: root.dataset.defaultTheme, glassStrength: Number(root.dataset.defaultGlass) }
+        const storageKey = `vbi-light-dashboard:${root.dataset.dashboard}:appearance`
+        const normalize = (value) => ({
+          theme: Object.hasOwn(themes, value?.theme) ? value.theme : defaults.theme,
+          glassStrength: Number.isFinite(value?.glassStrength)
+            ? Math.round(Math.max(0, Math.min(100, value.glassStrength)))
+            : defaults.glassStrength,
+        })
+        let state = { ...defaults },
+          dispose
+        try {
+          state = normalize(JSON.parse(localStorage.getItem(storageKey)))
+        } catch {}
+        const palette = document.createElement('style')
+        palette.id = 'dashboard-appearance-palettes'
+        palette.textContent = Object.entries(themes)
+          .map(
+            ([key, theme]) =>
+              `:root[data-theme="${key}"]{--accent:${theme.accent};--accent-ink:${theme.ink};--chart-accent-end:${theme.chartEnd || theme.ink};--background-base:${theme.base};--background-start:${theme.start};--background-glow:${theme.glow};--glass-fallback:${theme.base}}`,
+          )
+          .join('\n')
+        document.head.append(palette)
+        function apply(next, persist = true) {
+          next = normalize(next)
+          const themeChanged = next.theme !== state.theme
+          const glassChanged = next.glassStrength !== state.glassStrength
+          state = next
+          root.dataset.theme = state.theme
+          root.style.setProperty('--glass-strength', state.glassStrength)
+          if (persist) {
+            try {
+              localStorage.setItem(storageKey, JSON.stringify(state))
+            } catch {}
+          }
+          if (themeChanged || glassChanged)
+            window.dispatchEvent(
+              new CustomEvent('dashboardappearancechange', { detail: { ...state, themeChanged, glassChanged } }),
+            )
+        }
+        apply(state, false)
+        function mount() {
+          if (dispose) return dispose
+          const trigger = document.querySelector('#appearance-trigger')
+          if (!trigger) return () => {}
+          const lifetime = new AbortController(),
+            { signal } = lifetime
+          const on = (node, type, callback, options = {}) =>
+            node.addEventListener(type, callback, { ...options, signal })
+          const panel = document.createElement('dialog')
+          panel.id = 'appearance-panel'
+          panel.className = 'da-panel'
+          panel.setAttribute('aria-labelledby', 'appearance-title')
+          panel.innerHTML = `<header class="da-heading"><h2 id="appearance-title">外观设置</h2><button type="button" class="da-icon" data-appearance="close" aria-label="关闭外观设置"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button></header><div class="da-themes" role="group" aria-label="主题颜色"></div><div class="da-strength"><label for="appearance-strength">玻璃强度<output for="appearance-strength"></output></label><input id="appearance-strength" type="range" min="0" max="100" step="1" aria-label="玻璃强度"><div class="da-scale" aria-hidden="true"><span>通透</span><span>凝实</span></div></div><button type="button" class="da-reset">恢复默认外观</button><p class="da-note">外观自动保存，当前筛选范围保持不变。</p>`
+          document.body.append(panel)
+          const group = panel.querySelector('.da-themes'),
+            input = panel.querySelector('input'),
+            output = panel.querySelector('output')
+          for (const [key, theme] of Object.entries(themes)) {
+            const button = document.createElement('button')
+            button.type = 'button'
+            button.className = 'da-theme'
+            button.dataset.appearanceTheme = key
+            button.style.setProperty('--theme-swatch', theme.accent)
+            const swatch = document.createElement('i')
+            swatch.setAttribute('aria-hidden', 'true')
+            button.append(swatch, document.createTextNode(theme.label))
+            on(button, 'click', () => {
+              apply({ ...state, theme: key })
+              sync()
+            })
+            group.append(button)
+          }
+          function sync() {
+            group
+              .querySelectorAll('button')
+              .forEach((button) =>
+                button.setAttribute('aria-pressed', String(button.dataset.appearanceTheme === state.theme)),
+              )
+            input.value = state.glassStrength
+            input.style.setProperty('--range-progress', `${state.glassStrength}%`)
+            input.setAttribute('aria-valuetext', `${state.glassStrength}%，通透到凝实`)
+            output.value = `${state.glassStrength}%`
+          }
+          function position() {
+            if (!panel.open) return
+            const anchor = trigger.getBoundingClientRect(),
+              box = panel.getBoundingClientRect(),
+              edge = 12
+            const left = Math.max(edge, Math.min(innerWidth - box.width - edge, anchor.right - box.width))
+            const top = Math.max(edge, Math.min(innerHeight - box.height - edge, anchor.bottom + 10))
+            panel.style.left = `${left}px`
+            panel.style.top = `${top}px`
+          }
+          function close(restoreFocus = false) {
+            if (!panel.open) return
+            panel.close()
+            trigger.setAttribute('aria-expanded', 'false')
+            if (restoreFocus) trigger.focus({ preventScroll: true })
+          }
+          on(trigger, 'click', () => {
+            if (panel.open) return close(true)
+            document.querySelectorAll('.df-selector').forEach((selector) => window.DashboardFilters?.close(selector))
+            sync()
+            panel.show()
+            trigger.setAttribute('aria-expanded', 'true')
+            position()
+            group.querySelector('[aria-pressed="true"]').focus({ preventScroll: true })
+          })
+          on(panel.querySelector('[data-appearance="close"]'), 'click', () => close(true))
+          on(panel, 'cancel', (event) => {
+            event.preventDefault()
+            close(true)
+          })
+          on(panel, 'close', () => trigger.setAttribute('aria-expanded', 'false'))
+          on(
+            document,
+            'pointerdown',
+            (event) => {
+              if (panel.open && !panel.contains(event.target) && !trigger.contains(event.target)) close()
+            },
+            { capture: true },
+          )
+          on(document, 'focusin', (event) => {
+            if (panel.open && !panel.contains(event.target) && !trigger.contains(event.target)) close()
+          })
+          on(
+            document,
+            'keydown',
+            (event) => {
+              if (panel.open && event.key === 'Escape') {
+                event.preventDefault()
+                event.stopPropagation()
+                close(true)
+              }
+            },
+            { capture: true },
+          )
+          let frame = 0,
+            pendingStrength
+          on(input, 'input', () => {
+            pendingStrength = Number(input.value)
+            output.value = `${pendingStrength}%`
+            input.style.setProperty('--range-progress', `${pendingStrength}%`)
+            if (!frame)
+              frame = requestAnimationFrame(() => {
+                frame = 0
+                apply({ ...state, glassStrength: pendingStrength }, false)
+                sync()
+              })
+          })
+          on(input, 'change', () => {
+            cancelAnimationFrame(frame)
+            frame = 0
+            apply({ ...state, glassStrength: Number(input.value) })
+            sync()
+          })
+          on(panel.querySelector('.da-reset'), 'click', () => {
+            cancelAnimationFrame(frame)
+            frame = 0
+            apply(defaults, false)
+            try {
+              localStorage.removeItem(storageKey)
+            } catch {}
+            sync()
+          })
+          on(window, 'resize', position)
+          on(window, 'scroll', position, { capture: true, passive: true })
+          const resize = new ResizeObserver(position)
+          resize.observe(trigger)
+          resize.observe(panel)
+          dispose = () => {
+            close()
+            lifetime.abort()
+            resize.disconnect()
+            cancelAnimationFrame(frame)
+            panel.remove()
+            dispose = undefined
+          }
+          on(window, 'pagehide', (event) => {
+            if (!event.persisted) dispose()
+          })
+          sync()
+          return dispose
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount, { once: true })
+        else mount()
+        return { mount, getState: () => ({ ...state }), storageKey }
+      })()
+    </script>
     <style>
       * {
         box-sizing: border-box;
       }
       :root {
+        --chart-accent-end: var(--accent-ink);
         --ink: #25303b;
         --muted: #5d6875;
         --up: #12815e;
@@ -145,6 +407,7 @@
         border: 1px solid var(--glass-edge, rgb(255 255 255 / 65%));
         border-radius: 24px;
         background: var(--glass-background, rgb(255 255 255 / 65%));
+        background-clip: padding-box;
         box-shadow: var(--glass-shadow, 0 18px 48px -20px rgb(40 51 62 / 15%));
       }
       .dashboard-loading-orbit {
@@ -263,8 +526,10 @@
           transform: translateX(360%);
         }
       }
-      /* 主页 VTable 使用无边框阅读面；选中与键盘焦点继续使用各自的 token。 */
-      #overview-table {
+      /* VTable 使用无边框阅读面；选中与键盘焦点使用各自的 token。 */
+      #overview-table,
+      #records-table,
+      .ma-dialog .ma-table {
         --table-frame: transparent;
         --table-divider: transparent;
       }
@@ -608,17 +873,31 @@
       /* 与地图模板共用玻璃层次；每个阅读面只做一次背景模糊。 */
       :root {
         --chart-track: #e7ebf0;
-        --glass-surface: rgb(255 255 255 / 46%);
+        --glass-surface: color-mix(in srgb, var(--glass-solid) calc(30% + var(--glass-strength) * 0.5%), transparent);
         --glass-fallback: var(--background-base);
-        --glass-filter: blur(14px) saturate(1.08) brightness(1.02);
-        --glass-sheen: linear-gradient(145deg, rgb(255 255 255 / 32%), rgb(255 255 255 / 4%) 58%);
+        --glass-solid: #fafbfc;
+        --glass-overlay-surface: color-mix(
+          in srgb,
+          var(--glass-solid) calc(30% + var(--glass-strength) * 0.34%),
+          transparent
+        );
+        --glass-filter: blur(calc(12px + var(--glass-strength) * 0.1px)) saturate(1.22);
+        --glass-control-filter: blur(calc(6px + var(--glass-strength) * 0.06px)) saturate(1.3);
+        --glass-sheen:
+          radial-gradient(
+            100% 80px at 5% 0%,
+            rgb(255 255 255 / calc(0.22 + var(--glass-strength) * 0.002)),
+            transparent 72%
+          ),
+          linear-gradient(145deg, transparent 42%, color-mix(in srgb, var(--accent) 2%, transparent));
+        --glass-lip: inset 0 1px 0 rgb(255 255 255 / calc(0.42 + var(--glass-strength) * 0.003));
         --glass-background: var(--glass-sheen), var(--glass-surface);
-        --glass-edge: rgb(255 255 255 / 64%);
-        --glass-shadow:
-          0 18px 48px -20px rgb(40 51 62 / 15%), 0 4px 16px -8px rgb(40 51 62 / 8%),
-          inset 0 1px 0 rgb(255 255 255 / 76%), inset 0 -1px 0 rgb(255 255 255 / 16%);
-        --glass-tile: linear-gradient(145deg, rgb(255 255 255 / 48%), rgb(255 255 255 / 20%));
-        --glass-tile-shadow: inset 0 1px 0 rgb(255 255 255 / 68%), 0 5px 16px -12px rgb(40 51 62 / 12%);
+        --glass-edge: transparent;
+        --glass-shadow: var(--glass-lip), 0 18px 44px -22px rgb(31 50 65 / 20%), 0 2px 8px -4px rgb(31 50 65 / 12%);
+        --glass-raised-shadow:
+          var(--glass-lip), 0 18px 44px -22px rgb(31 50 65 / 30%), 0 2px 8px -4px rgb(31 50 65 / 16%);
+        --glass-tile: linear-gradient(155deg, rgb(255 255 255 / 24%), transparent 52%), rgb(255 255 255 / 14%);
+        --glass-tile-shadow: var(--glass-lip);
         --glass-divider: rgb(104 122 143 / 12%);
         --overlay-duration: 720ms;
         --overlay-easing: cubic-bezier(0.22, 1, 0.36, 1);
@@ -626,6 +905,7 @@
       .card,
       #dashboard-content > details {
         background: var(--glass-background);
+        background-clip: padding-box;
         border: 1px solid var(--glass-edge);
         box-shadow: var(--glass-shadow);
         backdrop-filter: var(--glass-filter);
@@ -633,11 +913,9 @@
       }
       /* 底部明细保留更轻、更透的阅读面，与上方指标卡区分。 */
       #dashboard-content > details {
-        --glass-surface: rgb(255 255 255 / 24%);
-        --glass-background:
-          linear-gradient(145deg, rgb(255 255 255 / 14%), rgb(255 255 255 / 2%) 58%), var(--glass-surface);
-        --glass-edge: rgb(255 255 255 / 34%);
-        --glass-shadow: 0 10px 32px -24px rgb(40 51 62 / 10%), inset 0 1px 0 rgb(255 255 255 / 38%);
+        --glass-surface: color-mix(in srgb, var(--glass-solid) calc(28% + var(--glass-strength) * 0.4%), transparent);
+        --glass-background: var(--glass-sheen), var(--glass-surface);
+        --glass-shadow: var(--glass-lip), 0 10px 32px -24px rgb(31 50 65 / 16%);
       }
       .hero-bottom,
       .hero-bottom > div + div {
@@ -648,6 +926,7 @@
         #dashboard-content > details,
         dialog.ma-dialog {
           background: var(--glass-fallback);
+          background-clip: padding-box;
         }
       }
       @media (prefers-reduced-transparency: reduce) {
@@ -655,6 +934,7 @@
         #dashboard-content > details,
         dialog.ma-dialog {
           background: var(--glass-fallback);
+          background-clip: padding-box;
           backdrop-filter: none;
           -webkit-backdrop-filter: none;
         }
@@ -691,10 +971,11 @@
         opacity: 1;
       }
       .ma-dialog {
-        --glass-surface: rgb(255 255 255 / 78%);
+        --glass-surface: var(--glass-overlay-surface);
         --glass-background: var(--glass-sheen), var(--glass-surface);
         color: var(--ink);
         background: var(--glass-background);
+        background-clip: padding-box;
         border: 1px solid var(--glass-edge);
         border-radius: 22px;
         backdrop-filter: var(--glass-filter);
@@ -705,14 +986,12 @@
         height: min(780px, calc(100dvh - 48px));
         max-height: calc(100dvh - 48px);
         overflow: hidden;
-        box-shadow:
-          var(--glass-shadow),
-          0 32px 100px -24px rgb(21 32 48 / 24%);
+        box-shadow: var(--glass-raised-shadow);
       }
       .ma-dialog::backdrop {
-        background: rgb(38 51 69 / 22%);
-        backdrop-filter: blur(7px);
-        -webkit-backdrop-filter: blur(7px);
+        background: rgb(31 50 65 / 22%);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
       }
       /* 空间展开与内容揭示分开计时：慢查询仍从内容就绪时开始播放。 */
       .ma-dialog[open] {
@@ -872,11 +1151,14 @@
         flex: none;
         width: 32px;
         height: 32px;
-        font-size: 24px;
-        line-height: 1;
+        line-height: 0;
         padding: 0;
         border: 0;
         color: var(--text-secondary);
+      }
+      .ma-dialog .ma-close svg {
+        display: block;
+        pointer-events: none;
       }
       .ma-dialog .ma-body {
         position: relative;
@@ -904,18 +1186,9 @@
         z-index: 1;
         grid-column: 1 / -1;
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 220px) auto;
+        grid-template-columns: minmax(0, 1fr) auto;
         align-items: center;
         gap: 12px;
-      }
-      .ma-dialog .ma-selection {
-        min-width: 0;
-        height: 28px;
-        display: flex;
-        align-items: center;
-        gap: 7px;
-        font-size: 12px;
-        color: var(--text-secondary);
       }
       .ma-dialog .ma-feedback {
         position: absolute;
@@ -942,11 +1215,6 @@
         border-right-color: var(--ink);
         border-radius: 50%;
         animation: dashboard-loading-turn 1.1s linear infinite;
-      }
-      .ma-dialog .ma-selection > span {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
       }
       .ma-dialog .ma-content {
         display: grid;
@@ -994,9 +1262,10 @@
         flex-direction: column;
         min-width: 0;
         padding: 16px;
-        border: 1px solid rgb(255 255 255 / 42%);
+        border: 1px solid var(--glass-edge);
         border-radius: 14px;
         background: var(--glass-tile);
+        background-clip: padding-box;
         box-shadow: var(--glass-tile-shadow);
       }
       .ma-dialog .ma-panel-heading {
@@ -1021,32 +1290,6 @@
         width: 100%;
         margin-top: 10px;
       }
-      .ma-dialog .ma-picker {
-        position: relative;
-        margin: 0 0 0 auto;
-        padding: 0;
-        border: 0;
-        box-shadow: none;
-        background: transparent;
-        min-width: 0;
-      }
-      .ma-dialog .ma-groups {
-        position: absolute;
-        top: calc(100% + 6px);
-        right: 0;
-        z-index: 2;
-        display: grid;
-        gap: 4px;
-        width: 280px;
-        max-width: calc(100vw - 88px);
-        max-height: 280px;
-        overflow: auto;
-        padding: 6px;
-        background: var(--glass-fallback);
-        border: 1px solid var(--glass-edge);
-        border-radius: 12px;
-        box-shadow: 0 8px 30px #1520301a;
-      }
       .ma-dialog .ma-definition {
         grid-column: 1 / -1;
         margin: 0;
@@ -1068,12 +1311,6 @@
       }
       .ma-dialog [hidden] {
         display: none !important;
-      }
-      /* 保留筛选标签的布局位置，加载和清除选择时不推移内容。 */
-      .ma-dialog .ma-selection[hidden] {
-        display: flex !important;
-        visibility: hidden;
-        pointer-events: none;
       }
       .ma-dialog .ma-chart[data-empty='true'] {
         display: grid;
@@ -1149,15 +1386,6 @@
           grid-template-columns: minmax(0, 1fr) auto;
           gap: 8px;
         }
-        .ma-dialog .ma-picker {
-          grid-column: 2;
-          grid-row: 1;
-        }
-        .ma-dialog .ma-selection {
-          grid-column: 1 / -1;
-          grid-row: 2;
-          width: 100%;
-        }
       }
     </style>
     <style id="dashboard-table-tokens">
@@ -1182,6 +1410,8 @@
         --table-selected: color-mix(in srgb, var(--accent) 25%, transparent);
         --table-selected-row: color-mix(in srgb, var(--accent) 9%, transparent);
         --table-selected-border: color-mix(in srgb, var(--accent) 70%, var(--ink));
+        --table-bar-positive: rgb(104 120 137 / 22%);
+        --table-bar-negative: rgb(194 103 103 / 24%);
         --table-scroll-thumb: color-mix(in srgb, var(--muted) 38%, transparent);
         --table-scroll-rail: transparent;
         --table-font-size: 12px;
@@ -1201,6 +1431,7 @@
       }
       .dashboard-table,
       .ma-dialog .ma-table {
+        position: relative;
         border-radius: var(--table-radius);
         overflow: hidden;
         outline: none;
@@ -1211,15 +1442,17 @@
         outline-offset: 3px;
       }
       .dashboard-table {
-        position: relative;
         width: 100%;
         height: var(--table-overview-max-height);
         margin-top: 14px;
       }
-      .dashboard-table[data-empty='true']::after {
+      .dashboard-table[data-empty='true']::after,
+      .ma-dialog .ma-table[data-empty='true']::after {
         content: '当前筛选暂无数据';
         position: absolute;
-        inset: 45% 0 auto;
+        inset: var(--table-header-height) 0 var(--table-summary-height, 0px);
+        display: grid;
+        place-items: center;
         text-align: center;
         color: var(--text-secondary);
         font: 12px var(--font-ui);
@@ -1236,6 +1469,232 @@
         color: var(--text-faint);
         font-size: 11px;
         font-weight: 400;
+      }
+      .df-menu.dashboard-table-menu {
+        --filter-height: 28px;
+        width: min(264px, calc(100vw - 24px));
+        max-height: calc(100dvh - 24px);
+        padding: 10px;
+        border-radius: 16px;
+        font-size: 11px;
+        overflow: auto;
+      }
+      .dashboard-table-menu:popover-open {
+        display: grid;
+        gap: 6px;
+      }
+      .dashboard-table-menu:not(:popover-open),
+      .dashboard-table-menu [hidden] {
+        display: none !important;
+      }
+      .dashboard-table-menu-heading {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 24px;
+      }
+      .dashboard-table-menu-heading strong {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .dashboard-table-menu
+        :is(.dashboard-table-menu-heading, .dashboard-table-actions, .dashboard-table-sort-row)
+        > button {
+        min-height: var(--filter-height);
+        padding: 0 8px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        box-shadow: none;
+        color: var(--muted);
+        font: inherit;
+        cursor: pointer;
+        transition:
+          background-color 140ms ease,
+          transform 140ms ease;
+      }
+      .dashboard-table-menu
+        :is(.dashboard-table-menu-heading, .dashboard-table-actions, .dashboard-table-sort-row)
+        > button:hover {
+        background: rgb(255 255 255 / 64%);
+        color: var(--ink);
+        box-shadow: inset 0 0 6px rgb(38 53 68 / 6%);
+      }
+      .dashboard-table-menu
+        :is(.dashboard-table-menu-heading, .dashboard-table-actions, .dashboard-table-sort-row)
+        > button:active {
+        transform: scale(0.985);
+        box-shadow: inset 0 0 6px rgb(38 53 68 / 10%);
+      }
+      .dashboard-table-sort-row {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .dashboard-table-menu button.dashboard-table-icon {
+        flex: 0 0 var(--filter-height);
+        display: grid;
+        place-items: center;
+        width: var(--filter-height);
+        height: var(--filter-height);
+        padding: 0;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      .dashboard-table-menu .dashboard-table-sort {
+        flex: 1;
+        min-width: 0;
+        justify-content: space-between;
+        gap: 4px;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      .dashboard-table-menu .dashboard-table-sort button {
+        flex: 1;
+        gap: 5px;
+        height: var(--filter-height);
+        min-height: var(--filter-height);
+        border-radius: 6px;
+        font: inherit;
+      }
+      .dashboard-table-menu .dashboard-table-sort .segment-indicator {
+        border-radius: 6px;
+        background: rgb(255 255 255 / 72%);
+        box-shadow: none;
+      }
+      .dashboard-table-menu .dashboard-table-sort-row svg {
+        width: 13px;
+        height: 13px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .dashboard-table-rule {
+        display: grid;
+        grid-template-columns: 96px minmax(0, 1fr);
+        align-items: center;
+        gap: 6px;
+        padding-top: 8px;
+        border-top: 1px solid color-mix(in srgb, var(--muted) 12%, transparent);
+      }
+      .dashboard-table-rule[data-range='true'],
+      .dashboard-table-rule[data-valueless='true'] {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .dashboard-table-menu .dashboard-table-rule .df-selector,
+      .dashboard-table-menu .dashboard-table-rule .df-selector > summary {
+        width: 100%;
+        min-width: 0;
+      }
+      .dashboard-table-menu .dashboard-table-rule .df-selector > summary {
+        gap: 5px;
+        padding: 0 7px;
+        border: 1px solid rgb(104 120 137 / 14%);
+        border-radius: 6px;
+        font: inherit;
+        background: rgb(255 255 255 / 16%);
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      .dashboard-table-menu .dashboard-table-rule .df-selector > summary:hover {
+        background: rgb(255 255 255 / 56%);
+        box-shadow: var(--control-menu-hover-shadow);
+      }
+      .dashboard-table-rule [data-control-label] {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .dashboard-table-values {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+      }
+      .dashboard-table-values > span {
+        color: var(--text-faint);
+        font-size: 11px;
+      }
+      .dashboard-table-menu .dashboard-table-values .df-search {
+        flex: 1;
+        width: 0;
+        min-width: 0;
+        margin: 0;
+        padding: 0 8px;
+        border: 1px solid rgb(104 120 137 / 14%);
+        border-radius: 6px;
+        background: rgb(255 255 255 / 16%);
+        appearance: textfield;
+      }
+      .dashboard-table-values input::-webkit-inner-spin-button,
+      .dashboard-table-values input::-webkit-outer-spin-button {
+        appearance: none;
+        margin: 0;
+      }
+      .df-menu.dashboard-table-menu :is(button, summary, input):focus-visible {
+        outline: 1.5px solid color-mix(in srgb, var(--muted) 84%, transparent);
+        outline-offset: 1px;
+      }
+      .dashboard-table-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-height: var(--filter-height);
+        font: inherit;
+        margin: 0;
+        padding-top: 4px;
+      }
+      .dashboard-table-menu .dashboard-table-actions [data-dt='apply'] {
+        margin-left: auto;
+        min-width: 56px;
+        background: var(--ink);
+        color: #fff;
+        font-weight: 500;
+      }
+      .dashboard-table-menu .dashboard-table-actions [data-dt='apply']:hover {
+        background: color-mix(in srgb, var(--ink) 88%, white);
+      }
+      .dashboard-table-feedback {
+        color: var(--muted);
+        margin: 0;
+        font-size: 11px;
+      }
+      .dashboard-table-feedback:empty {
+        display: none;
+      }
+      .dashboard-table-menu .df-menu {
+        padding: 6px;
+        border-radius: 12px;
+        font-size: inherit;
+      }
+      .dashboard-table-menu .df-menu :is(.df-option, .df-search) {
+        border-radius: 6px;
+      }
+      @media (pointer: coarse) {
+        .df-menu.dashboard-table-menu {
+          --filter-height: 36px;
+          font-size: 12px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .dashboard-table-menu
+          :is(.dashboard-table-menu-heading, .dashboard-table-actions, .dashboard-table-sort-row)
+          button {
+          transition: none;
+        }
       }
     </style>
     <script id="dashboard-table-runtime">
@@ -1294,8 +1753,8 @@
             throw error
           }
         }
-        const animation = () =>
-          matchMedia('(prefers-reduced-motion: reduce)').matches ? false : { type: 'all', duration: 220, delay: 0 }
+        const appearances = new WeakMap()
+        const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches
         function options(base, host) {
           const tokens = readTokens(host)
           try {
@@ -1316,11 +1775,14 @@
               borderColor: divider,
               borderLineWidth: [0, 0, 1, 0],
             }
-            return {
+            const resolved = {
               ...base,
               columns: base.columns.map((column) => ({
                 ...column,
-                headerStyle: { ...column.headerStyle, textAlign: column.style?.textAlign || 'left' },
+                headerStyle: {
+                  ...column.headerStyle,
+                  textAlign: column.headerStyle?.textAlign || column.style?.textAlign || 'left',
+                },
               })),
               autoFillWidth: true,
               autoWrapText: false,
@@ -1328,8 +1790,9 @@
               defaultRowHeight: tokens.number('--table-row-height'),
               defaultHeaderRowHeight: tokens.number('--table-header-height'),
               hover: { highlightMode: 'row' },
-              select: { highlightMode: 'row', headerSelectMode: 'cell' },
-              animationAppear: animation(),
+              select: { highlightMode: 'cell', headerSelectMode: 'inline' },
+              keyboardOptions: { ...base.keyboardOptions, copySelected: true },
+              animationAppear: reducedMotion() ? false : base.animationAppear,
               theme: {
                 underlayBackgroundColor: color('--table-canvas'),
                 defaultStyle: common,
@@ -1344,6 +1807,13 @@
                   fontWeight: 600,
                   color: color('--table-header-text'),
                   bgColor: color('--table-header'),
+                  hover,
+                },
+                bottomFrozenStyle: {
+                  ...common,
+                  bgColor: color('--table-header'),
+                  color: color('--table-header-text'),
+                  fontWeight: 600,
                   hover,
                 },
                 selectionStyle: {
@@ -1370,97 +1840,1403 @@
                 columnResize: { lineColor: color('--table-selected-border'), lineWidth: 1 },
               },
             }
+            appearances.set(resolved, base.animationAppear)
+            return resolved
           } finally {
             tokens.dispose()
           }
         }
-        function overview(Builder, columns, rows, host) {
+        function build(Builder, { dataset, dimensions, measures, totals = 'avg' }, host) {
+          const tokens = readTokens(host)
+          try {
+            const spec = Builder.from({
+              chartType: 'table',
+              dataset,
+              dimensions,
+              measures,
+              totals,
+              locale: 'zh-CN',
+              theme: 'light',
+              bodyCellStyle: {
+                selector: { field: measures.map(({ id }) => id) },
+                enableProgressBar: true,
+                barPositiveColor: tokens.color('--table-bar-positive'),
+                barNegativeColor: tokens.color('--table-bar-negative'),
+              },
+            }).build()
+            spec.columns = spec.columns.map((column) => {
+              const textAlign = measures.some(({ id }) => id === column.field) ? 'right' : 'left'
+              const style = column.style
+              const aggregation = column.aggregation
+              return {
+                ...column,
+                ...(aggregation?.aggregationType !== 'NONE' && aggregation?.formatFun
+                  ? {
+                      aggregation: {
+                        ...aggregation,
+                        formatFun: (value, ...args) =>
+                          Number.isFinite(value) ? aggregation.formatFun(value, ...args) : '—',
+                      },
+                    }
+                  : {}),
+                headerStyle: { ...column.headerStyle, textAlign },
+                style: (datum) => ({ ...(typeof style === 'function' ? style(datum) : style), textAlign }),
+              }
+            })
+            return spec
+          } finally {
+            tokens.dispose()
+          }
+        }
+        function overview(
+          Builder,
+          columns,
+          rows,
+          host,
+          formats = [],
+          summary = { type: 'avg', fields: columns.slice(1).map((_, i) => i + 1) },
+        ) {
           const records = rows.map((values) =>
-            Object.fromEntries(values.map((value, index) => [`c${index}`, value ?? '—'])),
+            Object.fromEntries(values.map((value, index) => [`c${index}`, value ?? null])),
           )
-          const dimensions = columns.map((alias, index) => ({ id: `c${index}`, alias, encoding: 'column' }))
-          const base = records.length
-            ? Builder.from({ chartType: 'table', dataset: records, dimensions, measures: [] }).build()
-            : { records, columns: dimensions.map(({ id, alias }) => ({ field: id, title: alias })) }
-          base.columns = columns.map((title, index) => ({
-            ...base.columns.find((column) => column.field === `c${index}`),
-            field: `c${index}`,
-            title,
-            width: index === 0 ? 170 : Math.max(130, Math.min(210, title.length * 12 + 24)),
-            style: { textAlign: index === 0 ? 'left' : 'right' },
-          }))
+          const fields = columns.map((alias, index) => ({ id: `c${index}`, alias, encoding: 'column' }))
+          const base = build(
+            Builder,
+            {
+              dataset: records,
+              dimensions: fields.filter((_, index) => !summary.fields.includes(index)),
+              measures: fields.filter((_, index) => summary.fields.includes(index)),
+              totals: summary.type,
+            },
+            host,
+          )
+          base.columns = columns.map((title, index) => {
+            const column = base.columns.find((column) => column.field === `c${index}`)
+            const textAlign = index === 0 ? 'left' : 'right'
+            const style = column.style
+            return {
+              ...column,
+              headerIcon: filterIcon(),
+              fieldFormat: (record) =>
+                record[`c${index}`] == null
+                  ? '—'
+                  : formats[index]
+                    ? formats[index](record[`c${index}`])
+                    : record[`c${index}`],
+              ...(formats[index] && summary.fields.includes(index)
+                ? {
+                    aggregation: {
+                      ...column.aggregation,
+                      formatFun: (value) => (Number.isFinite(value) ? formats[index](value) : '—'),
+                    },
+                  }
+                : {}),
+              width: index === 0 ? 170 : Math.max(130, Math.min(210, title.length * 12 + 24)),
+              headerStyle: { ...column.headerStyle, textAlign },
+              style: (datum) => ({ ...(typeof style === 'function' ? style(datum) : style), textAlign }),
+            }
+          })
           base.widthMode = 'standard'
           const resolved = options(base, host)
+          const summaryRows = rows.length ? resolved.bottomFrozenRowCount : 0
           host.style.height = `${Math.min(
             parseFloat(getComputedStyle(host).getPropertyValue('--table-overview-max-height')),
-            resolved.defaultHeaderRowHeight + Math.max(1, rows.length) * resolved.defaultRowHeight + 2,
+            resolved.defaultHeaderRowHeight + (Math.max(1, rows.length) + summaryRows) * resolved.defaultRowHeight + 2,
           )}px`
+          host.style.setProperty('--table-summary-height', `${summaryRows * resolved.defaultRowHeight}px`)
           return resolved
         }
+        function update(table, next, { records = true } = {}) {
+          table.updateColumns(
+            next.columns.map((column) => ({
+              ...column,
+              ...(column.headerIcon
+                ? {
+                    headerIcon:
+                      table.options.columns.find(({ field }) => field === column.field)?.headerIcon ||
+                      column.headerIcon,
+                  }
+                : {}),
+            })),
+            { clearColWidthCache: false, clearRowHeightCache: false },
+          )
+          if (records) setRecords(table, next.records)
+        }
         function setRecords(table, records, { animate = true } = {}) {
-          table.clearSelected()
-          table.options.animationAppear = animate ? animation() : false
+          if (table.records !== records) table.clearSelected()
+          if (!appearances.has(table.options)) appearances.set(table.options, table.options.animationAppear)
+          table.options.animationAppear = animate && !reducedMotion() ? appearances.get(table.options) : false
           table.setRecords(records)
         }
-        return { load, options, overview, setRecords }
+        const filterIcon = (active = false) => ({
+          name: 'dashboard-table-filter',
+          type: 'svg',
+          width: 14,
+          height: 14,
+          positionType: 'right',
+          marginLeft: 5,
+          cursor: 'pointer',
+          svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2 3h12L9.5 8v5l-3-1.5V8Z" fill="${active ? '#64717e' : 'none'}" stroke="#64717e" stroke-width="1.3" stroke-linejoin="round"/></svg>`,
+        })
+        const blankOperators = [
+          { id: 'empty', label: '为空', op: 'is null', inputs: 0 },
+          { id: 'filled', label: '不为空', op: 'is not null', inputs: 0 },
+        ]
+        const equalityOperators = [
+          { id: 'eq', label: '等于', op: '=' },
+          { id: 'ne', label: '不等于', op: '!=' },
+        ]
+        const columnOperators = {
+          text: [
+            { id: 'contains', label: '包含', op: 'ilike', prefix: '%', suffix: '%' },
+            { id: 'excludes', label: '不包含', op: 'not ilike', prefix: '%', suffix: '%' },
+            ...equalityOperators,
+            { id: 'starts', label: '开头是', op: 'ilike', suffix: '%' },
+            { id: 'ends', label: '结尾是', op: 'ilike', prefix: '%' },
+            ...blankOperators,
+          ],
+          number: [
+            ...equalityOperators,
+            { id: 'gt', label: '大于', op: '>' },
+            { id: 'gte', label: '大于等于', op: '>=' },
+            { id: 'lt', label: '小于', op: '<' },
+            { id: 'lte', label: '小于等于', op: '<=' },
+            { id: 'between', label: '介于', op: 'between', inputs: 2 },
+            { id: 'outside', label: '不在区间', op: 'not between', inputs: 2 },
+            ...blankOperators,
+          ],
+        }
+        async function createView({
+          vbi,
+          query,
+          connectorId,
+          columns,
+          fields = columns.map((_, index) => `c${index}`),
+          types = columns.map((_, i) => (i === 0 ? 'string' : 'number')),
+          host,
+          render,
+        }) {
+          // Query the displayed grain without regrouping its already aggregated measures.
+          const id = `${connectorId}-table-view`
+          const schema = [
+            ...fields.map((name, index) => ({ name, type: types[index] })),
+            { name: '__row_order', type: 'number' },
+          ]
+          const source = { type: 'json', rawDataset: [] }
+          if (await query.hasDataset(id)) await query.updateDatasetSource(id, schema, source)
+          else await query.createDataset(id, schema, source)
+          vbi.connectors.register(id, {
+            discoverSchema: async () => schema,
+            query: async ({ queryDSL }) => {
+              const dataset = await query.connectDataset(id)
+              try {
+                return await dataset.query(queryDSL)
+              } finally {
+                await dataset.disconnect()
+              }
+            },
+          })
+          const builder = vbi.chart.create(vbi.chart.createEmpty(id))
+          builder.chartType.changeChartType('table')
+          fields.forEach((field, index) => builder.dimensions.add(field, (node) => node.setAlias(columns[index])))
+          builder.dimensions.add('__row_order', (node) => node.setSort({ order: 'asc' }))
+          const events = new AbortController(),
+            { signal } = events
+          let table,
+            rows = [],
+            sourceVersion = 0,
+            loadedVersion = -1,
+            revision = 0,
+            pending,
+            disposed = false
+          let queue = Promise.resolve(),
+            activeField,
+            mode,
+            operatorType,
+            anchor,
+            iconState,
+            openFrame = 0
+          const panel = document.createElement('div')
+          panel.className = 'df-menu dashboard-table-menu'
+          panel.setAttribute('popover', 'auto')
+          panel.setAttribute('role', 'dialog')
+          panel.innerHTML = `<header class="dashboard-table-menu-heading"><strong data-dt="title"></strong><button type="button" data-dt="clear" title="清除本列筛选" aria-label="清除本列筛选">清除</button></header>
+      <div class="dashboard-table-sort-row"><div class="segment dashboard-table-sort" role="group" aria-label="列排序"><button type="button" data-sort="asc"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 13V3m-2 2 2-2 2 2m3-1h5M9 8h4m-4 4h2"/></svg>升序</button><button type="button" data-sort="desc"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3v10m-2-2 2 2 2-2m3-7h2M9 8h4m-4 4h5"/></svg>降序</button></div><button type="button" class="df-icon dashboard-table-icon" data-filter-control="icon" data-sort="normal" title="恢复默认顺序" aria-label="恢复默认顺序"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6a5 5 0 1 1 0 5M3 2v4h4"/></svg></button></div>
+      <div class="dashboard-table-rule" data-dt="rule"><details data-filter-control="selector" data-menu-min-width="184" data-menu-align="start" aria-label="筛选条件"><summary><span data-control-label></span></summary><div data-control-options role="group" aria-label="筛选条件"></div></details><div class="dashboard-table-values" data-dt="values"><input class="df-search" data-dt="low" autocomplete="off" spellcheck="false"><span data-dt="separator" aria-hidden="true">—</span><input class="df-search" data-dt="high" type="number" step="any" autocomplete="off"></div></div>
+      <p class="dashboard-table-feedback" data-dt="feedback" role="status"></p>
+      <footer class="dashboard-table-actions"><button type="button" data-dt="reset">清除全部筛选</button><button type="button" data-dt="apply">筛选</button></footer>`
+          ;(host.closest('dialog') || document.body).append(panel)
+          const nodes = Object.fromEntries(
+            [...panel.querySelectorAll('[data-dt]')].map((node) => [node.dataset.dt, node]),
+          )
+          const picker = panel.querySelector('details')
+          const operatorList = picker.querySelector('[data-control-options]')
+          const unmount = DashboardFilters.mount(panel)
+          const operators = () => columnOperators[types[fields.indexOf(activeField)] === 'number' ? 'number' : 'text']
+          const currentOperator = () => operators().find(({ id }) => id === mode)
+          const predicates = (field) =>
+            builder.whereFilter.toJSON().conditions.filter((condition) => condition.field === field)
+          const hide = (focus = false) => {
+            cancelAnimationFrame(openFrame)
+            openFrame = 0
+            DashboardFilters.close(picker)
+            if (panel.matches(':popover-open')) panel.hidePopover()
+            if (focus && !disposed) (table?.getElement() || host).focus({ preventScroll: true })
+          }
+          function headers() {
+            const dimensions = builder.build().dimensions
+            const state = JSON.stringify([
+              builder.whereFilter.toJSON(),
+              dimensions.map(({ field, sort }) => [field, sort]),
+            ])
+            if (!table || state === iconState) return
+            iconState = state
+            table.updateColumns(
+              table.options.columns.map((column) => ({
+                ...column,
+                headerIcon: filterIcon(
+                  predicates(column.field).length > 0 || !!dimensions.find((dim) => dim.field === column.field)?.sort,
+                ),
+              })),
+              { clearColWidthCache: false, clearRowHeightCache: false },
+            )
+          }
+          function refresh() {
+            const ticket = ++revision
+            pending?.abort()
+            const task = queue
+              .catch(() => {})
+              .then(async () => {
+                if (disposed || ticket !== revision) return false
+                pending = new AbortController()
+                host.setAttribute('aria-busy', 'true')
+                try {
+                  if (loadedVersion !== sourceVersion) {
+                    const version = sourceVersion
+                    await query.updateDatasetSource(id, schema, { type: 'json', rawDataset: rows })
+                    loadedVersion = version
+                  }
+                  if (disposed || ticket !== revision) return false
+                  const seed = await builder.buildVSeed({ signal: pending.signal })
+                  if (disposed || ticket !== revision) return false
+                  const dimensions = builder.build().dimensions
+                  const ids = fields.map((field) => dimensions.find((dim) => dim.field === field).id)
+                  await render(
+                    seed.dataset.map((record) => ids.map((key) => record[key] ?? null)),
+                    rows.length,
+                    { signal: pending.signal, isCurrent: () => !disposed && ticket === revision },
+                  )
+                  if (disposed || ticket !== revision) return false
+                  headers()
+                  return true
+                } catch (error) {
+                  if (disposed || ticket !== revision || error.name === 'AbortError') return false
+                  throw error
+                } finally {
+                  if (!disposed && ticket === revision) host.setAttribute('aria-busy', 'false')
+                }
+              })
+            queue = task
+            return task
+          }
+          async function submit(action) {
+            const field = activeField
+            nodes.feedback.textContent = ''
+            try {
+              action()
+              if ((await refresh()) && activeField === field) hide(true)
+            } catch (error) {
+              nodes.feedback.textContent = `表格更新失败：${error.message}`
+              position()
+            }
+          }
+          function position() {
+            if (!anchor || !panel.matches(':popover-open')) return
+            const cell = table.getCellRelativeRect(anchor.col, anchor.row)
+            const canvas = table.canvas.getBoundingClientRect(),
+              rect = panel.getBoundingClientRect()
+            const below = canvas.top + cell.bottom + 6,
+              above = canvas.top + cell.top - rect.height - 6
+            panel.style.left = `${Math.max(12, Math.min(canvas.left + cell.right - rect.width, innerWidth - rect.width - 12))}px`
+            panel.style.top = `${Math.max(12, Math.min(below + rect.height <= innerHeight - 12 ? below : above, innerHeight - rect.height - 12))}px`
+          }
+          function controls() {
+            const numeric = types[fields.indexOf(activeField)] === 'number',
+              type = numeric ? 'number' : 'text'
+            if (operatorType !== type) {
+              operatorList.replaceChildren(
+                ...operators().map(({ id, label }) => {
+                  const button = document.createElement('button')
+                  button.type = 'button'
+                  button.dataset.op = id
+                  button.textContent = label
+                  return button
+                }),
+              )
+              operatorType = type
+            }
+            const inputs = currentOperator().inputs ?? 1
+            nodes.low.type = numeric ? 'number' : 'search'
+            nodes.low.step = 'any'
+            nodes.values.hidden = inputs === 0
+            nodes.high.hidden = nodes.separator.hidden = inputs !== 2
+            nodes.rule.dataset.range = String(inputs === 2)
+            nodes.rule.dataset.valueless = String(inputs === 0)
+            nodes.low.placeholder = inputs === 2 ? '最小值' : numeric ? '输入数值' : '输入文本'
+            nodes.high.placeholder = '最大值'
+            nodes.low.setAttribute('aria-label', `${nodes.title.textContent}${inputs === 2 ? '下限' : '筛选值'}`)
+            nodes.high.setAttribute('aria-label', `${nodes.title.textContent}上限`)
+            operatorList
+              .querySelectorAll('[data-op]')
+              .forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.op === mode)))
+            DashboardFilters.sync(picker)
+            position()
+          }
+          function show(field, col, row) {
+            if (!fields.includes(field) || disposed || host.closest('[inert]')) return
+            activeField = field
+            anchor = { col, row }
+            nodes.title.textContent = nodes.title.title = columns[fields.indexOf(field)]
+            panel.setAttribute('aria-label', `${nodes.title.textContent}列筛选与排序`)
+            const condition = predicates(field)[0]
+            const op = { eq: '=', ne: '!=', gt: '>', gte: '>=', lt: '<', lte: '<=' }[condition?.op] || condition?.op
+            let option
+            if (op === 'ilike' || op === 'not ilike') {
+              const pattern = String(condition.value)
+              const id =
+                op === 'not ilike'
+                  ? 'excludes'
+                  : pattern.startsWith('%') && pattern.endsWith('%')
+                    ? 'contains'
+                    : pattern.endsWith('%')
+                      ? 'starts'
+                      : 'ends'
+              option = operators().find((item) => item.id === id)
+            } else option = operators().find((item) => item.op === op)
+            option ||= operators()[0]
+            mode = option.id
+            controls()
+            const bounds = option.inputs === 2 ? condition?.value : undefined
+            nodes.low.value = bounds
+              ? (bounds.min ?? bounds[0] ?? '')
+              : option.inputs === 0
+                ? ''
+                : option.prefix || option.suffix
+                  ? String(condition?.value ?? '').slice(
+                      option.prefix?.length || 0,
+                      option.suffix ? -option.suffix.length : undefined,
+                    )
+                  : (condition?.value ?? '')
+            nodes.high.value = bounds?.max ?? bounds?.[1] ?? ''
+            nodes.feedback.textContent = ''
+            const conditions = builder.whereFilter.toJSON().conditions
+            nodes.clear.hidden = !condition
+            nodes.reset.hidden = !conditions.length || (conditions.length === 1 && !!condition)
+            const sort = builder.build().dimensions.find((dim) => dim.field !== '__row_order' && dim.sort)
+            panel.querySelectorAll('[data-sort]').forEach((button) => {
+              button.hidden = button.dataset.sort === 'normal' && !sort
+              if (button.dataset.sort === 'normal') button.removeAttribute('aria-pressed')
+              else
+                button.setAttribute(
+                  'aria-pressed',
+                  String(sort?.field === field && sort.sort.order === button.dataset.sort),
+                )
+            })
+            if (!panel.matches(':popover-open')) panel.showPopover()
+            position()
+            requestAnimationFrame(() => {
+              if (!disposed && panel.matches(':popover-open'))
+                (option.inputs === 0 ? nodes.apply : nodes.low).focus({ preventScroll: true })
+            })
+          }
+          operatorList.addEventListener(
+            'click',
+            (event) => {
+              const button = event.target.closest('[data-op]')
+              if (!button) return
+              mode = button.dataset.op
+              nodes.feedback.textContent = ''
+              controls()
+              ;(currentOperator().inputs === 0 ? nodes.apply : nodes.low).focus({ preventScroll: true })
+            },
+            { signal },
+          )
+          panel.querySelectorAll('[data-sort]').forEach((button) =>
+            button.addEventListener(
+              'click',
+              () =>
+                void submit(() => {
+                  builder.doc.transact(() => {
+                    builder
+                      .build()
+                      .dimensions.forEach((dim) => builder.dimensions.update(dim.id, (node) => node.clearSort()))
+                    if (button.dataset.sort !== 'normal' && button.getAttribute('aria-pressed') !== 'true') {
+                      const dim = builder.build().dimensions.find((item) => item.field === activeField)
+                      builder.dimensions.update(dim.id, (node) => node.setSort({ order: button.dataset.sort }))
+                    }
+                    const original = builder.build().dimensions.find((item) => item.field === '__row_order')
+                    builder.dimensions.update(original.id, (node) => node.setSort({ order: 'asc' }))
+                  })
+                }),
+              { signal },
+            ),
+          )
+          const clear = (field) => predicates(field).forEach((condition) => builder.whereFilter.remove(condition.id))
+          nodes.clear.addEventListener('click', () => void submit(() => clear(activeField)), { signal })
+          nodes.reset.addEventListener('click', () => void submit(() => builder.whereFilter.clear()), { signal })
+          nodes.apply.addEventListener(
+            'click',
+            () => {
+              const numeric = types[fields.indexOf(activeField)] === 'number',
+                option = currentOperator()
+              const low = nodes.low.value.trim(),
+                high = nodes.high.value.trim(),
+                inputs = option.inputs ?? 1
+              if (
+                inputs &&
+                ((!low && (inputs !== 2 || !high)) ||
+                  (numeric && (!nodes.low.checkValidity() || (inputs === 2 && !nodes.high.checkValidity()))))
+              ) {
+                nodes.feedback.textContent = numeric ? '请输入有效数值。' : '请输入筛选文本。'
+                position()
+                return
+              }
+              if (inputs === 2 && low !== '' && high !== '' && Number(low) > Number(high)) {
+                nodes.feedback.textContent = '下限不能大于上限。'
+                position()
+                return
+              }
+              void submit(() =>
+                builder.doc.transact(() => {
+                  clear(activeField)
+                  const add = (group, op, value) =>
+                    group.add(activeField, (node) => node.setOperator(op).setValue(value))
+                  if (inputs === 0) add(builder.whereFilter, option.op)
+                  else if (inputs === 2)
+                    add(builder.whereFilter, option.op, {
+                      min: low === '' ? undefined : Number(low),
+                      max: high === '' ? undefined : Number(high),
+                    })
+                  else
+                    add(
+                      builder.whereFilter,
+                      option.op,
+                      numeric ? Number(low) : `${option.prefix || ''}${low}${option.suffix || ''}`,
+                    )
+                }),
+              )
+            },
+            { signal },
+          )
+          panel.addEventListener(
+            'keydown',
+            (event) => {
+              if (event.isComposing || event.keyCode === 229) return
+              if (event.key === 'Escape') {
+                event.preventDefault()
+                event.stopPropagation()
+                hide(true)
+              } else if (event.key === 'Enter' && (event.target === nodes.low || event.target === nodes.high)) {
+                event.preventDefault()
+                nodes.apply.click()
+              }
+            },
+            { signal },
+          )
+          panel.addEventListener(
+            'beforetoggle',
+            (event) => {
+              if (event.newState === 'closed') DashboardFilters.close(picker)
+            },
+            { signal },
+          )
+          panel.addEventListener(
+            'focusout',
+            (event) => {
+              if (event.relatedTarget && !panel.contains(event.relatedTarget)) hide()
+            },
+            { signal },
+          )
+          window.addEventListener('resize', () => hide(), { signal })
+          window.addEventListener(
+            'scroll',
+            (event) => {
+              if (!panel.contains(event.target)) hide()
+            },
+            { signal, capture: true },
+          )
+          const iconClick = ({ name, col, row, event }) => {
+            const native = event?.nativeEvent || event
+            if (name !== 'dashboard-table-filter' || (native?.button ?? event?.button ?? 0) !== 0) return
+            cancelAnimationFrame(openFrame)
+            // Open after the pointer gesture so native light-dismiss cannot consume it.
+            openFrame = requestAnimationFrame(() => {
+              openFrame = 0
+              show(table.getHeaderField(col, row), col, row)
+            })
+          }
+          const keyboard = (event) => {
+            if (!event.altKey || event.key !== 'ArrowDown') return
+            const range = table.getSelectedCellRanges()[0]
+            if (!range) return
+            event.preventDefault()
+            event.stopPropagation()
+            show(table.getHeaderField(range.start.col, 0), range.start.col, 0)
+          }
+          return {
+            builder,
+            bind(instance) {
+              table = instance
+              table.on('icon_click', iconClick)
+              host.addEventListener('keydown', keyboard, { signal, capture: true })
+            },
+            updateRows(values) {
+              rows = values.map((row, index) =>
+                Object.fromEntries([
+                  ...fields.map((field, col) => [
+                    field,
+                    types[col] === 'string' ? (row[col] ?? null) : Number.isFinite(row[col]) ? row[col] : null,
+                  ]),
+                  ['__row_order', index],
+                ]),
+              )
+              sourceVersion++
+              builder.limit.setLimit(Math.max(rows.length, 1))
+              return refresh()
+            },
+            refresh,
+            dispose() {
+              disposed = true
+              revision++
+              pending?.abort()
+              hide()
+              events.abort()
+              unmount()
+              panel.remove()
+              table?.off('icon_click', iconClick)
+              void queue
+                .catch(() => {})
+                .then(async () => {
+                  vbi.resources.chart.unregister(builder.getUUID())
+                  builder.undoManager?.destroy()
+                  builder.doc.destroy()
+                  vbi.connectors.unregister(id)
+                  await query.dropDataset(id)
+                })
+                .catch(() => {})
+            },
+          }
+        }
+        async function createDetails({ vbi, query, Builder, VChart, connectorId, columns, rows, host, count }) {
+          const library = await load()
+          const id = `${connectorId}-records`,
+            profileId = `${id}-profiles`
+          const fields = columns.map((_, i) => `c${i}`)
+          const types = fields.map((_, i) => {
+            const value = rows.find((row) => row[i] != null)?.[i]
+            return typeof value === 'number' ? 'number' : 'string'
+          })
+          const schema = [
+            ...fields.map((name, i) => ({ name, type: types[i] })),
+            { name: '__row_order', type: 'number' },
+          ]
+          const records = (values) =>
+            values.map((row, index) =>
+              Object.fromEntries([...fields.map((field, i) => [field, row[i] ?? null]), ['__row_order', index]]),
+            )
+          const register = async (name, dataSchema, rawDataset) => {
+            if (await query.hasDataset(name))
+              await query.updateDatasetSource(name, dataSchema, { type: 'json', rawDataset })
+            else await query.createDataset(name, dataSchema, { type: 'json', rawDataset })
+            vbi.connectors.register(name, {
+              discoverSchema: async () => dataSchema,
+              query: async ({ queryDSL }) => {
+                const dataset = await query.connectDataset(name)
+                try {
+                  return await dataset.query(queryDSL)
+                } finally {
+                  await dataset.disconnect()
+                }
+              },
+            })
+          }
+          await register(id, schema, records(rows))
+          const profileSchema = [
+            ...schema,
+            ...fields.flatMap((_, i) => (types[i] === 'number' ? [{ name: `b${i}`, type: 'number' }] : [])),
+          ]
+          await register(profileId, profileSchema, [])
+          const builders = []
+          const make = (name) => {
+            const chart = vbi.chart.create(vbi.chart.createEmpty(name))
+            chart.chartType.changeChartType('table')
+            chart.limit.setLimit(Math.max(rows.length, 1))
+            builders.push(chart)
+            return chart
+          }
+          const source = make(id)
+          fields.forEach((field, i) => source.dimensions.add(field, (node) => node.setAlias(columns[i])))
+          source.dimensions.add('__row_order', (node) => node.setSort({ order: 'asc' }))
+          const bounds = make(profileId)
+          bounds.measures.add('__row_order', (node) => node.setAlias('total').setAggregate({ func: 'count' }))
+          fields.forEach((field, i) => {
+            if (types[i] !== 'number') return
+            for (const func of ['min', 'max'])
+              bounds.measures.add(field, (node) => node.setAlias(`${func}${i}`).setAggregate({ func }))
+          })
+          const frequencies = fields.map((field, i) => {
+            const chart = make(profileId)
+            chart.dimensions.add(types[i] === 'number' ? `b${i}` : field, (node) => node.setSort({ order: 'asc' }))
+            chart.measures.add('__row_order', (node) => node.setAggregate({ func: 'count' }))
+            return chart
+          })
+          const number = (value) => new Intl.NumberFormat('zh-CN', { maximumSignificantDigits: 4 }).format(value)
+          let table,
+            profiles = [],
+            currentRows = [],
+            totalCount = 0,
+            disposed = false,
+            scopeVersion = 0,
+            profileKey,
+            scopeKey,
+            scopeRequest = 0,
+            scopePending,
+            scopeJob = Promise.resolve(),
+            renderJob = Promise.resolve()
+          library.register.chartModule('vchart', VChart)
+          async function profile(values, signal, isCurrent) {
+            const key = JSON.stringify([scopeVersion, view.builder.whereFilter.toJSON()])
+            if (key === profileKey) return profiles
+            const data = records(values).map((record) => ({
+              ...record,
+              ...Object.fromEntries(
+                fields.map((field, i) => [field, types[i] === 'string' && record[field] === '' ? null : record[field]]),
+              ),
+              ...Object.fromEntries(fields.flatMap((_, i) => (types[i] === 'number' ? [[`b${i}`, null]] : []))),
+            }))
+            await query.updateDatasetSource(profileId, profileSchema, { type: 'json', rawDataset: data })
+            const seed = await bounds.buildVSeed({ signal })
+            if (!isCurrent()) return
+            const summary = Object.fromEntries(bounds.build().measures.map((m) => [m.alias, seed.dataset[0]?.[m.id]]))
+            const ranges = fields.map((_, i) => {
+              if (types[i] !== 'number' || !Number.isFinite(summary[`min${i}`])) return
+              const min = summary[`min${i}`],
+                max = summary[`max${i}`]
+              const discrete = Number.isInteger(min) && Number.isInteger(max) && max - min <= 20
+              const size = min === max ? 1 : discrete ? max - min + 1 : 12
+              return { min, max, size, step: min === max || discrete ? 1 : (max - min) / size }
+            })
+            // Binning is a per-record encoding; all frequencies are counted by VBI below.
+            const binned = data.map((record) => ({
+              ...record,
+              ...Object.fromEntries(
+                fields
+                  .map((field, i) => {
+                    const range = ranges[i],
+                      value = record[field]
+                    return [
+                      `b${i}`,
+                      range && Number.isFinite(value)
+                        ? Math.min(range.size - 1, Math.max(0, Math.floor((value - range.min) / range.step)))
+                        : -1,
+                    ]
+                  })
+                  .filter((_, i) => types[i] === 'number'),
+              ),
+            }))
+            await query.updateDatasetSource(profileId, profileSchema, { type: 'json', rawDataset: binned })
+            const seeds = await Promise.all(frequencies.map((chart) => chart.buildVSeed({ signal })))
+            if (!isCurrent()) return
+            const total = Number(summary.total) || 0
+            const next = seeds.map((result, i) => {
+              const dsl = frequencies[i].build(),
+                dimension = dsl.dimensions[0].id,
+                measure = dsl.measures[0].id
+              const entries = result.dataset.map((row) => ({ key: row[dimension], count: Number(row[measure]) }))
+              const missing =
+                entries.find((row) => row.key == null || row.key === '' || (types[i] === 'number' && row.key === -1))
+                  ?.count || 0
+              const percentage = (n) => (total ? `${((n / total) * 100).toFixed(2)}%` : '0.0%')
+              if (types[i] === 'number') {
+                const range = ranges[i],
+                  counts = new Map(entries.map((row) => [Number(row.key), row.count]))
+                const bins = range
+                  ? Array.from({ length: range.size }, (_, bin) => {
+                      const low = range.min + bin * range.step,
+                        high = bin === range.size - 1 && range.size === 12 ? range.max : low + range.step
+                      return {
+                        bin: range.min === range.max ? number(low) : `${number(low)}–${number(high)}`,
+                        count: counts.get(bin) || 0,
+                        kind: '有效值',
+                      }
+                    })
+                  : []
+                if (missing) bins.push({ bin: '缺失值', count: missing, kind: '缺失值' })
+                return {
+                  total,
+                  missing,
+                  bins: bins.map((bin) => ({ ...bin, share: total ? (bin.count / total) * 100 : 0 })),
+                  text: total
+                    ? `${range ? `${number(range.min)}–${number(range.max)}` : '无有效数值'}；缺失 ${missing} 行（${percentage(missing)}）`
+                    : '暂无记录',
+                }
+              }
+              const valid = entries
+                .filter((row) => row.key != null && row.key !== '')
+                .sort((a, b) => b.count - a.count || String(a.key).localeCompare(String(b.key)))
+              const take = valid.length <= (missing ? 2 : 3) ? valid.length : missing ? 1 : 2
+              const visible = valid.slice(0, take).map((row) => ({ label: String(row.key), count: row.count }))
+              if (take < valid.length)
+                visible.push({
+                  label: `其他 ${valid.length - take} 项`,
+                  count: total - missing - visible.reduce((sum, row) => sum + row.count, 0),
+                })
+              if (missing) visible.push({ label: '缺失值', count: missing, missing: true })
+              if (!visible.length) visible.push({ label: '暂无记录', count: 0 })
+              const lines = visible.map((row) => ({
+                ...row,
+                value: `${row.count.toLocaleString('zh-CN')} 行 · ${percentage(row.count)}`,
+              }))
+              return { total, missing, lines, text: lines.map((row) => `${row.label}：${row.value}`).join('\n') }
+            })
+            profiles = next
+            profileKey = key
+            return next
+          }
+          function draw(appearanceOnly = false) {
+            if (disposed || !profiles.length) return
+            const tokens = readTokens(host),
+              css = getComputedStyle(host)
+            const accent = css.getPropertyValue('--accent').trim(),
+              down = css.getPropertyValue('--down').trim()
+            try {
+              const text = tokens.color('--table-text'),
+                muted = tokens.color('--text-secondary'),
+                missing = down || '#c64a3f'
+              const seed = Builder.from({
+                chartType: 'table',
+                dataset: records(currentRows),
+                dimensions: fields.map((field, i) => ({ id: field, alias: columns[i], encoding: 'column' })),
+                backgroundColor: 'transparent',
+                animation: { enable: !reducedMotion() },
+              }).build()
+              seed.columns = fields.map((field, i) => {
+                const info = profiles[i]
+                const numeric = types[i] === 'number'
+                const chartSpec =
+                  numeric && info.total
+                    ? Builder.from({
+                        chartType: 'column',
+                        dataset: info.bins.map((bin) => ({ ...bin, bin: `${bin.bin} · ${bin.share.toFixed(2)}%` })),
+                        dimensions: [
+                          { id: 'bin', alias: columns[i], encoding: 'xAxis' },
+                          { id: 'kind', alias: '数据状态', encoding: 'color' },
+                        ],
+                        measures: [
+                          {
+                            id: 'count',
+                            alias: '记录数',
+                            encoding: 'yAxis',
+                            format: { type: 'number', fractionDigits: 0 },
+                          },
+                        ],
+                        color: {
+                          colorScheme: info.bins.some((bin) => bin.kind === '有效值') ? [accent, missing] : [missing],
+                        },
+                        backgroundColor: 'transparent',
+                        xAxis: { visible: false },
+                        yAxis: { visible: false, zero: true },
+                        legend: { enable: false },
+                        label: { enable: false },
+                        tooltip: { enable: true },
+                        animation: { enable: false },
+                        barStyle: { barRadius: 2, barGradient: true, barBorderWidth: 0, barBorderOpacity: 0 },
+                      }).build()
+                    : undefined
+                if (chartSpec) chartSpec.padding = { top: 4, right: 4, bottom: 4, left: 4 }
+                return {
+                  ...seed.columns.find((column) => column.field === field),
+                  field,
+                  title: columns[i],
+                  width: numeric
+                    ? Math.max(164, Math.min(220, columns[i].length * 8 + 34))
+                    : Math.max(230, Math.min(280, columns[i].length * 8 + 34)),
+                  headerIcon: filterIcon(),
+                  headerStyle: { textAlign: numeric ? 'right' : 'left' },
+                  style: (args) => ({ padding: args.row === 1 ? 6 : [10, 12], textAlign: numeric ? 'right' : 'left' }),
+                  fieldFormat: (record) => (record[field] == null ? '—' : record[field]),
+                  aggregation: {
+                    aggregationType: 'CUSTOM',
+                    aggregationFun: () => (numeric ? (info.total ? chartSpec.data.values : '暂无记录') : info.text),
+                    showOnTop: true,
+                  },
+                  cellType: numeric ? (args) => (args.row === 1 && info.total ? 'chart' : 'text') : 'text',
+                  ...(numeric
+                    ? { chartModule: 'vchart', chartSpec }
+                    : {
+                        customRender: (args) => {
+                          if (args.row !== 1)
+                            return { elements: [], expectedHeight: 0, expectedWidth: 0, renderDefault: true }
+                          const width = (args.rect || args.table.getCellRect(args.col, args.row)).width
+                          return {
+                            renderDefault: false,
+                            expectedHeight: 86,
+                            expectedWidth: width,
+                            elements: info.lines.flatMap((line, index) => [
+                              {
+                                type: 'text',
+                                x: 6,
+                                y: 16 + index * 22,
+                                text: line.label,
+                                fontSize: 11,
+                                fontFamily: tokens.fontFamily,
+                                fill: line.missing ? missing : text,
+                                textBaseline: 'middle',
+                                maxLineWidth: Math.max(28, width - 132),
+                              },
+                              {
+                                type: 'text',
+                                x: width - 6,
+                                y: 16 + index * 22,
+                                text: line.value,
+                                fontSize: 11,
+                                fontFamily: tokens.fontFamily,
+                                fill: line.missing ? missing : muted,
+                                textBaseline: 'middle',
+                                textAlign: 'right',
+                              },
+                            ]),
+                          }
+                        },
+                      }),
+                }
+              })
+              const resolved = options(seed, host)
+              resolved.autoFillWidth = false
+              resolved.widthMode = 'standard'
+              resolved.frozenRowCount = 2
+              resolved.customComputeRowHeight = (args) => (args.row === 1 ? 86 : undefined)
+              resolved.keyboardOptions = {
+                ...resolved.keyboardOptions,
+                getCopyCellValue: {
+                  value: (col, row) =>
+                    row === 1 ? profiles[col].text.replace(/\n/g, '；') : table.getCellValue(col, row),
+                },
+              }
+              resolved.tooltip = { isShowOverflowTextTooltip: true, parentElement: document.body }
+              host.style.height = `${Math.min(560, 86 + resolved.defaultHeaderRowHeight + Math.max(1, Math.min(currentRows.length, 9)) * resolved.defaultRowHeight + 14)}px`
+              host.dataset.recordCount = String(currentRows.length)
+              host.setAttribute('aria-label', `原始记录明细表，${currentRows.length} 条记录；第二行为列概况`)
+              count.textContent =
+                currentRows.length === totalCount
+                  ? `${currentRows.length.toLocaleString('zh-CN')} 条记录`
+                  : `${currentRows.length.toLocaleString('zh-CN')} / ${totalCount.toLocaleString('zh-CN')} 条记录`
+              if (table) {
+                update(table, resolved, { records: !appearanceOnly })
+                if (appearanceOnly) table.updateTheme(resolved.theme)
+              } else {
+                table = new library.ListTable(host, resolved)
+                view.bind(table)
+              }
+            } finally {
+              tokens.dispose()
+            }
+          }
+          const view = await createView({
+            vbi,
+            query,
+            connectorId: id,
+            columns,
+            types,
+            host,
+            render(values, total, context) {
+              renderJob = (async () => {
+                const result = await profile(values, context.signal, context.isCurrent)
+                if (!result || !context.isCurrent() || disposed) return
+                currentRows = values
+                totalCount = total
+                draw()
+              })()
+              return renderJob
+            },
+          })
+          const observer = new ResizeObserver(() => {
+            if (host.clientWidth && host.clientHeight) table?.resize()
+          })
+          observer.observe(host)
+          return {
+            view,
+            get table() {
+              return table
+            },
+            get profiles() {
+              return profiles
+            },
+            repaint: () => draw(true),
+            updateScope(conditions) {
+              const key = JSON.stringify(conditions)
+              if (key === scopeKey) return scopeJob
+              scopeKey = key
+              const ticket = ++scopeRequest
+              scopePending?.abort()
+              scopePending = new AbortController()
+              source.doc.transact(() => {
+                source.whereFilter.clear()
+                conditions.forEach((condition) =>
+                  source.whereFilter.add(`c${condition.column}`, (node) =>
+                    node.setOperator(condition.operator || 'eq').setValue(condition.value),
+                  ),
+                )
+              })
+              scopeJob = (async () => {
+                try {
+                  const seed = await source.buildVSeed({ signal: scopePending.signal })
+                  if (disposed || ticket !== scopeRequest) return
+                  scopeVersion++
+                  const dimensions = source.build().dimensions
+                  const ids = fields.map((field) => dimensions.find((dim) => dim.field === field).id)
+                  await view.updateRows(seed.dataset.map((row) => ids.map((field) => row[field] ?? null)))
+                } catch (error) {
+                  if (!disposed && ticket === scopeRequest && error.name !== 'AbortError') {
+                    scopeKey = undefined
+                    throw error
+                  }
+                }
+              })()
+              return scopeJob
+            },
+            dispose() {
+              if (disposed) return
+              disposed = true
+              scopeRequest++
+              scopePending?.abort()
+              observer.disconnect()
+              view.dispose()
+              table?.release()
+              void Promise.allSettled([scopeJob, renderJob])
+                .then(async () => {
+                  for (const chart of builders) {
+                    vbi.resources.chart.unregister(chart.getUUID())
+                    chart.undoManager?.destroy()
+                    chart.doc.destroy()
+                  }
+                  for (const name of [id, profileId]) {
+                    vbi.connectors.unregister(name)
+                    await query.dropDataset(name)
+                  }
+                })
+                .catch(() => {})
+            },
+          }
+        }
+
+        return { load, options, build, overview, update, setRecords, createView, createDetails }
       })()
     </script>
     <style id="dashboard-controls-style">
-      /* 单层玻璃轨道与连续选中面；内容层保留稳定阅读底色。 */
       :root {
-        --control-track: rgb(255 255 255 / 48%);
-        --control-edge: rgb(255 255 255 / 72%);
-        --control-surface: rgb(255 255 255 / 92%);
-        --control-hover: #ffffff80;
-        --control-sheen: linear-gradient(155deg, rgb(255 255 255 / 60%), rgb(255 255 255 / 6%) 65%);
-        --control-shadow: 0 2px 8px rgb(38 53 68 / 9%), inset 0 1px 0 rgb(255 255 255 / 90%);
+        --filter-height: 36px;
+        --control-track: rgb(255 255 255 / calc(0.22 + var(--glass-strength) * 0.003));
+        --control-edge: var(--glass-edge);
+        --control-surface: rgb(255 255 255 / 84%);
+        --control-shadow: var(--glass-lip), 0 4px 12px -8px rgb(31 50 65 / 30%);
+        --control-hover: rgb(255 255 255 / 58%);
+        --control-light: radial-gradient(
+          80px 36px at var(--df-light-x, 50%) var(--df-light-y, 50%),
+          rgb(255 255 255 / 50%),
+          transparent 78%
+        );
+        --control-sheen: var(--glass-sheen);
+        --control-selected-shadow: inset 0 1px 0 rgb(255 255 255 / 90%);
+        --control-hover-shadow: inset 0 1px 4px rgb(38 53 68 / 6%);
+        --control-menu-hover-shadow: inset 0px 0px 50px rgb(38 53 68 / 5%);
       }
       #filters {
         flex-wrap: wrap;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
         max-width: 100%;
       }
-      :is(#filters, .ma-dialog) .segment {
+      :is(.df-segment, .df-selector > summary, .df-icon) {
+        border: 1px solid var(--control-edge);
+        background: var(--control-sheen), var(--control-track);
+        background-clip: padding-box;
+        box-shadow: var(--control-shadow);
+        backdrop-filter: var(--glass-control-filter);
+        -webkit-backdrop-filter: var(--glass-control-filter);
+      }
+      .df-icon {
         position: relative;
         isolation: isolate;
         display: inline-flex;
-        flex-wrap: wrap;
+        flex: none;
+        align-items: center;
+        justify-content: center;
+        width: var(--filter-height);
+        height: var(--filter-height);
+        padding: 0;
+        border-radius: 20px;
+        color: var(--muted);
+        cursor: pointer;
+      }
+      .df-icon svg {
+        display: block;
+        width: 16px;
+        height: 16px;
+      }
+      .df-segment {
+        position: relative;
+        isolation: isolate;
+        display: inline-flex;
+        flex: none;
+        flex-wrap: nowrap;
         align-items: center;
         gap: 3px;
+        height: var(--filter-height);
+        min-height: var(--filter-height);
         max-width: 100%;
         padding: 3px;
-        border: 1px solid var(--control-edge);
         border-radius: 20px;
-        background: var(--control-sheen), var(--control-track);
-        box-shadow:
-          inset 0 1px 0 rgb(255 255 255 / 46%),
-          0 3px 12px -8px rgb(38 53 68 / 14%);
-        backdrop-filter: blur(12px) saturate(1.12);
-        -webkit-backdrop-filter: blur(12px) saturate(1.12);
+        overflow-x: auto;
+        scrollbar-width: none;
       }
-      :is(#filters, .ma-dialog) .segment-indicator {
+      .df-segment::-webkit-scrollbar {
+        display: none;
+      }
+      .df-segment button {
+        position: relative;
+        display: inline-flex;
+        flex: none;
+        align-items: center;
+        justify-content: center;
+        height: 28px;
+        min-height: 28px;
+        margin: 0;
+        padding: 0 11px;
+        border: 0;
+        border-radius: 16px;
+        background: transparent;
+        color: var(--muted);
+        box-shadow: none;
+        font: 12px/1.4 var(--font-ui);
+        white-space: nowrap;
+        cursor: pointer;
+        transition:
+          background-color 160ms ease,
+          color 160ms ease;
+      }
+      .df-segment button[aria-pressed='true'] {
+        color: var(--ink);
+      }
+      .df-segment .segment-indicator {
         position: absolute;
         inset: 0;
         z-index: -1;
         border-radius: inherit;
-        background: var(--control-sheen), var(--control-surface);
-        box-shadow:
-          var(--control-shadow),
-          inset 0 -1px 0 rgb(38 53 68 / 4%);
+        pointer-events: none;
+        background: var(--control-surface);
+        box-shadow: var(--control-selected-shadow);
         transform-origin: top left;
+      }
+      .df-selector {
+        position: relative;
+        display: block;
+        flex: none;
+        width: max-content;
+        min-width: 0;
+        max-width: 100%;
+        height: var(--filter-height);
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        overflow: visible;
+      }
+      .ma-dialog .ma-toolbar .df-selector {
+        margin-left: auto;
+      }
+      .df-selector > summary {
+        isolation: isolate;
+        box-sizing: border-box;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 118px;
+        max-width: 100%;
+        height: var(--filter-height);
+        min-height: var(--filter-height);
+        margin: 0;
+        padding: 0 13px;
+        border-radius: 20px;
+        list-style: none;
+        color: var(--ink);
+        font: 12px/1.4 var(--font-ui);
+        white-space: nowrap;
+        cursor: pointer;
+        transition:
+          background-color 160ms ease,
+          color 160ms ease;
+      }
+      .df-selector > summary::-webkit-details-marker {
+        display: none;
+      }
+      .df-selector > summary::marker {
+        content: '';
+      }
+      .df-selector [data-control-label] {
+        display: block;
+        max-width: 220px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .df-selector .df-chevron {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        width: 12px;
+        height: 12px;
+        flex: none;
+      }
+      .df-selector .df-chevron svg {
+        display: block;
+        width: 12px;
+        height: 12px;
+        transition: opacity 140ms ease;
+      }
+      .df-selector .df-chevron::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        box-sizing: border-box;
+        border: 2px solid color-mix(in srgb, var(--ink) 16%, white);
+        border-right-color: var(--ink);
+        border-radius: 50%;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 140ms ease;
+      }
+      .df-selector > summary[data-loading='true'] .df-chevron svg {
+        opacity: 0;
+      }
+      .df-selector > summary[data-loading='true'] .df-chevron::after {
+        opacity: 1;
+        animation: dashboard-loading-turn 1.1s linear infinite;
+      }
+      .df-segment button:hover,
+      .df-selector > summary:hover,
+      .df-icon:hover {
+        background-color: var(--control-hover);
+        color: var(--ink);
+        box-shadow: var(--control-hover-shadow);
+      }
+      .df-segment button::before,
+      .df-segment .segment-indicator::after,
+      .df-selector > summary::before,
+      .df-icon::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: inherit;
+        background: var(--control-light);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 160ms ease;
+      }
+      .df-segment .segment-indicator::after {
+        z-index: 0;
+      }
+      .df-segment button,
+      .df-selector > summary,
+      .df-icon {
+        transform-origin: center;
+        transition:
+          background-color 160ms ease,
+          color 160ms ease,
+          box-shadow 180ms ease,
+          transform 200ms cubic-bezier(0.2, 0.9, 0.3, 1);
+      }
+      .df-selector[open] > summary,
+      .df-icon[aria-expanded='true'] {
+        background: var(--control-sheen), var(--control-surface);
+        background-clip: padding-box;
+        box-shadow: var(--control-shadow);
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .df-segment button:hover::before,
+        .df-segment button:hover .segment-indicator::after,
+        .df-selector > summary:hover::before,
+        .df-icon:hover::before {
+          opacity: 0.78;
+        }
+        .df-selector > summary:hover,
+        .df-icon:hover {
+          box-shadow: var(--control-hover-shadow);
+        }
+      }
+      .df-segment button:active::before,
+      .df-segment button:active .segment-indicator::after,
+      .df-selector > summary:active::before,
+      .df-icon:active::before {
+        opacity: 1;
+      }
+      .df-selector > summary[aria-disabled='true'],
+      .df-icon:disabled {
+        cursor: default;
+        opacity: 0.65;
+      }
+      .df-menu {
+        box-sizing: border-box;
+        position: fixed;
+        inset: auto;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin: 0;
+        padding: 8px;
+        border: 1px solid var(--control-edge);
+        border-radius: 18px;
+        background: var(--glass-sheen), var(--glass-overlay-surface);
+        background-clip: padding-box;
+        color: var(--ink);
+        box-shadow: var(--glass-raised-shadow);
+        backdrop-filter: var(--glass-filter);
+        -webkit-backdrop-filter: var(--glass-filter);
+        font: 12px/1.4 var(--font-ui);
+        overflow: hidden;
+        transform-origin: var(--df-menu-origin, center top);
+        will-change: transform, opacity;
+      }
+      .df-menu .df-search {
+        box-sizing: border-box;
+        display: block;
+        flex: none;
+        width: 100%;
+        height: var(--filter-height);
+        min-height: var(--filter-height);
+        margin: 0;
+        padding: 0 11px;
+        border: 1px solid rgb(104 120 137 / 18%);
+        border-radius: 11px;
+        outline-offset: -2px;
+        background: color-mix(in srgb, var(--glass-solid) 28%, transparent);
+        color: var(--ink);
+        font: inherit;
+      }
+      .df-menu .df-options {
+        position: static;
+        display: grid;
+        flex: 1 1 auto;
+        gap: 3px;
+        width: 100%;
+        min-height: 0;
+        max-width: none;
+        max-height: none;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        overflow: auto;
+        overscroll-behavior: contain;
+      }
+      .df-menu .df-option {
+        position: relative;
+        box-sizing: border-box;
+        display: block;
+        width: 100%;
+        height: var(--filter-height);
+        min-height: var(--filter-height);
+        margin: 0;
+        padding: 0 11px;
+        border: 0;
+        border-radius: 11px;
+        background: transparent;
+        color: var(--muted);
+        font: inherit;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+        transition:
+          background-color 160ms ease,
+          color 160ms ease;
+      }
+      .df-menu .df-option {
+        padding-left: 31px;
+        transition:
+          background-color 140ms ease,
+          color 140ms ease,
+          box-shadow 140ms ease,
+          transform 160ms ease;
+      }
+      .df-menu .df-option::before {
+        content: '';
+        position: absolute;
+        left: 11px;
+        top: 50%;
+        width: 12px;
+        height: 12px;
+        transform: translateY(-50%);
+        opacity: 0;
+        background: currentColor;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='m2 6 2.5 2.5L10 3' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+          center / contain no-repeat;
+      }
+      .df-menu .df-option[aria-pressed='true']::before {
+        opacity: 1;
+      }
+      .df-menu[data-closing='true'] {
         pointer-events: none;
       }
-      /* 弹窗已有玻璃底面，内部轨道不重复模糊。 */
-      .ma-dialog .segment {
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
+      .df-menu .df-option[aria-pressed='true'] {
+        background: var(--control-surface);
+        color: var(--ink);
+        box-shadow: var(--control-selected-shadow);
       }
-      :is(#filters, .ma-dialog) .segment button:active .segment-indicator {
-        box-shadow:
-          0 1px 4px rgb(38 53 68 / 7%),
-          inset 0 1px 3px rgb(38 53 68 / 9%);
+      .df-menu .df-option:hover,
+      .df-menu .df-option:focus-visible {
+        background: var(--control-hover);
+        color: var(--ink);
+        box-shadow: var(--control-menu-hover-shadow);
+      }
+      .df-segment button:active,
+      .df-selector > summary:active,
+      .df-menu .df-option:active,
+      .df-icon:active {
+        transform: translateY(1.5px) scale(0.98);
+        box-shadow: inset 0 2px 6px rgb(38 53 68 / 10%);
+        transition-duration: 70ms;
+      }
+      .df-menu .df-empty {
+        margin: 0;
+        padding: 12px;
+        color: var(--muted);
+        font: inherit;
+      }
+      :is(.df-menu, .df-option, .df-empty, .df-search)[hidden] {
+        display: none !important;
+      }
+      :is(.df-selector, .df-segment, .df-menu) :is(button, summary, input):focus-visible,
+      .df-icon:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: -2px;
       }
       .ma-dialog .ma-modes {
         justify-self: start;
+      }
+      .ma-dialog :is(.df-segment, .df-selector > summary) {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
       }
       .ma-dialog .ma-close {
         border-radius: 50%;
@@ -1470,87 +3246,23 @@
         background: var(--control-surface);
         color: var(--ink);
       }
-      :is(#filters, .ma-dialog) .segment button,
-      .ma-dialog :is(button:not(.ma-close), .ma-picker > summary) {
-        position: relative;
+      .ma-dialog :is([data-ma='retry'], [data-ma='expand']) {
         display: inline-flex;
-        flex: none;
         align-items: center;
         justify-content: center;
-        padding: 7px 12px;
-        border: 0;
-        border-radius: 17px;
-        background: var(--control-surface);
+        height: var(--filter-height);
+        min-height: var(--filter-height);
+        padding: 0 12px;
+        border: 1px solid var(--control-edge);
+        border-radius: 20px;
+        background: var(--control-track);
         color: var(--muted);
-        font: 12px / 1.4 var(--font-ui);
-        white-space: nowrap;
+        font: 12px/1.4 var(--font-ui);
         cursor: pointer;
-        -webkit-tap-highlight-color: transparent;
-        transition:
-          background-color 160ms ease,
-          color 160ms ease,
-          box-shadow 160ms ease;
       }
-      :is(#filters, .ma-dialog) .segment button {
-        background: transparent;
-        box-shadow: none;
-      }
-      :is(#filters, .ma-dialog) .segment button[aria-pressed='true'] {
-        background: var(--control-surface);
-        color: var(--ink);
-        box-shadow: var(--control-shadow);
-      }
-      :is(#filters, .ma-dialog) .segment[data-glass='true'] button[aria-pressed='true'] {
-        background: transparent;
-        box-shadow: none;
-      }
-      :is(#filters, .ma-dialog) .segment button:active,
-      .ma-dialog :is(button:not(.ma-close), .ma-picker > summary):active {
-        background-color: rgb(255 255 255 / 72%);
-        box-shadow: inset 0 1px 4px rgb(38 53 68 / 9%);
-      }
-      :is(#filters, .ma-dialog) .segment button:not([aria-pressed='true']):hover,
-      .ma-dialog :is(button:not(.ma-close):not([aria-pressed='true']), .ma-picker > summary):hover {
-        background: var(--control-hover);
-        color: var(--ink);
-      }
-      :is(#filters, .ma-dialog) :is(button, summary):focus-visible {
-        outline: 2px solid var(--focus-ring);
-        outline-offset: 3px;
-      }
-      .ma-dialog .ma-picker > summary {
-        list-style: none;
-        box-shadow: var(--control-shadow);
-      }
-      .ma-dialog .ma-picker > summary::-webkit-details-marker {
-        display: none;
-      }
-      .ma-dialog .ma-picker-chevron {
-        order: 2;
-        flex: none;
-        width: 12px;
-        margin-left: 6px;
-        text-align: center;
-      }
-      .ma-dialog .ma-groups button {
-        justify-content: flex-start;
-        width: 100%;
-        border-radius: 12px;
-        background: transparent;
-        white-space: normal;
-        text-align: left;
-      }
-      .ma-dialog .ma-groups button[aria-pressed='true'] {
-        background: var(--control-surface);
-        color: var(--ink);
-        box-shadow: var(--control-shadow);
-      }
-      #filters .segment button::after,
-      .ma-dialog .ma-modes button::after,
-      .ma-dialog :is([data-ma='reset'], [data-ma='retry'], .ma-picker > summary)::after {
+      :is(.df-segment button, .ma-dialog [data-ma='retry'])::after {
         content: '';
         display: inline-block;
-        order: 1;
         flex: 0 0 auto;
         box-sizing: border-box;
         width: 0;
@@ -1567,60 +3279,730 @@
           border-width 180ms ease,
           opacity 140ms ease;
       }
-      #filters .segment button[data-loading='true']::after,
-      .ma-dialog [data-loading='true'][aria-busy='true']::after {
+      :is(.df-segment button, .ma-dialog [data-ma='retry'])[data-loading='true']::after {
         width: 12px;
         margin-left: 6px;
         border-width: 2px;
         opacity: 1;
         animation: dashboard-loading-turn 1.1s linear infinite;
       }
-      .ma-dialog .ma-picker[open] .ma-groups {
-        transform-origin: top right;
-        animation: control-menu-enter 180ms cubic-bezier(0.22, 1, 0.36, 1);
-      }
-      @keyframes control-menu-enter {
-        from {
-          opacity: 0;
-          transform: translateY(-4px) scale(0.98);
-        }
-        to {
-          opacity: 1;
-          transform: none;
-        }
-      }
       @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-        :is(#filters, .ma-dialog) .segment {
+        :is(.df-menu, .df-selector > summary, .df-selector[open] > summary, .df-segment, .df-icon) {
           background: var(--glass-fallback);
+          background-clip: padding-box;
         }
       }
       @media (prefers-reduced-transparency: reduce) {
-        :is(#filters, .ma-dialog) .segment {
+        :is(.df-menu, .df-selector > summary, .df-selector[open] > summary, .df-segment, .df-icon) {
           background: var(--glass-fallback);
+          background-clip: padding-box;
           backdrop-filter: none;
           -webkit-backdrop-filter: none;
         }
       }
-      @media (max-width: 600px) {
-        :is(#filters, .ma-dialog) .segment {
-          gap: 1px;
+      @media (prefers-reduced-motion: reduce) {
+        .df-segment button,
+        .df-selector > summary,
+        .df-menu .df-option,
+        .df-icon {
+          transform: none !important;
+          transition: none !important;
         }
-        :is(#filters, .ma-dialog) .segment button {
-          padding: 7px 8px;
-          font-size: 10px;
+        .df-segment button::before,
+        .segment-indicator::after,
+        .df-selector > summary::before,
+        .df-icon::before {
+          transition: none !important;
+        }
+        .df-menu,
+        .df-menu .df-option,
+        .df-selector .df-chevron svg,
+        .df-selector .df-chevron::after,
+        :is(#filters, .ma-dialog) :is(button, summary)::after {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+    <script id="dashboard-filters-runtime">
+      // Shared by the page and deep analysis. Business values and queries remain with the caller.
+      window.DashboardFilters = (() => {
+        const instances = new WeakMap(),
+          selectors = new Set()
+        const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
+        let sequence = 0
+        const listen = (target, event, handler, signal, options = {}) =>
+          target.addEventListener(event, handler, { ...options, signal })
+        const text = (node) => node.textContent.trim()
+        const finePointer = matchMedia('(hover: hover) and (pointer: fine)')
+        function bindLight(root, signal) {
+          let frame = 0,
+            active,
+            pending
+          function clear() {
+            cancelAnimationFrame(frame)
+            frame = 0
+            active?.style.removeProperty('--df-light-x')
+            active?.style.removeProperty('--df-light-y')
+            active = pending = undefined
+          }
+          listen(
+            root,
+            'pointermove',
+            (event) => {
+              if (!finePointer.matches || reducedMotion.matches) return
+              const target = event.target.closest('.df-segment button, .df-selector > summary, .df-icon')
+              if (!target || !root.contains(target)) return clear()
+              pending = { target, x: event.clientX, y: event.clientY }
+              if (frame) return
+              frame = requestAnimationFrame(() => {
+                frame = 0
+                const point = pending
+                if (!point?.target.isConnected) return clear()
+                if (active !== point.target) {
+                  active?.style.removeProperty('--df-light-x')
+                  active?.style.removeProperty('--df-light-y')
+                }
+                active = point.target
+                const box = active.getBoundingClientRect()
+                if (!box.width || !box.height) return
+                active.style.setProperty(
+                  '--df-light-x',
+                  `${Math.max(0, Math.min(100, ((point.x - box.left) / box.width) * 100))}%`,
+                )
+                active.style.setProperty(
+                  '--df-light-y',
+                  `${Math.max(0, Math.min(100, ((point.y - box.top) / box.height) * 100))}%`,
+                )
+              })
+            },
+            signal,
+            { passive: true },
+          )
+          listen(root, 'pointerleave', clear, signal)
+          listen(reducedMotion, 'change', clear, signal)
+          signal.addEventListener('abort', clear, { once: true })
+        }
+        function segment(group) {
+          const controller = new AbortController(),
+            { signal } = controller
+          group.classList.add('df-segment')
+          bindLight(group, signal)
+          const indicator = document.createElement('span')
+          indicator.className = 'segment-indicator'
+          indicator.setAttribute('aria-hidden', 'true')
+          group.dataset.glass = 'true'
+          let animation
+          function sync() {
+            const next = group.querySelector('button[aria-pressed="true"]')
+            if (indicator.parentElement === next) return
+            const from = indicator.isConnected && !reducedMotion.matches && indicator.getBoundingClientRect()
+            animation?.cancel()
+            if (!next) return indicator.remove()
+            const to = next.getBoundingClientRect()
+            next.prepend(indicator)
+            if (!from?.width || !to.width || !to.height) return
+            animation = indicator.animate(
+              [
+                {
+                  transform: `translate(${from.x - to.x}px, ${from.y - to.y}px) scale(${from.width / to.width}, ${from.height / to.height})`,
+                },
+                { transform: 'none' },
+              ],
+              { duration: 240, easing: 'cubic-bezier(.22,1,.36,1)' },
+            )
+          }
+          const observer = new MutationObserver(sync)
+          observer.observe(group, {
+            subtree: true,
+            childList: true,
+            attributes: true,
+            attributeFilter: ['aria-pressed'],
+          })
+          listen(
+            reducedMotion,
+            'change',
+            () => {
+              if (reducedMotion.matches) animation?.cancel()
+            },
+            signal,
+          )
+          sync()
+          return {
+            sync,
+            dispose() {
+              controller.abort()
+              observer.disconnect()
+              animation?.cancel()
+              indicator.remove()
+              delete group.dataset.glass
+              instances.delete(group)
+            },
+          }
+        }
+        function selector(source) {
+          let root = source
+          if (root.tagName !== 'DETAILS') {
+            root = document.createElement('details')
+            for (const attribute of source.attributes) root.setAttribute(attribute.name, attribute.value)
+            const summary = document.createElement('summary'),
+              label = document.createElement('span')
+            label.dataset.controlLabel = ''
+            summary.append(label)
+            const options = document.createElement('div')
+            options.dataset.controlOptions = ''
+            options.append(...source.children)
+            root.append(summary, options)
+            source.replaceWith(root)
+          }
+          root.classList.remove('segment')
+          root.classList.add('df-selector')
+          const controller = new AbortController(),
+            { signal } = controller
+          const trigger = root.querySelector('summary'),
+            label = trigger.querySelector('[data-control-label]')
+          const chevron = trigger.querySelector('.df-chevron') || document.createElement('span')
+          chevron.className = 'df-chevron'
+          chevron.setAttribute('aria-hidden', 'true')
+          chevron.innerHTML =
+            '<svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="m3 4.5 3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+          trigger.append(chevron)
+          bindLight(root, signal)
+          const options = root.querySelector('[data-control-options]')
+          const name = root.getAttribute('aria-label') || options.getAttribute('aria-label') || '筛选'
+          const panel = document.createElement('div'),
+            search = document.createElement('input'),
+            empty = document.createElement('p')
+          panel.className = 'df-menu'
+          panel.id = `dashboard-filter-menu-${++sequence}`
+          panel.setAttribute('popover', 'manual')
+          panel.setAttribute('role', 'group')
+          panel.setAttribute('aria-label', `${name}选项`)
+          panel.hidden = true
+          search.type = 'search'
+          search.className = 'df-search'
+          search.placeholder = '搜索选项'
+          search.setAttribute('aria-label', `搜索${name}`)
+          search.autocomplete = 'off'
+          empty.className = 'df-empty'
+          empty.textContent = '没有匹配的选项'
+          empty.setAttribute('role', 'status')
+          empty.hidden = true
+          options.classList.add('df-options')
+          panel.append(search, options, empty)
+          root.append(panel)
+          trigger.setAttribute('aria-controls', panel.id)
+          trigger.setAttribute('aria-expanded', 'false')
+          let expanded = false,
+            disposed = false,
+            closing = false,
+            panelMotion,
+            motionVersion = 0
+          const choices = () => [...options.querySelectorAll('button')]
+          const visible = () => choices().filter((button) => !button.hidden && !button.disabled)
+          function filter() {
+            const buttons = choices(),
+              searchFocused = document.activeElement === search
+            search.hidden = buttons.length < 4
+            if (search.hidden) search.value = ''
+            const query = search.value.trim().toLocaleLowerCase()
+            for (const button of buttons) {
+              button.classList.add('df-option')
+              button.title = text(button)
+              button.hidden = !text(button).toLocaleLowerCase().includes(query)
+            }
+            empty.hidden = visible().length > 0
+            if (expanded && search.hidden && searchFocused)
+              (
+                visible().find((button) => button.getAttribute('aria-pressed') === 'true') ||
+                visible()[0] ||
+                trigger
+              ).focus({ preventScroll: true })
+          }
+          function position() {
+            if (!expanded) return
+            const rect = trigger.getBoundingClientRect(),
+              gap = 8,
+              edge = 12
+            const width = Math.min(
+              Math.max(rect.width, Number(root.dataset.menuMinWidth) || 280),
+              innerWidth - edge * 2,
+            )
+            const below = innerHeight - rect.bottom - edge - gap,
+              above = rect.top - edge - gap
+            const down = below >= 240 || below >= above
+            const height = Math.min(320, Math.max(100, down ? below : above))
+            panel.style.width = `${width}px`
+            panel.style.maxHeight = `${height}px`
+            const preferredLeft = root.dataset.menuAlign === 'start' ? rect.left : rect.right - width
+            panel.style.left = `${Math.max(edge, Math.min(preferredLeft, innerWidth - width - edge))}px`
+            panel.style.top = `${down ? rect.bottom + gap : Math.max(edge, rect.top - gap - Math.min(panel.scrollHeight, height))}px`
+            const left = parseFloat(panel.style.left)
+            panel.style.setProperty(
+              '--df-menu-origin',
+              `${Math.max(12, Math.min(width - 12, rect.left + rect.width / 2 - left))}px ${down ? 'top' : 'bottom'}`,
+            )
+            panel.style.setProperty('--df-reveal-y', down ? '-4px' : '4px')
+          }
+          function setOpen(open, restoreFocus = false, immediate = false) {
+            if (disposed || (open && root.closest('fieldset[disabled], [inert]'))) return
+            if (expanded === open && !closing) return
+            const ticket = ++motionVersion
+            const showing = panel.matches(':popover-open')
+            const current = showing
+              ? { opacity: getComputedStyle(panel).opacity, transform: getComputedStyle(panel).transform }
+              : undefined
+            panelMotion?.cancel()
+            panelMotion = undefined
+            expanded = open
+            closing = !open
+            panel.inert = !open
+            trigger.setAttribute('aria-expanded', String(open))
+            if (open) {
+              root.open = true
+              delete panel.dataset.closing
+              for (const other of selectors) if (other !== api) other.close()
+              search.value = ''
+              filter()
+              panel.hidden = false
+              if (!showing) panel.showPopover?.()
+              position()
+              const target = search.hidden
+                ? visible().find((button) => button.getAttribute('aria-pressed') === 'true') || visible()[0] || trigger
+                : search
+              target.focus({ preventScroll: true })
+            } else {
+              panel.dataset.closing = 'true'
+              if (restoreFocus) trigger.focus({ preventScroll: true })
+            }
+            function complete() {
+              if (ticket !== motionVersion) return
+              panelMotion?.cancel()
+              panelMotion = undefined
+              if (!open) {
+                if (panel.matches(':popover-open')) panel.hidePopover()
+                panel.hidden = true
+                root.open = false
+                closing = false
+                delete panel.dataset.closing
+              }
+            }
+            if (reducedMotion.matches || immediate || (!open && (!showing || !root.open))) return complete()
+            const rest = { opacity: 1, transform: 'none' }
+            const folded = {
+              opacity: 0,
+              transform: `translateY(${panel.style.getPropertyValue('--df-reveal-y') || '-4px'}) scale(.97)`,
+            }
+            panelMotion = panel.animate([current || (open ? folded : rest), open ? rest : folded], {
+              duration: open ? 180 : 110,
+              easing: open ? 'cubic-bezier(.2,.85,.25,1)' : 'ease-in',
+              fill: 'both',
+            })
+            panelMotion.finished.then(complete, () => {})
+          }
+          function sync() {
+            const selected = choices().find((button) => button.getAttribute('aria-pressed') === 'true')
+            const next = selected ? text(selected) : root.dataset.placeholder || name
+            if (label.textContent !== next) label.textContent = next
+            trigger.title = `${name}：${next}`
+            const disabled = !!root.closest('fieldset[disabled], [inert]')
+            trigger.setAttribute('aria-disabled', String(disabled))
+            trigger.tabIndex = disabled ? -1 : 0
+            filter()
+            if (expanded) position()
+          }
+          const api = {
+            root,
+            sync,
+            close: () => setOpen(false, false, true),
+            dispose() {
+              if (disposed) return
+              setOpen(false, false, true)
+              disposed = true
+              controller.abort()
+              observer.disconnect()
+              fieldObserver.disconnect()
+              panel.before(options)
+              panel.remove()
+              selectors.delete(api)
+              instances.delete(root)
+            },
+          }
+          selectors.add(api)
+          listen(
+            trigger,
+            'click',
+            (event) => {
+              event.preventDefault()
+              setOpen(!expanded)
+            },
+            signal,
+          )
+          listen(
+            root,
+            'toggle',
+            () => {
+              if (!closing && root.open !== expanded) setOpen(root.open)
+            },
+            signal,
+          )
+          listen(
+            search,
+            'input',
+            () => {
+              filter()
+              position()
+            },
+            signal,
+          )
+          listen(
+            options,
+            'click',
+            (event) => {
+              if (!event.target.closest('button')) return
+              sync()
+              setOpen(false, true)
+            },
+            signal,
+          )
+          listen(
+            document,
+            'pointerdown',
+            (event) => {
+              if (expanded && !root.contains(event.target)) setOpen(false)
+            },
+            signal,
+            { capture: true },
+          )
+          listen(
+            document,
+            'focusin',
+            (event) => {
+              if (expanded && !root.contains(event.target)) setOpen(false)
+            },
+            signal,
+          )
+          listen(
+            document,
+            'keydown',
+            (event) => {
+              if (!expanded) {
+                if (event.target === trigger && ['ArrowDown', 'ArrowUp'].includes(event.key)) {
+                  event.preventDefault()
+                  setOpen(true)
+                }
+                return
+              }
+              if (event.key === 'Escape') {
+                event.preventDefault()
+                event.stopImmediatePropagation()
+                setOpen(false, true)
+                return
+              }
+              if (!root.contains(event.target) || event.isComposing) return
+              const buttons = visible(),
+                index = buttons.indexOf(document.activeElement)
+              if (
+                ['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key) &&
+                (index >= 0 || ['ArrowDown', 'ArrowUp'].includes(event.key))
+              ) {
+                event.preventDefault()
+                const next =
+                  event.key === 'Home'
+                    ? 0
+                    : event.key === 'End'
+                      ? buttons.length - 1
+                      : event.key === 'ArrowDown'
+                        ? (index + 1) % buttons.length
+                        : index < 0
+                          ? buttons.length - 1
+                          : (index - 1 + buttons.length) % buttons.length
+                buttons[next]?.focus({ preventScroll: true })
+                buttons[next]?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+              } else if (event.target === search && event.key === 'Enter' && search.value.trim() && buttons[0]) {
+                event.preventDefault()
+                buttons[0].click()
+              }
+            },
+            signal,
+            { capture: true },
+          )
+          listen(
+            reducedMotion,
+            'change',
+            () => {
+              if (reducedMotion.matches) panelMotion?.finish()
+            },
+            signal,
+          )
+          listen(window, 'resize', position, signal)
+          listen(document, 'scroll', position, signal, { capture: true, passive: true })
+          const observer = new MutationObserver(sync),
+            fieldObserver = new MutationObserver(sync)
+          observer.observe(options, {
+            subtree: true,
+            childList: true,
+            attributes: true,
+            attributeFilter: ['aria-pressed'],
+          })
+          const fieldset = root.closest('fieldset')
+          if (fieldset) fieldObserver.observe(fieldset, { attributes: true, attributeFilter: ['disabled'] })
+          sync()
+          instances.set(root, api)
+          return api
+        }
+        function icon(root) {
+          const controller = new AbortController()
+          bindLight(root, controller.signal)
+          return {
+            dispose: () => {
+              controller.abort()
+              instances.delete(root)
+            },
+          }
+        }
+        function mount(root) {
+          const controls = root.matches('.segment, [data-filter-control]')
+            ? [root]
+            : [...root.querySelectorAll('.segment, [data-filter-control]')]
+          const mounted = controls.map((node) => {
+            if (instances.has(node)) return instances.get(node)
+            if (node.dataset.filterControl === 'selector') return selector(node)
+            const api = node.dataset.filterControl === 'icon' ? icon(node) : segment(node)
+            instances.set(node, api)
+            return api
+          })
+          return () => mounted.forEach((api) => api.dispose())
+        }
+        return {
+          mount,
+          sync: (root) => instances.get(root)?.sync?.(),
+          close: (root) => instances.get(root)?.close?.(),
+          trigger: (node) => node?.closest('.df-selector')?.querySelector('summary') || node,
+        }
+      })()
+    </script>
+    <style id="dashboard-appearance-style">
+      :root {
+        --glass-strength: 60;
+      }
+      body {
+        background: var(--background-base);
+      }
+      .da-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border: 1px solid var(--glass-edge);
+        border-radius: 50%;
+        background: var(--glass-sheen), var(--control-track);
+        background-clip: padding-box;
+        box-shadow: var(--control-shadow);
+        color: var(--ink);
+        cursor: pointer;
+      }
+      .da-icon svg {
+        display: block;
+        width: 18px;
+        height: 18px;
+      }
+      .da-panel {
+        position: fixed;
+        inset: auto;
+        z-index: 1000;
+        width: min(360px, calc(100vw - 24px));
+        max-width: none;
+        max-height: calc(100dvh - 24px);
+        margin: 0;
+        padding: 22px;
+        overflow: auto;
+        overscroll-behavior: contain;
+        border: 1px solid var(--glass-edge);
+        border-radius: 24px;
+        background: var(--glass-sheen), var(--glass-overlay-surface);
+        background-clip: padding-box;
+        box-shadow: var(--glass-raised-shadow);
+        backdrop-filter: var(--glass-filter);
+        -webkit-backdrop-filter: var(--glass-filter);
+        color: var(--ink);
+        font: 12px/1.6 var(--font-ui);
+      }
+      .da-panel[open] {
+        display: grid;
+        gap: 20px;
+      }
+      .da-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      .da-heading h2 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 600;
+      }
+      .da-icon {
+        box-shadow: var(--glass-lip);
+      }
+      .da-themes {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+      }
+      .da-theme {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 36px;
+        padding: 8px 10px;
+        border: 0;
+        border-radius: 13px;
+        background: transparent;
+        color: var(--muted);
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+      .da-theme i {
+        flex: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--theme-swatch) 52%, rgb(255 255 255 / 88%) 52%);
+      }
+      .da-theme[aria-pressed='true'] {
+        background: var(--control-surface);
+        color: var(--ink);
+        box-shadow: var(--control-selected-shadow);
+      }
+      .da-strength label {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 13px;
+      }
+      .da-strength output {
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .da-strength input {
+        appearance: none;
+        -webkit-appearance: none;
+        display: block;
+        width: 100%;
+        height: 28px;
+        margin: 8px 0 4px;
+        padding: 0;
+        background: transparent;
+        cursor: pointer;
+      }
+      .da-strength input::-webkit-slider-runnable-track {
+        height: 5px;
+        border-radius: 999px;
+        background: linear-gradient(
+          to right,
+          var(--accent) var(--range-progress),
+          rgb(104 120 137 / 18%) var(--range-progress)
+        );
+      }
+      .da-strength input::-moz-range-track {
+        height: 5px;
+        border-radius: 999px;
+        background: linear-gradient(
+          to right,
+          var(--accent) var(--range-progress),
+          rgb(104 120 137 / 18%) var(--range-progress)
+        );
+      }
+      .da-strength input::-webkit-slider-thumb {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        margin-top: -6.5px;
+        border: 0;
+        border-radius: 50%;
+        background: white;
+        box-shadow: var(--control-selected-shadow);
+      }
+      .da-strength input::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border: 0;
+        border-radius: 50%;
+        background: white;
+        box-shadow: var(--control-selected-shadow);
+      }
+      .da-scale {
+        display: flex;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .da-reset {
+        height: 36px;
+        padding: 0 14px;
+        border: 1px solid var(--glass-edge);
+        border-radius: 20px;
+        background: var(--glass-sheen), var(--control-track);
+        background-clip: padding-box;
+        box-shadow: var(--glass-lip);
+        color: var(--ink);
+        font: inherit;
+        cursor: pointer;
+      }
+      .da-note {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      :is(.da-icon, .da-theme, .da-reset):hover {
+        background-color: var(--control-hover);
+        color: var(--ink);
+        box-shadow: var(--control-menu-hover-shadow);
+      }
+      :is(.da-icon, .da-theme, .da-reset):active {
+        transform: translateY(1.5px) scale(0.98);
+        box-shadow: inset 0 2px 6px rgb(38 53 68 / 10%);
+      }
+      :is(.da-panel button, .da-panel input):focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: -2px;
+      }
+      @media (max-width: 600px) {
+        #filters {
+          flex-wrap: wrap;
+        }
+        #filters .df-selector > summary {
+          min-width: 0;
+        }
+        .da-panel {
+          padding: 18px;
         }
       }
       @media (prefers-reduced-motion: reduce) {
-        :is(#filters, .ma-dialog) :is(button, summary),
-        :is(#filters, .ma-dialog) ::after {
+        .da-panel button {
+          transform: none !important;
           transition: none !important;
         }
-        #filters .segment button[data-loading='true']::after,
-        .ma-dialog [data-loading='true'][aria-busy='true']::after,
-        .ma-dialog .ma-picker[open] .ma-groups,
-        .dashboard-loading-orbit,
-        .dashboard-loading-track::after {
-          animation: none;
+      }
+      @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+        .da-panel {
+          background: var(--glass-fallback);
+          background-clip: padding-box;
+        }
+      }
+      @media (prefers-reduced-transparency: reduce) {
+        .da-panel {
+          background: var(--glass-fallback);
+          background-clip: padding-box;
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
         }
       }
     </style>
@@ -1638,7 +4020,7 @@
           <p id="scope" class="scope">正在准备内嵌数据…</p>
         </div>
         <fieldset id="filters" disabled aria-label="全局筛选">
-          <div class="segment" role="group" aria-label="年龄范围">
+          <div class="segment" data-filter-control="selector" role="group" aria-label="年龄范围">
             <button type="button" data-filter="age" data-value="" aria-pressed="true">全部年龄</button
             ><button type="button" data-filter="age" data-value="younger" aria-pressed="false">&lt;60 岁</button
             ><button type="button" data-filter="age" data-value="older" aria-pressed="false">≥60 岁</button>
@@ -1648,6 +4030,21 @@
             ><button type="button" data-filter="pressure" data-value="1" aria-pressed="false">有高血压</button
             ><button type="button" data-filter="pressure" data-value="0" aria-pressed="false">无高血压</button>
           </div>
+          <button
+            id="appearance-trigger"
+            class="df-settings df-icon"
+            data-filter-control="icon"
+            type="button"
+            aria-label="外观设置"
+            aria-haspopup="dialog"
+            aria-expanded="false"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="6" cy="12" r="1.5" />
+              <circle cx="12" cy="12" r="1.5" />
+              <circle cx="18" cy="12" r="1.5" />
+            </svg>
+          </button>
         </fieldset>
       </header>
       <div id="dashboard-content" inert>
@@ -1751,9 +4148,19 @@
           </summary>
           <p class="dashboard-table-caption">
             每行对应一份临床记录。事件占比 = DEATH_EVENT 之和 / 样本记录数；DEATH_EVENT=0
-            表示随访观察期内未记录死亡。time 为随访天数，年龄组比较是样本描述，不构成因果或个体预后判断。
+            表示随访观察期内未记录死亡。time
+            为随访天数，年龄组比较是样本描述，不构成因果或个体预后判断。底部合计当前表格的样本与事件数，分组占比及均值不相加。
           </p>
           <div id="overview-table" class="dashboard-table" role="region" aria-label="完整明细表" tabindex="0"></div>
+        </details>
+        <details open id="records-panel" data-enter="7">
+          <summary>
+            原始记录明细<span id="records-count" class="dashboard-table-count" aria-live="polite"></span>
+          </summary>
+          <p class="dashboard-table-caption">
+            按全局范围展示原始记录（含缺失值）。第二行为列概况：数值分布、文本高频值与占比。列筛选仅影响本表，支持排序和复制。
+          </p>
+          <div id="records-table" class="dashboard-table" role="region" aria-label="原始记录明细表" tabindex="0"></div>
         </details>
       </div>
       <footer><p id="status" role="status">正在加载图表模块…</p></footer>
@@ -1791,6 +4198,7 @@
           finishRefreshWait?.()
         }
         const setTrigger = (button) => {
+          button = DashboardFilters.trigger(button)
           trigger?.removeAttribute('data-loading')
           trigger?.removeAttribute('aria-busy')
           trigger = button
@@ -2223,72 +4631,7 @@
         }
         // 选中面依附按钮尺寸，loading 伸缩与换行无需逐帧测量。
         function bindControls(root) {
-          const states = (root.matches('.segment') ? [root] : [...root.querySelectorAll('.segment')]).map((group) => {
-            const indicator = document.createElement('span')
-            indicator.className = 'segment-indicator'
-            indicator.setAttribute('aria-hidden', 'true')
-            group.dataset.glass = 'true'
-            return { group, indicator, animation: undefined }
-          })
-          function update() {
-            // 先读取所有变更位置，再迁移选中面；中途切换从当前画面接续。
-            const changes = states.flatMap((state) => {
-              const next = state.group.querySelector('button[aria-pressed="true"]')
-              if (state.indicator.parentElement === next) return []
-              const moving = next && state.indicator.isConnected && !reducedMotion.matches
-              return [
-                {
-                  state,
-                  next,
-                  from: moving && state.indicator.getBoundingClientRect(),
-                  to: moving && next.getBoundingClientRect(),
-                  width: moving && next.offsetWidth,
-                  height: moving && next.offsetHeight,
-                },
-              ]
-            })
-            for (const { state, next, from, to, width, height } of changes) {
-              state.animation?.cancel()
-              if (!next) {
-                state.indicator.remove()
-                continue
-              }
-              next.prepend(state.indicator)
-              if (!from?.width || !to?.width || !to.height) continue
-              const sx = to.width / width,
-                sy = to.height / height
-              state.animation = state.indicator.animate(
-                [
-                  {
-                    transform: `translate(${(from.x - to.x) / sx}px, ${(from.y - to.y) / sy}px) scale(${from.width / to.width}, ${from.height / to.height})`,
-                  },
-                  { transform: 'none' },
-                ],
-                { duration: 320, easing: 'cubic-bezier(.22,1,.36,1)' },
-              )
-            }
-          }
-          const observer = new MutationObserver(update)
-          observer.observe(root, {
-            subtree: true,
-            childList: true,
-            attributes: true,
-            attributeFilter: ['aria-pressed'],
-          })
-          const finish = () => {
-            if (reducedMotion.matches) states.forEach((state) => state.animation?.cancel())
-          }
-          reducedMotion.addEventListener('change', finish)
-          update()
-          return () => {
-            observer.disconnect()
-            reducedMotion.removeEventListener('change', finish)
-            states.forEach(({ group, indicator, animation }) => {
-              animation?.cancel()
-              indicator.remove()
-              delete group.dataset.glass
-            })
-          }
+          return DashboardFilters.mount(root)
         }
         function disposeMotion() {
           entrances.forEach((animation) => animation.cancel())
@@ -2418,6 +4761,7 @@
       // 指标分析的共享实现；随模板内嵌，保持单 HTML 交付。
       window.bindMetricAnalysis = function bindMetricAnalysis({
         vbi,
+        dataQuery,
         Builder,
         VChart,
         accent,
@@ -2428,6 +4772,13 @@
         ready,
       }) {
         let dialog, context, dimension, selection, chart, table, observer, controller
+        let tableView,
+          tableViewKey,
+          tableScope,
+          tableDataVersion,
+          tableFields = [],
+          tableTypes = [],
+          tableSequence = 0
         let version = 0,
           opener,
           previousOverflow,
@@ -2470,6 +4821,7 @@
           finishLoadingPaint?.()
         }
         const startControlLoading = (control) => {
+          control = DashboardFilters.trigger(control)
           stopControlLoading()
           loadingControl = control
           control?.setAttribute('data-loading', 'true')
@@ -2481,25 +4833,20 @@
           dialog.className = 'ma-dialog'
           dialog.setAttribute('aria-labelledby', 'ma-title')
           dialog.innerHTML = `<div class="ma-shell">
-      <header class="ma-header"><div><h2 id="ma-title"></h2><p class="ma-scope" data-ma="scope"></p></div><button type="button" class="ma-close" aria-label="关闭指标分析" data-ma="close">×</button></header>
+      <header class="ma-header"><div><h2 id="ma-title"></h2><p class="ma-scope" data-ma="scope"></p></div><button type="button" class="ma-close" aria-label="关闭指标分析" data-ma="close"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="m3 3 10 10m0-10L3 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg></button></header>
       <div class="ma-body">
       <p class="ma-feedback" data-ma="feedback" role="status"></p><button type="button" data-ma="retry" hidden>重新加载</button>
       <div class="ma-content" data-ma="content" hidden>
         <section class="ma-summary"><div><p class="ma-eyebrow" data-ma="value-label"></p><strong class="ma-value" data-ma="value"></strong></div><p class="ma-finding" data-ma="finding"></p></section>
-        <div class="ma-toolbar"><nav class="ma-modes segment" aria-label="分析维度" data-ma="modes"></nav><div class="ma-selection" data-ma="selection" hidden><span data-ma="selected"></span><button type="button" data-ma="reset" aria-label="清除分组筛选">清除 ×</button></div><details class="ma-picker" data-ma="picker"><summary data-ma="picker-label"><span data-ma="picker-text">选择分组</span><span class="ma-picker-chevron" aria-hidden="true">⌄</span></summary><div class="ma-groups" data-ma="groups" role="group" aria-label="选择分组查看记录"></div></details></div>
+        <div class="ma-toolbar"><nav class="ma-modes segment" aria-label="分析维度" data-ma="modes"></nav><details class="ma-picker" data-ma="picker" data-filter-control="selector"><summary data-ma="picker-label"><span data-ma="picker-text" data-control-label>选择分组</span><span class="df-chevron" aria-hidden="true"></span></summary><div class="ma-groups" data-ma="groups" data-control-options role="group" aria-label="选择分组查看记录"></div></details></div>
         <section class="ma-chart-panel"><div class="ma-panel-heading"><h3 data-ma="chart-title"></h3></div><p class="ma-hint" data-ma="chart-hint"></p><div class="ma-chart" data-ma="chart" role="img"></div></section>
         <section class="ma-table-panel"><div class="ma-panel-heading"><h3>关联明细</h3><button type="button" data-ma="expand" aria-expanded="false">展开表格</button></div><p class="ma-hint" data-ma="table-scope" aria-live="polite"></p><div class="ma-table" data-ma="table" role="region" aria-label="分析明细表" tabindex="0"></div></section>
         <details class="ma-definition"><summary>统计口径与依据</summary><p data-ma="definition"></p><p data-ma="evidence"></p><p data-ma="grain"></p></details>
       </div></div></div>`
           for (const node of dialog.querySelectorAll('[data-ma]')) nodes[node.dataset.ma] = node
           document.body.append(dialog)
-          listeners.push(motion.bindControls(nodes.modes))
+          listeners.push(motion.bindControls(nodes.modes), DashboardFilters.mount(nodes.picker))
           nodes.close.addEventListener('click', closeDialog)
-          nodes.reset.addEventListener('click', (event) => {
-            selection = undefined
-            nodes['picker-label'].focus({ preventScroll: true })
-            void refresh(false, event.currentTarget)
-          })
           nodes.retry.addEventListener('click', (event) => void refresh(true, event.currentTarget))
           nodes.expand.addEventListener('click', () => {
             const expanded = dialog.classList.toggle('ma-expanded')
@@ -2511,17 +4858,6 @@
           dialog.addEventListener('cancel', (event) => {
             event.preventDefault()
             closeDialog()
-          })
-          dialog.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && nodes.picker.open) {
-              event.preventDefault()
-              event.stopPropagation()
-              nodes.picker.open = false
-              nodes['picker-label'].focus()
-            }
-          })
-          dialog.addEventListener('click', (event) => {
-            if (!nodes.picker.contains(event.target)) nodes.picker.open = false
           })
           dialog.addEventListener('close', () => {
             if (!dialog.open && context) cleanup()
@@ -2537,10 +4873,6 @@
         }
         function selectGroup(key) {
           selection = selection === key ? undefined : key
-          if (nodes.picker.open) {
-            nodes.picker.open = false
-            nodes['picker-label'].focus({ preventScroll: true })
-          }
           void refresh(false, nodes['picker-label'])
         }
         function selectDimension(event) {
@@ -2562,6 +4894,7 @@
           cleanup()
         }
         function closeDialog() {
+          DashboardFilters.close(nodes.picker)
           if (!dialog?.open || dialog.dataset.closing === 'true') return
           // 退场开始就让旧查询失效，但保留当前 Canvas 直到画面退场完成。
           cancelRefresh()
@@ -2598,6 +4931,9 @@
           dialog?.getAnimations({ subtree: true }).forEach((animation) => animation.cancel())
           chart?.release()
           chart = undefined
+          tableView?.dispose()
+          tableView = tableViewKey = undefined
+          tableFields = tableTypes = []
           table?.release()
           table = undefined
           chartType = undefined
@@ -2617,7 +4953,7 @@
             builder.dimensions.add(field, (node) => node.setAlias(label).setSort({ order: 'asc' }))
           for (const [field, label, func] of measures)
             builder.measures.add(field, (node) => node.setAlias(label).setAggregate({ func }))
-          for (const condition of conditions)
+          for (const condition of [...(context.entryConditions || []), ...conditions])
             builder.whereFilter.add(condition.field, (node) =>
               node.setOperator(condition.operator || 'eq').setValue(condition.value),
             )
@@ -2632,15 +4968,36 @@
           }
         }
         function buildDiagnosticSpec(group, chartRows, selected) {
+          accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()
           const analysis = context.analysis
           const matrix = group[0] === '__cross'
-          const key = JSON.stringify([group[0], chartRows, reducedMotion.matches])
+          const relation = matrix ? undefined : analysis.relation
+          const yAxis = relation?.y || analysis
+          const xMean = matrix ? undefined : totalRow[relation.x.field]
+          const yMean =
+            matrix || !Number.isFinite(totalRow[relation.y.field])
+              ? undefined
+              : totalRow[relation.y.field] / (yAxis.scale || 1)
+          const key = JSON.stringify([group[0], chartRows, xMean, yMean, reducedMotion.matches, accent])
           if (key !== analysisKey) {
+            const meanLine = {
+              textPosition: 'insideEnd',
+              textColor: labelColor || '#64717e',
+              textFontSize: 10,
+              textBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+              textBackgroundBorderWidth: 0,
+              textBackgroundBorderRadius: 3,
+              textBackgroundPadding: 3,
+              lineColor: accent,
+              lineVisible: true,
+              lineStyle: 'dashed',
+              lineWidth: 1,
+            }
             analysisSpec = Builder.from({
               chartType: matrix ? 'heatmap' : 'scatter',
               dataset: chartRows.map((row) => ({
                 ...row,
-                value: row.value / (analysis.scale || 1),
+                value: row.value / (yAxis.scale || 1),
                 colorValue: row.value / (analysis.scale || 1),
               })),
               dimensions: matrix
@@ -2648,16 +5005,20 @@
                     { id: 'x', alias: analysis.dimensions[1][1], encoding: 'xAxis' },
                     { id: 'y', alias: analysis.dimensions[0][1], encoding: 'yAxis' },
                   ]
-                : [{ id: 'label', alias: analysis.dimensions[0][1], encoding: 'detail' }],
+                : [{ id: 'label', alias: relation.pointLabel, encoding: 'detail' }],
               measures: [
                 ...(matrix
                   ? []
                   : [
                       {
-                        id: 'count',
-                        alias: analysis.countLabel || '来源记录数',
+                        id: 'xValue',
+                        alias: relation.x.label,
                         encoding: 'xAxis',
-                        format: { type: 'number', fractionDigits: 0 },
+                        format: {
+                          type: 'number',
+                          fractionDigits: relation.x.digits ?? 1,
+                          suffix: relation.x.unit || '',
+                        },
                       },
                     ]),
                 ...(matrix
@@ -2672,20 +5033,16 @@
                   : []),
                 {
                   id: 'value',
-                  alias: analysis.label,
+                  alias: yAxis.label,
                   encoding: matrix ? 'label' : 'yAxis',
-                  format: { type: 'number', fractionDigits: analysis.digits ?? 1, suffix: analysis.unit || '' },
+                  format: { type: 'number', fractionDigits: yAxis.digits ?? 1, suffix: yAxis.unit || '' },
                 },
-                ...(matrix
-                  ? [
-                      {
-                        id: 'count',
-                        alias: analysis.countLabel || '来源记录数',
-                        encoding: 'tooltip',
-                        format: { type: 'number', fractionDigits: 0 },
-                      },
-                    ]
-                  : []),
+                {
+                  id: 'count',
+                  alias: matrix ? analysis.countLabel || '来源记录数' : relation.countLabel,
+                  encoding: 'tooltip',
+                  format: { type: 'number', fractionDigits: 0 },
+                },
               ],
               backgroundColor: 'transparent',
               color: { colorScheme: [accent], linearColorScheme: ['#f1f4f8', accent] },
@@ -2702,7 +5059,25 @@
               tooltip: { enable: true },
               xAxis: { visible: true, zero: true },
               yAxis: { visible: true, zero: true },
-              size: 10,
+              size: matrix ? 10 : relation.size || 6,
+              annotationHorizontalLine: Number.isFinite(yMean)
+                ? {
+                    ...meanLine,
+                    yValue: yMean,
+                    text: `Y 均值 ${number(yMean, yAxis.digits ?? 1)}${yAxis.unit || ''}`,
+                    textAlign: 'right',
+                    textBaseline: 'bottom',
+                  }
+                : undefined,
+              annotationVerticalLine: Number.isFinite(xMean)
+                ? {
+                    ...meanLine,
+                    xValue: xMean,
+                    text: `X 均值 ${number(xMean, relation.x.digits ?? 1)}${relation.x.unit || ''}`,
+                    textAlign: 'left',
+                    textBaseline: 'top',
+                  }
+                : undefined,
               animation: {
                 enable: !reducedMotion.matches,
                 params: { appear: { enable: false }, update: { enable: true, duration: 550, ease: 'cubicInOut' } },
@@ -2723,17 +5098,10 @@
               if (!matrix)
                 axis.title = {
                   visible: true,
-                  text: axis.orient === 'bottom' ? analysis.countLabel || '来源记录数' : analysis.label,
+                  text: axis.orient === 'bottom' ? relation.x.label : relation.y.label,
                   style: { fill: labelColor || '#64717e', fontSize: 11 },
                 }
             }
-            const baseline = analysis.value(totalRow)
-            if (!matrix && Number.isFinite(baseline))
-              analysisSpec.markLine = {
-                y: baseline / (analysis.scale || 1),
-                line: { style: { stroke: accent, lineDash: [4, 4], lineWidth: 1 } },
-                label: { text: '当前范围基准', style: { fill: labelColor || '#64717e', fontSize: 10 } },
-              }
             analysisKey = key
           }
           const mark = matrix ? 'cell' : 'point'
@@ -2743,14 +5111,16 @@
               ...analysisSpec[mark],
               style: {
                 ...analysisSpec[mark]?.style,
-                fillOpacity: (datum) => (selected === undefined || datum.key === selected ? 1 : 0.24),
+                fillOpacity: (datum) =>
+                  selected === undefined ? relation?.opacity || 1 : datum.key === selected ? 1 : 0.16,
               },
             },
           }
         }
         function buildAnalysisSpec(group, metric, chartRows, chartTitle, selected) {
+          accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()
           if (group[0].startsWith('__') && context.analysis) return buildDiagnosticSpec(group, chartRows, selected)
-          const key = JSON.stringify([group[0], chartRows, reducedMotion.matches])
+          const key = JSON.stringify([group[0], chartRows, reducedMotion.matches, accent])
           if (key !== analysisKey) {
             analysisSpec = Builder.from({
               chartType: group[2] ? 'line' : 'bar',
@@ -2763,9 +5133,25 @@
                   encoding: group[2] ? 'yAxis' : 'xAxis',
                   format: { type: 'number', fractionDigits: metric.digits ?? 1, suffix: metric.unit || '' },
                 },
+                ...(!group[2]
+                  ? [
+                      {
+                        id: 'value',
+                        alias: chartTitle,
+                        encoding: 'color',
+                        format: { type: 'number', fractionDigits: metric.digits ?? 1, suffix: metric.unit || '' },
+                      },
+                    ]
+                  : []),
               ],
               backgroundColor: 'transparent',
-              color: { colorScheme: [accent] },
+              color: {
+                colorScheme: [accent],
+                linearColorScheme: [
+                  accent,
+                  getComputedStyle(document.documentElement).getPropertyValue('--chart-accent-end').trim(),
+                ],
+              },
               legend: { enable: false },
               label: { enable: false },
               tooltip: { enable: true },
@@ -2809,32 +5195,96 @@
             encoding: 'column',
             format: { type: 'number', fractionDigits: 3 },
           }))
-          const options = records.length
-            ? Builder.from({
-                chartType: 'table',
-                dataset: records,
-                dimensions,
-                measures,
-                theme: 'light',
-              }).build()
-            : {
-                columns: [...dimensions, ...measures].map(({ id, alias }) => ({ field: id, title: alias })),
-                records: [],
-              }
+          const options = DashboardTable.build(
+            Builder,
+            {
+              dataset: records,
+              dimensions,
+              measures,
+              totals: context.tableTotals || 'avg',
+            },
+            nodes.table,
+          )
           options.widthMode = 'standard'
           options.columns = options.columns.map((column) => ({
             ...column,
-            width:
-              { country: 156, year: 72, id: 96, order_id: 110, order_date: 128, date: 128 }[column.field] ||
-              Math.max(96, Math.min(160, String(column.title || '').length * 12 + 24)),
+            width: Math.max(
+              { country: 156, year: 72, id: 96, order_id: 110, order_date: 128, date: 128 }[column.field] || 96,
+              Math.min(220, String(column.title || '').length * 11 + 44),
+            ),
           }))
           options.tooltip = { ...options.tooltip, parentElement: dialog, confine: true }
           options.defaultColWidth = 130
           return DashboardTable.options(options, nodes.table)
         }
+        async function updateDetailTable(detailDimensions, detailMeasures, records, scope, library, isCurrent) {
+          const fields = [...detailDimensions, ...detailMeasures].map(([field]) => field)
+          const columns = [...detailDimensions, ...detailMeasures].map(([, label]) => label)
+          const types = fields.map((field, index) => {
+            if (detailMeasures.some(([key]) => key === field)) return 'number'
+            const value = records.find((record) => record[field] != null)?.[field]
+            return value == null && tableFields[index] === field
+              ? tableTypes[index]
+              : typeof value === 'number'
+                ? 'number'
+                : 'string'
+          })
+          const key = JSON.stringify([fields, columns, types, context.tableTotals])
+          if (key !== tableViewKey) {
+            tableView?.dispose()
+            tableView = undefined
+            const model = context
+            let nextView
+            nextView = await DashboardTable.createView({
+              vbi,
+              query: dataQuery,
+              connectorId: `${model.connectorId}-modal-${++tableSequence}`,
+              fields,
+              columns,
+              types,
+              host: nodes.table,
+              render(values, totalCount, request) {
+                if (!request.isCurrent() || context !== model || tableView !== nextView || tableDataVersion !== version)
+                  return
+                const rows = values.map((values) =>
+                  Object.fromEntries(fields.map((field, index) => [field, values[index]])),
+                )
+                const options = buildTableOptions(detailDimensions, detailMeasures, rows)
+                nodes.table.dataset.empty = String(!rows.length)
+                const amount =
+                  rows.length === totalCount
+                    ? number(rows.length, 0)
+                    : `${number(rows.length, 0)} / ${number(totalCount, 0)}`
+                nodes['table-scope'].textContent =
+                  `${tableScope} · ${amount} 条记录 · ${model.tableTotals === 'sum' ? '数值列合计' : '数值列平均（空值不计）'}`
+                nodes['table-scope'].title = nodes['table-scope'].textContent
+                nodes.table.setAttribute('aria-label', `关联明细，${tableScope}，${rows.length} 条记录`)
+                if (table) DashboardTable.update(table, options)
+                else {
+                  table = new library.ListTable(nodes.table, options)
+                  nextView.bind(table)
+                  sizes.set(table, `${nodes.table.clientWidth}:${nodes.table.clientHeight}`)
+                }
+              },
+            })
+            if (!isCurrent()) {
+              nextView.dispose()
+              return
+            }
+            tableView = nextView
+            tableViewKey = key
+            tableFields = fields
+            tableTypes = types
+            if (table) tableView.bind(table)
+          }
+          if (!isCurrent()) return
+          tableDataVersion = version
+          tableScope = scope
+          await tableView.updateRows(records.map((record) => fields.map((field) => record[field] ?? null)))
+        }
         function renderGroupPicker(group, metric, rows, selected) {
-          nodes['picker-text'].textContent =
-            group[0] === '__cross' ? '选择组合' : group[0] === '__scale' ? '选择分组' : `选择${group[1]}`
+          nodes.picker.dataset.placeholder =
+            group[0] === '__cross' ? '选择组合' : group[0] === '__relation' ? '选择观测' : `选择${group[1]}`
           nodes.picker.hidden = !rows.length
           if (rows !== menuRows) {
             nodes.groups.replaceChildren(
@@ -2851,6 +5301,7 @@
           }
           for (const choice of nodes.groups.children)
             choice.setAttribute('aria-pressed', String(selected === choice.dataset.key))
+          DashboardFilters.sync(nodes.picker)
         }
         let groupRows, totalRow, priorRow
         async function refresh(reload, control) {
@@ -2870,25 +5321,25 @@
             selected = selection
           const analysis = model.analysis
           const diagnostic = !!analysis && group[0].startsWith('__')
-          const dimensions = diagnostic
-            ? group[0] === '__cross'
-              ? analysis.dimensions
-              : [analysis.dimensions[0]]
-            : [group]
+          const relation = group[0] === '__relation' ? analysis.relation : undefined
+          const dimensions = relation ? relation.dimensions : diagnostic ? analysis.dimensions : [group]
           const plotMetric = diagnostic
             ? {
                 ...metric,
-                title: analysis.label,
-                format: analysis.format,
-                groupFormat: analysis.format,
-                scale: analysis.scale,
-                digits: analysis.digits,
-                unit: analysis.unit,
+                title: relation?.y.label || analysis.label,
+                format: relation?.format || analysis.format,
+                groupFormat: relation?.format || analysis.format,
+                scale: relation?.y.scale || analysis.scale,
+                digits: relation?.y.digits ?? analysis.digits,
+                unit: relation?.y.unit ?? analysis.unit,
               }
             : metric
           const measures = [
             ...new Map(
-              [...metric.measures, ...(analysis?.measures || [])].map((measure) => [measure[0], measure]),
+              [...metric.measures, ...(analysis?.measures || []), ...(relation?.measures || [])].map((measure) => [
+                measure[0],
+                measure,
+              ]),
             ).values(),
           ]
           const selectedLabel = groupRows?.find((row) => row.key === selected)?.label || selected
@@ -2899,9 +5350,6 @@
           nodes.retry.hidden = control !== nodes.retry
           nodes.content.setAttribute('aria-busy', 'true')
           nodes.groups.inert = true
-          const clearing = control === nodes.reset
-          nodes.selection.hidden = selected === undefined && !clearing
-          if (!clearing) nodes.selected.textContent = selected === undefined ? '' : `${group[1]}：${selectedLabel}`
           const extra =
             selected === undefined
               ? []
@@ -2949,7 +5397,7 @@
                     typeof metric.groupConditions === 'function'
                       ? metric.groupConditions(dimensions[0])
                       : metric.groupConditions || base,
-                    measures,
+                    relation ? measures.filter(([field]) => !dimensions.some(([key]) => field === key)) : measures,
                     signal,
                   )
                 : undefined,
@@ -2962,16 +5410,28 @@
             if (reload) {
               totalRow = total[0] || {}
               priorRow = prior?.[0] || {}
-              groupRows = diagnostic
-                ? analysis.rows(groups, dimensions)
-                : groups
-                    .map((row) => ({
-                      source: row,
-                      count: analysis?.count(row),
-                      key: String(row[group[0]]),
-                      value: metric.groupValue ? metric.groupValue(row, priorRow) : metric.value(row, priorRow),
+              groupRows = relation
+                ? groups
+                    .map((source) => ({
+                      source,
+                      values: dimensions.map(([field]) => source[field]),
+                      key: JSON.stringify(dimensions.map(([field]) => source[field])),
+                      label: dimensions.map(([field]) => analysis.dimensionLabel(field, source[field])).join(' / '),
+                      xValue: source[relation.x.field],
+                      value: source[relation.y.field],
+                      count: source[relation.countField],
                     }))
-                    .filter((row) => Number.isFinite(row.value))
+                    .filter((row) => Number.isFinite(row.xValue) && Number.isFinite(row.value))
+                : diagnostic
+                  ? analysis.rows(groups, dimensions)
+                  : groups
+                      .map((row) => ({
+                        source: row,
+                        count: analysis?.count(row),
+                        key: String(row[group[0]]),
+                        value: metric.groupValue ? metric.groupValue(row, priorRow) : metric.value(row, priorRow),
+                      }))
+                      .filter((row) => Number.isFinite(row.value))
               if (!diagnostic && !group[2])
                 groupRows.sort((a, b) => b.value - a.value || a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
               else if (!diagnostic) groupRows.sort((a, b) => a.key.localeCompare(b.key, 'zh-CN', { numeric: true }))
@@ -3006,7 +5466,8 @@
                         : ranked.length
                           ? `${ranked[0].key}的${metric.title}最高（${metric.format(ranked[0].value)}）${ranked.length > 1 ? `，${ranked.at(-1).key}最低（${metric.format(ranked.at(-1).value)}）` : ''}。`
                           : '当前范围没有可分析的有效值。可返回看板调整筛选。'
-                if (analysis && (diagnostic || !metric.finding))
+                if (relation) nodes.finding.textContent = relation.description
+                else if (analysis && (diagnostic || (!metric.finding && !context.entryConditions)))
                   nodes.finding.textContent = analysis.finding(current, totalRow, selectedLabel)
                 nodes.definition.textContent = metric.definition
                 nodes.evidence.textContent = metric.evidence
@@ -3017,19 +5478,22 @@
                 nodes.grain.textContent = `${model.grain} · ${selected === undefined ? '当前筛选范围' : `${group[1]}：${selectedLabel}`} · 表格包含当前范围的完整结果`
                 const detailScope =
                   selected === undefined ? model.detailScope || '当前范围' : `${group[1]}：${selectedLabel}`
-                nodes['table-scope'].textContent = `${detailScope} · ${number(details.length, 0)} 条记录`
+                nodes['table-scope'].textContent =
+                  `${detailScope} · ${number(details.length, 0)} 条记录 · ${model.tableTotals === 'sum' ? '数值列合计' : '数值列平均（空值不计）'}`
                 nodes['table-scope'].title = nodes['table-scope'].textContent
                 nodes.table.setAttribute('aria-label', `关联明细，${detailScope}，${details.length} 条记录`)
                 const chartTitle = diagnostic ? analysis.label : metric.groupTitle || metric.title
                 nodes['chart-title'].textContent = diagnostic
-                  ? `${group[0] === '__cross' ? analysis.dimensions.map((item) => item[1]).join(' × ') : '规模与表现'} · ${analysis.label}`
+                  ? relation
+                    ? relation.title
+                    : `${analysis.dimensions.map((item) => item[1]).join(' × ')} · ${analysis.label}`
                   : metric.groupTitle || (group[2] ? `${group[1]}趋势` : `${group[1]}比较`)
                 nodes['chart-hint'].textContent = !group[2] && plotRows.length > 12 ? '前 12 组' : ''
                 renderGroupPicker(group, plotMetric, plotRows, selected)
-                const chartRows = diagnostic
-                  ? group[0] === '__cross'
-                    ? analysis.chartRows(plotRows, selected)
-                    : [...plotRows]
+                let chartRows = diagnostic
+                  ? relation
+                    ? plotRows
+                    : analysis.chartRows(plotRows, selected)
                   : group[2]
                     ? plotRows
                     : plotRows.slice(0, 12)
@@ -3041,11 +5505,17 @@
                     nodes['chart-hint'].textContent = '前 11 组及已选项'
                   }
                 }
-                if (diagnostic)
+                if (relation) {
+                  const varying =
+                    new Set(chartRows.map((row) => row.xValue)).size > 1 &&
+                    new Set(chartRows.map((row) => row.value)).size > 1
+                  nodes['chart-hint'].textContent = varying
+                    ? `${relation.hint} 有效配对 ${chartRows.length} 个。`
+                    : '当前范围缺少有效配对，或至少一个指标没有变化，不展示关系散点；仍可通过菜单核对明细。'
+                  if (!varying) chartRows = []
+                } else if (diagnostic)
                   nodes['chart-hint'].textContent =
-                    group[0] === '__cross'
-                      ? `颜色越深表示${analysis.label}越高；显示 ${chartRows.length}/${plotRows.length} 个有效组合，完整组合见菜单。`
-                      : `横轴为${analysis.countLabel || '来源记录数'}，纵轴为${analysis.label}；虚线为当前范围基准，点选核对记录。`
+                    `颜色越深表示${analysis.label}越高；显示 ${chartRows.length}/${plotRows.length} 个有效组合，完整组合见菜单。`
                 nodes.chart.dataset.empty = String(!chartRows.length)
                 if (!chartRows.length) {
                   chart?.release()
@@ -3088,15 +5558,8 @@
                   'aria-label',
                   `${chartTitle}，${selected === undefined ? '未选择分组' : `已选择${selectedLabel}`}，也可通过选择${group[1]}菜单联动明细`,
                 )
-                // 同一指标的表结构不变：筛选和翻页仅替换记录，避免重建表头及重算列宽。
-                const existingTable = !!table
-                if (!table) {
-                  const options = buildTableOptions(detailDimensions, detailMeasures, details)
-                  table = new library.ListTable(nodes.table, options)
-                  sizes.set(table, `${nodes.table.clientWidth}:${nodes.table.clientHeight}`)
-                }
+                await updateDetailTable(detailDimensions, detailMeasures, details, detailScope, library, isCurrent)
                 if (!isCurrent()) return
-                if (existingTable) DashboardTable.setRecords(table, details, { animate: false })
                 resize(chart, nodes.chart)
                 nodes.feedback.textContent = details.length ? '' : '当前范围暂无明细记录。'
                 dialog.dataset.state = details.length ? 'ready' : 'empty'
@@ -3123,7 +5586,6 @@
               stopControlLoading()
               delete nodes.feedback.dataset.loading
               nodes.feedback.removeAttribute('aria-label')
-              nodes.selection.hidden = selection === undefined
               if (dialog.dataset.state !== 'error') nodes.retry.hidden = true
               nodes.content.setAttribute('aria-busy', 'false')
               nodes.groups.inert = false
@@ -3131,13 +5593,22 @@
           }
         }
         function open(index, trigger) {
+          openContext(() => getContext(index), trigger)
+        }
+        function openContext(resolve, trigger) {
           if (!ready() || dialog?.open) return
+          const next = resolve()
+          if (!next) return
           createDialog()
           delete dialog.dataset.contentEnter
-          context = getContext(index)
+          context = next
           if (context.analysis)
-            context.dimensions = [...context.dimensions, ['__scale', '规模与表现'], ['__cross', '交叉定位']]
-          dimension = context.dimensions[0]
+            context.dimensions = [
+              ...context.dimensions,
+              ...(context.analysis.relation ? [['__relation', context.analysis.relation.title]] : []),
+              ['__cross', '交叉定位'],
+            ]
+          dimension = context.dimensions.find(([field]) => field === context.defaultDimension) || context.dimensions[0]
           selection = undefined
           groupRows = undefined
           opener = trigger
@@ -3180,7 +5651,10 @@
         const onOverlayMotionChange = () => {
           if (!reducedMotion.matches || !dialog?.open) return
           if (dialog.dataset.closing === 'true') completeClose()
-          else dialog.getAnimations({ subtree: true }).forEach((animation) => animation.cancel())
+          else {
+            dialog.getAnimations({ subtree: true }).forEach((animation) => animation.cancel())
+            if (table) DashboardTable.setRecords(table, table.records, { animate: false })
+          }
         }
         reducedMotion.addEventListener('change', onOverlayMotionChange)
         listeners.push(() => reducedMotion.removeEventListener('change', onOverlayMotionChange))
@@ -3230,11 +5704,56 @@
             listeners.push(() => card.removeEventListener('click', click))
           }
         })
-        return () => {
-          completeClose()
-          observer?.disconnect()
-          dialog?.remove()
-          listeners.forEach((dispose) => dispose())
+        return {
+          bindTable(table, resolve) {
+            const host = table.getContainer()
+            const description = host.getAttribute('aria-description')
+            host.setAttribute('aria-description', '点击数据单元格，或选中后按 Enter 或空格打开分析；表头用于整列选择。')
+            const activate = ({ col, row }) => {
+              if (
+                col < 0 ||
+                row < 0 ||
+                row >= table.rowCount ||
+                table.isHeader(col, row) ||
+                table.isAggregation(col, row)
+              )
+                return
+              const record = table.getCellOriginRecord(col, row)
+              if (!record) return
+              openContext(() => resolve(record, table.getCellInfo(col, row).field), host)
+            }
+            const keydown = (event) => {
+              if (!['Enter', ' '].includes(event.key) || event.repeat || event.ctrlKey || event.metaKey || event.altKey)
+                return
+              const ranges = table.getSelectedCellRanges()
+              if (ranges.length !== 1) return
+              const { start, end } = ranges[0]
+              if (
+                start.col !== end.col ||
+                start.row !== end.row ||
+                table.isHeader(start.col, start.row) ||
+                table.isAggregation(start.col, start.row)
+              )
+                return
+              event.preventDefault()
+              event.stopPropagation()
+              activate(start)
+            }
+            table.on('click_cell', activate)
+            host.addEventListener('keydown', keydown, true)
+            listeners.push(() => {
+              table.off('click_cell', activate)
+              host.removeEventListener('keydown', keydown, true)
+              if (description === null) host.removeAttribute('aria-description')
+              else host.setAttribute('aria-description', description)
+            })
+          },
+          dispose() {
+            completeClose()
+            observer?.disconnect()
+            dialog?.remove()
+            listeners.forEach((dispose) => dispose())
+          },
         }
       }
     </script>
@@ -3331,6 +5850,24 @@
           unit: '%',
           label: '记录死亡事件占比',
           question: '事件数量与事件占比指向同一年龄组吗？',
+          relation: {
+            title: '射血分数与肌酐',
+            pointLabel: '射血分数 / 肌酐',
+            dimensions: [
+              ['ef', '射血分数'],
+              ['creatinine', '血清肌酐'],
+            ],
+            countField: 'id',
+            countLabel: '同坐标样本数',
+            x: { field: 'ef', label: '射血分数', digits: 1, unit: '%' },
+            y: { field: 'creatinine', label: '血清肌酐', digits: 2, unit: ' mg/dL' },
+            format: (value) => `${formatNumber(value, 2)} mg/dL`,
+            description:
+              '核对射血分数相近时肌酐的差异，点选查看年龄、高血压状态、事件及随访记录；这是样本分布，不用于因果或个体风险判断。',
+            hint: '相同坐标合并，横纵虚线为当前范围各指标的有效值均值；点选核对。',
+            size: 6,
+            opacity: 0.7,
+          },
           dimensions: [
             ['age_band', '年龄组'],
             ['pressure', '高血压状态', false, 'number'],
@@ -3387,7 +5924,7 @@
           return {
             values: [n, ratio(events, n), r.ef, r.creatinine, r.age, r.followup, events],
             note: '所选样本记录数 · 按年龄组比较',
-            notes: [`${count(events)} 例 / ${count(n)} 份记录`, '样本均值 · 非临床阈值分组', '样本均值'],
+            notes: [`${count(events)} 例 / ${count(n)} 份记录`, '样本均值 · 非临床阈值分组', '样本均值 · 按年龄组排列'],
             ringRows: [
               { key: '记录死亡', value: events },
               { key: '未记录死亡', value: n - events },
@@ -3409,14 +5946,7 @@
           empty: !(total.id > 0),
           ...findings,
           axisLabels: [],
-          table: groups.map((r) => [
-            r.age_band,
-            count(r.id),
-            count(r.death),
-            `${formatNumber(ratio(r.death, r.id))}%`,
-            `${formatNumber(r.ef)}%`,
-            formatNumber(r.creatinine, 2),
-          ]),
+          table: groups.map((r) => [r.age_band, r.id, r.death, ratio(r.death, r.id), r.ef, r.creatinine]),
           plots: [
             {
               id: 'main-plot',
@@ -3463,7 +5993,7 @@
             {
               id: 'plot-three',
               emptyId: 'empty-three',
-              type: 'column',
+              type: 'area',
               valueLabel: '平均血清肌酐',
               dimensionLabel: '年龄组（岁）',
               digits: 2,
@@ -3498,18 +6028,29 @@
       const bindings = new Map()
       const plotSizes = new WeakMap()
       const definitionByPlot = new Map()
-      let overviewTable, overviewObserver
+      let overviewTable, overviewObserver, metricAnalysis, tableView, detailTable
       const preparedRows = prepareRows(sourceData)
-      function setTable(rows) {
+      function renderTable(rows, totalCount) {
         const host = $('#overview-table')
-        const options = DashboardTable.overview(Builder, PAGE.columns, rows, host)
+        const options = DashboardTable.overview(
+          Builder,
+          PAGE.columns,
+          rows,
+          host,
+          [undefined, count, count, valueWith(1, '%'), valueWith(1, '%'), (value) => formatNumber(value, 2)],
+          { type: 'sum', fields: [1, 2] },
+        )
         host.dataset.empty = String(!rows.length)
-        host.dataset.recordCount = String(rows.length)
-        $('#overview-count').textContent = `${rows.length} 条记录`
+        host.dataset.recordCount = String(totalCount)
+        $('#overview-count').textContent =
+          rows.length === totalCount ? `${rows.length} 条记录` : `${rows.length} / ${totalCount} 条记录`
         host.setAttribute('aria-label', `完整明细表，${rows.length} 条记录`)
-        if (overviewTable) DashboardTable.setRecords(overviewTable, options.records)
+        if (overviewTable) DashboardTable.update(overviewTable, options)
         else {
           overviewTable = new window.VTable.ListTable(host, options)
+
+          metricAnalysis.bindTable(overviewTable, tableAnalysisContext)
+          tableView.bind(overviewTable)
           overviewObserver = new ResizeObserver(() => {
             if (host.clientWidth && host.clientHeight) overviewTable?.resize()
           })
@@ -3552,20 +6093,30 @@
         const { type, rows, unit = '', digits = 1, main = false, categorical = false } = definition
         const dimEncoding = type === 'donut' ? 'color' : type === 'bar' ? 'yAxis' : 'xAxis'
         const valueEncoding = type === 'donut' ? 'angle' : type === 'bar' ? 'xAxis' : 'yAxis'
+        const colorByValue = type === 'bar' || type === 'column'
+        const measure = {
+          id: 'value',
+          alias: definition.valueLabel,
+          encoding: valueEncoding,
+          format: { type: 'number', fractionDigits: digits, suffix: unit },
+        }
         const spec = Builder.from({
           chartType: type,
           dataset: rows,
           dimensions: [{ id: 'key', alias: definition.dimensionLabel || '分组', encoding: dimEncoding }],
-          measures: [
-            {
-              id: 'value',
-              alias: definition.valueLabel,
-              encoding: valueEncoding,
-              format: { type: 'number', fractionDigits: digits, suffix: unit },
-            },
-          ],
+          measures: colorByValue ? [measure, { ...measure, encoding: 'color' }] : [measure],
           backgroundColor: 'transparent',
-          color: { colorScheme: type === 'donut' ? [PAGE.accent, PAGE.track] : [PAGE.accent] },
+          color: {
+            colorScheme: type === 'donut' ? [PAGE.accent, PAGE.track] : [PAGE.accent],
+            ...(colorByValue
+              ? {
+                  linearColorScheme: [
+                    PAGE.accent,
+                    getComputedStyle(document.documentElement).getPropertyValue('--chart-accent-end').trim(),
+                  ],
+                }
+              : {}),
+          },
           animation: animation(),
           label: {
             enable: main && categorical,
@@ -3577,21 +6128,27 @@
           legend: { enable: false },
           xAxis: {
             visible: main && categorical && type === 'column',
-            zero: type !== 'area',
+            zero: !main || type !== 'area',
             label: { labelColor: PAGE.labelColor },
           },
           yAxis: {
             visible: (main && categorical) || (type === 'bar' && !main),
-            zero: type !== 'area',
+            zero: !main || type !== 'area',
             label: { labelColor: PAGE.labelColor },
           },
           crosshairLine: { labelVisible: false },
           crosshairRect: { labelVisible: false },
           tooltip: { enable: true },
           pointStyle: { pointVisible: false },
-          lineStyle: { lineWidth: main ? 2.5 : 1.6, lineSmooth: true },
-          areaStyle: { areaColorOpacity: 0.14, areaGradient: true },
-          barStyle: { barRadius: 3, barColor: PAGE.accent, barColorOpacity: 1, barGradient: false },
+          lineStyle: { lineWidth: main ? 2.5 : 1.6, lineSmooth: main },
+          areaStyle: { areaColorOpacity: main ? 0.14 : 0.28, areaGradient: true },
+          barStyle: {
+            barRadius: 3,
+            barColorOpacity: 1,
+            barGradient: !main,
+            barBorderWidth: 0,
+            barBorderOpacity: 0,
+          },
           innerRadius: 0.77,
           outerRadius: 0.98,
           pieStyle: { pieBorderWidth: 0, pieHoverEffect: 'opacity' },
@@ -3753,7 +6310,19 @@
                 return span
               }),
             )
-            setTable(next.table)
+            await tableView.updateRows(next.table)
+            await detailTable.updateScope([
+              ...(state.age
+                ? [
+                    {
+                      column: 0,
+                      operator: 'between',
+                      value: state.age === 'younger' ? { min: 0, max: 59.999 } : { min: 60, max: 120 },
+                    },
+                  ]
+                : []),
+              ...(state.pressure ? [{ column: 5, value: Number(state.pressure) }] : []),
+            ])
             for (const definition of next.plots) definitionByPlot.set(definition.id, definition)
             await Promise.all(next.plots.map(drawPlot))
             if (disposed || current !== revision) continue
@@ -3781,6 +6350,7 @@
           completed = current
         }
         rendering = false
+        if (appearanceDirty) scheduleAppearance()
         grid.setAttribute('aria-busy', 'false')
       }
       function createQuery(key, definition) {
@@ -3816,6 +6386,43 @@
             }
           })
       }
+      let appearanceDirty = false,
+        appearanceFrame = 0,
+        appearancePainting = false
+      function scheduleAppearance() {
+        if (disposed || !appearanceDirty || appearanceFrame) return
+        appearanceFrame = requestAnimationFrame(() => {
+          appearanceFrame = 0
+          void repaintAppearance()
+        })
+      }
+      async function repaintAppearance() {
+        if (disposed || rendering || appearancePainting || !view) return
+        appearanceDirty = false
+        appearancePainting = true
+        try {
+          await Promise.all([...definitionByPlot.values()].map(drawPlot))
+          if (overviewTable)
+            overviewTable.updateTheme(DashboardTable.options(overviewTable.options, $('#overview-table')).theme)
+          detailTable?.repaint()
+        } catch (error) {
+          console.error('外观更新失败', error)
+        } finally {
+          appearancePainting = false
+          if (appearanceDirty) scheduleAppearance()
+        }
+      }
+      function onAppearanceChange(event) {
+        if (!event.detail.themeChanged) return
+        PAGE.accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()
+        appearanceDirty = true
+        scheduleAppearance()
+      }
+      window.addEventListener('dashboardappearancechange', onAppearanceChange)
+      subscriptions.push(() => {
+        window.removeEventListener('dashboardappearancechange', onAppearanceChange)
+        cancelAnimationFrame(appearanceFrame)
+      })
       let dashboard
       function layoutDashboard() {
         if (!dashboard) return
@@ -3862,9 +6469,9 @@
         if (!window.VChart?.default) throw new Error('VChart 模块未能加载，请检查网络后刷新')
         VChart = window.VChart.default
         const [{ createVBI }, { VQuery }, vseed] = await Promise.all([
-          import('https://cdn.jsdelivr.net/npm/@visactor/vbi@0.6.4/+esm'),
-          import('https://cdn.jsdelivr.net/npm/@visactor/vquery@0.6.4/dist/browser/esm/browser.js/+esm'),
-          import('https://cdn.jsdelivr.net/npm/@visactor/vseed@0.6.4/+esm'),
+          import('https://cdn.jsdelivr.net/npm/@visactor/vbi@0.7.2/+esm'),
+          import('https://cdn.jsdelivr.net/npm/@visactor/vquery@0.7.2/dist/browser/esm/browser.js/+esm'),
+          import('https://cdn.jsdelivr.net/npm/@visactor/vseed@0.7.2/+esm'),
           DashboardTable.load(),
         ])
         Builder = vseed.Builder
@@ -3887,6 +6494,28 @@
             }
           },
         })
+        tableView = await DashboardTable.createView({
+          vbi,
+          query,
+          connectorId: PAGE.connectorId,
+          columns: PAGE.columns,
+          host: $('#overview-table'),
+          render: renderTable,
+        })
+        subscriptions.push(tableView.dispose)
+        detailTable = await DashboardTable.createDetails({
+          vbi,
+          query,
+          Builder,
+          VChart,
+          connectorId: PAGE.connectorId,
+          columns: sourceData.columns.map((column) => column.trim()),
+          rows: sourceData.rows,
+          host: $('#records-table'),
+          count: $('#records-count'),
+        })
+        subscriptions.push(detailTable.dispose)
+
         for (const [key, definition] of Object.entries(PAGE.queries)) createQuery(key, definition)
         insight = vbi.insight.create(vbi.insight.createEmpty())
         insight.dsl.observeDeep(renderInsight)
@@ -3953,26 +6582,26 @@
         reducedMotion.addEventListener('change', onMotionChange)
         subscriptions.push(() => reducedMotion.removeEventListener('change', onMotionChange))
         // metric-analysis: 指标卡入口与独立详情，不修改主页状态。
-        subscriptions.push(
-          bindMetricAnalysis({
-            motion,
-            vbi,
-            Builder,
-            VChart,
-            accent: PAGE.accent,
-            labelColor: PAGE.labelColor,
-            ready: () => !rendering && !!view && ['ready', 'empty'].includes(document.body.dataset.state),
-            getContext: metricAnalysisContext,
-            entries: [
-              { value: '#primary', heading: '#primary-title', card: true },
-              { value: '#metric-one', heading: '#title-one', card: true },
-              { value: '#metric-two', heading: '#title-two', card: true },
-              { value: '#metric-three', heading: '#title-three', card: true },
-              { value: '#aux-one' },
-              { value: '#aux-two' },
-            ],
-          }),
-        )
+        metricAnalysis = bindMetricAnalysis({
+          dataQuery: query,
+          motion,
+          vbi,
+          Builder,
+          VChart,
+          accent: PAGE.accent,
+          labelColor: PAGE.labelColor,
+          ready: () => !rendering && !!view && ['ready', 'empty'].includes(document.body.dataset.state),
+          getContext: metricAnalysisContext,
+          entries: [
+            { value: '#primary', heading: '#primary-title', card: true },
+            { value: '#metric-one', heading: '#title-one', card: true },
+            { value: '#metric-two', heading: '#title-two', card: true },
+            { value: '#metric-three', heading: '#title-three', card: true },
+            { value: '#aux-one' },
+            { value: '#aux-two' },
+          ],
+        })
+        subscriptions.push(metricAnalysis.dispose)
         applyFilters()
         requestRender()
       } catch (error) {
@@ -3988,8 +6617,8 @@
           disposed = true
           observer?.disconnect()
           overviewObserver?.disconnect()
-          overviewTable?.release()
           subscriptions.forEach((dispose) => dispose())
+          overviewTable?.release()
           disposeMotion()
           instances.forEach((instance) => instance.release())
         },
@@ -4046,6 +6675,25 @@
           grain: '每行一条来源记录',
           scope: view.scope,
           metric,
+        }
+      }
+      function tableAnalysisContext(record, field) {
+        const context = metricAnalysisContext({ c0: 0, c1: 0, c2: 1, c3: 1, c4: 2, c5: 3 }[field] ?? 0)
+        if (field === 'c2')
+          context.metric = {
+            ...context.metric,
+            title: '记录死亡事件',
+            value: (row) => row.death,
+            format: (value) => (Number.isFinite(value) ? `${count(value)} 例` : '—'),
+            digits: 0,
+            unit: ' 例',
+            definition: '当前年龄组及已确认筛选内的记录死亡事件数；随访时长不同，不能当作统一时点死亡率。',
+          }
+        return {
+          ...context,
+          entryConditions: [{ field: 'age_band', value: record.c0 }],
+          defaultDimension: 'pressure',
+          scope: `${context.scope} · 年龄组：${record.c0}`,
         }
       }
       function numberForAnalysis(value) {

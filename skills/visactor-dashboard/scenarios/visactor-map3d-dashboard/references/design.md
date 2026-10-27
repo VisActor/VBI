@@ -1,6 +1,6 @@
 # 空间构图与外观契约
 
-[完整模板](../templates/template.html)维护默认外观、组件和动效，主页面见[预览](../templates/desktop.png)。只修改外观时读取本篇；分析问题与内容按[分析方法](../../../references/metric-analysis/guide.md)决定。
+[完整模板](../templates/template.html)维护默认外观、组件和动效，主页面见[预览](../templates/desktop.png)。只修改外观时读取本篇；分析问题与内容按[分析方法](../../../references/data-analysis/guide.md)决定。
 
 ## 空间与阅读
 

@@ -1,7 +1,13 @@
 # 路径相对于本技能根目录，按当前任务选择所需资料。
 capabilities:
-  - id: metric-analysis
-    path: references/metric-analysis/guide.md
+  - id: data-analysis
+    path: references/data-analysis/guide.md
+    when:
+      - 按业务问题选择透视、漏斗、留存、实验、目标、贡献、分布、路径或生命周期方法
+      - 明确事实粒度、比较口径、计算规则、证据和验证
+      - 可独立于页面执行分析；空间问题按需补读 data-analysis/map.md
+  - id: deep-analysis
+    path: references/deep-analysis/interaction.md
     when:
       - 用户要求围绕某个指标深入分析，或为看板配置指标分析入口
       - 组织指标详情中的趋势、比较、结构、下钻与 VTable 明细动线
@@ -62,6 +68,7 @@ selection:
   - 修改已有页面时优先复用已有内容
   - 按职责选择参考指南；跨层任务只补读涉及的能力与 API
   - 单图、指标卡和普通分析页面读取 visual-query，布局与视觉沿用宿主要求
-  - 为指标设计主动探索入口时补读 metric-analysis；普通悬停、样式修改或单纯表格展示不触发
+  - 需要分析方法与计算证据时读取 data-analysis；只读取适用的方法，不要求创建页面或弹窗
+  - 为指标或数据设计主动探索入口时补读 deep-analysis；普通悬停、样式修改或单纯表格展示不触发
   - 独立数据查询或 API 问题直接读取对应参考指南
   - 数据接入按 server-runtime 的判断规则选择

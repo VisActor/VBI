@@ -1,6 +1,6 @@
 # 模板适配
 
-新建先运行[完整模板](../templates/template.html)，再按问题替换示例业务；已有页面沿用宿主。保留适用的地图、外观、导航和生命周期，指标、图表与卡片结构按[分析方法](../../../references/metric-analysis/guide.md)调整。模板默认摘要与图型只提供接入示例。
+新建先运行[完整模板](../templates/template.html)，再按问题替换示例业务；已有页面沿用宿主。保留适用的地图、外观、导航和生命周期，指标、图表与卡片结构按[分析方法](../../../references/data-analysis/guide.md)调整。模板默认摘要与图型只提供接入示例。
 
 ## 字段与完整记录
 
@@ -20,7 +20,7 @@
 | 数据与查询     | `loadFeed`、`normalize`、`schema`、`chart`、`summary`、`eventTable`                                  | 事实粒度、字段、聚合、同范围证据；接入按 [server-runtime](../../../references/server-runtime/guide.md#数据接入判断)        |
 | 筛选与刷新     | `rangeConditions`、`applyRange`、`updateFilters`、`refresh`                                          | 传入可见触发控件，保留取消、版本保护、失败恢复与快照语义                                                                   |
 | 地图与记录     | `initializeMap`、`renderMap`、`eventIndex`、`recordDetail`、`renderList`                             | 统一 ID、真实位置、定位避让、返回与完整字段；接法见[地图接入](open-street-map.md)                                          |
-| 分析           | `quakeMetric`、`quakeAnalysisContext`、`bindMapMetricAnalysis`                                       | 默认问题、基准、计算与发现，继续探索和明细；按[空间分析](../../../references/metric-analysis/map.md)设计                   |
+| 分析           | `quakeMetric`、`quakeAnalysisContext`、`bindMapMetricAnalysis`                                       | 默认问题、基准、计算与发现，继续探索和明细；按[空间分析](../../../references/data-analysis/map.md)设计                     |
 | 地图表现       | `map-basemaps`、`MapBasemaps.createRenderer`、`renderMapEffects`、`positionMapEffects`、`syncMotion` | 保留图层恢复、投影、暂停与释放；不改嵌入的第三方运行时                                                                     |
 | 外观与启动     | `map-ui-styles`、`MapUI.createAppearance`、`MapUI.loading`、`prepareMapEntrance`、`enterMap`         | 样式与时序由本页 token 管理，首屏相机入场与后续导航分开                                                                    |
 | 图表表格与释放 | `renderMetrics`、`renderDistributions`、`DashboardTable`、`pagehide`                                 | 复用实例、完整记录、变化尺寸更新及幂等清理；表格按[公共适配器](../../../references/visual-query/references/table-theme.md) |
@@ -35,7 +35,7 @@
 
 指标与分析共用条件和聚合定义。`countDistinct` 忽略 null，缺失是否作为一组需由 schema 与查询明确；比率、分位、排序和门槛使用公开 Builder，不在详情另算总体。相机与临时悬停归 UI，可保存分析条件归 DSL。
 
-按[发现与行动](../../../references/metric-analysis/guide.md#发现解释与行动)补充比较与检验，不能只改 `finding` 文案而缺少相应查询证据。模板现有通用分组与极值摘要需要按业务扩展，不代表已具备所有诊断方法。
+按[发现与行动](../../../references/data-analysis/guide.md#发现解释与行动)补充比较与检验，不能只改 `finding` 文案而缺少相应查询证据。模板现有通用分组与极值摘要需要按业务扩展，不代表已具备所有诊断方法。
 
 ## 更新与生命周期
 

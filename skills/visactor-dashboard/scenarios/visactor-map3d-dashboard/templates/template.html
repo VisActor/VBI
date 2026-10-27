@@ -2290,6 +2290,8 @@
         --table-selected: color-mix(in srgb, var(--accent) 25%, transparent);
         --table-selected-row: color-mix(in srgb, var(--accent) 9%, transparent);
         --table-selected-border: color-mix(in srgb, var(--accent) 70%, var(--ink));
+        --table-bar-positive: rgb(104 120 137 / 22%);
+        --table-bar-negative: rgb(194 103 103 / 24%);
         --table-scroll-thumb: color-mix(in srgb, var(--muted) 38%, transparent);
         --table-scroll-rail: transparent;
         --table-font-size: 12px;
@@ -2327,7 +2329,9 @@
       .dashboard-table[data-empty='true']::after {
         content: '当前筛选暂无数据';
         position: absolute;
-        inset: 45% 0 auto;
+        inset: var(--table-header-height) 0 var(--table-summary-height, 0px);
+        display: grid;
+        place-items: center;
         text-align: center;
         color: var(--text-secondary);
         font: 12px var(--font-ui);
@@ -2344,6 +2348,232 @@
         color: var(--text-faint);
         font-size: 11px;
         font-weight: 400;
+      }
+      .df-menu.dashboard-table-menu {
+        --filter-height: 28px;
+        width: min(264px, calc(100vw - 24px));
+        max-height: calc(100dvh - 24px);
+        padding: 10px;
+        border-radius: 16px;
+        font-size: 11px;
+        overflow: auto;
+      }
+      .dashboard-table-menu:popover-open {
+        display: grid;
+        gap: 6px;
+      }
+      .dashboard-table-menu:not(:popover-open),
+      .dashboard-table-menu [hidden] {
+        display: none !important;
+      }
+      .dashboard-table-menu-heading {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 24px;
+      }
+      .dashboard-table-menu-heading strong {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .dashboard-table-menu
+        :is(.dashboard-table-menu-heading, .dashboard-table-actions, .dashboard-table-sort-row)
+        > button {
+        min-height: var(--filter-height);
+        padding: 0 8px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        box-shadow: none;
+        color: var(--muted);
+        font: inherit;
+        cursor: pointer;
+        transition:
+          background-color 140ms ease,
+          transform 140ms ease;
+      }
+      .dashboard-table-menu
+        :is(.dashboard-table-menu-heading, .dashboard-table-actions, .dashboard-table-sort-row)
+        > button:hover {
+        background: rgb(255 255 255 / 64%);
+        color: var(--ink);
+        box-shadow: inset 0 0 6px rgb(38 53 68 / 6%);
+      }
+      .dashboard-table-menu
+        :is(.dashboard-table-menu-heading, .dashboard-table-actions, .dashboard-table-sort-row)
+        > button:active {
+        transform: scale(0.985);
+        box-shadow: inset 0 0 6px rgb(38 53 68 / 10%);
+      }
+      .dashboard-table-sort-row {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .dashboard-table-menu button.dashboard-table-icon {
+        flex: 0 0 var(--filter-height);
+        display: grid;
+        place-items: center;
+        width: var(--filter-height);
+        height: var(--filter-height);
+        padding: 0;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      .dashboard-table-menu .dashboard-table-sort {
+        flex: 1;
+        min-width: 0;
+        justify-content: space-between;
+        gap: 4px;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      .dashboard-table-menu .dashboard-table-sort button {
+        flex: 1;
+        gap: 5px;
+        height: var(--filter-height);
+        min-height: var(--filter-height);
+        border-radius: 6px;
+        font: inherit;
+      }
+      .dashboard-table-menu .dashboard-table-sort .segment-indicator {
+        border-radius: 6px;
+        background: rgb(255 255 255 / 72%);
+        box-shadow: none;
+      }
+      .dashboard-table-menu .dashboard-table-sort-row svg {
+        width: 13px;
+        height: 13px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .dashboard-table-rule {
+        display: grid;
+        grid-template-columns: 96px minmax(0, 1fr);
+        align-items: center;
+        gap: 6px;
+        padding-top: 8px;
+        border-top: 1px solid color-mix(in srgb, var(--muted) 12%, transparent);
+      }
+      .dashboard-table-rule[data-range='true'],
+      .dashboard-table-rule[data-valueless='true'] {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .dashboard-table-menu .dashboard-table-rule .df-selector,
+      .dashboard-table-menu .dashboard-table-rule .df-selector > summary {
+        width: 100%;
+        min-width: 0;
+      }
+      .dashboard-table-menu .dashboard-table-rule .df-selector > summary {
+        gap: 5px;
+        padding: 0 7px;
+        border: 1px solid rgb(104 120 137 / 14%);
+        border-radius: 6px;
+        font: inherit;
+        background: rgb(255 255 255 / 16%);
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      .dashboard-table-menu .dashboard-table-rule .df-selector > summary:hover {
+        background: rgb(255 255 255 / 56%);
+        box-shadow: var(--control-menu-hover-shadow);
+      }
+      .dashboard-table-rule [data-control-label] {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .dashboard-table-values {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+      }
+      .dashboard-table-values > span {
+        color: var(--text-faint);
+        font-size: 11px;
+      }
+      .dashboard-table-menu .dashboard-table-values .df-search {
+        flex: 1;
+        width: 0;
+        min-width: 0;
+        margin: 0;
+        padding: 0 8px;
+        border: 1px solid rgb(104 120 137 / 14%);
+        border-radius: 6px;
+        background: rgb(255 255 255 / 16%);
+        appearance: textfield;
+      }
+      .dashboard-table-values input::-webkit-inner-spin-button,
+      .dashboard-table-values input::-webkit-outer-spin-button {
+        appearance: none;
+        margin: 0;
+      }
+      .df-menu.dashboard-table-menu :is(button, summary, input):focus-visible {
+        outline: 1.5px solid color-mix(in srgb, var(--muted) 84%, transparent);
+        outline-offset: 1px;
+      }
+      .dashboard-table-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-height: var(--filter-height);
+        font: inherit;
+        margin: 0;
+        padding-top: 4px;
+      }
+      .dashboard-table-menu .dashboard-table-actions [data-dt='apply'] {
+        margin-left: auto;
+        min-width: 56px;
+        background: var(--ink);
+        color: #fff;
+        font-weight: 500;
+      }
+      .dashboard-table-menu .dashboard-table-actions [data-dt='apply']:hover {
+        background: color-mix(in srgb, var(--ink) 88%, white);
+      }
+      .dashboard-table-feedback {
+        color: var(--muted);
+        margin: 0;
+        font-size: 11px;
+      }
+      .dashboard-table-feedback:empty {
+        display: none;
+      }
+      .dashboard-table-menu .df-menu {
+        padding: 6px;
+        border-radius: 12px;
+        font-size: inherit;
+      }
+      .dashboard-table-menu .df-menu :is(.df-option, .df-search) {
+        border-radius: 6px;
+      }
+      @media (pointer: coarse) {
+        .df-menu.dashboard-table-menu {
+          --filter-height: 36px;
+          font-size: 12px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .dashboard-table-menu
+          :is(.dashboard-table-menu-heading, .dashboard-table-actions, .dashboard-table-sort-row)
+          button {
+          transition: none;
+        }
       }
     </style>
 
@@ -18029,7 +18259,7 @@
        * Raw VBI/VQuery/VSeed ESM contains bare imports; use a rewritten dependency graph.
        */
       const DashboardResources = (() => {
-        const versions = Object.freeze({ vchart: '2.1.7', vtable: '1.23.1', vbi: '0.6.4', three: '0.170.0' })
+        const versions = Object.freeze({ vchart: '2.1.7', vtable: '1.23.1', vbi: '0.7.2', three: '0.170.0' })
         const resourceSources = {
           probes: [
             ['aliyun-npmmirror', `https://registry.npmmirror.com/three/${versions.three}`],
@@ -18374,8 +18604,8 @@
             throw error
           }
         }
-        const animation = () =>
-          matchMedia('(prefers-reduced-motion: reduce)').matches ? false : { type: 'all', duration: 220, delay: 0 }
+        const appearances = new WeakMap()
+        const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches
         function options(base, host) {
           const tokens = readTokens(host)
           try {
@@ -18396,11 +18626,14 @@
               borderColor: divider,
               borderLineWidth: [0, 0, 1, 0],
             }
-            return {
+            const resolved = {
               ...base,
               columns: base.columns.map((column) => ({
                 ...column,
-                headerStyle: { ...column.headerStyle, textAlign: column.style?.textAlign || 'left' },
+                headerStyle: {
+                  ...column.headerStyle,
+                  textAlign: column.headerStyle?.textAlign || column.style?.textAlign || 'left',
+                },
               })),
               autoFillWidth: true,
               autoWrapText: false,
@@ -18408,8 +18641,9 @@
               defaultRowHeight: tokens.number('--table-row-height'),
               defaultHeaderRowHeight: tokens.number('--table-header-height'),
               hover: { highlightMode: 'row' },
-              select: { highlightMode: 'row', headerSelectMode: 'cell' },
-              animationAppear: animation(),
+              select: { highlightMode: 'cell', headerSelectMode: 'inline' },
+              keyboardOptions: { ...base.keyboardOptions, copySelected: true },
+              animationAppear: reducedMotion() ? false : base.animationAppear,
               theme: {
                 underlayBackgroundColor: color('--table-canvas'),
                 defaultStyle: common,
@@ -18424,6 +18658,13 @@
                   fontWeight: 600,
                   color: color('--table-header-text'),
                   bgColor: color('--table-header'),
+                  hover,
+                },
+                bottomFrozenStyle: {
+                  ...common,
+                  bgColor: color('--table-header'),
+                  color: color('--table-header-text'),
+                  fontWeight: 600,
                   hover,
                 },
                 selectionStyle: {
@@ -18450,39 +18691,584 @@
                 columnResize: { lineColor: color('--table-selected-border'), lineWidth: 1 },
               },
             }
+            appearances.set(resolved, base.animationAppear)
+            return resolved
           } finally {
             tokens.dispose()
           }
         }
-        function overview(Builder, columns, rows, host) {
+        function build(Builder, { dataset, dimensions, measures, totals = 'avg' }, host) {
+          const tokens = readTokens(host)
+          try {
+            const spec = Builder.from({
+              chartType: 'table',
+              dataset,
+              dimensions,
+              measures,
+              totals,
+              locale: 'zh-CN',
+              theme: 'light',
+              bodyCellStyle: {
+                selector: { field: measures.map(({ id }) => id) },
+                enableProgressBar: true,
+                barPositiveColor: tokens.color('--table-bar-positive'),
+                barNegativeColor: tokens.color('--table-bar-negative'),
+              },
+            }).build()
+            spec.columns = spec.columns.map((column) => {
+              const textAlign = measures.some(({ id }) => id === column.field) ? 'right' : 'left'
+              const style = column.style
+              const aggregation = column.aggregation
+              return {
+                ...column,
+                ...(aggregation?.aggregationType !== 'NONE' && aggregation?.formatFun
+                  ? {
+                      aggregation: {
+                        ...aggregation,
+                        formatFun: (value, ...args) =>
+                          Number.isFinite(value) ? aggregation.formatFun(value, ...args) : '—',
+                      },
+                    }
+                  : {}),
+                headerStyle: { ...column.headerStyle, textAlign },
+                style: (datum) => ({ ...(typeof style === 'function' ? style(datum) : style), textAlign }),
+              }
+            })
+            return spec
+          } finally {
+            tokens.dispose()
+          }
+        }
+        function overview(
+          Builder,
+          columns,
+          rows,
+          host,
+          formats = [],
+          summary = { type: 'avg', fields: columns.slice(1).map((_, i) => i + 1) },
+        ) {
           const records = rows.map((values) =>
-            Object.fromEntries(values.map((value, index) => [`c${index}`, value ?? '—'])),
+            Object.fromEntries(values.map((value, index) => [`c${index}`, value ?? null])),
           )
-          const dimensions = columns.map((alias, index) => ({ id: `c${index}`, alias, encoding: 'column' }))
-          const base = records.length
-            ? Builder.from({ chartType: 'table', dataset: records, dimensions, measures: [] }).build()
-            : { records, columns: dimensions.map(({ id, alias }) => ({ field: id, title: alias })) }
-          base.columns = columns.map((title, index) => ({
-            ...base.columns.find((column) => column.field === `c${index}`),
-            field: `c${index}`,
-            title,
-            width: index === 0 ? 170 : Math.max(130, Math.min(210, title.length * 12 + 24)),
-            style: { textAlign: index === 0 ? 'left' : 'right' },
-          }))
+          const fields = columns.map((alias, index) => ({ id: `c${index}`, alias, encoding: 'column' }))
+          const base = build(
+            Builder,
+            {
+              dataset: records,
+              dimensions: fields.filter((_, index) => !summary.fields.includes(index)),
+              measures: fields.filter((_, index) => summary.fields.includes(index)),
+              totals: summary.type,
+            },
+            host,
+          )
+          base.columns = columns.map((title, index) => {
+            const column = base.columns.find((column) => column.field === `c${index}`)
+            const textAlign = index === 0 ? 'left' : 'right'
+            const style = column.style
+            return {
+              ...column,
+              headerIcon: filterIcon(),
+              fieldFormat: (record) =>
+                record[`c${index}`] == null
+                  ? '—'
+                  : formats[index]
+                    ? formats[index](record[`c${index}`])
+                    : record[`c${index}`],
+              ...(formats[index] && summary.fields.includes(index)
+                ? {
+                    aggregation: {
+                      ...column.aggregation,
+                      formatFun: (value) => (Number.isFinite(value) ? formats[index](value) : '—'),
+                    },
+                  }
+                : {}),
+              width: index === 0 ? 170 : Math.max(130, Math.min(210, title.length * 12 + 24)),
+              headerStyle: { ...column.headerStyle, textAlign },
+              style: (datum) => ({ ...(typeof style === 'function' ? style(datum) : style), textAlign }),
+            }
+          })
           base.widthMode = 'standard'
           const resolved = options(base, host)
+          const summaryRows = rows.length ? resolved.bottomFrozenRowCount : 0
           host.style.height = `${Math.min(
             parseFloat(getComputedStyle(host).getPropertyValue('--table-overview-max-height')),
-            resolved.defaultHeaderRowHeight + Math.max(1, rows.length) * resolved.defaultRowHeight + 2,
+            resolved.defaultHeaderRowHeight + (Math.max(1, rows.length) + summaryRows) * resolved.defaultRowHeight + 2,
           )}px`
+          host.style.setProperty('--table-summary-height', `${summaryRows * resolved.defaultRowHeight}px`)
           return resolved
         }
+        function update(table, next) {
+          table.updateColumns(
+            next.columns.map((column) => ({
+              ...column,
+              ...(column.headerIcon
+                ? {
+                    headerIcon:
+                      table.options.columns.find(({ field }) => field === column.field)?.headerIcon ||
+                      column.headerIcon,
+                  }
+                : {}),
+            })),
+            { clearColWidthCache: false, clearRowHeightCache: false },
+          )
+          setRecords(table, next.records)
+        }
         function setRecords(table, records, { animate = true } = {}) {
-          table.clearSelected()
-          table.options.animationAppear = animate ? animation() : false
+          if (table.records !== records) table.clearSelected()
+          if (!appearances.has(table.options)) appearances.set(table.options, table.options.animationAppear)
+          table.options.animationAppear = animate && !reducedMotion() ? appearances.get(table.options) : false
           table.setRecords(records)
         }
-        return { load, options, overview, setRecords }
+        const filterIcon = (active = false) => ({
+          name: 'dashboard-table-filter',
+          type: 'svg',
+          width: 14,
+          height: 14,
+          positionType: 'right',
+          marginLeft: 5,
+          cursor: 'pointer',
+          svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2 3h12L9.5 8v5l-3-1.5V8Z" fill="${active ? '#64717e' : 'none'}" stroke="#64717e" stroke-width="1.3" stroke-linejoin="round"/></svg>`,
+        })
+        const blankOperators = [
+          { id: 'empty', label: '为空', op: 'is null', inputs: 0 },
+          { id: 'filled', label: '不为空', op: 'is not null', inputs: 0 },
+        ]
+        const equalityOperators = [
+          { id: 'eq', label: '等于', op: '=' },
+          { id: 'ne', label: '不等于', op: '!=' },
+        ]
+        const columnOperators = {
+          text: [
+            { id: 'contains', label: '包含', op: 'ilike', prefix: '%', suffix: '%' },
+            { id: 'excludes', label: '不包含', op: 'not ilike', prefix: '%', suffix: '%' },
+            ...equalityOperators,
+            { id: 'starts', label: '开头是', op: 'ilike', suffix: '%' },
+            { id: 'ends', label: '结尾是', op: 'ilike', prefix: '%' },
+            ...blankOperators,
+          ],
+          number: [
+            ...equalityOperators,
+            { id: 'gt', label: '大于', op: '>' },
+            { id: 'gte', label: '大于等于', op: '>=' },
+            { id: 'lt', label: '小于', op: '<' },
+            { id: 'lte', label: '小于等于', op: '<=' },
+            { id: 'between', label: '介于', op: 'between', inputs: 2 },
+            { id: 'outside', label: '不在区间', op: 'not between', inputs: 2 },
+            ...blankOperators,
+          ],
+        }
+        async function createView({ vbi, query, connectorId, columns, host, render }) {
+          // Query the displayed grain without regrouping its already aggregated measures.
+          const id = `${connectorId}-table-view`
+          const fields = columns.map((_, index) => `c${index}`)
+          const schema = [
+            ...fields.map((name, index) => ({ name, type: index === 0 ? 'string' : 'number' })),
+            { name: '__row_order', type: 'number' },
+          ]
+          const source = { type: 'json', rawDataset: [] }
+          if (await query.hasDataset(id)) await query.updateDatasetSource(id, schema, source)
+          else await query.createDataset(id, schema, source)
+          vbi.connectors.register(id, {
+            discoverSchema: async () => schema,
+            query: async ({ queryDSL }) => {
+              const dataset = await query.connectDataset(id)
+              try {
+                return await dataset.query(queryDSL)
+              } finally {
+                await dataset.disconnect()
+              }
+            },
+          })
+          const builder = vbi.chart.create(vbi.chart.createEmpty(id))
+          builder.chartType.changeChartType('table')
+          fields.forEach((field, index) => builder.dimensions.add(field, (node) => node.setAlias(columns[index])))
+          builder.dimensions.add('__row_order', (node) => node.setSort({ order: 'asc' }))
+          const events = new AbortController(),
+            { signal } = events
+          let table,
+            rows = [],
+            sourceVersion = 0,
+            loadedVersion = -1,
+            revision = 0,
+            pending,
+            disposed = false
+          let queue = Promise.resolve(),
+            activeField,
+            mode,
+            operatorType,
+            anchor,
+            iconState,
+            openFrame = 0
+          const panel = document.createElement('div')
+          panel.className = 'df-menu dashboard-table-menu'
+          panel.setAttribute('popover', 'auto')
+          panel.setAttribute('role', 'dialog')
+          panel.innerHTML = `<header class="dashboard-table-menu-heading"><strong data-dt="title"></strong><button type="button" data-dt="clear" title="清除本列筛选" aria-label="清除本列筛选">清除</button></header>
+            <div class="dashboard-table-sort-row"><div class="segment dashboard-table-sort" role="group" aria-label="列排序"><button type="button" data-sort="asc"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 13V3m-2 2 2-2 2 2m3-1h5M9 8h4m-4 4h2"/></svg>升序</button><button type="button" data-sort="desc"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3v10m-2-2 2 2 2-2m3-7h2M9 8h4m-4 4h5"/></svg>降序</button></div><button type="button" class="df-icon dashboard-table-icon" data-filter-control="icon" data-sort="normal" title="恢复默认顺序" aria-label="恢复默认顺序"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6a5 5 0 1 1 0 5M3 2v4h4"/></svg></button></div>
+            <div class="dashboard-table-rule" data-dt="rule"><details data-filter-control="selector" data-menu-min-width="184" data-menu-align="start" aria-label="筛选条件"><summary><span data-control-label></span></summary><div data-control-options role="group" aria-label="筛选条件"></div></details><div class="dashboard-table-values" data-dt="values"><input class="df-search" data-dt="low" autocomplete="off" spellcheck="false"><span data-dt="separator" aria-hidden="true">—</span><input class="df-search" data-dt="high" type="number" step="any" autocomplete="off"></div></div>
+            <p class="dashboard-table-feedback" data-dt="feedback" role="status"></p>
+            <footer class="dashboard-table-actions"><button type="button" data-dt="reset">清除全部筛选</button><button type="button" data-dt="apply">筛选</button></footer>`
+          document.body.append(panel)
+          const nodes = Object.fromEntries(
+            [...panel.querySelectorAll('[data-dt]')].map((node) => [node.dataset.dt, node]),
+          )
+          const picker = panel.querySelector('details')
+          const operatorList = picker.querySelector('[data-control-options]')
+          const unmount = DashboardFilters.mount(panel)
+          const operators = () => columnOperators[activeField === 'c0' ? 'text' : 'number']
+          const currentOperator = () => operators().find(({ id }) => id === mode)
+          const predicates = (field) =>
+            builder.whereFilter.toJSON().conditions.filter((condition) => condition.field === field)
+          const hide = (focus = false) => {
+            cancelAnimationFrame(openFrame)
+            openFrame = 0
+            DashboardFilters.close(picker)
+            if (panel.matches(':popover-open')) panel.hidePopover()
+            if (focus && !disposed) host.focus({ preventScroll: true })
+          }
+          function headers() {
+            const dimensions = builder.build().dimensions
+            const state = JSON.stringify([
+              builder.whereFilter.toJSON(),
+              dimensions.map(({ field, sort }) => [field, sort]),
+            ])
+            if (!table || state === iconState) return
+            iconState = state
+            table.updateColumns(
+              table.options.columns.map((column) => ({
+                ...column,
+                headerIcon: filterIcon(
+                  predicates(column.field).length > 0 || !!dimensions.find((dim) => dim.field === column.field)?.sort,
+                ),
+              })),
+              { clearColWidthCache: false, clearRowHeightCache: false },
+            )
+          }
+          function refresh() {
+            const ticket = ++revision
+            pending?.abort()
+            const task = queue
+              .catch(() => {})
+              .then(async () => {
+                if (disposed || ticket !== revision) return false
+                pending = new AbortController()
+                host.setAttribute('aria-busy', 'true')
+                try {
+                  if (loadedVersion !== sourceVersion) {
+                    const version = sourceVersion
+                    await query.updateDatasetSource(id, schema, { type: 'json', rawDataset: rows })
+                    loadedVersion = version
+                  }
+                  if (disposed || ticket !== revision) return false
+                  const seed = await builder.buildVSeed({ signal: pending.signal })
+                  if (disposed || ticket !== revision) return false
+                  const dimensions = builder.build().dimensions
+                  const ids = fields.map((field) => dimensions.find((dim) => dim.field === field).id)
+                  render(
+                    seed.dataset.map((record) => ids.map((key) => record[key] ?? null)),
+                    rows.length,
+                  )
+                  headers()
+                  return true
+                } catch (error) {
+                  if (disposed || ticket !== revision || error.name === 'AbortError') return false
+                  throw error
+                } finally {
+                  if (!disposed && ticket === revision) host.setAttribute('aria-busy', 'false')
+                }
+              })
+            queue = task
+            return task
+          }
+          async function submit(action) {
+            const field = activeField
+            nodes.feedback.textContent = ''
+            try {
+              action()
+              if ((await refresh()) && activeField === field) hide(true)
+            } catch (error) {
+              nodes.feedback.textContent = `表格更新失败：${error.message}`
+              position()
+            }
+          }
+          function position() {
+            if (!anchor || !panel.matches(':popover-open')) return
+            const cell = table.getCellRelativeRect(anchor.col, anchor.row)
+            const canvas = table.canvas.getBoundingClientRect(),
+              rect = panel.getBoundingClientRect()
+            const below = canvas.top + cell.bottom + 6,
+              above = canvas.top + cell.top - rect.height - 6
+            panel.style.left = `${Math.max(12, Math.min(canvas.left + cell.right - rect.width, innerWidth - rect.width - 12))}px`
+            panel.style.top = `${Math.max(12, Math.min(below + rect.height <= innerHeight - 12 ? below : above, innerHeight - rect.height - 12))}px`
+          }
+          function controls() {
+            const numeric = activeField !== 'c0',
+              type = numeric ? 'number' : 'text'
+            if (operatorType !== type) {
+              operatorList.replaceChildren(
+                ...operators().map(({ id, label }) => {
+                  const button = document.createElement('button')
+                  button.type = 'button'
+                  button.dataset.op = id
+                  button.textContent = label
+                  return button
+                }),
+              )
+              operatorType = type
+            }
+            const inputs = currentOperator().inputs ?? 1
+            nodes.low.type = numeric ? 'number' : 'search'
+            nodes.low.step = 'any'
+            nodes.values.hidden = inputs === 0
+            nodes.high.hidden = nodes.separator.hidden = inputs !== 2
+            nodes.rule.dataset.range = String(inputs === 2)
+            nodes.rule.dataset.valueless = String(inputs === 0)
+            nodes.low.placeholder = inputs === 2 ? '最小值' : numeric ? '输入数值' : '输入文本'
+            nodes.high.placeholder = '最大值'
+            nodes.low.setAttribute('aria-label', `${nodes.title.textContent}${inputs === 2 ? '下限' : '筛选值'}`)
+            nodes.high.setAttribute('aria-label', `${nodes.title.textContent}上限`)
+            operatorList
+              .querySelectorAll('[data-op]')
+              .forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.op === mode)))
+            DashboardFilters.sync(picker)
+            position()
+          }
+          function show(field, col, row) {
+            if (!fields.includes(field) || disposed || host.closest('[inert]')) return
+            activeField = field
+            anchor = { col, row }
+            nodes.title.textContent = nodes.title.title = columns[fields.indexOf(field)]
+            panel.setAttribute('aria-label', `${nodes.title.textContent}列筛选与排序`)
+            const condition = predicates(field)[0]
+            const op = { eq: '=', ne: '!=', gt: '>', gte: '>=', lt: '<', lte: '<=' }[condition?.op] || condition?.op
+            let option
+            if (op === 'ilike' || op === 'not ilike') {
+              const pattern = String(condition.value)
+              const id =
+                op === 'not ilike'
+                  ? 'excludes'
+                  : pattern.startsWith('%') && pattern.endsWith('%')
+                    ? 'contains'
+                    : pattern.endsWith('%')
+                      ? 'starts'
+                      : 'ends'
+              option = operators().find((item) => item.id === id)
+            } else option = operators().find((item) => item.op === op)
+            option ||= operators()[0]
+            mode = option.id
+            controls()
+            const bounds = option.inputs === 2 ? condition?.value : undefined
+            nodes.low.value = bounds
+              ? (bounds.min ?? bounds[0] ?? '')
+              : option.inputs === 0
+                ? ''
+                : option.prefix || option.suffix
+                  ? String(condition?.value ?? '').slice(
+                      option.prefix?.length || 0,
+                      option.suffix ? -option.suffix.length : undefined,
+                    )
+                  : (condition?.value ?? '')
+            nodes.high.value = bounds?.max ?? bounds?.[1] ?? ''
+            nodes.feedback.textContent = ''
+            const conditions = builder.whereFilter.toJSON().conditions
+            nodes.clear.hidden = !condition
+            nodes.reset.hidden = !conditions.length || (conditions.length === 1 && !!condition)
+            const sort = builder.build().dimensions.find((dim) => dim.field !== '__row_order' && dim.sort)
+            panel.querySelectorAll('[data-sort]').forEach((button) => {
+              button.hidden = button.dataset.sort === 'normal' && !sort
+              if (button.dataset.sort === 'normal') button.removeAttribute('aria-pressed')
+              else
+                button.setAttribute(
+                  'aria-pressed',
+                  String(sort?.field === field && sort.sort.order === button.dataset.sort),
+                )
+            })
+            if (!panel.matches(':popover-open')) panel.showPopover()
+            position()
+            requestAnimationFrame(() => {
+              if (!disposed && panel.matches(':popover-open'))
+                (option.inputs === 0 ? nodes.apply : nodes.low).focus({ preventScroll: true })
+            })
+          }
+          operatorList.addEventListener(
+            'click',
+            (event) => {
+              const button = event.target.closest('[data-op]')
+              if (!button) return
+              mode = button.dataset.op
+              nodes.feedback.textContent = ''
+              controls()
+              ;(currentOperator().inputs === 0 ? nodes.apply : nodes.low).focus({ preventScroll: true })
+            },
+            { signal },
+          )
+          panel.querySelectorAll('[data-sort]').forEach((button) =>
+            button.addEventListener(
+              'click',
+              () =>
+                void submit(() => {
+                  builder.doc.transact(() => {
+                    builder
+                      .build()
+                      .dimensions.forEach((dim) => builder.dimensions.update(dim.id, (node) => node.clearSort()))
+                    if (button.dataset.sort !== 'normal' && button.getAttribute('aria-pressed') !== 'true') {
+                      const dim = builder.build().dimensions.find((item) => item.field === activeField)
+                      builder.dimensions.update(dim.id, (node) => node.setSort({ order: button.dataset.sort }))
+                    }
+                    const original = builder.build().dimensions.find((item) => item.field === '__row_order')
+                    builder.dimensions.update(original.id, (node) => node.setSort({ order: 'asc' }))
+                  })
+                }),
+              { signal },
+            ),
+          )
+          const clear = (field) => predicates(field).forEach((condition) => builder.whereFilter.remove(condition.id))
+          nodes.clear.addEventListener('click', () => void submit(() => clear(activeField)), { signal })
+          nodes.reset.addEventListener('click', () => void submit(() => builder.whereFilter.clear()), { signal })
+          nodes.apply.addEventListener(
+            'click',
+            () => {
+              const numeric = activeField !== 'c0',
+                option = currentOperator()
+              const low = nodes.low.value.trim(),
+                high = nodes.high.value.trim(),
+                inputs = option.inputs ?? 1
+              if (
+                inputs &&
+                ((!low && (inputs !== 2 || !high)) ||
+                  (numeric && (!nodes.low.checkValidity() || (inputs === 2 && !nodes.high.checkValidity()))))
+              ) {
+                nodes.feedback.textContent = numeric ? '请输入有效数值。' : '请输入筛选文本。'
+                position()
+                return
+              }
+              if (inputs === 2 && low !== '' && high !== '' && Number(low) > Number(high)) {
+                nodes.feedback.textContent = '下限不能大于上限。'
+                position()
+                return
+              }
+              void submit(() =>
+                builder.doc.transact(() => {
+                  clear(activeField)
+                  const add = (group, op, value) =>
+                    group.add(activeField, (node) => node.setOperator(op).setValue(value))
+                  if (inputs === 0) add(builder.whereFilter, option.op)
+                  else if (inputs === 2)
+                    add(builder.whereFilter, option.op, {
+                      min: low === '' ? undefined : Number(low),
+                      max: high === '' ? undefined : Number(high),
+                    })
+                  else
+                    add(
+                      builder.whereFilter,
+                      option.op,
+                      numeric ? Number(low) : `${option.prefix || ''}${low}${option.suffix || ''}`,
+                    )
+                }),
+              )
+            },
+            { signal },
+          )
+          panel.addEventListener(
+            'keydown',
+            (event) => {
+              if (event.isComposing || event.keyCode === 229) return
+              if (event.key === 'Escape') {
+                event.preventDefault()
+                event.stopPropagation()
+                hide(true)
+              } else if (event.key === 'Enter' && (event.target === nodes.low || event.target === nodes.high)) {
+                event.preventDefault()
+                nodes.apply.click()
+              }
+            },
+            { signal },
+          )
+          panel.addEventListener(
+            'beforetoggle',
+            (event) => {
+              if (event.newState === 'closed') DashboardFilters.close(picker)
+            },
+            { signal },
+          )
+          panel.addEventListener(
+            'focusout',
+            (event) => {
+              if (event.relatedTarget && !panel.contains(event.relatedTarget)) hide()
+            },
+            { signal },
+          )
+          window.addEventListener('resize', () => hide(), { signal })
+          window.addEventListener(
+            'scroll',
+            (event) => {
+              if (!panel.contains(event.target)) hide()
+            },
+            { signal, capture: true },
+          )
+          const iconClick = ({ name, col, row, event }) => {
+            const native = event?.nativeEvent || event
+            if (name !== 'dashboard-table-filter' || (native?.button ?? event?.button ?? 0) !== 0) return
+            cancelAnimationFrame(openFrame)
+            // Open after the pointer gesture so native light-dismiss cannot consume it.
+            openFrame = requestAnimationFrame(() => {
+              openFrame = 0
+              show(table.getHeaderField(col, row), col, row)
+            })
+          }
+          const keyboard = (event) => {
+            if (!event.altKey || event.key !== 'ArrowDown') return
+            const range = table.getSelectedCellRanges()[0]
+            if (!range) return
+            event.preventDefault()
+            event.stopPropagation()
+            show(table.getHeaderField(range.start.col, 0), range.start.col, 0)
+          }
+          return {
+            builder,
+            bind(instance) {
+              table = instance
+              table.on('icon_click', iconClick)
+              host.addEventListener('keydown', keyboard, { signal, capture: true })
+            },
+            updateRows(values) {
+              rows = values.map((row, index) =>
+                Object.fromEntries([
+                  ...fields.map((field, col) => [
+                    field,
+                    col === 0 ? (row[col] ?? null) : Number.isFinite(row[col]) ? row[col] : null,
+                  ]),
+                  ['__row_order', index],
+                ]),
+              )
+              sourceVersion++
+              builder.limit.setLimit(Math.max(rows.length, 1))
+              return refresh()
+            },
+            refresh,
+            dispose() {
+              disposed = true
+              revision++
+              pending?.abort()
+              hide()
+              events.abort()
+              unmount()
+              panel.remove()
+              table?.off('icon_click', iconClick)
+              void queue
+                .catch(() => {})
+                .then(async () => {
+                  vbi.resources.chart.unregister(builder.getUUID())
+                  builder.undoManager?.destroy()
+                  builder.doc.destroy()
+                  vbi.connectors.unregister(id)
+                  await query.dropDataset(id)
+                })
+                .catch(() => {})
+            },
+          }
+        }
+        return { load, options, build, overview, update, setRecords, createView }
       })()
     </script>
     <script type="module">

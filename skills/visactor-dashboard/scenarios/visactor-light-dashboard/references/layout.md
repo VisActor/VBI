@@ -51,4 +51,4 @@
 
 打开容器与内容就绪分开处理：加载期间保留可测量尺寸，关闭和失败恢复始终可用；内容就绪后再同步揭示。一次打开内的筛选与滚动不重播入场。关闭从当前姿态退场，旧查询失效后再释放 Canvas，并恢复入口焦点。
 
-复用 `metric-analysis-runtime` 与 `metric-analysis-style`，参数以 HTML 为准。局部选择、返回与生命周期沿用[指标深入分析](../../../references/metric-analysis/guide.md)；材质降级见[玻璃阅读面](design.md#玻璃阅读面)，验收见[验收标准](acceptance.md)。
+复用 `metric-analysis-runtime` 与 `metric-analysis-style`，参数以 HTML 为准。局部选择、返回与生命周期沿用[指标深入分析](../../../references/deep-analysis/interaction.md)；材质降级见[玻璃阅读面](design.md#玻璃阅读面)，验收见[验收标准](acceptance.md)。

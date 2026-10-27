@@ -28,7 +28,7 @@
 
 ## 问题、方法与交互
 
-按[分析与决策](../../../references/metric-analysis/guide.md)及[空间分析](../../../references/metric-analysis/map.md)确定比较或检验，再扩展查询、图型与摘要。`metricDefs` 和默认分组图提供业务接入示例；改一段 `finding` 文字不能替代新增证据，现有模板不代表已实现全部诊断方法。
+按[分析与决策](../../../references/data-analysis/guide.md)及[空间分析](../../../references/data-analysis/map.md)确定比较或检验，再扩展查询、图型与摘要。`metricDefs` 和默认分组图提供业务接入示例；改一段 `finding` 文字不能替代新增证据，现有模板不代表已实现全部诊断方法。
 
 分析捕获入口国家和指标固有条件，如 AQI>100 的风险子集。样本门槛与 Top N 只限制对应展示，全部分组和完整证据仍可达；敏感性比较须保留原始基准。来源分类与数值分箱不混用，分位与样本量按完整范围计算。
 
