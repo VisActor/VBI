@@ -11,9 +11,11 @@ import { withBase } from '@rspress/core/runtime'
 
 <div className="dashboard-examples">
   <div className="dashboard-examples__toolbar">
+    <a href={withBase('/examples/light-dashboard/zh-CN/template-life-expectancy.html')} download>下载 HTML</a>
     <a href={withBase('/examples/light-dashboard/zh-CN/template-life-expectancy.html')} target="_blank" rel="noreferrer">在新窗口打开 <span aria-hidden="true">↗</span></a>
   </div>
   <iframe
+    allowFullScreen
     className="dashboard-examples__frame"
     title="全球寿命观察"
     src={withBase('/examples/light-dashboard/zh-CN/template-life-expectancy.html')}
