@@ -3,66 +3,6 @@
     "type": "dir",
     "name": "foundations",
     "label": "基础参考",
-    "collapsed": true
-  },
-  {
-    "type": "dir",
-    "name": "agriculture",
-    "label": "农业",
-    "collapsed": true
-  },
-  {
-    "type": "dir",
-    "name": "banking",
-    "label": "银行",
-    "collapsed": true
-  },
-  {
-    "type": "dir",
-    "name": "education",
-    "label": "教育",
-    "collapsed": true
-  },
-  {
-    "type": "dir",
-    "name": "energy",
-    "label": "能源",
-    "collapsed": true
-  },
-  {
-    "type": "dir",
-    "name": "healthcare",
-    "label": "医疗",
-    "collapsed": true
-  },
-  {
-    "type": "dir",
-    "name": "hospitality",
-    "label": "酒店",
-    "collapsed": true
-  },
-  {
-    "type": "dir",
-    "name": "housing",
-    "label": "住宅",
-    "collapsed": true
-  },
-  {
-    "type": "dir",
-    "name": "logistics",
-    "label": "物流",
-    "collapsed": true
-  },
-  {
-    "type": "dir",
-    "name": "manufacturing",
-    "label": "制造",
-    "collapsed": true
-  },
-  {
-    "type": "dir",
-    "name": "retail",
-    "label": "零售",
-    "collapsed": true
+    "collapsed": false
   }
 ]

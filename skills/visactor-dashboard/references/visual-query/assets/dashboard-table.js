@@ -41,16 +41,11 @@ window.DashboardTable = (() => {
       const [r, g, b, a] = context.getImageData(0, 0, 1, 1).data
       return `rgba(${r}, ${g}, ${b}, ${a / 255})`
     }
-    try {
-      return {
-        color,
-        number: (name) => parseFloat(style.getPropertyValue(name)),
-        fontFamily: style.getPropertyValue('--font-ui').trim(),
-        dispose: () => probe.remove(),
-      }
-    } catch (error) {
-      probe.remove()
-      throw error
+    return {
+      color,
+      number: (name) => parseFloat(style.getPropertyValue(name)),
+      fontFamily: style.getPropertyValue('--font-ui').trim(),
+      dispose: () => probe.remove(),
     }
   }
   const appearances = new WeakMap()
@@ -247,12 +242,8 @@ window.DashboardTable = (() => {
     table.updateColumns(
       next.columns.map((column) => ({
         ...column,
-        ...(column.headerIcon
-          ? {
-              headerIcon:
-                table.options.columns.find(({ field }) => field === column.field)?.headerIcon || column.headerIcon,
-            }
-          : {}),
+        // Column-query icons belong to the view, not regenerated VSeed options.
+        headerIcon: table.options.columns.find(({ field }) => field === column.field)?.headerIcon || column.headerIcon,
       })),
       { clearColWidthCache: false, clearRowHeightCache: false },
     )
@@ -318,20 +309,7 @@ window.DashboardTable = (() => {
       ...fields.map((name, index) => ({ name, type: types[index] })),
       { name: '__row_order', type: 'number' },
     ]
-    const source = { type: 'json', rawDataset: [] }
-    if (await query.hasDataset(id)) await query.updateDatasetSource(id, schema, source)
-    else await query.createDataset(id, schema, source)
-    vbi.connectors.register(id, {
-      discoverSchema: async () => schema,
-      query: async ({ queryDSL }) => {
-        const dataset = await query.connectDataset(id)
-        try {
-          return await dataset.query(queryDSL)
-        } finally {
-          await dataset.disconnect()
-        }
-      },
-    })
+    const source = await DashboardData.connect(vbi, query, id, schema, [])
     const builder = vbi.chart.create(vbi.chart.createEmpty(id))
     builder.chartType.changeChartType('table')
     fields.forEach((field, index) => builder.dimensions.add(field, (node) => node.setAlias(columns[index])))
@@ -353,19 +331,23 @@ window.DashboardTable = (() => {
       iconState,
       openFrame = 0
     const panel = document.createElement('div')
-    panel.className = 'df-menu dashboard-table-menu'
+    panel.className = 'ui-surface ui-surface--overlay df-menu dashboard-table-menu'
     panel.setAttribute('popover', 'auto')
     panel.setAttribute('role', 'dialog')
-    panel.innerHTML = `<header class="dashboard-table-menu-heading"><strong data-dt="title"></strong><button type="button" data-dt="clear" title="清除本列筛选" aria-label="清除本列筛选">清除</button></header>
-      <div class="dashboard-table-sort-row"><div class="segment dashboard-table-sort" role="group" aria-label="列排序"><button type="button" data-sort="asc"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 13V3m-2 2 2-2 2 2m3-1h5M9 8h4m-4 4h2"/></svg>升序</button><button type="button" data-sort="desc"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3v10m-2-2 2 2 2-2m3-7h2M9 8h4m-4 4h5"/></svg>降序</button></div><button type="button" class="df-icon dashboard-table-icon" data-filter-control="icon" data-sort="normal" title="恢复默认顺序" aria-label="恢复默认顺序"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6a5 5 0 1 1 0 5M3 2v4h4"/></svg></button></div>
-      <div class="dashboard-table-rule" data-dt="rule"><details data-filter-control="selector" data-menu-min-width="184" data-menu-align="start" aria-label="筛选条件"><summary><span data-control-label></span></summary><div data-control-options role="group" aria-label="筛选条件"></div></details><div class="dashboard-table-values" data-dt="values"><input class="df-search" data-dt="low" autocomplete="off" spellcheck="false"><span data-dt="separator" aria-hidden="true">—</span><input class="df-search" data-dt="high" type="number" step="any" autocomplete="off"></div></div>
+    panel.innerHTML = `<header class="dashboard-table-menu-heading"><strong data-dt="title"></strong><button type="button" class="ui-button" data-dt="clear" title="清除本列筛选" aria-label="清除本列筛选">清除</button></header>
+      <div class="dashboard-table-sort-row"><div class="dashboard-table-sort" data-filter-control="segment" role="group" aria-label="列排序"><button type="button" data-sort="asc"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 13V3m-2 2 2-2 2 2m3-1h5M9 8h4m-4 4h2"/></svg>升序</button><button type="button" data-sort="desc"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3v10m-2-2 2 2 2-2m3-7h2M9 8h4m-4 4h5"/></svg>降序</button></div><button type="button" class="ui-button ui-icon df-icon dashboard-table-icon" data-filter-control="icon" data-sort="normal" title="恢复默认顺序" aria-label="恢复默认顺序"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6a5 5 0 1 1 0 5M3 2v4h4"/></svg></button></div>
+      <div class="dashboard-table-rule" data-dt="rule"><details data-filter-control="selector" data-menu-min-width="184" data-menu-align="start" aria-label="筛选条件"><summary><span data-control-label></span></summary><div data-control-options role="group" aria-label="筛选条件"></div></details><div class="dashboard-table-values" data-dt="values"><input class="ui-input df-search" data-dt="low" autocomplete="off" spellcheck="false"><span data-dt="separator" aria-hidden="true">—</span><input class="ui-input df-search" data-dt="high" type="number" step="any" autocomplete="off"></div></div>
       <p class="dashboard-table-feedback" data-dt="feedback" role="status"></p>
-      <footer class="dashboard-table-actions"><button type="button" data-dt="reset">清除全部筛选</button><button type="button" data-dt="apply">筛选</button></footer>`
+      <footer class="dashboard-table-actions"><button type="button" class="ui-button" data-dt="reset">清除全部筛选</button><button type="button" class="ui-button" data-dt="apply">筛选</button></footer>`
     ;(host.closest('dialog') || document.body).append(panel)
     const nodes = Object.fromEntries([...panel.querySelectorAll('[data-dt]')].map((node) => [node.dataset.dt, node]))
     const picker = panel.querySelector('details')
     const operatorList = picker.querySelector('[data-control-options]')
     const unmount = DashboardFilters.mount(panel)
+    const activity = window.DashboardUI?.activity?.({
+      minimum: 0,
+      change: (busy) => host.setAttribute('aria-busy', String(busy)),
+    })
     const operators = () => columnOperators[types[fields.indexOf(activeField)] === 'number' ? 'number' : 'text']
     const currentOperator = () => operators().find(({ id }) => id === mode)
     const predicates = (field) =>
@@ -392,9 +374,10 @@ window.DashboardTable = (() => {
         { clearColWidthCache: false, clearRowHeightCache: false },
       )
     }
-    function refresh() {
+    function refresh(control) {
       const ticket = ++revision
       pending?.abort()
+      const feedback = activity?.start(DashboardFilters.trigger(control) || null, control ? 200 : 0)
       const task = queue
         .catch(() => {})
         .then(async () => {
@@ -402,9 +385,11 @@ window.DashboardTable = (() => {
           pending = new AbortController()
           host.setAttribute('aria-busy', 'true')
           try {
+            await feedback?.painted
+            if (disposed || ticket !== revision) return false
             if (loadedVersion !== sourceVersion) {
               const version = sourceVersion
-              await query.updateDatasetSource(id, schema, { type: 'json', rawDataset: rows })
+              await source.replace(rows)
               loadedVersion = version
             }
             if (disposed || ticket !== revision) return false
@@ -419,23 +404,24 @@ window.DashboardTable = (() => {
             )
             if (disposed || ticket !== revision) return false
             headers()
-            return true
           } catch (error) {
             if (disposed || ticket !== revision || error.name === 'AbortError') return false
             throw error
           } finally {
-            if (!disposed && ticket === revision) host.setAttribute('aria-busy', 'false')
+            if (feedback) await feedback.finish(() => !disposed && ticket === revision)
+            else if (!disposed && ticket === revision) host.setAttribute('aria-busy', 'false')
           }
+          return !disposed && ticket === revision
         })
       queue = task
       return task
     }
-    async function submit(action) {
+    async function submit(action, control) {
       const field = activeField
       nodes.feedback.textContent = ''
       try {
         action()
-        if ((await refresh()) && activeField === field) hide(true)
+        if ((await refresh(control)) && activeField === field) hide(true)
       } catch (error) {
         nodes.feedback.textContent = `表格更新失败：${error.message}`
         position()
@@ -563,13 +549,13 @@ window.DashboardTable = (() => {
               const original = builder.build().dimensions.find((item) => item.field === '__row_order')
               builder.dimensions.update(original.id, (node) => node.setSort({ order: 'asc' }))
             })
-          }),
+          }, button),
         { signal },
       ),
     )
     const clear = (field) => predicates(field).forEach((condition) => builder.whereFilter.remove(condition.id))
-    nodes.clear.addEventListener('click', () => void submit(() => clear(activeField)), { signal })
-    nodes.reset.addEventListener('click', () => void submit(() => builder.whereFilter.clear()), { signal })
+    nodes.clear.addEventListener('click', () => void submit(() => clear(activeField), nodes.clear), { signal })
+    nodes.reset.addEventListener('click', () => void submit(() => builder.whereFilter.clear(), nodes.reset), { signal })
     nodes.apply.addEventListener(
       'click',
       () => {
@@ -592,23 +578,25 @@ window.DashboardTable = (() => {
           position()
           return
         }
-        void submit(() =>
-          builder.doc.transact(() => {
-            clear(activeField)
-            const add = (group, op, value) => group.add(activeField, (node) => node.setOperator(op).setValue(value))
-            if (inputs === 0) add(builder.whereFilter, option.op)
-            else if (inputs === 2)
-              add(builder.whereFilter, option.op, {
-                min: low === '' ? undefined : Number(low),
-                max: high === '' ? undefined : Number(high),
-              })
-            else
-              add(
-                builder.whereFilter,
-                option.op,
-                numeric ? Number(low) : `${option.prefix || ''}${low}${option.suffix || ''}`,
-              )
-          }),
+        void submit(
+          () =>
+            builder.doc.transact(() => {
+              clear(activeField)
+              const add = (group, op, value) => group.add(activeField, (node) => node.setOperator(op).setValue(value))
+              if (inputs === 0) add(builder.whereFilter, option.op)
+              else if (inputs === 2)
+                add(builder.whereFilter, option.op, {
+                  min: low === '' ? undefined : Number(low),
+                  max: high === '' ? undefined : Number(high),
+                })
+              else
+                add(
+                  builder.whereFilter,
+                  option.op,
+                  numeric ? Number(low) : `${option.prefix || ''}${low}${option.suffix || ''}`,
+                )
+            }),
+          nodes.apply,
         )
       },
       { signal },
@@ -694,6 +682,7 @@ window.DashboardTable = (() => {
         disposed = true
         revision++
         pending?.abort()
+        activity?.cancel()
         hide()
         events.abort()
         unmount()
@@ -702,11 +691,8 @@ window.DashboardTable = (() => {
         void queue
           .catch(() => {})
           .then(async () => {
-            vbi.resources.chart.unregister(builder.getUUID())
-            builder.undoManager?.destroy()
-            builder.doc.destroy()
-            vbi.connectors.unregister(id)
-            await query.dropDataset(id)
+            DashboardData.release(vbi, builder)
+            await source.dispose()
           })
           .catch(() => {})
       },
@@ -726,27 +712,12 @@ window.DashboardTable = (() => {
       values.map((row, index) =>
         Object.fromEntries([...fields.map((field, i) => [field, row[i] ?? null]), ['__row_order', index]]),
       )
-    const register = async (name, dataSchema, rawDataset) => {
-      if (await query.hasDataset(name)) await query.updateDatasetSource(name, dataSchema, { type: 'json', rawDataset })
-      else await query.createDataset(name, dataSchema, { type: 'json', rawDataset })
-      vbi.connectors.register(name, {
-        discoverSchema: async () => dataSchema,
-        query: async ({ queryDSL }) => {
-          const dataset = await query.connectDataset(name)
-          try {
-            return await dataset.query(queryDSL)
-          } finally {
-            await dataset.disconnect()
-          }
-        },
-      })
-    }
-    await register(id, schema, records(rows))
+    const connection = await DashboardData.connect(vbi, query, id, schema, records(rows))
     const profileSchema = [
       ...schema,
       ...fields.flatMap((_, i) => (types[i] === 'number' ? [{ name: `b${i}`, type: 'number' }] : [])),
     ]
-    await register(profileId, profileSchema, [])
+    const profileSource = await DashboardData.connect(vbi, query, profileId, profileSchema, [])
     const builders = []
     const make = (name) => {
       const chart = vbi.chart.create(vbi.chart.createEmpty(name))
@@ -795,7 +766,7 @@ window.DashboardTable = (() => {
         ),
         ...Object.fromEntries(fields.flatMap((_, i) => (types[i] === 'number' ? [[`b${i}`, null]] : []))),
       }))
-      await query.updateDatasetSource(profileId, profileSchema, { type: 'json', rawDataset: data })
+      await profileSource.replace(data)
       const seed = await bounds.buildVSeed({ signal })
       if (!isCurrent()) return
       const summary = Object.fromEntries(bounds.build().measures.map((m) => [m.alias, seed.dataset[0]?.[m.id]]))
@@ -825,7 +796,7 @@ window.DashboardTable = (() => {
             .filter((_, i) => types[i] === 'number'),
         ),
       }))
-      await query.updateDatasetSource(profileId, profileSchema, { type: 'json', rawDataset: binned })
+      await profileSource.replace(binned)
       const seeds = await Promise.all(frequencies.map((chart) => chart.buildVSeed({ signal })))
       if (!isCurrent()) return
       const total = Number(summary.total) || 0
@@ -1090,15 +1061,8 @@ window.DashboardTable = (() => {
         table?.release()
         void Promise.allSettled([scopeJob, renderJob])
           .then(async () => {
-            for (const chart of builders) {
-              vbi.resources.chart.unregister(chart.getUUID())
-              chart.undoManager?.destroy()
-              chart.doc.destroy()
-            }
-            for (const name of [id, profileId]) {
-              vbi.connectors.unregister(name)
-              await query.dropDataset(name)
-            }
+            builders.forEach((chart) => DashboardData.release(vbi, chart))
+            await Promise.all([connection.dispose(), profileSource.dispose()])
           })
           .catch(() => {})
       },

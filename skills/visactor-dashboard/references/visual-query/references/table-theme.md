@@ -5,9 +5,10 @@
 ## 维护入口
 
 - [dashboard-table.css](../assets/dashboard-table.css)：公共语义 token、深色覆盖、表格容器与键盘焦点。
+- [dashboard-data.js](../assets/dashboard-data.js)：VBI Connector 与 VQuery 数据集的连接、更新、查询顺序和资源释放；先于表格脚本内嵌。
 - [dashboard-table.js](../assets/dashboard-table.js)：CSS → Canvas 颜色解析、统一 VTable 主题、模块加载、记录更新与列查询接入。
 
-将上述资源作为样式和脚本接入宿主；交付单文件 HTML 时，把内容分别内联到 `style#dashboard-table-tokens` 与 `script#dashboard-table-runtime`。业务数据、列配置和查询由调用方提供，不需要具体场景模板或其他 package 的源码。维护内联副本时先修改公共资源，再由调用方同步并验证副本一致性。
+将上述资源作为样式和脚本接入宿主；交付单文件 HTML 时，分别内联到 `style#dashboard-table-tokens`、`script#dashboard-data-runtime` 与 `script#dashboard-table-runtime`。业务数据、列配置和查询由调用方提供，不需要具体场景模板或其他 package 的源码。维护内联副本时先修改公共资源，再由调用方同步并验证副本一致性。
 
 适配器服务平面 `ListTable`；`PivotTable` / `PivotChart` 保留 VSeed 输出的布局与交互，按对应表类型另行接入。
 
@@ -45,7 +46,9 @@
 
 ## 列搜索、过滤与排序
 
-主页与 Modal 表格通过 `DashboardTable.createView({ vbi, query, connectorId, columns, fields, types, host, render })` 接入列查询；宿主提供已有 VBI / VQuery 实例和 `DashboardFilters`。`bind(table)` 绑定表头入口，`updateRows(rows)` 接收主页当前范围的完整、未格式化查询结果，`render(rows, totalCount)` 更新同一 VTable 实例，退出时调用 `dispose()`。
+主页与 Modal 表格通过 `DashboardTable.createView({ vbi, query, connectorId, columns, fields, types, host, render })` 接入列查询；宿主提供已有 VBI / VQuery 实例、`DashboardData` 和 `DashboardFilters`。`bind(table)` 绑定表头入口，`updateRows(rows)` 接收主页当前范围的完整、未格式化查询结果，`render(rows, totalCount)` 更新同一 VTable 实例，退出时调用 `dispose()`。连接由视图持有，列筛选与排序复用已加载数据，只有 `updateRows()` 改变来源记录时重新加载，释放时等待在途操作结束。
+
+提供 `DashboardUI.activity()` 的宿主共用控件等待逻辑：列筛选、排序和清除在查询前绘制触发按钮的 loading，结束或失败清理反馈，旧任务不能关闭新操作的菜单。内部数据更新不叠加控件的最短展示时间；其他宿主通过表格的 `aria-busy` 管理自身反馈。
 
 表格视图把已查询的展示粒度注册为独立数据集，通过公开 VBI Builder 配置 `whereFilter` 和维度排序，再由 VQuery 取数；不在浏览器手写聚合或过滤记录，不引入额外筛选插件。`fields` 按列提供与 VSeed 列定义一致的原始字段 ID，省略时使用 `c0`、`c1` 等索引字段；`columns` 为同序标签。`types` 按列提供 `string` / `number`，省略时保持首列文本、其余数值的分析表约定；菜单条件与空值判断读取相应类型。数值按原始精度过滤与排序，首列使用业务键，原始行序用于稳定排序及恢复默认顺序。
 
