@@ -1,5 +1,5 @@
 ---
-name: visactor-chart-editor
+name: chart-editor
 description: 创建轻巧易用的图表编辑器，拖拽字段、切换图型，即时查看数据。适用于自助制图和数据探索。Powered by VisActor。
 ---
 

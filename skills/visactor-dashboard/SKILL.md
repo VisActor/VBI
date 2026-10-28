@@ -9,12 +9,12 @@ description: 创建和修改交互式 Dashboard、分析页面与图表编辑器
 
 ## 场景
 
-| 用户需求                           | 场景指南                                                    |
-| ---------------------------------- | ----------------------------------------------------------- |
-| 地图、地理分布、位置关系或地域下钻 | [地图看板](scenarios/visactor-map2d-dashboard/SKILL.md)     |
-| 经营概览、指标监测、趋势和专题分析 | [轻量看板](scenarios/visactor-light-dashboard/SKILL.md)     |
-| 字段配置、聚合筛选与可视化图表编辑 | [图表编辑器](scenarios/visactor-chart-editor/SKILL.md)      |
-| Three.js 三维地图、地球与空间态势  | [三维地图看板](scenarios/visactor-map3d-dashboard/SKILL.md) |
+| 用户需求                           | 场景指南                                           |
+| ---------------------------------- | -------------------------------------------------- |
+| 地图、地理分布、位置关系或地域下钻 | [地图看板](scenarios/map2d-dashboard/SKILL.md)     |
+| 经营概览、指标监测、趋势和专题分析 | [轻量看板](scenarios/light-dashboard/SKILL.md)     |
+| 字段配置、聚合筛选与可视化图表编辑 | [图表编辑器](scenarios/chart-editor/SKILL.md)      |
+| Three.js 三维地图、地球与空间态势  | [三维地图看板](scenarios/map3d-dashboard/SKILL.md) |
 
 用户明确指定类型时按其要求选择；图表编辑使用编辑器，明确的三维需求使用三维地图，普通地图使用二维地图，其余看板使用轻量看板。
 

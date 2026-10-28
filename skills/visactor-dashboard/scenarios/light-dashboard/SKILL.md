@@ -1,5 +1,5 @@
 ---
-name: visactor-light-dashboard
+name: light-dashboard
 description: 创建支持业务判断与进一步分析的小而美的 Dashboard，适用于经营概览、指标监测和专题分析。Powered by VisActor。
 ---
 

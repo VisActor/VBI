@@ -1,5 +1,5 @@
 ---
-name: visactor-map2d-dashboard
+name: map2d-dashboard
 description: 创建富有空间感的交互式地图 Dashboard，围绕地域差异、时空事件和业务问题组织分析、证据与后续行动。Powered by VisActor。
 ---
 
