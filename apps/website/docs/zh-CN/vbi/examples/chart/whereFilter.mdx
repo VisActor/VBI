@@ -1076,6 +1076,78 @@ export default () => {
 }
 ```
 
+## root-filter-operator
+
+通过公开 Builder 切换根过滤组 AND/OR，保留条件及其 ID，支持保存和撤销。
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "column",
+          "dimensions": [
+            {
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  builder.whereFilter
+    .add('area', node => node.setOperator('eq').setValue('华东'))
+    .add('area', node => node.setOperator('eq').setValue('华南'))
+    .setOperator('or');
+  builder.havingFilter
+    .add('sales', node => node.setOperator('>').setValue(1000))
+    .add('sales', node => node.setOperator('<').setValue(100))
+    .setOperator('or');
+}
+      await applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
 ## update-filter-switch-province
 
 动态修改过滤条件：将省份筛选从浙江更新为广东，观察销售额变化

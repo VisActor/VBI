@@ -217,6 +217,10 @@ export declare class DimensionsBuilder {
 export declare class HavingFilterBuilder {
   constructor(doc: Y.Doc, dsl: Y.Map<any>)
   getConditions(): Y.Array<any>
+  /** @description 获取根过滤组的逻辑操作符。 */
+  getOperator(): 'and' | 'or'
+  /** @description 设置根过滤组的逻辑操作符，保留已有条件及其 ID。 */
+  setOperator(op: 'and' | 'or'): this
   /**
    * @description 添加一个 Having 过滤条件
    * @param field - 字段名
@@ -595,6 +599,10 @@ options = {}
 export declare class WhereFilterBuilder {
   constructor(doc: Y.Doc, dsl: Y.Map<any>)
   getConditions(): Y.Array<any>
+  /** @description 获取根过滤组的逻辑操作符。 */
+  getOperator(): 'and' | 'or'
+  /** @description 设置根过滤组的逻辑操作符，保留已有条件及其 ID。 */
+  setOperator(op: 'and' | 'or'): this
   /**
    * @description 添加一个 Where 过滤条件
    * @param field - 字段名

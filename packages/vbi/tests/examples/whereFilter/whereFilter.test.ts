@@ -3121,6 +3121,216 @@ describe('chart / WhereFilter', () => {
     `)
   })
 
+  it('root-filter-operator', async () => {
+    const builder = VBI.chart.create({
+      connectorId: 'demoSupermarket',
+      chartType: 'column',
+      dimensions: [
+        {
+          field: 'area',
+          alias: '区域',
+        },
+      ],
+      measures: [
+        {
+          field: 'sales',
+          alias: '销售额',
+          aggregate: {
+            func: 'sum',
+          },
+        },
+      ],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      theme: 'light',
+      locale: 'zh-CN',
+      version: 1,
+    })
+
+    const applyBuilder = (builder: VBIChartBuilder) => {
+      builder.whereFilter
+        .add('area', (node) => node.setOperator('eq').setValue('华东'))
+        .add('area', (node) => node.setOperator('eq').setValue('华南'))
+        .setOperator('or')
+      builder.havingFilter
+        .add('sales', (node) => node.setOperator('>').setValue(1000))
+        .add('sales', (node) => node.setOperator('<').setValue(100))
+        .setOperator('or')
+    }
+    await applyBuilder(builder)
+
+    const vbiDSL = builder.build()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "column",
+        "connectorId": "demoSupermarket",
+        "dimensions": [
+          {
+            "alias": "区域",
+            "field": "area",
+            "id": "id-2",
+          },
+        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "aggregate": {
+                "func": "sum",
+              },
+              "field": "sales",
+              "id": "id-5",
+              "op": ">",
+              "value": 1000,
+            },
+            {
+              "aggregate": {
+                "func": "sum",
+              },
+              "field": "sales",
+              "id": "id-6",
+              "op": "<",
+              "value": 100,
+            },
+          ],
+          "id": "root",
+          "op": "or",
+        },
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "销售额",
+            "field": "sales",
+            "id": "id-1",
+          },
+        ],
+        "theme": "light",
+        "uuid": "uuid-1",
+        "version": 1,
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "area",
+              "id": "id-3",
+              "op": "eq",
+              "value": "华东",
+            },
+            {
+              "field": "area",
+              "id": "id-4",
+              "op": "eq",
+              "value": "华南",
+            },
+          ],
+          "id": "root",
+          "op": "or",
+        },
+      }
+    `)
+
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [
+          "area",
+        ],
+        "having": {
+          "conditions": [
+            {
+              "aggr": {
+                "func": "sum",
+              },
+              "field": "sales",
+              "op": ">",
+              "value": 1000,
+            },
+            {
+              "aggr": {
+                "func": "sum",
+              },
+              "field": "sales",
+              "op": "<",
+              "value": 100,
+            },
+          ],
+          "op": "or",
+        },
+        "limit": 1000,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "id-1",
+            "field": "sales",
+          },
+          {
+            "alias": "id-2",
+            "field": "area",
+          },
+        ],
+        "where": {
+          "conditions": [
+            {
+              "field": "area",
+              "op": "eq",
+              "value": "华东",
+            },
+            {
+              "field": "area",
+              "op": "eq",
+              "value": "华南",
+            },
+          ],
+          "op": "or",
+        },
+      }
+    `)
+
+    const vSeedDSL = await builder.buildVSeed()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "column",
+        "dataset": [
+          {
+            "id-1": 4684506.442,
+            "id-2": "华东",
+          },
+        ],
+        "dimensions": [
+          {
+            "alias": "区域",
+            "id": "id-2",
+          },
+        ],
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "销售额",
+            "id": "id-1",
+          },
+        ],
+        "theme": "light",
+      }
+    `)
+  })
+
   it('update-filter-switch-province', async () => {
     const builder = VBI.chart.create({
       connectorId: 'demoSupermarket',

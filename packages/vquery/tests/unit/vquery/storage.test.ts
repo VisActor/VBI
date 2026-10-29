@@ -23,6 +23,27 @@ for (const [entrypoint, VQuery] of [
   ['node', NodeVQuery],
 ] as const) {
   describe(`${entrypoint} dataset storage`, () => {
+    it('replaces connected JSON and CSV sources and restores the new schema on reconnect', async () => {
+      const vquery = new VQuery({ enableIndexedDB: false })
+      const columns = [{ name: 'sales', type: 'number' as const }]
+      try {
+        await vquery.createDataset('replace-source', columns, { type: 'json', rawDataset: [{ sales: 10 }] })
+        const dataset = await vquery.connectDataset('replace-source')
+        await dataset.replaceSource(columns, { type: 'json', rawDataset: [{ sales: 42 }] })
+        expect((await dataset.query({ select: ['sales'] })).dataset).toEqual([{ sales: 42 }])
+        const nextColumns = [{ name: 'profit', type: 'number' as const }]
+        await dataset.replaceSource(nextColumns, { type: 'csv', rawDataset: 'profit\n24' })
+        expect((await dataset.query({ select: ['profit'] })).dataset).toEqual([{ profit: 24 }])
+        const restored = await vquery.connectDataset('replace-source')
+        expect((await restored.query({ select: ['profit'] })).dataset).toEqual([{ profit: 24 }])
+        await dataset.replaceSource(nextColumns, { type: 'json', rawDataset: [] })
+        expect((await dataset.query({ select: ['profit'] })).dataset).toEqual([])
+        await dataset.disconnect()
+      } finally {
+        await vquery.close()
+      }
+    })
+
     const defaults: Array<[string, VQueryOptions | undefined]> = [
       ['no options', undefined],
       ['empty options', {}],

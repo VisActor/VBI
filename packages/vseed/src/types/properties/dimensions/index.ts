@@ -1,4 +1,5 @@
 export * from './zDimensions'
+export * from './zTableDimensions'
 
 // Export all dimension types
 export type { BaseDimension, Dimension, Dimensions } from './baseDimension'

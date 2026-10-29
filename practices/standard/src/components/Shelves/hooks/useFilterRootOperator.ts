@@ -3,26 +3,13 @@ import { useCallback } from 'react'
 import { useBuilderDocState } from '../../../hooks/useBuilderDocState'
 import type { RootOperator } from '../common/ShelfRootOperatorButton'
 
-const FILTER_ROOT_KEY = {
-  where: 'whereFilter',
-  having: 'havingFilter',
-} as const
-
-export const useFilterRootOperator = (params: {
-  builder: VBIChartBuilder | undefined
-  type: keyof typeof FILTER_ROOT_KEY
-}) => {
+export const useFilterRootOperator = (params: { builder: VBIChartBuilder | undefined; type: 'where' | 'having' }) => {
   const { builder, type } = params
 
   const operator = useBuilderDocState<RootOperator>({
     builder,
     fallback: 'and',
-    getSnapshot: (activeBuilder) => {
-      if (type === 'where') {
-        return activeBuilder.whereFilter.toJSON().op === 'or' ? 'or' : 'and'
-      }
-      return activeBuilder.havingFilter.toJSON().op === 'or' ? 'or' : 'and'
-    },
+    getSnapshot: (activeBuilder) => activeBuilder[type === 'where' ? 'whereFilter' : 'havingFilter'].getOperator(),
   })
 
   const setOperator = useCallback(
@@ -31,12 +18,7 @@ export const useFilterRootOperator = (params: {
         return
       }
 
-      builder.doc.transact(() => {
-        const rootNode = builder.dsl.get(FILTER_ROOT_KEY[type]) as
-          | { set: (key: string, value: unknown) => void }
-          | undefined
-        rootNode?.set('op', nextOperator)
-      })
+      builder[type === 'where' ? 'whereFilter' : 'havingFilter'].setOperator(nextOperator)
     },
     [builder, operator, type],
   )

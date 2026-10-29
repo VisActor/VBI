@@ -331,3 +331,68 @@ export default () => {
 }
 ```
 
+## 固定行高与字段列宽
+
+通过 VSeed 配置固定行高、字段列宽与空值文本；汇总和数据条继续使用公开配置，无需修改生成后的 Spec。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+  "chartType": "table",
+  "dataset": [
+    {
+      "region": "华东 East",
+      "sales": 1200
+    },
+    {
+      "region": "华南 South",
+      "sales": null
+    },
+    {
+      "region": "华北 North",
+      "sales": 0
+    },
+    {
+      "region": null,
+      "sales": -200
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "region",
+      "alias": "区域 Region",
+      "width": 180
+    }
+  ],
+  "measures": [
+    {
+      "id": "sales",
+      "alias": "销售额 Revenue",
+      "width": 150,
+      "autoFormat": false,
+      "numFormat": {
+        "fractionDigits": 2
+      }
+    }
+  ],
+  "heightMode": "standard",
+  "rowHeight": 38,
+  "headerRowHeight": 44,
+  "autoWrapText": false,
+  "autoFillWidth": true,
+  "emptyCellText": "—",
+  "totals": "sum",
+  "bodyCellStyle": {
+    "selector": {
+      "field": "sales"
+    },
+    "enableProgressBar": true
+  }
+}
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+

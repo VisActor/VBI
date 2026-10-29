@@ -1,3 +1,4 @@
+import { buildLabelStyle } from './labelStyle'
 import type { ILineChartSpec } from '@visactor/vchart'
 import {
   createFormatter,
@@ -88,11 +89,6 @@ export const buildLabel = (
     showDimension,
     labelOverlap,
     labelColorSmartInvert,
-    labelStroke,
-    labelColor,
-    labelFontSize,
-    labelFontWeight,
-    labelBackgroundColor,
     labelPosition,
     autoFormat,
     numFormat = {},
@@ -186,18 +182,9 @@ export const buildLabel = (
     },
     syncState: true,
     position: labelPosition,
-    style: {
-      stroke: labelStroke,
-      fill: labelColor,
-      fontSize: labelFontSize,
-      fontWeight: labelFontWeight,
-      background: labelBackgroundColor,
-    },
+    style: buildLabelStyle(label),
+    ...(label.labelAnimation == null ? {} : { animation: label.labelAnimation }),
     smartInvert: labelColorSmartInvert,
-  }
-
-  if (labelColorSmartInvert) {
-    ;(result.style as any).lineWidth = 2 // label 边框线宽度，不设置这个会导致智能反色失败
   }
 
   if (labelOverlap) {

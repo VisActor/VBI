@@ -9,6 +9,7 @@
 - 用 `Builder.from()` 创建 Builder，再调用 `build()` 生成 VChart / VTable Spec。DSL 包含动态过滤代码时，先 `await prepare()`，再构建；不要把异步准备当成已经完成。
 - 根据实际数据选择图表、维度、指标与编码。只有存在真实时间字段时才组织时间趋势；单位、聚合粒度与比例口径与查询结果一致。
 - 主题、格式和标记样式优先使用 DSL 支持的配置。渲染器特有事件、Tooltip、容器尺寸与资源释放由集成层处理；复用 VChart / VTable 实例更新。
+- 表格布局使用 `widthMode`、`heightMode`、`autoWrapText`、`autoFillWidth`、`rowHeight` 与 `headerRowHeight`；列宽写在表格维度或指标的 `width` 中。普通表用 `emptyCellText` 统一正文和汇总的空值显示。标签动画与描边用 `label.labelAnimation` 和 `label.labelStrokeWidth` 配置，避免构建后重写这些 Spec 字段。
 
 ## 中间态与扩展
 

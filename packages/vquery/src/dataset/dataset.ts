@@ -1,5 +1,14 @@
-import type { DatasetColumn, DatasetSource, QueryDSL, QueryAdapter, StorageAdapter, VQueryDSL } from '../types'
+import type {
+  DatasetColumn,
+  DatasetSource,
+  RawDatasetSource,
+  QueryDSL,
+  QueryAdapter,
+  StorageAdapter,
+  VQueryDSL,
+} from '../types'
 import { convertDSLToDuckDB } from '../sql-builder'
+import { DatasetSourceBuilder } from '../data-source-builder'
 
 export class Dataset {
   private queryAdapter: QueryAdapter
@@ -35,6 +44,22 @@ export class Dataset {
       throw new Error(`Unsupported dataSource type: ${datasetSource.type}`)
     }
     await this.queryAdapter.loadDataset(this._datasetId, columns, datasetSource)
+  }
+
+  /**
+   * Replace the stored schema/source and reload this connected dataset, preserving its alias.
+   * Operations on the connection must be ordered by the caller. If reloading fails, the updated
+   * metadata remains stored; call init() to retry. An empty schema follows init() and skips loading.
+   */
+  public async replaceSource(columns: DatasetColumn[], rawDatasetSource: RawDatasetSource): Promise<void> {
+    const datasetInfo = await this.storageAdapter.readDataset(this._datasetId)
+    if (!datasetInfo) {
+      throw new Error(`Dataset ${this._datasetId} not found`)
+    }
+
+    const datasetSource = await DatasetSourceBuilder.from(rawDatasetSource).build()
+    await this.storageAdapter.writeDataset(this._datasetId, { ...datasetInfo.datasetSchema, columns }, datasetSource)
+    await this.init()
   }
 
   public async query<T extends Record<string, number | string>>(queryDSL: QueryDSL<T> | VQueryDSL<T>) {

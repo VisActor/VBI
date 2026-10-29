@@ -6,7 +6,7 @@ export default defineConfig({
     provider: 'istanbul',
     include: ['src/**/*.{ts,tsx}'],
     reporters: ['text', 'html', 'json-summary'],
-    thresholds: { statements: 58.09, branches: 41.87, functions: 55.76, lines: 56.33 },
+    thresholds: { statements: 58.25, branches: 42.19, functions: 55.97, lines: 56.5 },
   },
   testEnvironment: 'jsdom',
   setupFiles: ['./rstest.setup.ts'],

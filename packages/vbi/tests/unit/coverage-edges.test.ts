@@ -378,6 +378,7 @@ describe('unit/coverage edges', () => {
     const doc = new Y.Doc()
     const dsl = doc.getMap('dsl')
     setBaseDSLFields(dsl, { uuid: 'chart', limit: 10 } as any)
+    setBaseDSLFields(dsl, {} as any)
     expect(dsl.toJSON()).toEqual({ uuid: 'chart', limit: 10 })
     const normalizedDoc = new Y.Doc()
     const whereGroup = ensureWhereGroup(undefined)

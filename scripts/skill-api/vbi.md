@@ -6,6 +6,7 @@
 
 - 使用 `createVBI()` 创建隔离实例，或在需要共享资源时使用默认 `VBI`。同一看板的 Chart、Dashboard 与 Insight 使用同一实例和稳定资源 ID。
 - Connector 提供实际 schema 并执行收到的查询 DSL。字段、维度、指标、聚合、排序和筛选通过公开 Chart Builder 配置；先核对字段 ID、数据粒度、去重方式和单位。
+- 根过滤组的 AND/OR 通过 `whereFilter.getOperator()/setOperator()` 与 `havingFilter.getOperator()/setOperator()` 读取和修改，已有条件及其 ID 保留；不要直接写 Yjs 内部字段。
 - `buildVQuery()` 获取查询配置；`buildVSeed()` 查询数据并构建可视化 DSL，再交给 [VSeed 参考指南](../vseed/guide.md)生成渲染 Spec。需要数据集管理或 SQL 编译时补读 [VQuery 参考指南](../vquery/guide.md)。
 - Dashboard Builder 管理组件、资源引用、布局与主题；新增组件提供 `layouts.lg`，在组件集合 `add` / `update` 回调中设置布局。页面根据布局渲染，不另建一套可保存的领域状态。
 - Insight Builder 保存洞察内容。结论与衍生指标来自同一查询范围，文本快照不能代替可重算的指标公式与依赖。

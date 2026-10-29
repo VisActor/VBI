@@ -66,38 +66,40 @@ import config_62 from './pie/example-3.json'
 import config_63 from './pivotTable/basic.json'
 import config_64 from './pivotTable/example-2.json'
 import config_65 from './pivotTable/example-3.json'
-import config_66 from './raceBar/basic.json'
-import config_67 from './raceColumn/basic.json'
-import config_68 from './raceDonut/basic.json'
-import config_69 from './raceLine/basic.json'
-import config_70 from './racePie/basic.json'
-import config_71 from './raceScatter/basic.json'
-import config_72 from './radar/basic.json'
-import config_73 from './radar/example-2.json'
-import config_74 from './radar/example-3.json'
-import config_75 from './rose/basic.json'
-import config_76 from './rose/example-2.json'
-import config_77 from './rose/example-3.json'
-import config_78 from './rose/example-4.json'
-import config_79 from './rose/stack.json'
-import config_80 from './roseParallel/basic.json'
-import config_81 from './roseParallel/example-2.json'
-import config_82 from './roseParallel/example-3.json'
-import config_83 from './sankey/basic.json'
-import config_84 from './sankey/pivot.json'
-import config_85 from './scatter/basic.json'
-import config_86 from './scatter/example-2.json'
-import config_87 from './scatter/example-3.json'
-import config_88 from './sunburst/basic.json'
-import config_89 from './sunburst/combination.json'
-import config_90 from './sunburst/encoding.json'
-import config_91 from './table/basic.json'
-import config_92 from './table/example-2.json'
-import config_93 from './table/example-3.json'
-import config_94 from './table/example-4.json'
-import config_95 from './treeMap/basic.json'
-import config_96 from './treeMap/combination.json'
-import config_97 from './treeMap/encoding.json'
+import config_66 from './pivotTable/layout-and-widths.json'
+import config_67 from './raceBar/basic.json'
+import config_68 from './raceColumn/basic.json'
+import config_69 from './raceDonut/basic.json'
+import config_70 from './raceLine/basic.json'
+import config_71 from './racePie/basic.json'
+import config_72 from './raceScatter/basic.json'
+import config_73 from './radar/basic.json'
+import config_74 from './radar/example-2.json'
+import config_75 from './radar/example-3.json'
+import config_76 from './rose/basic.json'
+import config_77 from './rose/example-2.json'
+import config_78 from './rose/example-3.json'
+import config_79 from './rose/example-4.json'
+import config_80 from './rose/stack.json'
+import config_81 from './roseParallel/basic.json'
+import config_82 from './roseParallel/example-2.json'
+import config_83 from './roseParallel/example-3.json'
+import config_84 from './sankey/basic.json'
+import config_85 from './sankey/pivot.json'
+import config_86 from './scatter/basic.json'
+import config_87 from './scatter/example-2.json'
+import config_88 from './scatter/example-3.json'
+import config_89 from './sunburst/basic.json'
+import config_90 from './sunburst/combination.json'
+import config_91 from './sunburst/encoding.json'
+import config_92 from './table/basic.json'
+import config_93 from './table/example-2.json'
+import config_94 from './table/example-3.json'
+import config_95 from './table/example-4.json'
+import config_96 from './table/layout-and-empty-values.json'
+import config_97 from './treeMap/basic.json'
+import config_98 from './treeMap/combination.json'
+import config_99 from './treeMap/encoding.json'
 
 const cases = [
   { name: 'area/basic', vseed: config_0 },
@@ -166,38 +168,40 @@ const cases = [
   { name: 'pivotTable/basic', vseed: config_63 },
   { name: 'pivotTable/example-2', vseed: config_64 },
   { name: 'pivotTable/example-3', vseed: config_65 },
-  { name: 'raceBar/basic', vseed: config_66 },
-  { name: 'raceColumn/basic', vseed: config_67 },
-  { name: 'raceDonut/basic', vseed: config_68 },
-  { name: 'raceLine/basic', vseed: config_69 },
-  { name: 'racePie/basic', vseed: config_70 },
-  { name: 'raceScatter/basic', vseed: config_71 },
-  { name: 'radar/basic', vseed: config_72 },
-  { name: 'radar/example-2', vseed: config_73 },
-  { name: 'radar/example-3', vseed: config_74 },
-  { name: 'rose/basic', vseed: config_75 },
-  { name: 'rose/example-2', vseed: config_76 },
-  { name: 'rose/example-3', vseed: config_77 },
-  { name: 'rose/example-4', vseed: config_78 },
-  { name: 'rose/stack', vseed: config_79 },
-  { name: 'roseParallel/basic', vseed: config_80 },
-  { name: 'roseParallel/example-2', vseed: config_81 },
-  { name: 'roseParallel/example-3', vseed: config_82 },
-  { name: 'sankey/basic', vseed: config_83 },
-  { name: 'sankey/pivot', vseed: config_84 },
-  { name: 'scatter/basic', vseed: config_85 },
-  { name: 'scatter/example-2', vseed: config_86 },
-  { name: 'scatter/example-3', vseed: config_87 },
-  { name: 'sunburst/basic', vseed: config_88 },
-  { name: 'sunburst/combination', vseed: config_89 },
-  { name: 'sunburst/encoding', vseed: config_90 },
-  { name: 'table/basic', vseed: config_91 },
-  { name: 'table/example-2', vseed: config_92 },
-  { name: 'table/example-3', vseed: config_93 },
-  { name: 'table/example-4', vseed: config_94 },
-  { name: 'treeMap/basic', vseed: config_95 },
-  { name: 'treeMap/combination', vseed: config_96 },
-  { name: 'treeMap/encoding', vseed: config_97 }
+  { name: 'pivotTable/layout-and-widths', vseed: config_66 },
+  { name: 'raceBar/basic', vseed: config_67 },
+  { name: 'raceColumn/basic', vseed: config_68 },
+  { name: 'raceDonut/basic', vseed: config_69 },
+  { name: 'raceLine/basic', vseed: config_70 },
+  { name: 'racePie/basic', vseed: config_71 },
+  { name: 'raceScatter/basic', vseed: config_72 },
+  { name: 'radar/basic', vseed: config_73 },
+  { name: 'radar/example-2', vseed: config_74 },
+  { name: 'radar/example-3', vseed: config_75 },
+  { name: 'rose/basic', vseed: config_76 },
+  { name: 'rose/example-2', vseed: config_77 },
+  { name: 'rose/example-3', vseed: config_78 },
+  { name: 'rose/example-4', vseed: config_79 },
+  { name: 'rose/stack', vseed: config_80 },
+  { name: 'roseParallel/basic', vseed: config_81 },
+  { name: 'roseParallel/example-2', vseed: config_82 },
+  { name: 'roseParallel/example-3', vseed: config_83 },
+  { name: 'sankey/basic', vseed: config_84 },
+  { name: 'sankey/pivot', vseed: config_85 },
+  { name: 'scatter/basic', vseed: config_86 },
+  { name: 'scatter/example-2', vseed: config_87 },
+  { name: 'scatter/example-3', vseed: config_88 },
+  { name: 'sunburst/basic', vseed: config_89 },
+  { name: 'sunburst/combination', vseed: config_90 },
+  { name: 'sunburst/encoding', vseed: config_91 },
+  { name: 'table/basic', vseed: config_92 },
+  { name: 'table/example-2', vseed: config_93 },
+  { name: 'table/example-3', vseed: config_94 },
+  { name: 'table/example-4', vseed: config_95 },
+  { name: 'table/layout-and-empty-values', vseed: config_96 },
+  { name: 'treeMap/basic', vseed: config_97 },
+  { name: 'treeMap/combination', vseed: config_98 },
+  { name: 'treeMap/encoding', vseed: config_99 }
 ]
 
 describe('chartType', () => {

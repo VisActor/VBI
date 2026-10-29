@@ -1047,6 +1047,24 @@ order:'asc'
 
 :::
 
+### labelStrokeWidth
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+标签描边宽度，单位 px；显式设置 0 可关闭描边，优先于智能反色的默认宽度。
+
+:::
+
+### labelAnimation
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否启用标签动画；未配置时沿用图表组件默认行为。
+
+:::
+
 ### labelColor
 
 **Type:** `string | undefined`

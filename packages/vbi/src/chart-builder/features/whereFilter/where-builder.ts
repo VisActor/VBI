@@ -37,6 +37,17 @@ export class WhereFilterBuilder {
     return this.whereFilter.get('conditions') as Y.Array<any>
   }
 
+  /** @description 获取根过滤组的逻辑操作符。 */
+  getOperator(): 'and' | 'or' {
+    return this.whereFilter.get('op')
+  }
+
+  /** @description 设置根过滤组的逻辑操作符，保留已有条件及其 ID。 */
+  setOperator(op: 'and' | 'or'): this {
+    this.whereFilter.set('op', op)
+    return this
+  }
+
   /**
    * @description 添加一个 Where 过滤条件
    * @param field - 字段名

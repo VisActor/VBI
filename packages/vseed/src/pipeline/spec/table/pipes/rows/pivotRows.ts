@@ -1,9 +1,9 @@
-import type { Dimensions, PivotTableSpecPipe } from 'src/types'
+import type { TableDimension, PivotTableSpecPipe } from 'src/types'
 import { createFormatterByDimension } from 'src/pipeline/utils'
 
 export const pivotRows: PivotTableSpecPipe = (spec, context) => {
   const { advancedVSeed } = context
-  const dimensions = advancedVSeed.dimensionTree as Dimensions
+  const dimensions = advancedVSeed.dimensionTree as TableDimension[]
   const { encoding } = advancedVSeed
   const rows = dimensions.filter((item) => encoding.row?.includes(item.id))
 
@@ -14,7 +14,7 @@ export const pivotRows: PivotTableSpecPipe = (spec, context) => {
       return {
         dimensionKey: item.id,
         title: item.alias || item.id,
-        width: 'auto',
+        width: item.width ?? 'auto',
         headerFormat: (value: string | number) => formatter(value),
       }
     }),

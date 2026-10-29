@@ -1,7 +1,18 @@
 import { z } from 'zod'
 import { zBackgroundColor } from './backgroundColor/backgroundColor'
 
+export const zTableLayout = z.object({
+  widthMode: z.enum(['standard', 'adaptive', 'autoWidth']).nullish(),
+  heightMode: z.enum(['standard', 'adaptive', 'autoHeight']).nullish(),
+  autoWrapText: z.boolean().nullish(),
+  autoFillWidth: z.boolean().nullish(),
+  rowHeight: z.number().positive().nullish(),
+  headerRowHeight: z.number().positive().nullish(),
+})
+
 export const zTableConfig = z.object({
+  ...zTableLayout.shape,
+  emptyCellText: z.string().nullish(),
   backgroundColor: zBackgroundColor.nullish(),
 
   // Border

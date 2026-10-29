@@ -1,4 +1,5 @@
 export * from './zMeasures'
+export * from './zTableMeasures'
 export * from './zDualMeasures'
 
 // Export all measure types

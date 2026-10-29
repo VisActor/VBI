@@ -1,0 +1,14 @@
+{
+  "name": "root-filter-operator",
+  "description": "通过公开 Builder 切换根过滤组 AND/OR，保留条件及其 ID，支持保存和撤销。",
+  "schema": [
+    { "name": "area", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "column",
+    "dimensions": [{ "field": "area", "alias": "区域" }],
+    "measures": [{ "field": "sales", "alias": "销售额", "aggregate": { "func": "sum" } }]
+  },
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.whereFilter\n    .add('area', node => node.setOperator('eq').setValue('华东'))\n    .add('area', node => node.setOperator('eq').setValue('华南'))\n    .setOperator('or');\n  builder.havingFilter\n    .add('sales', node => node.setOperator('>').setValue(1000))\n    .add('sales', node => node.setOperator('<').setValue(100))\n    .setOperator('or');\n}"
+}

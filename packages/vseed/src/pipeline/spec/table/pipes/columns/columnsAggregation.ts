@@ -2,6 +2,7 @@ import { intl } from 'src/i18n'
 import { createFormatterByMeasure, isMeasure, findTreeNodesBy } from 'src/pipeline/utils'
 import type { ListTableSpecPipe, Measure } from 'src/types'
 import { extractLeafIds } from './utils'
+import { formatTableValue } from './formatTableValue'
 
 /**
  * @description 为表格列添加汇总行配置
@@ -91,7 +92,8 @@ export const columnsAggregation: ListTableSpecPipe = (spec, context) => {
         aggregation: {
           aggregationType: vtableAggregationType,
           showOnTop: false,
-          formatFun: (value: number | string | undefined) => formatter(value),
+          formatFun: (value: number | string | undefined) =>
+            formatTableValue(value, formatter, advancedVSeed.config?.table?.emptyCellText),
         },
       }
     }
