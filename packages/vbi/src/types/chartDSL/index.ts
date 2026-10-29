@@ -1,4 +1,5 @@
 export type { VBISort, VBISortOrder } from './sort'
+export type { VBIQueryMode } from './queryMode'
 export type { VBIDimensionTree, VBIDimensionGroup, VBIDimension } from './dimensions/dimensions'
 export type { VBIDimensionAggregate } from './dimensions/aggregate'
 export type { VBIMeasureTree, VBIMeasureGroup, VBIMeasure, VBIMeasureFormat } from './measures/measures'

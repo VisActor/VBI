@@ -5,6 +5,7 @@
 - [BuildVSeedOptions](types.md#buildvseedoptions)
 - [ObserveCallback](types.md#observecallback)
 - [ObserveDeepCallback](types.md#observedeepcallback)
+- [QueryOptions](types.md#queryoptions)
 - [Schema](types.md#schema)
 - [VBIChartBuildVQueryContext](types.md#vbichartbuildvquerycontext)
 - [VBIChartBuildVSeedContext](types.md#vbichartbuildvseedcontext)
@@ -17,6 +18,8 @@
 - [VBIChartInstanceOff](types.md#vbichartinstanceoff)
 - [VBIChartInstanceOn](types.md#vbichartinstanceon)
 - [VBIChartQueryBuilder](types.md#vbichartquerybuilder)
+- [VBIChartQueryContext](types.md#vbichartquerycontext)
+- [VBIChartQueryExecutor](types.md#vbichartqueryexecutor)
 - [VBIChartSeedBuilder](types.md#vbichartseedbuilder)
 - [VBIConnector](types.md#vbiconnector)
 - [VBIDSLLocale](types.md#vbidsllocale)
@@ -50,6 +53,7 @@
 - [VBIMeasureFormat](types.md#vbimeasureformat)
 - [VBIMeasureGroup](types.md#vbimeasuregroup)
 - [VBIMeasureTree](types.md#vbimeasuretree)
+- [VBIQueryMode](types.md#vbiquerymode)
 - [VBIQueryProps](types.md#vbiqueryprops)
 - [VBIQueryResult](types.md#vbiqueryresult)
 - [VBISort](types.md#vbisort)
@@ -96,13 +100,16 @@ import type {
   ThemeBuilder,
   LocaleBuilder,
   LimitBuilder,
+  QueryModeBuilder,
   UndoManager,
 } from 'src/chart-builder/features'
 import type { NumFormat } from '@visactor/vseed'
 import type { ObserveCallback, ObserveDeepCallback } from './observe'
+import type { QueryOptions } from './query'
 import type { UndoManager } from 'src/chart-builder/features'
 import type { UndoManagerOptions } from 'src/chart-builder/features/undo-manager/undo-manager'
 import type { VBIChartBuilder } from 'src/chart-builder/builder'
+import type { VBIChartBuilderAdapters } from './adapter'
 import type { VBIChartBuilderInterface } from './VBIInterface'
 import type { VBIChartBuilderOptions } from './adapter'
 import type { VBIChartDSL } from '../chartDSL'
@@ -110,6 +117,7 @@ import type { VBIDashboardDSL, VBIDashboardThemeDefinition } from '../dashboardD
 import type { VBIInsightBuilder } from 'src/insight-builder/builder'
 import type { VBIInsightDSL } from '../insightDSL'
 import type { VBIQueryProps, VBIQueryResult } from './query'
+import type { VBIQueryResult } from '../connector'
 import type { VBIWhereDatePredicate } from './date'
 import type {
   VBIWhereFilter,
@@ -127,14 +135,12 @@ import { zAggregate } from '../measures/aggregate'
 
 ## BuildVSeedOptions
 
-源码：[packages/vbi/src/types/builder/build-vseed.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/build-vseed.ts#L1)
+源码：[packages/vbi/src/types/builder/build-vseed.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/build-vseed.ts#L3)
 
 包导出：`BuildVSeedOptions`
 
 ```typescript
-export interface BuildVSeedOptions {
-  signal?: AbortSignal
-}
+export interface BuildVSeedOptions extends QueryOptions {}
 ```
 
 ## ObserveCallback
@@ -157,6 +163,19 @@ export type ObserveCallback = (e: YMapEvent<any>, trans: Transaction) => void
 export type ObserveDeepCallback = (events: YEvent<any>[], trans: Transaction) => void
 ```
 
+## QueryOptions
+
+源码：[packages/vbi/src/types/builder/query.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/query.ts#L2)
+
+包导出：`QueryOptions`
+
+```typescript
+/** @description 图表查询的执行选项。 */
+export interface QueryOptions {
+  signal?: AbortSignal
+}
+```
+
 ## Schema
 
 源码：[packages/vbi/src/types/connector/schema.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/connector/schema.ts#L10)
@@ -169,7 +188,7 @@ export type Schema = z.infer<typeof zSchema>
 
 ## VBIChartBuildVQueryContext
 
-源码：[packages/vbi/src/types/builder/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/adapter.ts#L7)
+源码：[packages/vbi/src/types/builder/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/adapter.ts#L9)
 
 包导出：`VBIChartBuildVQueryContext`
 
@@ -183,7 +202,7 @@ export interface VBIChartBuildVQueryContext<TQueryDSL = DefaultVBIQueryDSL, TSee
 
 ## VBIChartBuildVSeedContext
 
-源码：[packages/vbi/src/types/builder/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/adapter.ts#L13)
+源码：[packages/vbi/src/types/builder/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/adapter.ts#L23)
 
 包导出：`VBIChartBuildVSeedContext`
 
@@ -191,15 +210,14 @@ export interface VBIChartBuildVQueryContext<TQueryDSL = DefaultVBIQueryDSL, TSee
 export interface VBIChartBuildVSeedContext<
   TQueryDSL = DefaultVBIQueryDSL,
   TSeedDSL = DefaultVBISeedDSL,
-> extends VBIChartBuildVQueryContext<TQueryDSL, TSeedDSL> {
+> extends VBIChartQueryContext<TQueryDSL, TSeedDSL> {
   options: BuildVSeedOptions
-  queryDSL: TQueryDSL
 }
 ```
 
 ## VBIChartBuilderAdapters
 
-源码：[packages/vbi/src/types/builder/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/adapter.ts#L29)
+源码：[packages/vbi/src/types/builder/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/adapter.ts#L42)
 
 包导出：`VBIChartBuilderAdapters`
 
@@ -207,12 +225,13 @@ export interface VBIChartBuildVSeedContext<
 export interface VBIChartBuilderAdapters<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
   buildVQuery: VBIChartQueryBuilder<TQueryDSL, TSeedDSL>
   buildVSeed: VBIChartSeedBuilder<TQueryDSL, TSeedDSL>
+  query?: VBIChartQueryExecutor<TQueryDSL, TSeedDSL>
 }
 ```
 
 ## VBIChartBuilderInterface
 
-源码：[packages/vbi/src/types/builder/VBIInterface.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/VBIInterface.ts#L19)
+源码：[packages/vbi/src/types/builder/VBIInterface.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/VBIInterface.ts#L23)
 
 包导出：`VBIChartBuilderInterface`
 
@@ -220,6 +239,7 @@ export interface VBIChartBuilderAdapters<TQueryDSL = DefaultVBIQueryDSL, TSeedDS
 export interface VBIChartBuilderInterface<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
   doc: Doc
   dsl: Map<any>
+  adapters: Required<VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>>
   undoManager: UndoManager
   chartType: ChartTypeBuilder
   instance: ChartInstanceBuilder
@@ -230,11 +250,13 @@ export interface VBIChartBuilderInterface<TQueryDSL = DefaultVBIQueryDSL, TSeedD
   theme: ThemeBuilder
   locale: LocaleBuilder
   limit: LimitBuilder
+  queryMode: QueryModeBuilder
   applyUpdate: (update: Uint8Array, origin?: any) => void
   encodeStateAsUpdate: (targetStateVector?: Uint8Array) => Uint8Array
   getUUID: () => string
   buildVSeed: (options?: BuildVSeedOptions) => Promise<TSeedDSL>
   buildVQuery: () => TQueryDSL
+  query: (options?: QueryOptions) => Promise<VBIQueryResult>
   build: () => VBIChartDSL
   isEmpty: () => boolean
   observe: (callback: ObserveCallback) => void
@@ -246,7 +268,7 @@ export interface VBIChartBuilderInterface<TQueryDSL = DefaultVBIQueryDSL, TSeedD
 
 ## VBIChartBuilderOptions
 
-源码：[packages/vbi/src/types/builder/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/adapter.ts#L34)
+源码：[packages/vbi/src/types/builder/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/adapter.ts#L48)
 
 包导出：`VBIChartBuilderOptions`
 
@@ -258,7 +280,7 @@ export interface VBIChartBuilderOptions<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL
 
 ## VBIChartDSL
 
-源码：[packages/vbi/src/types/chartDSL/vbi/vbi.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/chartDSL/vbi/vbi.ts#L32)
+源码：[packages/vbi/src/types/chartDSL/vbi/vbi.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/chartDSL/vbi/vbi.ts#L34)
 
 包导出：`VBIChartDSL`
 
@@ -268,7 +290,7 @@ export type VBIChartDSL = z.output<typeof zVBIChartDSL>
 
 ## VBIChartDSLInput
 
-源码：[packages/vbi/src/types/chartDSL/vbi/vbi.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/chartDSL/vbi/vbi.ts#L31)
+源码：[packages/vbi/src/types/chartDSL/vbi/vbi.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/chartDSL/vbi/vbi.ts#L33)
 
 包导出：`VBIChartDSLInput`
 
@@ -311,7 +333,7 @@ export type VBIChartInstanceOn = BaseTableAPI['on'] & IVChart['on']
 
 ## VBIChartQueryBuilder
 
-源码：[packages/vbi/src/types/builder/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/adapter.ts#L21)
+源码：[packages/vbi/src/types/builder/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/adapter.ts#L30)
 
 包导出：`VBIChartQueryBuilder`
 
@@ -321,9 +343,37 @@ export type VBIChartQueryBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = Defa
 ) => TQueryDSL
 ```
 
+## VBIChartQueryContext
+
+源码：[packages/vbi/src/types/builder/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/adapter.ts#L15)
+
+包导出：`VBIChartQueryContext`
+
+```typescript
+export interface VBIChartQueryContext<
+  TQueryDSL = DefaultVBIQueryDSL,
+  TSeedDSL = DefaultVBISeedDSL,
+> extends VBIChartBuildVQueryContext<TQueryDSL, TSeedDSL> {
+  options: QueryOptions
+  queryDSL: TQueryDSL
+}
+```
+
+## VBIChartQueryExecutor
+
+源码：[packages/vbi/src/types/builder/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/adapter.ts#L38)
+
+包导出：`VBIChartQueryExecutor`
+
+```typescript
+export type VBIChartQueryExecutor<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> = (
+  context: VBIChartQueryContext<TQueryDSL, TSeedDSL>,
+) => Promise<VBIQueryResult> | VBIQueryResult
+```
+
 ## VBIChartSeedBuilder
 
-源码：[packages/vbi/src/types/builder/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/adapter.ts#L25)
+源码：[packages/vbi/src/types/builder/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/builder/adapter.ts#L34)
 
 包导出：`VBIChartSeedBuilder`
 
@@ -706,6 +756,17 @@ export type VBIMeasureGroup = {
 
 ```typescript
 export type VBIMeasureTree = z.infer<typeof zVBIMeasureTree>
+```
+
+## VBIQueryMode
+
+源码：[packages/vbi/src/types/chartDSL/queryMode.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/types/chartDSL/queryMode.ts#L6)
+
+包导出：`VBIQueryMode`
+
+```typescript
+/** @description 图表查询模式。aggregate 按维度聚合，detail 查询普通表的源记录。 */
+export type VBIQueryMode = z.infer<typeof zVBIQueryMode>
 ```
 
 ## VBIQueryProps

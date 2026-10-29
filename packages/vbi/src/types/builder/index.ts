@@ -3,10 +3,13 @@ export type {
   VBIChartBuilderOptions,
   VBIChartBuildVQueryContext,
   VBIChartBuildVSeedContext,
+  VBIChartQueryContext,
   VBIChartQueryBuilder,
   VBIChartSeedBuilder,
+  VBIChartQueryExecutor,
 } from './adapter'
 export type { BuildVSeedOptions } from './build-vseed'
+export type { QueryOptions } from './query'
 export type { VBIChartInstance, VBIChartInstanceOn, VBIChartInstanceOff } from './instance'
 export type {
   VBIDashboardBuilderInterface,

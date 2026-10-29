@@ -1,6 +1,6 @@
 # @visactor/vbi API
 
-适用版本：`0.7.2`。
+适用版本：`0.7.3`。
 包含 TypeScript 公开导出、接口声明与使用说明；实现代码、private / protected 成员不属于此 API。
 
 ## 分类
@@ -11,7 +11,7 @@
 - [types](types.md)
 - [vbi](vbi.md)
 
-## 公开导出（108）
+## 公开导出（113）
 
 | 导出                                | 入口条件 | 声明                                                                                        |
 | ----------------------------------- | -------- | ------------------------------------------------------------------------------------------- |
@@ -30,6 +30,8 @@
 | `MeasuresBuilder`                   | default  | [MeasuresBuilder](chart-builder.md#measuresbuilder)                                         |
 | `ObserveCallback`                   | default  | [ObserveCallback](types.md#observecallback)                                                 |
 | `ObserveDeepCallback`               | default  | [ObserveDeepCallback](types.md#observedeepcallback)                                         |
+| `QueryModeBuilder`                  | default  | [QueryModeBuilder](chart-builder.md#querymodebuilder)                                       |
+| `QueryOptions`                      | default  | [QueryOptions](types.md#queryoptions)                                                       |
 | `ThemeBuilder`                      | default  | [ThemeBuilder](chart-builder.md#themebuilder)                                               |
 | `UndoManager`                       | default  | [UndoManager](chart-builder.md#undomanager)                                                 |
 | `UndoManagerOptions`                | default  | [UndoManagerOptions](chart-builder.md#undomanageroptions)                                   |
@@ -47,6 +49,8 @@
 | `VBIChartInstanceOn`                | default  | [VBIChartInstanceOn](types.md#vbichartinstanceon)                                           |
 | `VBIChartNamespace`                 | default  | [VBIChartNamespace](vbi.md#vbichartnamespace)                                               |
 | `VBIChartQueryBuilder`              | default  | [VBIChartQueryBuilder](types.md#vbichartquerybuilder)                                       |
+| `VBIChartQueryContext`              | default  | [VBIChartQueryContext](types.md#vbichartquerycontext)                                       |
+| `VBIChartQueryExecutor`             | default  | [VBIChartQueryExecutor](types.md#vbichartqueryexecutor)                                     |
 | `VBIChartResourceNamespace`         | default  | [VBIChartResourceNamespace](vbi.md#vbichartresourcenamespace)                               |
 | `VBIChartSeedBuilder`               | default  | [VBIChartSeedBuilder](types.md#vbichartseedbuilder)                                         |
 | `VBIConnector`                      | default  | [VBIConnector](types.md#vbiconnector)                                                       |
@@ -89,6 +93,7 @@
 | `VBIMeasureFormat`                  | default  | [VBIMeasureFormat](types.md#vbimeasureformat)                                               |
 | `VBIMeasureGroup`                   | default  | [VBIMeasureGroup](types.md#vbimeasuregroup)                                                 |
 | `VBIMeasureTree`                    | default  | [VBIMeasureTree](types.md#vbimeasuretree)                                                   |
+| `VBIQueryMode`                      | default  | [VBIQueryMode](types.md#vbiquerymode)                                                       |
 | `VBIQueryProps`                     | default  | [VBIQueryProps](types.md#vbiqueryprops)                                                     |
 | `VBIQueryResult`                    | default  | [VBIQueryResult](types.md#vbiqueryresult)                                                   |
 | `VBIResourceNamespace`              | default  | [VBIResourceNamespace](vbi.md#vbiresourcenamespace)                                         |

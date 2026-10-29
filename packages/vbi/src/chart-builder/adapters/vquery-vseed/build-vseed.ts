@@ -1,18 +1,12 @@
 import type { Dimension, Measure } from '@visactor/vseed'
 import { DimensionsBuilder, MeasuresBuilder } from 'src/chart-builder/features'
 import type { VBIChartSeedBuilder } from 'src/types'
-import { getConnector } from 'src/chart-builder/connector'
+import { query } from './query'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from './types'
 
-export const buildVSeedDSL: VBIChartSeedBuilder<DefaultVBIQueryDSL, DefaultVBISeedDSL> = async ({
-  vbiDSL,
-  queryDSL,
-  options,
-}) => {
-  const connectorId = vbiDSL.connectorId
-  const connector = await getConnector(connectorId)
-  const schema = await connector.discoverSchema()
-  const queryResult = await connector.query({ queryDSL, schema, connectorId, signal: options.signal })
+export const buildVSeedDSL: VBIChartSeedBuilder<DefaultVBIQueryDSL, DefaultVBISeedDSL> = async (context) => {
+  const { vbiDSL, builder } = context
+  const queryResult = await (builder.adapters?.query ?? query)(context)
   const measures = vbiDSL.measures
     .filter((measure) => MeasuresBuilder.isMeasureNode(measure))
     .map<Measure>((measure) => {

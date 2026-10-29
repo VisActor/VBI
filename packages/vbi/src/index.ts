@@ -4,6 +4,7 @@ export {
   DimensionsBuilder,
   HavingFilterBuilder,
   LimitBuilder,
+  QueryModeBuilder,
   LocaleBuilder,
   MeasuresBuilder,
   ThemeBuilder,

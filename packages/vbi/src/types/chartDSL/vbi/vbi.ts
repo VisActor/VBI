@@ -5,6 +5,7 @@ import { zVBIDSLLocale } from '../locale/locale'
 import { zVBIMeasureTree } from '../measures/measures'
 import { zVBIDSLTheme } from '../theme/theme'
 import { zVBIWhereGroup } from '../whereFilter/filters'
+import { zVBIQueryMode } from '../queryMode'
 
 export const zVBIChartDSL = z.object({
   uuid: z.string().optional().default(''),
@@ -25,6 +26,7 @@ export const zVBIChartDSL = z.object({
   theme: zVBIDSLTheme,
   locale: zVBIDSLLocale,
   limit: z.number().int().min(1).optional(),
+  queryMode: zVBIQueryMode.optional(),
   version: z.number().int().min(0),
 })
 

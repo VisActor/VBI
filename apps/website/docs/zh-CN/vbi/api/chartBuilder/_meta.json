@@ -54,6 +54,11 @@
   },
   {
     "type": "file",
+    "name": "queryMode",
+    "label": "chartBuilder.queryMode"
+  },
+  {
+    "type": "file",
     "name": "undoManager",
     "label": "chartBuilder.undoManager"
   }

@@ -90,6 +90,32 @@ const queryDSL = chart.buildVQuery() // 生成的查询配置
 const vseed = await chart.buildVSeed() // 查询数据并生成 VSeed DSL
 ```
 
+只需要数据时，可以直接执行同一图表的查询：
+
+```ts
+const controller = new AbortController()
+const { dataset } = await chart.query({ signal: controller.signal })
+```
+
+`query()` 根据图表配置生成查询，通过 `adapters.query(context)` 执行并原样返回结果。默认 query adapter 调用 Connector，字段键保留维度和度量的 ID，并将 `signal` 交给 Connector 实现取消。`buildVQuery()` 只生成查询 DSL；默认 `buildVSeed()` 通过同一个 query adapter 查询一次后组装 VSeed 配置。分别调用 `query()` 和默认 `buildVSeed()` 会独立查询，不缓存结果。
+
+可通过 `adapters.query` 自定义查询执行；context 包含 `dsl`、`vbiDSL`、`builder`、已编译的 `queryDSL` 与 `options`，返回 `VBIQueryResult`。只覆盖 query 时，直接查询和默认 VSeed 构建都会使用它。未提供 query 的现有 adapter 自动使用默认执行器；自定义 seed adapter 保留原有上下文与调用顺序，可继续自行取数或不查询，也可调用 `context.builder.adapters.query(context)` 复用查询执行。可运行示例见[直接查询图表数据](./examples/chart/chartWorkflow#query-without-vseed)。
+
+### 查询聚合或明细
+
+图表 DSL 的 `queryMode` 缺省为 `aggregate`，按维度聚合。普通表可以保存为 `detail` 模式，直接取得源记录：
+
+```ts
+chart.chartType.changeChartType('table')
+chart.queryMode.setMode('detail')
+const queryDSL = chart.buildVQuery()
+const { dataset } = await chart.query()
+```
+
+明细查询保留维度/度量 ID，投影源字段，忽略字段聚合配置，保留重复行。`whereFilter`、源字段排序和记录数 `limit` 继续生效；非空 HAVING 与其他图表类型会报错。`buildVSeed()` 读取同一个查询模式，VQuery 继续执行完整的查询 DSL，无需新增明细查询接口。
+
+模式随 `chart.build()` 保存，并参与撤销与恢复。自定义 `query` 执行器可使用默认编译结果；自定义 `buildVQuery` 编译器通过 `context.vbiDSL.queryMode` 获得模式，需负责对应的查询语义，也可包装默认编译器复用。可运行示例见[查询模式](./examples/chart/queryMode)。
+
 ### 渲染
 
 在页面中准备一个 `<div id="chart"></div>` 容器，再将 VSeed DSL 转换为 VChart Spec。

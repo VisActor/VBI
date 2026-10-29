@@ -1,0 +1,17 @@
+{
+  "name": "aggregate-sales",
+  "description": "{zh-CN}聚合模式按区域汇总销售额；显式 aggregate 与未配置 queryMode 的现有查询行为一致。{/zh-CN}{en-US}Aggregate sales by area. Explicit aggregate mode preserves the behavior of charts without queryMode.{/en-US}",
+  "tags": ["chart", "queryMode", "aggregate"],
+  "priority": 1,
+  "schema": [
+    { "name": "area", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [{ "field": "area", "alias": "区域" }],
+    "measures": [{ "field": "sales", "alias": "销售额合计", "aggregate": { "func": "sum" } }],
+    "limit": 10
+  },
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  const original = builder.buildVQuery()\n  builder.queryMode.setMode('aggregate')\n  if (JSON.stringify(builder.buildVQuery()) !== JSON.stringify(original)) {\n    throw new Error('Explicit aggregate mode must preserve the existing query')\n  }\n}"
+}

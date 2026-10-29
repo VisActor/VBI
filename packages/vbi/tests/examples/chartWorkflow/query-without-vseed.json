@@ -1,0 +1,12 @@
+{
+  "name": "query-without-vseed",
+  "description": "{zh-CN}通过图表维度、度量和筛选直接 query()，返回以字段 ID 命名的查询结果。示例随后独立调用 buildVSeed() 渲染表格，两次操作各执行一次查询。{/zh-CN}{en-US}Execute query() from chart dimensions, measures and filters. Result keys preserve field IDs. The example then calls buildVSeed() independently to render a table; each operation executes one query.{/en-US}",
+  "tags": ["chart", "query", "headless"],
+  "priority": 1,
+  "schema": [
+    { "name": "area", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ],
+  "dsl": { "chartType": "table", "dimensions": [], "measures": [], "limit": 5 },
+  "code": "const applyBuilder = async (builder: VBIChartBuilder) => {\n  builder.dimensions.add('area', node => node.setAlias('区域'))\n  builder.measures.add('sales', node => node.setAlias('销售额合计').setAggregate({ func: 'sum' }))\n  builder.measures.add('sales', node => node.setAlias('平均销售额').setAggregate({ func: 'avg' }))\n  builder.whereFilter.add('sales', node => node.setOperator('>').setValue(0))\n  const result = await builder.query()\n  const ids = [...builder.dimensions.findAll(), ...builder.measures.findAll()].map(node => node.getId())\n  if (!result.dataset.length || result.dataset.some(row => ids.some(id => !(id in row)))) {\n    throw new Error('Query results must preserve every dimension and measure ID')\n  }\n}"
+}
