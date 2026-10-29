@@ -12,6 +12,8 @@
 
 适配器服务平面 `ListTable`；`PivotTable` / `PivotChart` 保留 VSeed 输出的布局与交互，按对应表类型另行接入。
 
+适配器使用 VBI / VQuery / VSeed 0.7.3。列宽与空值文本由 VSeed 的 `width`、`widthMode` 和 `emptyCellText` 配置；概览表的 `formats` 数组按列传入 VSeed `NumFormat`，汇总范围由 `summary.fields` 指定。数据替换通过已连接数据集的 `replaceSource()` 完成，视图继续管理查询顺序与连接生命周期。
+
 ## Token 契约
 
 | 用途           | Token                                                                                                                                           |

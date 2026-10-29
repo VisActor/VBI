@@ -141,38 +141,30 @@ window.DashboardTable = (() => {
       tokens.dispose()
     }
   }
-  function build(Builder, { dataset, dimensions, measures, totals = 'avg' }, host) {
+  function build(Builder, seed, host) {
     const tokens = readTokens(host)
     try {
       const spec = Builder.from({
         chartType: 'table',
-        dataset,
-        dimensions,
-        measures,
-        totals,
+        ...seed,
+        totals: seed.totals || 'avg',
+        widthMode: 'standard',
+        emptyCellText: '—',
         locale: 'zh-CN',
         theme: 'light',
         bodyCellStyle: {
-          selector: { field: measures.map(({ id }) => id) },
+          selector: { field: seed.measures.map(({ id }) => id) },
           enableProgressBar: true,
           barPositiveColor: tokens.color('--table-bar-positive'),
           barNegativeColor: tokens.color('--table-bar-negative'),
+          ...seed.bodyCellStyle,
         },
       }).build()
       spec.columns = spec.columns.map((column) => {
-        const textAlign = measures.some(({ id }) => id === column.field) ? 'right' : 'left'
+        const textAlign = seed.measures.some(({ id }) => id === column.field) ? 'right' : 'left'
         const style = column.style
-        const aggregation = column.aggregation
         return {
           ...column,
-          ...(aggregation?.aggregationType !== 'NONE' && aggregation?.formatFun
-            ? {
-                aggregation: {
-                  ...aggregation,
-                  formatFun: (value, ...args) => (Number.isFinite(value) ? aggregation.formatFun(value, ...args) : '—'),
-                },
-              }
-            : {}),
           headerStyle: { ...column.headerStyle, textAlign },
           style: (datum) => ({ ...(typeof style === 'function' ? style(datum) : style), textAlign }),
         }
@@ -191,44 +183,32 @@ window.DashboardTable = (() => {
     summary = { type: 'avg', fields: columns.slice(1).map((_, i) => i + 1) },
   ) {
     const records = rows.map((values) => Object.fromEntries(values.map((value, index) => [`c${index}`, value ?? null])))
-    const fields = columns.map((alias, index) => ({ id: `c${index}`, alias, encoding: 'column' }))
+    const fields = columns.map((alias, index) => ({
+      id: `c${index}`,
+      alias,
+      encoding: 'column',
+      width: index === 0 ? 170 : Math.max(130, Math.min(210, alias.length * 12 + 24)),
+      format: formats[index] && { thousandSeparator: true, roundingMode: 'halfExpand', ...formats[index] },
+    }))
     const base = build(
       Builder,
       {
         dataset: records,
-        dimensions: fields.filter((_, index) => !summary.fields.includes(index)),
-        measures: fields.filter((_, index) => summary.fields.includes(index)),
+        dimensions: fields.slice(0, 1),
+        measures: fields.slice(1),
         totals: summary.type,
+        bodyCellStyle: { selector: { field: summary.fields.map((index) => `c${index}`) } },
       },
       host,
     )
-    base.columns = columns.map((title, index) => {
-      const column = base.columns.find((column) => column.field === `c${index}`)
-      const textAlign = index === 0 ? 'left' : 'right'
-      const style = column.style
-      return {
-        ...column,
-        headerIcon: filterIcon(),
-        fieldFormat: (record) =>
-          record[`c${index}`] == null
-            ? '—'
-            : formats[index]
-              ? formats[index](record[`c${index}`])
-              : record[`c${index}`],
-        ...(formats[index] && summary.fields.includes(index)
-          ? {
-              aggregation: {
-                ...column.aggregation,
-                formatFun: (value) => (Number.isFinite(value) ? formats[index](value) : '—'),
-              },
-            }
-          : {}),
-        width: index === 0 ? 170 : Math.max(130, Math.min(210, title.length * 12 + 24)),
-        headerStyle: { ...column.headerStyle, textAlign },
-        style: (datum) => ({ ...(typeof style === 'function' ? style(datum) : style), textAlign }),
-      }
-    })
-    base.widthMode = 'standard'
+    base.columns = base.columns.map((column, index) => ({
+      ...column,
+      headerIcon: filterIcon(),
+      ...(index && !formats[index] ? { fieldFormat: (record) => record[column.field] ?? '—' } : {}),
+      ...(index && !summary.fields.includes(index)
+        ? { aggregation: { aggregationType: 'NONE', formatFun: () => '' } }
+        : {}),
+    }))
     const resolved = options(base, host)
     const summaryRows = rows.length ? resolved.bottomFrozenRowCount : 0
     host.style.height = `${Math.min(
@@ -868,7 +848,17 @@ window.DashboardTable = (() => {
         const seed = Builder.from({
           chartType: 'table',
           dataset: records(currentRows),
-          dimensions: fields.map((field, i) => ({ id: field, alias: columns[i], encoding: 'column' })),
+          dimensions: fields.map((id, i) => ({
+            id,
+            alias: columns[i],
+            encoding: 'column',
+            width:
+              types[i] === 'number'
+                ? Math.max(164, Math.min(220, columns[i].length * 8 + 34))
+                : Math.max(230, Math.min(280, columns[i].length * 8 + 34)),
+          })),
+          widthMode: 'standard',
+          emptyCellText: '—',
           backgroundColor: 'transparent',
           animation: { enable: !reducedMotion() },
         }).build()
@@ -903,15 +893,9 @@ window.DashboardTable = (() => {
           if (chartSpec) chartSpec.padding = { top: 4, right: 4, bottom: 4, left: 4 }
           return {
             ...seed.columns.find((column) => column.field === field),
-            field,
-            title: columns[i],
-            width: numeric
-              ? Math.max(164, Math.min(220, columns[i].length * 8 + 34))
-              : Math.max(230, Math.min(280, columns[i].length * 8 + 34)),
             headerIcon: filterIcon(),
             headerStyle: { textAlign: numeric ? 'right' : 'left' },
             style: (args) => ({ padding: args.row === 1 ? 6 : [10, 12], textAlign: numeric ? 'right' : 'left' }),
-            fieldFormat: (record) => (record[field] == null ? '—' : record[field]),
             aggregation: {
               aggregationType: 'CUSTOM',
               aggregationFun: () => (numeric ? (info.total ? chartSpec.data.values : '暂无记录') : info.text),
@@ -960,7 +944,6 @@ window.DashboardTable = (() => {
         })
         const resolved = options(seed, host)
         resolved.autoFillWidth = false
-        resolved.widthMode = 'standard'
         resolved.frozenRowCount = 2
         resolved.customComputeRowHeight = (args) => (args.row === 1 ? 86 : undefined)
         resolved.keyboardOptions = {

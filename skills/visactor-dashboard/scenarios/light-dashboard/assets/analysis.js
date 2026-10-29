@@ -344,6 +344,12 @@ window.bindMetricAnalysis = function bindMetricAnalysis({
         : totalRow[relation.y.field] / (yAxis.scale || 1)
     const key = JSON.stringify([group[0], chartRows, xMean, yMean, reducedMotion.matches, accent])
     if (key !== analysisKey) {
+      const axis = (titleText) => ({
+        visible: true,
+        zero: true,
+        label: { labelColor: labelColor || '#64717e', labelFontSize: 11 },
+        title: { visible: !!titleText, titleText, titleColor: labelColor || '#64717e', titleFontSize: 11 },
+      })
       const meanLine = {
         textPosition: 'insideEnd',
         textColor: labelColor || '#64717e',
@@ -392,8 +398,8 @@ window.bindMetricAnalysis = function bindMetricAnalysis({
           labelOverlap: true,
         },
         tooltip: { enable: true },
-        xAxis: { visible: true, zero: true },
-        yAxis: { visible: true, zero: true },
+        xAxis: axis(relation?.x.label),
+        yAxis: axis(relation?.y.label),
         size: matrix ? 10 : relation.size || 6,
         annotationHorizontalLine: Number.isFinite(yMean)
           ? {
@@ -420,20 +426,7 @@ window.bindMetricAnalysis = function bindMetricAnalysis({
         analysisSpec.tooltip.mark.content = analysisSpec.tooltip.mark.content.filter(
           (item) => item.key !== analysis.label,
         )
-      analysisSpec.animation = !reducedMotion.matches
       analysisSpec.padding = { top: 16, right: 22, bottom: 10, left: 6 }
-      for (const axis of analysisSpec.axes || []) {
-        axis.label = {
-          ...axis.label,
-          style: { ...axis.label?.style, fill: labelColor || '#64717e', fontSize: 11 },
-        }
-        if (!matrix)
-          axis.title = {
-            visible: true,
-            text: axis.orient === 'bottom' ? relation.x.label : relation.y.label,
-            style: { fill: labelColor || '#64717e', fontSize: 11 },
-          }
-      }
       analysisKey = key
     }
     const mark = matrix ? 'cell' : 'point'
@@ -481,7 +474,6 @@ window.bindMetricAnalysis = function bindMetricAnalysis({
     }
     const spec = { ...analysisSpec }
     spec.padding = { top: 12, right: 20, bottom: 10, left: 4 }
-    spec.stackCornerRadius = 0
     const mark = group[2] ? 'point' : 'bar'
     const opacity = (datum) => (selected === undefined || String(datum.key) === selected ? 1 : 0.24)
     spec[mark] = {
@@ -498,11 +490,18 @@ window.bindMetricAnalysis = function bindMetricAnalysis({
     return spec
   }
   function buildTableOptions(detailDimensions, detailMeasures, records) {
-    const dimensions = detailDimensions.map(([id, alias]) => ({ id, alias, encoding: 'column' }))
-    const measures = detailMeasures.map(([id, alias]) => ({
+    const field = ([id, alias]) => ({
       id,
       alias,
       encoding: 'column',
+      width: Math.max(
+        { country: 156, year: 72, id: 96, order_id: 110, order_date: 128, date: 128 }[id] || 96,
+        Math.min(220, alias.length * 11 + 44),
+      ),
+    })
+    const dimensions = detailDimensions.map(field)
+    const measures = detailMeasures.map(([id, alias]) => ({
+      ...field([id, alias]),
       format: { type: 'number', fractionDigits: 3 },
     }))
     const options = DashboardTable.build(
@@ -515,14 +514,6 @@ window.bindMetricAnalysis = function bindMetricAnalysis({
       },
       nodes.table,
     )
-    options.widthMode = 'standard'
-    options.columns = options.columns.map((column) => ({
-      ...column,
-      width: Math.max(
-        { country: 156, year: 72, id: 96, order_id: 110, order_date: 128, date: 128 }[column.field] || 96,
-        Math.min(220, String(column.title || '').length * 11 + 44),
-      ),
-    }))
     options.tooltip = { ...options.tooltip, parentElement: dialog, confine: true }
     options.defaultColWidth = 130
     return DashboardTable.options(options, nodes.table)
