@@ -24732,6 +24732,7 @@
         }
       }
     </style>
+    <!-- prettier-ignore -->
     <script id="dashboard-data-runtime">
       // VBI owns query semantics; each VQuery dataset has one ordered connection lifetime.
       window.DashboardData = {
@@ -24787,6 +24788,7 @@
         },
       }
     </script>
+    <!-- prettier-ignore -->
     <script id="dashboard-table-runtime">
       /* CSS is the palette authority; this adapter resolves its tokens for Canvas. */
       window.DashboardTable = (() => {
@@ -24972,9 +24974,7 @@
           formats = [],
           summary = { type: 'avg', fields: columns.slice(1).map((_, i) => i + 1) },
         ) {
-          const records = rows.map((values) =>
-            Object.fromEntries(values.map((value, index) => [`c${index}`, value ?? null])),
-          )
+          const records = rows.map((values) => Object.fromEntries(values.map((value, index) => [`c${index}`, value ?? null])))
           const fields = columns.map((alias, index) => ({
             id: `c${index}`,
             alias,
@@ -25015,8 +25015,7 @@
             next.columns.map((column) => ({
               ...column,
               // Column-query icons belong to the view, not regenerated VSeed options.
-              headerIcon:
-                table.options.columns.find(({ field }) => field === column.field)?.headerIcon || column.headerIcon,
+              headerIcon: table.options.columns.find(({ field }) => field === column.field)?.headerIcon || column.headerIcon,
             })),
             { clearColWidthCache: false, clearRowHeightCache: false },
           )
@@ -25113,9 +25112,7 @@
             <p class="dashboard-table-feedback" data-dt="feedback" role="status"></p>
             <footer class="dashboard-table-actions"><button type="button" class="ui-button" data-dt="reset">清除全部筛选</button><button type="button" class="ui-button" data-dt="apply">筛选</button></footer>`
           ;(host.closest('dialog') || document.body).append(panel)
-          const nodes = Object.fromEntries(
-            [...panel.querySelectorAll('[data-dt]')].map((node) => [node.dataset.dt, node]),
-          )
+          const nodes = Object.fromEntries([...panel.querySelectorAll('[data-dt]')].map((node) => [node.dataset.dt, node]))
           const picker = panel.querySelector('details')
           const operatorList = picker.querySelector('[data-control-options]')
           const unmount = DashboardFilters.mount(panel)
@@ -25136,10 +25133,7 @@
           }
           function headers() {
             const dimensions = builder.build().dimensions
-            const state = JSON.stringify([
-              builder.whereFilter.toJSON(),
-              dimensions.map(({ field, sort }) => [field, sort]),
-            ])
+            const state = JSON.stringify([builder.whereFilter.toJSON(), dimensions.map(({ field, sort }) => [field, sort])])
             if (!table || state === iconState) return
             iconState = state
             table.updateColumns(
@@ -25292,10 +25286,7 @@
               button.hidden = button.dataset.sort === 'normal' && !sort
               if (button.dataset.sort === 'normal') button.removeAttribute('aria-pressed')
               else
-                button.setAttribute(
-                  'aria-pressed',
-                  String(sort?.field === field && sort.sort.order === button.dataset.sort),
-                )
+                button.setAttribute('aria-pressed', String(sort?.field === field && sort.sort.order === button.dataset.sort))
             })
             if (!panel.matches(':popover-open')) panel.showPopover()
             position()
@@ -25322,9 +25313,7 @@
               () =>
                 void submit(() => {
                   builder.doc.transact(() => {
-                    builder
-                      .build()
-                      .dimensions.forEach((dim) => builder.dimensions.update(dim.id, (node) => node.clearSort()))
+                    builder.build().dimensions.forEach((dim) => builder.dimensions.update(dim.id, (node) => node.clearSort()))
                     if (button.dataset.sort !== 'normal' && button.getAttribute('aria-pressed') !== 'true') {
                       const dim = builder.build().dimensions.find((item) => item.field === activeField)
                       builder.dimensions.update(dim.id, (node) => node.setSort({ order: button.dataset.sort }))
@@ -25338,9 +25327,7 @@
           )
           const clear = (field) => predicates(field).forEach((condition) => builder.whereFilter.remove(condition.id))
           nodes.clear.addEventListener('click', () => void submit(() => clear(activeField), nodes.clear), { signal })
-          nodes.reset.addEventListener('click', () => void submit(() => builder.whereFilter.clear(), nodes.reset), {
-            signal,
-          })
+          nodes.reset.addEventListener('click', () => void submit(() => builder.whereFilter.clear(), nodes.reset), { signal })
           nodes.apply.addEventListener(
             'click',
             () => {
@@ -25367,8 +25354,7 @@
                 () =>
                   builder.doc.transact(() => {
                     clear(activeField)
-                    const add = (group, op, value) =>
-                      group.add(activeField, (node) => node.setOperator(op).setValue(value))
+                    const add = (group, op, value) => group.add(activeField, (node) => node.setOperator(op).setValue(value))
                     if (inputs === 0) add(builder.whereFilter, option.op)
                     else if (inputs === 2)
                       add(builder.whereFilter, option.op, {
@@ -25493,10 +25479,7 @@
             const value = rows.find((row) => row[i] != null)?.[i]
             return typeof value === 'number' ? 'number' : 'string'
           })
-          const schema = [
-            ...fields.map((name, i) => ({ name, type: types[i] })),
-            { name: '__row_order', type: 'number' },
-          ]
+          const schema = [...fields.map((name, i) => ({ name, type: types[i] })), { name: '__row_order', type: 'number' }]
           const records = (values) =>
             values.map((row, index) =>
               Object.fromEntries([...fields.map((field, i) => [field, row[i] ?? null]), ['__row_order', index]]),
@@ -25684,12 +25667,7 @@
                           { id: 'kind', alias: '数据状态', encoding: 'color' },
                         ],
                         measures: [
-                          {
-                            id: 'count',
-                            alias: '记录数',
-                            encoding: 'yAxis',
-                            format: { type: 'number', fractionDigits: 0 },
-                          },
+                          { id: 'count', alias: '记录数', encoding: 'yAxis', format: { type: 'number', fractionDigits: 0 } },
                         ],
                         color: {
                           colorScheme: info.bins.some((bin) => bin.kind === '有效值') ? [accent, missing] : [missing],
@@ -25763,8 +25741,7 @@
               resolved.keyboardOptions = {
                 ...resolved.keyboardOptions,
                 getCopyCellValue: {
-                  value: (col, row) =>
-                    row === 1 ? profiles[col].text.replace(/\n/g, '；') : table.getCellValue(col, row),
+                  value: (col, row) => (row === 1 ? profiles[col].text.replace(/\n/g, '；') : table.getCellValue(col, row)),
                 },
               }
               resolved.tooltip = { isShowOverflowTextTooltip: true, parentElement: document.body }
