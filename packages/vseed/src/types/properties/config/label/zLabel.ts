@@ -13,6 +13,8 @@ export const zLabel = z.object({
   labelFontSize: z.number().nullish(),
   labelFontWeight: z.number().or(z.string()).nullish(),
   labelBackgroundColor: z.string().nullish(),
+  labelStrokeWidth: z.number().nonnegative().nullish(),
+  labelAnimation: z.boolean().nullish(),
   labelColor: z.string().nullish(),
   labelColorSmartInvert: z.boolean().nullish(),
   labelPosition: z.string().nullish(),

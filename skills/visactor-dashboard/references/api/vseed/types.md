@@ -2969,7 +2969,7 @@ export declare const DimensionEncodingEnum: {
 
 ## DimensionGroup
 
-源码：[packages/vseed/src/types/properties/dimensions/tableDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/tableDimension.ts#L15)
+源码：[packages/vseed/src/types/properties/dimensions/tableDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/tableDimension.ts#L17)
 
 包导出：`DimensionGroup`
 
@@ -3047,7 +3047,7 @@ export type DimensionSelector = {
 
 ## DimensionTree
 
-源码：[packages/vseed/src/types/properties/dimensions/tableDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/tableDimension.ts#L21)
+源码：[packages/vseed/src/types/properties/dimensions/tableDimension.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/dimensions/tableDimension.ts#L23)
 
 包导出：`DimensionTree`
 
@@ -3754,6 +3754,10 @@ export type Label = {
    * @description 标签描边颜色
    */
   labelStroke?: string
+  /** @description 标签描边宽度，单位 px；显式设置 0 可关闭描边，优先于智能反色的默认宽度。 */
+  labelStrokeWidth?: number
+  /** @description 是否启用标签动画；未配置时沿用图表组件默认行为。 */
+  labelAnimation?: boolean
   /**
    * @description 标签字体颜色
    */
@@ -6259,7 +6263,7 @@ export type SunburstConfig = z.infer<typeof zSunburstConfig>
 
 ## TableConfig
 
-源码：[packages/vseed/src/types/properties/config/table.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/table.ts#L49)
+源码：[packages/vseed/src/types/properties/config/table.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/types/properties/config/table.ts#L60)
 
 包导出：`TableConfig`
 
@@ -6275,6 +6279,8 @@ export type TableConfig = z.infer<typeof zTableConfig>
 
 ```typescript
 export type TableDimension = BaseDimension & {
+  /** @description 表格列宽，单位 px；auto 根据内容计算，默认 auto。 */
+  width?: number | 'auto'
   /**
    * @description 维度映射的通道
    * - row: 支持将多个维度映射到行通道
@@ -6418,6 +6424,8 @@ export interface TableDynamicFilter {
 
 ```typescript
 export type TableMeasure = BaseMeasure & {
+  /** @description 表格指标列宽，单位 px；auto 根据内容计算，默认 auto。 */
+  width?: number | 'auto'
   /**
    * @description 指标映射的通道
    * - column: 指标列

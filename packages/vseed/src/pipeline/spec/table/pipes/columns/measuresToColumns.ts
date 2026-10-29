@@ -1,16 +1,17 @@
 import type { ListTableConstructorOptions } from '@visactor/vtable'
 import { createFormatterByMeasure, isMeasureGroup } from 'src/pipeline/utils'
-import type { MeasureGroup, Measure, MeasureTree, ListTableSpecPipe, Datum } from 'src/types'
+import type { MeasureGroup, TableMeasure, MeasureTree, ListTableSpecPipe, Datum } from 'src/types'
 import { treeTreeToColumns } from './utils'
 import { isNullish } from 'remeda'
 import { isUndefined } from '@visactor/vutils'
+import { formatTableValue } from './formatTableValue'
 
 export const measureTreeToColumns: ListTableSpecPipe = (spec, context) => {
   const { advancedVSeed } = context
   const measureTree = (advancedVSeed as unknown as { measureTree: MeasureTree }).measureTree
   const result = { ...spec } as ListTableConstructorOptions
 
-  const eachNode = (node: Measure | MeasureGroup) => {
+  const eachNode = (node: TableMeasure | MeasureGroup) => {
     const field = node.id
     const title = node.alias ?? node.id
 
@@ -27,32 +28,32 @@ export const measureTreeToColumns: ListTableSpecPipe = (spec, context) => {
     return {
       field,
       title,
-      width: 'auto',
+      width: node.width ?? 'auto',
       style: {
         textAlign: 'right',
       },
       headerStyle: {
         textAlign: 'right',
       },
-      fieldFormat: fieldFormat(node),
+      fieldFormat: fieldFormat(node, advancedVSeed.config?.table?.emptyCellText),
     }
   }
-  const columns = treeTreeToColumns<Measure, MeasureGroup>(measureTree, eachNode)
+  const columns = treeTreeToColumns<TableMeasure, MeasureGroup>(measureTree, eachNode)
   return {
     ...result,
     columns: [...(result.columns || []), ...columns] as ListTableConstructorOptions['columns'],
   }
 }
 
-const fieldFormat = (node: Measure) => {
+const fieldFormat = (node: TableMeasure, emptyCellText?: string | null) => {
   const formatter = createFormatterByMeasure(node)
 
   return (datum: Datum) => {
     const { id } = node
     const value = datum[id] as number | string | undefined
     if (isNullish(value) || isUndefined(value)) {
-      return value
+      return emptyCellText ?? value
     }
-    return formatter(value)
+    return formatTableValue(value, formatter, emptyCellText)
   }
 }

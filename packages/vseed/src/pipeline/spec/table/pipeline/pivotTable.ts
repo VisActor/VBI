@@ -1,6 +1,7 @@
 import type { SpecPipeline } from 'src/types'
 import {
   initPivotTable,
+  tableLayout,
   pivotColumns,
   pivotRows,
   pivotIndicators,
@@ -17,6 +18,7 @@ import { dataConfig } from '../pipes/indicators/pivotDataConfig'
 
 export const pivotTableSpecPipeline: SpecPipeline = [
   initPivotTable,
+  tableLayout,
   pivotColumns,
   pivotRows,
   pivotIndicators,

@@ -3,19 +3,21 @@ import { zLocale } from '../../i18n'
 import {
   zBackgroundColor,
   zDataset,
-  zDimensions,
+  zTableDimension,
   zTheme,
-  zMeasures,
+  zTableMeasure,
   zBodyCellStyle,
   zPage,
   zPivotTableTotals,
+  zTableLayout,
 } from '../../properties'
 
 export const zPivotTable = z.object({
+  ...zTableLayout.shape,
   chartType: z.literal('pivotTable'),
   dataset: zDataset.nullish(),
-  dimensions: zDimensions.nullish(),
-  measures: zMeasures.nullish(),
+  dimensions: z.array(zTableDimension).nullish(),
+  measures: z.array(zTableMeasure).nullish(),
   page: zPage.nullish(),
 
   backgroundColor: zBackgroundColor.nullish(),

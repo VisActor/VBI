@@ -4,17 +4,19 @@ import {
   zBackgroundColor,
   zBodyCellStyle,
   zDataset,
-  zDimensions,
-  zMeasureTree,
+  zTableDimensionTree,
+  zTableMeasureTree,
   zTheme,
   zTotalType,
+  zTableLayout,
 } from '../../properties'
 import { zPage } from '../../properties/page'
 export const zTable = z.object({
+  ...zTableLayout.shape,
   chartType: z.literal('table'),
   dataset: zDataset.nullish(),
-  dimensions: zDimensions.nullish(),
-  measures: zMeasureTree.nullish(),
+  dimensions: zTableDimensionTree.nullish(),
+  measures: zTableMeasureTree.nullish(),
   page: zPage.nullish(),
 
   backgroundColor: zBackgroundColor.nullish(),
@@ -34,6 +36,7 @@ export const zTable = z.object({
   bodyCellStyle: z.array(zBodyCellStyle).or(zBodyCellStyle).nullish(),
 
   totals: zTotalType.nullish(),
+  emptyCellText: z.string().nullish(),
 
   theme: zTheme.nullish(),
   locale: zLocale.nullish(),

@@ -1,13 +1,14 @@
 import type { ListTableConstructorOptions } from '@visactor/vtable'
 import { createFormatterByDimension, isDimensionGroup } from 'src/pipeline/utils'
-import type { Datum, Dimension, DimensionGroup, DimensionTree, ListTableSpecPipe } from 'src/types'
+import type { Datum, TableDimension, DimensionGroup, DimensionTree, ListTableSpecPipe } from 'src/types'
 import { treeTreeToColumns } from './utils'
+import { formatTableValue } from './formatTableValue'
 
 export const dimensionTreeToColumns: ListTableSpecPipe = (spec, context) => {
   const { advancedVSeed } = context
   const dimensionTree = (advancedVSeed as unknown as { dimensionTree: DimensionTree }).dimensionTree
   const result = { ...spec } as ListTableConstructorOptions
-  const eachNode = (node: Dimension | DimensionGroup) => {
+  const eachNode = (node: TableDimension | DimensionGroup) => {
     const field = node.id
     const title = node.alias ?? node.id
 
@@ -24,7 +25,7 @@ export const dimensionTreeToColumns: ListTableSpecPipe = (spec, context) => {
     return {
       field,
       title,
-      width: 'auto',
+      width: node.width ?? 'auto',
       style: {
         textAlign: 'left',
       },
@@ -33,11 +34,15 @@ export const dimensionTreeToColumns: ListTableSpecPipe = (spec, context) => {
       },
       fieldFormat: (datum: Datum) => {
         const formatter = createFormatterByDimension(node, advancedVSeed.locale)
-        return formatter(datum[node.id] as string | number)
+        return formatTableValue(
+          datum[node.id] as string | number,
+          formatter,
+          advancedVSeed.config?.table?.emptyCellText,
+        )
       },
     }
   }
-  const columns = treeTreeToColumns<Dimension, DimensionGroup>(dimensionTree, eachNode)
+  const columns = treeTreeToColumns<TableDimension, DimensionGroup>(dimensionTree, eachNode)
 
   return {
     ...result,

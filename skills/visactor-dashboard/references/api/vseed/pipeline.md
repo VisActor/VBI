@@ -1373,7 +1373,7 @@ export declare const pivotTableAdvancedPipeline: AdvancedPipeline
 
 ## pivotTableSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/table/pipeline/pivotTable.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/table/pipeline/pivotTable.ts#L18)
+源码：[packages/vseed/src/pipeline/spec/table/pipeline/pivotTable.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/table/pipeline/pivotTable.ts#L19)
 
 包导出：`pivotTableSpecPipeline`
 
@@ -1681,7 +1681,7 @@ export declare const tableAdvancedPipeline: AdvancedPipeline
 
 ## tableSpecPipeline
 
-源码：[packages/vseed/src/pipeline/spec/table/pipeline/table.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/table/pipeline/table.ts#L15)
+源码：[packages/vseed/src/pipeline/spec/table/pipeline/table.ts](https://github.com/VisActor/VBI/blob/main/packages/vseed/src/pipeline/spec/table/pipeline/table.ts#L16)
 
 包导出：`tableSpecPipeline`
 

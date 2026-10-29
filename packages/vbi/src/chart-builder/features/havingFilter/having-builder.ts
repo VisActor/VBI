@@ -37,6 +37,17 @@ export class HavingFilterBuilder {
     return this.havingFilter.get('conditions') as Y.Array<any>
   }
 
+  /** @description 获取根过滤组的逻辑操作符。 */
+  getOperator(): 'and' | 'or' {
+    return this.havingFilter.get('op')
+  }
+
+  /** @description 设置根过滤组的逻辑操作符，保留已有条件及其 ID。 */
+  setOperator(op: 'and' | 'or'): this {
+    this.havingFilter.set('op', op)
+    return this
+  }
+
   /**
    * @description 添加一个 Having 过滤条件
    * @param field - 字段名

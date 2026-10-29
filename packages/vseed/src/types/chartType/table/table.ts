@@ -52,6 +52,7 @@ export interface Table {
    * @description 分页配置, 用于指定分页的字段名, 必须是维度
    */
   page?: Page
+
   /**
    * @default transparent 默认为透明背景
    * @description 背景颜色可以是颜色字符串, 例如'red', 'blue', 也可以是hex, rgb或rgba'#ff0000', 'rgba(255,0,0,0.5)'
@@ -75,6 +76,10 @@ export interface Table {
    */
   bodyBackgroundColor?: string
   /**
+   * @description 表格体的默认行高, 单位为px, 配合heightMode为'standard'时使用固定行高
+   */
+  rowHeight?: number
+  /**
    * @description 列表头的字体大小
    */
   headerFontSize?: number
@@ -86,6 +91,10 @@ export interface Table {
    * @description 列表头的背景颜色
    */
   headerBackgroundColor?: string
+  /**
+   * @description 列表头的默认行高, 单位为px
+   */
+  headerRowHeight?: number
   /**
    * @description 鼠标悬浮在列表头的单元格时的背景颜色, 用于突出显示鼠标所在的单元格
    */
@@ -108,6 +117,17 @@ export interface Table {
   bodyCellStyle?: BodyCellStyle | BodyCellStyle[]
 
   /**
+   * @description 单元格内容是否自动换行
+   * @default true
+   */
+  autoWrapText?: boolean
+  /**
+   * @description 表格的空值显示文本, 用于替换正文和汇总中的null、undefined及非有限数值, 不影响0和空字符串
+   * @example '—'
+   */
+  emptyCellText?: string
+
+  /**
    * @description 显示汇总行的类型，仅对度量列生效
    * - 'sum': 显示求和行
    * - 'avg': 显示平均值行
@@ -117,6 +137,27 @@ export interface Table {
    * @example 'sum'
    */
   totals?: TotalType
+
+  /**
+   * @description 表格宽度的计算方式
+   * - 'standard': 使用配置的列宽
+   * - 'adaptive': 根据容器宽度自适应
+   * - 'autoWidth': 根据单元格内容计算列宽
+   * @default 'standard'
+   */
+  widthMode?: 'standard' | 'adaptive' | 'autoWidth'
+  /**
+   * @description 表格高度的计算方式
+   * - 'standard': 使用配置的行高
+   * - 'adaptive': 根据容器高度自适应
+   * - 'autoHeight': 根据单元格内容计算行高
+   * @default 'autoHeight'
+   */
+  heightMode?: 'standard' | 'adaptive' | 'autoHeight'
+  /**
+   * @description 列宽总和小于容器宽度时, 是否自动填满容器
+   */
+  autoFillWidth?: boolean
 
   /**
    * @default light 默认为亮色主题

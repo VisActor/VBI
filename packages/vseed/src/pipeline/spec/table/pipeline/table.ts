@@ -1,6 +1,7 @@
 import type { SpecPipeline } from 'src/types'
 import {
   initTable,
+  tableLayout,
   dimensionTreeToColumns,
   measureTreeToColumns,
   columnsAggregation,
@@ -14,6 +15,7 @@ import {
 
 export const tableSpecPipeline: SpecPipeline = [
   initTable,
+  tableLayout,
   dimensionTreeToColumns,
   measureTreeToColumns,
   columnsAggregation,

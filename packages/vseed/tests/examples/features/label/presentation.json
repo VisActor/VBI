@@ -1,0 +1,20 @@
+{
+  "name": "标签动画与描边",
+  "description": "标签关闭动画，启用智能反色并显式去掉描边，无需构建后修改 label Spec。",
+  "vseed": {
+    "chartType": "column",
+    "dataset": [
+      { "region": "华东", "sales": 1200 },
+      { "region": "华南", "sales": 900 }
+    ],
+    "dimensions": [{ "id": "region" }],
+    "measures": [{ "id": "sales" }],
+    "label": {
+      "enable": true,
+      "showValue": true,
+      "labelAnimation": false,
+      "labelColorSmartInvert": true,
+      "labelStrokeWidth": 0
+    }
+  }
+}

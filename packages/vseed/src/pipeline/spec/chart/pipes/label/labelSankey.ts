@@ -1,3 +1,4 @@
+import { buildLabelStyle } from './labelStyle'
 import type { ILineChartSpec } from '@visactor/vchart'
 import { isNumber, merge, uniqueBy } from 'remeda'
 import { selector, selectorWithDynamicFilter } from 'src/dataSelector'
@@ -45,11 +46,6 @@ const buildLabel = (
     showDimension,
     labelOverlap,
     labelColorSmartInvert,
-    labelStroke,
-    labelColor,
-    labelFontSize,
-    labelFontWeight,
-    labelBackgroundColor,
     labelPosition,
     autoFormat,
     numFormat = {},
@@ -140,18 +136,9 @@ const buildLabel = (
     },
     syncState: true,
     position: labelPosition,
-    style: {
-      stroke: labelStroke,
-      fill: labelColor,
-      fontSize: labelFontSize,
-      fontWeight: labelFontWeight,
-      background: labelBackgroundColor,
-    },
+    style: buildLabelStyle(label),
+    ...(label.labelAnimation == null ? {} : { animation: label.labelAnimation }),
     smartInvert: labelColorSmartInvert,
-  }
-
-  if (labelColorSmartInvert) {
-    ;(result.style as any).lineWidth = 2
   }
 
   if (labelOverlap) {

@@ -1,11 +1,11 @@
 import type { PivotTableConstructorOptions } from '@visactor/vtable'
-import type { Dimensions, PivotTableSpecPipe } from 'src/types'
+import type { TableDimension, PivotTableSpecPipe } from 'src/types'
 import { createFormatterByDimension } from 'src/pipeline/utils'
 
 export const pivotColumns: PivotTableSpecPipe = (spec, context) => {
   const { advancedVSeed } = context
   const { encoding } = advancedVSeed
-  const dimensions = advancedVSeed.dimensionTree as Dimensions
+  const dimensions = advancedVSeed.dimensionTree as TableDimension[]
   const columns = dimensions.filter((item) => encoding.column?.includes(item.id))
 
   return {
@@ -15,7 +15,7 @@ export const pivotColumns: PivotTableSpecPipe = (spec, context) => {
       return {
         dimensionKey: item.id,
         title: item.alias || item.id,
-        width: 'auto',
+        width: item.width ?? 'auto',
         headerStyle: {
           textAlign: 'center',
         },

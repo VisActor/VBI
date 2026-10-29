@@ -2,12 +2,12 @@ import type { PivotChartConstructorOptions, BaseTableAPI } from '@visactor/vtabl
 import { isNumber } from 'remeda'
 import { intl } from 'src/i18n'
 import { createFormatterByMeasure, findAllMeasures } from 'src/pipeline/utils'
-import type { Datum, MeasureTree, PivotTable, PivotTableSpecPipe } from 'src/types'
+import type { Datum, MeasureTree, PivotTable, PivotTableSpecPipe, TableMeasure } from 'src/types'
 
 export const pivotIndicators: PivotTableSpecPipe = (spec, context) => {
   const { advancedVSeed, vseed } = context
   const { measureTree } = advancedVSeed
-  const measures = findAllMeasures(measureTree as MeasureTree)
+  const measures = findAllMeasures(measureTree as MeasureTree) as TableMeasure[]
 
   // 用户可配置 indicatorsAsCol，默认 true
   const indicatorsAsCol = (vseed as PivotTable).indicatorsAsCol ?? false
@@ -23,7 +23,7 @@ export const pivotIndicators: PivotTableSpecPipe = (spec, context) => {
         cellType: 'text',
         indicatorKey: measure.id,
         title: measure.alias || measure.id,
-        width: 'auto',
+        width: measure.width ?? 'auto',
         format: (value: number | string, col?: number, row?: number, table?: BaseTableAPI) => {
           if (!isNumber(col) || !isNumber(row) || !table) {
             return value

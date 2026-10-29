@@ -12,11 +12,7 @@ export const useVBIWhereFilter = (builder: VBIChartBuilder | undefined) => {
   const rootOperator = useBuilderDocState({
     builder,
     fallback: 'and' as 'and' | 'or',
-    getSnapshot: (activeBuilder) => {
-      const whereRoot = activeBuilder.dsl.get('whereFilter') as { get: (key: string) => unknown } | undefined
-      const operator = whereRoot?.get('op')
-      return operator === 'or' ? 'or' : 'and'
-    },
+    getSnapshot: (activeBuilder) => activeBuilder.whereFilter.getOperator(),
   })
 
   const replaceFilters = useCallback(
@@ -40,18 +36,7 @@ export const useVBIWhereFilter = (builder: VBIChartBuilder | undefined) => {
 
   const setRootOperator = useCallback(
     (operator: 'and' | 'or') => {
-      if (!builder) {
-        return
-      }
-
-      const whereRoot = builder.dsl.get('whereFilter') as { set: (key: string, value: unknown) => void } | undefined
-      if (!whereRoot) {
-        return
-      }
-
-      builder.doc.transact(() => {
-        whereRoot.set('op', operator)
-      })
+      builder?.whereFilter.setOperator(operator)
     },
     [builder],
   )

@@ -8,13 +8,21 @@
 类型引用沿用源码模块名，包的公开导出以索引为准：
 
 ```typescript
-import type { DatasetColumn, DatasetSource, QueryDSL, QueryAdapter, StorageAdapter, VQueryDSL } from '../types'
+import type {
+  DatasetColumn,
+  DatasetSource,
+  RawDatasetSource,
+  QueryDSL,
+  QueryAdapter,
+  StorageAdapter,
+  VQueryDSL,
+} from '../types'
 import type { DatasetSourceType, RawDatasetSource } from '../types'
 ```
 
 ## Dataset
 
-源码：[packages/vquery/src/dataset/dataset.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/dataset/dataset.ts#L4)
+源码：[packages/vquery/src/dataset/dataset.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/dataset/dataset.ts#L13)
 
 包导出：`Dataset`
 
@@ -23,6 +31,12 @@ export declare class Dataset {
   constructor(queryAdapter: QueryAdapter, storageAdapter: StorageAdapter, datasetId: string)
   init(temporaryColumns?: DatasetColumn[], temporaryDatasetSource?: DatasetSource): Promise<void>
   createOrReplaceView(columns: DatasetColumn[], datasetSource: DatasetSource): Promise<void>
+  /**
+   * Replace the stored schema/source and reload this connected dataset, preserving its alias.
+   * Operations on the connection must be ordered by the caller. If reloading fails, the updated
+   * metadata remains stored; call init() to retry. An empty schema follows init() and skips loading.
+   */
+  replaceSource(columns: DatasetColumn[], rawDatasetSource: RawDatasetSource): Promise<void>
   query<T extends Record<string, number | string>>(
     queryDSL: QueryDSL<T> | VQueryDSL<T>,
   ): Promise<{

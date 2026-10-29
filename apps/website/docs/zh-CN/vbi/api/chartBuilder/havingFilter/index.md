@@ -29,6 +29,36 @@ getConditions(): Y.Array<any>
 
 **返回**: `Y.Array<any>`
 
+### getOperator
+
+获取根过滤组的逻辑操作符。
+
+**定义**:
+
+```typescript
+getOperator(): 'and' | 'or'
+```
+
+**返回**: `'and' \| 'or'`
+
+### setOperator
+
+设置根过滤组的逻辑操作符，保留已有条件及其 ID。
+
+**定义**:
+
+```typescript
+setOperator(op: 'and' | 'or'): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `op` | 'and' \| 'or' | - |
+
 ### add
 
 添加一个 Having 过滤条件

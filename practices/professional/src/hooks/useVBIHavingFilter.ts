@@ -11,11 +11,7 @@ export const useVBIHavingFilter = (builder: VBIChartBuilder | undefined) => {
   const rootOperator = useBuilderDocState({
     builder,
     fallback: 'and' as 'and' | 'or',
-    getSnapshot: (activeBuilder) => {
-      const havingRoot = activeBuilder.dsl.get('havingFilter') as { get: (key: string) => unknown } | undefined
-      const operator = havingRoot?.get('op')
-      return operator === 'or' ? 'or' : 'and'
-    },
+    getSnapshot: (activeBuilder) => activeBuilder.havingFilter.getOperator(),
   })
 
   const replaceFilters = useCallback(
@@ -47,18 +43,7 @@ export const useVBIHavingFilter = (builder: VBIChartBuilder | undefined) => {
 
   const setRootOperator = useCallback(
     (operator: 'and' | 'or') => {
-      if (!builder) {
-        return
-      }
-
-      const havingRoot = builder.dsl.get('havingFilter') as { set: (key: string, value: unknown) => void } | undefined
-      if (!havingRoot) {
-        return
-      }
-
-      builder.doc.transact(() => {
-        havingRoot.set('op', operator)
-      })
+      builder?.havingFilter.setOperator(operator)
     },
     [builder],
   )

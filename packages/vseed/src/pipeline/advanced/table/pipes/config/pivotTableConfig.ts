@@ -9,6 +9,12 @@ export const pivotTableConfig: AdvancedPipe = (advancedVSeed, context) => {
   }
 
   const config = pick(vseed, [
+    'widthMode',
+    'heightMode',
+    'autoWrapText',
+    'autoFillWidth',
+    'rowHeight',
+    'headerRowHeight',
     'backgroundColor',
     'bodyFontSize',
     'bodyFontColor',
@@ -21,7 +27,7 @@ export const pivotTableConfig: AdvancedPipe = (advancedVSeed, context) => {
     'selectedBorderColor',
     'selectedBackgroundColor',
     'totals',
-  ]) as Config['table']
+  ]) as Config['pivotTable']
 
   result.config = {
     ...(result.config || {}),

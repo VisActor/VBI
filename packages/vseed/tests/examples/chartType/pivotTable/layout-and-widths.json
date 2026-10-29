@@ -1,0 +1,24 @@
+{
+  "name": "透视表布局与字段列宽",
+  "description": "行维度、列维度和指标分别设置列宽，表格保持固定行高并自动填满容器。",
+  "vseed": {
+    "chartType": "pivotTable",
+    "dataset": [
+      { "region": "华东 East", "year": "2025", "sales": 1200 },
+      { "region": "华东 East", "year": "2026", "sales": 1600 },
+      { "region": "华南 South", "year": "2025", "sales": 900 },
+      { "region": "华南 South", "year": "2026", "sales": 1300 }
+    ],
+    "dimensions": [
+      { "id": "region", "alias": "区域", "encoding": "row", "width": 150 },
+      { "id": "year", "alias": "年份", "encoding": "column", "width": 120 }
+    ],
+    "measures": [{ "id": "sales", "alias": "销售额", "width": 130 }],
+    "indicatorsAsCol": true,
+    "heightMode": "standard",
+    "rowHeight": 38,
+    "headerRowHeight": 44,
+    "autoWrapText": false,
+    "autoFillWidth": true
+  }
+}

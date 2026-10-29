@@ -79,6 +79,10 @@ export interface PivotTable {
    */
   bodyBackgroundColor?: string
   /**
+   * @description 表格体的默认行高, 单位为px, 配合heightMode为'standard'时使用固定行高
+   */
+  rowHeight?: number
+  /**
    * @description 行表头、列表头的字体大小
    */
   headerFontSize?: number
@@ -90,6 +94,10 @@ export interface PivotTable {
    * @description 行表头、列表头的背景颜色
    */
   headerBackgroundColor?: string
+  /**
+   * @description 列表头的默认行高, 单位为px
+   */
+  headerRowHeight?: number
   /**
    * @description 鼠标悬浮在行、列表头的单元格时的背景颜色, 用于突出显示鼠标所在的行列交叉的单元格
    */
@@ -112,6 +120,12 @@ export interface PivotTable {
   bodyCellStyle?: BodyCellStyle | BodyCellStyle[]
 
   /**
+   * @description 单元格内容是否自动换行
+   * @default true
+   */
+  autoWrapText?: boolean
+
+  /**
    * @description 指标是否作为列展示，当为 true 时指标在列方向展开，为 false 时在行方向展开
    * @default true
    * @example true
@@ -123,6 +137,27 @@ export interface PivotTable {
    * @example { row: { showGrandTotals: true, showSubTotals: true, subTotalsDimensions: ['category'] } }
    */
   totals?: PivotTableTotals
+
+  /**
+   * @description 表格宽度的计算方式
+   * - 'standard': 使用配置的列宽
+   * - 'adaptive': 根据容器宽度自适应
+   * - 'autoWidth': 根据单元格内容计算列宽
+   * @default 'standard'
+   */
+  widthMode?: 'standard' | 'adaptive' | 'autoWidth'
+  /**
+   * @description 表格高度的计算方式
+   * - 'standard': 使用配置的行高
+   * - 'adaptive': 根据容器高度自适应
+   * - 'autoHeight': 根据单元格内容计算行高
+   * @default 'autoHeight'
+   */
+  heightMode?: 'standard' | 'adaptive' | 'autoHeight'
+  /**
+   * @description 列宽总和小于容器宽度时, 是否自动填满容器
+   */
+  autoFillWidth?: boolean
 
   /**
    * 图表的主题, 主题是优先级较低的功能配置, 包含所有图表类型共用的通用配置, 与单类图表类型共用的图表配置

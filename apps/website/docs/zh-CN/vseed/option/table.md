@@ -113,6 +113,15 @@
 
 :::
 
+### width
+
+**Type:** `number | "auto" | undefined`
+
+:::note{title=描述}
+表格列宽，单位 px；auto 根据内容计算，默认 auto。
+
+:::
+
 ### encoding
 
 **Type:** `"row" | "column" | undefined`
@@ -155,6 +164,15 @@
 
 :::note{title=描述}
 时间粒度，决定日期展示精度
+
+:::
+
+#### width
+
+**Type:** `number | "auto" | undefined`
+
+:::note{title=描述}
+表格列宽，单位 px；auto 根据内容计算，默认 auto。
 
 :::
 
@@ -528,6 +546,15 @@
 
 :::
 
+### width
+
+**Type:** `number | "auto" | undefined`
+
+:::note{title=描述}
+表格指标列宽，单位 px；auto 根据内容计算，默认 auto。
+
+:::
+
 ### children
 
 **Type:** `(TableMeasure | MeasureGroup)[] | undefined`
@@ -622,6 +649,16 @@
 :::
 
 
+## rowHeight
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+表格体的默认行高, 单位为px, 配合heightMode为'standard'时使用固定行高
+
+:::
+
+
 ## headerFontSize
 
 **Type:** `number | undefined`
@@ -648,6 +685,16 @@
 
 :::note{title=描述}
 列表头的背景颜色
+
+:::
+
+
+## headerRowHeight
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+列表头的默认行高, 单位为px
 
 :::
 
@@ -1228,6 +1275,31 @@ prepare() 阶段写入，运行时只读
 :::
 
 
+## autoWrapText
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+单元格内容是否自动换行
+
+:::
+
+
+## emptyCellText
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+表格的空值显示文本, 用于替换正文和汇总中的null、undefined及非有限数值, 不影响0和空字符串
+
+:::
+
+**示例**
+'—'
+
+
+
+
 ## totals
 
 **Type:** `TotalType | undefined`
@@ -1265,6 +1337,48 @@ prepare() 阶段写入，运行时只读
 'sum'
 
 
+
+
+## widthMode
+
+**Type:** `"standard" | "adaptive" | "autoWidth" | undefined`
+
+:::note{title=描述}
+表格宽度的计算方式
+
+\- 'standard': 使用配置的列宽
+
+\- 'adaptive': 根据容器宽度自适应
+
+\- 'autoWidth': 根据单元格内容计算列宽
+
+:::
+
+
+## heightMode
+
+**Type:** `"standard" | "adaptive" | "autoHeight" | undefined`
+
+:::note{title=描述}
+表格高度的计算方式
+
+\- 'standard': 使用配置的行高
+
+\- 'adaptive': 根据容器高度自适应
+
+\- 'autoHeight': 根据单元格内容计算行高
+
+:::
+
+
+## autoFillWidth
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+列宽总和小于容器宽度时, 是否自动填满容器
+
+:::
 
 
 ## theme
