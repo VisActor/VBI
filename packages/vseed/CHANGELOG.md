@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.7.3
+
+### Patch Changes
+
+- 80b3739: Add reusable table layout, field width, empty-cell text, and label presentation options to VSeed while preserving existing defaults. Add connected dataset source replacement to VQuery and root filter operator accessors to VBI to reduce integration code.
+
 ## 0.7.2
 
 ### Patch Changes
