@@ -19,7 +19,7 @@
 
 ## 复制与接入
 
-复制完整 HTML 并先运行，确认默认读数、筛选与分析返回可用。模板内嵌数据和组件，CDN 依赖需联网；已有页面沿用宿主。
+复制完整 HTML 并先运行，确认默认读数、筛选与分析返回可用。模板内嵌数据与组件；VBI / VQuery / VSeed、VChart 和 VTable 通过固定版本 CDN 加载，需联网。已有页面沿用宿主。
 
 只调整需求涉及的数据、资源 ID、字段、口径、文案和布局；复用[UI 组件](components.md)，用户风格与宿主约束优先。字段变化时，同步筛选、分析上下文、表格下钻与原始明细的字段映射。
 
@@ -32,7 +32,7 @@
 
 函数名以实际 HTML 为准；外观配置见 [UI 组件](components.md#外观设置)。
 
-复用内嵌 `DashboardData` 管理连接与替换，条件、聚合和排序交给公开 Builder。专题页列字典由 `DashboardData.decode()` 在 `prepareRows()` 前还原；新数据可直接使用 `{ columns, rows }` JSON，缺失保留 `null`。静态数据见[内嵌规则](../../../references/visual-query/references/html-integration.md#静态独立-html-的数据内置)，其他来源见[数据接入](../../../references/server-runtime/guide.md)。
+复用内嵌 `DashboardData` 管理连接与替换，条件、聚合和排序交给公开 Builder。纯数据通过 `query()` 获取，图形通过 `buildVSeed()` 获取；明细 QueryBuilder 使用 `queryMode: 'detail'`，列概况通过 `queryProfile()` 取得。专题页列字典由 `DashboardData.decode()` 在 `prepareRows()` 前还原；新数据可直接使用 `{ columns, rows }` JSON，缺失保留 `null`。静态数据见[内嵌规则](../../../references/visual-query/references/html-integration.md#静态独立-html-的数据内置)，其他来源见[数据接入](../../../references/server-runtime/guide.md)。
 
 沿用示例口径时注意：寿命指标取末年国家等权均值，首尾比较仅用两端有效的配对国家，国家汇总在所选完整范围内按国家平均，原始明细保留逐年记录；心衰事件占比不等于统一随访时点的死亡率；餐食热效应占比与单件热量先汇总再相除。关系图仅在 `analysis.relation` 配置了有业务含义的两轴时启用，不默认以记录数作解释轴。
 
@@ -52,7 +52,7 @@
 
 修改相关图形或升级依赖时核对：
 
-- 模板固定 VBI / VQuery / VSeed 0.7.3、VChart 2.1.7、VTable 1.23.1；API 参考对应当前仓库，升级需核对目标版本和最终 Spec、画面。
+- 模板固定 VBI / VQuery / VSeed 0.7.4、VChart 2.1.7、VTable 1.23.1；API 参考对应当前仓库，升级需核对目标版本和最终 Spec、画面。
 - 热力图数值度量编码到 `label`，同值以颜色度量编码到 `color`，关闭重复值标签；分析图 tooltip 挂在 `dialog` 内。散点、矩阵与条形之间不做跨图元形变。
 - 单柱圆角通过 `barStyle.barRadius` 配置；标签动画、智能反色与描边使用 `label` 配置。日期 crosshair 格式化函数保持稳定引用。
 - 经营概览销售主图和增长迷你图复用 seed，各自绑定实例；利润柱展示完整区间，客户类型环图关闭图例筛选，保持中心占比与扇区同口径。

@@ -40,14 +40,14 @@ window.DashboardData = {
     }
   },
   async rows(chart, signal) {
-    const seed = await chart.buildVSeed({ signal })
+    const { dataset } = await chart.query({ signal })
     const { dimensions, measures } = chart.build()
-    return seed.dataset.map((row) =>
+    return dataset.map((row) =>
       Object.fromEntries([...dimensions, ...measures].map(({ field, id }) => [field, row[id]])),
     )
   },
   release(vbi, chart) {
-    vbi.resources.chart.unregister(chart.getUUID())
+    if (chart.chartType) vbi.resources.chart.unregister(chart.getUUID())
     chart.doc.destroy()
   },
 }
