@@ -1,1 +1,1 @@
-export { IndexedDBAdapter, InMemoryAdapter } from './storage-adapter'
+export { IndexedDBAdapter, InMemoryAdapter } from './storage'

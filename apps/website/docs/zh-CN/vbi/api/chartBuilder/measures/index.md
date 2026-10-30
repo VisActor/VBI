@@ -1,6 +1,6 @@
 # MeasuresBuilder
 
-度量构建器，用于添加、修改、删除度量配置。度量是数据的数值字段，如：销售额、利润、数量
+度量构建器，在查询字段操作上补充图形编码。
 
 ## 方法
 
@@ -17,7 +17,7 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `dsl` | Y.Map&lt;any> | - |
 
 ### add
 
@@ -26,10 +26,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 **定义**:
 
 ```typescript
-add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
+add(field: string, callback: (node: MeasureNodeBuilder) => void): this
 ```
 
-**返回**: `MeasuresBuilder`
+**返回**: `this`
 
 **参数**:
 
@@ -45,10 +45,10 @@ add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilde
 **定义**:
 
 ```typescript
-remove(id: string): MeasuresBuilder
+remove(id: string): this
 ```
 
-**返回**: `MeasuresBuilder`
+**返回**: `this`
 
 **参数**:
 
@@ -63,10 +63,10 @@ remove(id: string): MeasuresBuilder
 **定义**:
 
 ```typescript
-update(id: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
+update(id: string, callback: (node: MeasureNodeBuilder) => void): this
 ```
 
-**返回**: `MeasuresBuilder`
+**返回**: `this`
 
 **参数**:
 
@@ -119,7 +119,7 @@ toJSON(): VBIMeasure[]
 
 ### observe
 
-监听度量变化
+监听度量变化，返回取消监听的函数
 
 **定义**:
 

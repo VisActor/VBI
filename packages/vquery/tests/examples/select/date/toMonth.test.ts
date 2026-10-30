@@ -17,10 +17,12 @@ describe('toMonth', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId, {
+      columns: schema as DatasetColumn[],
+    })
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "area", sum("sales") as "Sum(sales)", strftime(CAST("date" AS TIMESTAMP), '%Y-%m') as "month" from "vquery-demo" where (("area" in ('BEI JING') or "sales" >= 400)) group by "month", "area" order by "Sum(sales)" desc nulls last limit 100"`,
+      `"select "area", sum("sales") as "Sum(sales)", strftime(CAST("date" AS TIMESTAMP), '%Y-%m') as "month" from (select "area" collate "binary" as "area", "date" as "date", "sales" as "sales" from "vquery-demo") as "__vquery_source" where (("area" in ('BEI JING') or "sales" >= 400)) group by "month", "area" order by "Sum(sales)" desc nulls last limit 100"`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

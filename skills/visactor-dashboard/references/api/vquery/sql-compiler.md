@@ -9,21 +9,24 @@
 - [compileQuery](sql-compiler.md#compilequery)
 - [convertDSLToDuckDB](sql-compiler.md#convertdsltoduckdb)
 - [convertDSLToMysql](sql-compiler.md#convertdsltomysql)
+- [getQuerySchema](sql-compiler.md#getqueryschema)
+- [validateQuery](sql-compiler.md#validatequery)
 
 类型引用沿用源码模块名，包的公开导出以索引为准：
 
 ```typescript
 import type { CompileQueryOptions, CompiledQuery } from './types'
-import type { DatasetColumn, QueryDSL } from '../types'
+import type { DatasetColumn, QueryDSL } from '../../types'
+import type { DatasetColumn, VQueryDSL } from '../../types'
 import type { Dialect, RawBuilder, Kysely, SelectQueryBuilder } from 'kysely'
-import type { QueryDSL } from '../types'
+import type { QueryDSL } from '../../types'
 import type { QueryTable, CompileQueryOptions } from './types'
-import type { SelectItem } from '../types/dsl/Select'
+import type { SelectItem } from '../../types/dsl/Select'
 ```
 
 ## CompileQueryOptions
 
-源码：[packages/vquery/src/sql-builder/types.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql-builder/types.ts#L10)
+源码：[packages/vquery/src/sql/compiler/types.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql/compiler/types.ts#L10)
 
 包导出：`CompileQueryOptions`
 
@@ -38,7 +41,7 @@ export interface CompileQueryOptions {
 
 ## CompiledQuery
 
-源码：[packages/vquery/src/sql-builder/types.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql-builder/types.ts#L17)
+源码：[packages/vquery/src/sql/compiler/types.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql/compiler/types.ts#L17)
 
 包导出：`CompiledQuery`
 
@@ -51,7 +54,7 @@ export interface CompiledQuery {
 
 ## QueryDialect
 
-源码：[packages/vquery/src/sql-builder/types.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql-builder/types.ts#L5)
+源码：[packages/vquery/src/sql/compiler/types.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql/compiler/types.ts#L5)
 
 包导出：`QueryDialect`
 
@@ -61,7 +64,7 @@ export type QueryDialect = 'mysql' | 'duckdb'
 
 ## QueryTable
 
-源码：[packages/vquery/src/sql-builder/types.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql-builder/types.ts#L6)
+源码：[packages/vquery/src/sql/compiler/types.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql/compiler/types.ts#L6)
 
 包导出：`QueryTable`
 
@@ -76,7 +79,7 @@ export type QueryTable =
 
 ## compileQuery
 
-源码：[packages/vquery/src/sql-builder/compileQuery.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql-builder/compileQuery.ts#L10)
+源码：[packages/vquery/src/sql/compiler/compileQuery.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql/compiler/compileQuery.ts#L12)
 
 包导出：`compileQuery`
 
@@ -86,7 +89,7 @@ export declare const compileQuery: <T>(dsl: QueryDSL<T>, options: CompileQueryOp
 
 ## convertDSLToDuckDB
 
-源码：[packages/vquery/src/sql-builder/convertDSLToDuckDB.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql-builder/convertDSLToDuckDB.ts#L6)
+源码：[packages/vquery/src/sql/compiler/convertDSLToDuckDB.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql/compiler/convertDSLToDuckDB.ts#L6)
 
 包导出：`convertDSLToDuckDB`
 
@@ -107,7 +110,7 @@ options = {}
 
 ## convertDSLToMysql
 
-源码：[packages/vquery/src/sql-builder/convertDSLToMysql.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql-builder/convertDSLToMysql.ts#L6)
+源码：[packages/vquery/src/sql/compiler/convertDSLToMysql.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql/compiler/convertDSLToMysql.ts#L6)
 
 包导出：`convertDSLToMysql`
 
@@ -124,4 +127,32 @@ export declare const convertDSLToMysql: <T, TableName extends QueryTable = Query
 ```typescript
 // convertDSLToMysql
 options = {}
+```
+
+## getQuerySchema
+
+源码：[packages/vquery/src/sql/compiler/getQuerySchema.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql/compiler/getQuerySchema.ts#L4)
+
+包导出：`getQuerySchema`
+
+```typescript
+/** Infer projected names and types, including subqueries, wildcards and aggregate aliases. */
+export declare const getQuerySchema: (query: VQueryDSL, columns: DatasetColumn[]) => DatasetColumn[]
+```
+
+## validateQuery
+
+源码：[packages/vquery/src/sql/compiler/validateQuery.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/sql/compiler/validateQuery.ts#L71)
+
+包导出：`validateQuery`
+
+```typescript
+export declare function validateQuery(dsl: unknown, columns?: DatasetColumn[]): asserts dsl is VQueryDSL
+```
+
+参数默认值（来自源码）：
+
+```typescript
+// validateQuery
+columns = []
 ```

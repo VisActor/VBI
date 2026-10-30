@@ -1,0 +1,19 @@
+{
+  "name": "category-frequency",
+  "builder": "query",
+  "description": "在最多 10000 条明细上统计品类频次，返回最常见的两个品类和其他记录数。",
+  "tags": ["query", "profile"],
+  "priority": 2,
+  "dsl": {
+    "queryMode": "detail",
+    "dimensions": [
+      {
+        "id": "productType",
+        "field": "product_type",
+        "alias": "品类"
+      }
+    ],
+    "limit": 10000
+  },
+  "code": "const applyBuilder = async (builder: VBIQueryBuilder) => {\n  return await builder.queryProfile({ columns: ['productType'], topK: 2 })\n}"
+}

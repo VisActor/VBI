@@ -1,5 +1,6 @@
 export { VChartRender } from './Chart'
 export { JsonRender } from './JsonRender'
+export { QueryResultRender } from './QueryResultRender'
 export { PivotChart } from './PivotChart'
 export { Table } from './Table'
 export { PivotTable } from './PivotTable'

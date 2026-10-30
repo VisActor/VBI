@@ -8,9 +8,29 @@ const __dirname = path.dirname(__filename)
 export const EXAMPLES_DIR = path.resolve(__dirname, '../tests/examples')
 export const MOCK_SYSTEM_TIME = '2026-03-23T00:00:00.000Z'
 export const DEFAULT_LOCALE = 'zh-CN'
-export const BUILDER_ORDER = ['chart', 'insight', 'dashboard']
+export const BUILDER_ORDER = ['chart', 'query', 'insight', 'dashboard']
+
+export const QUERY_EXAMPLE_GROUPS = {
+  Analysis: {
+    queryBins: 'QueryBins',
+    queryProfile: 'QueryProfile',
+  },
+}
+
+export const QUERY_EXAMPLE_LABELS = {
+  queryDimensions: 'Dimensions',
+  queryMeasures: 'Measures',
+  queryCalculations: 'Calculations',
+  queryWhereFilter: 'WhereFilter',
+  queryHavingFilter: 'HavingFilter',
+  queryLimit: 'Limit',
+  queryModes: 'QueryMode',
+  queryUndoManager: 'UndoManager',
+  ...QUERY_EXAMPLE_GROUPS.Analysis,
+}
 
 const DEFAULT_DSL = {
+  query: {},
   chart: {
     connectorId: 'demoSupermarket',
     chartType: 'line',
@@ -54,6 +74,7 @@ const DEFAULT_DSL = {
 
 const BUILDER_TYPES = {
   chart: 'VBIChartBuilder',
+  query: 'VBIQueryBuilder',
   insight: 'VBIInsightBuilder',
   dashboard: 'VBIDashboardBuilder',
 }
@@ -93,7 +114,7 @@ export function parseTags(json) {
 }
 
 export function formatDirLabel(dirName) {
-  return dirName.charAt(0).toUpperCase() + dirName.slice(1).replace(/-/g, ' ')
+  return QUERY_EXAMPLE_LABELS[dirName] ?? dirName.charAt(0).toUpperCase() + dirName.slice(1).replace(/-/g, ' ')
 }
 
 export function getBuilderKind(json) {
@@ -164,6 +185,22 @@ ${indentCode(json.code, 4)}
     const insightDSL = builder.build()
     expect(insightDSL).toMatchInlineSnapshot()`
   }
+  if (kind === 'query') {
+    return `    const builder = VBI.query.create({
+      ...VBI.query.createEmpty('demoSupermarket'),
+      ...${dslCode}
+    })
+
+    ${applyBuilderCode}
+    try {
+      const result = await applyBuilder(builder)
+      expect(builder.build()).toMatchInlineSnapshot()
+      expect(builder.buildVQuery()).toMatchInlineSnapshot()
+      expect(result ?? await builder.query()).toMatchInlineSnapshot()
+    } finally {
+      builder.doc.destroy()
+    }`
+  }
   return `    const builder = VBI.chart.create(${dslCode})
 
     ${applyBuilderCode}
@@ -180,6 +217,9 @@ ${indentCode(json.code, 4)}
 }
 
 export function getTestImports(kind) {
+  if (kind === 'query') {
+    return "import { VBI, type VBIQueryBuilder } from '@visactor/vbi'"
+  }
   if (kind === 'insight') {
     return "import { VBI, type VBIInsightBuilder } from '@visactor/vbi'"
   }
@@ -201,6 +241,44 @@ export function renderPreview(json) {
   const kind = getBuilderKind(json)
   const dsl = buildDSL(kind, json.dsl || {})
   const code = normalizeExampleCode(json.code || 'const applyBuilder = () => {}', kind)
+
+  if (kind === 'query') {
+    return `
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...${toCode(dsl, 8)}
+      })
+      try {
+        ${code}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}`.trim()
+  }
 
   if (kind === 'insight') {
     return `

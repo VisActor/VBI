@@ -8,21 +8,13 @@
 类型引用沿用源码模块名，包的公开导出以索引为准：
 
 ```typescript
-import type {
-  DatasetColumn,
-  DatasetSource,
-  RawDatasetSource,
-  QueryDSL,
-  QueryAdapter,
-  StorageAdapter,
-  VQueryDSL,
-} from '../types'
-import type { DatasetSourceType, RawDatasetSource } from '../types'
+import type { DatasetColumn, DatasetSource, RawDatasetSource, QueryDSL, QueryAdapter, StorageAdapter } from '../types'
+import type { DatasetSourceType, RawDatasetSource } from '../../types'
 ```
 
 ## Dataset
 
-源码：[packages/vquery/src/dataset/dataset.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/dataset/dataset.ts#L13)
+源码：[packages/vquery/src/dataset/dataset.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/dataset/dataset.ts#L5)
 
 包导出：`Dataset`
 
@@ -37,8 +29,8 @@ export declare class Dataset {
    * metadata remains stored; call init() to retry. An empty schema follows init() and skips loading.
    */
   replaceSource(columns: DatasetColumn[], rawDatasetSource: RawDatasetSource): Promise<void>
-  query<T extends Record<string, number | string>>(
-    queryDSL: QueryDSL<T> | VQueryDSL<T>,
+  query<T extends Record<string, unknown>>(
+    queryDSL: QueryDSL<T>,
   ): Promise<{
     performance: {
       startAt: string
@@ -64,7 +56,7 @@ export declare class Dataset {
 
 ## DatasetSourceBuilder
 
-源码：[packages/vquery/src/data-source-builder/dataSourceBuilder.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/data-source-builder/dataSourceBuilder.ts#L9)
+源码：[packages/vquery/src/dataset/source/builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/dataset/source/builder.ts#L9)
 
 包导出：`DatasetSourceBuilder`
 

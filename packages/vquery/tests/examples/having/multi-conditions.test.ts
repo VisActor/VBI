@@ -17,10 +17,12 @@ describe('Having Example with multiple conditions (AND/OR)', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId, {
+      columns: schema as DatasetColumn[],
+    })
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", sum("salary") as "Total Salary", count("salary") as "Count" from "having-multi" group by "department" having (sum("salary") > 5000 and count("salary") > 1)"`,
+      `"select "department", sum("salary") as "Total Salary", count("salary") as "Count" from (select "id" as "id", "name" collate "binary" as "name", "age" as "age", "department" collate "binary" as "department", "salary" as "salary" from "having-multi") as "__vquery_source" group by "department" having (sum("salary") > 5000 and count("salary") > 1)"`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

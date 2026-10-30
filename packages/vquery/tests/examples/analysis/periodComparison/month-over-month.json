@@ -1,0 +1,164 @@
+{
+  "datasetId": "analysis-month-over-month",
+  "description": "比较 2026-03 与 2026-02 的地区销售额：先按月分桶并汇总，再计算差额和环比。4 月数据排除；基期为 0 时环比为 NULL，缺失期间不补零，实际销售额为 0 则保留，0.2 表示增长 20%。",
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "orderDate",
+      "type": "datetime"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "orderDate": "2026-02-28 23:59:59",
+      "sales": 100
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-03-01 00:00:00",
+      "sales": 50
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-03-31 23:59:59",
+      "sales": 70
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-04-01 00:00:00",
+      "sales": 999
+    },
+    {
+      "region": "B",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 100
+    },
+    {
+      "region": "B",
+      "orderDate": "2026-03-10 10:00:00",
+      "sales": 80
+    },
+    {
+      "region": "C",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 0
+    },
+    {
+      "region": "C",
+      "orderDate": "2026-03-10 10:00:00",
+      "sales": 20
+    },
+    {
+      "region": "D",
+      "orderDate": "2026-03-10 10:00:00",
+      "sales": 50
+    },
+    {
+      "region": "E",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 60
+    },
+    {
+      "region": "E",
+      "orderDate": "2026-03-10 10:00:00",
+      "sales": 0
+    },
+    {
+      "region": "F",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 80
+    }
+  ],
+  "vquery": {
+    "from": {
+      "from": {
+        "select": [
+          "region",
+          {
+            "field": "orderDate",
+            "alias": "month",
+            "aggr": {
+              "func": "to_month"
+            }
+          },
+          "sales"
+        ]
+      },
+      "select": [
+        "region",
+        {
+          "field": "sales",
+          "alias": "currentSales",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "month",
+                "op": "=",
+                "value": "2026-03"
+              }
+            ]
+          }
+        },
+        {
+          "field": "sales",
+          "alias": "baselineSales",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "month",
+                "op": "=",
+                "value": "2026-02"
+              }
+            ]
+          }
+        }
+      ],
+      "where": {
+        "op": "and",
+        "conditions": [
+          {
+            "field": "month",
+            "op": "in",
+            "value": ["2026-02", "2026-03"]
+          }
+        ]
+      },
+      "groupBy": ["region"]
+    },
+    "select": [
+      "region",
+      "currentSales",
+      "baselineSales",
+      {
+        "expr": "currentSales-baselineSales",
+        "alias": "delta"
+      },
+      {
+        "expr": "(currentSales-baselineSales)/NULLIF(baselineSales,0)",
+        "alias": "growthRate"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "region",
+        "order": "asc"
+      }
+    ]
+  }
+}

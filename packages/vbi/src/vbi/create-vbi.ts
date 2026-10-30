@@ -1,5 +1,6 @@
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/chart-builder/adapters/vquery-vseed/types'
 import type { VBIChartBuilderOptions } from 'src/types'
+import { createVBIQueryNamespace } from './namespaces/query'
 import { createVBIChartNamespace } from './namespaces/chart'
 import { createVBIConnectorNamespace } from './namespaces/connectors'
 import { createVBIDashboardNamespace } from './namespaces/dashboard'
@@ -31,6 +32,7 @@ export function createVBI<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBIS
     connectors: createVBIConnectorNamespace(),
     resources: createVBIResourceNamespace(resourceRegistry),
     dashboard: createVBIDashboardNamespace(defaultBuilderOptions, resourceRegistry),
+    query: createVBIQueryNamespace(),
     chart: createVBIChartNamespace(defaultBuilderOptions, resourceRegistry),
     insight: createVBIInsightNamespace(resourceRegistry),
   } satisfies VBIInstance<TQueryDSL, TSeedDSL>

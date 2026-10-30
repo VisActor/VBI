@@ -1,0 +1,21 @@
+{
+  "name": "monthly-sales",
+  "builder": "query",
+  "description": "将下单日期按月分组，按月份升序查看每月销售额。",
+  "tags": ["query", "dimensions"],
+  "priority": 4,
+  "dsl": {
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 5
+  },
+  "code": "const applyBuilder = (builder: VBIQueryBuilder) => {\n  builder.dimensions.add('order_date', node => node\n    .setAlias('月份')\n    .setAggregate({ func: 'toMonth' })\n    .setSort({ order: 'asc' }))\n}"
+}

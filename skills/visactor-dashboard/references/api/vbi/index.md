@@ -11,31 +11,46 @@
 - [types](types.md)
 - [vbi](vbi.md)
 
-## 公开导出（113）
+## 公开导出（147）
 
 | 导出                                | 入口条件 | 声明                                                                                        |
 | ----------------------------------- | -------- | ------------------------------------------------------------------------------------------- |
+| `BinsOptions`                       | default  | [BinsOptions](types.md#binsoptions)                                                         |
+| `BinsResult`                        | default  | [BinsResult](types.md#binsresult)                                                           |
 | `BuildVSeedOptions`                 | default  | [BuildVSeedOptions](types.md#buildvseedoptions)                                             |
+| `CalculationNodeBuilder`            | default  | [CalculationNodeBuilder](types.md#calculationnodebuilder)                                   |
+| `CalculationsBuilder`               | default  | [CalculationsBuilder](types.md#calculationsbuilder)                                         |
 | `ChartInstanceBuilder`              | default  | [ChartInstanceBuilder](chart-builder.md#chartinstancebuilder)                               |
 | `ChartTypeBuilder`                  | default  | [ChartTypeBuilder](chart-builder.md#charttypebuilder)                                       |
+| `ColumnBins`                        | default  | [ColumnBins](types.md#columnbins)                                                           |
+| `ColumnProfile`                     | default  | [ColumnProfile](types.md#columnprofile)                                                     |
 | `DashboardChartBuilder`             | default  | [DashboardChartBuilder](dashboard-builder.md#dashboardchartbuilder)                         |
 | `DashboardChartCollectionBuilder`   | default  | [DashboardChartCollectionBuilder](dashboard-builder.md#dashboardchartcollectionbuilder)     |
 | `DashboardInsightBuilder`           | default  | [DashboardInsightBuilder](dashboard-builder.md#dashboardinsightbuilder)                     |
 | `DashboardInsightCollectionBuilder` | default  | [DashboardInsightCollectionBuilder](dashboard-builder.md#dashboardinsightcollectionbuilder) |
 | `DashboardThemeBuilder`             | default  | [DashboardThemeBuilder](dashboard-builder.md#dashboardthemebuilder)                         |
 | `DimensionsBuilder`                 | default  | [DimensionsBuilder](chart-builder.md#dimensionsbuilder)                                     |
-| `HavingFilterBuilder`               | default  | [HavingFilterBuilder](chart-builder.md#havingfilterbuilder)                                 |
-| `LimitBuilder`                      | default  | [LimitBuilder](chart-builder.md#limitbuilder)                                               |
+| `HavingFilterBuilder`               | default  | [HavingFilterBuilder](types.md#havingfilterbuilder)                                         |
+| `LimitBuilder`                      | default  | [LimitBuilder](types.md#limitbuilder)                                                       |
 | `LocaleBuilder`                     | default  | [LocaleBuilder](chart-builder.md#localebuilder)                                             |
 | `MeasuresBuilder`                   | default  | [MeasuresBuilder](chart-builder.md#measuresbuilder)                                         |
 | `ObserveCallback`                   | default  | [ObserveCallback](types.md#observecallback)                                                 |
 | `ObserveDeepCallback`               | default  | [ObserveDeepCallback](types.md#observedeepcallback)                                         |
-| `QueryModeBuilder`                  | default  | [QueryModeBuilder](chart-builder.md#querymodebuilder)                                       |
+| `ProfileBin`                        | default  | [ProfileBin](types.md#profilebin)                                                           |
+| `ProfileOptions`                    | default  | [ProfileOptions](types.md#profileoptions)                                                   |
+| `ProfileResult`                     | default  | [ProfileResult](types.md#profileresult)                                                     |
+| `QueryBuilderBase`                  | default  | [QueryBuilderBase](types.md#querybuilderbase)                                               |
+| `QueryDimensionNodeBuilder`         | default  | [QueryDimensionNodeBuilder](types.md#querydimensionnodebuilder)                             |
+| `QueryDimensionsBuilder`            | default  | [QueryDimensionsBuilder](types.md#querydimensionsbuilder)                                   |
+| `QueryMeasureNodeBuilder`           | default  | [QueryMeasureNodeBuilder](types.md#querymeasurenodebuilder)                                 |
+| `QueryMeasuresBuilder`              | default  | [QueryMeasuresBuilder](types.md#querymeasuresbuilder)                                       |
+| `QueryModeBuilder`                  | default  | [QueryModeBuilder](types.md#querymodebuilder)                                               |
 | `QueryOptions`                      | default  | [QueryOptions](types.md#queryoptions)                                                       |
 | `ThemeBuilder`                      | default  | [ThemeBuilder](chart-builder.md#themebuilder)                                               |
-| `UndoManager`                       | default  | [UndoManager](chart-builder.md#undomanager)                                                 |
-| `UndoManagerOptions`                | default  | [UndoManagerOptions](chart-builder.md#undomanageroptions)                                   |
+| `UndoManager`                       | default  | [UndoManager](types.md#undomanager)                                                         |
+| `UndoManagerOptions`                | default  | [UndoManagerOptions](types.md#undomanageroptions)                                           |
 | `VBI`                               | default  | [VBI](vbi.md#vbi)                                                                           |
+| `VBICalculation`                    | default  | [VBICalculation](types.md#vbicalculation)                                                   |
 | `VBIChartBuildVQueryContext`        | default  | [VBIChartBuildVQueryContext](types.md#vbichartbuildvquerycontext)                           |
 | `VBIChartBuildVSeedContext`         | default  | [VBIChartBuildVSeedContext](types.md#vbichartbuildvseedcontext)                             |
 | `VBIChartBuilder`                   | default  | [VBIChartBuilder](chart-builder.md#vbichartbuilder)                                         |
@@ -93,7 +108,17 @@
 | `VBIMeasureFormat`                  | default  | [VBIMeasureFormat](types.md#vbimeasureformat)                                               |
 | `VBIMeasureGroup`                   | default  | [VBIMeasureGroup](types.md#vbimeasuregroup)                                                 |
 | `VBIMeasureTree`                    | default  | [VBIMeasureTree](types.md#vbimeasuretree)                                                   |
+| `VBIQueryBuildContext`              | default  | [VBIQueryBuildContext](types.md#vbiquerybuildcontext)                                       |
+| `VBIQueryBuilder`                   | default  | [VBIQueryBuilder](types.md#vbiquerybuilder)                                                 |
+| `VBIQueryBuilderAdapters`           | default  | [VBIQueryBuilderAdapters](types.md#vbiquerybuilderadapters)                                 |
+| `VBIQueryBuilderOptions`            | default  | [VBIQueryBuilderOptions](types.md#vbiquerybuilderoptions)                                   |
+| `VBIQueryContext`                   | default  | [VBIQueryContext](types.md#vbiquerycontext)                                                 |
+| `VBIQueryDSL`                       | default  | [VBIQueryDSL](types.md#vbiquerydsl)                                                         |
+| `VBIQueryDSLInput`                  | default  | [VBIQueryDSLInput](types.md#vbiquerydslinput)                                               |
+| `VBIQueryDimension`                 | default  | [VBIQueryDimension](types.md#vbiquerydimension)                                             |
+| `VBIQueryMeasure`                   | default  | [VBIQueryMeasure](types.md#vbiquerymeasure)                                                 |
 | `VBIQueryMode`                      | default  | [VBIQueryMode](types.md#vbiquerymode)                                                       |
+| `VBIQueryNamespace`                 | default  | [VBIQueryNamespace](vbi.md#vbiquerynamespace)                                               |
 | `VBIQueryProps`                     | default  | [VBIQueryProps](types.md#vbiqueryprops)                                                     |
 | `VBIQueryResult`                    | default  | [VBIQueryResult](types.md#vbiqueryresult)                                                   |
 | `VBIResourceNamespace`              | default  | [VBIResourceNamespace](vbi.md#vbiresourcenamespace)                                         |
@@ -113,11 +138,15 @@
 | `VBIWhereFilter`                    | default  | [VBIWhereFilter](types.md#vbiwherefilter)                                                   |
 | `VBIWhereGroup`                     | default  | [VBIWhereGroup](types.md#vbiwheregroup)                                                     |
 | `VBIWhereScalarFilter`              | default  | [VBIWhereScalarFilter](types.md#vbiwherescalarfilter)                                       |
-| `WhereFilterBuilder`                | default  | [WhereFilterBuilder](chart-builder.md#wherefilterbuilder)                                   |
+| `WhereFilterBuilder`                | default  | [WhereFilterBuilder](types.md#wherefilterbuilder)                                           |
+| `WhereGroupBuilder`                 | default  | [WhereGroupBuilder](types.md#wheregroupbuilder)                                             |
+| `buildQueryDSL`                     | default  | [buildQueryDSL](types.md#buildquerydsl)                                                     |
 | `buildVQuery`                       | default  | [buildVQuery](chart-builder.md#buildvquery)                                                 |
 | `createEmptyChart`                  | default  | [createEmptyChart](vbi.md#createemptychart)                                                 |
 | `createEmptyDashboard`              | default  | [createEmptyDashboard](vbi.md#createemptydashboard)                                         |
 | `createEmptyInsight`                | default  | [createEmptyInsight](vbi.md#createemptyinsight)                                             |
+| `createEmptyQuery`                  | default  | [createEmptyQuery](vbi.md#createemptyquery)                                                 |
+| `createQuery`                       | default  | [createQuery](vbi.md#createquery)                                                           |
 | `createVBI`                         | default  | [createVBI](vbi.md#createvbi)                                                               |
 | `defaultVBIChartBuilderAdapters`    | default  | [defaultVBIChartBuilderAdapters](chart-builder.md#defaultvbichartbuilderadapters)           |
 | `findTreeNodesBy`                   | default  | [findTreeNodesBy](types.md#findtreenodesby)                                                 |
@@ -128,3 +157,8 @@
 | `isVBIWhereGroup`                   | default  | [isVBIWhereGroup](types.md#isvbiwheregroup)                                                 |
 | `preorderTraverse`                  | default  | [preorderTraverse](types.md#preordertraverse)                                               |
 | `resolveVBIChartBuilderAdapters`    | default  | [resolveVBIChartBuilderAdapters](chart-builder.md#resolvevbichartbuilderadapters)           |
+| `resolveVBIQueryBuilderAdapters`    | default  | [resolveVBIQueryBuilderAdapters](types.md#resolvevbiquerybuilderadapters)                   |
+| `zVBICalculation`                   | default  | [zVBICalculation](types.md#zvbicalculation)                                                 |
+| `zVBIQueryDSL`                      | default  | [zVBIQueryDSL](types.md#zvbiquerydsl)                                                       |
+| `zVBIQueryDimension`                | default  | [zVBIQueryDimension](types.md#zvbiquerydimension)                                           |
+| `zVBIQueryMeasure`                  | default  | [zVBIQueryMeasure](types.md#zvbiquerymeasure)                                               |

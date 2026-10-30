@@ -1,0 +1,71 @@
+{
+  "datasetId": "expression-quoted-fields",
+  "description": "标准双引号支持含点、引号、问号和关键字的字段名；这些字段保持完整标识符。",
+  "vquery": {
+    "select": [
+      "id",
+      "城市",
+      {
+        "expr": "\"sales.amount\"+\"a\"\"b\"+\"?\"",
+        "alias": "total"
+      },
+      {
+        "expr": "\"sales.amount\"/NULLIF(\"select\",0)",
+        "alias": "safe.rate"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "safe.rate",
+        "order": "desc"
+      },
+      {
+        "field": "id"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "城市",
+      "type": "string"
+    },
+    {
+      "name": "sales.amount",
+      "type": "number"
+    },
+    {
+      "name": "select",
+      "type": "number"
+    },
+    {
+      "name": "a\"b",
+      "type": "number"
+    },
+    {
+      "name": "?",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "id": 1,
+      "城市": "杭州",
+      "sales.amount": 10,
+      "select": 2,
+      "a\"b": 3,
+      "?": 4
+    },
+    {
+      "id": 2,
+      "城市": "上海",
+      "sales.amount": 20,
+      "select": 0,
+      "a\"b": 5,
+      "?": 6
+    }
+  ]
+}

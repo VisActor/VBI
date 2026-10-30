@@ -1,0 +1,83 @@
+# query
+
+本页面展示 query builder 的示例。
+
+## Dimensions
+
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [add-dimension](./queryDimensions#add-dimension) | 添加区域维度，按区域汇总销售额。 | query, dimensions |
+| [sort-dimension](./queryDimensions#sort-dimension) | 通过维度 ID 更新显示名称，并按区域升序返回。 | query, dimensions |
+| [remove-dimension](./queryDimensions#remove-dimension) | 移除品类维度，将区域与品类明细汇总为区域销售额。 | query, dimensions |
+| [monthly-sales](./queryDimensions#monthly-sales) | 将下单日期按月分组，按月份升序查看每月销售额。 | query, dimensions |
+
+## Measures
+
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [sum-sales](./queryMeasures#sum-sales) | 添加销售额指标，使用 sum 查询全部记录的销售总额。 | query, measures |
+| [average-sales](./queryMeasures#average-sales) | 更新销售额指标的聚合方式，查询各区域的单笔平均销售额。 | query, measures |
+| [sales-and-profit](./queryMeasures#sales-and-profit) | 按品类同时查询销售额与利润，并按销售总额从高到低排列。 | query, measures |
+
+## Calculations
+
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [simple-expression](./queryCalculations#simple-expression) | 新增九折销售额计算列；表达式通过 sales 引用基础查询的度量 ID。 | query, calculations |
+| [builder-parameters](./queryCalculations#builder-parameters) | 通过 CalculationsBuilder 添加带参数的计算列；表达式引用基础查询的度量 ID，返回数据仍由表格展示。 | query, expression, parameters |
+| [aggregate-margin](./queryCalculations#aggregate-margin) | 按区域汇总销售额和利润，计算整体利润率并按利润率取前三名；配置和参数可保存、协同和撤销。 | query, expression, ratio |
+| [nested-functions](./queryCalculations#nested-functions) | 通过参数和嵌套数值函数计算调整后的利润率；按最终结果排序并限制返回行数。 | query, expression, null |
+
+## WhereFilter
+
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [equal-filter](./queryWhereFilter#equal-filter) | 先筛选华东地区的源记录，再按品类汇总销售额。 | query, whereFilter |
+| [range-filter](./queryWhereFilter#range-filter) | 先保留单笔销售额在 100 到 1000 之间的记录，再按品类求和。 | query, whereFilter |
+| [nested-filters](./queryWhereFilter#nested-filters) | 以 AND 连接华东地区条件与品类 OR 分组，统计华东办公用品或家具的销售额。 | query, whereFilter |
+
+## HavingFilter
+
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [sum-threshold](./queryHavingFilter#sum-threshold) | 先按品类聚合，再保留销售总额超过 150000 的品类。 | query, havingFilter |
+| [or-group](./queryHavingFilter#or-group) | 按区域汇总，保留销售总额超过 500000 或利润总额超过 10000 的区域。 | query, havingFilter |
+| [where-and-having](./queryHavingFilter#where-and-having) | 先用 WHERE 筛选浙江明细，再按品类聚合，并用 HAVING 保留销售总额超过 150000 的品类。 | query, where, having |
+
+## Limit
+
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [top-regions](./queryLimit#top-regions) | 区域销售额降序排列后取前三行；聚合查询的 limit 限制分组结果数量。 | query, limit |
+
+## QueryMode
+
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [detail-query](./queryModes#detail-query) | 将默认聚合模式切换为 detail，按区域默认排序返回五条源记录的区域和单笔销售额，保留重复记录。 | query, modes |
+| [filtered-detail](./queryModes#filtered-detail) | 切换 detail 模式读取华东地区的源记录，按单笔销售额排序并返回前五行；度量不再执行聚合。 | query, detail, orderBy, limit |
+
+## UndoManager
+
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [undo-redo](./queryUndoManager#undo-redo) | 把返回行数从 5 改为 1，撤销恢复为 5，再重做为 1；最终展示重做后的查询结果。 | query, undoManager |
+| [transaction-undo-redo](./queryUndoManager#transaction-undo-redo) | 用一个 Yjs 事务完成字段、筛选和 limit 配置，再撤销和重做；查询执行不产生新的状态通知。 | query, undo, redo, observe |
+
+## Analysis
+
+### QueryBins
+
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [basic-bins](./queryBins#basic-bins) | 对前五十条销售记录查询数值分箱，先使用默认分箱配置。 | query, bins |
+| [numeric-bins](./queryBins#numeric-bins) | 只查询销售额的分箱，不计算分类频次；在筛选和 limit 后的二十条记录上生成四个等宽箱。 | query, bins, detail |
+
+### QueryProfile
+
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [numeric-profile](./queryProfile#numeric-profile) | 统计前五十条销售记录的有效数、缺失数、数值范围和默认分箱。 | query, profile |
+| [category-frequency](./queryProfile#category-frequency) | 在最多 10000 条明细上统计品类频次，返回最常见的两个品类和其他记录数。 | query, profile |
+| [profile-current-query](./queryProfile#profile-current-query) | 统计华东地区销售额最高的二十条明细，获取有效数、范围、数值分箱和分类频次；调用不修改查询状态。 | query, profile, bins, topK |
+| [profile-calculation](./queryProfile#profile-calculation) | 直接统计计算列的范围和分箱；计算列仍通过 Connector 的 Query DSL 查询，不读取明细做统计。 | query, expression, profile |

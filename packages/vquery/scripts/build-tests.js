@@ -52,7 +52,7 @@ describe('${description}', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId, { columns: schema as DatasetColumn[] })
 
     expect(sql).toMatchInlineSnapshot()
 

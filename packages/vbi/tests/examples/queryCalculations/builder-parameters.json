@@ -1,0 +1,35 @@
+{
+  "builder": "query",
+  "name": "builder-parameters",
+  "description": "通过 CalculationsBuilder 添加带参数的计算列；表达式引用基础查询的度量 ID，返回数据仍由表格展示。",
+  "tags": ["query", "expression", "parameters"],
+  "priority": 2,
+  "dsl": {
+    "dimensions": [
+      {
+        "id": "region",
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "id": "profit",
+        "field": "profit",
+        "alias": "利润",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ]
+  },
+  "code": "const applyBuilder = async (builder: VBIQueryBuilder) => {\n  builder.calculations.add('sales * ?', node => node\n    .setAlias('调整后销售额')\n    .setExpression('sales * ?', [1.05])\n    .setSort({ order: 'desc' }))\n  builder.limit.setLimit(3)\n  return await builder.query()\n}"
+}

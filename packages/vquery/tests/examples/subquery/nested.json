@@ -1,0 +1,98 @@
+{
+  "datasetId": "subquery-nested",
+  "description": "三层查询依次完成门店汇总、区域平均值计算和跨区域概况；每一层只引用上一层的输出列。",
+  "vquery": {
+    "from": {
+      "from": {
+        "select": [
+          "region",
+          "store",
+          {
+            "field": "sales",
+            "alias": "storeTotal",
+            "aggr": {
+              "func": "sum"
+            }
+          }
+        ],
+        "groupBy": ["region", "store"],
+        "where": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "sales",
+              "op": ">=",
+              "value": 10
+            }
+          ]
+        }
+      },
+      "select": [
+        "region",
+        {
+          "field": "storeTotal",
+          "alias": "averageStoreTotal",
+          "aggr": {
+            "func": "avg"
+          }
+        }
+      ],
+      "where": {
+        "op": "and",
+        "conditions": [
+          {
+            "field": "storeTotal",
+            "op": ">=",
+            "value": 30
+          }
+        ]
+      },
+      "groupBy": ["region"]
+    },
+    "select": [
+      {
+        "field": "*",
+        "alias": "regions",
+        "aggr": {
+          "func": "count"
+        }
+      },
+      {
+        "field": "averageStoreTotal",
+        "alias": "minimum",
+        "aggr": {
+          "func": "min"
+        }
+      },
+      {
+        "field": "averageStoreTotal",
+        "alias": "maximum",
+        "aggr": {
+          "func": "max"
+        }
+      }
+    ]
+  },
+  "dataset": [
+    { "region": "East", "store": "A", "sales": 10 },
+    { "region": "East", "store": "A", "sales": 20 },
+    { "region": "East", "store": "B", "sales": 40 },
+    { "region": "West", "store": "C", "sales": 15 },
+    { "region": "West", "store": "C", "sales": 5 },
+    { "region": "West", "store": "D", "sales": 60 }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}

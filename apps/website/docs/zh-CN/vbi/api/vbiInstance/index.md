@@ -15,7 +15,7 @@ function createVBI<TQueryDSL, TSeedDSL>(defaultBuilderOptions: VBIChartBuilderOp
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `defaultBuilderOptions` | VBIChartBuilderOptions<TQueryDSL, TSeedDSL> | 默认图表 Builder 配置，会传递给 chart 和 dashboard 中创建的图表 Builder。 |
+| `defaultBuilderOptions` | VBIChartBuilderOptions&lt;TQueryDSL, TSeedDSL> | 默认图表 Builder 配置，会传递给 chart 和 dashboard 中创建的图表 Builder。 |
 
 ---
 
@@ -43,6 +43,7 @@ createVBI 返回的 VBI 实例，是访问 chart、insight、dashboard 等能力
 | --- | --- | --- |
 | **connectors** | `VBIConnectorNamespace` | 连接器注册、获取和释放 API。 |
 | **resources** | `VBIResourceNamespace` | 图表和 insight 资源注册 API，用于 dashboard 引用共享资源。 |
+| **query** | `VBIQueryNamespace` | 独立查询 Builder 创建 API。 |
 | **chart** | `VBIChartNamespace<TQueryDSL, TSeedDSL>` | 图表 Builder 创建 API。 |
 | **insight** | `VBIInsightNamespace` | Insight Builder 创建 API。 |
 | **dashboard** | `VBIDashboardNamespace<TQueryDSL, TSeedDSL>` | Dashboard Builder 创建 API。 |

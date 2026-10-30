@@ -6,6 +6,7 @@ import { zVBIMeasureTree } from '../measures/measures'
 import { zVBIDSLTheme } from '../theme/theme'
 import { zVBIWhereGroup } from '../whereFilter/filters'
 import { zVBIQueryMode } from '../queryMode'
+import { zVBICalculation } from '../../queryDSL/calculation'
 
 export const zVBIChartDSL = z.object({
   uuid: z.string().optional().default(''),
@@ -13,6 +14,7 @@ export const zVBIChartDSL = z.object({
   chartType: z.custom<any>(), // Use any to avoid circular dependency or simplify for now
   dimensions: zVBIDimensionTree,
   measures: zVBIMeasureTree,
+  calculations: z.array(zVBICalculation).optional(),
   havingFilter: zVBIHavingGroup.optional().default({
     id: 'root',
     op: 'and',

@@ -1,0 +1,127 @@
+# QueryBins
+
+import { registerDemoConnector } from '@components/demoConnector'
+
+{registerDemoConnector()}
+
+## basic-bins
+
+对前五十条销售记录查询数值分箱，先使用默认分箱配置。
+
+
+> 标签: `query` `bins`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "queryMode": "detail",
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "limit": 50
+        }
+      })
+      try {
+        const applyBuilder = async (builder: VBIQueryBuilder) => {
+  return await builder.queryBins({ columns: ['sales'] })
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## numeric-bins
+
+只查询销售额的分箱，不计算分类频次；在筛选和 limit 后的二十条记录上生成四个等宽箱。
+
+
+> 标签: `query` `bins` `detail`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ]
+        }
+      })
+      try {
+        const applyBuilder = async (builder: VBIQueryBuilder) => {
+  builder.queryMode.setMode('detail')
+  builder.whereFilter.add('sales', node => node.setOperator('between').setValue([100, 1000]))
+  builder.limit.setLimit(20)
+
+  return builder.queryBins({ columns: ['sales'], maxBins: 4, discreteMax: 3 })
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```

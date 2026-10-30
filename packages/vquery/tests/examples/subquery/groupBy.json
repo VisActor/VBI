@@ -1,0 +1,66 @@
+{
+  "datasetId": "subquery-groupBy",
+  "description": "内层按区域和门店汇总，外层按区域计算门店数与门店销售总额的平均值。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        "store",
+        {
+          "field": "sales",
+          "alias": "storeTotal",
+          "aggr": {
+            "func": "sum"
+          }
+        }
+      ],
+      "groupBy": ["region", "store"]
+    },
+    "select": [
+      "region",
+      {
+        "field": "*",
+        "alias": "stores",
+        "aggr": {
+          "func": "count"
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "averageStoreTotal",
+        "aggr": {
+          "func": "avg"
+        }
+      }
+    ],
+    "groupBy": ["region"],
+    "orderBy": [
+      {
+        "field": "region",
+        "order": "asc"
+      }
+    ]
+  },
+  "dataset": [
+    { "region": "East", "store": "A", "sales": 10 },
+    { "region": "East", "store": "A", "sales": 20 },
+    { "region": "East", "store": "B", "sales": 40 },
+    { "region": "West", "store": "C", "sales": 15 },
+    { "region": "West", "store": "C", "sales": 5 },
+    { "region": "West", "store": "D", "sales": 60 }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}

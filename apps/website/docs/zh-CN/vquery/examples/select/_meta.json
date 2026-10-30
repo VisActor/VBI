@@ -1,0 +1,22 @@
+[
+  {
+    "type": "file",
+    "name": "aggregation",
+    "label": "Aggregation"
+  },
+  {
+    "type": "file",
+    "name": "date",
+    "label": "Date"
+  },
+  {
+    "type": "file",
+    "name": "expression",
+    "label": "Expression"
+  },
+  {
+    "type": "file",
+    "name": "when",
+    "label": "When"
+  }
+]

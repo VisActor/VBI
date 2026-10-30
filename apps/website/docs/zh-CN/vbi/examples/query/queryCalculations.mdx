@@ -1,0 +1,320 @@
+# Calculations
+
+import { registerDemoConnector } from '@components/demoConnector'
+
+{registerDemoConnector()}
+
+## simple-expression
+
+新增九折销售额计算列；表达式通过 sales 引用基础查询的度量 ID。
+
+
+> 标签: `query` `calculations`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "region",
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "limit": 3
+        }
+      })
+      try {
+        const applyBuilder = (builder: VBIQueryBuilder) => {
+  builder.calculations.add('sales * 0.9', node => node.setAlias('九折销售额'))
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## builder-parameters
+
+通过 CalculationsBuilder 添加带参数的计算列；表达式引用基础查询的度量 ID，返回数据仍由表格展示。
+
+
+> 标签: `query` `expression` `parameters`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "region",
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            },
+            {
+              "id": "profit",
+              "field": "profit",
+              "alias": "利润",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ]
+        }
+      })
+      try {
+        const applyBuilder = async (builder: VBIQueryBuilder) => {
+  builder.calculations.add('sales * ?', node => node
+    .setAlias('调整后销售额')
+    .setExpression('sales * ?', [1.05])
+    .setSort({ order: 'desc' }))
+  builder.limit.setLimit(3)
+  return await builder.query()
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## aggregate-margin
+
+按区域汇总销售额和利润，计算整体利润率并按利润率取前三名；配置和参数可保存、协同和撤销。
+
+
+> 标签: `query` `expression` `ratio`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "region",
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            },
+            {
+              "id": "profit",
+              "field": "profit",
+              "alias": "利润",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "calculations": [
+            {
+              "id": "margin",
+              "alias": "利润率",
+              "expr": "profit / NULLIF(sales, 0)",
+              "sort": {
+                "order": "desc"
+              }
+            }
+          ],
+          "limit": 3
+        }
+      })
+      try {
+        const applyBuilder = async (builder: VBIQueryBuilder) => {
+  return await builder.query()
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## nested-functions
+
+通过参数和嵌套数值函数计算调整后的利润率；按最终结果排序并限制返回行数。
+
+
+> 标签: `query` `expression` `null`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "region",
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            },
+            {
+              "id": "profit",
+              "field": "profit",
+              "alias": "利润",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "calculations": [
+            {
+              "id": "adjustedMargin",
+              "alias": "调整利润率",
+              "expr": "ABS(COALESCE(profit,0)-?)/NULLIF(sales,0)",
+              "parameters": [
+                1000
+              ],
+              "sort": {
+                "order": "desc"
+              }
+            }
+          ],
+          "limit": 3
+        }
+      })
+      try {
+        const applyBuilder = async (builder: VBIQueryBuilder) => {
+  return await builder.query()
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```

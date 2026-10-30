@@ -1,0 +1,30 @@
+{
+  "name": "top-regions",
+  "builder": "query",
+  "description": "区域销售额降序排列后取前三行；聚合查询的 limit 限制分组结果数量。",
+  "tags": ["query", "limit"],
+  "priority": 1,
+  "dsl": {
+    "dimensions": [
+      {
+        "id": "region",
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        },
+        "sort": {
+          "order": "desc"
+        }
+      }
+    ]
+  },
+  "code": "const applyBuilder = (builder: VBIQueryBuilder) => {\n  builder.limit.setLimit(3)\n}"
+}

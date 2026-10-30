@@ -68,6 +68,26 @@ test('generates the complete dashboard API, navigation, options and resolved Yjs
     expect(readFileSync(path.join(output, '_meta.json'), 'utf8')).toContain('dashboardBuilder')
     const chart = readFileSync(path.join(output, 'chartBuilder/index.md'), 'utf8')
     expect(chart).toContain('ChartInstanceBuilder')
+    expect(chart).toContain('### queryProfile')
+    const query = readFileSync(path.join(output, 'queryBuilder/index.md'), 'utf8')
+    for (const method of [
+      'build',
+      'buildVQuery',
+      'query',
+      'queryProfile',
+      'applyUpdate',
+      'encodeStateAsUpdate',
+      'observeDeep',
+    ]) {
+      expect(query).toContain(`### ${method}`)
+    }
+    expect(query).toContain('VBIQueryBuilderOptions&lt;TQueryDSL>')
+    const dimensions = readFileSync(path.join(output, 'chartBuilder/dimensions/index.md'), 'utf8')
+    expect(dimensions).toContain('findAll(): DimensionNodeBuilder[]')
+    expect(dimensions).toContain('toJSON(): VBIDimension[]')
+    expect(dimensions).not.toContain('### createField')
+    expect(dimensions).not.toContain('### createNode')
+    expect(readFileSync(path.join(output, 'vbiInstance/query.md'), 'utf8')).toContain('createEmpty')
     const instance = readFileSync(path.join(output, 'chartBuilder/instance.md'), 'utf8')
     expect(instance).toContain('bind(instance: VBIChartInstance | undefined): this')
     expect(instance).toContain('get<T extends VBIChartInstance = VBIChartInstance>(): T | undefined')

@@ -1,0 +1,42 @@
+{
+  "builder": "query",
+  "name": "profile-calculation",
+  "description": "直接统计计算列的范围和分箱；计算列仍通过 Connector 的 Query DSL 查询，不读取明细做统计。",
+  "tags": ["query", "expression", "profile"],
+  "priority": 4,
+  "dsl": {
+    "dimensions": [
+      {
+        "id": "region",
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "id": "profit",
+        "field": "profit",
+        "alias": "利润",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "calculations": [
+      {
+        "id": "margin",
+        "alias": "利润率",
+        "expr": "profit/NULLIF(sales,0)"
+      }
+    ]
+  },
+  "code": "const applyBuilder = async (builder: VBIQueryBuilder) => {\n  return { profile: await builder.queryProfile({ columns: ['margin'], bins: { maxBins: 4, discreteMax: 2 } }) }\n}"
+}

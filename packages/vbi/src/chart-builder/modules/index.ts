@@ -1,5 +1,4 @@
-export { applyUpdateToDoc } from './apply-update'
-export { encodeDocStateAsUpdate } from './encode-state-as-update'
+export { applyUpdateToDoc } from '../../query-builder/modules/apply-update'
+export { encodeDocStateAsUpdate } from '../../query-builder/modules/encode-state-as-update'
 export { buildVBIChartDSL } from './build'
 export { isEmptyVBIChartDSL } from './is-empty'
-export { getBuilderSchema } from './get-schema'

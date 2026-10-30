@@ -1,0 +1,583 @@
+# PeriodComparison
+
+先按明确的本期与基期汇总，再计算差额和增长率。下面依次展示环比、同月同比和累计同比；基期为 0 或缺失时，增长率返回 NULL。
+
+## month-over-month
+
+比较 2026-03 与 2026-02 的地区销售额：先按月分桶并汇总，再计算差额和环比。4 月数据排除；基期为 0 时环比为 NULL，缺失期间不补零，实际销售额为 0 则保留，0.2 表示增长 20%。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "analysis-month-over-month",
+  "description": "比较 2026-03 与 2026-02 的地区销售额：先按月分桶并汇总，再计算差额和环比。4 月数据排除；基期为 0 时环比为 NULL，缺失期间不补零，实际销售额为 0 则保留，0.2 表示增长 20%。",
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "orderDate",
+      "type": "datetime"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "orderDate": "2026-02-28 23:59:59",
+      "sales": 100
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-03-01 00:00:00",
+      "sales": 50
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-03-31 23:59:59",
+      "sales": 70
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-04-01 00:00:00",
+      "sales": 999
+    },
+    {
+      "region": "B",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 100
+    },
+    {
+      "region": "B",
+      "orderDate": "2026-03-10 10:00:00",
+      "sales": 80
+    },
+    {
+      "region": "C",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 0
+    },
+    {
+      "region": "C",
+      "orderDate": "2026-03-10 10:00:00",
+      "sales": 20
+    },
+    {
+      "region": "D",
+      "orderDate": "2026-03-10 10:00:00",
+      "sales": 50
+    },
+    {
+      "region": "E",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 60
+    },
+    {
+      "region": "E",
+      "orderDate": "2026-03-10 10:00:00",
+      "sales": 0
+    },
+    {
+      "region": "F",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 80
+    }
+  ],
+  "vquery": {
+    "from": {
+      "from": {
+        "select": [
+          "region",
+          {
+            "field": "orderDate",
+            "alias": "month",
+            "aggr": {
+              "func": "to_month"
+            }
+          },
+          "sales"
+        ]
+      },
+      "select": [
+        "region",
+        {
+          "field": "sales",
+          "alias": "currentSales",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "month",
+                "op": "=",
+                "value": "2026-03"
+              }
+            ]
+          }
+        },
+        {
+          "field": "sales",
+          "alias": "baselineSales",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "month",
+                "op": "=",
+                "value": "2026-02"
+              }
+            ]
+          }
+        }
+      ],
+      "where": {
+        "op": "and",
+        "conditions": [
+          {
+            "field": "month",
+            "op": "in",
+            "value": [
+              "2026-02",
+              "2026-03"
+            ]
+          }
+        ]
+      },
+      "groupBy": [
+        "region"
+      ]
+    },
+    "select": [
+      "region",
+      "currentSales",
+      "baselineSales",
+      {
+        "expr": "currentSales-baselineSales",
+        "alias": "delta"
+      },
+      {
+        "expr": "(currentSales-baselineSales)/NULLIF(baselineSales,0)",
+        "alias": "growthRate"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "region",
+        "order": "asc"
+      }
+    ]
+  }
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## month-year-over-year
+
+同月同比：比较 2026-03 与 2025-03 的地区销售额，两期均为完整自然月。先汇总再计算差额和同比，其他月份数据排除；基期为 0 时同比为 NULL，缺失期间不补零。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "analysis-month-year-over-year",
+  "description": "同月同比：比较 2026-03 与 2025-03 的地区销售额，两期均为完整自然月。先汇总再计算差额和同比，其他月份数据排除；基期为 0 时同比为 NULL，缺失期间不补零。",
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "orderDate",
+      "type": "datetime"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "orderDate": "2025-03-28 23:59:59",
+      "sales": 100
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-03-01 00:00:00",
+      "sales": 50
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-03-31 23:59:59",
+      "sales": 70
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-04-01 00:00:00",
+      "sales": 999
+    },
+    {
+      "region": "B",
+      "orderDate": "2025-03-10 10:00:00",
+      "sales": 100
+    },
+    {
+      "region": "B",
+      "orderDate": "2026-03-10 10:00:00",
+      "sales": 80
+    },
+    {
+      "region": "C",
+      "orderDate": "2025-03-10 10:00:00",
+      "sales": 0
+    },
+    {
+      "region": "C",
+      "orderDate": "2026-03-10 10:00:00",
+      "sales": 20
+    },
+    {
+      "region": "D",
+      "orderDate": "2026-03-10 10:00:00",
+      "sales": 50
+    },
+    {
+      "region": "E",
+      "orderDate": "2025-03-10 10:00:00",
+      "sales": 60
+    },
+    {
+      "region": "E",
+      "orderDate": "2026-03-10 10:00:00",
+      "sales": 0
+    },
+    {
+      "region": "F",
+      "orderDate": "2025-03-10 10:00:00",
+      "sales": 80
+    },
+    {
+      "region": "A",
+      "orderDate": "2025-04-01 00:00:00",
+      "sales": 888
+    }
+  ],
+  "vquery": {
+    "from": {
+      "from": {
+        "select": [
+          "region",
+          {
+            "field": "orderDate",
+            "alias": "month",
+            "aggr": {
+              "func": "to_month"
+            }
+          },
+          "sales"
+        ]
+      },
+      "select": [
+        "region",
+        {
+          "field": "sales",
+          "alias": "currentSales",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "month",
+                "op": "=",
+                "value": "2026-03"
+              }
+            ]
+          }
+        },
+        {
+          "field": "sales",
+          "alias": "baselineSales",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "month",
+                "op": "=",
+                "value": "2025-03"
+              }
+            ]
+          }
+        }
+      ],
+      "where": {
+        "op": "and",
+        "conditions": [
+          {
+            "field": "month",
+            "op": "in",
+            "value": [
+              "2025-03",
+              "2026-03"
+            ]
+          }
+        ]
+      },
+      "groupBy": [
+        "region"
+      ]
+    },
+    "select": [
+      "region",
+      "currentSales",
+      "baselineSales",
+      {
+        "expr": "currentSales-baselineSales",
+        "alias": "delta"
+      },
+      {
+        "expr": "(currentSales-baselineSales)/NULLIF(baselineSales,0)",
+        "alias": "growthRate"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "region",
+        "order": "asc"
+      }
+    ]
+  }
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## year-to-date-yoy
+
+累计同比：比较 2026 与 2025 各自 1 月 1 日至 4 月 1 日之前的销售额，采用左闭右开的相同进度口径。先累加再求增长率，不平均单月增长率；基期为 0 时增长率为 NULL，缺失期间不补零。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "analysis-year-to-date-yoy",
+  "description": "累计同比：比较 2026 与 2025 各自 1 月 1 日至 4 月 1 日之前的销售额，采用左闭右开的相同进度口径。先累加再求增长率，不平均单月增长率；基期为 0 时增长率为 NULL，缺失期间不补零。",
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "orderDate",
+      "type": "datetime"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "orderDate": "2025-01-01 00:00:00",
+      "sales": 40
+    },
+    {
+      "region": "A",
+      "orderDate": "2025-03-31 23:59:59",
+      "sales": 80
+    },
+    {
+      "region": "A",
+      "orderDate": "2025-04-01 00:00:00",
+      "sales": 888
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-01-01 00:00:00",
+      "sales": 60
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-03-31 23:59:59",
+      "sales": 90
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-04-01 00:00:00",
+      "sales": 999
+    },
+    {
+      "region": "B",
+      "orderDate": "2025-02-10 10:00:00",
+      "sales": 120
+    },
+    {
+      "region": "B",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 90
+    },
+    {
+      "region": "C",
+      "orderDate": "2025-02-10 10:00:00",
+      "sales": 0
+    },
+    {
+      "region": "C",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 10
+    },
+    {
+      "region": "D",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 40
+    },
+    {
+      "region": "E",
+      "orderDate": "2025-02-10 10:00:00",
+      "sales": 80
+    },
+    {
+      "region": "E",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 0
+    },
+    {
+      "region": "F",
+      "orderDate": "2025-02-10 10:00:00",
+      "sales": 20
+    }
+  ],
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        {
+          "field": "sales",
+          "alias": "currentSales",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "orderDate",
+                "op": ">=",
+                "value": "2026-01-01 00:00:00"
+              },
+              {
+                "field": "orderDate",
+                "op": "<",
+                "value": "2026-04-01 00:00:00"
+              }
+            ]
+          }
+        },
+        {
+          "field": "sales",
+          "alias": "baselineSales",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "orderDate",
+                "op": ">=",
+                "value": "2025-01-01 00:00:00"
+              },
+              {
+                "field": "orderDate",
+                "op": "<",
+                "value": "2025-04-01 00:00:00"
+              }
+            ]
+          }
+        }
+      ],
+      "where": {
+        "op": "or",
+        "conditions": [
+          {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "orderDate",
+                "op": ">=",
+                "value": "2026-01-01 00:00:00"
+              },
+              {
+                "field": "orderDate",
+                "op": "<",
+                "value": "2026-04-01 00:00:00"
+              }
+            ]
+          },
+          {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "orderDate",
+                "op": ">=",
+                "value": "2025-01-01 00:00:00"
+              },
+              {
+                "field": "orderDate",
+                "op": "<",
+                "value": "2025-04-01 00:00:00"
+              }
+            ]
+          }
+        ]
+      },
+      "groupBy": [
+        "region"
+      ]
+    },
+    "select": [
+      "region",
+      "currentSales",
+      "baselineSales",
+      {
+        "expr": "currentSales-baselineSales",
+        "alias": "delta"
+      },
+      {
+        "expr": "(currentSales-baselineSales)/NULLIF(baselineSales,0)",
+        "alias": "growthRate"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "region",
+        "order": "asc"
+      }
+    ]
+  }
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```

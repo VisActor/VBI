@@ -1,6 +1,7 @@
 import { Dataset } from './dataset/dataset'
-import type { RawDatasetSource, DatasetColumn, QueryAdapter, StorageAdapter } from './types'
-import { DatasetSourceBuilder } from './data-source-builder'
+import type { RawDatasetSource, DatasetColumn, QueryAdapter, StorageAdapter, ValidateExpressionOptions } from './types'
+import { DatasetSourceBuilder } from './dataset/source/builder'
+import { parseNumericExpression } from './sql/numericExpression'
 
 export class VQuery {
   protected queryAdapter: QueryAdapter
@@ -10,6 +11,11 @@ export class VQuery {
   constructor(queryAdapter: QueryAdapter, storageAdapter: StorageAdapter) {
     this.queryAdapter = queryAdapter
     this.storageAdapter = storageAdapter
+  }
+
+  /** Validate a numeric expression without querying data; invalid syntax, bindings or columns throw. */
+  public static validateExpression(expr: string, options: ValidateExpressionOptions = {}): void {
+    parseNumericExpression(expr, options.parameters, options.columns, options.columns !== undefined)
   }
 
   private async checkInitialized() {

@@ -17,10 +17,12 @@ describe('Where with TIMESTAMP comparison window', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId, {
+      columns: schema as DatasetColumn[],
+    })
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "id", "event", "amount", strftime(CAST("created_at" AS TIMESTAMP), '%Y-%m-%d %H:%M') as "created_minute" from "where-timestamp-window" where ("created_at" >= '2024-01-15 12:00:00' and "created_at" < '2024-02-01 00:00:00') order by "created_minute" asc nulls last"`,
+      `"select "id", "event", "amount", strftime(CAST("created_at" AS TIMESTAMP), '%Y-%m-%d %H:%M') as "created_minute" from (select "id" as "id", "event" collate "binary" as "event", "created_at" as "created_at", "amount" as "amount" from "where-timestamp-window") as "__vquery_source" where ("created_at" >= '2024-01-15 12:00:00' and "created_at" < '2024-02-01 00:00:00') order by "created_minute" asc nulls last"`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

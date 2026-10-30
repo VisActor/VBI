@@ -1,7 +1,7 @@
 import { rs } from '@rstest/core'
 import { createVBI } from '@visactor/vbi'
 import type { VBIWhereDatePredicate } from '@visactor/vbi'
-import { resolveDatePredicate } from 'src/chart-builder/pipeline/vqueryDSL/resolveDatePredicate'
+import { resolveDatePredicate } from 'src/query-builder/pipeline/resolveDatePredicate'
 
 const now = new Date('2026-10-28T12:00:00Z')
 const cases: Array<[VBIWhereDatePredicate, string, string]> = [

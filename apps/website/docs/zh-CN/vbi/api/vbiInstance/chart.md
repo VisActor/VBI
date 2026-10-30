@@ -21,7 +21,7 @@ create(vbi: VBIChartDSLInput, builderOptions?: VBIChartBuilderOptions<TQueryDSL,
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `vbi` | VBIChartDSLInput | - |
-| `builderOptions?` | VBIChartBuilderOptions<TQueryDSL, TSeedDSL> | - |
+| `builderOptions?` | VBIChartBuilderOptions&lt;TQueryDSL, TSeedDSL> | - |
 
 ### createEmpty
 

@@ -1,0 +1,34 @@
+{
+  "datasetId": "expression-basic",
+  "description": "销售额减去成本得到利润；expr 定义算式，alias 为结果列命名。",
+  "vquery": {
+    "select": [
+      "sales",
+      "cost",
+      {
+        "expr": "sales - cost",
+        "alias": "profit"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "cost",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "sales": 120,
+      "cost": 80
+    },
+    {
+      "sales": 90,
+      "cost": 60
+    }
+  ]
+}

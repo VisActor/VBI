@@ -1,3 +1,5 @@
+import type { Where } from './Where'
+
 export type BaseAggregateFunction =
   | 'count'
   | 'count_distinct'
@@ -23,13 +25,35 @@ export type DateAggregateFunction =
 
 export type AggregateFunction = BaseAggregateFunction | DateAggregateFunction
 
-export type SelectItem<T> = {
-  field: keyof T
-  alias?: string
-  aggr?: {
-    func: AggregateFunction
-    quantile?: number
-  }
-}
+export type SelectItem<T> =
+  | {
+      field: keyof T
+      alias?: string
+      /** Keep the field value only when the condition holds; otherwise use NULL. */
+      when?: Where<T>
+      aggr?: {
+        func: AggregateFunction
+        quantile?: number
+      }
+      expr?: never
+      parameters?: never
+    }
+  | {
+      field: '*'
+      alias?: string
+      when?: never
+      aggr: { func: 'count' }
+      expr?: never
+      parameters?: never
+    }
+  | {
+      /** Numeric SQL expression over this query's input columns. */
+      expr: string
+      alias: string
+      parameters?: (number | null)[]
+      field?: never
+      when?: never
+      aggr?: never
+    }
 
-export type Select<T> = Array<keyof T | SelectItem<T>>
+export type Select<T> = Array<keyof T | '*' | SelectItem<T>>

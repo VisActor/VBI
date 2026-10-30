@@ -1,0 +1,28 @@
+{
+  "name": "undo-redo",
+  "builder": "query",
+  "description": "把返回行数从 5 改为 1，撤销恢复为 5，再重做为 1；最终展示重做后的查询结果。",
+  "tags": ["query", "undoManager"],
+  "priority": 1,
+  "dsl": {
+    "dimensions": [
+      {
+        "id": "region",
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 5
+  },
+  "code": "const applyBuilder = async (builder: VBIQueryBuilder) => {\n  builder.undoManager.clear()\n  builder.limit.setLimit(1)\n  builder.undoManager.undo()\n  const afterUndo = builder.limit.getLimit()\n  builder.undoManager.redo()\n  const afterRedo = builder.limit.getLimit()\n  return { afterUndo, afterRedo, result: await builder.query() }\n}"
+}

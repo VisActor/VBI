@@ -6,6 +6,8 @@ import type { Where } from './Where'
 
 export interface QueryDSL<Table> {
   select: Select<Table>
+  /** Use a SQL subquery in FROM; the physical dataset remains the execution context. */
+  from?: VQueryDSL
   where?: Where<Table>
   groupBy?: GroupBy<Table>
   having?: Having<Table>

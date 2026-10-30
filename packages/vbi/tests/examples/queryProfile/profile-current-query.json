@@ -1,0 +1,27 @@
+{
+  "builder": "query",
+  "name": "profile-current-query",
+  "description": "统计华东地区销售额最高的二十条明细，获取有效数、范围、数值分箱和分类频次；调用不修改查询状态。",
+  "tags": ["query", "profile", "bins", "topK"],
+  "priority": 3,
+  "dsl": {
+    "dimensions": [
+      {
+        "id": "productType",
+        "field": "product_type",
+        "alias": "品类"
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ]
+  },
+  "code": "const applyBuilder = async (builder: VBIQueryBuilder) => {\n  builder.queryMode.setMode('detail')\n  builder.whereFilter.add('area', node => node.setOperator('eq').setValue('华东'))\n  builder.measures.update('sales', node => node.setSort({ order: 'desc' }))\n  builder.limit.setLimit(20)\n  const before = builder.build()\n  const profile = await builder.queryProfile({\n    columns: ['sales', 'productType'],\n    bins: { maxBins: 5, discreteMax: 3 },\n    topK: 2,\n  })\n\n  return { stateUnchanged: JSON.stringify(before) === JSON.stringify(builder.build()), profile }\n}"
+}

@@ -1,19 +1,12 @@
-import type {
-  DatasetColumn,
-  DatasetSource,
-  RawDatasetSource,
-  QueryDSL,
-  QueryAdapter,
-  StorageAdapter,
-  VQueryDSL,
-} from '../types'
-import { convertDSLToDuckDB } from '../sql-builder'
-import { DatasetSourceBuilder } from '../data-source-builder'
+import type { DatasetColumn, DatasetSource, RawDatasetSource, QueryDSL, QueryAdapter, StorageAdapter } from '../types'
+import { convertDSLToDuckDB } from '../sql/compiler'
+import { DatasetSourceBuilder } from './source/builder'
 
 export class Dataset {
   private queryAdapter: QueryAdapter
   private storageAdapter: StorageAdapter
   private _datasetId: string
+  private temporaryColumns?: DatasetColumn[]
 
   constructor(queryAdapter: QueryAdapter, storageAdapter: StorageAdapter, datasetId: string) {
     this.queryAdapter = queryAdapter
@@ -33,6 +26,7 @@ export class Dataset {
     if (columns.length > 0 && datasetSource) {
       await this.createOrReplaceView(columns, datasetSource)
     }
+    this.temporaryColumns = temporaryColumns
   }
 
   public async createOrReplaceView(columns: DatasetColumn[], datasetSource: DatasetSource) {
@@ -44,6 +38,7 @@ export class Dataset {
       throw new Error(`Unsupported dataSource type: ${datasetSource.type}`)
     }
     await this.queryAdapter.loadDataset(this._datasetId, columns, datasetSource)
+    this.temporaryColumns = columns
   }
 
   /**
@@ -62,8 +57,10 @@ export class Dataset {
     await this.init()
   }
 
-  public async query<T extends Record<string, number | string>>(queryDSL: QueryDSL<T> | VQueryDSL<T>) {
-    const sql = convertDSLToDuckDB(queryDSL, this.datasetId)
+  public async query<T extends Record<string, unknown>>(queryDSL: QueryDSL<T>) {
+    const columns =
+      this.temporaryColumns ?? (await this.storageAdapter.readDataset(this._datasetId))?.datasetSchema.columns
+    const sql = convertDSLToDuckDB(queryDSL, this.datasetId, { columns })
     return this.queryBySQL(sql)
   }
 

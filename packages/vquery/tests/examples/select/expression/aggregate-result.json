@@ -1,0 +1,97 @@
+{
+  "datasetId": "expression-aggregate-result",
+  "description": "计算列仍是普通数值列，可以在下一层查询中统计中位数、分位数和行数。",
+  "vquery": {
+    "from": {
+      "from": {
+        "select": [
+          "region",
+          {
+            "field": "sales",
+            "aggr": {
+              "func": "sum"
+            },
+            "alias": "sales"
+          },
+          {
+            "field": "profit",
+            "aggr": {
+              "func": "sum"
+            },
+            "alias": "profit"
+          }
+        ],
+        "groupBy": ["region"]
+      },
+      "select": [
+        "region",
+        "sales",
+        "profit",
+        {
+          "expr": "profit / NULLIF(sales, 0)",
+          "alias": "margin"
+        }
+      ]
+    },
+    "select": [
+      {
+        "field": "margin",
+        "aggr": {
+          "func": "median"
+        },
+        "alias": "median"
+      },
+      {
+        "field": "margin",
+        "aggr": {
+          "func": "quantile",
+          "quantile": 0.75
+        },
+        "alias": "q75"
+      },
+      {
+        "field": "*",
+        "aggr": {
+          "func": "count"
+        },
+        "alias": "regions"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "sales": 100,
+      "profit": 10
+    },
+    {
+      "region": "A",
+      "sales": 100,
+      "profit": 30
+    },
+    {
+      "region": "B",
+      "sales": 50,
+      "profit": 20
+    },
+    {
+      "region": "C",
+      "sales": 0,
+      "profit": 5
+    }
+  ]
+}

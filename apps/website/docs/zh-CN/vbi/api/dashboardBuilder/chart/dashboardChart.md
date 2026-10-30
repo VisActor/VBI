@@ -14,8 +14,8 @@ constructor(widget: Y.Map<any>, options?: DashboardChartBuilderOptions<TQueryDSL
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `widget` | Y.Map<any> | - |
-| `options?` = {} | DashboardChartBuilderOptions<TQueryDSL, TSeedDSL> | - |
+| `widget` | Y.Map&lt;any> | - |
+| `options?` = {} | DashboardChartBuilderOptions&lt;TQueryDSL, TSeedDSL> | - |
 
 ### getId
 

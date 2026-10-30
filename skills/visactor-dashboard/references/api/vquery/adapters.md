@@ -10,15 +10,15 @@
 类型引用沿用源码模块名，包的公开导出以索引为准：
 
 ```typescript
-import type { DatasetColumn, DatasetSource, QueryAdapter } from '../../types'
+import type { DataRow } from '../../../dataset/types'
+import type { DatasetColumn, DatasetSource, QueryAdapter } from '../../../types'
 import type { DatasetSchema } from '../../types/DataSet'
 import type { DatasetSource, StorageAdapter } from '../../types'
-import { type DataRow } from '../../data-loader'
 ```
 
 ## InMemoryAdapter
 
-源码：[packages/vquery/src/adapters/storage-adapter/inmemoryAdapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/adapters/storage-adapter/inmemoryAdapter.ts#L11)
+源码：[packages/vquery/src/adapters/storage/inmemoryAdapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/adapters/storage/inmemoryAdapter.ts#L11)
 
 包导出：`InMemoryAdapter`
 
@@ -39,7 +39,7 @@ export declare class InMemoryAdapter implements StorageAdapter {
 
 ## InMemoryQueryAdapter
 
-源码：[packages/vquery/src/adapters/query-adapter/inMemoryQueryAdapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/adapters/query-adapter/inMemoryQueryAdapter.ts#L19)
+源码：[packages/vquery/src/adapters/query/in-memory/adapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/adapters/query/in-memory/adapter.ts#L21)
 
 包导出：`InMemoryQueryAdapter`
 
@@ -57,7 +57,7 @@ export declare class InMemoryQueryAdapter implements QueryAdapter {
     {
       cid: number
       name: string
-      type: import('../../types').DataType
+      type: import('../../../types').DataType
       notnull: boolean
       dflt_value: null
       pk: boolean
@@ -68,7 +68,7 @@ export declare class InMemoryQueryAdapter implements QueryAdapter {
 
 ## IndexedDBAdapter
 
-源码：[packages/vquery/src/adapters/storage-adapter/indexeddbAdapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/adapters/storage-adapter/indexeddbAdapter.ts#L11)
+源码：[packages/vquery/src/adapters/storage/indexeddbAdapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/adapters/storage/indexeddbAdapter.ts#L11)
 
 包导出：`IndexedDBAdapter`
 
@@ -102,7 +102,7 @@ dbName = 'vquery'
 
 ## StoredDataset
 
-源码：[packages/vquery/src/adapters/storage-adapter/inmemoryAdapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/adapters/storage-adapter/inmemoryAdapter.ts#L5)
+源码：[packages/vquery/src/adapters/storage/inmemoryAdapter.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/adapters/storage/inmemoryAdapter.ts#L5)
 
 关联声明，未从包入口独立导出。
 

@@ -1,4 +1,4 @@
-import { mysqlStrategy, duckdbStrategy } from '../../../../src/sql-builder/dialect'
+import { mysqlStrategy, duckdbStrategy } from '../../../../src/sql/compiler/dialect'
 import { Kysely } from 'kysely'
 
 for (const [name, strategy] of Object.entries({ mysql: mysqlStrategy, duckdb: duckdbStrategy })) {

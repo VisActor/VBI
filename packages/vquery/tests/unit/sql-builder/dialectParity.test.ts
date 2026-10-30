@@ -117,7 +117,7 @@ it('quotes exact string values and fixes LIKE escape semantics in both dialects'
   for (const dialect of ['mysql', 'duckdb'] as const) {
     for (const op of ['like', 'not like', 'ilike', 'not ilike']) {
       const result = compile({ select: ['category'], where: { field: 'category', op, value: 'a\\_b' } }, dialect)
-      expect(result.sql).toContain("escape ''")
+      expect(result.sql).toContain(dialect === 'mysql' ? "escape '!'" : "escape ''")
       expect(result.parameters).toEqual(['a\\_b'])
       for (const value of [1, false])
         expect(() => compile({ select: ['category'], where: { field: 'category', op, value } }, dialect)).toThrow(
@@ -136,6 +136,12 @@ it('quotes exact string values and fixes LIKE escape semantics in both dialects'
     ])
   }
   expect(compile({ select: [{ field: 'value', aggr: { func: 'count' } }] }, 'duckdb').sql).not.toContain('AS INTEGER')
+})
+
+it('keeps literal LIKE escape characters in MySQL patterns', () => {
+  const result = compile({ select: ['category'], where: { field: 'category', op: 'like', value: 'a!_%!' } })
+  expect(result.sql).toContain("escape '!'")
+  expect(result.parameters).toEqual(['a!!_%!!'])
 })
 
 it('rejects mixed comparison types before native implicit conversions diverge', () => {

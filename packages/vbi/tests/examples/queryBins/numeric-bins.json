@@ -1,0 +1,20 @@
+{
+  "builder": "query",
+  "name": "numeric-bins",
+  "description": "只查询销售额的分箱，不计算分类频次；在筛选和 limit 后的二十条记录上生成四个等宽箱。",
+  "tags": ["query", "bins", "detail"],
+  "priority": 2,
+  "dsl": {
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ]
+  },
+  "code": "const applyBuilder = async (builder: VBIQueryBuilder) => {\n  builder.queryMode.setMode('detail')\n  builder.whereFilter.add('sales', node => node.setOperator('between').setValue([100, 1000]))\n  builder.limit.setLimit(20)\n\n  return builder.queryBins({ columns: ['sales'], maxBins: 4, discreteMax: 3 })\n}"
+}

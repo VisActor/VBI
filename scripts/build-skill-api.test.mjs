@@ -111,20 +111,20 @@ function fixture(t) {
     write(
       root,
       `packages/vquery/src/${entry}.ts`,
-      `export { VQuery } from './vquery-${entry}'
+      `export { VQuery } from './default-vquery'
       export { ${entry === 'node' ? 'InMemoryAdapter' : 'IndexedDBAdapter'} } from './adapters/storage'
       export * from './types/query'
-      export * from './sql-builder/compile'
+      export * from './sql/compiler/compile'
       export * from './dataset/dataset'
-      export * from './utils/url'`,
-    )
-    write(
-      root,
-      `packages/vquery/src/vquery-${entry}.ts`,
-      `import { VQuery as Core } from './VQuery'
-      export class VQuery extends Core { constructor() { super() } }`,
+      export * from './dataset/source/url'`,
     )
   }
+  write(
+    root,
+    'packages/vquery/src/default-vquery.ts',
+    `import { VQuery as Core } from './VQuery'
+      export class VQuery extends Core { constructor() { super() } }`,
+  )
   write(
     root,
     'packages/vquery/src/adapters/storage.ts',
@@ -137,11 +137,11 @@ function fixture(t) {
   )
   write(
     root,
-    'packages/vquery/src/sql-builder/compile.ts',
+    'packages/vquery/src/sql/compiler/compile.ts',
     `export const compileQuery = (value: string) => ({ sql: value, parameters: [] as string[] })`,
   )
   write(root, 'packages/vquery/src/dataset/dataset.ts', 'export class Dataset {}')
-  write(root, 'packages/vquery/src/utils/url.ts', 'export const isUrl = (value: string) => value.length > 0')
+  write(root, 'packages/vquery/src/dataset/source/url.ts', 'export const isUrl = (value: string) => value.length > 0')
   const vseedFiles = {
     'builder/builder.ts': 'export class Builder { build() { return { chart: true } } }',
     'builder/register/all.ts': 'export const registerAll = () => true',
@@ -217,8 +217,7 @@ test('keeps conditional exports distinct and documents inherited public members'
       .find((cells) => cells[1] === `\`${name}\``)?.[2]
   assert.equal(exportConditions('InMemoryAdapter'), 'node')
   assert.equal(exportConditions('IndexedDBAdapter'), 'browser, default')
-  assert.match(index, /VQuery \(browser, default\)/)
-  assert.match(index, /VQuery \(node\)/)
+  assert.equal(exportConditions('VQuery'), 'browser, default, node')
   const runtime = fs.readFileSync(path.join(api, 'runtime.md'), 'utf8')
   assert.match(runtime, /query\(value: string\): string/)
   assert.doesNotMatch(runtime, /private secret|protected cache/)

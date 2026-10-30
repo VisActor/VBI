@@ -1,0 +1,263 @@
+# Dimensions
+
+import { registerDemoConnector } from '@components/demoConnector'
+
+{registerDemoConnector()}
+
+## add-dimension
+
+添加区域维度，按区域汇总销售额。
+
+
+> 标签: `query` `dimensions`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "limit": 5
+        }
+      })
+      try {
+        const applyBuilder = (builder: VBIQueryBuilder) => {
+  builder.dimensions.add('area', node => node.setAlias('区域'))
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## sort-dimension
+
+通过维度 ID 更新显示名称，并按区域升序返回。
+
+
+> 标签: `query` `dimensions`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "region",
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "limit": 3
+        }
+      })
+      try {
+        const applyBuilder = (builder: VBIQueryBuilder) => {
+  builder.dimensions.update('region', node => node.setAlias('销售区域').setSort({ order: 'asc' }))
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## remove-dimension
+
+移除品类维度，将区域与品类明细汇总为区域销售额。
+
+
+> 标签: `query` `dimensions`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "region",
+              "field": "area",
+              "alias": "区域"
+            },
+            {
+              "id": "productType",
+              "field": "product_type",
+              "alias": "品类"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "limit": 5
+        }
+      })
+      try {
+        const applyBuilder = (builder: VBIQueryBuilder) => {
+  builder.dimensions.remove('productType')
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## monthly-sales
+
+将下单日期按月分组，按月份升序查看每月销售额。
+
+
+> 标签: `query` `dimensions`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "limit": 5
+        }
+      })
+      try {
+        const applyBuilder = (builder: VBIQueryBuilder) => {
+  builder.dimensions.add('order_date', node => node
+    .setAlias('月份')
+    .setAggregate({ func: 'toMonth' })
+    .setSort({ order: 'asc' }))
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```

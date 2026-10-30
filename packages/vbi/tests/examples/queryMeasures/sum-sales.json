@@ -1,0 +1,9 @@
+{
+  "name": "sum-sales",
+  "builder": "query",
+  "description": "添加销售额指标，使用 sum 查询全部记录的销售总额。",
+  "tags": ["query", "measures"],
+  "priority": 1,
+  "dsl": {},
+  "code": "const applyBuilder = (builder: VBIQueryBuilder) => {\n  builder.measures.add('sales', node => node.setAlias('销售额合计').setAggregate({ func: 'sum' }))\n}"
+}

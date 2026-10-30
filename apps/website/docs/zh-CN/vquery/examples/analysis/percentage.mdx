@@ -1,0 +1,402 @@
+# Percentage
+
+以同一范围的总额作分母，先计算品类占比，再比较份额变化。0.25 表示 25%，以 Pp 结尾的字段表示百分点。
+
+## category-share
+
+按地区计算固定品类的销售占比：分母包含该地区全部品类，其他品类金额为总额减去已列品类。分类金额缺省按 0 计算，总额为 0 或 NULL 时占比返回 NULL；0.25 表示 25%。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "analysis-category-share",
+  "description": "按地区计算固定品类的销售占比：分母包含该地区全部品类，其他品类金额为总额减去已列品类。分类金额缺省按 0 计算，总额为 0 或 NULL 时占比返回 NULL；0.25 表示 25%。",
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "category": "electronics",
+      "sales": 40
+    },
+    {
+      "region": "A",
+      "category": "electronics",
+      "sales": 60
+    },
+    {
+      "region": "A",
+      "category": "food",
+      "sales": 100
+    },
+    {
+      "region": "A",
+      "category": "other",
+      "sales": 200
+    },
+    {
+      "region": "B",
+      "category": "food",
+      "sales": 80
+    },
+    {
+      "region": "B",
+      "category": "other",
+      "sales": 80
+    },
+    {
+      "region": "C",
+      "category": "electronics",
+      "sales": 0
+    },
+    {
+      "region": "C",
+      "category": "food",
+      "sales": 0
+    },
+    {
+      "region": "D",
+      "category": "other",
+      "sales": null
+    }
+  ],
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        {
+          "field": "sales",
+          "alias": "totalSales",
+          "aggr": {
+            "func": "sum"
+          }
+        },
+        {
+          "field": "sales",
+          "alias": "electronicsSales",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "category",
+                "op": "=",
+                "value": "electronics"
+              }
+            ]
+          }
+        },
+        {
+          "field": "sales",
+          "alias": "foodSales",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "category",
+                "op": "=",
+                "value": "food"
+              }
+            ]
+          }
+        }
+      ],
+      "groupBy": [
+        "region"
+      ]
+    },
+    "select": [
+      "region",
+      "totalSales",
+      {
+        "expr": "COALESCE(electronicsSales,0)/NULLIF(totalSales,0)",
+        "alias": "electronicsShare"
+      },
+      {
+        "expr": "COALESCE(foodSales,0)/NULLIF(totalSales,0)",
+        "alias": "foodShare"
+      },
+      {
+        "expr": "(totalSales-COALESCE(electronicsSales,0)-COALESCE(foodSales,0))/NULLIF(totalSales,0)",
+        "alias": "otherShare"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "region",
+        "order": "asc"
+      }
+    ]
+  }
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## share-change
+
+比较 2026-03 与 2026-02 的线上销售份额，各期分母均包含全部渠道。份额从 25% 到 50% 时，changePp 为 25 个百分点，relativeChange 为 1 即相对增长 100%；基期份额为 0 时相对变化返回 NULL。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "analysis-share-change",
+  "description": "比较 2026-03 与 2026-02 的线上销售份额，各期分母均包含全部渠道。份额从 25% 到 50% 时，changePp 为 25 个百分点，relativeChange 为 1 即相对增长 100%；基期份额为 0 时相对变化返回 NULL。",
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "period",
+      "type": "string"
+    },
+    {
+      "name": "channel",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "period": "2026-02",
+      "channel": "online",
+      "sales": 40
+    },
+    {
+      "region": "A",
+      "period": "2026-02",
+      "channel": "store",
+      "sales": 120
+    },
+    {
+      "region": "A",
+      "period": "2026-03",
+      "channel": "online",
+      "sales": 80
+    },
+    {
+      "region": "A",
+      "period": "2026-03",
+      "channel": "store",
+      "sales": 80
+    },
+    {
+      "region": "A",
+      "period": "2026-04",
+      "channel": "online",
+      "sales": 999
+    },
+    {
+      "region": "B",
+      "period": "2026-02",
+      "channel": "online",
+      "sales": 0
+    },
+    {
+      "region": "B",
+      "period": "2026-02",
+      "channel": "store",
+      "sales": 100
+    },
+    {
+      "region": "B",
+      "period": "2026-03",
+      "channel": "online",
+      "sales": 50
+    },
+    {
+      "region": "B",
+      "period": "2026-03",
+      "channel": "store",
+      "sales": 50
+    },
+    {
+      "region": "C",
+      "period": "2026-02",
+      "channel": "online",
+      "sales": 50
+    },
+    {
+      "region": "C",
+      "period": "2026-02",
+      "channel": "store",
+      "sales": 50
+    },
+    {
+      "region": "D",
+      "period": "2026-03",
+      "channel": "online",
+      "sales": 20
+    },
+    {
+      "region": "D",
+      "period": "2026-03",
+      "channel": "store",
+      "sales": 20
+    }
+  ],
+  "vquery": {
+    "from": {
+      "from": {
+        "select": [
+          "region",
+          {
+            "field": "sales",
+            "alias": "currentTotal",
+            "aggr": {
+              "func": "sum"
+            },
+            "when": {
+              "op": "and",
+              "conditions": [
+                {
+                  "field": "period",
+                  "op": "=",
+                  "value": "2026-03"
+                }
+              ]
+            }
+          },
+          {
+            "field": "sales",
+            "alias": "currentOnline",
+            "aggr": {
+              "func": "sum"
+            },
+            "when": {
+              "op": "and",
+              "conditions": [
+                {
+                  "field": "period",
+                  "op": "=",
+                  "value": "2026-03"
+                },
+                {
+                  "field": "channel",
+                  "op": "=",
+                  "value": "online"
+                }
+              ]
+            }
+          },
+          {
+            "field": "sales",
+            "alias": "baselineTotal",
+            "aggr": {
+              "func": "sum"
+            },
+            "when": {
+              "op": "and",
+              "conditions": [
+                {
+                  "field": "period",
+                  "op": "=",
+                  "value": "2026-02"
+                }
+              ]
+            }
+          },
+          {
+            "field": "sales",
+            "alias": "baselineOnline",
+            "aggr": {
+              "func": "sum"
+            },
+            "when": {
+              "op": "and",
+              "conditions": [
+                {
+                  "field": "period",
+                  "op": "=",
+                  "value": "2026-02"
+                },
+                {
+                  "field": "channel",
+                  "op": "=",
+                  "value": "online"
+                }
+              ]
+            }
+          }
+        ],
+        "where": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "period",
+              "op": "in",
+              "value": [
+                "2026-02",
+                "2026-03"
+              ]
+            }
+          ]
+        },
+        "groupBy": [
+          "region"
+        ]
+      },
+      "select": [
+        "region",
+        {
+          "expr": "COALESCE(currentOnline,0)/NULLIF(currentTotal,0)",
+          "alias": "currentShare"
+        },
+        {
+          "expr": "COALESCE(baselineOnline,0)/NULLIF(baselineTotal,0)",
+          "alias": "baselineShare"
+        }
+      ]
+    },
+    "select": [
+      "region",
+      "currentShare",
+      "baselineShare",
+      {
+        "expr": "(currentShare-baselineShare)*100",
+        "alias": "changePp"
+      },
+      {
+        "expr": "(currentShare-baselineShare)/NULLIF(baselineShare,0)",
+        "alias": "relativeChange"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "region",
+        "order": "asc"
+      }
+    ]
+  }
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```

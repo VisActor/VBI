@@ -17,7 +17,7 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `dsl` | Y.Map&lt;any> | - |
 
 ### getConditions
 
@@ -229,7 +229,7 @@ static isGroup(yMap: Y.Map<any>): boolean
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | Y.Map&lt;any> | - |
 
 ### static isNode
 
@@ -247,4 +247,4 @@ static isNode(yMap: Y.Map<any>): boolean
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | Y.Map&lt;any> | - |

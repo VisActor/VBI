@@ -1,4 +1,5 @@
-import { executeSQL, parseSQL } from '../../../src/query-engine/sql'
+import { executeSQL } from '../../../src/adapters/query/in-memory/execute'
+import { parseSQL } from '../../../src/sql/parser'
 
 it('preserves null predicates and three-valued boolean logic', () => {
   const rows = [{ value: null }, { value: 3 }]

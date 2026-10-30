@@ -1,4 +1,4 @@
-import { InMemoryAdapter } from '../../../src/adapters/storage-adapter/inmemoryAdapter'
+import { InMemoryAdapter } from '../../../src/adapters/storage/inmemoryAdapter'
 import type { DatasetSchema } from '../../../src/types/DataSet'
 import type { DatasetSource } from '../../../src/types'
 

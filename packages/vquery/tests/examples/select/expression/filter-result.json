@@ -1,0 +1,84 @@
+{
+  "datasetId": "expression-filter-result",
+  "description": "将计算结果作为下一层 FROM 输入，使用普通 WHERE 筛选利润率，不扩展筛选语法。",
+  "vquery": {
+    "from": {
+      "from": {
+        "select": [
+          "region",
+          {
+            "field": "sales",
+            "aggr": {
+              "func": "sum"
+            },
+            "alias": "sales"
+          },
+          {
+            "field": "profit",
+            "aggr": {
+              "func": "sum"
+            },
+            "alias": "profit"
+          }
+        ],
+        "groupBy": ["region"]
+      },
+      "select": [
+        "region",
+        "sales",
+        "profit",
+        {
+          "expr": "profit / NULLIF(sales, 0)",
+          "alias": "margin"
+        }
+      ]
+    },
+    "select": ["region", "margin"],
+    "where": {
+      "op": "and",
+      "conditions": [
+        {
+          "field": "margin",
+          "op": ">",
+          "value": 0.3
+        }
+      ]
+    }
+  },
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "sales": 100,
+      "profit": 10
+    },
+    {
+      "region": "A",
+      "sales": 100,
+      "profit": 30
+    },
+    {
+      "region": "B",
+      "sales": 50,
+      "profit": 20
+    },
+    {
+      "region": "C",
+      "sales": 0,
+      "profit": 5
+    }
+  ]
+}

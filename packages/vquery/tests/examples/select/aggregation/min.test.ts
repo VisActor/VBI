@@ -17,9 +17,13 @@ describe('Select Min Example', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId, {
+      columns: schema as DatasetColumn[],
+    })
 
-    expect(sql).toMatchInlineSnapshot(`"select min("salary") as "min_salary" from "select-aggregation-min""`)
+    expect(sql).toMatchInlineSnapshot(
+      `"select min("salary") as "min_salary" from (select "id" as "id", "name" collate "binary" as "name", "age" as "age", "department" collate "binary" as "department", "salary" as "salary" from "select-aggregation-min") as "__vquery_source""`,
+    )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)
 

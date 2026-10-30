@@ -1,0 +1,28 @@
+{
+  "datasetId": "subquery-statistics",
+  "description": "内层按门店汇总销售额，外层计算门店数、中位数和 75% 分位数；统计对象是四家门店的总额，而非六条原始明细。",
+  "vquery": {
+    "from": {
+      "select": ["region", "store", { "field": "sales", "alias": "storeTotal", "aggr": { "func": "sum" } }],
+      "groupBy": ["region", "store"]
+    },
+    "select": [
+      { "field": "*", "alias": "stores", "aggr": { "func": "count" } },
+      { "field": "storeTotal", "alias": "median", "aggr": { "func": "median" } },
+      { "field": "storeTotal", "alias": "q75", "aggr": { "func": "quantile", "quantile": 0.75 } }
+    ]
+  },
+  "dataset": [
+    { "region": "East", "store": "A", "sales": 10 },
+    { "region": "East", "store": "A", "sales": 20 },
+    { "region": "East", "store": "B", "sales": 40 },
+    { "region": "West", "store": "C", "sales": 15 },
+    { "region": "West", "store": "C", "sales": 5 },
+    { "region": "West", "store": "D", "sales": 60 }
+  ],
+  "schema": [
+    { "name": "region", "type": "string" },
+    { "name": "store", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ]
+}

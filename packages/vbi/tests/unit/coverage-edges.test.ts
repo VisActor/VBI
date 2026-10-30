@@ -1,7 +1,7 @@
 import * as Y from 'yjs'
 import { VBI, createVBI } from '@visactor/vbi'
 import { ChartTypeEnum } from '@visactor/vseed'
-import { getConnector, registerConnector } from 'src/chart-builder/connector'
+import { getConnector, registerConnector } from 'src/query-builder/connector'
 import { VBIChartBuilder } from 'src/chart-builder/builder'
 import { buildVSeedDSL } from 'src/chart-builder/adapters/vquery-vseed/build-vseed'
 import { ChartTypeBuilder } from 'src/chart-builder/features/chart-type/chart-type-builder'
@@ -16,19 +16,16 @@ import {
 import { DimensionsBuilder } from 'src/chart-builder/features/dimensions/dim-builder'
 import { MeasuresBuilder } from 'src/chart-builder/features/measures/mea-builder'
 import { MeasureNodeBuilder } from 'src/chart-builder/features/measures/mea-node-builder'
-import { HavingFilterBuilder } from 'src/chart-builder/features/havingFilter/having-builder'
-import { HavingFilterNodeBuilder } from 'src/chart-builder/features/havingFilter/having-node-builder'
-import { createHavingGroup, findEntry as findHavingEntry } from 'src/chart-builder/features/havingFilter/having-utils'
-import { WhereFilterBuilder } from 'src/chart-builder/features/whereFilter/where-builder'
-import { WhereFilterNodeBuilder } from 'src/chart-builder/features/whereFilter/where-node-builder'
+import { HavingFilterBuilder } from 'src/query-builder/features/havingFilter/having-builder'
+import { HavingFilterNodeBuilder } from 'src/query-builder/features/havingFilter/having-node-builder'
+import { createHavingGroup, findEntry as findHavingEntry } from 'src/query-builder/features/havingFilter/having-utils'
+import { WhereFilterBuilder } from 'src/query-builder/features/whereFilter/where-builder'
+import { WhereFilterNodeBuilder } from 'src/query-builder/features/whereFilter/where-node-builder'
 import { LocaleBuilder } from 'src/chart-builder/features/locale/locale-builder'
 import { ThemeBuilder } from 'src/chart-builder/features/theme/theme-builder'
-import {
-  mapAggregateForVQuery,
-  mapDimensionAggregateForVQuery,
-} from 'src/chart-builder/pipeline/vqueryDSL/aggregateMap'
-import { buildWhere } from 'src/chart-builder/pipeline/vqueryDSL/buildWhere'
-import { resolveDatePredicate } from 'src/chart-builder/pipeline/vqueryDSL/resolveDatePredicate'
+import { mapAggregateForVQuery, mapDimensionAggregateForVQuery } from 'src/query-builder/pipeline/aggregateMap'
+import { buildWhere } from 'src/query-builder/pipeline/buildWhere'
+import { resolveDatePredicate } from 'src/query-builder/pipeline/resolveDatePredicate'
 import { VBIDashboardBuilder } from 'src/dashboard-builder/builder'
 import { mergeWidgetLayoutsIntoDSL } from 'src/dashboard-builder/features/layout-merge'
 import { DashboardChartBuilder } from 'src/dashboard-builder/features/chart/chart-builder'
@@ -36,9 +33,9 @@ import { DashboardChartCollectionBuilder } from 'src/dashboard-builder/features/
 import { DashboardInsightBuilder } from 'src/dashboard-builder/features/insight/insight-builder'
 import { DashboardInsightCollectionBuilder } from 'src/dashboard-builder/features/insight/insight-collection-builder'
 import { zVBIDimensionGroupSchema } from 'src/types/chartDSL/dimensions/dimensions'
-import { zVBIHavingClause } from 'src/types/chartDSL/havingFilter/having'
+import { zVBIHavingClause } from 'src/types/queryDSL/havingFilter/having'
 import { zVBIMeasureGroup } from 'src/types/chartDSL/measures/measures'
-import { zVBIWhereClause, zVBIWhereScalarFilter } from 'src/types/chartDSL/whereFilter/filters'
+import { zVBIWhereClause, zVBIWhereScalarFilter } from 'src/types/queryDSL/whereFilter/filters'
 import {
   createDashboardWidgetYMap,
   getOrCreateDashboardWidgets,

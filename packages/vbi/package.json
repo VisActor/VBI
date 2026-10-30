@@ -20,6 +20,12 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./query": {
+      "source": "./src/query.ts",
+      "types": "./dist/query.d.ts",
+      "import": "./dist/query.js",
+      "require": "./dist/query.cjs"
     }
   },
   "main": "./dist/index.cjs",

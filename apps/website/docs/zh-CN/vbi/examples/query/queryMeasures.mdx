@@ -1,0 +1,176 @@
+# Measures
+
+import { registerDemoConnector } from '@components/demoConnector'
+
+{registerDemoConnector()}
+
+## sum-sales
+
+添加销售额指标，使用 sum 查询全部记录的销售总额。
+
+
+> 标签: `query` `measures`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{}
+      })
+      try {
+        const applyBuilder = (builder: VBIQueryBuilder) => {
+  builder.measures.add('sales', node => node.setAlias('销售额合计').setAggregate({ func: 'sum' }))
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## average-sales
+
+更新销售额指标的聚合方式，查询各区域的单笔平均销售额。
+
+
+> 标签: `query` `measures`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "region",
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "limit": 3
+        }
+      })
+      try {
+        const applyBuilder = (builder: VBIQueryBuilder) => {
+  builder.measures.update('sales', node => node.setAlias('平均销售额').setAggregate({ func: 'avg' }))
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## sales-and-profit
+
+按品类同时查询销售额与利润，并按销售总额从高到低排列。
+
+
+> 标签: `query` `measures`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "productType",
+              "field": "product_type",
+              "alias": "品类"
+            }
+          ],
+          "limit": 3
+        }
+      })
+      try {
+        const applyBuilder = (builder: VBIQueryBuilder) => {
+  builder.measures
+    .add('sales', node => node.setAlias('销售额').setAggregate({ func: 'sum' }).setSort({ order: 'desc' }))
+    .add('profit', node => node.setAlias('利润').setAggregate({ func: 'sum' }))
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```

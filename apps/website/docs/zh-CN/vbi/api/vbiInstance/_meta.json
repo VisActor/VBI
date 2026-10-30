@@ -1,6 +1,11 @@
 [
   {
     "type": "file",
+    "name": "query",
+    "label": "VBI.query"
+  },
+  {
+    "type": "file",
     "name": "chart",
     "label": "VBI.chart"
   },

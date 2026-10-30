@@ -16,7 +16,7 @@ constructor(yMap: Y.Map<any>)
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | Y.Map&lt;any> | - |
 
 ### getConditions
 

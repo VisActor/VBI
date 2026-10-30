@@ -1,0 +1,11 @@
+{
+  "builder": "query",
+  "name": "transaction-undo-redo",
+  "description": "用一个 Yjs 事务完成字段、筛选和 limit 配置，再撤销和重做；查询执行不产生新的状态通知。",
+  "tags": ["query", "undo", "redo", "observe"],
+  "priority": 2,
+  "dsl": {
+    "limit": 5
+  },
+  "code": "const applyBuilder = async (builder: VBIQueryBuilder) => {\n  builder.undoManager.clear()\n  let revisions = 0\n  const onChange = () => { revisions += 1 }\n  builder.observeDeep(onChange)\n  builder.doc.transact(() => {\n    builder.dimensions.add('product_type', node => node.setAlias('品类'))\n    builder.measures.add('sales', node => node.setAlias('销售额').setAggregate({ func: 'sum' }))\n    builder.whereFilter.add('province', node => node.setOperator('eq').setValue('浙江'))\n    builder.limit.setLimit(3)\n  })\n\n  builder.undoManager.undo()\n  const afterUndo = { empty: builder.isEmpty(), limit: builder.limit.getLimit() }\n  builder.undoManager.redo()\n  const afterRedo = { empty: builder.isEmpty(), limit: builder.limit.getLimit() }\n  const result = await builder.query()\n  builder.unobserveDeep(onChange)\n\n  return { afterUndo, afterRedo, revisions, result }\n}"
+}

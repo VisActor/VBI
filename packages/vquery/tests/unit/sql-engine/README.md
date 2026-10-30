@@ -1,6 +1,6 @@
 # VQuery SQL engine conformance suite
 
-This suite uses SQLLogicTest records from the DuckDB repository as an external correctness oracle. It does not contain a VQuery-authored fixture or hand-calculated expected result.
+The SQLLogicTest runner uses records from the DuckDB repository as an external correctness oracle. Its `cases/` corpus does not contain a VQuery-authored fixture or hand-calculated expected result.
 
 ## Provenance
 
@@ -32,3 +32,7 @@ DuckDB allows computed result columns without aliases, while VQuery's production
 5. Run `pnpm --filter=@visactor/vquery test`.
 
 This policy is deliberate: the same implementation assumption must never define both the engine behavior and its expected result.
+
+## MySQL numeric and AST checks
+
+`mysql-numeric-reference.test.ts` verifies 50 numeric cases with independently obtained MySQL expected values. `numeric-ast-roundtrip.test.ts` checks exact reconstruction of 1,000 deterministic ASTs.

@@ -15,7 +15,7 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>, dashboardBuilder: TDashboardBuilder)
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `dsl` | Y.Map&lt;any> | - |
 | `dashboardBuilder` | TDashboardBuilder | - |
 
 ### add
@@ -34,7 +34,7 @@ add(callback: (insight: DashboardInsightBuilder<TQueryDSL, TSeedDSL>) => void): 
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `callback` | (insight: DashboardInsightBuilder<TQueryDSL, TSeedDSL>) => void | - |
+| `callback` | (insight: DashboardInsightBuilder&lt;TQueryDSL, TSeedDSL>) => void | - |
 
 ### update
 
@@ -53,7 +53,7 @@ update(widgetId: string, callback: (insight: DashboardInsightBuilder<TQueryDSL, 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `widgetId` | string | - |
-| `callback` | (insight: DashboardInsightBuilder<TQueryDSL, TSeedDSL>) => void | - |
+| `callback` | (insight: DashboardInsightBuilder&lt;TQueryDSL, TSeedDSL>) => void | - |
 
 ### remove
 

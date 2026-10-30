@@ -74,6 +74,34 @@ describe('VQuery Coverage', () => {
     expect((await dataset.query({ select: ['id'] })).dataset).toEqual([{ id: 'temporary' }])
   })
 
+  it('uses the connected schema for temporary sources and restores it on init', async () => {
+    const dataset = await vquery.connectDataset(datasetId, [{ name: 'id', type: 'number' }], {
+      type: 'json',
+      rawDataset: [{ id: 42 }],
+    })
+    expect((await dataset.query({ select: [{ field: 'id', aggr: { func: 'sum' } }] })).dataset).toEqual([{ id: 42 }])
+    expect((await vquery.listDatasets())[0].datasetSchema.columns).toEqual(schema)
+    await dataset.init()
+    expect((await dataset.query({ select: ['id'] })).dataset).toEqual([{ id: '1' }])
+    await expect(dataset.query({ select: [{ field: 'id', aggr: { func: 'sum' } }] })).rejects.toThrow(
+      'requires a number column',
+    )
+    await dataset.disconnect()
+  })
+
+  it('uses refreshed stored schema across existing connections', async () => {
+    const first = await vquery.connectDataset(datasetId)
+    await vquery.updateDatasetSource(datasetId, [{ name: 'id', type: 'number' }], {
+      type: 'json',
+      rawDataset: [{ id: 42 }],
+    })
+    const second = await vquery.connectDataset(datasetId)
+    const query = { select: [{ field: 'id', alias: 'total', aggr: { func: 'sum' as const } }] }
+    expect((await first.query(query)).dataset).toEqual([{ total: 42 }])
+    expect((await second.query(query)).dataset).toEqual([{ total: 42 }])
+    await second.disconnect()
+  })
+
   it('should throw error when updating non-existent dataset', async () => {
     await expect(vquery.updateDatasetSource('non_existent', schema, rawDataset)).rejects.toThrow(
       'dataset non_existent not exists, please create it first',

@@ -1,0 +1,1192 @@
+# From
+
+`from` 接收一份 Query DSL，将内层查询结果作为外层输入，对应 SQL 的 `FROM (SELECT ...)`。省略 `from` 时，直接查询当前连接的数据集。
+
+外层使用内层输出的列名或别名；每一层的筛选、聚合、排序和 limit 各自生效。数据集或物理表名由连接与编译选项指定。
+
+## basic
+
+内层重命名销售额，外层通过该别名选列并再次重命名，保留每一条明细记录。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "subquery-basic",
+  "description": "内层重命名销售额，外层通过该别名选列并再次重命名，保留每一条明细记录。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        {
+          "field": "sales",
+          "alias": "amount"
+        }
+      ]
+    },
+    "select": [
+      "region",
+      {
+        "field": "amount",
+        "alias": "revenue"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "revenue",
+        "order": "asc"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 10
+    },
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 20
+    },
+    {
+      "region": "East",
+      "store": "B",
+      "sales": 40
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 15
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 5
+    },
+    {
+      "region": "West",
+      "store": "D",
+      "sales": 60
+    }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## aggregation
+
+先按类别求和，再对分组结果计算行数和最大值；外层统计的是分组结果。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "subquery-aggregation",
+  "description": "先按类别求和，再对分组结果计算行数和最大值；外层统计的是分组结果。",
+  "schema": [
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "category": "a",
+      "value": 3
+    },
+    {
+      "category": "a",
+      "value": 4
+    },
+    {
+      "category": "b",
+      "value": 2
+    }
+  ],
+  "vquery": {
+    "from": {
+      "select": [
+        "category",
+        {
+          "field": "value",
+          "alias": "total",
+          "aggr": {
+            "func": "sum"
+          }
+        }
+      ],
+      "groupBy": [
+        "category"
+      ]
+    },
+    "select": [
+      {
+        "field": "*",
+        "alias": "groups",
+        "aggr": {
+          "func": "count"
+        }
+      },
+      {
+        "field": "total",
+        "alias": "maximum",
+        "aggr": {
+          "func": "max"
+        }
+      }
+    ]
+  }
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## empty-result
+
+内层没有符合 HAVING 条件的分组时，外层 COUNT 返回 0，SUM 和 MAX 返回 NULL。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "subquery-empty-result",
+  "description": "内层没有符合 HAVING 条件的分组时，外层 COUNT 返回 0，SUM 和 MAX 返回 NULL。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        "store",
+        {
+          "field": "sales",
+          "alias": "storeTotal",
+          "aggr": {
+            "func": "sum"
+          }
+        }
+      ],
+      "groupBy": [
+        "region",
+        "store"
+      ],
+      "having": {
+        "op": "and",
+        "conditions": [
+          {
+            "field": "sales",
+            "aggr": {
+              "func": "sum"
+            },
+            "op": ">",
+            "value": 100
+          }
+        ]
+      }
+    },
+    "select": [
+      {
+        "field": "*",
+        "alias": "rows",
+        "aggr": {
+          "func": "count"
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "total",
+        "aggr": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "maximum",
+        "aggr": {
+          "func": "max"
+        }
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 10
+    },
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 20
+    },
+    {
+      "region": "East",
+      "store": "B",
+      "sales": 40
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 15
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 5
+    },
+    {
+      "region": "West",
+      "store": "D",
+      "sales": 60
+    }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## groupBy
+
+内层按区域和门店汇总，外层按区域计算门店数与门店销售总额的平均值。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "subquery-groupBy",
+  "description": "内层按区域和门店汇总，外层按区域计算门店数与门店销售总额的平均值。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        "store",
+        {
+          "field": "sales",
+          "alias": "storeTotal",
+          "aggr": {
+            "func": "sum"
+          }
+        }
+      ],
+      "groupBy": [
+        "region",
+        "store"
+      ]
+    },
+    "select": [
+      "region",
+      {
+        "field": "*",
+        "alias": "stores",
+        "aggr": {
+          "func": "count"
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "averageStoreTotal",
+        "aggr": {
+          "func": "avg"
+        }
+      }
+    ],
+    "groupBy": [
+      "region"
+    ],
+    "orderBy": [
+      {
+        "field": "region",
+        "order": "asc"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 10
+    },
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 20
+    },
+    {
+      "region": "East",
+      "store": "B",
+      "sales": 40
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 15
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 5
+    },
+    {
+      "region": "West",
+      "store": "D",
+      "sales": 60
+    }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## having
+
+内层 HAVING 保留销售总额不少于 30 的门店，外层再次聚合并筛选总额大于 65 的区域。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "subquery-having",
+  "description": "内层 HAVING 保留销售总额不少于 30 的门店，外层再次聚合并筛选总额大于 65 的区域。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        "store",
+        {
+          "field": "sales",
+          "alias": "storeTotal",
+          "aggr": {
+            "func": "sum"
+          }
+        }
+      ],
+      "groupBy": [
+        "region",
+        "store"
+      ],
+      "having": {
+        "op": "and",
+        "conditions": [
+          {
+            "field": "sales",
+            "aggr": {
+              "func": "sum"
+            },
+            "op": ">=",
+            "value": 30
+          }
+        ]
+      }
+    },
+    "select": [
+      "region",
+      {
+        "field": "*",
+        "alias": "stores",
+        "aggr": {
+          "func": "count"
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "regionTotal",
+        "aggr": {
+          "func": "sum"
+        }
+      }
+    ],
+    "groupBy": [
+      "region"
+    ],
+    "having": {
+      "op": "and",
+      "conditions": [
+        {
+          "field": "storeTotal",
+          "aggr": {
+            "func": "sum"
+          },
+          "op": ">",
+          "value": 65
+        }
+      ]
+    },
+    "orderBy": [
+      {
+        "field": "region",
+        "order": "asc"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 10
+    },
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 20
+    },
+    {
+      "region": "East",
+      "store": "B",
+      "sales": 40
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 15
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 5
+    },
+    {
+      "region": "West",
+      "store": "D",
+      "sales": 60
+    }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## limit-aggregation
+
+先取销售总额最高的两家门店，再统计这两行的数量、总额和平均值；内层 limit 限定统计范围。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "subquery-limit-aggregation",
+  "description": "先取销售总额最高的两家门店，再统计这两行的数量、总额和平均值；内层 limit 限定统计范围。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        "store",
+        {
+          "field": "sales",
+          "alias": "storeTotal",
+          "aggr": {
+            "func": "sum"
+          }
+        }
+      ],
+      "groupBy": [
+        "region",
+        "store"
+      ],
+      "orderBy": [
+        {
+          "field": "storeTotal",
+          "order": "desc"
+        }
+      ],
+      "limit": 2
+    },
+    "select": [
+      {
+        "field": "*",
+        "alias": "stores",
+        "aggr": {
+          "func": "count"
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "total",
+        "aggr": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "average",
+        "aggr": {
+          "func": "avg"
+        }
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 10
+    },
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 20
+    },
+    {
+      "region": "East",
+      "store": "B",
+      "sales": 40
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 15
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 5
+    },
+    {
+      "region": "West",
+      "store": "D",
+      "sales": 60
+    }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## nested
+
+三层查询依次完成门店汇总、区域平均值计算和跨区域概况；每一层只引用上一层的输出列。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "subquery-nested",
+  "description": "三层查询依次完成门店汇总、区域平均值计算和跨区域概况；每一层只引用上一层的输出列。",
+  "vquery": {
+    "from": {
+      "from": {
+        "select": [
+          "region",
+          "store",
+          {
+            "field": "sales",
+            "alias": "storeTotal",
+            "aggr": {
+              "func": "sum"
+            }
+          }
+        ],
+        "groupBy": [
+          "region",
+          "store"
+        ],
+        "where": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "sales",
+              "op": ">=",
+              "value": 10
+            }
+          ]
+        }
+      },
+      "select": [
+        "region",
+        {
+          "field": "storeTotal",
+          "alias": "averageStoreTotal",
+          "aggr": {
+            "func": "avg"
+          }
+        }
+      ],
+      "where": {
+        "op": "and",
+        "conditions": [
+          {
+            "field": "storeTotal",
+            "op": ">=",
+            "value": 30
+          }
+        ]
+      },
+      "groupBy": [
+        "region"
+      ]
+    },
+    "select": [
+      {
+        "field": "*",
+        "alias": "regions",
+        "aggr": {
+          "func": "count"
+        }
+      },
+      {
+        "field": "averageStoreTotal",
+        "alias": "minimum",
+        "aggr": {
+          "func": "min"
+        }
+      },
+      {
+        "field": "averageStoreTotal",
+        "alias": "maximum",
+        "aggr": {
+          "func": "max"
+        }
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 10
+    },
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 20
+    },
+    {
+      "region": "East",
+      "store": "B",
+      "sales": 40
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 15
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 5
+    },
+    {
+      "region": "West",
+      "store": "D",
+      "sales": 60
+    }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## orderBy-limit
+
+内层先取销售总额前三名门店，外层再按门店名升序排列并取前两行；两层排序和 limit 各自生效。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "subquery-orderBy-limit",
+  "description": "内层先取销售总额前三名门店，外层再按门店名升序排列并取前两行；两层排序和 limit 各自生效。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        "store",
+        {
+          "field": "sales",
+          "alias": "storeTotal",
+          "aggr": {
+            "func": "sum"
+          }
+        }
+      ],
+      "groupBy": [
+        "region",
+        "store"
+      ],
+      "orderBy": [
+        {
+          "field": "storeTotal",
+          "order": "desc"
+        }
+      ],
+      "limit": 3
+    },
+    "select": [
+      "region",
+      "store",
+      "storeTotal"
+    ],
+    "orderBy": [
+      {
+        "field": "store",
+        "order": "asc"
+      }
+    ],
+    "limit": 2
+  },
+  "dataset": [
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 10
+    },
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 20
+    },
+    {
+      "region": "East",
+      "store": "B",
+      "sales": 40
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 15
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 5
+    },
+    {
+      "region": "West",
+      "store": "D",
+      "sales": 60
+    }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## select-all
+
+内层筛选并取销售额最小的三条明细，外层用通配符保留内层输出的 store、amount 两列，再按 amount 降序排列。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "subquery-select-all",
+  "description": "内层筛选并取销售额最小的三条明细，外层用通配符保留内层输出的 store、amount 两列，再按 amount 降序排列。",
+  "vquery": {
+    "from": {
+      "select": [
+        "store",
+        {
+          "field": "sales",
+          "alias": "amount"
+        }
+      ],
+      "where": {
+        "op": "and",
+        "conditions": [
+          {
+            "field": "sales",
+            "op": ">=",
+            "value": 15
+          }
+        ]
+      },
+      "orderBy": [
+        {
+          "field": "amount",
+          "order": "asc"
+        }
+      ],
+      "limit": 3
+    },
+    "select": [
+      "*"
+    ],
+    "orderBy": [
+      {
+        "field": "amount",
+        "order": "desc"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 10
+    },
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 20
+    },
+    {
+      "region": "East",
+      "store": "B",
+      "sales": 40
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 15
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 5
+    },
+    {
+      "region": "West",
+      "store": "D",
+      "sales": 60
+    }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## statistics
+
+内层按门店汇总销售额，外层计算门店数、中位数和 75% 分位数；统计对象是四家门店的总额，而非六条原始明细。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "subquery-statistics",
+  "description": "内层按门店汇总销售额，外层计算门店数、中位数和 75% 分位数；统计对象是四家门店的总额，而非六条原始明细。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        "store",
+        {
+          "field": "sales",
+          "alias": "storeTotal",
+          "aggr": {
+            "func": "sum"
+          }
+        }
+      ],
+      "groupBy": [
+        "region",
+        "store"
+      ]
+    },
+    "select": [
+      {
+        "field": "*",
+        "alias": "stores",
+        "aggr": {
+          "func": "count"
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "median",
+        "aggr": {
+          "func": "median"
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "q75",
+        "aggr": {
+          "func": "quantile",
+          "quantile": 0.75
+        }
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 10
+    },
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 20
+    },
+    {
+      "region": "East",
+      "store": "B",
+      "sales": 40
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 15
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 5
+    },
+    {
+      "region": "West",
+      "store": "D",
+      "sales": 60
+    }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## where
+
+内层先筛选销售额不少于 15 的明细，外层再按 amount 别名筛选 20 至 50 的记录。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "subquery-where",
+  "description": "内层先筛选销售额不少于 15 的明细，外层再按 amount 别名筛选 20 至 50 的记录。",
+  "vquery": {
+    "from": {
+      "select": [
+        "store",
+        {
+          "field": "sales",
+          "alias": "amount"
+        }
+      ],
+      "where": {
+        "op": "and",
+        "conditions": [
+          {
+            "field": "sales",
+            "op": ">=",
+            "value": 15
+          }
+        ]
+      }
+    },
+    "select": [
+      "store",
+      "amount"
+    ],
+    "where": {
+      "op": "and",
+      "conditions": [
+        {
+          "field": "amount",
+          "op": "between",
+          "value": [
+            20,
+            50
+          ]
+        }
+      ]
+    },
+    "orderBy": [
+      {
+        "field": "amount",
+        "order": "asc"
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 10
+    },
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 20
+    },
+    {
+      "region": "East",
+      "store": "B",
+      "sales": 40
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 15
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 5
+    },
+    {
+      "region": "West",
+      "store": "D",
+      "sales": 60
+    }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```

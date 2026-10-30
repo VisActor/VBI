@@ -1,0 +1,48 @@
+{
+  "datasetId": "when-basic",
+  "description": "when 只影响当前列：保留华东销售额，其他地区在该列返回 NULL；原始列和记录仍然保留。",
+  "vquery": {
+    "select": [
+      "region",
+      "sales",
+      {
+        "field": "sales",
+        "alias": "eastSales",
+        "when": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "region",
+              "op": "=",
+              "value": "East"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "East",
+      "sales": 100
+    },
+    {
+      "region": "West",
+      "sales": 80
+    },
+    {
+      "region": "East",
+      "sales": 50
+    }
+  ]
+}

@@ -14,7 +14,7 @@ constructor(widget: Y.Map<any>, options?: DashboardInsightBuilderOptions)
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `widget` | Y.Map<any> | - |
+| `widget` | Y.Map&lt;any> | - |
 | `options?` = {} | DashboardInsightBuilderOptions | - |
 
 ### getId

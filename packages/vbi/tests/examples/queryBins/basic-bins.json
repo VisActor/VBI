@@ -1,0 +1,22 @@
+{
+  "name": "basic-bins",
+  "builder": "query",
+  "description": "对前五十条销售记录查询数值分箱，先使用默认分箱配置。",
+  "tags": ["query", "bins"],
+  "priority": 1,
+  "dsl": {
+    "queryMode": "detail",
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 50
+  },
+  "code": "const applyBuilder = async (builder: VBIQueryBuilder) => {\n  return await builder.queryBins({ columns: ['sales'] })\n}"
+}

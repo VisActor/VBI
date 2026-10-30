@@ -1,7 +1,7 @@
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/chart-builder/adapters/vquery-vseed/types'
 import type { VBIChartBuilder } from 'src/chart-builder/builder'
 import type { UndoManager } from 'src/chart-builder/features'
-import type { UndoManagerOptions } from 'src/chart-builder/features/undo-manager/undo-manager'
+import type { UndoManagerOptions } from 'src/query-builder/features/undo-manager/undo-manager'
 import type { VBIInsightBuilder } from 'src/insight-builder/builder'
 import type { DashboardThemeBuilder } from 'src/dashboard-builder/features/theme/theme-builder'
 import type { DashboardChartCollectionBuilder } from 'src/dashboard-builder/features/chart/chart-collection-builder'
