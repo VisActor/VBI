@@ -1,0 +1,164 @@
+# queryMode
+
+import { registerDemoConnector } from '@components/demoConnector'
+
+{registerDemoConnector()}
+
+## aggregate-sales
+
+聚合模式按区域汇总销售额；显式 aggregate 与未配置 queryMode 的现有查询行为一致。
+
+
+> 标签: `chart` `queryMode` `aggregate`
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [
+            {
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额合计",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 10
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = (builder: VBIChartBuilder) => {
+  const original = builder.buildVQuery()
+  builder.queryMode.setMode('aggregate')
+  if (JSON.stringify(builder.buildVQuery()) !== JSON.stringify(original)) {
+    throw new Error('Explicit aggregate mode must preserve the existing query')
+  }
+}
+      await applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```
+
+## detail-sales
+
+明细模式直接查询订单销售记录；保留源字段与重复行，度量的聚合配置不参与查询，仍可配置数字格式。仅支持普通表，不支持 HAVING。
+
+
+> 标签: `chart` `queryMode` `detail` `table`
+
+
+```tsx preview
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<any>(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.chart.create({
+        ...{
+          "connectorId": "demoSupermarket",
+          "chartType": "table",
+          "dimensions": [
+            {
+              "field": "order_id",
+              "alias": "订单 ID"
+            },
+            {
+              "field": "order_date",
+              "alias": "日期"
+            },
+            {
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              },
+              "format": {
+                "fractionDigits": 2
+              }
+            }
+          ],
+          "whereFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "havingFilter": {
+            "id": "root",
+            "op": "and",
+            "conditions": []
+          },
+          "theme": "light",
+          "locale": "zh-CN",
+          "version": 1,
+          "limit": 10
+        },
+        connectorId: DEMO_CONNECTOR_ID,
+      })
+      const applyBuilder = async (builder: VBIChartBuilder) => {
+  builder.queryMode.setMode('detail')
+  const query = builder.buildVQuery()
+  if (query.groupBy || query.having || query.select.some(item => typeof item !== 'string' && item.aggr)) {
+    throw new Error('Detail queries must project source fields without aggregation')
+  }
+  const result = await builder.query()
+  if (result.dataset.length !== 10) throw new Error('Detail limit counts source records')
+}
+      await applyBuilder(builder)
+      setResult(await builder.buildVSeed())
+    }
+    run()
+  }, [])
+
+  if (!result) return <div>Loading...</div>
+
+  return <VSeedRender vseed={result} />
+}
+```

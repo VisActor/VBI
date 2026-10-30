@@ -31,6 +31,7 @@
 
 | 示例 | 描述 | 标签 |
 | --- | --- | --- |
+| [query-without-vseed](./chartWorkflow#query-without-vseed) | 通过图表维度、度量和筛选直接 query()，返回以字段 ID 命名的查询结果。示例随后独立调用 buildVSeed() 渲染表格，两次操作各执行一次查询。 | chart, query, headless |
 | [analyst-workbench-sync-and-schema](./chartWorkflow#analyst-workbench-sync-and-schema) | 分析工作台在配置图表时读取数据集 schema、切换候选图表类型、设置展示偏好，并把协作状态同步给另一端 | workflow, collaboration, schema |
 | [filter-review-audit-trail](./chartWorkflow#filter-review-audit-trail) | 分析师复核筛选条件时，覆盖日期窗口、嵌套 where 分组、聚合后 having 门槛以及错误更新保护 | workflow, filters, audit |
 
@@ -87,6 +88,13 @@
 | [measure-with-custom-and-auto-format](./measures#measure-with-custom-and-auto-format) | 度量格式化：销售额使用万元自定义格式（¥前缀、保留2位小数），利润率使用自动格式化，折扣使用百分比格式 | - |
 | [remove-measure](./measures#remove-measure) | 删除度量 | - |
 | [update-measure](./measures#update-measure) | 更新度量 | - |
+
+## QueryMode
+
+| 示例 | 描述 | 标签 |
+| --- | --- | --- |
+| [aggregate-sales](./queryMode#aggregate-sales) | 聚合模式按区域汇总销售额；显式 aggregate 与未配置 queryMode 的现有查询行为一致。 | chart, queryMode, aggregate |
+| [detail-sales](./queryMode#detail-sales) | 明细模式直接查询订单销售记录；保留源字段与重复行，度量的聚合配置不参与查询，仍可配置数字格式。仅支持普通表，不支持 HAVING。 | chart, queryMode, detail, table |
 
 ## Theme
 

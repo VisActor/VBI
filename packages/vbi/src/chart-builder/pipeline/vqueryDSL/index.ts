@@ -8,10 +8,29 @@ import { buildWhere } from './buildWhere'
 import { buildHaving } from './buildHaving'
 import { buildOrderBy } from './buildOrderBy'
 import { buildLimit } from './buildLimit'
+import { buildDetailSelect } from './buildDetailSelect'
+import { zVBIQueryMode } from 'src/types/chartDSL/queryMode'
 
 export const buildVQuery = (vbiDSL: VBIChartDSL, builder: VBIChartBuilderInterface<any, any>) => {
+  const queryMode = zVBIQueryMode.default('aggregate').parse(vbiDSL.queryMode)
   const wrapper = (processor: buildPipe) => {
     return (queryDSL: VQueryDSL): VQueryDSL => processor(queryDSL, { vbiDSL, builder })
+  }
+
+  if (queryMode === 'detail') {
+    if (vbiDSL.chartType !== 'table') {
+      throw new Error('Detail queries only support table charts')
+    }
+    if (vbiDSL.havingFilter.conditions.length > 0) {
+      throw new Error('Detail queries do not support HAVING filters')
+    }
+    return pipe(
+      {} as VQueryDSL,
+      wrapper(buildDetailSelect),
+      wrapper(buildWhere),
+      wrapper(buildOrderBy),
+      wrapper(buildLimit),
+    )
   }
 
   return pipe(

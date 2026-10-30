@@ -1,0 +1,25 @@
+{
+  "name": "detail-sales",
+  "description": "{zh-CN}明细模式直接查询订单销售记录；保留源字段与重复行，度量的聚合配置不参与查询，仍可配置数字格式。仅支持普通表，不支持 HAVING。{/zh-CN}{en-US}Query source sales records without grouping. Detail mode preserves source values and duplicate rows, ignores field aggregation, and retains numeric formatting. Only ordinary tables are supported; HAVING is rejected.{/en-US}",
+  "tags": ["chart", "queryMode", "detail", "table"],
+  "priority": 2,
+  "schema": [
+    { "name": "order_id", "type": "string" },
+    { "name": "order_date", "type": "string" },
+    { "name": "area", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [
+      { "field": "order_id", "alias": "订单 ID" },
+      { "field": "order_date", "alias": "日期" },
+      { "field": "area", "alias": "区域" }
+    ],
+    "measures": [
+      { "field": "sales", "alias": "销售额", "aggregate": { "func": "sum" }, "format": { "fractionDigits": 2 } }
+    ],
+    "limit": 10
+  },
+  "code": "const applyBuilder = async (builder: VBIChartBuilder) => {\n  builder.queryMode.setMode('detail')\n  const query = builder.buildVQuery()\n  if (query.groupBy || query.having || query.select.some(item => typeof item !== 'string' && item.aggr)) {\n    throw new Error('Detail queries must project source fields without aggregation')\n  }\n  const result = await builder.query()\n  if (result.dataset.length !== 10) throw new Error('Detail limit counts source records')\n}"
+}

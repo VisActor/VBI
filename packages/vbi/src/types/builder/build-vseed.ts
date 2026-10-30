@@ -1,3 +1,3 @@
-export interface BuildVSeedOptions {
-  signal?: AbortSignal
-}
+import type { QueryOptions } from './query'
+
+export interface BuildVSeedOptions extends QueryOptions {}

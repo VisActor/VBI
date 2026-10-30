@@ -7,6 +7,7 @@ export const setBaseDSLFields = (dsl: Y.Map<any>, vbi: VBIChartDSLInput) => {
   if (vbi.chartType !== undefined) dsl.set('chartType', vbi.chartType)
   if (vbi.theme !== undefined) dsl.set('theme', vbi.theme)
   if (vbi.limit !== undefined) dsl.set('limit', vbi.limit)
+  if (vbi.queryMode !== undefined) dsl.set('queryMode', vbi.queryMode)
   if (vbi.locale !== undefined) dsl.set('locale', vbi.locale)
   if (vbi.version !== undefined) dsl.set('version', vbi.version)
 }

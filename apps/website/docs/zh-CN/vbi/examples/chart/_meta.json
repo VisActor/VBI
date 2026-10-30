@@ -36,6 +36,11 @@
   },
   {
     "type": "file",
+    "name": "queryMode",
+    "label": "QueryMode"
+  },
+  {
+    "type": "file",
     "name": "theme",
     "label": "Theme"
   },

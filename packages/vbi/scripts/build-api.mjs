@@ -256,6 +256,13 @@ const API_SECTIONS = [
       },
       {
         type: 'file',
+        name: 'queryMode',
+        label: 'chartBuilder.queryMode',
+        file: 'features/query-mode/query-mode-builder.ts',
+        displayName: 'QueryModeBuilder',
+      },
+      {
+        type: 'file',
         name: 'undoManager',
         label: 'chartBuilder.undoManager',
         file: 'features/undo-manager/undo-manager.ts',

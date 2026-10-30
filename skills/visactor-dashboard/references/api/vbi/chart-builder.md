@@ -9,6 +9,7 @@
 - [LimitBuilder](chart-builder.md#limitbuilder)
 - [LocaleBuilder](chart-builder.md#localebuilder)
 - [MeasuresBuilder](chart-builder.md#measuresbuilder)
+- [QueryModeBuilder](chart-builder.md#querymodebuilder)
 - [ThemeBuilder](chart-builder.md#themebuilder)
 - [UndoManager](chart-builder.md#undomanager)
 - [UndoManagerOptions](chart-builder.md#undomanageroptions)
@@ -25,6 +26,8 @@ import * as Y from 'yjs'
 import type * as Y from 'yjs'
 import type {
   BuildVSeedOptions,
+  QueryOptions,
+  VBIQueryResult,
   VBIChartDSL,
   VBIChartBuilderAdapters,
   VBIChartBuilderInterface,
@@ -36,6 +39,7 @@ import type { ChartTypeBuilder } from '../chart-type'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from './types'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/chart-builder/adapters/vquery-vseed'
 import type { ObserveCallback } from 'src/types'
+import type { ObserveCallback, VBIQueryMode } from 'src/types'
 import type { ObserveDeepCallback, VBIDimension, VBIDimensionGroup, VBIDimensionTree } from 'src/types'
 import type { ObserveDeepCallback, VBIMeasure, VBIMeasureGroup, VBIMeasureTree } from 'src/types'
 import type { VBIChartBuilderAdapters } from 'src/types'
@@ -55,6 +59,7 @@ import {
   ThemeBuilder,
   LocaleBuilder,
   LimitBuilder,
+  QueryModeBuilder,
   UndoManager,
 } from './features'
 import { HavingFilterNodeBuilder } from './having-node-builder'
@@ -413,6 +418,27 @@ export declare class MeasuresBuilder {
 }
 ```
 
+## QueryModeBuilder
+
+源码：[packages/vbi/src/chart-builder/features/query-mode/query-mode-builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/features/query-mode/query-mode-builder.ts#L6)
+
+包导出：`QueryModeBuilder`
+
+```typescript
+/** @description 查询模式构建器。未配置时按 aggregate 查询；detail 仅用于普通表。 */
+export declare class QueryModeBuilder {
+  constructor(dsl: Y.Map<any>)
+  /** @description 设置查询模式，保留已有字段和筛选配置。 */
+  setMode(mode: VBIQueryMode): this
+  /** @description 获取查询模式，未配置时返回 aggregate。 */
+  getMode(): VBIQueryMode
+  /** @description 监听查询模式变化，返回取消监听的函数。 */
+  observe(callback: ObserveCallback): () => void
+  /** @description 导出当前查询模式。 */
+  toJSON(): VBIQueryMode
+}
+```
+
 ## ThemeBuilder
 
 源码：[packages/vbi/src/chart-builder/features/theme/theme-builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/features/theme/theme-builder.ts#L7)
@@ -530,7 +556,7 @@ export interface UndoManagerOptions {
 
 ## VBIChartBuilder
 
-源码：[packages/vbi/src/chart-builder/builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/builder.ts#L36)
+源码：[packages/vbi/src/chart-builder/builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/builder.ts#L39)
 
 包导出：`VBIChartBuilder`
 
@@ -541,7 +567,7 @@ export declare class VBIChartBuilder<
 > implements VBIChartBuilderInterface<TQueryDSL, TSeedDSL> {
   doc: Y.Doc
   dsl: Y.Map<any>
-  adapters: VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>
+  adapters: Required<VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>>
   chartType: ChartTypeBuilder
   /** @description 图表运行时实例的绑定、获取与原生事件代理。 */
   instance: ChartInstanceBuilder
@@ -552,14 +578,19 @@ export declare class VBIChartBuilder<
   theme: ThemeBuilder
   locale: LocaleBuilder
   limit: LimitBuilder
+  /** @description 图表查询粒度，普通表可选择源记录明细；缺省保持聚合查询。 */
+  queryMode: QueryModeBuilder
   /** @description 图表撤销历史，每个 Yjs 事务独立成一步；连续 add / update 不按时间合并，doc.transact 可显式合并多个修改。 */
   undoManager: UndoManager
   constructor(doc: Y.Doc, options?: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>, dsl?: Y.Map<any>)
   applyUpdate: (update: Uint8Array, transactionOrigin?: any) => void
   encodeStateAsUpdate: (targetStateVector?: Uint8Array) => Uint8Array<ArrayBufferLike>
   getUUID: () => string
+  /** @description 默认通过 query adapter 查询一次并构建 VSeed。自定义 seed adapter 保留原有上下文和取数方式。 */
   buildVSeed: (options?: BuildVSeedOptions) => Promise<TSeedDSL>
   buildVQuery: () => TQueryDSL
+  /** @description 根据当前图表配置，通过 query adapter 执行并原样返回查询结果。默认查询保留维度和度量 ID，并将 signal 传给 Connector；独立调用不缓存结果。 */
+  query: (options?: QueryOptions) => Promise<VBIQueryResult>
   build: () => VBIChartDSL
   /** @description 订阅图表 DSL 顶层字段变化，与 dsl.observe 语义一致；不包含嵌套字段修改，也不触发首次渲染。 */
   observe(callback: ObserveCallback): void
@@ -583,6 +614,9 @@ export declare class VBIChartBuilder<
 
 ```typescript
 // buildVSeed
+options = {}
+
+// query
 options = {}
 ```
 
@@ -666,7 +700,7 @@ export declare class WhereFilterBuilder {
 
 ## buildVQuery
 
-源码：[packages/vbi/src/chart-builder/pipeline/vqueryDSL/index.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/pipeline/vqueryDSL/index.ts#L12)
+源码：[packages/vbi/src/chart-builder/pipeline/vqueryDSL/index.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/pipeline/vqueryDSL/index.ts#L14)
 
 包导出：`buildVQuery`
 
@@ -676,22 +710,24 @@ export declare const buildVQuery: (vbiDSL: VBIChartDSL, builder: VBIChartBuilder
 
 ## defaultVBIChartBuilderAdapters
 
-源码：[packages/vbi/src/chart-builder/adapters/vquery-vseed/index.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/adapters/vquery-vseed/index.ts#L10)
+源码：[packages/vbi/src/chart-builder/adapters/vquery-vseed/index.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/adapters/vquery-vseed/index.ts#L11)
 
 包导出：`defaultVBIChartBuilderAdapters`
 
 ```typescript
-export declare const defaultVBIChartBuilderAdapters: VBIChartBuilderAdapters<DefaultVBIQueryDSL, DefaultVBISeedDSL>
+export declare const defaultVBIChartBuilderAdapters: Required<
+  VBIChartBuilderAdapters<DefaultVBIQueryDSL, DefaultVBISeedDSL>
+>
 ```
 
 ## resolveVBIChartBuilderAdapters
 
-源码：[packages/vbi/src/chart-builder/adapters/vquery-vseed/index.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/adapters/vquery-vseed/index.ts#L15)
+源码：[packages/vbi/src/chart-builder/adapters/vquery-vseed/index.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/adapters/vquery-vseed/index.ts#L18)
 
 包导出：`resolveVBIChartBuilderAdapters`
 
 ```typescript
 export declare const resolveVBIChartBuilderAdapters: <TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>(
   adapters?: Partial<VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>>,
-) => VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>
+) => Required<VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>>
 ```

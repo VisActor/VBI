@@ -12,11 +12,14 @@ import {
   ThemeBuilder,
   LocaleBuilder,
   LimitBuilder,
+  QueryModeBuilder,
   UndoManager,
 } from './features'
 
 import type {
   BuildVSeedOptions,
+  QueryOptions,
+  VBIQueryResult,
   VBIChartDSL,
   VBIChartBuilderAdapters,
   VBIChartBuilderInterface,
@@ -39,7 +42,7 @@ export class VBIChartBuilder<
 > implements VBIChartBuilderInterface<TQueryDSL, TSeedDSL> {
   public doc: Y.Doc
   public dsl: Y.Map<any>
-  public adapters: VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>
+  public adapters: Required<VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>>
 
   public chartType: ChartTypeBuilder
   /** @description 图表运行时实例的绑定、获取与原生事件代理。 */
@@ -51,6 +54,8 @@ export class VBIChartBuilder<
   public theme: ThemeBuilder
   public locale: LocaleBuilder
   public limit: LimitBuilder
+  /** @description 图表查询粒度，普通表可选择源记录明细；缺省保持聚合查询。 */
+  public queryMode: QueryModeBuilder
   /** @description 图表撤销历史，每个 Yjs 事务独立成一步；连续 add / update 不按时间合并，doc.transact 可显式合并多个修改。 */
   public undoManager: UndoManager
 
@@ -73,6 +78,7 @@ export class VBIChartBuilder<
     this.theme = new ThemeBuilder(doc, this.dsl)
     this.locale = new LocaleBuilder(doc, this.dsl)
     this.limit = new LimitBuilder(doc, this.dsl)
+    this.queryMode = new QueryModeBuilder(this.dsl)
   }
 
   public applyUpdate = (update: Uint8Array, transactionOrigin?: any) => {
@@ -85,6 +91,7 @@ export class VBIChartBuilder<
 
   public getUUID = (): string => getResourceUUID(this.dsl)
 
+  /** @description 默认通过 query adapter 查询一次并构建 VSeed。自定义 seed adapter 保留原有上下文和取数方式。 */
   public buildVSeed = async (options: BuildVSeedOptions = {}): Promise<TSeedDSL> => {
     const vbiDSL = this.build()
     const queryDSL = this.adapters.buildVQuery({
@@ -108,6 +115,13 @@ export class VBIChartBuilder<
       vbiDSL,
       builder: this,
     })
+  }
+
+  /** @description 根据当前图表配置，通过 query adapter 执行并原样返回查询结果。默认查询保留维度和度量 ID，并将 signal 传给 Connector；独立调用不缓存结果。 */
+  public query = async (options: QueryOptions = {}): Promise<VBIQueryResult> => {
+    const context = { dsl: this.dsl, vbiDSL: this.build(), builder: this }
+    const queryDSL = this.adapters.buildVQuery(context)
+    return this.adapters.query({ ...context, queryDSL, options })
   }
 
   public build = (): VBIChartDSL => buildVBIChartDSL(this.dsl)

@@ -90,6 +90,32 @@ const queryDSL = chart.buildVQuery() // Generated query configuration
 const vseed = await chart.buildVSeed() // Query data and generate a VSeed DSL
 ```
 
+To retrieve data directly, execute the query defined by the same chart:
+
+```ts
+const controller = new AbortController()
+const { dataset } = await chart.query({ signal: controller.signal })
+```
+
+`query()` builds the query from the chart configuration, executes it through `adapters.query(context)`, and returns the result unchanged. The default query adapter calls the Connector, preserves dimension and measure IDs as result keys, and forwards the signal for Connector cancellation. `buildVQuery()` only generates the query DSL; the default `buildVSeed()` uses the same query adapter once and assembles the visualization configuration. Calling `query()` and the default `buildVSeed()` separately performs two independent queries without caching.
+
+Override `adapters.query` to customize execution. Its context contains `dsl`, `vbiDSL`, `builder`, the compiled `queryDSL`, and `options`; it returns `VBIQueryResult`. Overriding query alone affects both direct queries and default VSeed builds. Existing adapters without query receive the default executor. Custom seed adapters retain their context and call order, may fetch data themselves or return without querying, and can reuse execution with `context.builder.adapters.query(context)`. See the runnable [chart query example in Chinese](/VBI/vbi/examples/chart/chartWorkflow#query-without-vseed).
+
+### Query aggregates or source records
+
+The chart DSL defaults to `queryMode: 'aggregate'`. Ordinary tables can persist `detail` mode to query source records:
+
+```ts
+chart.chartType.changeChartType('table')
+chart.queryMode.setMode('detail')
+const queryDSL = chart.buildVQuery()
+const { dataset } = await chart.query()
+```
+
+Detail mode preserves dimension and measure IDs, projects source fields, ignores field aggregation, and retains duplicate rows. WHERE filters, source-field sorting and the record limit still apply. Nonempty HAVING filters and other chart types are rejected. `buildVSeed()` uses the same mode; VQuery continues to execute the complete query DSL through its existing API.
+
+The mode is saved by `chart.build()` and participates in undo and restoration. Custom query executors can consume the default compiled DSL. Custom `buildVQuery` compilers receive `context.vbiDSL.queryMode` and own its query semantics; they can also wrap the default compiler. See the runnable [query mode examples in Chinese](/VBI/vbi/examples/chart/queryMode).
+
 ### Render
 
 Add a `<div id="chart"></div>` container to the page, then convert the VSeed DSL into a VChart spec.

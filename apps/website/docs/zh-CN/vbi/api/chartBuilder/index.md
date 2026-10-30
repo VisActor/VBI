@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | **doc** | `Y.Doc` | - |
 | **dsl** | `Y.Map<any>` | - |
-| **adapters** | `VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>` | - |
+| **adapters** | `Required<VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>>` | - |
 | **chartType** | `ChartTypeBuilder` | - |
 | **instance** | `ChartInstanceBuilder` | 图表运行时实例的绑定、获取与原生事件代理。 |
 | **measures** | `MeasuresBuilder` | - |
@@ -16,6 +16,7 @@
 | **theme** | `ThemeBuilder` | - |
 | **locale** | `LocaleBuilder` | - |
 | **limit** | `LimitBuilder` | - |
+| **queryMode** | `QueryModeBuilder` | 图表查询粒度，普通表可选择源记录明细；缺省保持聚合查询。 |
 | **undoManager** | `UndoManager` | 图表撤销历史，每个 Yjs 事务独立成一步；连续 add / update 不按时间合并，doc.transact 可显式合并多个修改。 |
 
 
@@ -154,6 +155,8 @@ getUUID(): string
 
 ### buildVSeed
 
+默认通过 query adapter 查询一次并构建 VSeed。自定义 seed adapter 保留原有上下文和取数方式。
+
 **定义**:
 
 ```typescript
@@ -177,6 +180,24 @@ buildVQuery(): TQueryDSL
 ```
 
 **返回**: `TQueryDSL`
+
+### query
+
+根据当前图表配置，通过 query adapter 执行并原样返回查询结果。默认查询保留维度和度量 ID，并将 signal 传给 Connector；独立调用不缓存结果。
+
+**定义**:
+
+```typescript
+query(options?: QueryOptions): Promise<VBIQueryResult>
+```
+
+**返回**: `Promise<VBIQueryResult>`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `options?` = {} | QueryOptions | - |
 
 ### build
 

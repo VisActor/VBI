@@ -15,6 +15,201 @@ describe('chart / ChartWorkflow', () => {
     rs.useRealTimers()
   })
 
+  it('query-without-vseed', async () => {
+    const builder = VBI.chart.create({
+      connectorId: 'demoSupermarket',
+      chartType: 'table',
+      dimensions: [],
+      measures: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      theme: 'light',
+      locale: 'zh-CN',
+      version: 1,
+      limit: 5,
+    })
+
+    const applyBuilder = async (builder: VBIChartBuilder) => {
+      builder.dimensions.add('area', (node) => node.setAlias('区域'))
+      builder.measures.add('sales', (node) => node.setAlias('销售额合计').setAggregate({ func: 'sum' }))
+      builder.measures.add('sales', (node) => node.setAlias('平均销售额').setAggregate({ func: 'avg' }))
+      builder.whereFilter.add('sales', (node) => node.setOperator('>').setValue(0))
+      const result = await builder.query()
+      const ids = [...builder.dimensions.findAll(), ...builder.measures.findAll()].map((node) => node.getId())
+      if (!result.dataset.length || result.dataset.some((row) => ids.some((id) => !(id in row)))) {
+        throw new Error('Query results must preserve every dimension and measure ID')
+      }
+    }
+    await applyBuilder(builder)
+
+    const vbiDSL = builder.build()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "table",
+        "connectorId": "demoSupermarket",
+        "dimensions": [
+          {
+            "alias": "区域",
+            "encoding": "column",
+            "field": "area",
+            "id": "id-1",
+          },
+        ],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+        "limit": 5,
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "销售额合计",
+            "encoding": "column",
+            "field": "sales",
+            "id": "id-2",
+          },
+          {
+            "aggregate": {
+              "func": "avg",
+            },
+            "alias": "平均销售额",
+            "encoding": "column",
+            "field": "sales",
+            "id": "id-3",
+          },
+        ],
+        "theme": "light",
+        "uuid": "uuid-1",
+        "version": 1,
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "sales",
+              "id": "id-4",
+              "op": ">",
+              "value": 0,
+            },
+          ],
+          "id": "root",
+          "op": "and",
+        },
+      }
+    `)
+
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [
+          "area",
+        ],
+        "limit": 5,
+        "orderBy": [
+          {
+            "field": "id-1",
+            "order": "asc",
+          },
+        ],
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "id-2",
+            "field": "sales",
+          },
+          {
+            "aggr": {
+              "func": "avg",
+            },
+            "alias": "id-3",
+            "field": "sales",
+          },
+          {
+            "alias": "id-1",
+            "field": "area",
+          },
+        ],
+        "where": {
+          "conditions": [
+            {
+              "field": "sales",
+              "op": ">",
+              "value": 0,
+            },
+          ],
+          "op": "and",
+        },
+      }
+    `)
+
+    const vSeedDSL = await builder.buildVSeed()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "table",
+        "dataset": [
+          {
+            "id-1": "东北",
+            "id-2": 2681567.469000001,
+            "id-3": 1609.584315126051,
+          },
+          {
+            "id-1": "中南",
+            "id-2": 4137415.0929999948,
+            "id-3": 1603.027932196821,
+          },
+          {
+            "id-1": "华东",
+            "id-2": 4684506.442,
+            "id-3": 1591.2046338315217,
+          },
+          {
+            "id-1": "华北",
+            "id-2": 2447301.017000004,
+            "id-3": 1787.6559656683742,
+          },
+          {
+            "id-1": "西北",
+            "id-2": 815039.5959999998,
+            "id-3": 1705.1037573221754,
+          },
+        ],
+        "dimensions": [
+          {
+            "alias": "区域",
+            "encoding": "column",
+            "id": "id-1",
+          },
+        ],
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "销售额合计",
+            "encoding": "column",
+            "id": "id-2",
+          },
+          {
+            "alias": "平均销售额",
+            "encoding": "column",
+            "id": "id-3",
+          },
+        ],
+        "theme": "light",
+      }
+    `)
+  })
+
   it('analyst-workbench-sync-and-schema', async () => {
     const builder = VBI.chart.create({
       connectorId: 'demoSupermarket',

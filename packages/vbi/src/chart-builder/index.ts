@@ -10,5 +10,6 @@ export {
   ThemeBuilder,
   LocaleBuilder,
   LimitBuilder,
+  QueryModeBuilder,
   UndoManager,
 } from './features'
