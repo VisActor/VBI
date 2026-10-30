@@ -1,5 +1,16 @@
 # @visactor/vbi
 
+## 0.7.4
+
+### Patch Changes
+
+- 7441b61: Add an independent VBI QueryBuilder with persistent, collaborative query state, calculated fields, queryProfile() and queryBins(). Reuse query capabilities in ChartBuilder while preserving existing chart APIs.
+
+  Extend VQuery with FROM subqueries, conditional projections and validated numeric expressions for period comparisons, percentages and other BI calculations. Improve in-memory execution performance and organize SQL parsing, compilation and adapters without changing public package entrypoints.
+
+- bc8d2ed: Expose chart.query() for direct query results and persist aggregate/detail queryMode in chart DSL. Detail table queries preserve source records and field IDs while reusing existing query execution, filtering, sorting and limits.
+  - @visactor/vseed@0.7.4
+
 ## 0.7.3
 
 ### Patch Changes
