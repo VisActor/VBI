@@ -314,8 +314,7 @@ window.bindMetricAnalysis = function bindMetricAnalysis({
     opener?.focus({ preventScroll: true })
   }
   async function query(dimensions, conditions, measures, signal) {
-    const builder = vbi.chart.create(vbi.chart.createEmpty(context.connectorId))
-    builder.chartType.changeChartType('table')
+    const builder = vbi.query.create(vbi.query.createEmpty(context.connectorId))
     builder.limit.setLimit(context.rowLimit)
     for (const [field, label] of dimensions)
       builder.dimensions.add(field, (node) => node.setAlias(label).setSort({ order: 'asc' }))

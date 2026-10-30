@@ -812,14 +812,14 @@ window.DashboardData = {
     }
   },
   async rows(chart, signal) {
-    const seed = await chart.buildVSeed({ signal })
+    const { dataset } = await chart.query({ signal })
     const { dimensions, measures } = chart.build()
-    return seed.dataset.map((row) =>
+    return dataset.map((row) =>
       Object.fromEntries([...dimensions, ...measures].map(({ field, id }) => [field, row[id]])),
     )
   },
   release(vbi, chart) {
-    vbi.resources.chart.unregister(chart.getUUID())
+    if (chart.chartType) vbi.resources.chart.unregister(chart.getUUID())
     chart.doc.destroy()
   },
 }
@@ -1118,8 +1118,8 @@ window.DashboardTable = (() => {
       { name: '__row_order', type: 'number' },
     ]
     const source = await DashboardData.connect(vbi, query, id, schema, [])
-    const builder = vbi.chart.create(vbi.chart.createEmpty(id))
-    builder.chartType.changeChartType('table')
+    const builder = vbi.query.create(vbi.query.createEmpty(id))
+    builder.queryMode.setMode('detail')
     fields.forEach((field, index) => builder.dimensions.add(field, (node) => node.setAlias(columns[index])))
     builder.dimensions.add('__row_order', (node) => node.setSort({ order: 'asc' }))
     const events = new AbortController(),
@@ -1201,12 +1201,12 @@ window.DashboardTable = (() => {
               loadedVersion = version
             }
             if (disposed || ticket !== revision) return false
-            const seed = await builder.buildVSeed({ signal: pending.signal })
+            const result = await builder.query({ signal: pending.signal })
             if (disposed || ticket !== revision) return false
             const dimensions = builder.build().dimensions
             const ids = fields.map((field) => dimensions.find((dim) => dim.field === field).id)
             await render(
-              seed.dataset.map((record) => ids.map((key) => record[key] ?? null)),
+              result.dataset.map((record) => ids.map((key) => record[key] ?? null)),
               rows.length,
               { signal: pending.signal, isCurrent: () => !disposed && ticket === revision },
             )
@@ -1508,8 +1508,7 @@ window.DashboardTable = (() => {
   }
   async function createDetails({ vbi, query, Builder, VChart, connectorId, columns, rows, host, count }) {
     const library = await load()
-    const id = `${connectorId}-records`,
-      profileId = `${id}-profiles`
+    const id = `${connectorId}-records`
     const fields = columns.map((_, i) => `c${i}`)
     const types = fields.map((_, i) => {
       const value = rows.find((row) => row[i] != null)?.[i]
@@ -1521,35 +1520,11 @@ window.DashboardTable = (() => {
         Object.fromEntries([...fields.map((field, i) => [field, row[i] ?? null]), ['__row_order', index]]),
       )
     const connection = await DashboardData.connect(vbi, query, id, schema, records(rows))
-    const profileSchema = [
-      ...schema,
-      ...fields.flatMap((_, i) => (types[i] === 'number' ? [{ name: `b${i}`, type: 'number' }] : [])),
-    ]
-    const profileSource = await DashboardData.connect(vbi, query, profileId, profileSchema, [])
-    const builders = []
-    const make = (name) => {
-      const chart = vbi.chart.create(vbi.chart.createEmpty(name))
-      chart.chartType.changeChartType('table')
-      chart.limit.setLimit(Math.max(rows.length, 1))
-      builders.push(chart)
-      return chart
-    }
-    const source = make(id)
+    const source = vbi.query.create(vbi.query.createEmpty(id))
+    source.queryMode.setMode('detail')
+    source.limit.setLimit(Math.max(rows.length, 1))
     fields.forEach((field, i) => source.dimensions.add(field, (node) => node.setAlias(columns[i])))
     source.dimensions.add('__row_order', (node) => node.setSort({ order: 'asc' }))
-    const bounds = make(profileId)
-    bounds.measures.add('__row_order', (node) => node.setAlias('total').setAggregate({ func: 'count' }))
-    fields.forEach((field, i) => {
-      if (types[i] !== 'number') return
-      for (const func of ['min', 'max'])
-        bounds.measures.add(field, (node) => node.setAlias(`${func}${i}`).setAggregate({ func }))
-    })
-    const frequencies = fields.map((field, i) => {
-      const chart = make(profileId)
-      chart.dimensions.add(types[i] === 'number' ? `b${i}` : field, (node) => node.setSort({ order: 'asc' }))
-      chart.measures.add('__row_order', (node) => node.setAggregate({ func: 'count' }))
-      return chart
-    })
     const number = (value) => new Intl.NumberFormat("en-US", { maximumSignificantDigits: 4 }).format(value)
     let table,
       profiles = [],
@@ -1567,59 +1542,34 @@ window.DashboardTable = (() => {
     async function profile(values, signal, isCurrent) {
       const key = JSON.stringify([scopeVersion, view.builder.whereFilter.toJSON()])
       if (key === profileKey) return profiles
-      const data = records(values).map((record) => ({
-        ...record,
-        ...Object.fromEntries(
-          fields.map((field, i) => [field, types[i] === 'string' && record[field] === '' ? null : record[field]]),
-        ),
-        ...Object.fromEntries(fields.flatMap((_, i) => (types[i] === 'number' ? [[`b${i}`, null]] : []))),
-      }))
-      await profileSource.replace(data)
-      const seed = await bounds.buildVSeed({ signal })
-      if (!isCurrent()) return
-      const summary = Object.fromEntries(bounds.build().measures.map((m) => [m.alias, seed.dataset[0]?.[m.id]]))
-      const ranges = fields.map((_, i) => {
-        if (types[i] !== 'number' || !Number.isFinite(summary[`min${i}`])) return
-        const min = summary[`min${i}`],
-          max = summary[`max${i}`]
-        const discrete = Number.isInteger(min) && Number.isInteger(max) && max - min <= 20
-        const size = min === max ? 1 : discrete ? max - min + 1 : 12
-        return { min, max, size, step: min === max || discrete ? 1 : (max - min) / size }
+      const dimensions = view.builder.build().dimensions
+      const ids = fields.map((field) => dimensions.find((dimension) => dimension.field === field).id)
+      const statistics = await view.builder.queryProfile({
+        columns: ids,
+        bins: { discreteMax: Math.max(values.length, 1) },
+        topK: Math.max(values.length, 1),
+        emptyString: 'missing',
+        signal,
       })
-      // Binning is a per-record encoding; all frequencies are counted by VBI below.
-      const binned = data.map((record) => ({
-        ...record,
-        ...Object.fromEntries(
-          fields
-            .map((field, i) => {
-              const range = ranges[i],
-                value = record[field]
-              return [
-                `b${i}`,
-                range && Number.isFinite(value)
-                  ? Math.min(range.size - 1, Math.max(0, Math.floor((value - range.min) / range.step)))
-                  : -1,
-              ]
-            })
-            .filter((_, i) => types[i] === 'number'),
-        ),
-      }))
-      await profileSource.replace(binned)
-      const seeds = await Promise.all(frequencies.map((chart) => chart.buildVSeed({ signal })))
       if (!isCurrent()) return
-      const total = Number(summary.total) || 0
-      const next = seeds.map((result, i) => {
-        const dsl = frequencies[i].build(),
-          dimension = dsl.dimensions[0].id,
-          measure = dsl.measures[0].id
-        const entries = result.dataset.map((row) => ({ key: row[dimension], count: Number(row[measure]) }))
-        const missing =
-          entries.find((row) => row.key == null || row.key === '' || (types[i] === 'number' && row.key === -1))
-            ?.count || 0
+      const total = statistics.rowCount
+      const next = fields.map((_, i) => {
+        const info = statistics.columns[ids[i]]
+        const missing = info.missingCount
         const percentage = (n) => (total ? `${((n / total) * 100).toFixed(2)}%` : '0.0%')
         if (types[i] === 'number') {
-          const range = ranges[i],
-            counts = new Map(entries.map((row) => [Number(row.key), row.count]))
+          const range = Number.isFinite(info.min) ? { min: info.min, max: info.max } : undefined
+          if (range) {
+            const discrete = Number.isInteger(range.min) && Number.isInteger(range.max) && range.max - range.min <= 20
+            range.size = range.min === range.max ? 1 : discrete ? range.max - range.min + 1 : 12
+            range.step = range.min === range.max || discrete ? 1 : (range.max - range.min) / range.size
+          }
+          const counts = new Map()
+          // Place SQL value frequencies in the existing display intervals without re-encoding source rows.
+          for (const bin of info.bins || []) {
+            const slot = Math.min(range.size - 1, Math.max(0, Math.floor((bin.min - range.min) / range.step)))
+            counts.set(slot, (counts.get(slot) || 0) + bin.count)
+          }
           const bins = range
             ? Array.from({ length: range.size }, (_, bin) => {
                 const low = range.min + bin * range.step,
@@ -1641,8 +1591,8 @@ window.DashboardTable = (() => {
               : "No records",
           }
         }
-        const valid = entries
-          .filter((row) => row.key != null && row.key !== '')
+        const valid = (info.top || [])
+          .map(({ value: key, count }) => ({ key, count }))
           .sort((a, b) => b.count - a.count || String(a.key).localeCompare(String(b.key)))
         const take = valid.length <= (missing ? 2 : 3) ? valid.length : missing ? 1 : 2
         const visible = valid.slice(0, take).map((row) => ({ label: String(row.key), count: row.count }))
@@ -1847,12 +1797,12 @@ window.DashboardTable = (() => {
         })
         scopeJob = (async () => {
           try {
-            const seed = await source.buildVSeed({ signal: scopePending.signal })
+            const result = await source.query({ signal: scopePending.signal })
             if (disposed || ticket !== scopeRequest) return
             scopeVersion++
             const dimensions = source.build().dimensions
             const ids = fields.map((field) => dimensions.find((dim) => dim.field === field).id)
-            await view.updateRows(seed.dataset.map((row) => ids.map((field) => row[field] ?? null)))
+            await view.updateRows(result.dataset.map((row) => ids.map((field) => row[field] ?? null)))
           } catch (error) {
             if (!disposed && ticket === scopeRequest && error.name !== 'AbortError') {
               scopeKey = undefined
@@ -1872,8 +1822,8 @@ window.DashboardTable = (() => {
         table?.release()
         void Promise.allSettled([scopeJob, renderJob])
           .then(async () => {
-            builders.forEach((chart) => DashboardData.release(vbi, chart))
-            await Promise.all([connection.dispose(), profileSource.dispose()])
+            DashboardData.release(vbi, source)
+            await connection.dispose()
           })
           .catch(() => {})
       },
@@ -5277,8 +5227,7 @@ window.bindMetricAnalysis = function bindMetricAnalysis({
     opener?.focus({ preventScroll: true })
   }
   async function query(dimensions, conditions, measures, signal) {
-    const builder = vbi.chart.create(vbi.chart.createEmpty(context.connectorId))
-    builder.chartType.changeChartType('table')
+    const builder = vbi.query.create(vbi.query.createEmpty(context.connectorId))
     builder.limit.setLimit(context.rowLimit)
     for (const [field, label] of dimensions)
       builder.dimensions.add(field, (node) => node.setAlias(label).setSort({ order: 'asc' }))
@@ -6697,9 +6646,9 @@ try {
   if (!window.VChart?.default) throw new Error("VChart Module could not be loaded, Check your connection and refresh")
   VChart = window.VChart.default
   const [{ createVBI }, { VQuery }, vseed] = await Promise.all([
-    import('https://cdn.jsdelivr.net/npm/@visactor/vbi@0.7.3/+esm'),
-    import('https://cdn.jsdelivr.net/npm/@visactor/vquery@0.7.3/dist/browser/esm/browser.js/+esm'),
-    import('https://cdn.jsdelivr.net/npm/@visactor/vseed@0.7.3/+esm'),
+    import('https://cdn.jsdelivr.net/npm/@visactor/vbi@0.7.4/+esm'),
+    import('https://cdn.jsdelivr.net/npm/@visactor/vquery@0.7.4/dist/browser/esm/browser.js/+esm'),
+    import('https://cdn.jsdelivr.net/npm/@visactor/vseed@0.7.4/+esm'),
     DashboardTable.load(),
   ])
   Builder = vseed.Builder
