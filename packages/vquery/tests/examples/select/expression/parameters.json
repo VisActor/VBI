@@ -1,0 +1,28 @@
+{
+  "datasetId": "expression-parameters",
+  "description": "用 ? 表示折扣参数，parameters: [0.9] 将单价按九折计算。",
+  "vquery": {
+    "select": [
+      "price",
+      {
+        "expr": "price * ?",
+        "parameters": [0.9],
+        "alias": "discountedPrice"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "price",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "price": 100
+    },
+    {
+      "price": 200
+    }
+  ]
+}

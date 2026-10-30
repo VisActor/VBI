@@ -1,4 +1,5 @@
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/chart-builder/adapters/vquery-vseed/types'
+import type { VBIQueryNamespace } from './query'
 import type { VBIChartNamespace } from './chart'
 import type { VBIConnectorNamespace } from './connectors'
 import type { VBIDashboardNamespace } from './dashboard'
@@ -11,6 +12,8 @@ export interface VBIInstance<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultV
   connectors: VBIConnectorNamespace
   /** @description 图表和 insight 资源注册 API，用于 dashboard 引用共享资源。 */
   resources: VBIResourceNamespace
+  /** @description 独立查询 Builder 创建 API。 */
+  query: VBIQueryNamespace
   /** @description 图表 Builder 创建 API。 */
   chart: VBIChartNamespace<TQueryDSL, TSeedDSL>
   /** @description Insight Builder 创建 API。 */

@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import { id } from 'src/utils'
+import { id } from 'src/utils/id'
 
 export type EnsureIdMode = boolean | 'field'
 

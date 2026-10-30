@@ -1,0 +1,52 @@
+{
+  "datasetId": "expression-alias-order",
+  "description": "聚合输出与源字段同名时，按聚合结果排序并将 NULL 放在最后；兼容 MySQL ONLY_FULL_GROUP_BY。",
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "sales": 10
+    },
+    {
+      "region": "A",
+      "sales": 20
+    },
+    {
+      "region": "B",
+      "sales": 25
+    },
+    {
+      "region": "C",
+      "sales": null
+    }
+  ],
+  "vquery": {
+    "select": [
+      "region",
+      {
+        "field": "sales",
+        "alias": "sales",
+        "aggr": {
+          "func": "sum"
+        }
+      }
+    ],
+    "groupBy": ["region"],
+    "orderBy": [
+      {
+        "field": "sales",
+        "order": "asc",
+        "nulls": "last"
+      }
+    ]
+  }
+}

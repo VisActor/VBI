@@ -1,0 +1,356 @@
+{
+  "mysqlCommit": "8a180268d832300c09a375115dfa0ea77d83f1af",
+  "oracle": "Native MySQL SELECT; expected values are not produced by VQuery. Numeric comparisons use a 1e-9 tolerance.",
+  "cases": [
+    {
+      "name": "mysql-01",
+      "expr": "1+1",
+      "source": "https://github.com/mysql/mysql-server/blob/8a180268d832300c09a375115dfa0ea77d83f1af/mysql-test/t/func_op.test#L6",
+      "selection": "select-list expression",
+      "expected": 2
+    },
+    {
+      "name": "mysql-02",
+      "expr": "1-1",
+      "source": "https://github.com/mysql/mysql-server/blob/8a180268d832300c09a375115dfa0ea77d83f1af/mysql-test/t/func_op.test#L6",
+      "selection": "select-list expression",
+      "expected": 0
+    },
+    {
+      "name": "mysql-03",
+      "expr": "1+1*2",
+      "source": "https://github.com/mysql/mysql-server/blob/8a180268d832300c09a375115dfa0ea77d83f1af/mysql-test/t/func_op.test#L6",
+      "selection": "select-list expression",
+      "expected": 3
+    },
+    {
+      "name": "mysql-04",
+      "expr": "8/5",
+      "source": "https://github.com/mysql/mysql-server/blob/8a180268d832300c09a375115dfa0ea77d83f1af/mysql-test/t/func_op.test#L6",
+      "selection": "select-list expression",
+      "expected": 1.6
+    },
+    {
+      "name": "mysql-05",
+      "expr": "-(1+1)*-2",
+      "source": "https://github.com/mysql/mysql-server/blob/8a180268d832300c09a375115dfa0ea77d83f1af/mysql-test/t/func_op.test#L6",
+      "selection": "select-list expression",
+      "expected": 4
+    },
+    {
+      "name": "mysql-06",
+      "expr": "ABS(-10)",
+      "source": "https://github.com/mysql/mysql-server/blob/8a180268d832300c09a375115dfa0ea77d83f1af/mysql-test/t/func_math.test#L18",
+      "selection": "select-list expression",
+      "expected": 10
+    },
+    {
+      "name": "mysql-07",
+      "expr": "ABS(-2) * -2",
+      "source": "https://github.com/mysql/mysql-server/blob/8a180268d832300c09a375115dfa0ea77d83f1af/mysql-test/t/func_math.test#L109",
+      "selection": "complete select expression",
+      "expected": -4
+    },
+    {
+      "name": "mysql-08",
+      "expr": "NULLIF(NULL,NULL)",
+      "source": "https://github.com/mysql/mysql-server/blob/8a180268d832300c09a375115dfa0ea77d83f1af/mysql-test/t/func_if.test#L38",
+      "selection": "numeric select-list expression",
+      "expected": null
+    },
+    {
+      "name": "mysql-09",
+      "expr": "NULLIF(NULL,1)",
+      "source": "https://github.com/mysql/mysql-server/blob/8a180268d832300c09a375115dfa0ea77d83f1af/mysql-test/t/func_if.test#L38",
+      "selection": "numeric select-list expression",
+      "expected": null
+    },
+    {
+      "name": "mysql-10",
+      "expr": "NULLIF(NULL,1.0)",
+      "source": "https://github.com/mysql/mysql-server/blob/8a180268d832300c09a375115dfa0ea77d83f1af/mysql-test/t/func_if.test#L38",
+      "selection": "numeric select-list expression",
+      "expected": null
+    },
+    {
+      "name": "mysql-11",
+      "expr": "NULLIF(1,NULL)",
+      "source": "https://github.com/mysql/mysql-server/blob/8a180268d832300c09a375115dfa0ea77d83f1af/mysql-test/t/func_if.test#L38",
+      "selection": "numeric select-list expression",
+      "expected": 1
+    },
+    {
+      "name": "mysql-12",
+      "expr": "NULLIF(1.0,NULL)",
+      "source": "https://github.com/mysql/mysql-server/blob/8a180268d832300c09a375115dfa0ea77d83f1af/mysql-test/t/func_if.test#L38",
+      "selection": "numeric select-list expression",
+      "expected": 1.0
+    },
+    {
+      "name": "mysql-13",
+      "expr": "NULLIF(5,5)",
+      "source": "https://github.com/mysql/mysql-server/blob/8a180268d832300c09a375115dfa0ea77d83f1af/mysql-test/t/func_if.test#L67",
+      "selection": "numeric function from predicate",
+      "expected": null
+    },
+    {
+      "name": "mysql-14",
+      "expr": "NULLIF(1,2)",
+      "source": "https://github.com/mysql/mysql-server/blob/8a180268d832300c09a375115dfa0ea77d83f1af/mysql-test/t/func_if.test#L275",
+      "selection": "complete select expression",
+      "expected": 1
+    },
+    {
+      "name": "mysql-15",
+      "expr": "3+5",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/arithmetic-functions.html",
+      "selection": "documented numeric example",
+      "expected": 8
+    },
+    {
+      "name": "mysql-16",
+      "expr": "3-5",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/arithmetic-functions.html",
+      "selection": "documented numeric example",
+      "expected": -2
+    },
+    {
+      "name": "mysql-17",
+      "expr": "- 2",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/arithmetic-functions.html",
+      "selection": "documented numeric example",
+      "expected": -2
+    },
+    {
+      "name": "mysql-18",
+      "expr": "3*5",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/arithmetic-functions.html",
+      "selection": "documented numeric example",
+      "expected": 15
+    },
+    {
+      "name": "mysql-19",
+      "expr": "3/5",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/arithmetic-functions.html",
+      "selection": "documented numeric example",
+      "expected": 0.6
+    },
+    {
+      "name": "mysql-20",
+      "expr": "102/(1-1)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/arithmetic-functions.html",
+      "selection": "documented numeric example",
+      "expected": null
+    },
+    {
+      "name": "mysql-21",
+      "expr": "1+2*3",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/operator-precedence.html",
+      "selection": "documented numeric example",
+      "expected": 7
+    },
+    {
+      "name": "mysql-22",
+      "expr": "(1+2)*3",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/operator-precedence.html",
+      "selection": "documented numeric example",
+      "expected": 9
+    },
+    {
+      "name": "mysql-23",
+      "expr": "COALESCE(NULL,1)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "numeric function boundary",
+      "expected": 1
+    },
+    {
+      "name": "mysql-24",
+      "expr": "COALESCE(NULL,NULL)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "numeric function boundary",
+      "expected": null
+    },
+    {
+      "name": "mysql-25",
+      "expr": "NULLIF(1,1)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "numeric function boundary",
+      "expected": null
+    },
+    {
+      "name": "mysql-26",
+      "expr": "10-3-2",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/operator-precedence.html",
+      "selection": "independently authored precedence case",
+      "expected": 5
+    },
+    {
+      "name": "mysql-27",
+      "expr": "10-(3-2)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/operator-precedence.html",
+      "selection": "independently authored precedence case",
+      "expected": 9
+    },
+    {
+      "name": "mysql-28",
+      "expr": "8/2/2",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/operator-precedence.html",
+      "selection": "independently authored precedence case",
+      "expected": 2.0
+    },
+    {
+      "name": "mysql-29",
+      "expr": "8/(2/2)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/operator-precedence.html",
+      "selection": "independently authored precedence case",
+      "expected": 8.0
+    },
+    {
+      "name": "mysql-30",
+      "expr": "-2*3+4",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/operator-precedence.html",
+      "selection": "independently authored precedence case",
+      "expected": -2
+    },
+    {
+      "name": "mysql-31",
+      "expr": "-(2*3+4)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/operator-precedence.html",
+      "selection": "independently authored precedence case",
+      "expected": -10
+    },
+    {
+      "name": "mysql-32",
+      "expr": "-(-2)+ +3",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/operator-precedence.html",
+      "selection": "independently authored precedence case",
+      "expected": 5
+    },
+    {
+      "name": "mysql-33",
+      "expr": "1e2-3e-1",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/operator-precedence.html",
+      "selection": "independently authored precedence case",
+      "expected": 99.7
+    },
+    {
+      "name": "mysql-34",
+      "expr": ".5+2E+1",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/operator-precedence.html",
+      "selection": "independently authored precedence case",
+      "expected": 20.5
+    },
+    {
+      "name": "mysql-35",
+      "expr": "(4+2)*(3-1)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/operator-precedence.html",
+      "selection": "independently authored precedence case",
+      "expected": 12
+    },
+    {
+      "name": "mysql-36",
+      "expr": "NULL+7",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": null
+    },
+    {
+      "name": "mysql-37",
+      "expr": "4*NULL",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": null
+    },
+    {
+      "name": "mysql-38",
+      "expr": "NULL/0",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": null
+    },
+    {
+      "name": "mysql-39",
+      "expr": "NULLIF(1,1)+1",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": null
+    },
+    {
+      "name": "mysql-40",
+      "expr": "COALESCE(NULL,8)/2",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": 4.0
+    },
+    {
+      "name": "mysql-41",
+      "expr": "ABS(NULL)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": null
+    },
+    {
+      "name": "mysql-42",
+      "expr": "-NULL",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": null
+    },
+    {
+      "name": "mysql-43",
+      "expr": "+NULL",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": null
+    },
+    {
+      "name": "mysql-44",
+      "expr": "COALESCE(NULLIF(2,2),7)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": 7
+    },
+    {
+      "name": "mysql-45",
+      "expr": "NULLIF(COALESCE(NULL,3),4)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": 3
+    },
+    {
+      "name": "mysql-46",
+      "expr": "ABS(-2)+ABS(-3)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": 5
+    },
+    {
+      "name": "mysql-47",
+      "expr": "1/NULLIF(0,0)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": null
+    },
+    {
+      "name": "mysql-48",
+      "expr": "COALESCE(0,2)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": 0
+    },
+    {
+      "name": "mysql-49",
+      "expr": "NULLIF(0,-0)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": null
+    },
+    {
+      "name": "mysql-50",
+      "expr": "COALESCE(1/0,5)",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/comparison-operators.html",
+      "selection": "independently authored NULL/function case",
+      "expected": 5
+    }
+  ]
+}

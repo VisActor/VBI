@@ -1,0 +1,50 @@
+{
+  "datasetId": "subquery-basic",
+  "description": "内层重命名销售额，外层通过该别名选列并再次重命名，保留每一条明细记录。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        {
+          "field": "sales",
+          "alias": "amount"
+        }
+      ]
+    },
+    "select": [
+      "region",
+      {
+        "field": "amount",
+        "alias": "revenue"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "revenue",
+        "order": "asc"
+      }
+    ]
+  },
+  "dataset": [
+    { "region": "East", "store": "A", "sales": 10 },
+    { "region": "East", "store": "A", "sales": 20 },
+    { "region": "East", "store": "B", "sales": 40 },
+    { "region": "West", "store": "C", "sales": 15 },
+    { "region": "West", "store": "C", "sales": 5 },
+    { "region": "West", "store": "D", "sales": 60 }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}

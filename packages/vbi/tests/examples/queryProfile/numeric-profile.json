@@ -1,0 +1,22 @@
+{
+  "name": "numeric-profile",
+  "builder": "query",
+  "description": "统计前五十条销售记录的有效数、缺失数、数值范围和默认分箱。",
+  "tags": ["query", "profile"],
+  "priority": 1,
+  "dsl": {
+    "queryMode": "detail",
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 50
+  },
+  "code": "const applyBuilder = async (builder: VBIQueryBuilder) => {\n  return await builder.queryProfile({ columns: ['sales'] })\n}"
+}

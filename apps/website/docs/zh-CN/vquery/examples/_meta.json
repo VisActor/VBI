@@ -6,6 +6,11 @@
   },
   {
     "type": "file",
+    "name": "subquery",
+    "label": "From"
+  },
+  {
+    "type": "file",
     "name": "where",
     "label": "Where"
   },
@@ -28,5 +33,10 @@
     "type": "file",
     "name": "limit",
     "label": "Limit"
+  },
+  {
+    "type": "dir",
+    "name": "analysis",
+    "label": "Analysis"
   }
 ]

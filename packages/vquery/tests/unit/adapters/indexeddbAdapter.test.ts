@@ -1,4 +1,4 @@
-import { IndexedDBAdapter } from '../../../src/adapters/storage-adapter/indexeddbAdapter'
+import { IndexedDBAdapter } from '../../../src/adapters/storage/indexeddbAdapter'
 import type { DatasetSchema } from '../../../src/types/DataSet'
 import type { DatasetSource } from '../../../src/types'
 

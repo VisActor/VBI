@@ -62,7 +62,7 @@ it('defaults to parameterized MySQL, quotes qualified tables, and preserves para
   }
   const result = compileQuery(dsl, { table: { database: 'local_data', name: 'supermarket' } })
   expect(result.sql).toBe(
-    'select sum(`sales`) as `total` from `local_data`.`supermarket` where (`province` = convert(? using utf8mb4) collate utf8mb4_0900_bin) group by `province` having (sum(`sales`) > ?) order by `total` is null asc, `total` desc limit 8',
+    'select sum(`sales`) as `total` from `local_data`.`supermarket` where (`province` = convert(? using utf8mb4) collate utf8mb4_0900_bin) group by `province` having (sum(`sales`) > ?) order by sum(`sales`) is null asc, `total` desc limit 8',
   )
   expect(result.parameters).toEqual(["x\\' OR 1=1; -- ? $1", 10])
   expect(result.sql).not.toContain('OR 1=1')
@@ -132,7 +132,7 @@ it('renders explicit dialect SQL without replacing placeholders inside identifie
     limit: 2,
   }
   expect(convertDSLToMysql(dsl, 'orders')).toBe(
-    "select `name` as `? $1` from `orders` where (`name` = convert('O''Reilly ? $1\\\\path' using utf8mb4) collate utf8mb4_0900_bin and `active` = TRUE) limit 2",
+    'select `name` as `? $1` from `orders` where (`name` = convert(convert(0x4f275265696c6c79203f2024315c70617468 using utf8mb4) using utf8mb4) collate utf8mb4_0900_bin and `active` = TRUE) limit 2',
   )
   expect(convertDSLToDuckDB(dsl, 'orders')).toBe(
     'select "name" as "? $1" from "orders" where ("name" = \'O\'\'Reilly ? $1\\path\' and "active" = TRUE) limit 2',

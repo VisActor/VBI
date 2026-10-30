@@ -1,8 +1,5 @@
 import { createVBI } from '@visactor/vbi'
-import {
-  mapAggregateForVQuery,
-  mapDimensionAggregateForVQuery,
-} from 'src/chart-builder/pipeline/vqueryDSL/aggregateMap'
+import { mapAggregateForVQuery, mapDimensionAggregateForVQuery } from 'src/query-builder/pipeline/aggregateMap'
 
 it('edits dashboard widget collections without copying or deleting shared resources', () => {
   const vbi = createVBI()

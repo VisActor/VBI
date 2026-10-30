@@ -1,0 +1,57 @@
+{
+  "datasetId": "expression-unary-scientific",
+  "description": "一元正负号、连续减号和科学记数法均由 AST 明确解析。",
+  "vquery": {
+    "select": [
+      "id",
+      {
+        "expr": "-(-x)+ +y",
+        "alias": "signs"
+      },
+      {
+        "expr": "x--2",
+        "alias": "minusNegative"
+      },
+      {
+        "expr": ".5+1e-2+2E+1",
+        "alias": "scientific"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "id"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "id": 1,
+      "x": 8,
+      "y": 2
+    },
+    {
+      "id": 2,
+      "x": 3,
+      "y": 0
+    },
+    {
+      "id": 3,
+      "x": null,
+      "y": -2
+    }
+  ]
+}

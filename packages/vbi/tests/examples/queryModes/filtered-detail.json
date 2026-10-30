@@ -1,0 +1,35 @@
+{
+  "builder": "query",
+  "name": "filtered-detail",
+  "description": "切换 detail 模式读取华东地区的源记录，按单笔销售额排序并返回前五行；度量不再执行聚合。",
+  "tags": ["query", "detail", "orderBy", "limit"],
+  "priority": 2,
+  "dsl": {
+    "dimensions": [
+      {
+        "id": "province",
+        "field": "province",
+        "alias": "省份"
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "单笔销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "id": "amount",
+        "field": "amount",
+        "alias": "件数",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ]
+  },
+  "code": "const applyBuilder = async (builder: VBIQueryBuilder) => {\n  builder.queryMode.setMode('detail')\n  builder.whereFilter.add('area', node => node.setOperator('eq').setValue('华东'))\n  builder.measures.update('sales', node => node.setSort({ order: 'desc' }))\n  builder.limit.setLimit(5)\n\n  return { query: builder.buildVQuery(), result: await builder.query() }\n}"
+}

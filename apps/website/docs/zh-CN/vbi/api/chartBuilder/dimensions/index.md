@@ -1,6 +1,6 @@
 # DimensionsBuilder
 
-维度构建器，用于添加、修改、删除维度配置。维度是数据的分类字段，如：时间、地区、产品类别
+维度构建器，在查询字段操作上补充图形编码。
 
 ## 方法
 
@@ -17,7 +17,7 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `dsl` | Y.Map&lt;any> | - |
 
 ### add
 
@@ -26,10 +26,10 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 **定义**:
 
 ```typescript
-add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder
+add(field: string, callback: (node: DimensionNodeBuilder) => void): this
 ```
 
-**返回**: `DimensionsBuilder`
+**返回**: `this`
 
 **参数**:
 
@@ -45,10 +45,10 @@ add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBu
 **定义**:
 
 ```typescript
-remove(id: string): DimensionsBuilder
+remove(id: string): this
 ```
 
-**返回**: `DimensionsBuilder`
+**返回**: `this`
 
 **参数**:
 
@@ -63,10 +63,10 @@ remove(id: string): DimensionsBuilder
 **定义**:
 
 ```typescript
-update(id: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder
+update(id: string, callback: (node: DimensionNodeBuilder) => void): this
 ```
 
-**返回**: `DimensionsBuilder`
+**返回**: `this`
 
 **参数**:
 

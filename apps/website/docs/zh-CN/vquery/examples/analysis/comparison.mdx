@@ -1,0 +1,458 @@
+# Comparison
+
+先比较实际与目标，再比较两组转化率。目标达成率 1.2 表示 120%；转化率从 50% 到 75% 相差 25 个百分点。
+
+## target-attainment
+
+按同一地区和月份汇总实际销售额与目标，计算差额和目标达成率。1.2 表示达成 120%，0 表示实际销售额为 0；目标为 0 或缺失时达成率返回 NULL，缺失实际记录不自动补零。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "analysis-target-attainment",
+  "description": "按同一地区和月份汇总实际销售额与目标，计算差额和目标达成率。1.2 表示达成 120%，0 表示实际销售额为 0；目标为 0 或缺失时达成率返回 NULL，缺失实际记录不自动补零。",
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "period",
+      "type": "string"
+    },
+    {
+      "name": "kind",
+      "type": "string"
+    },
+    {
+      "name": "amount",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "period": "2026-03",
+      "kind": "actual",
+      "amount": 80
+    },
+    {
+      "region": "A",
+      "period": "2026-03",
+      "kind": "actual",
+      "amount": 40
+    },
+    {
+      "region": "A",
+      "period": "2026-03",
+      "kind": "target",
+      "amount": 100
+    },
+    {
+      "region": "A",
+      "period": "2026-02",
+      "kind": "actual",
+      "amount": 999
+    },
+    {
+      "region": "B",
+      "period": "2026-03",
+      "kind": "actual",
+      "amount": 80
+    },
+    {
+      "region": "B",
+      "period": "2026-03",
+      "kind": "target",
+      "amount": 100
+    },
+    {
+      "region": "C",
+      "period": "2026-03",
+      "kind": "actual",
+      "amount": 20
+    },
+    {
+      "region": "C",
+      "period": "2026-03",
+      "kind": "target",
+      "amount": 0
+    },
+    {
+      "region": "D",
+      "period": "2026-03",
+      "kind": "target",
+      "amount": 100
+    },
+    {
+      "region": "E",
+      "period": "2026-03",
+      "kind": "actual",
+      "amount": 0
+    },
+    {
+      "region": "E",
+      "period": "2026-03",
+      "kind": "target",
+      "amount": 80
+    },
+    {
+      "region": "F",
+      "period": "2026-03",
+      "kind": "actual",
+      "amount": 50
+    }
+  ],
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        {
+          "field": "amount",
+          "alias": "actual",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "kind",
+                "op": "=",
+                "value": "actual"
+              }
+            ]
+          }
+        },
+        {
+          "field": "amount",
+          "alias": "target",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "kind",
+                "op": "=",
+                "value": "target"
+              }
+            ]
+          }
+        }
+      ],
+      "where": {
+        "op": "and",
+        "conditions": [
+          {
+            "field": "period",
+            "op": "=",
+            "value": "2026-03"
+          },
+          {
+            "field": "kind",
+            "op": "in",
+            "value": [
+              "actual",
+              "target"
+            ]
+          }
+        ]
+      },
+      "groupBy": [
+        "region"
+      ]
+    },
+    "select": [
+      "region",
+      "actual",
+      "target",
+      {
+        "expr": "actual-target",
+        "alias": "variance"
+      },
+      {
+        "expr": "actual/NULLIF(target,0)",
+        "alias": "attainmentRate"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "region",
+        "order": "asc"
+      }
+    ]
+  }
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## conversion-comparison
+
+比较两组用户转化率：样本数按各组全部 userId 去重，转化人数按 convert 事件的 userId 去重，重复事件不重复计数。50% 到 75% 相差 25 个百分点、相对提升 50%；无样本或基期转化率为 0 的相对提升返回 NULL。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "analysis-conversion-comparison",
+  "description": "比较两组用户转化率：样本数按各组全部 userId 去重，转化人数按 convert 事件的 userId 去重，重复事件不重复计数。50% 到 75% 相差 25 个百分点、相对提升 50%；无样本或基期转化率为 0 的相对提升返回 NULL。",
+  "schema": [
+    {
+      "name": "market",
+      "type": "string"
+    },
+    {
+      "name": "variant",
+      "type": "string"
+    },
+    {
+      "name": "userId",
+      "type": "string"
+    },
+    {
+      "name": "event",
+      "type": "string"
+    }
+  ],
+  "dataset": [
+    {
+      "market": "A",
+      "variant": "control",
+      "userId": "u1",
+      "event": "visit"
+    },
+    {
+      "market": "A",
+      "variant": "control",
+      "userId": "u1",
+      "event": "convert"
+    },
+    {
+      "market": "A",
+      "variant": "control",
+      "userId": "u1",
+      "event": "convert"
+    },
+    {
+      "market": "A",
+      "variant": "control",
+      "userId": "u2",
+      "event": "convert"
+    },
+    {
+      "market": "A",
+      "variant": "control",
+      "userId": "u3",
+      "event": "visit"
+    },
+    {
+      "market": "A",
+      "variant": "control",
+      "userId": "u4",
+      "event": "visit"
+    },
+    {
+      "market": "A",
+      "variant": "variant",
+      "userId": "u5",
+      "event": "convert"
+    },
+    {
+      "market": "A",
+      "variant": "variant",
+      "userId": "u6",
+      "event": "convert"
+    },
+    {
+      "market": "A",
+      "variant": "variant",
+      "userId": "u7",
+      "event": "convert"
+    },
+    {
+      "market": "A",
+      "variant": "variant",
+      "userId": "u8",
+      "event": "visit"
+    },
+    {
+      "market": "B",
+      "variant": "control",
+      "userId": "u9",
+      "event": "visit"
+    },
+    {
+      "market": "B",
+      "variant": "control",
+      "userId": "u10",
+      "event": "visit"
+    },
+    {
+      "market": "B",
+      "variant": "variant",
+      "userId": "u11",
+      "event": "convert"
+    },
+    {
+      "market": "B",
+      "variant": "variant",
+      "userId": "u12",
+      "event": "visit"
+    },
+    {
+      "market": "C",
+      "variant": "control",
+      "userId": "u13",
+      "event": "convert"
+    },
+    {
+      "market": "C",
+      "variant": "control",
+      "userId": "u14",
+      "event": "visit"
+    },
+    {
+      "market": "D",
+      "variant": "variant",
+      "userId": "u15",
+      "event": "convert"
+    },
+    {
+      "market": "D",
+      "variant": "variant",
+      "userId": "u16",
+      "event": "visit"
+    }
+  ],
+  "vquery": {
+    "from": {
+      "from": {
+        "select": [
+          "market",
+          {
+            "field": "userId",
+            "alias": "controlUsers",
+            "aggr": {
+              "func": "count_distinct"
+            },
+            "when": {
+              "op": "and",
+              "conditions": [
+                {
+                  "field": "variant",
+                  "op": "=",
+                  "value": "control"
+                }
+              ]
+            }
+          },
+          {
+            "field": "userId",
+            "alias": "controlConversions",
+            "aggr": {
+              "func": "count_distinct"
+            },
+            "when": {
+              "op": "and",
+              "conditions": [
+                {
+                  "field": "variant",
+                  "op": "=",
+                  "value": "control"
+                },
+                {
+                  "field": "event",
+                  "op": "=",
+                  "value": "convert"
+                }
+              ]
+            }
+          },
+          {
+            "field": "userId",
+            "alias": "variantUsers",
+            "aggr": {
+              "func": "count_distinct"
+            },
+            "when": {
+              "op": "and",
+              "conditions": [
+                {
+                  "field": "variant",
+                  "op": "=",
+                  "value": "variant"
+                }
+              ]
+            }
+          },
+          {
+            "field": "userId",
+            "alias": "variantConversions",
+            "aggr": {
+              "func": "count_distinct"
+            },
+            "when": {
+              "op": "and",
+              "conditions": [
+                {
+                  "field": "variant",
+                  "op": "=",
+                  "value": "variant"
+                },
+                {
+                  "field": "event",
+                  "op": "=",
+                  "value": "convert"
+                }
+              ]
+            }
+          }
+        ],
+        "groupBy": [
+          "market"
+        ]
+      },
+      "select": [
+        "market",
+        {
+          "expr": "controlConversions/NULLIF(controlUsers,0)",
+          "alias": "controlRate"
+        },
+        {
+          "expr": "variantConversions/NULLIF(variantUsers,0)",
+          "alias": "variantRate"
+        }
+      ]
+    },
+    "select": [
+      "market",
+      "controlRate",
+      "variantRate",
+      {
+        "expr": "(variantRate-controlRate)*100",
+        "alias": "differencePp"
+      },
+      {
+        "expr": "(variantRate-controlRate)/NULLIF(controlRate,0)",
+        "alias": "relativeLift"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "market",
+        "order": "asc"
+      }
+    ]
+  }
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```

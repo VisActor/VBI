@@ -1,0 +1,28 @@
+{
+  "name": "sort-dimension",
+  "builder": "query",
+  "description": "通过维度 ID 更新显示名称，并按区域升序返回。",
+  "tags": ["query", "dimensions"],
+  "priority": 2,
+  "dsl": {
+    "dimensions": [
+      {
+        "id": "region",
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 3
+  },
+  "code": "const applyBuilder = (builder: VBIQueryBuilder) => {\n  builder.dimensions.update('region', node => node.setAlias('销售区域').setSort({ order: 'asc' }))\n}"
+}

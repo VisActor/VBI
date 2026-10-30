@@ -7,17 +7,17 @@ import {
   getOrCreateDimensions,
   locateDimensionIndexById,
   normalizeDimensionNodeIds,
-} from 'src/chart-builder/features/dimensions/dimension-utils'
+} from 'src/query-builder/features/dimensions/dimension-utils'
 import { MeasuresBuilder } from 'src/chart-builder/features/measures/mea-builder'
 import { MeasureNodeBuilder } from 'src/chart-builder/features/measures/mea-node-builder'
 import {
   getOrCreateMeasures,
   locateMeasureIndexById,
   normalizeMeasureNodeIds,
-} from 'src/chart-builder/features/measures/measure-utils'
-import { UndoManager } from 'src/chart-builder/features/undo-manager/undo-manager'
-import { HavingGroupBuilder } from 'src/chart-builder/features/havingFilter/having-group-builder'
-import { WhereGroupBuilder } from 'src/chart-builder/features/whereFilter/where-group-builder'
+} from 'src/query-builder/features/measures/measure-utils'
+import { UndoManager } from 'src/query-builder/features/undo-manager/undo-manager'
+import { HavingGroupBuilder } from 'src/query-builder/features/havingFilter/having-group-builder'
+import { WhereGroupBuilder } from 'src/query-builder/features/whereFilter/where-group-builder'
 import { isEmptyVBIChartDSL } from 'src/chart-builder/modules/is-empty'
 import { isEmptyVBIDashboardDSL } from 'src/dashboard-builder/modules/is-empty'
 import { isEmptyVBIInsightDSL } from 'src/insight-builder/modules/is-empty'

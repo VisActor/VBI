@@ -1,0 +1,110 @@
+{
+  "datasetId": "expression-period-comparison",
+  "description": "先通过 when 获取本期、基期，再计算差额和增长率；日期期间及对齐口径由调用方明确指定。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        {
+          "field": "sales",
+          "alias": "current",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "period",
+                "op": "=",
+                "value": "current"
+              }
+            ]
+          }
+        },
+        {
+          "field": "sales",
+          "alias": "baseline",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "period",
+                "op": "=",
+                "value": "baseline"
+              }
+            ]
+          }
+        }
+      ],
+      "groupBy": ["region"]
+    },
+    "select": [
+      "region",
+      "current",
+      "baseline",
+      {
+        "expr": "current-baseline",
+        "alias": "delta"
+      },
+      {
+        "expr": "(current-baseline)/NULLIF(baseline,0)",
+        "alias": "growthRate"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "region"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "period",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "period": "current",
+      "sales": 120
+    },
+    {
+      "region": "A",
+      "period": "baseline",
+      "sales": 100
+    },
+    {
+      "region": "B",
+      "period": "current",
+      "sales": 80
+    },
+    {
+      "region": "B",
+      "period": "baseline",
+      "sales": 100
+    },
+    {
+      "region": "C",
+      "period": "current",
+      "sales": 20
+    },
+    {
+      "region": "C",
+      "period": "baseline",
+      "sales": 0
+    }
+  ]
+}

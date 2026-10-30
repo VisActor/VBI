@@ -5,16 +5,10 @@
 - [ChartInstanceBuilder](chart-builder.md#chartinstancebuilder)
 - [ChartTypeBuilder](chart-builder.md#charttypebuilder)
 - [DimensionsBuilder](chart-builder.md#dimensionsbuilder)
-- [HavingFilterBuilder](chart-builder.md#havingfilterbuilder)
-- [LimitBuilder](chart-builder.md#limitbuilder)
 - [LocaleBuilder](chart-builder.md#localebuilder)
 - [MeasuresBuilder](chart-builder.md#measuresbuilder)
-- [QueryModeBuilder](chart-builder.md#querymodebuilder)
 - [ThemeBuilder](chart-builder.md#themebuilder)
-- [UndoManager](chart-builder.md#undomanager)
-- [UndoManagerOptions](chart-builder.md#undomanageroptions)
 - [VBIChartBuilder](chart-builder.md#vbichartbuilder)
-- [WhereFilterBuilder](chart-builder.md#wherefilterbuilder)
 - [buildVQuery](chart-builder.md#buildvquery)
 - [defaultVBIChartBuilderAdapters](chart-builder.md#defaultvbichartbuilderadapters)
 - [resolveVBIChartBuilderAdapters](chart-builder.md#resolvevbichartbuilderadapters)
@@ -22,7 +16,6 @@
 类型引用沿用源码模块名，包的公开导出以索引为准：
 
 ```typescript
-import * as Y from 'yjs'
 import type * as Y from 'yjs'
 import type {
   BuildVSeedOptions,
@@ -32,41 +25,29 @@ import type {
   VBIChartBuilderAdapters,
   VBIChartBuilderInterface,
   VBIChartBuilderOptions,
-  ObserveCallback,
-  ObserveDeepCallback,
 } from 'src/types'
 import type { ChartTypeBuilder } from '../chart-type'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from './types'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/chart-builder/adapters/vquery-vseed'
 import type { ObserveCallback } from 'src/types'
-import type { ObserveCallback, VBIQueryMode } from 'src/types'
-import type { ObserveDeepCallback, VBIDimension, VBIDimensionGroup, VBIDimensionTree } from 'src/types'
-import type { ObserveDeepCallback, VBIMeasure, VBIMeasureGroup, VBIMeasureTree } from 'src/types'
 import type { VBIChartBuilderAdapters } from 'src/types'
 import type { VBIChartBuilderInterface, VBIChartDSL } from 'src/types'
 import type { VBIChartInstance, VBIChartInstanceOn, VBIChartInstanceOff } from 'src/types'
-import type { VBIHavingGroup, ObserveDeepCallback } from 'src/types'
-import type { VBIWhereGroup, ObserveDeepCallback } from 'src/types'
-import type { VQueryDSL } from '@visactor/vquery'
+import type { VBIDimension, VBIDimensionTree, VBIDimensionGroup } from 'src/types'
+import type { VBIMeasure, VBIMeasureTree, VBIMeasureGroup } from 'src/types'
 import { DimensionNodeBuilder } from './dim-node-builder'
 import {
   DimensionsBuilder,
   MeasuresBuilder,
-  HavingFilterBuilder,
-  WhereFilterBuilder,
   ChartTypeBuilder,
   ChartInstanceBuilder,
   ThemeBuilder,
   LocaleBuilder,
-  LimitBuilder,
-  QueryModeBuilder,
-  UndoManager,
 } from './features'
-import { HavingFilterNodeBuilder } from './having-node-builder'
-import { HavingGroupBuilder } from './having-group-builder'
 import { MeasureNodeBuilder } from './mea-node-builder'
-import { WhereFilterNodeBuilder } from './where-node-builder'
-import { WhereGroupBuilder } from './where-group-builder'
+import { QueryBuilderBase } from 'src/query-builder/base'
+import { QueryDimensionsBuilderBase } from 'src/query-builder/features/dimensions/dim-builder'
+import { QueryMeasuresBuilderBase } from 'src/query-builder/features/measures/mea-builder'
 ```
 
 ## ChartInstanceBuilder
@@ -158,169 +139,17 @@ export declare class ChartTypeBuilder {
 
 ## DimensionsBuilder
 
-源码：[packages/vbi/src/chart-builder/features/dimensions/dim-builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/features/dimensions/dim-builder.ts#L11)
+源码：[packages/vbi/src/chart-builder/features/dimensions/dim-builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/features/dimensions/dim-builder.ts#L9)
 
 包导出：`DimensionsBuilder`
 
+继承的公开成员见：[QueryDimensionsBuilderBase](types.md#querydimensionsbuilderbase)。
+
 ```typescript
-/**
- * @description 维度构建器，用于添加、修改、删除维度配置。维度是数据的分类字段，如：时间、地区、产品类别
- */
-export declare class DimensionsBuilder {
-  constructor(doc: Y.Doc, dsl: Y.Map<any>)
-  /**
-   * @description 添加一个维度
-   * @param field - 字段名
-   * @param callback - 回调函数
-   */
-  add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder
-  /**
-   * @description 删除指定 ID 的维度
-   * @param id - 维度 ID
-   */
-  remove(id: string): DimensionsBuilder
-  /**
-   * @description 更新指定维度 ID 的配置
-   * @param id - 维度 ID
-   * @param callback - 回调函数
-   */
-  update(id: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder
-  /**
-   * @description 按回调条件查找第一个维度，行为与 Array.find 一致
-   * @param predicate - 查找条件
-   */
-  find(predicate: (node: DimensionNodeBuilder, index: number) => boolean): DimensionNodeBuilder | undefined
-  /**
-   * @description 获取所有维度
-   */
-  findAll(): DimensionNodeBuilder[]
-  /**
-   * @description 导出所有维度为 JSON 数组
-   */
-  toJSON(): VBIDimension[]
-  /**
-   * @description 监听维度变化，返回取消监听的函数
-   * @param callback - 回调函数
-   * @returns 取消监听的函数
-   */
-  observe(callback: ObserveDeepCallback): () => void
+/** @description 维度构建器，在查询字段操作上补充图形编码。 */
+export declare class DimensionsBuilder extends QueryDimensionsBuilderBase<VBIDimension, DimensionNodeBuilder> {
   static isDimensionNode(node: VBIDimensionTree[0]): node is VBIDimension
   static isDimensionGroup(node: VBIDimensionTree[0]): node is VBIDimensionGroup
-}
-```
-
-## HavingFilterBuilder
-
-源码：[packages/vbi/src/chart-builder/features/havingFilter/having-builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/features/havingFilter/having-builder.ts#L11)
-
-包导出：`HavingFilterBuilder`
-
-```typescript
-/**
- * @description Having 过滤构建器，用于添加、修改、删除分组后过滤条件。Having 过滤在数据聚合后生效，用于筛选分组结果
- */
-export declare class HavingFilterBuilder {
-  constructor(doc: Y.Doc, dsl: Y.Map<any>)
-  getConditions(): Y.Array<any>
-  /** @description 获取根过滤组的逻辑操作符。 */
-  getOperator(): 'and' | 'or'
-  /** @description 设置根过滤组的逻辑操作符，保留已有条件及其 ID。 */
-  setOperator(op: 'and' | 'or'): this
-  /**
-   * @description 添加一个 Having 过滤条件
-   * @param field - 字段名
-   * @param callback - 回调函数
-   */
-  add(field: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFilterBuilder
-  /**
-   * @description 添加一个 Having 分组
-   * @param op - 逻辑操作符
-   * @param callback - 回调函数
-   */
-  addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): HavingFilterBuilder
-  /**
-   * @description 更新指定 ID 的过滤条件
-   * @param id - 过滤条件 ID
-   * @param callback - 回调函数
-   */
-  update(id: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFilterBuilder
-  /**
-   * @description 更新指定 ID 的分组
-   * @param id - 分组 ID
-   * @param callback - 回调函数
-   */
-  updateGroup(id: string, callback: (group: HavingGroupBuilder) => void): HavingFilterBuilder
-  /**
-   * @description 删除指定 ID 的条件或指定索引的项
-   * @param idOrIndex - ID 或索引
-   */
-  remove(idOrIndex: string | number): HavingFilterBuilder
-  /**
-   * @description 按回调条件查找第一个条件（过滤或分组），行为与 Array.find 一致
-   * @param predicate - 查找条件
-   */
-  find(
-    predicate: (entry: HavingFilterNodeBuilder | HavingGroupBuilder, index: number) => boolean,
-  ): HavingFilterNodeBuilder | HavingGroupBuilder | undefined
-  /**
-   * @description 清空所有 Having 过滤条件
-   */
-  clear(): this
-  /**
-   * @description 导出完整的 Having 过滤配置
-   */
-  toJSON(): VBIHavingGroup
-  /**
-   * @description 监听过滤条件变化，返回取消监听的函数
-   * @param callback - 回调函数
-   * @returns 取消监听的函数
-   */
-  observe(callback: ObserveDeepCallback): () => void
-  /**
-   * @description 判断是否为分组节点
-   */
-  static isGroup(yMap: Y.Map<any>): boolean
-  /**
-   * @description 判断是否为叶子节点
-   */
-  static isNode(yMap: Y.Map<any>): boolean
-}
-```
-
-## LimitBuilder
-
-源码：[packages/vbi/src/chart-builder/features/limit/limit-builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/features/limit/limit-builder.ts#L7)
-
-包导出：`LimitBuilder`
-
-```typescript
-/**
- * @description 数据量限制构建器，用于设置和获取当前 limit
- */
-export declare class LimitBuilder {
-  /**
-   * @description 构造函数
-   */
-  constructor(_doc: Y.Doc, dsl: Y.Map<any>)
-  /**
-   * @description 监听 limit 变化，返回取消监听的函数
-   * @param callback - 回调函数
-   * @returns 取消监听的函数
-   */
-  observe(callback: ObserveCallback): () => void
-  /**
-   * @description 设置 limit
-   * @param limit - 数据量限制
-   */
-  setLimit(limit: number): void
-  /**
-   * @description 获取当前 limit
-   */
-  getLimit(): number | undefined
-  /**
-   * @description 导出为 JSON
-   */
-  toJSON(): number | undefined
 }
 ```
 
@@ -363,79 +192,17 @@ export declare class LocaleBuilder {
 
 ## MeasuresBuilder
 
-源码：[packages/vbi/src/chart-builder/features/measures/mea-builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/features/measures/mea-builder.ts#L11)
+源码：[packages/vbi/src/chart-builder/features/measures/mea-builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/features/measures/mea-builder.ts#L9)
 
 包导出：`MeasuresBuilder`
 
+继承的公开成员见：[QueryMeasuresBuilderBase](types.md#querymeasuresbuilderbase)。
+
 ```typescript
-/**
- * @description 度量构建器，用于添加、修改、删除度量配置。度量是数据的数值字段，如：销售额、利润、数量
- */
-export declare class MeasuresBuilder {
-  constructor(doc: Y.Doc, dsl: Y.Map<any>)
-  /**
-   * @description 添加一个度量
-   * @param field - 字段名
-   * @param callback - 回调函数
-   */
-  add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
-  /**
-   * @description 删除指定 ID 的度量
-   * @param id - 度量 ID
-   */
-  remove(id: string): MeasuresBuilder
-  /**
-   * @description 更新度量配置
-   * @param id - 度量 ID
-   * @param callback - 回调函数
-   */
-  update(id: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
-  /**
-   * @description 按回调条件查找第一个度量，行为与 Array.find 一致
-   * @param predicate - 查找条件
-   */
-  find(predicate: (node: MeasureNodeBuilder, index: number) => boolean): MeasureNodeBuilder | undefined
-  /**
-   * @description 获取所有度量
-   */
-  findAll(): MeasureNodeBuilder[]
-  /**
-   * @description 导出所有度量为 JSON 数组
-   */
-  toJSON(): VBIMeasure[]
-  /**
-   * @description 监听度量变化
-   * @param callback - 回调函数
-   */
-  /**
-   * @description 监听度量变化，返回取消监听的函数
-   * @param callback - 回调函数
-   * @returns 取消监听的函数
-   */
-  observe(callback: ObserveDeepCallback): () => void
+/** @description 度量构建器，在查询字段操作上补充图形编码。 */
+export declare class MeasuresBuilder extends QueryMeasuresBuilderBase<VBIMeasure, MeasureNodeBuilder> {
   static isMeasureNode(node: VBIMeasureTree[0]): node is VBIMeasure
   static isMeasureGroup(node: VBIMeasureTree[0]): node is VBIMeasureGroup
-}
-```
-
-## QueryModeBuilder
-
-源码：[packages/vbi/src/chart-builder/features/query-mode/query-mode-builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/features/query-mode/query-mode-builder.ts#L6)
-
-包导出：`QueryModeBuilder`
-
-```typescript
-/** @description 查询模式构建器。未配置时按 aggregate 查询；detail 仅用于普通表。 */
-export declare class QueryModeBuilder {
-  constructor(dsl: Y.Map<any>)
-  /** @description 设置查询模式，保留已有字段和筛选配置。 */
-  setMode(mode: VBIQueryMode): this
-  /** @description 获取查询模式，未配置时返回 aggregate。 */
-  getMode(): VBIQueryMode
-  /** @description 监听查询模式变化，返回取消监听的函数。 */
-  observe(callback: ObserveCallback): () => void
-  /** @description 导出当前查询模式。 */
-  toJSON(): VBIQueryMode
 }
 ```
 
@@ -476,137 +243,35 @@ export declare class ThemeBuilder {
 }
 ```
 
-## UndoManager
-
-源码：[packages/vbi/src/chart-builder/features/undo-manager/undo-manager.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/features/undo-manager/undo-manager.ts#L14)
-
-包导出：`UndoManager`
-
-```typescript
-/**
- * @description 撤销/重做管理器，提供基于 YJS 的撤销和重做功能，支持栈管理和历史清除操作
- */
-export declare class UndoManager {
-  /**
-   * @description 构造函数
-   * @param scope - YJS 文档或类型作用域，用于定义撤销/重做的追踪范围
-   */
-  constructor(scope: Y.Doc | Y.AbstractType<any> | Y.AbstractType<any>[], options?: UndoManagerOptions)
-  /**
-   * @description 撤销上一次修改
-   * @returns 是否成功撤销
-   */
-  undo(): boolean
-  /**
-   * @description 重做被撤销的修改
-   * @returns 是否成功重做
-   */
-  redo(): boolean
-  /**
-   * @description 检查是否有可撤销的操作
-   * @returns 是否可以撤销
-   */
-  canUndo(): boolean
-  /**
-   * @description 检查是否有可重做的操作
-   * @returns 是否可以重做
-   */
-  canRedo(): boolean
-  /**
-   * @description 清除历史记录
-   * @param clearUndoStack - 是否清除撤销栈，默认 true
-   * @param clearRedoStack - 是否清除重做栈，默认 true
-   */
-  clear(clearUndoStack?: boolean, clearRedoStack?: boolean): void
-  /** @description 结束当前历史分组，下一次修改作为新的撤销步骤。 */
-  stopCapturing(): void
-  /** @description 开始追踪指定来源的本地事务。 */
-  addTrackedOrigin(origin: unknown): void
-  /** @description 停止追踪指定来源的本地事务，不影响已有历史。 */
-  removeTrackedOrigin(origin: unknown): void
-  /** @description 订阅历史新增、合并、撤销、重做和清空，返回取消订阅函数；回调中可读取 canUndo / canRedo。 */
-  observe(callback: () => void): () => void
-  /** @description 停止追踪并释放监听器；销毁所属 Y.Doc 时也会自动释放。 */
-  destroy(): void
-}
-```
-
-参数默认值（来自源码）：
-
-```typescript
-// constructor
-options = {}
-```
-
-## UndoManagerOptions
-
-源码：[packages/vbi/src/chart-builder/features/undo-manager/undo-manager.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/features/undo-manager/undo-manager.ts#L4)
-
-包导出：`UndoManagerOptions`
-
-```typescript
-/** @description 撤销历史选项。只记录本地事务；默认追踪 origin 为 null 的事务。 */
-export interface UndoManagerOptions {
-  /** @description 合并相邻操作的时间窗口（毫秒）；0 表示每个事务独立成一步。 */
-  captureTimeout?: number
-  /** @description 需要记录的本地事务来源，可包含 origin 对象或其构造函数。 */
-  trackedOrigins?: Set<unknown>
-}
-```
-
 ## VBIChartBuilder
 
-源码：[packages/vbi/src/chart-builder/builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/builder.ts#L39)
+源码：[packages/vbi/src/chart-builder/builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/builder.ts#L27)
 
 包导出：`VBIChartBuilder`
 
+继承的公开成员见：[QueryBuilderBase](types.md#querybuilderbase)。
+
 ```typescript
-export declare class VBIChartBuilder<
-  TQueryDSL = DefaultVBIQueryDSL,
-  TSeedDSL = DefaultVBISeedDSL,
-> implements VBIChartBuilderInterface<TQueryDSL, TSeedDSL> {
-  doc: Y.Doc
-  dsl: Y.Map<any>
+export declare class VBIChartBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>
+  extends QueryBuilderBase<VBIChartDSL>
+  implements VBIChartBuilderInterface<TQueryDSL, TSeedDSL>
+{
   adapters: Required<VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>>
   chartType: ChartTypeBuilder
   /** @description 图表运行时实例的绑定、获取与原生事件代理。 */
   instance: ChartInstanceBuilder
   measures: MeasuresBuilder
   dimensions: DimensionsBuilder
-  havingFilter: HavingFilterBuilder
-  whereFilter: WhereFilterBuilder
   theme: ThemeBuilder
   locale: LocaleBuilder
-  limit: LimitBuilder
-  /** @description 图表查询粒度，普通表可选择源记录明细；缺省保持聚合查询。 */
-  queryMode: QueryModeBuilder
-  /** @description 图表撤销历史，每个 Yjs 事务独立成一步；连续 add / update 不按时间合并，doc.transact 可显式合并多个修改。 */
-  undoManager: UndoManager
   constructor(doc: Y.Doc, options?: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>, dsl?: Y.Map<any>)
-  applyUpdate: (update: Uint8Array, transactionOrigin?: any) => void
-  encodeStateAsUpdate: (targetStateVector?: Uint8Array) => Uint8Array<ArrayBufferLike>
-  getUUID: () => string
-  /** @description 默认通过 query adapter 查询一次并构建 VSeed。自定义 seed adapter 保留原有上下文和取数方式。 */
+  /** @description 校验计算表达式后，默认通过 query adapter 查询一次并构建 VSeed；非法表达式抛错。自定义 seed adapter 保留原有上下文和取数方式。 */
   buildVSeed: (options?: BuildVSeedOptions) => Promise<TSeedDSL>
   buildVQuery: () => TQueryDSL
-  /** @description 根据当前图表配置，通过 query adapter 执行并原样返回查询结果。默认查询保留维度和度量 ID，并将 signal 传给 Connector；独立调用不缓存结果。 */
+  /** @description 根据当前图表配置，取数前校验计算表达式，非法时抛错；通过 query adapter 执行并原样返回查询结果。默认查询保留维度和度量 ID，并将 signal 传给 Connector；独立调用不缓存结果。 */
   query: (options?: QueryOptions) => Promise<VBIQueryResult>
   build: () => VBIChartDSL
-  /** @description 订阅图表 DSL 顶层字段变化，与 dsl.observe 语义一致；不包含嵌套字段修改，也不触发首次渲染。 */
-  observe(callback: ObserveCallback): void
-  /** @description 取消指定的图表 DSL 顶层订阅，传入 observe 时使用的同一回调。 */
-  unobserve(callback: ObserveCallback): void
-  /** @description 订阅整个图表 DSL 的深层变化，包括嵌套筛选、字段、本地编辑、撤销重做及协同更新；同一事务通知一次，不包含运行时实例变化，也不触发首次渲染。 */
-  observeDeep(callback: ObserveDeepCallback): void
-  /** @description 取消指定的图表 DSL 深层订阅，传入 observeDeep 时使用的同一回调。 */
-  unobserveDeep(callback: ObserveDeepCallback): void
   isEmpty: () => boolean
-  getSchema: () => Promise<
-    {
-      name: string
-      type: string
-    }[]
-  >
 }
 ```
 
@@ -620,92 +285,17 @@ options = {}
 options = {}
 ```
 
-## WhereFilterBuilder
-
-源码：[packages/vbi/src/chart-builder/features/whereFilter/where-builder.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/features/whereFilter/where-builder.ts#L11)
-
-包导出：`WhereFilterBuilder`
-
-```typescript
-/**
- * @description Where 过滤构建器，用于添加、修改、删除行级过滤条件。Where 过滤在数据查询前生效，用于筛选原始数据
- */
-export declare class WhereFilterBuilder {
-  constructor(doc: Y.Doc, dsl: Y.Map<any>)
-  getConditions(): Y.Array<any>
-  /** @description 获取根过滤组的逻辑操作符。 */
-  getOperator(): 'and' | 'or'
-  /** @description 设置根过滤组的逻辑操作符，保留已有条件及其 ID。 */
-  setOperator(op: 'and' | 'or'): this
-  /**
-   * @description 添加一个 Where 过滤条件
-   * @param field - 字段名
-   * @param callback - 回调函数
-   */
-  add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilterBuilder
-  /**
-   * @description 添加一个 Where 分组
-   * @param op - 逻辑操作符
-   * @param callback - 回调函数
-   */
-  addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereFilterBuilder
-  /**
-   * @description 更新指定 ID 的过滤条件
-   * @param id - 过滤条件 ID
-   * @param callback - 回调函数
-   */
-  update(id: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilterBuilder
-  /**
-   * @description 更新指定 ID 的分组
-   * @param id - 分组 ID
-   * @param callback - 回调函数
-   */
-  updateGroup(id: string, callback: (group: WhereGroupBuilder) => void): WhereFilterBuilder
-  /**
-   * @description 删除指定 ID 的条件或指定索引的项
-   * @param idOrIndex - ID 或索引
-   */
-  remove(idOrIndex: string | number): WhereFilterBuilder
-  /**
-   * @description 按回调条件查找第一个条件（过滤或分组），行为与 Array.find 一致
-   * @param predicate - 查找条件
-   */
-  find(
-    predicate: (entry: WhereFilterNodeBuilder | WhereGroupBuilder, index: number) => boolean,
-  ): WhereFilterNodeBuilder | WhereGroupBuilder | undefined
-  /**
-   * @description 清空所有 Where 过滤条件
-   */
-  clear(): this
-  /**
-   * @description 导出完整的 Where 过滤配置
-   */
-  toJSON(): VBIWhereGroup
-  /**
-   * @description 监听过滤条件变化，返回取消监听的函数
-   * @param callback - 回调函数
-   * @returns 取消监听的函数
-   */
-  observe(callback: ObserveDeepCallback): () => void
-  /**
-   * @description 判断是否为分组节点
-   */
-  static isGroup(yMap: Y.Map<any>): boolean
-  /**
-   * @description 判断是否为叶子节点
-   */
-  static isNode(yMap: Y.Map<any>): boolean
-}
-```
-
 ## buildVQuery
 
-源码：[packages/vbi/src/chart-builder/pipeline/vqueryDSL/index.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/pipeline/vqueryDSL/index.ts#L14)
+源码：[packages/vbi/src/chart-builder/pipeline/vqueryDSL/index.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/chart-builder/pipeline/vqueryDSL/index.ts#L5)
 
 包导出：`buildVQuery`
 
 ```typescript
-export declare const buildVQuery: (vbiDSL: VBIChartDSL, builder: VBIChartBuilderInterface<any, any>) => VQueryDSL
+export declare const buildVQuery: (
+  vbiDSL: VBIChartDSL,
+  _builder: VBIChartBuilderInterface<any, any>,
+) => import('@visactor/vquery').VQueryDSL
 ```
 
 ## defaultVBIChartBuilderAdapters

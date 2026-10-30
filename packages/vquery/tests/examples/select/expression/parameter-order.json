@@ -1,0 +1,50 @@
+{
+  "datasetId": "expression-parameter-order",
+  "description": "多处问号按从左到右顺序绑定；NULL 参数可参与 COALESCE，字段名中的问号不会占用参数。",
+  "vquery": {
+    "select": [
+      "id",
+      {
+        "expr": "(x-?)/NULLIF(?,0)+COALESCE(?,?)",
+        "parameters": [2, 4, null, 1],
+        "alias": "boundResult"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "id"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "id": 1,
+      "x": 8,
+      "y": 2
+    },
+    {
+      "id": 2,
+      "x": 3,
+      "y": 0
+    },
+    {
+      "id": 3,
+      "x": null,
+      "y": -2
+    }
+  ]
+}

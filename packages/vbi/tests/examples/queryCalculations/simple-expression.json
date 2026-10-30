@@ -1,0 +1,28 @@
+{
+  "name": "simple-expression",
+  "builder": "query",
+  "description": "新增九折销售额计算列；表达式通过 sales 引用基础查询的度量 ID。",
+  "tags": ["query", "calculations"],
+  "priority": 1,
+  "dsl": {
+    "dimensions": [
+      {
+        "id": "region",
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 3
+  },
+  "code": "const applyBuilder = (builder: VBIQueryBuilder) => {\n  builder.calculations.add('sales * 0.9', node => node.setAlias('九折销售额'))\n}"
+}

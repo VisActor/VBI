@@ -1,0 +1,278 @@
+# QueryProfile
+
+import { registerDemoConnector } from '@components/demoConnector'
+
+{registerDemoConnector()}
+
+## numeric-profile
+
+统计前五十条销售记录的有效数、缺失数、数值范围和默认分箱。
+
+
+> 标签: `query` `profile`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "queryMode": "detail",
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "limit": 50
+        }
+      })
+      try {
+        const applyBuilder = async (builder: VBIQueryBuilder) => {
+  return await builder.queryProfile({ columns: ['sales'] })
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## category-frequency
+
+在最多 10000 条明细上统计品类频次，返回最常见的两个品类和其他记录数。
+
+
+> 标签: `query` `profile`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "queryMode": "detail",
+          "dimensions": [
+            {
+              "id": "productType",
+              "field": "product_type",
+              "alias": "品类"
+            }
+          ],
+          "limit": 10000
+        }
+      })
+      try {
+        const applyBuilder = async (builder: VBIQueryBuilder) => {
+  return await builder.queryProfile({ columns: ['productType'], topK: 2 })
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## profile-current-query
+
+统计华东地区销售额最高的二十条明细，获取有效数、范围、数值分箱和分类频次；调用不修改查询状态。
+
+
+> 标签: `query` `profile` `bins` `topK`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "productType",
+              "field": "product_type",
+              "alias": "品类"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ]
+        }
+      })
+      try {
+        const applyBuilder = async (builder: VBIQueryBuilder) => {
+  builder.queryMode.setMode('detail')
+  builder.whereFilter.add('area', node => node.setOperator('eq').setValue('华东'))
+  builder.measures.update('sales', node => node.setSort({ order: 'desc' }))
+  builder.limit.setLimit(20)
+  const before = builder.build()
+  const profile = await builder.queryProfile({
+    columns: ['sales', 'productType'],
+    bins: { maxBins: 5, discreteMax: 3 },
+    topK: 2,
+  })
+
+  return { stateUnchanged: JSON.stringify(before) === JSON.stringify(builder.build()), profile }
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## profile-calculation
+
+直接统计计算列的范围和分箱；计算列仍通过 Connector 的 Query DSL 查询，不读取明细做统计。
+
+
+> 标签: `query` `expression` `profile`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "region",
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            },
+            {
+              "id": "profit",
+              "field": "profit",
+              "alias": "利润",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "calculations": [
+            {
+              "id": "margin",
+              "alias": "利润率",
+              "expr": "profit/NULLIF(sales,0)"
+            }
+          ]
+        }
+      })
+      try {
+        const applyBuilder = async (builder: VBIQueryBuilder) => {
+  return { profile: await builder.queryProfile({ columns: ['margin'], bins: { maxBins: 4, discreteMax: 2 } }) }
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```

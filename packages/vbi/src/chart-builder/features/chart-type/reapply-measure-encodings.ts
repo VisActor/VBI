@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import { getOrCreateMeasures } from '../measures/measure-utils'
+import { getOrCreateMeasures } from 'src/query-builder/features/measures/measure-utils'
 import { getRecommendedMeasureEncodingsForChartType } from './measure-encoding'
 
 export const reapplyMeasureEncodings = (dsl: Y.Map<any>, chartType: string) => {

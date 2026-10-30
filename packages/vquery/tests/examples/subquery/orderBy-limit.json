@@ -1,0 +1,57 @@
+{
+  "datasetId": "subquery-orderBy-limit",
+  "description": "内层先取销售总额前三名门店，外层再按门店名升序排列并取前两行；两层排序和 limit 各自生效。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        "store",
+        {
+          "field": "sales",
+          "alias": "storeTotal",
+          "aggr": {
+            "func": "sum"
+          }
+        }
+      ],
+      "groupBy": ["region", "store"],
+      "orderBy": [
+        {
+          "field": "storeTotal",
+          "order": "desc"
+        }
+      ],
+      "limit": 3
+    },
+    "select": ["region", "store", "storeTotal"],
+    "orderBy": [
+      {
+        "field": "store",
+        "order": "asc"
+      }
+    ],
+    "limit": 2
+  },
+  "dataset": [
+    { "region": "East", "store": "A", "sales": 10 },
+    { "region": "East", "store": "A", "sales": 20 },
+    { "region": "East", "store": "B", "sales": 40 },
+    { "region": "West", "store": "C", "sales": 15 },
+    { "region": "West", "store": "C", "sales": 5 },
+    { "region": "West", "store": "D", "sales": 60 }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}

@@ -16,7 +16,7 @@ constructor(dsl: Y.Map<any>)
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `dsl` | Y.Map<any> | - |
+| `dsl` | Y.Map&lt;any> | - |
 
 ### setMode
 

@@ -1,0 +1,27 @@
+{
+  "builder": "query",
+  "name": "where-and-having",
+  "description": "先用 WHERE 筛选浙江明细，再按品类聚合，并用 HAVING 保留销售总额超过 150000 的品类。",
+  "tags": ["query", "where", "having"],
+  "priority": 3,
+  "dsl": {
+    "dimensions": [
+      {
+        "id": "productType",
+        "field": "product_type",
+        "alias": "品类"
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ]
+  },
+  "code": "const applyBuilder = async (builder: VBIQueryBuilder) => {\n  builder.whereFilter.add('province', node => node.setOperator('eq').setValue('浙江'))\n  builder.havingFilter.add('sales', node => node.setAggregate({ func: 'sum' }).setOperator('>').setValue(150000))\n  builder.measures.update('sales', node => node.setSort({ order: 'desc' }))\n  builder.limit.setLimit(3)\n\n  return { query: builder.buildVQuery(), result: await builder.query() }\n}"
+}

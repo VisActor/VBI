@@ -1,8 +1,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-import { executeSQL, parseSQL } from '../../../src/query-engine/sql'
-import type { DataRow } from '../../../src/data-loader'
+import { executeSQL } from '../../../src/adapters/query/in-memory/execute'
+import { parseSQL } from '../../../src/sql/parser'
+import type { DataRow } from '../../../src/dataset/types'
 
 type SortMode = 'nosort' | 'rowsort' | 'valuesort'
 

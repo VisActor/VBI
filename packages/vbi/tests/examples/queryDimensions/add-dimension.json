@@ -1,0 +1,21 @@
+{
+  "name": "add-dimension",
+  "builder": "query",
+  "description": "添加区域维度，按区域汇总销售额。",
+  "tags": ["query", "dimensions"],
+  "priority": 1,
+  "dsl": {
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 5
+  },
+  "code": "const applyBuilder = (builder: VBIQueryBuilder) => {\n  builder.dimensions.add('area', node => node.setAlias('区域'))\n}"
+}

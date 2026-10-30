@@ -1,0 +1,172 @@
+{
+  "datasetId": "analysis-target-attainment",
+  "description": "按同一地区和月份汇总实际销售额与目标，计算差额和目标达成率。1.2 表示达成 120%，0 表示实际销售额为 0；目标为 0 或缺失时达成率返回 NULL，缺失实际记录不自动补零。",
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "period",
+      "type": "string"
+    },
+    {
+      "name": "kind",
+      "type": "string"
+    },
+    {
+      "name": "amount",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "period": "2026-03",
+      "kind": "actual",
+      "amount": 80
+    },
+    {
+      "region": "A",
+      "period": "2026-03",
+      "kind": "actual",
+      "amount": 40
+    },
+    {
+      "region": "A",
+      "period": "2026-03",
+      "kind": "target",
+      "amount": 100
+    },
+    {
+      "region": "A",
+      "period": "2026-02",
+      "kind": "actual",
+      "amount": 999
+    },
+    {
+      "region": "B",
+      "period": "2026-03",
+      "kind": "actual",
+      "amount": 80
+    },
+    {
+      "region": "B",
+      "period": "2026-03",
+      "kind": "target",
+      "amount": 100
+    },
+    {
+      "region": "C",
+      "period": "2026-03",
+      "kind": "actual",
+      "amount": 20
+    },
+    {
+      "region": "C",
+      "period": "2026-03",
+      "kind": "target",
+      "amount": 0
+    },
+    {
+      "region": "D",
+      "period": "2026-03",
+      "kind": "target",
+      "amount": 100
+    },
+    {
+      "region": "E",
+      "period": "2026-03",
+      "kind": "actual",
+      "amount": 0
+    },
+    {
+      "region": "E",
+      "period": "2026-03",
+      "kind": "target",
+      "amount": 80
+    },
+    {
+      "region": "F",
+      "period": "2026-03",
+      "kind": "actual",
+      "amount": 50
+    }
+  ],
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        {
+          "field": "amount",
+          "alias": "actual",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "kind",
+                "op": "=",
+                "value": "actual"
+              }
+            ]
+          }
+        },
+        {
+          "field": "amount",
+          "alias": "target",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "kind",
+                "op": "=",
+                "value": "target"
+              }
+            ]
+          }
+        }
+      ],
+      "where": {
+        "op": "and",
+        "conditions": [
+          {
+            "field": "period",
+            "op": "=",
+            "value": "2026-03"
+          },
+          {
+            "field": "kind",
+            "op": "in",
+            "value": ["actual", "target"]
+          }
+        ]
+      },
+      "groupBy": ["region"]
+    },
+    "select": [
+      "region",
+      "actual",
+      "target",
+      {
+        "expr": "actual-target",
+        "alias": "variance"
+      },
+      {
+        "expr": "actual/NULLIF(target,0)",
+        "alias": "attainmentRate"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "region",
+        "order": "asc"
+      }
+    ]
+  }
+}

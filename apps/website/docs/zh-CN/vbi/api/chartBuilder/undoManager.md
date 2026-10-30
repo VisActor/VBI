@@ -18,7 +18,7 @@ constructor(scope: Y.Doc | Y.AbstractType<any> | Y.AbstractType<any>[], options?
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `scope` | Y.Doc \| Y.AbstractType<any> \| Y.AbstractType<any>[] | - YJS 文档或类型作用域，用于定义撤销/重做的追踪范围 |
+| `scope` | Y.Doc \| Y.AbstractType&lt;any> \| Y.AbstractType&lt;any>[] | - YJS 文档或类型作用域，用于定义撤销/重做的追踪范围 |
 | `options?` = {} | UndoManagerOptions | - |
 
 ### undo

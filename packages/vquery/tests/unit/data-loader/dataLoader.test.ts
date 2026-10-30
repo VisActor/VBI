@@ -1,4 +1,4 @@
-import { loadRows } from '../../../src/data-loader'
+import { loadRows } from '../../../src/dataset/source/loadRows'
 
 describe('loadRows', () => {
   it('handles an empty CSV and fills missing trailing columns', async () => {

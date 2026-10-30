@@ -29,7 +29,7 @@ constructor(doc: Y.Doc, dependencies?: VBIDashboardBuilderDependencies<TQueryDSL
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
-| `dependencies?` = {} | VBIDashboardBuilderDependencies<TQueryDSL, TSeedDSL> | - |
+| `dependencies?` = {} | VBIDashboardBuilderDependencies&lt;TQueryDSL, TSeedDSL> | - |
 
 ### applyUpdate
 

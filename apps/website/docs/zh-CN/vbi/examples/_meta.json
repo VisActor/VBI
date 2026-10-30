@@ -8,6 +8,13 @@
   },
   {
     "type": "dir",
+    "name": "query",
+    "label": "query",
+    "collapsible": true,
+    "collapsed": false
+  },
+  {
+    "type": "dir",
     "name": "insight",
     "label": "insight",
     "collapsible": true,

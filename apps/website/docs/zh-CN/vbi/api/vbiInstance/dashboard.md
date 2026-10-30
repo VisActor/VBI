@@ -21,7 +21,7 @@ create(dashboard: VBIDashboardDSLInput, builderOptions?: VBIDashboardBuilderOpti
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `dashboard` | VBIDashboardDSLInput | - |
-| `builderOptions?` | VBIDashboardBuilderOptions<TQueryDSL, TSeedDSL> | - |
+| `builderOptions?` | VBIDashboardBuilderOptions&lt;TQueryDSL, TSeedDSL> | - |
 
 ### createEmpty
 

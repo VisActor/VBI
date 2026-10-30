@@ -1,0 +1,58 @@
+{
+  "datasetId": "expression-shadowed-field",
+  "description": "计算列与输入字段同名时，NULL 排序依据计算后的值，空值统一排在末尾。",
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "id": 1,
+      "x": 8,
+      "y": 2
+    },
+    {
+      "id": 2,
+      "x": 3,
+      "y": 0
+    },
+    {
+      "id": 3,
+      "x": null,
+      "y": -2
+    },
+    {
+      "id": 4,
+      "x": 1,
+      "y": 2
+    }
+  ],
+  "vquery": {
+    "select": [
+      "id",
+      {
+        "expr": "x/NULLIF(y,0)",
+        "alias": "x"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "x",
+        "nulls": "last"
+      },
+      {
+        "field": "id"
+      }
+    ]
+  }
+}

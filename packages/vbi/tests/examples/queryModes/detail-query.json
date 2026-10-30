@@ -1,0 +1,28 @@
+{
+  "name": "detail-query",
+  "builder": "query",
+  "description": "将默认聚合模式切换为 detail，按区域默认排序返回五条源记录的区域和单笔销售额，保留重复记录。",
+  "tags": ["query", "modes"],
+  "priority": 1,
+  "dsl": {
+    "dimensions": [
+      {
+        "id": "region",
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 5
+  },
+  "code": "const applyBuilder = (builder: VBIQueryBuilder) => {\n  builder.queryMode.setMode('detail')\n}"
+}

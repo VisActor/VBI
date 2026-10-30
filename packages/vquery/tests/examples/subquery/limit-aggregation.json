@@ -1,0 +1,72 @@
+{
+  "datasetId": "subquery-limit-aggregation",
+  "description": "先取销售总额最高的两家门店，再统计这两行的数量、总额和平均值；内层 limit 限定统计范围。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        "store",
+        {
+          "field": "sales",
+          "alias": "storeTotal",
+          "aggr": {
+            "func": "sum"
+          }
+        }
+      ],
+      "groupBy": ["region", "store"],
+      "orderBy": [
+        {
+          "field": "storeTotal",
+          "order": "desc"
+        }
+      ],
+      "limit": 2
+    },
+    "select": [
+      {
+        "field": "*",
+        "alias": "stores",
+        "aggr": {
+          "func": "count"
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "total",
+        "aggr": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "average",
+        "aggr": {
+          "func": "avg"
+        }
+      }
+    ]
+  },
+  "dataset": [
+    { "region": "East", "store": "A", "sales": 10 },
+    { "region": "East", "store": "A", "sales": 20 },
+    { "region": "East", "store": "B", "sales": 40 },
+    { "region": "West", "store": "C", "sales": 15 },
+    { "region": "West", "store": "C", "sales": 5 },
+    { "region": "West", "store": "D", "sales": 60 }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "datasetId": "when-aggregation",
+  "description": "在同一查询中计算全部销售额与华东销售额；when 先筛选当前列的值，再执行 sum。",
+  "vquery": {
+    "select": [
+      {
+        "field": "sales",
+        "alias": "totalSales",
+        "aggr": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "sales",
+        "alias": "eastSales",
+        "aggr": {
+          "func": "sum"
+        },
+        "when": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "region",
+              "op": "=",
+              "value": "East"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "East",
+      "sales": 100
+    },
+    {
+      "region": "West",
+      "sales": 80
+    },
+    {
+      "region": "East",
+      "sales": 50
+    }
+  ]
+}

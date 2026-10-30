@@ -1,0 +1,59 @@
+{
+  "datasetId": "subquery-aggregation",
+  "description": "先按类别求和，再对分组结果计算行数和最大值；外层统计的是分组结果。",
+  "schema": [
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "category": "a",
+      "value": 3
+    },
+    {
+      "category": "a",
+      "value": 4
+    },
+    {
+      "category": "b",
+      "value": 2
+    }
+  ],
+  "vquery": {
+    "from": {
+      "select": [
+        "category",
+        {
+          "field": "value",
+          "alias": "total",
+          "aggr": {
+            "func": "sum"
+          }
+        }
+      ],
+      "groupBy": ["category"]
+    },
+    "select": [
+      {
+        "field": "*",
+        "alias": "groups",
+        "aggr": {
+          "func": "count"
+        }
+      },
+      {
+        "field": "total",
+        "alias": "maximum",
+        "aggr": {
+          "func": "max"
+        }
+      }
+    ]
+  }
+}

@@ -32,6 +32,7 @@
 - [TidyDatum](types.md#tidydatum)
 - [VQueryDSL](types.md#vquerydsl)
 - [VQueryOptions](types.md#vqueryoptions)
+- [ValidateExpressionOptions](types.md#validateexpressionoptions)
 - [Where](types.md#where)
 - [WhereClause](types.md#whereclause)
 - [WhereGroup](types.md#wheregroup)
@@ -42,6 +43,7 @@
 ```typescript
 import type { BaseAggregateFunction } from './Select'
 import type { DatasetColumn } from '../DataSet'
+import type { DatasetColumn } from './DataSet'
 import type { DatasetSchema } from '../DataSet'
 import type { DatasetSource } from '../DataSource'
 import type { GroupBy } from './GroupBy'
@@ -54,7 +56,7 @@ import type { Where } from './Where'
 
 ## AggregateFunction
 
-源码：[packages/vquery/src/types/dsl/Select.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/types/dsl/Select.ts#L24)
+源码：[packages/vquery/src/types/dsl/Select.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/types/dsl/Select.ts#L26)
 
 关联声明，未从包入口独立导出。
 
@@ -64,7 +66,7 @@ export type AggregateFunction = BaseAggregateFunction | DateAggregateFunction
 
 ## BaseAggregateFunction
 
-源码：[packages/vquery/src/types/dsl/Select.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/types/dsl/Select.ts#L1)
+源码：[packages/vquery/src/types/dsl/Select.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/types/dsl/Select.ts#L3)
 
 关联声明，未从包入口独立导出。
 
@@ -155,7 +157,7 @@ export type DatasetSourceValue = string | ArrayBuffer | Blob | TidyDatum[]
 
 ## DateAggregateFunction
 
-源码：[packages/vquery/src/types/dsl/Select.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/types/dsl/Select.ts#L14)
+源码：[packages/vquery/src/types/dsl/Select.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/types/dsl/Select.ts#L16)
 
 关联声明，未从包入口独立导出。
 
@@ -384,6 +386,8 @@ export interface QueryAdapter {
 ```typescript
 export interface QueryDSL<Table> {
   select: Select<Table>
+  /** Use a SQL subquery in FROM; the physical dataset remains the execution context. */
+  from?: VQueryDSL
   where?: Where<Table>
   groupBy?: GroupBy<Table>
   having?: Having<Table>
@@ -417,29 +421,53 @@ export interface RawDatasetSource {
 
 ## Select
 
-源码：[packages/vquery/src/types/dsl/Select.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/types/dsl/Select.ts#L35)
+源码：[packages/vquery/src/types/dsl/Select.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/types/dsl/Select.ts#L59)
 
 包导出：`Select`
 
 ```typescript
-export type Select<T> = Array<keyof T | SelectItem<T>>
+export type Select<T> = Array<keyof T | '*' | SelectItem<T>>
 ```
 
 ## SelectItem
 
-源码：[packages/vquery/src/types/dsl/Select.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/types/dsl/Select.ts#L26)
+源码：[packages/vquery/src/types/dsl/Select.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/types/dsl/Select.ts#L28)
 
 关联声明，未从包入口独立导出。
 
 ```typescript
-export type SelectItem<T> = {
-  field: keyof T
-  alias?: string
-  aggr?: {
-    func: AggregateFunction
-    quantile?: number
-  }
-}
+export type SelectItem<T> =
+  | {
+      field: keyof T
+      alias?: string
+      /** Keep the field value only when the condition holds; otherwise use NULL. */
+      when?: Where<T>
+      aggr?: {
+        func: AggregateFunction
+        quantile?: number
+      }
+      expr?: never
+      parameters?: never
+    }
+  | {
+      field: '*'
+      alias?: string
+      when?: never
+      aggr: {
+        func: 'count'
+      }
+      expr?: never
+      parameters?: never
+    }
+  | {
+      /** Numeric SQL expression over this query's input columns. */
+      expr: string
+      alias: string
+      parameters?: (number | null)[]
+      field?: never
+      when?: never
+      aggr?: never
+    }
 ```
 
 ## StorageAdapter
@@ -480,7 +508,7 @@ export type TidyDatum = Record<string, number | string | null | boolean | undefi
 
 ## VQueryDSL
 
-源码：[packages/vquery/src/types/dsl/QueryDSL.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/types/dsl/QueryDSL.ts#L16)
+源码：[packages/vquery/src/types/dsl/QueryDSL.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/types/dsl/QueryDSL.ts#L18)
 
 包导出：`VQueryDSL`
 
@@ -498,6 +526,21 @@ export type VQueryDSL<Table = Record<string, unknown>> = QueryDSL<Table>
 export interface VQueryOptions {
   /** Persist datasets in IndexedDB. Defaults to false; requires IndexedDB support. */
   enableIndexedDB?: boolean
+}
+```
+
+## ValidateExpressionOptions
+
+源码：[packages/vquery/src/types/ValidateExpressionOptions.ts](https://github.com/VisActor/VBI/blob/main/packages/vquery/src/types/ValidateExpressionOptions.ts#L3)
+
+包导出：`ValidateExpressionOptions`
+
+```typescript
+export interface ValidateExpressionOptions {
+  /** Bound numeric constants for expression placeholders. */
+  parameters?: (number | null)[]
+  /** Complete input schema; omit to validate syntax and parameter binding only. */
+  columns?: DatasetColumn[]
 }
 ```
 

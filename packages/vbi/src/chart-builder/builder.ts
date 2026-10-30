@@ -1,19 +1,16 @@
 import type * as Y from 'yjs'
+import { QueryBuilderBase } from 'src/query-builder/base'
+import { validateCalculations } from 'src/query-builder/modules/validate-calculations'
 
 import { resolveVBIChartBuilderAdapters } from 'src/chart-builder/adapters/vquery-vseed'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/chart-builder/adapters/vquery-vseed'
 import {
   DimensionsBuilder,
   MeasuresBuilder,
-  HavingFilterBuilder,
-  WhereFilterBuilder,
   ChartTypeBuilder,
   ChartInstanceBuilder,
   ThemeBuilder,
   LocaleBuilder,
-  LimitBuilder,
-  QueryModeBuilder,
-  UndoManager,
 } from './features'
 
 import type {
@@ -24,74 +21,33 @@ import type {
   VBIChartBuilderAdapters,
   VBIChartBuilderInterface,
   VBIChartBuilderOptions,
-  ObserveCallback,
-  ObserveDeepCallback,
 } from 'src/types'
-import {
-  applyUpdateToDoc,
-  encodeDocStateAsUpdate,
-  buildVBIChartDSL,
-  isEmptyVBIChartDSL,
-  getBuilderSchema,
-} from './modules'
-import { ensureResourceUUID, getResourceUUID } from 'src/vbi/resource-uuid'
+import { buildVBIChartDSL, isEmptyVBIChartDSL } from './modules'
 
-export class VBIChartBuilder<
-  TQueryDSL = DefaultVBIQueryDSL,
-  TSeedDSL = DefaultVBISeedDSL,
-> implements VBIChartBuilderInterface<TQueryDSL, TSeedDSL> {
-  public doc: Y.Doc
-  public dsl: Y.Map<any>
+export class VBIChartBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>
+  extends QueryBuilderBase<VBIChartDSL>
+  implements VBIChartBuilderInterface<TQueryDSL, TSeedDSL>
+{
   public adapters: Required<VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>>
 
   public chartType: ChartTypeBuilder
   /** @description 图表运行时实例的绑定、获取与原生事件代理。 */
   public instance: ChartInstanceBuilder
-  public measures: MeasuresBuilder
-  public dimensions: DimensionsBuilder
-  public havingFilter: HavingFilterBuilder
-  public whereFilter: WhereFilterBuilder
+  declare public measures: MeasuresBuilder
+  declare public dimensions: DimensionsBuilder
   public theme: ThemeBuilder
   public locale: LocaleBuilder
-  public limit: LimitBuilder
-  /** @description 图表查询粒度，普通表可选择源记录明细；缺省保持聚合查询。 */
-  public queryMode: QueryModeBuilder
-  /** @description 图表撤销历史，每个 Yjs 事务独立成一步；连续 add / update 不按时间合并，doc.transact 可显式合并多个修改。 */
-  public undoManager: UndoManager
 
   constructor(doc: Y.Doc, options?: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>, dsl?: Y.Map<any>) {
-    this.doc = doc
-    this.dsl = (dsl ?? doc.getMap('dsl')) as Y.Map<any>
+    super(doc, dsl)
     this.adapters = resolveVBIChartBuilderAdapters(options?.adapters)
-
-    doc.transact(() => {
-      ensureResourceUUID(this.dsl)
-    })
-
-    this.undoManager = new UndoManager(this.dsl, { captureTimeout: 0 })
     this.chartType = new ChartTypeBuilder(doc, this.dsl)
     this.instance = new ChartInstanceBuilder(doc, this.chartType)
-    this.measures = new MeasuresBuilder(doc, this.dsl)
-    this.dimensions = new DimensionsBuilder(doc, this.dsl)
-    this.havingFilter = new HavingFilterBuilder(doc, this.dsl)
-    this.whereFilter = new WhereFilterBuilder(doc, this.dsl)
     this.theme = new ThemeBuilder(doc, this.dsl)
     this.locale = new LocaleBuilder(doc, this.dsl)
-    this.limit = new LimitBuilder(doc, this.dsl)
-    this.queryMode = new QueryModeBuilder(this.dsl)
   }
 
-  public applyUpdate = (update: Uint8Array, transactionOrigin?: any) => {
-    return applyUpdateToDoc(this.doc, update, transactionOrigin)
-  }
-
-  public encodeStateAsUpdate = (targetStateVector?: Uint8Array) => {
-    return encodeDocStateAsUpdate(this.doc, targetStateVector)
-  }
-
-  public getUUID = (): string => getResourceUUID(this.dsl)
-
-  /** @description 默认通过 query adapter 查询一次并构建 VSeed。自定义 seed adapter 保留原有上下文和取数方式。 */
+  /** @description 校验计算表达式后，默认通过 query adapter 查询一次并构建 VSeed；非法表达式抛错。自定义 seed adapter 保留原有上下文和取数方式。 */
   public buildVSeed = async (options: BuildVSeedOptions = {}): Promise<TSeedDSL> => {
     const vbiDSL = this.build()
     const queryDSL = this.adapters.buildVQuery({
@@ -99,6 +55,8 @@ export class VBIChartBuilder<
       vbiDSL,
       builder: this,
     })
+    await validateCalculations(vbiDSL.calculations)
+    options.signal?.throwIfAborted()
     return this.adapters.buildVSeed({
       dsl: this.dsl,
       vbiDSL,
@@ -117,36 +75,23 @@ export class VBIChartBuilder<
     })
   }
 
-  /** @description 根据当前图表配置，通过 query adapter 执行并原样返回查询结果。默认查询保留维度和度量 ID，并将 signal 传给 Connector；独立调用不缓存结果。 */
+  /** @description 根据当前图表配置，取数前校验计算表达式，非法时抛错；通过 query adapter 执行并原样返回查询结果。默认查询保留维度和度量 ID，并将 signal 传给 Connector；独立调用不缓存结果。 */
   public query = async (options: QueryOptions = {}): Promise<VBIQueryResult> => {
     const context = { dsl: this.dsl, vbiDSL: this.build(), builder: this }
     const queryDSL = this.adapters.buildVQuery(context)
+    await validateCalculations(context.vbiDSL.calculations)
+    options.signal?.throwIfAborted()
     return this.adapters.query({ ...context, queryDSL, options })
   }
 
   public build = (): VBIChartDSL => buildVBIChartDSL(this.dsl)
 
-  /** @description 订阅图表 DSL 顶层字段变化，与 dsl.observe 语义一致；不包含嵌套字段修改，也不触发首次渲染。 */
-  public observe(callback: ObserveCallback): void {
-    this.dsl.observe(callback)
-  }
-
-  /** @description 取消指定的图表 DSL 顶层订阅，传入 observe 时使用的同一回调。 */
-  public unobserve(callback: ObserveCallback): void {
-    this.dsl.unobserve(callback)
-  }
-
-  /** @description 订阅整个图表 DSL 的深层变化，包括嵌套筛选、字段、本地编辑、撤销重做及协同更新；同一事务通知一次，不包含运行时实例变化，也不触发首次渲染。 */
-  public observeDeep(callback: ObserveDeepCallback): void {
-    this.dsl.observeDeep(callback)
-  }
-
-  /** @description 取消指定的图表 DSL 深层订阅，传入 observeDeep 时使用的同一回调。 */
-  public unobserveDeep(callback: ObserveDeepCallback): void {
-    this.dsl.unobserveDeep(callback)
-  }
-
   public isEmpty = (): boolean => isEmptyVBIChartDSL(this.dsl)
 
-  public getSchema = async () => getBuilderSchema(this.dsl)
+  protected createDimensions(): DimensionsBuilder {
+    return new DimensionsBuilder(this.doc, this.dsl)
+  }
+  protected createMeasures(): MeasuresBuilder {
+    return new MeasuresBuilder(this.doc, this.dsl)
+  }
 }

@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import { getOrCreateDimensions } from '../dimensions/dimension-utils'
+import { getOrCreateDimensions } from 'src/query-builder/features/dimensions/dimension-utils'
 import { getRecommendedDimensionEncodingsForChartType } from './dimension-encoding'
 
 export const reapplyDimensionEncodings = (dsl: Y.Map<any>, chartType: string) => {

@@ -1,5 +1,5 @@
 import type * as Y from 'yjs'
-import { id } from 'src/utils'
+import { id } from 'src/utils/id'
 
 const UUID_KEY = 'uuid'
 

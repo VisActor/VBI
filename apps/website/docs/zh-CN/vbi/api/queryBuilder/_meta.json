@@ -1,0 +1,51 @@
+[
+  {
+    "type": "dir",
+    "name": "dimensions",
+    "label": "queryBuilder.dimensions",
+    "collapsible": true,
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "measures",
+    "label": "queryBuilder.measures",
+    "collapsible": true,
+    "collapsed": true
+  },
+  {
+    "type": "file",
+    "name": "calculations",
+    "label": "queryBuilder.calculations"
+  },
+  {
+    "type": "file",
+    "name": "calculationNode",
+    "label": "queryBuilder.calculationNode"
+  },
+  {
+    "type": "file",
+    "name": "whereFilter",
+    "label": "queryBuilder.whereFilter"
+  },
+  {
+    "type": "file",
+    "name": "havingFilter",
+    "label": "queryBuilder.havingFilter"
+  },
+  {
+    "type": "file",
+    "name": "limit",
+    "label": "queryBuilder.limit"
+  },
+  {
+    "type": "file",
+    "name": "queryMode",
+    "label": "queryBuilder.queryMode"
+  },
+  {
+    "type": "file",
+    "name": "undoManager",
+    "label": "queryBuilder.undoManager"
+  }
+]

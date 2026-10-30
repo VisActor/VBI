@@ -1,0 +1,18 @@
+{
+  "name": "sales-and-profit",
+  "builder": "query",
+  "description": "按品类同时查询销售额与利润，并按销售总额从高到低排列。",
+  "tags": ["query", "measures"],
+  "priority": 3,
+  "dsl": {
+    "dimensions": [
+      {
+        "id": "productType",
+        "field": "product_type",
+        "alias": "品类"
+      }
+    ],
+    "limit": 3
+  },
+  "code": "const applyBuilder = (builder: VBIQueryBuilder) => {\n  builder.measures\n    .add('sales', node => node.setAlias('销售额').setAggregate({ func: 'sum' }).setSort({ order: 'desc' }))\n    .add('profit', node => node.setAlias('利润').setAggregate({ func: 'sum' }))\n}"
+}

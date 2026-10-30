@@ -1,6 +1,6 @@
 # DimensionNodeBuilder
 
-维度节点构建器，用于配置单个维度
+维度节点构建器，在查询配置上补充图形配置。
 
 ## 方法
 
@@ -16,7 +16,7 @@ constructor(yMap: Y.Map<any>)
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `yMap` | Y.Map<any> | - |
+| `yMap` | Y.Map&lt;any> | - |
 
 ### getId
 
@@ -41,18 +41,6 @@ getField(): string
 ```
 
 **返回**: `string`
-
-### getEncoding
-
-获取图表编码位置
-
-**定义**:
-
-```typescript
-getEncoding(): VBIDimension['encoding'] | undefined
-```
-
-**返回**: `VBIDimension['encoding'] \| undefined`
 
 ### getSort
 
@@ -84,24 +72,6 @@ setAlias(alias: string): this
 | --- | --- | --- |
 | `alias` | string | - 显示名称 |
 
-### setEncoding
-
-设置图表编码位置
-
-**定义**:
-
-```typescript
-setEncoding(encoding: NonNullable<VBIDimension['encoding']>): this
-```
-
-**返回**: `this`
-
-**参数**:
-
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `encoding` | NonNullable<VBIDimension['encoding']> | - 维度编码位置 |
-
 ### setSort
 
 设置排序配置
@@ -127,7 +97,7 @@ setSort(sort: VBISort): this
 **定义**:
 
 ```typescript
-setAggregate(aggregate: NonNullable<VBIDimension['aggregate']>): this
+setAggregate(aggregate: NonNullable<VBIQueryDimension['aggregate']>): this
 ```
 
 **返回**: `this`
@@ -136,7 +106,7 @@ setAggregate(aggregate: NonNullable<VBIDimension['aggregate']>): this
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `aggregate` | NonNullable<VBIDimension['aggregate']> | - 日期聚合配置 |
+| `aggregate` | NonNullable&lt;VBIQueryDimension['aggregate']> | - 日期聚合配置 |
 
 ### clearAggregate
 
@@ -173,3 +143,33 @@ toJSON(): VBIDimension
 ```
 
 **返回**: `VBIDimension`
+
+### getEncoding
+
+获取图表编码位置
+
+**定义**:
+
+```typescript
+getEncoding(): VBIDimension['encoding'] | undefined
+```
+
+**返回**: `VBIDimension['encoding'] \| undefined`
+
+### setEncoding
+
+设置图表编码位置
+
+**定义**:
+
+```typescript
+setEncoding(encoding: NonNullable<VBIDimension['encoding']>): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `encoding` | NonNullable&lt;VBIDimension['encoding']> | - 维度编码位置 |

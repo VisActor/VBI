@@ -1,0 +1,149 @@
+# QueryMode
+
+import { registerDemoConnector } from '@components/demoConnector'
+
+{registerDemoConnector()}
+
+## detail-query
+
+将默认聚合模式切换为 detail，按区域默认排序返回五条源记录的区域和单笔销售额，保留重复记录。
+
+
+> 标签: `query` `modes`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "region",
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "limit": 5
+        }
+      })
+      try {
+        const applyBuilder = (builder: VBIQueryBuilder) => {
+  builder.queryMode.setMode('detail')
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## filtered-detail
+
+切换 detail 模式读取华东地区的源记录，按单笔销售额排序并返回前五行；度量不再执行聚合。
+
+
+> 标签: `query` `detail` `orderBy` `limit`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "province",
+              "field": "province",
+              "alias": "省份"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "单笔销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            },
+            {
+              "id": "amount",
+              "field": "amount",
+              "alias": "件数",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ]
+        }
+      })
+      try {
+        const applyBuilder = async (builder: VBIQueryBuilder) => {
+  builder.queryMode.setMode('detail')
+  builder.whereFilter.add('area', node => node.setOperator('eq').setValue('华东'))
+  builder.measures.update('sales', node => node.setSort({ order: 'desc' }))
+  builder.limit.setLimit(5)
+
+  return { query: builder.buildVQuery(), result: await builder.query() }
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```

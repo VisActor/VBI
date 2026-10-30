@@ -114,22 +114,22 @@ describe('chart.query', () => {
     }
   })
 
-  it('forwards cancellation and propagates connector cancellation without retrying', async () => {
+  it('forwards cancellation and stops already-cancelled operations without retrying', async () => {
     const { vbi, chart } = createChart()
     const reason = new Error('cancelled')
     const controller = new AbortController()
     const query = rs.fn(async ({ signal }) => {
       expect(signal).toBe(controller.signal)
+      controller.abort(reason)
       signal.throwIfAborted()
       return { dataset: [] }
     })
     vbi.connectors.register(connectorId, { discoverSchema: async () => schema, query })
-    controller.abort(reason)
-
     await expect(chart.query({ signal: controller.signal })).rejects.toBe(reason)
     expect(query).toHaveBeenCalledTimes(1)
+    await expect(chart.query({ signal: controller.signal })).rejects.toBe(reason)
     await expect(chart.buildVSeed({ signal: controller.signal })).rejects.toBe(reason)
-    expect(query).toHaveBeenCalledTimes(2)
+    expect(query).toHaveBeenCalledTimes(1)
   })
 
   it('keeps concurrent VSeed queries and their visual configuration snapshots separate', async () => {

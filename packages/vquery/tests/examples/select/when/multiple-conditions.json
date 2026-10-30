@@ -1,0 +1,80 @@
+{
+  "datasetId": "when-multiple-conditions",
+  "description": "按地区分组，同时统计全部销售额和线上单笔不少于 50 的销售额；多个条件以 and 组合。",
+  "vquery": {
+    "select": [
+      "region",
+      {
+        "field": "sales",
+        "alias": "totalSales",
+        "aggr": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "sales",
+        "alias": "qualifiedSales",
+        "aggr": {
+          "func": "sum"
+        },
+        "when": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "channel",
+              "op": "=",
+              "value": "online"
+            },
+            {
+              "field": "sales",
+              "op": ">=",
+              "value": 50
+            }
+          ]
+        }
+      }
+    ],
+    "groupBy": ["region"],
+    "orderBy": [
+      {
+        "field": "region"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "channel",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "East",
+      "channel": "online",
+      "sales": 100
+    },
+    {
+      "region": "East",
+      "channel": "online",
+      "sales": 20
+    },
+    {
+      "region": "West",
+      "channel": "online",
+      "sales": 80
+    },
+    {
+      "region": "West",
+      "channel": "offline",
+      "sales": 60
+    }
+  ]
+}

@@ -1,0 +1,353 @@
+# When
+
+`when` 使用与 `where` 相同的条件格式，只影响当前选择列：满足条件时保留字段值，否则为 NULL。先看条件投影，再组合聚合、多条件和子查询。
+
+## basic
+
+when 只影响当前列：保留华东销售额，其他地区在该列返回 NULL；原始列和记录仍然保留。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "when-basic",
+  "description": "when 只影响当前列：保留华东销售额，其他地区在该列返回 NULL；原始列和记录仍然保留。",
+  "vquery": {
+    "select": [
+      "region",
+      "sales",
+      {
+        "field": "sales",
+        "alias": "eastSales",
+        "when": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "region",
+              "op": "=",
+              "value": "East"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "East",
+      "sales": 100
+    },
+    {
+      "region": "West",
+      "sales": 80
+    },
+    {
+      "region": "East",
+      "sales": 50
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## aggregation
+
+在同一查询中计算全部销售额与华东销售额；when 先筛选当前列的值，再执行 sum。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "when-aggregation",
+  "description": "在同一查询中计算全部销售额与华东销售额；when 先筛选当前列的值，再执行 sum。",
+  "vquery": {
+    "select": [
+      {
+        "field": "sales",
+        "alias": "totalSales",
+        "aggr": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "sales",
+        "alias": "eastSales",
+        "aggr": {
+          "func": "sum"
+        },
+        "when": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "region",
+              "op": "=",
+              "value": "East"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "East",
+      "sales": 100
+    },
+    {
+      "region": "West",
+      "sales": 80
+    },
+    {
+      "region": "East",
+      "sales": 50
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## multiple-conditions
+
+按地区分组，同时统计全部销售额和线上单笔不少于 50 的销售额；多个条件以 and 组合。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "when-multiple-conditions",
+  "description": "按地区分组，同时统计全部销售额和线上单笔不少于 50 的销售额；多个条件以 and 组合。",
+  "vquery": {
+    "select": [
+      "region",
+      {
+        "field": "sales",
+        "alias": "totalSales",
+        "aggr": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "sales",
+        "alias": "qualifiedSales",
+        "aggr": {
+          "func": "sum"
+        },
+        "when": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "channel",
+              "op": "=",
+              "value": "online"
+            },
+            {
+              "field": "sales",
+              "op": ">=",
+              "value": 50
+            }
+          ]
+        }
+      }
+    ],
+    "groupBy": [
+      "region"
+    ],
+    "orderBy": [
+      {
+        "field": "region"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "channel",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "East",
+      "channel": "online",
+      "sales": 100
+    },
+    {
+      "region": "East",
+      "channel": "online",
+      "sales": 20
+    },
+    {
+      "region": "West",
+      "channel": "online",
+      "sales": 80
+    },
+    {
+      "region": "West",
+      "channel": "offline",
+      "sales": 60
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## subquery
+
+对子查询结果按门店总额不少于 40 做条件计数与求和；不满足 when 条件的值作为 NULL 参与聚合。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "subquery-conditional-aggregation",
+  "description": "对子查询结果按门店总额不少于 40 做条件计数与求和；不满足 when 条件的值作为 NULL 参与聚合。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        "store",
+        {
+          "field": "sales",
+          "alias": "storeTotal",
+          "aggr": {
+            "func": "sum"
+          }
+        }
+      ],
+      "groupBy": [
+        "region",
+        "store"
+      ]
+    },
+    "select": [
+      {
+        "field": "*",
+        "alias": "stores",
+        "aggr": {
+          "func": "count"
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "qualifiedStores",
+        "aggr": {
+          "func": "count"
+        },
+        "when": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "storeTotal",
+              "op": ">=",
+              "value": 40
+            }
+          ]
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "qualifiedTotal",
+        "aggr": {
+          "func": "sum"
+        },
+        "when": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "storeTotal",
+              "op": ">=",
+              "value": 40
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "dataset": [
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 10
+    },
+    {
+      "region": "East",
+      "store": "A",
+      "sales": 20
+    },
+    {
+      "region": "East",
+      "store": "B",
+      "sales": 40
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 15
+    },
+    {
+      "region": "West",
+      "store": "C",
+      "sales": 5
+    },
+    {
+      "region": "West",
+      "store": "D",
+      "sales": 60
+    }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```

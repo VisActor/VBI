@@ -1,0 +1,38 @@
+{
+  "datasetId": "expression-parentheses",
+  "description": "乘法先于加法；添加括号后，先计算括号内的金额。",
+  "vquery": {
+    "select": [
+      "price",
+      "fee",
+      {
+        "expr": "price + fee * 2",
+        "alias": "withoutParentheses"
+      },
+      {
+        "expr": "(price + fee) * 2",
+        "alias": "withParentheses"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "price",
+      "type": "number"
+    },
+    {
+      "name": "fee",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "price": 10,
+      "fee": 2
+    },
+    {
+      "price": 20,
+      "fee": 3
+    }
+  ]
+}

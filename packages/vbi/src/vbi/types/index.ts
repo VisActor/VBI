@@ -11,3 +11,4 @@ export type {
   VBIResourceSnapshot,
 } from './resources'
 export type { VBIInstance } from './vbi'
+export type { VBIQueryNamespace } from './query'

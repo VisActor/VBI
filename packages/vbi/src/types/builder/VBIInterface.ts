@@ -1,3 +1,5 @@
+import type { BinsOptions, BinsResult, ProfileOptions, ProfileResult } from 'src/query-builder/types'
+import type { CalculationsBuilder } from 'src/query-builder/features/calculations/calculations-builder'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/chart-builder/adapters/vquery-vseed/types'
 import type { VBIChartDSL } from '../chartDSL'
 import type { BuildVSeedOptions } from './build-vseed'
@@ -30,6 +32,7 @@ export interface VBIChartBuilderInterface<TQueryDSL = DefaultVBIQueryDSL, TSeedD
   instance: ChartInstanceBuilder
   measures: MeasuresBuilder
   dimensions: DimensionsBuilder
+  calculations: CalculationsBuilder
   havingFilter: HavingFilterBuilder
   whereFilter: WhereFilterBuilder
   theme: ThemeBuilder
@@ -44,6 +47,8 @@ export interface VBIChartBuilderInterface<TQueryDSL = DefaultVBIQueryDSL, TSeedD
   buildVSeed: (options?: BuildVSeedOptions) => Promise<TSeedDSL>
   buildVQuery: () => TQueryDSL
   query: (options?: QueryOptions) => Promise<VBIQueryResult>
+  queryProfile: (options?: ProfileOptions) => Promise<ProfileResult>
+  queryBins: (options?: BinsOptions) => Promise<BinsResult>
   build: () => VBIChartDSL
   isEmpty: () => boolean
   observe: (callback: ObserveCallback) => void

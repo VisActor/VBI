@@ -1,4 +1,4 @@
-import { connectorMap, getConnector, registerConnector } from 'src/chart-builder/connector'
+import { connectorMap, getConnector, registerConnector } from 'src/query-builder/connector'
 import type { VBIConnectorId } from 'src/types/connector/connector'
 import type { VBIConnectorNamespace } from '../types'
 

@@ -1,0 +1,61 @@
+{
+  "datasetId": "expression-null-and-zero",
+  "description": "NULL 参与运算时传播；COALESCE 显式补零，NULLIF 显式排除零分母。",
+  "vquery": {
+    "select": [
+      "id",
+      {
+        "expr": "COALESCE(x,0)",
+        "alias": "filled"
+      },
+      {
+        "expr": "x/y",
+        "alias": "ratio"
+      },
+      {
+        "expr": "NULLIF(x,x)",
+        "alias": "alwaysNull"
+      },
+      {
+        "expr": "ABS(y)",
+        "alias": "absolute"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "id"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "id": 1,
+      "x": 8,
+      "y": 2
+    },
+    {
+      "id": 2,
+      "x": 3,
+      "y": 0
+    },
+    {
+      "id": 3,
+      "x": null,
+      "y": -2
+    }
+  ]
+}

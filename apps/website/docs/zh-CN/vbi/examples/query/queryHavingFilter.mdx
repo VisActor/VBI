@@ -1,0 +1,218 @@
+# HavingFilter
+
+import { registerDemoConnector } from '@components/demoConnector'
+
+{registerDemoConnector()}
+
+## sum-threshold
+
+先按品类聚合，再保留销售总额超过 150000 的品类。
+
+
+> 标签: `query` `havingFilter`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "productType",
+              "field": "product_type",
+              "alias": "品类"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "limit": 3
+        }
+      })
+      try {
+        const applyBuilder = (builder: VBIQueryBuilder) => {
+  builder.havingFilter.add('sales', node => node.setAggregate({ func: 'sum' }).setOperator('>').setValue(150000))
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## or-group
+
+按区域汇总，保留销售总额超过 500000 或利润总额超过 10000 的区域。
+
+
+> 标签: `query` `havingFilter`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "region",
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            },
+            {
+              "id": "profit",
+              "field": "profit",
+              "alias": "利润",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "limit": 5
+        }
+      })
+      try {
+        const applyBuilder = (builder: VBIQueryBuilder) => {
+  builder.havingFilter.addGroup('or', group => {
+    group.add('sales', node => node.setAggregate({ func: 'sum' }).setOperator('>').setValue(500000))
+    group.add('profit', node => node.setAggregate({ func: 'sum' }).setOperator('>').setValue(10000))
+  })
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## where-and-having
+
+先用 WHERE 筛选浙江明细，再按品类聚合，并用 HAVING 保留销售总额超过 150000 的品类。
+
+
+> 标签: `query` `where` `having`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "productType",
+              "field": "product_type",
+              "alias": "品类"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ]
+        }
+      })
+      try {
+        const applyBuilder = async (builder: VBIQueryBuilder) => {
+  builder.whereFilter.add('province', node => node.setOperator('eq').setValue('浙江'))
+  builder.havingFilter.add('sales', node => node.setAggregate({ func: 'sum' }).setOperator('>').setValue(150000))
+  builder.measures.update('sales', node => node.setSort({ order: 'desc' }))
+  builder.limit.setLimit(3)
+
+  return { query: builder.buildVQuery(), result: await builder.query() }
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```

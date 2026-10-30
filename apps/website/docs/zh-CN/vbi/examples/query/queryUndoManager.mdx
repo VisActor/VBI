@@ -1,0 +1,144 @@
+# UndoManager
+
+import { registerDemoConnector } from '@components/demoConnector'
+
+{registerDemoConnector()}
+
+## undo-redo
+
+把返回行数从 5 改为 1，撤销恢复为 5，再重做为 1；最终展示重做后的查询结果。
+
+
+> 标签: `query` `undoManager`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "dimensions": [
+            {
+              "id": "region",
+              "field": "area",
+              "alias": "区域"
+            }
+          ],
+          "measures": [
+            {
+              "id": "sales",
+              "field": "sales",
+              "alias": "销售额",
+              "aggregate": {
+                "func": "sum"
+              }
+            }
+          ],
+          "limit": 5
+        }
+      })
+      try {
+        const applyBuilder = async (builder: VBIQueryBuilder) => {
+  builder.undoManager.clear()
+  builder.limit.setLimit(1)
+  builder.undoManager.undo()
+  const afterUndo = builder.limit.getLimit()
+  builder.undoManager.redo()
+  const afterRedo = builder.limit.getLimit()
+  return { afterUndo, afterRedo, result: await builder.query() }
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```
+
+## transaction-undo-redo
+
+用一个 Yjs 事务完成字段、筛选和 limit 配置，再撤销和重做；查询执行不产生新的状态通知。
+
+
+> 标签: `query` `undo` `redo` `observe`
+
+
+```tsx preview
+import { VBI, type VBIQueryBuilder, type VBIQueryDSL } from '@visactor/vbi'
+import { QueryResultRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [result, setResult] = useState<{ value: unknown; dsl: VBIQueryDSL } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let disposed = false
+    const run = async () => {
+      const builder = VBI.query.create({
+        ...VBI.query.createEmpty('demoSupermarket'),
+        ...{
+          "limit": 5
+        }
+      })
+      try {
+        const applyBuilder = async (builder: VBIQueryBuilder) => {
+  builder.undoManager.clear()
+  let revisions = 0
+  const onChange = () => { revisions += 1 }
+  builder.observeDeep(onChange)
+  builder.doc.transact(() => {
+    builder.dimensions.add('product_type', node => node.setAlias('品类'))
+    builder.measures.add('sales', node => node.setAlias('销售额').setAggregate({ func: 'sum' }))
+    builder.whereFilter.add('province', node => node.setOperator('eq').setValue('浙江'))
+    builder.limit.setLimit(3)
+  })
+
+  builder.undoManager.undo()
+  const afterUndo = { empty: builder.isEmpty(), limit: builder.limit.getLimit() }
+  builder.undoManager.redo()
+  const afterRedo = { empty: builder.isEmpty(), limit: builder.limit.getLimit() }
+  const result = await builder.query()
+  builder.unobserveDeep(onChange)
+
+  return { afterUndo, afterRedo, revisions, result }
+}
+        const value = await applyBuilder(builder) ?? await builder.query()
+        if (!disposed) setResult({ value, dsl: builder.build() })
+      } catch (err) {
+        if (!disposed) setError(err instanceof Error ? err.message : String(err))
+      } finally {
+        builder.doc.destroy()
+      }
+    }
+    void run()
+    return () => { disposed = true }
+  }, [])
+
+  if (error) return <div role='alert'>{error}</div>
+  if (result === null) return <div>Loading...</div>
+
+  return <QueryResultRender value={result.value} dsl={result.dsl} />
+}
+```

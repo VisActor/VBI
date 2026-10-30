@@ -1,0 +1,85 @@
+{
+  "datasetId": "subquery-conditional-aggregation",
+  "description": "对子查询结果按门店总额不少于 40 做条件计数与求和；不满足 when 条件的值作为 NULL 参与聚合。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        "store",
+        {
+          "field": "sales",
+          "alias": "storeTotal",
+          "aggr": {
+            "func": "sum"
+          }
+        }
+      ],
+      "groupBy": ["region", "store"]
+    },
+    "select": [
+      {
+        "field": "*",
+        "alias": "stores",
+        "aggr": {
+          "func": "count"
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "qualifiedStores",
+        "aggr": {
+          "func": "count"
+        },
+        "when": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "storeTotal",
+              "op": ">=",
+              "value": 40
+            }
+          ]
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "qualifiedTotal",
+        "aggr": {
+          "func": "sum"
+        },
+        "when": {
+          "op": "and",
+          "conditions": [
+            {
+              "field": "storeTotal",
+              "op": ">=",
+              "value": 40
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "dataset": [
+    { "region": "East", "store": "A", "sales": 10 },
+    { "region": "East", "store": "A", "sales": 20 },
+    { "region": "East", "store": "B", "sales": 40 },
+    { "region": "West", "store": "C", "sales": 15 },
+    { "region": "West", "store": "C", "sales": 5 },
+    { "region": "West", "store": "D", "sales": 60 }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "datasetId": "group-by-date-alias",
+  "description": "按月份别名分组并排序；同月数据合并，NULL 月份排在最后，可在 MySQL 严格分组模式下执行。",
+  "schema": [{ "name": "date", "type": "datetime" }],
+  "dataset": [
+    { "date": "2026-01-02 10:00:00" },
+    { "date": "2026-01-20 12:00:00" },
+    { "date": "2026-02-01 00:00:00" },
+    { "date": null }
+  ],
+  "vquery": {
+    "select": [
+      { "field": "date", "alias": "month", "aggr": { "func": "to_month" } },
+      { "field": "*", "alias": "rows", "aggr": { "func": "count" } }
+    ],
+    "groupBy": ["month"],
+    "orderBy": [{ "field": "month", "nulls": "last" }]
+  }
+}

@@ -1,4 +1,4 @@
-import * as convert from '../../../src/sql-builder'
+import * as convert from '../../../src/sql/compiler'
 
 describe('convert index export', () => {
   it('has convertDSLToDuckDB function', () => {

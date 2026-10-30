@@ -1,0 +1,64 @@
+{
+  "datasetId": "subquery-where",
+  "description": "内层先筛选销售额不少于 15 的明细，外层再按 amount 别名筛选 20 至 50 的记录。",
+  "vquery": {
+    "from": {
+      "select": [
+        "store",
+        {
+          "field": "sales",
+          "alias": "amount"
+        }
+      ],
+      "where": {
+        "op": "and",
+        "conditions": [
+          {
+            "field": "sales",
+            "op": ">=",
+            "value": 15
+          }
+        ]
+      }
+    },
+    "select": ["store", "amount"],
+    "where": {
+      "op": "and",
+      "conditions": [
+        {
+          "field": "amount",
+          "op": "between",
+          "value": [20, 50]
+        }
+      ]
+    },
+    "orderBy": [
+      {
+        "field": "amount",
+        "order": "asc"
+      }
+    ]
+  },
+  "dataset": [
+    { "region": "East", "store": "A", "sales": 10 },
+    { "region": "East", "store": "A", "sales": 20 },
+    { "region": "East", "store": "B", "sales": 40 },
+    { "region": "West", "store": "C", "sales": 15 },
+    { "region": "West", "store": "C", "sales": 5 },
+    { "region": "West", "store": "D", "sales": 60 }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}

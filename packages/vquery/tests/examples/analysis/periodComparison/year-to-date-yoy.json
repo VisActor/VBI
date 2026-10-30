@@ -1,0 +1,196 @@
+{
+  "datasetId": "analysis-year-to-date-yoy",
+  "description": "累计同比：比较 2026 与 2025 各自 1 月 1 日至 4 月 1 日之前的销售额，采用左闭右开的相同进度口径。先累加再求增长率，不平均单月增长率；基期为 0 时增长率为 NULL，缺失期间不补零。",
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "orderDate",
+      "type": "datetime"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "orderDate": "2025-01-01 00:00:00",
+      "sales": 40
+    },
+    {
+      "region": "A",
+      "orderDate": "2025-03-31 23:59:59",
+      "sales": 80
+    },
+    {
+      "region": "A",
+      "orderDate": "2025-04-01 00:00:00",
+      "sales": 888
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-01-01 00:00:00",
+      "sales": 60
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-03-31 23:59:59",
+      "sales": 90
+    },
+    {
+      "region": "A",
+      "orderDate": "2026-04-01 00:00:00",
+      "sales": 999
+    },
+    {
+      "region": "B",
+      "orderDate": "2025-02-10 10:00:00",
+      "sales": 120
+    },
+    {
+      "region": "B",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 90
+    },
+    {
+      "region": "C",
+      "orderDate": "2025-02-10 10:00:00",
+      "sales": 0
+    },
+    {
+      "region": "C",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 10
+    },
+    {
+      "region": "D",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 40
+    },
+    {
+      "region": "E",
+      "orderDate": "2025-02-10 10:00:00",
+      "sales": 80
+    },
+    {
+      "region": "E",
+      "orderDate": "2026-02-10 10:00:00",
+      "sales": 0
+    },
+    {
+      "region": "F",
+      "orderDate": "2025-02-10 10:00:00",
+      "sales": 20
+    }
+  ],
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        {
+          "field": "sales",
+          "alias": "currentSales",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "orderDate",
+                "op": ">=",
+                "value": "2026-01-01 00:00:00"
+              },
+              {
+                "field": "orderDate",
+                "op": "<",
+                "value": "2026-04-01 00:00:00"
+              }
+            ]
+          }
+        },
+        {
+          "field": "sales",
+          "alias": "baselineSales",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "orderDate",
+                "op": ">=",
+                "value": "2025-01-01 00:00:00"
+              },
+              {
+                "field": "orderDate",
+                "op": "<",
+                "value": "2025-04-01 00:00:00"
+              }
+            ]
+          }
+        }
+      ],
+      "where": {
+        "op": "or",
+        "conditions": [
+          {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "orderDate",
+                "op": ">=",
+                "value": "2026-01-01 00:00:00"
+              },
+              {
+                "field": "orderDate",
+                "op": "<",
+                "value": "2026-04-01 00:00:00"
+              }
+            ]
+          },
+          {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "orderDate",
+                "op": ">=",
+                "value": "2025-01-01 00:00:00"
+              },
+              {
+                "field": "orderDate",
+                "op": "<",
+                "value": "2025-04-01 00:00:00"
+              }
+            ]
+          }
+        ]
+      },
+      "groupBy": ["region"]
+    },
+    "select": [
+      "region",
+      "currentSales",
+      "baselineSales",
+      {
+        "expr": "currentSales-baselineSales",
+        "alias": "delta"
+      },
+      {
+        "expr": "(currentSales-baselineSales)/NULLIF(baselineSales,0)",
+        "alias": "growthRate"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "region",
+        "order": "asc"
+      }
+    ]
+  }
+}

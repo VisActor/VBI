@@ -13,7 +13,7 @@ export {
   WhereFilterBuilder,
 } from './chart-builder'
 export { defaultVBIChartBuilderAdapters, resolveVBIChartBuilderAdapters } from './chart-builder/adapters'
-export type { UndoManagerOptions } from './chart-builder/features/undo-manager/undo-manager'
+export type { UndoManagerOptions } from './query-builder/features/undo-manager/undo-manager'
 export { buildVQuery } from './chart-builder/pipeline'
 export {
   DashboardChartBuilder,
@@ -51,3 +51,4 @@ export type {
   VBIResourceRegisterResult,
   VBIResourceSnapshot,
 } from './vbi/index'
+export * from './query'

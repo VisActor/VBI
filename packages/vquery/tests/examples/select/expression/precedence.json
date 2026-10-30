@@ -1,0 +1,65 @@
+{
+  "datasetId": "expression-precedence",
+  "description": "验证乘除优先、同级运算左结合以及括号改变运算顺序；同一输入展示不同表达式的结果。",
+  "vquery": {
+    "select": [
+      "id",
+      {
+        "expr": "x-y-2",
+        "alias": "leftSubtract"
+      },
+      {
+        "expr": "x-(y-2)",
+        "alias": "groupedSubtract"
+      },
+      {
+        "expr": "x/y/2",
+        "alias": "leftDivide"
+      },
+      {
+        "expr": "x/(y/2)",
+        "alias": "groupedDivide"
+      },
+      {
+        "expr": "(x+y)*2",
+        "alias": "groupedProduct"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "id"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "id": 1,
+      "x": 8,
+      "y": 2
+    },
+    {
+      "id": 2,
+      "x": 3,
+      "y": 0
+    },
+    {
+      "id": 3,
+      "x": null,
+      "y": -2
+    }
+  ]
+}

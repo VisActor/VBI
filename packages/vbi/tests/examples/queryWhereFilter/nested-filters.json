@@ -1,0 +1,28 @@
+{
+  "name": "nested-filters",
+  "builder": "query",
+  "description": "以 AND 连接华东地区条件与品类 OR 分组，统计华东办公用品或家具的销售额。",
+  "tags": ["query", "whereFilter"],
+  "priority": 3,
+  "dsl": {
+    "dimensions": [
+      {
+        "id": "productType",
+        "field": "product_type",
+        "alias": "品类"
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 3
+  },
+  "code": "const applyBuilder = (builder: VBIQueryBuilder) => {\n  builder.whereFilter\n    .add('area', node => node.setOperator('eq').setValue('华东'))\n    .addGroup('or', group => {\n      group.add('product_type', node => node.setOperator('eq').setValue('办公用品'))\n      group.add('product_type', node => node.setOperator('eq').setValue('家具'))\n    })\n}"
+}

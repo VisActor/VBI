@@ -1,4 +1,4 @@
-import { inlineParameters } from '../../../../src/sql-builder/compile/inlineParameters'
+import { inlineParameters } from '../../../../src/sql/compiler/inlineParameters'
 
 describe('inlineParameters', () => {
   it('replaces question marks sequentially', () => {

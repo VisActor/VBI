@@ -1,0 +1,92 @@
+{
+  "datasetId": "subquery-having",
+  "description": "内层 HAVING 保留销售总额不少于 30 的门店，外层再次聚合并筛选总额大于 65 的区域。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        "store",
+        {
+          "field": "sales",
+          "alias": "storeTotal",
+          "aggr": {
+            "func": "sum"
+          }
+        }
+      ],
+      "groupBy": ["region", "store"],
+      "having": {
+        "op": "and",
+        "conditions": [
+          {
+            "field": "sales",
+            "aggr": {
+              "func": "sum"
+            },
+            "op": ">=",
+            "value": 30
+          }
+        ]
+      }
+    },
+    "select": [
+      "region",
+      {
+        "field": "*",
+        "alias": "stores",
+        "aggr": {
+          "func": "count"
+        }
+      },
+      {
+        "field": "storeTotal",
+        "alias": "regionTotal",
+        "aggr": {
+          "func": "sum"
+        }
+      }
+    ],
+    "groupBy": ["region"],
+    "having": {
+      "op": "and",
+      "conditions": [
+        {
+          "field": "storeTotal",
+          "aggr": {
+            "func": "sum"
+          },
+          "op": ">",
+          "value": 65
+        }
+      ]
+    },
+    "orderBy": [
+      {
+        "field": "region",
+        "order": "asc"
+      }
+    ]
+  },
+  "dataset": [
+    { "region": "East", "store": "A", "sales": 10 },
+    { "region": "East", "store": "A", "sales": 20 },
+    { "region": "East", "store": "B", "sales": 40 },
+    { "region": "West", "store": "C", "sales": 15 },
+    { "region": "West", "store": "C", "sales": 5 },
+    { "region": "West", "store": "D", "sales": 60 }
+  ],
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "store",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ]
+}

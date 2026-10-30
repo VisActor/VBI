@@ -21,6 +21,7 @@ export const createChartBuilderFromVBIChartDSLInput = <TQueryDSL = DefaultVBIQue
     dsl.set('havingFilter', ensureHavingGroup(vbi.havingFilter))
     dsl.set('measures', ensureYArray(vbi.measures, 'field'))
     dsl.set('dimensions', ensureYArray(vbi.dimensions, 'field'))
+    if (vbi.calculations) dsl.set('calculations', ensureYArray(vbi.calculations))
   })
 
   return new VBIChartBuilder<TQueryDSL, TSeedDSL>(doc, options, dsl)

@@ -1,0 +1,17 @@
+[
+  {
+    "type": "file",
+    "name": "periodComparison",
+    "label": "PeriodComparison"
+  },
+  {
+    "type": "file",
+    "name": "percentage",
+    "label": "Percentage"
+  },
+  {
+    "type": "file",
+    "name": "comparison",
+    "label": "Comparison"
+  }
+]

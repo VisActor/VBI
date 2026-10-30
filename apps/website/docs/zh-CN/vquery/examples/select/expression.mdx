@@ -1,0 +1,1151 @@
+# Expression
+
+在 `select` 中使用 `{ expr, alias }` 添加数值计算列。从简单算式开始，再使用括号、参数、函数和子查询。
+
+## basic
+
+销售额减去成本得到利润；expr 定义算式，alias 为结果列命名。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-basic",
+  "description": "销售额减去成本得到利润；expr 定义算式，alias 为结果列命名。",
+  "vquery": {
+    "select": [
+      "sales",
+      "cost",
+      {
+        "expr": "sales - cost",
+        "alias": "profit"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "cost",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "sales": 120,
+      "cost": 80
+    },
+    {
+      "sales": 90,
+      "cost": 60
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## parentheses
+
+乘法先于加法；添加括号后，先计算括号内的金额。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-parentheses",
+  "description": "乘法先于加法；添加括号后，先计算括号内的金额。",
+  "vquery": {
+    "select": [
+      "price",
+      "fee",
+      {
+        "expr": "price + fee * 2",
+        "alias": "withoutParentheses"
+      },
+      {
+        "expr": "(price + fee) * 2",
+        "alias": "withParentheses"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "price",
+      "type": "number"
+    },
+    {
+      "name": "fee",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "price": 10,
+      "fee": 2
+    },
+    {
+      "price": 20,
+      "fee": 3
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## parameters
+
+用 ? 表示折扣参数，parameters: [0.9] 将单价按九折计算。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-parameters",
+  "description": "用 ? 表示折扣参数，parameters: [0.9] 将单价按九折计算。",
+  "vquery": {
+    "select": [
+      "price",
+      {
+        "expr": "price * ?",
+        "parameters": [
+          0.9
+        ],
+        "alias": "discountedPrice"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "price",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "price": 100
+    },
+    {
+      "price": 200
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## functions
+
+使用 ABS 取绝对值、COALESCE 补缺失值、NULLIF 避免零分母。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-functions",
+  "description": "使用 ABS 取绝对值、COALESCE 补缺失值、NULLIF 避免零分母。",
+  "vquery": {
+    "select": [
+      "x",
+      "y",
+      {
+        "expr": "x / NULLIF(y, 0)",
+        "alias": "ratio"
+      },
+      {
+        "expr": "ABS(COALESCE(x, 0) - y)",
+        "alias": "difference"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "x": 8,
+      "y": 2
+    },
+    {
+      "x": 3,
+      "y": 0
+    },
+    {
+      "x": null,
+      "y": -2
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## null-and-zero
+
+NULL 参与运算时传播；COALESCE 显式补零，NULLIF 显式排除零分母。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-null-and-zero",
+  "description": "NULL 参与运算时传播；COALESCE 显式补零，NULLIF 显式排除零分母。",
+  "vquery": {
+    "select": [
+      "id",
+      {
+        "expr": "COALESCE(x,0)",
+        "alias": "filled"
+      },
+      {
+        "expr": "x/y",
+        "alias": "ratio"
+      },
+      {
+        "expr": "NULLIF(x,x)",
+        "alias": "alwaysNull"
+      },
+      {
+        "expr": "ABS(y)",
+        "alias": "absolute"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "id"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "id": 1,
+      "x": 8,
+      "y": 2
+    },
+    {
+      "id": 2,
+      "x": 3,
+      "y": 0
+    },
+    {
+      "id": 3,
+      "x": null,
+      "y": -2
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## precedence
+
+验证乘除优先、同级运算左结合以及括号改变运算顺序；同一输入展示不同表达式的结果。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-precedence",
+  "description": "验证乘除优先、同级运算左结合以及括号改变运算顺序；同一输入展示不同表达式的结果。",
+  "vquery": {
+    "select": [
+      "id",
+      {
+        "expr": "x-y-2",
+        "alias": "leftSubtract"
+      },
+      {
+        "expr": "x-(y-2)",
+        "alias": "groupedSubtract"
+      },
+      {
+        "expr": "x/y/2",
+        "alias": "leftDivide"
+      },
+      {
+        "expr": "x/(y/2)",
+        "alias": "groupedDivide"
+      },
+      {
+        "expr": "(x+y)*2",
+        "alias": "groupedProduct"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "id"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "id": 1,
+      "x": 8,
+      "y": 2
+    },
+    {
+      "id": 2,
+      "x": 3,
+      "y": 0
+    },
+    {
+      "id": 3,
+      "x": null,
+      "y": -2
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## unary-scientific
+
+一元正负号、连续减号和科学记数法均由 AST 明确解析。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-unary-scientific",
+  "description": "一元正负号、连续减号和科学记数法均由 AST 明确解析。",
+  "vquery": {
+    "select": [
+      "id",
+      {
+        "expr": "-(-x)+ +y",
+        "alias": "signs"
+      },
+      {
+        "expr": "x--2",
+        "alias": "minusNegative"
+      },
+      {
+        "expr": ".5+1e-2+2E+1",
+        "alias": "scientific"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "id"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "id": 1,
+      "x": 8,
+      "y": 2
+    },
+    {
+      "id": 2,
+      "x": 3,
+      "y": 0
+    },
+    {
+      "id": 3,
+      "x": null,
+      "y": -2
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## quoted-fields
+
+标准双引号支持含点、引号、问号和关键字的字段名；这些字段保持完整标识符。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-quoted-fields",
+  "description": "标准双引号支持含点、引号、问号和关键字的字段名；这些字段保持完整标识符。",
+  "vquery": {
+    "select": [
+      "id",
+      "城市",
+      {
+        "expr": "\"sales.amount\"+\"a\"\"b\"+\"?\"",
+        "alias": "total"
+      },
+      {
+        "expr": "\"sales.amount\"/NULLIF(\"select\",0)",
+        "alias": "safe.rate"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "safe.rate",
+        "order": "desc"
+      },
+      {
+        "field": "id"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "城市",
+      "type": "string"
+    },
+    {
+      "name": "sales.amount",
+      "type": "number"
+    },
+    {
+      "name": "select",
+      "type": "number"
+    },
+    {
+      "name": "a\"b",
+      "type": "number"
+    },
+    {
+      "name": "?",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "id": 1,
+      "城市": "杭州",
+      "sales.amount": 10,
+      "select": 2,
+      "a\"b": 3,
+      "?": 4
+    },
+    {
+      "id": 2,
+      "城市": "上海",
+      "sales.amount": 20,
+      "select": 0,
+      "a\"b": 5,
+      "?": 6
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## parameter-order
+
+多处问号按从左到右顺序绑定；NULL 参数可参与 COALESCE，字段名中的问号不会占用参数。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-parameter-order",
+  "description": "多处问号按从左到右顺序绑定；NULL 参数可参与 COALESCE，字段名中的问号不会占用参数。",
+  "vquery": {
+    "select": [
+      "id",
+      {
+        "expr": "(x-?)/NULLIF(?,0)+COALESCE(?,?)",
+        "parameters": [
+          2,
+          4,
+          null,
+          1
+        ],
+        "alias": "boundResult"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "id"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "id": 1,
+      "x": 8,
+      "y": 2
+    },
+    {
+      "id": 2,
+      "x": 3,
+      "y": 0
+    },
+    {
+      "id": 3,
+      "x": null,
+      "y": -2
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## alias-order
+
+聚合输出与源字段同名时，按聚合结果排序并将 NULL 放在最后；兼容 MySQL ONLY_FULL_GROUP_BY。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-alias-order",
+  "description": "聚合输出与源字段同名时，按聚合结果排序并将 NULL 放在最后；兼容 MySQL ONLY_FULL_GROUP_BY。",
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "sales": 10
+    },
+    {
+      "region": "A",
+      "sales": 20
+    },
+    {
+      "region": "B",
+      "sales": 25
+    },
+    {
+      "region": "C",
+      "sales": null
+    }
+  ],
+  "vquery": {
+    "select": [
+      "region",
+      {
+        "field": "sales",
+        "alias": "sales",
+        "aggr": {
+          "func": "sum"
+        }
+      }
+    ],
+    "groupBy": [
+      "region"
+    ],
+    "orderBy": [
+      {
+        "field": "sales",
+        "order": "asc",
+        "nulls": "last"
+      }
+    ]
+  }
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## shadowed-field
+
+计算列与输入字段同名时，NULL 排序依据计算后的值，空值统一排在末尾。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-shadowed-field",
+  "description": "计算列与输入字段同名时，NULL 排序依据计算后的值，空值统一排在末尾。",
+  "schema": [
+    {
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "id": 1,
+      "x": 8,
+      "y": 2
+    },
+    {
+      "id": 2,
+      "x": 3,
+      "y": 0
+    },
+    {
+      "id": 3,
+      "x": null,
+      "y": -2
+    },
+    {
+      "id": 4,
+      "x": 1,
+      "y": 2
+    }
+  ],
+  "vquery": {
+    "select": [
+      "id",
+      {
+        "expr": "x/NULLIF(y,0)",
+        "alias": "x"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "x",
+        "nulls": "last"
+      },
+      {
+        "field": "id"
+      }
+    ]
+  }
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## aggregate-ratio
+
+先按地区汇总，再计算整体利润率；最终按利润率排序并取前两名，避免先截断后计算。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-aggregate-ratio",
+  "description": "先按地区汇总，再计算整体利润率；最终按利润率排序并取前两名，避免先截断后计算。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        {
+          "field": "sales",
+          "aggr": {
+            "func": "sum"
+          },
+          "alias": "sales"
+        },
+        {
+          "field": "profit",
+          "aggr": {
+            "func": "sum"
+          },
+          "alias": "profit"
+        }
+      ],
+      "groupBy": [
+        "region"
+      ]
+    },
+    "select": [
+      "region",
+      "sales",
+      "profit",
+      {
+        "expr": "profit / NULLIF(sales, 0)",
+        "alias": "margin"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "margin",
+        "order": "desc"
+      }
+    ],
+    "limit": 2
+  },
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "sales": 100,
+      "profit": 10
+    },
+    {
+      "region": "A",
+      "sales": 100,
+      "profit": 30
+    },
+    {
+      "region": "B",
+      "sales": 50,
+      "profit": 20
+    },
+    {
+      "region": "C",
+      "sales": 0,
+      "profit": 5
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## filter-result
+
+将计算结果作为下一层 FROM 输入，使用普通 WHERE 筛选利润率，不扩展筛选语法。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-filter-result",
+  "description": "将计算结果作为下一层 FROM 输入，使用普通 WHERE 筛选利润率，不扩展筛选语法。",
+  "vquery": {
+    "from": {
+      "from": {
+        "select": [
+          "region",
+          {
+            "field": "sales",
+            "aggr": {
+              "func": "sum"
+            },
+            "alias": "sales"
+          },
+          {
+            "field": "profit",
+            "aggr": {
+              "func": "sum"
+            },
+            "alias": "profit"
+          }
+        ],
+        "groupBy": [
+          "region"
+        ]
+      },
+      "select": [
+        "region",
+        "sales",
+        "profit",
+        {
+          "expr": "profit / NULLIF(sales, 0)",
+          "alias": "margin"
+        }
+      ]
+    },
+    "select": [
+      "region",
+      "margin"
+    ],
+    "where": {
+      "op": "and",
+      "conditions": [
+        {
+          "field": "margin",
+          "op": ">",
+          "value": 0.3
+        }
+      ]
+    }
+  },
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "sales": 100,
+      "profit": 10
+    },
+    {
+      "region": "A",
+      "sales": 100,
+      "profit": 30
+    },
+    {
+      "region": "B",
+      "sales": 50,
+      "profit": 20
+    },
+    {
+      "region": "C",
+      "sales": 0,
+      "profit": 5
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## aggregate-result
+
+计算列仍是普通数值列，可以在下一层查询中统计中位数、分位数和行数。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-aggregate-result",
+  "description": "计算列仍是普通数值列，可以在下一层查询中统计中位数、分位数和行数。",
+  "vquery": {
+    "from": {
+      "from": {
+        "select": [
+          "region",
+          {
+            "field": "sales",
+            "aggr": {
+              "func": "sum"
+            },
+            "alias": "sales"
+          },
+          {
+            "field": "profit",
+            "aggr": {
+              "func": "sum"
+            },
+            "alias": "profit"
+          }
+        ],
+        "groupBy": [
+          "region"
+        ]
+      },
+      "select": [
+        "region",
+        "sales",
+        "profit",
+        {
+          "expr": "profit / NULLIF(sales, 0)",
+          "alias": "margin"
+        }
+      ]
+    },
+    "select": [
+      {
+        "field": "margin",
+        "aggr": {
+          "func": "median"
+        },
+        "alias": "median"
+      },
+      {
+        "field": "margin",
+        "aggr": {
+          "func": "quantile",
+          "quantile": 0.75
+        },
+        "alias": "q75"
+      },
+      {
+        "field": "*",
+        "aggr": {
+          "func": "count"
+        },
+        "alias": "regions"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "sales": 100,
+      "profit": 10
+    },
+    {
+      "region": "A",
+      "sales": 100,
+      "profit": 30
+    },
+    {
+      "region": "B",
+      "sales": 50,
+      "profit": 20
+    },
+    {
+      "region": "C",
+      "sales": 0,
+      "profit": 5
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## period-comparison
+
+先通过 when 获取本期、基期，再计算差额和增长率；日期期间及对齐口径由调用方明确指定。
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+  "datasetId": "expression-period-comparison",
+  "description": "先通过 when 获取本期、基期，再计算差额和增长率；日期期间及对齐口径由调用方明确指定。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        {
+          "field": "sales",
+          "alias": "current",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "period",
+                "op": "=",
+                "value": "current"
+              }
+            ]
+          }
+        },
+        {
+          "field": "sales",
+          "alias": "baseline",
+          "aggr": {
+            "func": "sum"
+          },
+          "when": {
+            "op": "and",
+            "conditions": [
+              {
+                "field": "period",
+                "op": "=",
+                "value": "baseline"
+              }
+            ]
+          }
+        }
+      ],
+      "groupBy": [
+        "region"
+      ]
+    },
+    "select": [
+      "region",
+      "current",
+      "baseline",
+      {
+        "expr": "current-baseline",
+        "alias": "delta"
+      },
+      {
+        "expr": "(current-baseline)/NULLIF(baseline,0)",
+        "alias": "growthRate"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "region"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "period",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "period": "current",
+      "sales": 120
+    },
+    {
+      "region": "A",
+      "period": "baseline",
+      "sales": 100
+    },
+    {
+      "region": "B",
+      "period": "current",
+      "sales": 80
+    },
+    {
+      "region": "B",
+      "period": "baseline",
+      "sales": 100
+    },
+    {
+      "region": "C",
+      "period": "current",
+      "sales": 20
+    },
+    {
+      "region": "C",
+      "period": "baseline",
+      "sales": 0
+    }
+  ]
+}
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## 表达式校验与边界
+
+`VQuery.validateExpression(expr, { parameters, columns })` 可独立校验表达式，合法时正常返回，非法时抛错；无需实例或数据集。省略 `columns` 时仅校验语法和参数绑定，传入完整 schema 时也校验字段存在且为数值类型。
+
+`expr` 是当前输入列上的数值 SQL 表达式，必须提供输出 `alias`。支持括号、一元正负号、四则运算以及 ABS、COALESCE、NULLIF；COALESCE 和 NULLIF 接收两个参数。常量可用 `?` 和 `parameters` 绑定。字段可用标准双引号引用。
+
+表达式按 AST 校验和编译，数值操作数按 DOUBLE 处理，数值溢出报错；NULL 传播、除零返回 NULL，输出比例 0.1 表示 10%。表达式层不混合聚合、GROUP BY 或 HAVING；通过 `from` 明确先聚合再计算、先计算再聚合，以及计算后的筛选。表达式不能引用同层新定义的别名，也不接受任意 SQL、子查询或数据库专用函数。

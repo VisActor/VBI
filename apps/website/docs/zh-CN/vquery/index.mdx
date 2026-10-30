@@ -18,8 +18,9 @@ VQuery 是面向数据分析的查询引擎。它提供数据集管理、声明�
 | 能力 | 说明 |
 | --- | --- |
 | 数据集管理 | 加载 JSON、CSV 数据，定义字段 schema，并按实例管理数据集。 |
-| 声明式查询 | 使用 `select`、`where`、`groupBy`、`having`、`orderBy` 和 `limit` 组合分析需求。 |
+| 声明式查询 | 使用 `select`、`from`、`where`、`groupBy`、`having`、`orderBy` 和 `limit` 组合分析需求。 |
 | 聚合分析 | 支持求和、平均值、去重计数等聚合，以及按年、季度、月等日期粒度分组。 |
+| 数值计算 | 使用局部 SQL 表达式计算差额、比率等派生列，通过 `from` 组合计算与聚合。[表达式示例](./examples/select/expression) |
 | SQL 编译 | 将同一份查询 DSL 编译为 MySQL 或 DuckDB SQL，返回 SQL 与参数。 |
 | 存储选择 | 默认使用内存存储；需要跨会话保留数据时，可显式启用 IndexedDB。 |
 
@@ -104,6 +105,42 @@ try {
 
 `VQueryDSL` 描述“需要什么数据”。`where` 在聚合前过滤明细，`groupBy` 定义分组，`having` 在聚合后过滤结果。查询配置可保存为 JSON，并在后续分析中复用。
 
+### 子查询与条件计算
+
+`from` 对应 SQL 的 `FROM (SELECT ...)`：内层先完成筛选、聚合、排序和 limit，外层再处理其结果；表名仍由连接的数据集或编译选项决定。
+
+```ts
+const overview: VQueryDSL = {
+  from: query,
+  select: [
+    { field: '*', alias: 'groups', aggr: { func: 'count' } },
+    { field: 'totalSales', alias: 'maximum', aggr: { func: 'max' } },
+  ],
+}
+```
+
+`select[].when` 使用与 `where` 相同的条件组，仅保留满足条件的字段值，其他值为 NULL；可与 count、sum 等聚合组合。非聚合条件投影按输出名分组时，使用条件计算后的值。count(*) 未指定 alias 时输出列名为 `count`。
+
+`Dataset.query()` 使用数据集当前的 schema 校验并编译查询；连接时指定的临时 schema 优先。直接编译含 `when` 的查询时，须传入完整 `columns`，用于处理内部字段命名和通配符。`getQuerySchema(query, columns)` 可推导子查询和最终投影的列名与类型，`validateQuery(query, columns)` 校验执行 DSL。
+
+### 表达式校验
+
+`VQuery.validateExpression(expr, options?)` 是静态方法，无需创建实例或连接数据集。合法时返回 `undefined`，非法时抛出错误；它与查询编译使用同一套 AST 校验规则。
+
+```ts
+VQuery.validateExpression('profit / NULLIF(sales, ?)', {
+  parameters: [0],
+  columns: [
+    { name: 'profit', type: 'number' },
+    { name: 'sales', type: 'number' },
+  ],
+})
+```
+
+省略 `columns` 时检查语法、函数白名单、参数数量和绑定值；传入完整 `columns` 时，还会拒绝不存在或非数值的字段。显式传入空数组表示没有可引用的字段。缺少或多余的参数、不支持的函数、SQL 语句和子查询均会抛错；它不执行表达式，也不读取数据。
+
+VBI 在查询和构建图表前校验计算表达式的语法与参数绑定，失败时不会发起取数；字段类型由查询使用的数据集 schema 校验。编辑器也可调用这个方法，在提交表达式前给出错误提示。
+
 ### SQL 编译
 
 当数据在数据库中时，可单独使用 `compileQuery()`。编译器返回 SQL 与参数，数据库连接与执行由应用负责。
@@ -142,6 +179,7 @@ const persistentQuery = new VQuery({ enableIndexedDB: true })
 ## 下一步
 
 - [字段选择与聚合](./examples/select)：了解查询结果的字段与计算方式。
+- [From 子查询](./examples/subquery)：对查询结果继续筛选、聚合、排序和统计。
 - [筛选条件](./examples/where)：组合业务条件，缩小分析范围。
 - [分组分析](./examples/groupBy)：按维度汇总数据。
 - [Playground](./playground)：修改查询配置，查看结果。

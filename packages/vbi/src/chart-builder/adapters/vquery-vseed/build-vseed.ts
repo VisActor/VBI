@@ -32,6 +32,7 @@ export const buildVSeedDSL: VBIChartSeedBuilder<DefaultVBIQueryDSL, DefaultVBISe
 
       return nextMeasure
     })
+  measures.push(...(vbiDSL.calculations ?? []).map(({ id, alias }) => ({ id, alias })))
   const dimensions = vbiDSL.dimensions
     .filter((dimension) => DimensionsBuilder.isDimensionNode(dimension))
     .map<Dimension>((dimension) => {

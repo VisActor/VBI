@@ -4,6 +4,8 @@ import {
   BUILDER_ORDER,
   DEFAULT_LOCALE,
   EXAMPLES_DIR,
+  QUERY_EXAMPLE_GROUPS,
+  QUERY_EXAMPLE_LABELS,
   findJsonFilesInDir,
   findSubDirs,
   formatBuilderLabel,
@@ -40,11 +42,29 @@ const toMetaDir = (name, label) => ({
 const getActiveDirs = () =>
   findSubDirs(EXAMPLES_DIR).filter((dir) => findJsonFilesInDir(path.join(EXAMPLES_DIR, dir)).length > 0)
 
+const queryOrder = new Map(Object.keys(QUERY_EXAMPLE_LABELS).map((dir, index) => [dir, index]))
+const queryGroups = new Map(
+  Object.entries(QUERY_EXAMPLE_GROUPS).flatMap(([label, dirs]) => Object.keys(dirs).map((dir) => [dir, label])),
+)
+
 const groupDirsByBuilder = (dirs) =>
   BUILDER_ORDER.map((kind) => ({
     kind,
-    dirs: dirs.filter((dir) => getDirBuilderKind(dir) === kind),
+    dirs: dirs
+      .filter((dir) => getDirBuilderKind(dir) === kind)
+      .sort((a, b) => (queryOrder.get(a) ?? Infinity) - (queryOrder.get(b) ?? Infinity)),
   })).filter((group) => group.dirs.length > 0)
+
+function getExampleSections(group) {
+  const sections = []
+  for (const dir of group.dirs) {
+    const label = group.kind === 'query' ? queryGroups.get(dir) : undefined
+    const previous = sections.at(-1)
+    if (previous && previous.label === label) previous.dirs.push(dir)
+    else sections.push({ label, dirs: [dir] })
+  }
+  return sections
+}
 
 const shouldRenderBuilderIndexOnly = (group) =>
   group.kind === 'dashboard' || (group.dirs.length === 1 && group.dirs[0] === group.kind)
@@ -97,28 +117,31 @@ function generateBuilderIndexPage(group, locale = DEFAULT_LOCALE) {
   let md = `# ${formatBuilderLabel(group.kind)}\n\n`
   md += `本页面展示 ${group.kind} builder 的示例。\n\n`
 
-  for (const dir of group.dirs) {
-    const examples = findJsonFilesInDir(path.join(EXAMPLES_DIR, dir)).map((file) => {
-      const json = readJsonFile(file)
-      return {
-        name: json.name || path.basename(file, '.json'),
-        description: parseDescription(json, locale),
-        tags: parseTags(json),
-      }
-    })
-
-    if (!examples.length) {
-      continue
-    }
-
-    md += `## ${formatDirLabel(dir)}\n\n| 示例 | 描述 | 标签 |\n| --- | --- | --- |\n`
-    md += examples
-      .map((example) => {
-        const href = resolveExampleLink(group, dir, example.name, true)
-        return `| [${example.name}](${href}) | ${example.description} | ${example.tags.join(', ') || '-'} |`
+  for (const section of getExampleSections(group)) {
+    if (section.label) md += `## ${section.label}\n\n`
+    for (const dir of section.dirs) {
+      const examples = findJsonFilesInDir(path.join(EXAMPLES_DIR, dir)).map((file) => {
+        const json = readJsonFile(file)
+        return {
+          name: json.name || path.basename(file, '.json'),
+          description: parseDescription(json, locale),
+          tags: parseTags(json),
+        }
       })
-      .join('\n')
-    md += '\n\n'
+
+      if (!examples.length) {
+        continue
+      }
+
+      md += `${section.label ? '###' : '##'} ${formatDirLabel(dir)}\n\n| 示例 | 描述 | 标签 |\n| --- | --- | --- |\n`
+      md += examples
+        .map((example) => {
+          const href = resolveExampleLink(group, dir, example.name, true)
+          return `| [${example.name}](${href}) | ${example.description} | ${example.tags.join(', ') || '-'} |`
+        })
+        .join('\n')
+      md += '\n\n'
+    }
   }
 
   return `${md.trimEnd()}\n`
@@ -143,7 +166,22 @@ function writeBuilderDocs(group) {
   fs.writeFileSync(
     path.join(builderDir, '_meta.json'),
     JSON.stringify(
-      group.dirs.map((dir) => toMetaFile(dir, formatDirLabel(dir))),
+      getExampleSections(group).flatMap(({ label, dirs }) =>
+        label
+          ? [
+              {
+                type: 'custom-link',
+                label,
+                collapsible: true,
+                collapsed: false,
+                items: dirs.map((dir) => ({
+                  label: formatDirLabel(dir),
+                  link: `/vbi/examples/${group.kind}/${dir}.html`,
+                })),
+              },
+            ]
+          : dirs.map((dir) => toMetaFile(dir, formatDirLabel(dir))),
+      ),
       null,
       2,
     ),
@@ -151,7 +189,10 @@ function writeBuilderDocs(group) {
   console.log(`Generated: ${group.kind}/index.mdx`)
 
   for (const dir of group.dirs) {
-    fs.writeFileSync(path.join(builderDir, `${dir}.mdx`), generateDirDocs(dir))
+    fs.writeFileSync(
+      path.join(builderDir, `${dir}.mdx`),
+      generateDirDocs(dir, DEFAULT_LOCALE, group.kind === 'query' ? formatDirLabel(dir) : dir),
+    )
     console.log(`Generated: ${group.kind}/${dir}.mdx`)
   }
 }

@@ -99,7 +99,7 @@ const { dataset } = await chart.query({ signal: controller.signal })
 
 `query()` builds the query from the chart configuration, executes it through `adapters.query(context)`, and returns the result unchanged. The default query adapter calls the Connector, preserves dimension and measure IDs as result keys, and forwards the signal for Connector cancellation. `buildVQuery()` only generates the query DSL; the default `buildVSeed()` uses the same query adapter once and assembles the visualization configuration. Calling `query()` and the default `buildVSeed()` separately performs two independent queries without caching.
 
-Override `adapters.query` to customize execution. Its context contains `dsl`, `vbiDSL`, `builder`, the compiled `queryDSL`, and `options`; it returns `VBIQueryResult`. Overriding query alone affects both direct queries and default VSeed builds. Existing adapters without query receive the default executor. Custom seed adapters retain their context and call order, may fetch data themselves or return without querying, and can reuse execution with `context.builder.adapters.query(context)`. See the runnable [chart query example in Chinese](/VBI/vbi/examples/chart/chartWorkflow#query-without-vseed).
+Override `adapters.query` to customize execution. Its context contains `dsl`, `vbiDSL`, `builder`, the compiled `queryDSL`, and `options`; it returns `VBIQueryResult`. Overriding query alone affects both direct queries and default VSeed builds. Existing adapters without query receive the default executor. Custom seed adapters retain their context and call order, may fetch data themselves or return without querying, and can reuse execution with `context.builder.adapters.query(context)`.
 
 ### Query aggregates or source records
 

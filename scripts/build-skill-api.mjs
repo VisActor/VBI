@@ -40,10 +40,10 @@ function groupFor(packageName, source) {
   }
   if (packageName === 'vquery') {
     if (source.startsWith('types/')) return 'types'
-    if (source.startsWith('sql-builder/')) return 'sql-compiler'
+    if (source.startsWith('sql/compiler/')) return 'sql-compiler'
     if (source.startsWith('adapters/')) return 'adapters'
-    if (source.startsWith('utils/')) return 'utils'
-    return source.startsWith('vquery-') || source === 'VQuery.ts' ? 'runtime' : 'dataset'
+    if (source === 'dataset/source/url.ts') return 'utils'
+    return source === 'default-vquery.ts' || source === 'VQuery.ts' ? 'runtime' : 'dataset'
   }
   if (source.startsWith('types/chartType/')) return 'chart-types'
   if (source.startsWith('builder/register/')) return 'register'

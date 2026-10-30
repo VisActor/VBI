@@ -1,0 +1,78 @@
+{
+  "datasetId": "expression-aggregate-ratio",
+  "description": "先按地区汇总，再计算整体利润率；最终按利润率排序并取前两名，避免先截断后计算。",
+  "vquery": {
+    "from": {
+      "select": [
+        "region",
+        {
+          "field": "sales",
+          "aggr": {
+            "func": "sum"
+          },
+          "alias": "sales"
+        },
+        {
+          "field": "profit",
+          "aggr": {
+            "func": "sum"
+          },
+          "alias": "profit"
+        }
+      ],
+      "groupBy": ["region"]
+    },
+    "select": [
+      "region",
+      "sales",
+      "profit",
+      {
+        "expr": "profit / NULLIF(sales, 0)",
+        "alias": "margin"
+      }
+    ],
+    "orderBy": [
+      {
+        "field": "margin",
+        "order": "desc"
+      }
+    ],
+    "limit": 2
+  },
+  "schema": [
+    {
+      "name": "region",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "region": "A",
+      "sales": 100,
+      "profit": 10
+    },
+    {
+      "region": "A",
+      "sales": 100,
+      "profit": 30
+    },
+    {
+      "region": "B",
+      "sales": 50,
+      "profit": 20
+    },
+    {
+      "region": "C",
+      "sales": 0,
+      "profit": 5
+    }
+  ]
+}

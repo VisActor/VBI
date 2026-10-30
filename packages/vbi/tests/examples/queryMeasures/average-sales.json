@@ -1,0 +1,28 @@
+{
+  "name": "average-sales",
+  "builder": "query",
+  "description": "更新销售额指标的聚合方式，查询各区域的单笔平均销售额。",
+  "tags": ["query", "measures"],
+  "priority": 2,
+  "dsl": {
+    "dimensions": [
+      {
+        "id": "region",
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "field": "sales",
+        "alias": "销售额",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 3
+  },
+  "code": "const applyBuilder = (builder: VBIQueryBuilder) => {\n  builder.measures.update('sales', node => node.setAlias('平均销售额').setAggregate({ func: 'avg' }))\n}"
+}

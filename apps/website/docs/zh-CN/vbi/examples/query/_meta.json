@@ -1,0 +1,58 @@
+[
+  {
+    "type": "file",
+    "name": "queryDimensions",
+    "label": "Dimensions"
+  },
+  {
+    "type": "file",
+    "name": "queryMeasures",
+    "label": "Measures"
+  },
+  {
+    "type": "file",
+    "name": "queryCalculations",
+    "label": "Calculations"
+  },
+  {
+    "type": "file",
+    "name": "queryWhereFilter",
+    "label": "WhereFilter"
+  },
+  {
+    "type": "file",
+    "name": "queryHavingFilter",
+    "label": "HavingFilter"
+  },
+  {
+    "type": "file",
+    "name": "queryLimit",
+    "label": "Limit"
+  },
+  {
+    "type": "file",
+    "name": "queryModes",
+    "label": "QueryMode"
+  },
+  {
+    "type": "file",
+    "name": "queryUndoManager",
+    "label": "UndoManager"
+  },
+  {
+    "type": "custom-link",
+    "label": "Analysis",
+    "collapsible": true,
+    "collapsed": false,
+    "items": [
+      {
+        "label": "QueryBins",
+        "link": "/vbi/examples/query/queryBins.html"
+      },
+      {
+        "label": "QueryProfile",
+        "link": "/vbi/examples/query/queryProfile.html"
+      }
+    ]
+  }
+]

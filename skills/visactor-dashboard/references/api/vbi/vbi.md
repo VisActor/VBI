@@ -12,6 +12,7 @@
 - [VBIInsightNamespace](vbi.md#vbiinsightnamespace)
 - [VBIInsightResourceNamespace](vbi.md#vbiinsightresourcenamespace)
 - [VBIInstance](vbi.md#vbiinstance)
+- [VBIQueryNamespace](vbi.md#vbiquerynamespace)
 - [VBIResourceNamespace](vbi.md#vbiresourcenamespace)
 - [VBIResourceRegisterInput](vbi.md#vbiresourceregisterinput)
 - [VBIResourceRegisterResult](vbi.md#vbiresourceregisterresult)
@@ -19,11 +20,15 @@
 - [createEmptyChart](vbi.md#createemptychart)
 - [createEmptyDashboard](vbi.md#createemptydashboard)
 - [createEmptyInsight](vbi.md#createemptyinsight)
+- [createEmptyQuery](vbi.md#createemptyquery)
+- [createQuery](vbi.md#createquery)
 - [createVBI](vbi.md#createvbi)
 
 类型引用沿用源码模块名，包的公开导出以索引为准：
 
 ```typescript
+import * as Y from 'yjs'
+import type * as Y from 'yjs'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/chart-builder/adapters/vquery-vseed/types'
 import type { VBIChartBuilder } from 'src/chart-builder/builder'
 import type { VBIChartBuilderOptions } from 'src/types'
@@ -44,7 +49,15 @@ import type { VBIInsightDSL, VBIInsightDSLInput } from 'src/types'
 import type { VBIInsightNamespace } from './insight'
 import type { VBIInstance } from './types'
 import type { VBIInstance } from './vbi/index'
+import type { VBIQueryBuilder } from 'src/query-builder/builder'
+import type { VBIQueryBuilderOptions } from 'src/query-builder/types'
+import type { VBIQueryDSL } from 'src/types/queryDSL'
+import type { VBIQueryDSL, VBIQueryDSLInput } from 'src/types/queryDSL'
+import type { VBIQueryNamespace } from './query'
 import type { VBIResourceNamespace } from './resources'
+import type { VQueryDSL } from '@visactor/vquery'
+import { VBIQueryBuilder } from 'src/query-builder/builder'
+import { type VBIQueryDSLInput } from 'src/types/queryDSL'
 ```
 
 ## VBI
@@ -200,7 +213,7 @@ export interface VBIInsightResourceNamespace {
 
 ## VBIInstance
 
-源码：[packages/vbi/src/vbi/types/vbi.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/vbi/types/vbi.ts#L9)
+源码：[packages/vbi/src/vbi/types/vbi.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/vbi/types/vbi.ts#L10)
 
 包导出：`VBIInstance`
 
@@ -211,12 +224,33 @@ export interface VBIInstance<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultV
   connectors: VBIConnectorNamespace
   /** @description 图表和 insight 资源注册 API，用于 dashboard 引用共享资源。 */
   resources: VBIResourceNamespace
+  /** @description 独立查询 Builder 创建 API。 */
+  query: VBIQueryNamespace
   /** @description 图表 Builder 创建 API。 */
   chart: VBIChartNamespace<TQueryDSL, TSeedDSL>
   /** @description Insight Builder 创建 API。 */
   insight: VBIInsightNamespace
   /** @description Dashboard Builder 创建 API。 */
   dashboard: VBIDashboardNamespace<TQueryDSL, TSeedDSL>
+}
+```
+
+## VBIQueryNamespace
+
+源码：[packages/vbi/src/vbi/types/query.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/vbi/types/query.ts#L9)
+
+包导出：`VBIQueryNamespace`
+
+```typescript
+/** @description 独立查询 Builder 创建 API，不注册图表资源。 */
+export interface VBIQueryNamespace {
+  /** @description 从查询 DSL 或已恢复的 Y.Doc 创建查询 Builder。 */
+  create<TQueryDSL = VQueryDSL>(
+    input: VBIQueryDSLInput | Y.Doc,
+    options?: VBIQueryBuilderOptions<TQueryDSL>,
+  ): VBIQueryBuilder<TQueryDSL>
+  /** @description 创建一个空查询 DSL。 */
+  createEmpty(connectorId: VBIConnectorId, uuid?: string): VBIQueryDSL
 }
 ```
 
@@ -341,9 +375,40 @@ export declare const createEmptyInsight: (uuid?: string) => VBIInsightDSL
 uuid = id.resourceUUID()
 ```
 
+## createEmptyQuery
+
+源码：[packages/vbi/src/vbi/create-empty-query.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/vbi/create-empty-query.ts#L5)
+
+包导出：`createEmptyQuery`
+
+```typescript
+export declare const createEmptyQuery: (connectorId: VBIConnectorId, uuid?: string) => VBIQueryDSL
+```
+
+参数默认值（来自源码）：
+
+```typescript
+// createEmptyQuery
+uuid = id.resourceUUID()
+```
+
+## createQuery
+
+源码：[packages/vbi/src/vbi/from/from-vbi-query-dsl-input.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/vbi/from/from-vbi-query-dsl-input.ts#L11)
+
+包导出：`createQuery`
+
+```typescript
+/** @description JSON 创建独立文档，Y.Doc 绑定已恢复的协同状态。初始化不进入撤销历史。 */
+export declare const createQuery: <TQueryDSL = VQueryDSL>(
+  input: VBIQueryDSLInput | Y.Doc,
+  options?: VBIQueryBuilderOptions<TQueryDSL>,
+) => VBIQueryBuilder<TQueryDSL>
+```
+
 ## createVBI
 
-源码：[packages/vbi/src/vbi/create-vbi.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/vbi/create-vbi.ts#L16)
+源码：[packages/vbi/src/vbi/create-vbi.ts](https://github.com/VisActor/VBI/blob/main/packages/vbi/src/vbi/create-vbi.ts#L17)
 
 包导出：`createVBI`
 

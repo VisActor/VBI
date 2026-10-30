@@ -17,9 +17,13 @@ describe('Select Median Example', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId, {
+      columns: schema as DatasetColumn[],
+    })
 
-    expect(sql).toMatchInlineSnapshot(`"select median("salary") as "salary_median" from "select-aggregation-median""`)
+    expect(sql).toMatchInlineSnapshot(
+      `"select median("salary") as "salary_median" from (select "id" as "id", "name" collate "binary" as "name", "age" as "age", "department" collate "binary" as "department", "salary" as "salary" from "select-aggregation-median") as "__vquery_source""`,
+    )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)
 

@@ -113,7 +113,7 @@ describe('InMemoryQueryAdapter', () => {
       'JSON dataset must contain an object or an array of objects',
     )
     await expect(adapter.query('select @')).rejects.toThrow('Unsupported SQL character')
-    await expect(adapter.query('select -')).rejects.toThrow('Unsupported SQL character: -')
+    await expect(adapter.query('select -')).rejects.toThrow('Unexpected end of SQL expression')
     await expect(adapter.query('select')).rejects.toThrow('Unexpected end of SQL expression')
     await expect(adapter.query('select (1')).rejects.toThrow('Expected ), received end of SQL')
     await expect(adapter.query('select 1::decimal(')).rejects.toThrow('Unterminated SQL cast type')

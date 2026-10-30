@@ -17,10 +17,12 @@ describe('Where with IS NULL / IS NOT NULL', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+    const sql = convertDSLToDuckDB(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId, {
+      columns: schema as DatasetColumn[],
+    })
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "id", "name", "age", "gender" from "where-null-check" where (("age" >= 18 and "gender" is null) or ("age" < 18 and "gender" is not null))"`,
+      `"select "id", "name", "age", "gender" from (select "id" as "id", "name" collate "binary" as "name", "age" as "age", "department" collate "binary" as "department", "gender" collate "binary" as "gender", "active" as "active" from "where-null-check") as "__vquery_source" where (("age" >= 18 and "gender" is null) or ("age" < 18 and "gender" is not null))"`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

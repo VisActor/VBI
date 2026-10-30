@@ -1,0 +1,42 @@
+{
+  "datasetId": "expression-functions",
+  "description": "使用 ABS 取绝对值、COALESCE 补缺失值、NULLIF 避免零分母。",
+  "vquery": {
+    "select": [
+      "x",
+      "y",
+      {
+        "expr": "x / NULLIF(y, 0)",
+        "alias": "ratio"
+      },
+      {
+        "expr": "ABS(COALESCE(x, 0) - y)",
+        "alias": "difference"
+      }
+    ]
+  },
+  "schema": [
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    }
+  ],
+  "dataset": [
+    {
+      "x": 8,
+      "y": 2
+    },
+    {
+      "x": 3,
+      "y": 0
+    },
+    {
+      "x": null,
+      "y": -2
+    }
+  ]
+}

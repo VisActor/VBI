@@ -17,3 +17,5 @@ export type {
   VBIDashboardNamespace,
   VBIInsightNamespace,
 } from './types'
+export { createEmptyQuery } from './create-empty-query'
+export { createQuery } from './from/from-vbi-query-dsl-input'

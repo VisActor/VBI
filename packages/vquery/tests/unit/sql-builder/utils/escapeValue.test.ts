@@ -1,4 +1,4 @@
-import { escapeValue } from '../../../../src/sql-builder/utils'
+import { escapeValue } from '../../../../src/sql/compiler/utils'
 
 describe('escapeValue branches', () => {
   it('null', () => {

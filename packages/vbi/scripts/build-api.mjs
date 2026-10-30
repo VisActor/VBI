@@ -17,6 +17,7 @@ const __dirname = path.dirname(__filename)
 
 const SOURCE_ROOTS = {
   chart: path.resolve(__dirname, '../src/chart-builder'),
+  query: path.resolve(__dirname, '../src/query-builder'),
   insight: path.resolve(__dirname, '../src/insight-builder'),
   dashboard: path.resolve(__dirname, '../src/dashboard-builder'),
   vbi: path.resolve(__dirname, '../src/vbi'),
@@ -59,6 +60,15 @@ const API_SECTIONS = [
       },
     ],
     items: [
+      {
+        type: 'file',
+        name: 'query',
+        label: 'VBI.query',
+        kind: 'interface',
+        file: 'types/query.ts',
+        symbolName: 'VBIQueryNamespace',
+        displayName: 'VBI.query',
+      },
       {
         type: 'file',
         name: 'chart',
@@ -139,6 +149,59 @@ const API_SECTIONS = [
     ],
   },
   {
+    name: 'queryBuilder',
+    label: 'queryBuilder',
+    root: 'query',
+    index: { file: 'builder.ts', displayName: 'VBIQueryBuilder' },
+    items: [
+      {
+        type: 'dir',
+        name: 'dimensions',
+        label: 'queryBuilder.dimensions',
+        file: 'features/dimensions/dim-builder.ts',
+        displayName: 'QueryDimensionsBuilder',
+        children: [
+          {
+            name: 'dimensionNode',
+            label: 'dimensionNode',
+            file: 'features/dimensions/dim-node-builder.ts',
+            displayName: 'QueryDimensionNodeBuilder',
+          },
+        ],
+      },
+      {
+        type: 'dir',
+        name: 'measures',
+        label: 'queryBuilder.measures',
+        file: 'features/measures/mea-builder.ts',
+        displayName: 'QueryMeasuresBuilder',
+        children: [
+          {
+            name: 'measureNode',
+            label: 'measureNode',
+            file: 'features/measures/mea-node-builder.ts',
+            displayName: 'QueryMeasureNodeBuilder',
+          },
+        ],
+      },
+      ...[
+        ['calculations', 'calculations/calculations-builder.ts', 'CalculationsBuilder'],
+        ['calculationNode', 'calculations/calculation-node-builder.ts', 'CalculationNodeBuilder'],
+        ['whereFilter', 'whereFilter/where-builder.ts', 'WhereFilterBuilder'],
+        ['havingFilter', 'havingFilter/having-builder.ts', 'HavingFilterBuilder'],
+        ['limit', 'limit/limit-builder.ts', 'LimitBuilder'],
+        ['queryMode', 'query-mode/query-mode-builder.ts', 'QueryModeBuilder'],
+        ['undoManager', 'undo-manager/undo-manager.ts', 'UndoManager'],
+      ].map(([name, file, displayName]) => ({
+        type: 'file',
+        name,
+        label: `queryBuilder.${name}`,
+        file: `features/${file}`,
+        displayName,
+      })),
+    ],
+  },
+  {
     name: 'chartBuilder',
     label: 'chartBuilder',
     root: 'chart',
@@ -195,19 +258,19 @@ const API_SECTIONS = [
         type: 'dir',
         name: 'whereFilter',
         label: 'chartBuilder.whereFilter',
-        file: 'features/whereFilter/where-builder.ts',
+        file: '../query-builder/features/whereFilter/where-builder.ts',
         displayName: 'WhereFilterBuilder',
         children: [
           {
             name: 'whereNode',
             label: 'whereNode',
-            file: 'features/whereFilter/where-node-builder.ts',
+            file: '../query-builder/features/whereFilter/where-node-builder.ts',
             displayName: 'WhereFilterNodeBuilder',
           },
           {
             name: 'whereGroup',
             label: 'whereGroup',
-            file: 'features/whereFilter/where-group-builder.ts',
+            file: '../query-builder/features/whereFilter/where-group-builder.ts',
             displayName: 'WhereGroupBuilder',
           },
         ],
@@ -216,19 +279,19 @@ const API_SECTIONS = [
         type: 'dir',
         name: 'havingFilter',
         label: 'chartBuilder.havingFilter',
-        file: 'features/havingFilter/having-builder.ts',
+        file: '../query-builder/features/havingFilter/having-builder.ts',
         displayName: 'HavingFilterBuilder',
         children: [
           {
             name: 'havingNode',
             label: 'havingNode',
-            file: 'features/havingFilter/having-node-builder.ts',
+            file: '../query-builder/features/havingFilter/having-node-builder.ts',
             displayName: 'HavingFilterNodeBuilder',
           },
           {
             name: 'havingGroup',
             label: 'havingGroup',
-            file: 'features/havingFilter/having-group-builder.ts',
+            file: '../query-builder/features/havingFilter/having-group-builder.ts',
             displayName: 'HavingGroupBuilder',
           },
         ],
@@ -251,21 +314,21 @@ const API_SECTIONS = [
         type: 'file',
         name: 'limit',
         label: 'chartBuilder.limit',
-        file: 'features/limit/limit-builder.ts',
+        file: '../query-builder/features/limit/limit-builder.ts',
         displayName: 'LimitBuilder',
       },
       {
         type: 'file',
         name: 'queryMode',
         label: 'chartBuilder.queryMode',
-        file: 'features/query-mode/query-mode-builder.ts',
+        file: '../query-builder/features/query-mode/query-mode-builder.ts',
         displayName: 'QueryModeBuilder',
       },
       {
         type: 'file',
         name: 'undoManager',
         label: 'chartBuilder.undoManager',
-        file: 'features/undo-manager/undo-manager.ts',
+        file: '../query-builder/features/undo-manager/undo-manager.ts',
         displayName: 'UndoManager',
       },
     ],
@@ -285,10 +348,10 @@ const API_SECTIONS = [
         name: 'undoManager',
         label: 'dashboardBuilder.undoManager',
         docs: [
-          { file: '../chart-builder/features/undo-manager/undo-manager.ts', displayName: 'UndoManager' },
+          { file: '../query-builder/features/undo-manager/undo-manager.ts', displayName: 'UndoManager' },
           {
             kind: 'interface',
-            file: '../chart-builder/features/undo-manager/undo-manager.ts',
+            file: '../query-builder/features/undo-manager/undo-manager.ts',
             displayName: 'UndoManagerOptions',
           },
         ],
@@ -507,8 +570,29 @@ const toMethodDoc = (method, options = {}) => ({
 })
 
 const parseClassDeclaration = (classDecl) => {
-  const properties = classDecl
-    .getProperties()
+  const hierarchy = []
+  for (let current = classDecl; current; current = current.getBaseClass()) hierarchy.push(current)
+  const members = (getter) => {
+    const result = new Map()
+    for (const current of hierarchy.toReversed()) {
+      for (const member of current[getter]()) result.set(member.getName(), member)
+    }
+    return [...result.values()]
+  }
+  const substitute = (text, bindings) => text.replace(/\b[A-Za-z_$][\w$]*\b/g, (name) => bindings.get(name) ?? name)
+  const inheritedTypes = new Map()
+  let bindings = new Map()
+  for (const current of hierarchy) {
+    inheritedTypes.set(current, bindings)
+    const args = current.getExtends()?.getTypeArguments() || []
+    bindings = new Map(
+      (current.getBaseClass()?.getTypeParameters() || []).map((param, index) => [
+        param.getName(),
+        substitute(args[index]?.getText() || param.getDefault()?.getText() || param.getName(), bindings),
+      ]),
+    )
+  }
+  const properties = members('getProperties')
     .filter((property) => !isPrivate(property))
     .filter((property) => {
       const init = property.getInitializer()
@@ -518,7 +602,7 @@ const parseClassDeclaration = (classDecl) => {
 
   const methods = []
 
-  const ctors = classDecl.getConstructors()
+  const ctors = hierarchy.find((current) => current.getConstructors().length)?.getConstructors() || []
   if (ctors.length) {
     methods.push({
       name: 'constructor',
@@ -531,12 +615,16 @@ const parseClassDeclaration = (classDecl) => {
     })
   }
 
-  for (const method of classDecl.getMethods()) {
+  for (const method of members('getMethods')) {
     if (isPrivate(method)) continue
-    methods.push(toMethodDoc(method))
+    const parsed = toMethodDoc(method)
+    const typeBindings = inheritedTypes.get(method.getParent())
+    parsed.params = parsed.params.map((param) => ({ ...param, type: substitute(param.type, typeBindings) }))
+    parsed.returnType = substitute(parsed.returnType, typeBindings)
+    methods.push(parsed)
   }
 
-  for (const prop of classDecl.getProperties()) {
+  for (const prop of members('getProperties')) {
     const init = prop.getInitializer()
     if (!init || init.getKind() !== SyntaxKind.ArrowFunction) continue
     if (isPrivate(prop)) continue
@@ -677,7 +765,8 @@ const renderParamTable = (params, paramsDoc = {}) => {
     .map((param) => {
       const defaultValue = param.defaultValue ? ` = ${param.defaultValue}` : ''
       const description = paramsDoc[param.name] || '-'
-      return `| \`${renderParamName(param)}\`${defaultValue} | ${escapeTableCell(param.type || '-')} | ${description} |`
+      const type = escapeTableCell(param.type || '-').replaceAll('<', '&lt;')
+      return `| \`${renderParamName(param)}\`${defaultValue} | ${type} | ${description} |`
     })
     .join('\n')
   return `| 参数 | 类型 | 说明 |\n| --- | --- | --- |\n${rows}`

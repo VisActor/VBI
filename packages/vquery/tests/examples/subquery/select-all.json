@@ -1,0 +1,27 @@
+{
+  "datasetId": "subquery-select-all",
+  "description": "内层筛选并取销售额最小的三条明细，外层用通配符保留内层输出的 store、amount 两列，再按 amount 降序排列。",
+  "vquery": {
+    "from": {
+      "select": ["store", { "field": "sales", "alias": "amount" }],
+      "where": { "op": "and", "conditions": [{ "field": "sales", "op": ">=", "value": 15 }] },
+      "orderBy": [{ "field": "amount", "order": "asc" }],
+      "limit": 3
+    },
+    "select": ["*"],
+    "orderBy": [{ "field": "amount", "order": "desc" }]
+  },
+  "dataset": [
+    { "region": "East", "store": "A", "sales": 10 },
+    { "region": "East", "store": "A", "sales": 20 },
+    { "region": "East", "store": "B", "sales": 40 },
+    { "region": "West", "store": "C", "sales": 15 },
+    { "region": "West", "store": "C", "sales": 5 },
+    { "region": "West", "store": "D", "sales": 60 }
+  ],
+  "schema": [
+    { "name": "region", "type": "string" },
+    { "name": "store", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ]
+}

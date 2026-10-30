@@ -8,6 +8,13 @@
   },
   {
     "type": "dir",
+    "name": "queryBuilder",
+    "label": "queryBuilder",
+    "collapsible": true,
+    "collapsed": false
+  },
+  {
+    "type": "dir",
     "name": "chartBuilder",
     "label": "chartBuilder",
     "collapsible": true,

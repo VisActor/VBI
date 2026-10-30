@@ -15,7 +15,7 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>, dashboardBuilder: TDashboardBuilder)
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
-| `dsl` | Y.Map<any> | - |
+| `dsl` | Y.Map&lt;any> | - |
 | `dashboardBuilder` | TDashboardBuilder | - |
 
 ### add
@@ -34,7 +34,7 @@ add(callback: (chart: DashboardChartBuilder<TQueryDSL, TSeedDSL>) => void): TDas
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `callback` | (chart: DashboardChartBuilder<TQueryDSL, TSeedDSL>) => void | - |
+| `callback` | (chart: DashboardChartBuilder&lt;TQueryDSL, TSeedDSL>) => void | - |
 
 ### update
 
@@ -53,7 +53,7 @@ update(widgetId: string, callback: (chart: DashboardChartBuilder<TQueryDSL, TSee
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `widgetId` | string | - |
-| `callback` | (chart: DashboardChartBuilder<TQueryDSL, TSeedDSL>) => void | - |
+| `callback` | (chart: DashboardChartBuilder&lt;TQueryDSL, TSeedDSL>) => void | - |
 
 ### remove
 

@@ -6,18 +6,19 @@
 | --- | --- | --- |
 | **doc** | `Y.Doc` | - |
 | **dsl** | `Y.Map<any>` | - |
+| **dimensions** | `DimensionsBuilder` | - |
+| **measures** | `MeasuresBuilder` | - |
+| **calculations** | `CalculationsBuilder` | - |
+| **whereFilter** | `WhereFilterBuilder` | - |
+| **havingFilter** | `HavingFilterBuilder` | - |
+| **limit** | `LimitBuilder` | - |
+| **queryMode** | `QueryModeBuilder` | - |
+| **undoManager** | `UndoManager` | 本地事务的撤销历史，每个事务独立成一步；doc.transact 可合并多项编辑。 |
 | **adapters** | `Required<VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>>` | - |
 | **chartType** | `ChartTypeBuilder` | - |
 | **instance** | `ChartInstanceBuilder` | 图表运行时实例的绑定、获取与原生事件代理。 |
-| **measures** | `MeasuresBuilder` | - |
-| **dimensions** | `DimensionsBuilder` | - |
-| **havingFilter** | `HavingFilterBuilder` | - |
-| **whereFilter** | `WhereFilterBuilder` | - |
 | **theme** | `ThemeBuilder` | - |
 | **locale** | `LocaleBuilder` | - |
-| **limit** | `LimitBuilder` | - |
-| **queryMode** | `QueryModeBuilder` | 图表查询粒度，普通表可选择源记录明细；缺省保持聚合查询。 |
-| **undoManager** | `UndoManager` | 图表撤销历史，每个 Yjs 事务独立成一步；连续 add / update 不按时间合并，doc.transact 可显式合并多个修改。 |
 
 
 ## 方法
@@ -35,12 +36,12 @@ constructor(doc: Y.Doc, options?: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>, d
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
-| `options?` | VBIChartBuilderOptions<TQueryDSL, TSeedDSL> | - |
-| `dsl?` | Y.Map<any> | - |
+| `options?` | VBIChartBuilderOptions&lt;TQueryDSL, TSeedDSL> | - |
+| `dsl?` | Y.Map&lt;any> | - |
 
 ### observe
 
-订阅图表 DSL 顶层字段变化，与 dsl.observe 语义一致；不包含嵌套字段修改，也不触发首次渲染。
+订阅 DSL 顶层字段变化，不包含嵌套修改，也不触发首次通知。
 
 **定义**:
 
@@ -58,7 +59,7 @@ observe(callback: ObserveCallback): void
 
 ### unobserve
 
-取消指定的图表 DSL 顶层订阅，传入 observe 时使用的同一回调。
+取消顶层订阅，传入注册时的同一回调。
 
 **定义**:
 
@@ -76,7 +77,7 @@ unobserve(callback: ObserveCallback): void
 
 ### observeDeep
 
-订阅整个图表 DSL 的深层变化，包括嵌套筛选、字段、本地编辑、撤销重做及协同更新；同一事务通知一次，不包含运行时实例变化，也不触发首次渲染。
+订阅全部 DSL 变化，同一事务通知一次，不包含执行结果或运行时实例。
 
 **定义**:
 
@@ -94,7 +95,7 @@ observeDeep(callback: ObserveDeepCallback): void
 
 ### unobserveDeep
 
-取消指定的图表 DSL 深层订阅，传入 observeDeep 时使用的同一回调。
+取消深层订阅，传入注册时的同一回调。
 
 **定义**:
 
@@ -153,9 +154,87 @@ getUUID(): string
 
 **返回**: `string`
 
+### getSchema
+
+发现当前数据连接的字段结构。
+
+**定义**:
+
+```typescript
+getSchema(): Promise<{ name: string; type: string; }[]>
+```
+
+**返回**: `Promise<{ name: string; type: string; }[]>`
+
+### build
+
+**定义**:
+
+```typescript
+build(): VBIChartDSL
+```
+
+**返回**: `VBIChartDSL`
+
+### buildVQuery
+
+**定义**:
+
+```typescript
+buildVQuery(): TQueryDSL
+```
+
+**返回**: `TQueryDSL`
+
+### queryProfile
+
+通过 Query DSL 统计当前查询结果，不写入协同状态或撤销历史。
+
+**定义**:
+
+```typescript
+queryProfile(options?: ProfileOptions): Promise<ProfileResult>
+```
+
+**返回**: `Promise<ProfileResult>`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `options?` = {} | ProfileOptions | - |
+
+### queryBins
+
+独立查询数值分箱；计数由数据源聚合，不读取明细记录。
+
+**定义**:
+
+```typescript
+queryBins(options?: BinsOptions): Promise<BinsResult>
+```
+
+**返回**: `Promise<BinsResult>`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `options?` = {} | BinsOptions | - |
+
+### isEmpty
+
+**定义**:
+
+```typescript
+isEmpty(): boolean
+```
+
+**返回**: `boolean`
+
 ### buildVSeed
 
-默认通过 query adapter 查询一次并构建 VSeed。自定义 seed adapter 保留原有上下文和取数方式。
+校验计算表达式后，默认通过 query adapter 查询一次并构建 VSeed；非法表达式抛错。自定义 seed adapter 保留原有上下文和取数方式。
 
 **定义**:
 
@@ -171,19 +250,9 @@ buildVSeed(options?: BuildVSeedOptions): Promise<TSeedDSL>
 | --- | --- | --- |
 | `options?` = {} | BuildVSeedOptions | - |
 
-### buildVQuery
-
-**定义**:
-
-```typescript
-buildVQuery(): TQueryDSL
-```
-
-**返回**: `TQueryDSL`
-
 ### query
 
-根据当前图表配置，通过 query adapter 执行并原样返回查询结果。默认查询保留维度和度量 ID，并将 signal 传给 Connector；独立调用不缓存结果。
+根据当前图表配置，取数前校验计算表达式，非法时抛错；通过 query adapter 执行并原样返回查询结果。默认查询保留维度和度量 ID，并将 signal 传给 Connector；独立调用不缓存结果。
 
 **定义**:
 
@@ -198,33 +267,3 @@ query(options?: QueryOptions): Promise<VBIQueryResult>
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `options?` = {} | QueryOptions | - |
-
-### build
-
-**定义**:
-
-```typescript
-build(): VBIChartDSL
-```
-
-**返回**: `VBIChartDSL`
-
-### isEmpty
-
-**定义**:
-
-```typescript
-isEmpty(): boolean
-```
-
-**返回**: `boolean`
-
-### getSchema
-
-**定义**:
-
-```typescript
-getSchema(): Promise<{ name: string; type: string; }[]>
-```
-
-**返回**: `Promise<{ name: string; type: string; }[]>`
