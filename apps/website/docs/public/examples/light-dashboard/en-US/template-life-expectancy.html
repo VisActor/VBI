@@ -803,10 +803,7 @@ window.DashboardData = {
     })
     return {
       replace(rawDataset) {
-        return run(async () => {
-          await query.updateDatasetSource(id, columns, { type: 'json', rawDataset })
-          await dataset.init()
-        })
+        return run(() => dataset.replaceSource(columns, { type: 'json', rawDataset }))
       },
       dispose() {
         if (closed) return pending
@@ -829,7 +826,6 @@ window.DashboardData = {
   },
   release(vbi, chart) {
     vbi.resources.chart.unregister(chart.getUUID())
-    chart.undoManager?.destroy()
     chart.doc.destroy()
   },
 }
@@ -979,38 +975,30 @@ window.DashboardTable = (() => {
       tokens.dispose()
     }
   }
-  function build(Builder, { dataset, dimensions, measures, totals = 'avg' }, host) {
+  function build(Builder, seed, host) {
     const tokens = readTokens(host)
     try {
       const spec = Builder.from({
         chartType: 'table',
-        dataset,
-        dimensions,
-        measures,
-        totals,
+        ...seed,
+        totals: seed.totals || 'avg',
+        widthMode: 'standard',
+        emptyCellText: '—',
         locale: "en-US",
         theme: 'light',
         bodyCellStyle: {
-          selector: { field: measures.map(({ id }) => id) },
+          selector: { field: seed.measures.map(({ id }) => id) },
           enableProgressBar: true,
           barPositiveColor: tokens.color('--table-bar-positive'),
           barNegativeColor: tokens.color('--table-bar-negative'),
+          ...seed.bodyCellStyle,
         },
       }).build()
       spec.columns = spec.columns.map((column) => {
-        const textAlign = measures.some(({ id }) => id === column.field) ? 'right' : 'left'
+        const textAlign = seed.measures.some(({ id }) => id === column.field) ? 'right' : 'left'
         const style = column.style
-        const aggregation = column.aggregation
         return {
           ...column,
-          ...(aggregation?.aggregationType !== 'NONE' && aggregation?.formatFun
-            ? {
-                aggregation: {
-                  ...aggregation,
-                  formatFun: (value, ...args) => (Number.isFinite(value) ? aggregation.formatFun(value, ...args) : '—'),
-                },
-              }
-            : {}),
           headerStyle: { ...column.headerStyle, textAlign },
           style: (datum) => ({ ...(typeof style === 'function' ? style(datum) : style), textAlign }),
         }
@@ -1029,44 +1017,32 @@ window.DashboardTable = (() => {
     summary = { type: 'avg', fields: columns.slice(1).map((_, i) => i + 1) },
   ) {
     const records = rows.map((values) => Object.fromEntries(values.map((value, index) => [`c${index}`, value ?? null])))
-    const fields = columns.map((alias, index) => ({ id: `c${index}`, alias, encoding: 'column' }))
+    const fields = columns.map((alias, index) => ({
+      id: `c${index}`,
+      alias,
+      encoding: 'column',
+      width: index === 0 ? 170 : Math.max(130, Math.min(210, alias.length * 12 + 24)),
+      format: formats[index] && { thousandSeparator: true, roundingMode: 'halfExpand', ...formats[index] },
+    }))
     const base = build(
       Builder,
       {
         dataset: records,
-        dimensions: fields.filter((_, index) => !summary.fields.includes(index)),
-        measures: fields.filter((_, index) => summary.fields.includes(index)),
+        dimensions: fields.slice(0, 1),
+        measures: fields.slice(1),
         totals: summary.type,
+        bodyCellStyle: { selector: { field: summary.fields.map((index) => `c${index}`) } },
       },
       host,
     )
-    base.columns = columns.map((title, index) => {
-      const column = base.columns.find((column) => column.field === `c${index}`)
-      const textAlign = index === 0 ? 'left' : 'right'
-      const style = column.style
-      return {
-        ...column,
-        headerIcon: filterIcon(),
-        fieldFormat: (record) =>
-          record[`c${index}`] == null
-            ? '—'
-            : formats[index]
-              ? formats[index](record[`c${index}`])
-              : record[`c${index}`],
-        ...(formats[index] && summary.fields.includes(index)
-          ? {
-              aggregation: {
-                ...column.aggregation,
-                formatFun: (value) => (Number.isFinite(value) ? formats[index](value) : '—'),
-              },
-            }
-          : {}),
-        width: index === 0 ? 170 : Math.max(130, Math.min(210, title.length * 12 + 24)),
-        headerStyle: { ...column.headerStyle, textAlign },
-        style: (datum) => ({ ...(typeof style === 'function' ? style(datum) : style), textAlign }),
-      }
-    })
-    base.widthMode = 'standard'
+    base.columns = base.columns.map((column, index) => ({
+      ...column,
+      headerIcon: filterIcon(),
+      ...(index && !formats[index] ? { fieldFormat: (record) => record[column.field] ?? '—' } : {}),
+      ...(index && !summary.fields.includes(index)
+        ? { aggregation: { aggregationType: 'NONE', formatFun: () => '' } }
+        : {}),
+    }))
     const resolved = options(base, host)
     const summaryRows = rows.length ? resolved.bottomFrozenRowCount : 0
     host.style.height = `${Math.min(
@@ -1706,7 +1682,17 @@ window.DashboardTable = (() => {
         const seed = Builder.from({
           chartType: 'table',
           dataset: records(currentRows),
-          dimensions: fields.map((field, i) => ({ id: field, alias: columns[i], encoding: 'column' })),
+          dimensions: fields.map((id, i) => ({
+            id,
+            alias: columns[i],
+            encoding: 'column',
+            width:
+              types[i] === 'number'
+                ? Math.max(164, Math.min(220, columns[i].length * 8 + 34))
+                : Math.max(230, Math.min(280, columns[i].length * 8 + 34)),
+          })),
+          widthMode: 'standard',
+          emptyCellText: '—',
           backgroundColor: 'transparent',
           animation: { enable: !reducedMotion() },
         }).build()
@@ -1741,15 +1727,9 @@ window.DashboardTable = (() => {
           if (chartSpec) chartSpec.padding = { top: 4, right: 4, bottom: 4, left: 4 }
           return {
             ...seed.columns.find((column) => column.field === field),
-            field,
-            title: columns[i],
-            width: numeric
-              ? Math.max(164, Math.min(220, columns[i].length * 8 + 34))
-              : Math.max(230, Math.min(280, columns[i].length * 8 + 34)),
             headerIcon: filterIcon(),
             headerStyle: { textAlign: numeric ? 'right' : 'left' },
             style: (args) => ({ padding: args.row === 1 ? 6 : [10, 12], textAlign: numeric ? 'right' : 'left' }),
-            fieldFormat: (record) => (record[field] == null ? '—' : record[field]),
             aggregation: {
               aggregationType: 'CUSTOM',
               aggregationFun: () => (numeric ? (info.total ? chartSpec.data.values : "No records") : info.text),
@@ -1798,7 +1778,6 @@ window.DashboardTable = (() => {
         })
         const resolved = options(seed, host)
         resolved.autoFillWidth = false
-        resolved.widthMode = 'standard'
         resolved.frozenRowCount = 2
         resolved.customComputeRowHeight = (args) => (args.row === 1 ? 86 : undefined)
         resolved.keyboardOptions = {
@@ -5339,6 +5318,12 @@ window.bindMetricAnalysis = function bindMetricAnalysis({
         : totalRow[relation.y.field] / (yAxis.scale || 1)
     const key = JSON.stringify([group[0], chartRows, xMean, yMean, reducedMotion.matches, accent])
     if (key !== analysisKey) {
+      const axis = (titleText) => ({
+        visible: true,
+        zero: true,
+        label: { labelColor: labelColor || '#64717e', labelFontSize: 11 },
+        title: { visible: !!titleText, titleText, titleColor: labelColor || '#64717e', titleFontSize: 11 },
+      })
       const meanLine = {
         textPosition: 'insideEnd',
         textColor: labelColor || '#64717e',
@@ -5387,8 +5372,8 @@ window.bindMetricAnalysis = function bindMetricAnalysis({
           labelOverlap: true,
         },
         tooltip: { enable: true },
-        xAxis: { visible: true, zero: true },
-        yAxis: { visible: true, zero: true },
+        xAxis: axis(relation?.x.label),
+        yAxis: axis(relation?.y.label),
         size: matrix ? 10 : relation.size || 6,
         annotationHorizontalLine: Number.isFinite(yMean)
           ? {
@@ -5415,20 +5400,7 @@ window.bindMetricAnalysis = function bindMetricAnalysis({
         analysisSpec.tooltip.mark.content = analysisSpec.tooltip.mark.content.filter(
           (item) => item.key !== analysis.label,
         )
-      analysisSpec.animation = !reducedMotion.matches
       analysisSpec.padding = { top: 16, right: 22, bottom: 10, left: 6 }
-      for (const axis of analysisSpec.axes || []) {
-        axis.label = {
-          ...axis.label,
-          style: { ...axis.label?.style, fill: labelColor || '#64717e', fontSize: 11 },
-        }
-        if (!matrix)
-          axis.title = {
-            visible: true,
-            text: axis.orient === 'bottom' ? relation.x.label : relation.y.label,
-            style: { fill: labelColor || '#64717e', fontSize: 11 },
-          }
-      }
       analysisKey = key
     }
     const mark = matrix ? 'cell' : 'point'
@@ -5476,7 +5448,6 @@ window.bindMetricAnalysis = function bindMetricAnalysis({
     }
     const spec = { ...analysisSpec }
     spec.padding = { top: 12, right: 20, bottom: 10, left: 4 }
-    spec.stackCornerRadius = 0
     const mark = group[2] ? 'point' : 'bar'
     const opacity = (datum) => (selected === undefined || String(datum.key) === selected ? 1 : 0.24)
     spec[mark] = {
@@ -5493,11 +5464,18 @@ window.bindMetricAnalysis = function bindMetricAnalysis({
     return spec
   }
   function buildTableOptions(detailDimensions, detailMeasures, records) {
-    const dimensions = detailDimensions.map(([id, alias]) => ({ id, alias, encoding: 'column' }))
-    const measures = detailMeasures.map(([id, alias]) => ({
+    const field = ([id, alias]) => ({
       id,
       alias,
       encoding: 'column',
+      width: Math.max(
+        { country: 156, year: 72, id: 96, order_id: 110, order_date: 128, date: 128 }[id] || 96,
+        Math.min(220, alias.length * 11 + 44),
+      ),
+    })
+    const dimensions = detailDimensions.map(field)
+    const measures = detailMeasures.map(([id, alias]) => ({
+      ...field([id, alias]),
       format: { type: 'number', fractionDigits: 3 },
     }))
     const options = DashboardTable.build(
@@ -5510,14 +5488,6 @@ window.bindMetricAnalysis = function bindMetricAnalysis({
       },
       nodes.table,
     )
-    options.widthMode = 'standard'
-    options.columns = options.columns.map((column) => ({
-      ...column,
-      width: Math.max(
-        { country: 156, year: 72, id: 96, order_id: 110, order_date: 128, date: 128 }[column.field] || 96,
-        Math.min(220, String(column.title || '').length * 11 + 44),
-      ),
-    }))
     options.tooltip = { ...options.tooltip, parentElement: dialog, confine: true }
     options.defaultColWidth = 130
     return DashboardTable.options(options, nodes.table)
@@ -6378,12 +6348,7 @@ let overviewTable, overviewObserver, metricAnalysis, tableView, detailTable
 const preparedRows = prepareRows(sourceData)
 function renderTable(rows, totalCount) {
   const host = $('#overview-table')
-  const options = DashboardTable.overview(Builder, PAGE.columns, rows, host, [
-    undefined,
-    formatNumber,
-    formatNumber,
-    (value) => formatNumber(value, 0),
-  ])
+  const options = DashboardTable.overview(Builder, PAGE.columns, rows, host, [undefined, { fractionDigits: 1 }, { fractionDigits: 1 }, { fractionDigits: 0 }])
   host.dataset.empty = String(!rows.length)
   host.dataset.recordCount = String(totalCount)
   $('#overview-count').textContent =
@@ -6457,6 +6422,7 @@ function buildSpec(definition) {
     label: {
       enable: main && categorical,
       labelPosition: 'outside',
+      labelAnimation: false,
       labelColor: '#59636f',
       labelColorSmartInvert: false,
       labelStroke: false,
@@ -6490,9 +6456,7 @@ function buildSpec(definition) {
           bottom: main && categorical ? 4 : 0,
           left: main && categorical ? 0 : 3,
         }
-  // 图形与指标保留更新动画；标签直接显示真实读数，避免 resize 时从虚构的 0 计数。
-  if (main && categorical) spec.label = { ...spec.label, animation: false }
-  if (colorByValue) spec.stackCornerRadius = 0
+
   return spec
 }
 async function drawPlot(definition) {
@@ -6768,9 +6732,9 @@ try {
   if (!window.VChart?.default) throw new Error("VChart Module could not be loaded, Check your connection and refresh")
   VChart = window.VChart.default
   const [{ createVBI }, { VQuery }, vseed] = await Promise.all([
-    import('https://cdn.jsdelivr.net/npm/@visactor/vbi@0.7.2/+esm'),
-    import('https://cdn.jsdelivr.net/npm/@visactor/vquery@0.7.2/dist/browser/esm/browser.js/+esm'),
-    import('https://cdn.jsdelivr.net/npm/@visactor/vseed@0.7.2/+esm'),
+    import('https://cdn.jsdelivr.net/npm/@visactor/vbi@0.7.3/+esm'),
+    import('https://cdn.jsdelivr.net/npm/@visactor/vquery@0.7.3/dist/browser/esm/browser.js/+esm'),
+    import('https://cdn.jsdelivr.net/npm/@visactor/vseed@0.7.3/+esm'),
     DashboardTable.load(),
   ])
   Builder = vseed.Builder

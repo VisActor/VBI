@@ -1,6 +1,6 @@
 # @visactor/vbi API
 
-适用版本：`0.7.2`。
+适用版本：`0.7.3`。
 包含 TypeScript 公开导出、接口声明与使用说明；实现代码、private / protected 成员不属于此 API。
 
 ## 分类

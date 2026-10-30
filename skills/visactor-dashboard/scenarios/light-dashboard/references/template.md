@@ -52,7 +52,7 @@
 
 修改相关图形或升级依赖时核对：
 
-- 模板固定 VBI / VQuery / VSeed 0.7.2、VChart 2.1.7、VTable 1.23.1；API 参考对应当前仓库，升级需核对目标版本和最终 Spec、画面。
+- 模板固定 VBI / VQuery / VSeed 0.7.3、VChart 2.1.7、VTable 1.23.1；API 参考对应当前仓库，升级需核对目标版本和最终 Spec、画面。
 - 热力图数值度量编码到 `label`，同值以颜色度量编码到 `color`，关闭重复值标签；分析图 tooltip 挂在 `dialog` 内。散点、矩阵与条形之间不做跨图元形变。
-- 固定版本柱图生成 Spec 后设置 `spec.stackCornerRadius = 0`，单柱圆角保留 `barRadius`；升级时复核。日期 crosshair 格式化函数保持稳定引用。
+- 单柱圆角通过 `barStyle.barRadius` 配置；标签动画、智能反色与描边使用 `label` 配置。日期 crosshair 格式化函数保持稳定引用。
 - 经营概览销售主图和增长迷你图复用 seed，各自绑定实例；利润柱展示完整区间，客户类型环图关闭图例筛选，保持中心占比与扇区同口径。

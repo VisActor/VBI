@@ -18260,7 +18260,7 @@
        * Raw VBI/VQuery/VSeed ESM contains bare imports; use a rewritten dependency graph.
        */
       const DashboardResources = (() => {
-        const versions = Object.freeze({ vchart: '2.1.7', vtable: '1.23.1', vbi: '0.7.2', three: '0.170.0' })
+        const versions = Object.freeze({ vchart: '2.1.7', vtable: '1.23.1', vbi: '0.7.3', three: '0.170.0' })
         const resourceSources = {
           probes: [
             ['aliyun-npmmirror', `https://registry.npmmirror.com/three/${versions.three}`],
@@ -18549,6 +18549,7 @@
         return { detectNetwork, ensureCore, modules, threeModules, profile, dispose }
       })()
     </script>
+    <!-- prettier-ignore -->
     <script id="dashboard-data-runtime">
       // VBI owns query semantics; each VQuery dataset has one ordered connection lifetime.
       window.DashboardData = {
@@ -18577,10 +18578,7 @@
           })
           return {
             replace(rawDataset) {
-              return run(async () => {
-                await query.updateDatasetSource(id, columns, { type: 'json', rawDataset })
-                await dataset.init()
-              })
+              return run(() => dataset.replaceSource(columns, { type: 'json', rawDataset }))
             },
             dispose() {
               if (closed) return pending
@@ -18603,11 +18601,11 @@
         },
         release(vbi, chart) {
           vbi.resources.chart.unregister(chart.getUUID())
-          chart.undoManager?.destroy()
           chart.doc.destroy()
         },
       }
     </script>
+    <!-- prettier-ignore -->
     <script id="dashboard-table-runtime">
       /* CSS is the palette authority; this adapter resolves its tokens for Canvas. */
       window.DashboardTable = (() => {
@@ -18752,39 +18750,30 @@
             tokens.dispose()
           }
         }
-        function build(Builder, { dataset, dimensions, measures, totals = 'avg' }, host) {
+        function build(Builder, seed, host) {
           const tokens = readTokens(host)
           try {
             const spec = Builder.from({
               chartType: 'table',
-              dataset,
-              dimensions,
-              measures,
-              totals,
+              ...seed,
+              totals: seed.totals || 'avg',
+              widthMode: 'standard',
+              emptyCellText: '—',
               locale: 'zh-CN',
               theme: 'light',
               bodyCellStyle: {
-                selector: { field: measures.map(({ id }) => id) },
+                selector: { field: seed.measures.map(({ id }) => id) },
                 enableProgressBar: true,
                 barPositiveColor: tokens.color('--table-bar-positive'),
                 barNegativeColor: tokens.color('--table-bar-negative'),
+                ...seed.bodyCellStyle,
               },
             }).build()
             spec.columns = spec.columns.map((column) => {
-              const textAlign = measures.some(({ id }) => id === column.field) ? 'right' : 'left'
+              const textAlign = seed.measures.some(({ id }) => id === column.field) ? 'right' : 'left'
               const style = column.style
-              const aggregation = column.aggregation
               return {
                 ...column,
-                ...(aggregation?.aggregationType !== 'NONE' && aggregation?.formatFun
-                  ? {
-                      aggregation: {
-                        ...aggregation,
-                        formatFun: (value, ...args) =>
-                          Number.isFinite(value) ? aggregation.formatFun(value, ...args) : '—',
-                      },
-                    }
-                  : {}),
                 headerStyle: { ...column.headerStyle, textAlign },
                 style: (datum) => ({ ...(typeof style === 'function' ? style(datum) : style), textAlign }),
               }
@@ -18802,47 +18791,33 @@
           formats = [],
           summary = { type: 'avg', fields: columns.slice(1).map((_, i) => i + 1) },
         ) {
-          const records = rows.map((values) =>
-            Object.fromEntries(values.map((value, index) => [`c${index}`, value ?? null])),
-          )
-          const fields = columns.map((alias, index) => ({ id: `c${index}`, alias, encoding: 'column' }))
+          const records = rows.map((values) => Object.fromEntries(values.map((value, index) => [`c${index}`, value ?? null])))
+          const fields = columns.map((alias, index) => ({
+            id: `c${index}`,
+            alias,
+            encoding: 'column',
+            width: index === 0 ? 170 : Math.max(130, Math.min(210, alias.length * 12 + 24)),
+            format: formats[index] && { thousandSeparator: true, roundingMode: 'halfExpand', ...formats[index] },
+          }))
           const base = build(
             Builder,
             {
               dataset: records,
-              dimensions: fields.filter((_, index) => !summary.fields.includes(index)),
-              measures: fields.filter((_, index) => summary.fields.includes(index)),
+              dimensions: fields.slice(0, 1),
+              measures: fields.slice(1),
               totals: summary.type,
+              bodyCellStyle: { selector: { field: summary.fields.map((index) => `c${index}`) } },
             },
             host,
           )
-          base.columns = columns.map((title, index) => {
-            const column = base.columns.find((column) => column.field === `c${index}`)
-            const textAlign = index === 0 ? 'left' : 'right'
-            const style = column.style
-            return {
-              ...column,
-              headerIcon: filterIcon(),
-              fieldFormat: (record) =>
-                record[`c${index}`] == null
-                  ? '—'
-                  : formats[index]
-                    ? formats[index](record[`c${index}`])
-                    : record[`c${index}`],
-              ...(formats[index] && summary.fields.includes(index)
-                ? {
-                    aggregation: {
-                      ...column.aggregation,
-                      formatFun: (value) => (Number.isFinite(value) ? formats[index](value) : '—'),
-                    },
-                  }
-                : {}),
-              width: index === 0 ? 170 : Math.max(130, Math.min(210, title.length * 12 + 24)),
-              headerStyle: { ...column.headerStyle, textAlign },
-              style: (datum) => ({ ...(typeof style === 'function' ? style(datum) : style), textAlign }),
-            }
-          })
-          base.widthMode = 'standard'
+          base.columns = base.columns.map((column, index) => ({
+            ...column,
+            headerIcon: filterIcon(),
+            ...(index && !formats[index] ? { fieldFormat: (record) => record[column.field] ?? '—' } : {}),
+            ...(index && !summary.fields.includes(index)
+              ? { aggregation: { aggregationType: 'NONE', formatFun: () => '' } }
+              : {}),
+          }))
           const resolved = options(base, host)
           const summaryRows = rows.length ? resolved.bottomFrozenRowCount : 0
           host.style.height = `${Math.min(
@@ -18857,8 +18832,7 @@
             next.columns.map((column) => ({
               ...column,
               // Column-query icons belong to the view, not regenerated VSeed options.
-              headerIcon:
-                table.options.columns.find(({ field }) => field === column.field)?.headerIcon || column.headerIcon,
+              headerIcon: table.options.columns.find(({ field }) => field === column.field)?.headerIcon || column.headerIcon,
             })),
             { clearColWidthCache: false, clearRowHeightCache: false },
           )
@@ -18955,9 +18929,7 @@
             <p class="dashboard-table-feedback" data-dt="feedback" role="status"></p>
             <footer class="dashboard-table-actions"><button type="button" class="ui-button" data-dt="reset">清除全部筛选</button><button type="button" class="ui-button" data-dt="apply">筛选</button></footer>`
           ;(host.closest('dialog') || document.body).append(panel)
-          const nodes = Object.fromEntries(
-            [...panel.querySelectorAll('[data-dt]')].map((node) => [node.dataset.dt, node]),
-          )
+          const nodes = Object.fromEntries([...panel.querySelectorAll('[data-dt]')].map((node) => [node.dataset.dt, node]))
           const picker = panel.querySelector('details')
           const operatorList = picker.querySelector('[data-control-options]')
           const unmount = DashboardFilters.mount(panel)
@@ -18978,10 +18950,7 @@
           }
           function headers() {
             const dimensions = builder.build().dimensions
-            const state = JSON.stringify([
-              builder.whereFilter.toJSON(),
-              dimensions.map(({ field, sort }) => [field, sort]),
-            ])
+            const state = JSON.stringify([builder.whereFilter.toJSON(), dimensions.map(({ field, sort }) => [field, sort])])
             if (!table || state === iconState) return
             iconState = state
             table.updateColumns(
@@ -19134,10 +19103,7 @@
               button.hidden = button.dataset.sort === 'normal' && !sort
               if (button.dataset.sort === 'normal') button.removeAttribute('aria-pressed')
               else
-                button.setAttribute(
-                  'aria-pressed',
-                  String(sort?.field === field && sort.sort.order === button.dataset.sort),
-                )
+                button.setAttribute('aria-pressed', String(sort?.field === field && sort.sort.order === button.dataset.sort))
             })
             if (!panel.matches(':popover-open')) panel.showPopover()
             position()
@@ -19164,9 +19130,7 @@
               () =>
                 void submit(() => {
                   builder.doc.transact(() => {
-                    builder
-                      .build()
-                      .dimensions.forEach((dim) => builder.dimensions.update(dim.id, (node) => node.clearSort()))
+                    builder.build().dimensions.forEach((dim) => builder.dimensions.update(dim.id, (node) => node.clearSort()))
                     if (button.dataset.sort !== 'normal' && button.getAttribute('aria-pressed') !== 'true') {
                       const dim = builder.build().dimensions.find((item) => item.field === activeField)
                       builder.dimensions.update(dim.id, (node) => node.setSort({ order: button.dataset.sort }))
@@ -19180,9 +19144,7 @@
           )
           const clear = (field) => predicates(field).forEach((condition) => builder.whereFilter.remove(condition.id))
           nodes.clear.addEventListener('click', () => void submit(() => clear(activeField), nodes.clear), { signal })
-          nodes.reset.addEventListener('click', () => void submit(() => builder.whereFilter.clear(), nodes.reset), {
-            signal,
-          })
+          nodes.reset.addEventListener('click', () => void submit(() => builder.whereFilter.clear(), nodes.reset), { signal })
           nodes.apply.addEventListener(
             'click',
             () => {
@@ -19209,8 +19171,7 @@
                 () =>
                   builder.doc.transact(() => {
                     clear(activeField)
-                    const add = (group, op, value) =>
-                      group.add(activeField, (node) => node.setOperator(op).setValue(value))
+                    const add = (group, op, value) => group.add(activeField, (node) => node.setOperator(op).setValue(value))
                     if (inputs === 0) add(builder.whereFilter, option.op)
                     else if (inputs === 2)
                       add(builder.whereFilter, option.op, {
@@ -19335,10 +19296,7 @@
             const value = rows.find((row) => row[i] != null)?.[i]
             return typeof value === 'number' ? 'number' : 'string'
           })
-          const schema = [
-            ...fields.map((name, i) => ({ name, type: types[i] })),
-            { name: '__row_order', type: 'number' },
-          ]
+          const schema = [...fields.map((name, i) => ({ name, type: types[i] })), { name: '__row_order', type: 'number' }]
           const records = (values) =>
             values.map((row, index) =>
               Object.fromEntries([...fields.map((field, i) => [field, row[i] ?? null]), ['__row_order', index]]),
@@ -19499,7 +19457,17 @@
               const seed = Builder.from({
                 chartType: 'table',
                 dataset: records(currentRows),
-                dimensions: fields.map((field, i) => ({ id: field, alias: columns[i], encoding: 'column' })),
+                dimensions: fields.map((id, i) => ({
+                  id,
+                  alias: columns[i],
+                  encoding: 'column',
+                  width:
+                    types[i] === 'number'
+                      ? Math.max(164, Math.min(220, columns[i].length * 8 + 34))
+                      : Math.max(230, Math.min(280, columns[i].length * 8 + 34)),
+                })),
+                widthMode: 'standard',
+                emptyCellText: '—',
                 backgroundColor: 'transparent',
                 animation: { enable: !reducedMotion() },
               }).build()
@@ -19516,12 +19484,7 @@
                           { id: 'kind', alias: '数据状态', encoding: 'color' },
                         ],
                         measures: [
-                          {
-                            id: 'count',
-                            alias: '记录数',
-                            encoding: 'yAxis',
-                            format: { type: 'number', fractionDigits: 0 },
-                          },
+                          { id: 'count', alias: '记录数', encoding: 'yAxis', format: { type: 'number', fractionDigits: 0 } },
                         ],
                         color: {
                           colorScheme: info.bins.some((bin) => bin.kind === '有效值') ? [accent, missing] : [missing],
@@ -19539,15 +19502,9 @@
                 if (chartSpec) chartSpec.padding = { top: 4, right: 4, bottom: 4, left: 4 }
                 return {
                   ...seed.columns.find((column) => column.field === field),
-                  field,
-                  title: columns[i],
-                  width: numeric
-                    ? Math.max(164, Math.min(220, columns[i].length * 8 + 34))
-                    : Math.max(230, Math.min(280, columns[i].length * 8 + 34)),
                   headerIcon: filterIcon(),
                   headerStyle: { textAlign: numeric ? 'right' : 'left' },
                   style: (args) => ({ padding: args.row === 1 ? 6 : [10, 12], textAlign: numeric ? 'right' : 'left' }),
-                  fieldFormat: (record) => (record[field] == null ? '—' : record[field]),
                   aggregation: {
                     aggregationType: 'CUSTOM',
                     aggregationFun: () => (numeric ? (info.total ? chartSpec.data.values : '暂无记录') : info.text),
@@ -19596,14 +19553,12 @@
               })
               const resolved = options(seed, host)
               resolved.autoFillWidth = false
-              resolved.widthMode = 'standard'
               resolved.frozenRowCount = 2
               resolved.customComputeRowHeight = (args) => (args.row === 1 ? 86 : undefined)
               resolved.keyboardOptions = {
                 ...resolved.keyboardOptions,
                 getCopyCellValue: {
-                  value: (col, row) =>
-                    row === 1 ? profiles[col].text.replace(/\n/g, '；') : table.getCellValue(col, row),
+                  value: (col, row) => (row === 1 ? profiles[col].text.replace(/\n/g, '；') : table.getCellValue(col, row)),
                 },
               }
               resolved.tooltip = { isShowOverflowTextTooltip: true, parentElement: document.body }

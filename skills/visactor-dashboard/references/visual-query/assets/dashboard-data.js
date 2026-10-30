@@ -25,10 +25,7 @@ window.DashboardData = {
     })
     return {
       replace(rawDataset) {
-        return run(async () => {
-          await query.updateDatasetSource(id, columns, { type: 'json', rawDataset })
-          await dataset.init()
-        })
+        return run(() => dataset.replaceSource(columns, { type: 'json', rawDataset }))
       },
       dispose() {
         if (closed) return pending
@@ -51,7 +48,6 @@ window.DashboardData = {
   },
   release(vbi, chart) {
     vbi.resources.chart.unregister(chart.getUUID())
-    chart.undoManager?.destroy()
     chart.doc.destroy()
   },
 }
