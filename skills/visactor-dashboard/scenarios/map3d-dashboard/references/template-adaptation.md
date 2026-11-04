@@ -28,11 +28,11 @@
 
 ## 问题、方法与交互
 
-按[分析与决策](../../../references/data-analysis/guide.md)及[空间分析](../../../references/data-analysis/map.md)确定比较或检验，再扩展查询、图型与摘要。`metricDefs` 和默认分组图提供业务接入示例；改一段 `finding` 文字不能替代新增证据，现有模板不代表已实现全部诊断方法。
+按[分析与决策](../../../references/data-analysis-guide.md)及[空间分析](../../../references/data-analysis-map.md)确定比较或检验，再扩展查询、图型与摘要。`metricDefs` 和默认分组图提供业务接入示例；改一段 `finding` 文字不能替代新增证据，现有模板不代表已实现全部诊断方法。
 
 分析捕获入口国家和指标固有条件，如 AQI>100 的风险子集。样本门槛与 Top N 只限制对应展示，全部分组和完整证据仍可达；敏感性比较须保留原始基准。来源分类与数值分箱不混用，分位与样本量按完整范围计算。
 
-`requestMain`／`requestModal` 保留版本保护；关闭、重开或切换后，旧查询和退场回调不能覆盖新状态。图表与表格原位更新，完整记录不因分片映射被截断；临时 Builder、图表和等待任务按[组合指南](../../../references/visual-query/references/composition.md)释放。分析关闭保留主屏实例、国家、视角与入口焦点。
+`requestMain`／`requestModal` 保留版本保护；关闭、重开或切换后，旧查询和退场回调不能覆盖新状态。图表与表格原位更新，完整记录不因分片映射被截断；临时 Builder、图表和等待任务按[组合指南](../../../references/visual-query-composition.md)释放。分析关闭保留主屏实例、国家、视角与入口焦点。
 
 ## 初始化与降级
 
@@ -49,7 +49,7 @@
 - 统一暂停时钟覆盖后台、离屏、弹窗、手动暂停与减少动态，不累积恢复跳变，不增加第二条连续 RAF。样式变化不应重建 renderer 或重复上传地表。
 - 销毁先标记过期并取消请求、等待、观察与动画，再释放 controls、几何、材质、纹理、缓存、renderer、图表、Builder、连接器和数据集。异步每次返回或让步后检查状态，释放尚未赋给公开 globe 的临时资源。
 
-图表和表格按[HTML 接入](../../../references/visual-query/references/html-integration.md)及[公共表格适配](../../../references/visual-query/references/table-theme.md)维护；公共资源复制为内联内容，交付仍为单 HTML。
+图表和表格按[HTML 接入](../../../references/visual-query-html-integration.md)及[公共表格适配](../../../references/visual-query-table-theme.md)维护；公共资源复制为内联内容，交付仍为单 HTML。
 
 ## AQI 分布诊断示例
 

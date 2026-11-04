@@ -61,4 +61,4 @@
 - [ ] **33. 异常与重入**：弹窗内慢请求、快速切换、空结果、失败重试及加载中关闭重开均正确，旧响应不覆盖新指标，不遗留转圈或菜单。
 - [ ] **34. 关闭与源页面恢复**：关闭按钮、Escape 及声明的外部关闭方式有效，内部浮层不误关分析；键盘和触屏可完成全链路，返回保留主页条件与视野并归还焦点。
 
-规范参考：[分析验收](../../../references/data-analysis/guide.md#验收)、[空间分析验收](../../../references/data-analysis/map.md#空间分析验收)、[模板适配](template-adaptation.md)、[地图接入](open-street-map.md)、[布局](layout.md)、[外观契约](L-card.md)、[深度分析交互](../../../references/deep-analysis/interaction.md)。
+规范参考：[分析验收](../../../references/data-analysis-guide.md#验收)、[空间分析验收](../../../references/data-analysis-map.md#空间分析验收)、[模板适配](template-adaptation.md)、[地图接入](open-street-map.md)、[布局](layout.md)、[外观契约](L-card.md)、[深度分析交互](../../../references/deep-analysis-interaction.md)。

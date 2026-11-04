@@ -18,6 +18,6 @@ description: 创建支持业务判断与进一步分析的小而美的 Dashboard
 | [data-analysis](references/data-analysis.md) | 分析选型、计算口径、证据与 Insight 内容。  | 设计或调整指标、分析方法与结论。                                 |
 | [deep-analysis](references/deep-analysis.md) | 分析入口、上下文、局部探索与明细返回。     | 接入或修改主动探索；普通 hover、样式调整和单纯表格展示无需读取。 |
 
-查询、渲染与联动按需读 [visual-query](../../references/visual-query/guide.md)，数据源接入按需读 [server-runtime](../../references/server-runtime/guide.md)。
+数据接入、查询、分析方法与 API 按[通用模块](../../SKILL.md#通用模块)选读。
 
 按[验收标准](references/acceptance.md)验证本次受影响部分，交付说明实际验证结果与限制。

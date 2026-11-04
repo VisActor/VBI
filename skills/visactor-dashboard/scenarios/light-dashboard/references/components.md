@@ -6,16 +6,16 @@
 
 ## 组件边界与维护源
 
-| 职责                      | 结构与公开入口                                                                                                                            | 维护源                                                                   |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| 阅读面、布局与基础控件    | `.ui-surface`、`.ui-button`、`.ui-button--filled`、`.ui-icon`、`.ui-input`、`.dashboard`、`.ui-disclosure`。                              | [components.css](../assets/components.css)                               |
-| 结构、排印、等待与清理    | `DashboardUI.createAnalysisDialog()` / `createLoading()`、`applyTypography()`、`scope()`、`activity()`、`paint()`、`delay()`、`yield()`。 | [core.js](../assets/core.js)                                             |
-| 平铺、Selector 与图标控件 | `DashboardFilters.mount()`、`sync()`、`close()`、`trigger()`。                                                                            | [components.js](../assets/components.js)                                 |
-| 排印动效与卡片倾斜        | `DashboardMotion({ reducedMotion })` 返回动效控制器，可选传入 `metricUnit`。                                                              | [components.js](../assets/components.js)                                 |
-| 首次加载、刷新与失败恢复  | `DashboardLoading.setTrigger()`、`refresh()`、`paint()`、`reveal()`、`fail()`。                                                           | [components.js](../assets/components.js)                                 |
-| 外观设置与本地偏好        | `DashboardAppearance.mount()`、`getState()`、`storageKey`。                                                                               | [appearance.js](../assets/appearance.js)                                 |
-| 分析结果与 Modal 控制器   | `DashboardAnalysis()`、`bindMetricAnalysis()`；结构工厂只创建 UI。                                                                        | [analysis.js](../assets/analysis.js)                                     |
-| 表格与列菜单              | `DashboardTable.build()`、`update()`、`createView()`、`createDetails()`。                                                                 | [表格适配器](../../../references/visual-query/references/table-theme.md) |
+| 职责                      | 结构与公开入口                                                                                                                            | 维护源                                                        |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| 阅读面、布局与基础控件    | `.ui-surface`、`.ui-button`、`.ui-button--filled`、`.ui-icon`、`.ui-input`、`.dashboard`、`.ui-disclosure`。                              | [components.css](../assets/components.css)                    |
+| 结构、排印、等待与清理    | `DashboardUI.createAnalysisDialog()` / `createLoading()`、`applyTypography()`、`scope()`、`activity()`、`paint()`、`delay()`、`yield()`。 | [core.js](../assets/core.js)                                  |
+| 平铺、Selector 与图标控件 | `DashboardFilters.mount()`、`sync()`、`close()`、`trigger()`。                                                                            | [components.js](../assets/components.js)                      |
+| 排印动效与卡片倾斜        | `DashboardMotion({ reducedMotion })` 返回动效控制器，可选传入 `metricUnit`。                                                              | [components.js](../assets/components.js)                      |
+| 首次加载、刷新与失败恢复  | `DashboardLoading.setTrigger()`、`refresh()`、`paint()`、`reveal()`、`fail()`。                                                           | [components.js](../assets/components.js)                      |
+| 外观设置与本地偏好        | `DashboardAppearance.mount()`、`getState()`、`storageKey`。                                                                               | [appearance.js](../assets/appearance.js)                      |
+| 分析结果与 Modal 控制器   | `DashboardAnalysis()`、`bindMetricAnalysis()`；结构工厂只创建 UI。                                                                        | [analysis.js](../assets/analysis.js)                          |
+| 表格与列菜单              | `DashboardTable.build()`、`update()`、`createView()`、`createDetails()`。                                                                 | [表格适配器](../../../references/visual-query-table-theme.md) |
 
 `df-`、`ma-`、`da-` 分别是筛选、分析和外观组件的内部结构，业务层保留其 DOM 与状态管理。按角色类与 token 调整界面，不用具体业务 ID 编写逐卡控件样式。
 
@@ -49,7 +49,7 @@
 - 搜索仅过滤候选，完整选项少于 4 项时隐藏搜索框；确认后收起并返回焦点，输入法组合期间不提交。键盘、Escape 层级、外部关闭与浮层定位由组件统一处理。
 - 保留白色选中面、主题色菜单 hover、柔和内阴影和可中断的按压回弹；平铺选中面增加轻柔外投影，箭头固定向下。`data-menu-min-width` / `data-menu-align="start"` 可调整局部菜单，默认最小宽度 280px、右对齐，宽度受视口约束。
 
-控件只管理瞬时交互；确认选择后由宿主更新 Builder 条件和刷新，搜索不取数。条件归属见[组合与联动](../../../references/visual-query/references/composition.md)。
+控件只管理瞬时交互；确认选择后由宿主更新 Builder 条件和刷新，搜索不取数。条件归属见[组合与联动](../../../references/visual-query-composition.md)。
 
 ## 指标卡与图形
 
@@ -73,7 +73,7 @@
 
 `.ui-disclosure` / `.ma-definition` 提供可展开容器，保留折叠状态，内容自然撑高，宽表仅在自身容器滚动。Modal 的结构由 `DashboardUI.createAnalysisDialog()` 生成，业务接入走 `bindMetricAnalysis()`，具体配置见 [deep-analysis](deep-analysis.md)，不重复实现弹窗和控件。
 
-主页、原始记录及 Modal 表格统一使用 `DashboardTable`；表头 `--table-header` 为浅主题色玻璃底、深色文字，换色同步 Canvas。列菜单宽 264px、桌面控件高 28px、触屏高 36px；列查询、总计、复制与更新 API 按[表格适配器](../../../references/visual-query/references/table-theme.md)接入。
+主页、原始记录及 Modal 表格统一使用 `DashboardTable`；表头 `--table-header` 为浅主题色玻璃底、深色文字，换色同步 Canvas。列菜单宽 264px、桌面控件高 28px、触屏高 36px；列查询、总计、复制与更新 API 按[表格适配器](../../../references/visual-query-table-theme.md)接入。
 
 ## 外观设置
 

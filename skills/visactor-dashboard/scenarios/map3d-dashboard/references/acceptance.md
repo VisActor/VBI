@@ -65,4 +65,4 @@
 - [ ] **37. 关闭与操作可达**：关闭按钮、Escape 及声明的外部关闭方式有效，内部浮层优先处理；窄屏、触屏和键盘可完成选择、明细及返回，焦点不困住。
 - [ ] **38. 返回源页面**：普通关闭保留主屏国家、视野、读数和已有实例并归还入口焦点；显式应用后按已确认的新国家返回，不重建主页。
 
-规范参考：[分析验收](../../../references/data-analysis/guide.md#验收)、[空间分析验收](../../../references/data-analysis/map.md#空间分析验收)、[数据基线](map-and-data.md#可复算基线)、[设计契约](design.md)、[模板适配](template-adaptation.md)、[资源加载](resource-loading.md)、[深度分析交互](../../../references/deep-analysis/interaction.md)。
+规范参考：[分析验收](../../../references/data-analysis-guide.md#验收)、[空间分析验收](../../../references/data-analysis-map.md#空间分析验收)、[数据基线](map-and-data.md#可复算基线)、[设计契约](design.md)、[模板适配](template-adaptation.md)、[资源加载](resource-loading.md)、[深度分析交互](../../../references/deep-analysis-interaction.md)。

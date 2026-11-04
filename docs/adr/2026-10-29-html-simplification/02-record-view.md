@@ -9,7 +9,7 @@ VBI 当前按维度生成 GROUP BY，缺少明确的明细表语义。将查询�
 ## 收益计算
 
 - 原方案计入的 **272 行 / 11,372 B** 含连接、替换和释放流程，本案继续保留这些流程，原净省 **4.7–7.2 KB** 的估算作废。
-- [表格适配器](../../../skills/visactor-dashboard/references/visual-query/assets/dashboard-table.js) 的两个明细 Builder 可分别声明 detail；按每处一行，四份源 HTML 新增 `2 × 4 = 8 行`，约 **0.3 KB**。
+- [表格适配器](../../../skills/visactor-dashboard/assets/visual-query-dashboard-table.js) 的两个明细 Builder 可分别声明 detail；按每处一行，四份源 HTML 新增 `2 × 4 = 8 行`，约 **0.3 KB**。
 - `__row_order` 还用于默认排序和概况计数，不能据此整段删除。当前 HTML 净减少先按 **接近 0 KB** 评估，迁移后再实测；主要收益是查询语义完整和可恢复。
 - 口径：UTF-8 源码含空行/注释，只计四份源 HTML，不含库实现；不与其他 ADR 累加。
 

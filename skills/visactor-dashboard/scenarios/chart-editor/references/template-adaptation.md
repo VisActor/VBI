@@ -15,13 +15,13 @@
 
 查询通过 `builder.observeDeep` 订阅图表 DSL 的深层变化，字段、聚合、筛选、数据源配置与撤销重做变化后自动重新查询；绑定后显式触发首次查询，替换 Builder 或退出时用同一回调 `unobserveDeep`。同一事务通知一次，连续操作只提交最新请求，旧请求不得覆盖结果、缓存或提前结束 loading。
 
-查询由本地连接器 → VQuery 执行 → `builder.buildVSeed()` → VSeed Builder → VChart / VTable。渲染前不另写 JS 聚合、不本地 slice 冒充 limit、不从 DOM 反推领域状态。业务条件需要保存时直接写入完整 DSL。演示连接器 ID `localDataConnector` 已注册；动态源按公共接入能力适配。
+查询由 `builder.buildVSeed()` 调用本地连接器 → VQuery 执行并返回 dataset，随后由 VSeed Builder 构建 Spec → VChart / VTable 渲染。渲染前不另写 JS 聚合、不本地 slice 冒充 limit、不从 DOM 反推领域状态。业务条件需要保存时直接写入完整 DSL。演示连接器 ID `localDataConnector` 已注册；动态源按公共接入能力适配。
 
 日期维度默认按日分组。`to_year` 至 `to_second` 的八种日期聚合返回维度标签，连接器保留字符串原值（年份也保留字符串）；数值指标仍按指标类型归一化。维护时运行 `DIM-02` 验收，检查八种粒度的日期单元格、销售额汇总和按日分组结果。
 
 运行时内嵌 VBI / VQuery / VSeed 0.7.2、VChart 2.1.7 与 VTable 1.23.1。新业务默认沿用版本，版本升级后完整复测。脚本失败显示可理解错误；空查询移除旧图，保留有效配置；查询失败清除旧结果并反馈原因，修正后恢复。
 
-`serialize()` 返回的状态包结构为 `{version:2, chart:完整VBIChartDSL, presentation:{title,accent,appearance}}`，不含源数据或连接器实现。独立重放须注册同源连接器，不能把状态导出称为完整数据备份。`applyDSL` 支持空图表，非法连接器 / 字段 / DSL 保留原配置。
+`serialize()` 返回的状态包结构为 `{version:2, chart:完整VBIChartDSL, presentation:{title,accent,appearance,morph}}`，不含源数据或连接器实现。独立重放须注册同源连接器，不能把状态导出称为完整数据备份。`applyDSL` 支持空图表，非法连接器 / 字段 / DSL 保留原配置。
 
 ## 模板维护边界
 

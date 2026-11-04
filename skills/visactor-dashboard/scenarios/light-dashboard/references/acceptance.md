@@ -48,4 +48,4 @@
 - [ ] **39. 关闭防误触**：以 X、Escape、遮罩关闭，并操作全局筛选、内部菜单、外观设置及从内部拖出；内层 Escape 先关闭当前浮层，内部操作不误关，合法关闭完成退场与取消。
 - [ ] **40. 源页保留**：在桌面、390px、触屏、减少动态效果及加载 / 错误态下关闭；同一套全局控件原位恢复，无重复控件、ID、监听或占位残留；最新条件与读数保留，焦点回入口，滚动与实例不意外重置。
 
-预期配置按需查阅 [template](template.md)、[components](components.md)、[data-analysis](data-analysis.md)、[deep-analysis](deep-analysis.md)及[表格适配器](../../../references/visual-query/references/table-theme.md)。
+预期配置按需查阅 [template](template.md)、[components](components.md)、[data-analysis](data-analysis.md)、[deep-analysis](deep-analysis.md)及[表格适配器](../../../references/visual-query-table-theme.md)。

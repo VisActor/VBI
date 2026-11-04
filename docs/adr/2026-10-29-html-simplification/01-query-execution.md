@@ -8,7 +8,7 @@
 
 ## 收益计算
 
-- 实测：[DashboardData.rows](../../../skills/visactor-dashboard/references/visual-query/assets/dashboard-data.js) L42–48，7 行 / 278 B，复制于四份模板；[经营模板 rowsOf](../../../skills/visactor-dashboard/scenarios/light-dashboard/templates/template-business-overview.html) L6226–6230，5 行 / 246 B。
+- 实测：[DashboardData.rows](../../../skills/visactor-dashboard/assets/visual-query-dashboard-data.js) L42–48，7 行 / 278 B，复制于四份模板；[经营模板 rowsOf](../../../skills/visactor-dashboard/scenarios/light-dashboard/templates/template-business-overview.html) L6226–6230，5 行 / 246 B。
 - 现有映射包装成本：`7 × 4 + 5 = 33 行`，`278 × 4 + 246 = 1,358 B`。query() 保留字段 ID，这些映射不能据此整段删除。
 - 单纯把调用入口改为 query()，预计 HTML 净减少接近 **0 KB**。主要收益是查询入口完整，以及省去查询场景中 VSeed 配置的组装；性能收益尚未实测。
 - 口径：UTF-8 源码含空行/注释，只计四份源 HTML，不含库代码；本案不再计入字段投影的收益。
