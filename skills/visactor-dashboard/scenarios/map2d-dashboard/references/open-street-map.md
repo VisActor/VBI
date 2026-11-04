@@ -1,6 +1,6 @@
 # 地图接入与空间语义
 
-优先沿用模板中的 MapLibre、底图和导航模块，修改入口见[模板适配](template-adaptation.md)。空间比较与判断见[地图分析](../../../references/data-analysis/map.md)。
+优先沿用模板中的 MapLibre、底图和导航模块，修改入口见[模板适配](template-adaptation.md)。空间比较与判断见[地图分析](../../../references/data-analysis-map.md)。
 
 ## 位置数据
 
@@ -30,4 +30,4 @@
 
 空结果清除失效点线，选中对象离开结果集时同步清除高亮和详情；保留当前地域及空态。图例与标记共用真实编码和未知值规则，主题与刷新不隐式重置范围。
 
-数据变化才更新点集，选择变化更新高亮，相机移动更新投影。暂停、后台与减少动态统一控制动效；请求与销毁按[组合指南](../../../references/visual-query/references/composition.md)管理。
+数据变化才更新点集，选择变化更新高亮，相机移动更新投影。暂停、后台与减少动态统一控制动效；请求与销毁按[组合指南](../../../references/visual-query-composition.md)管理。

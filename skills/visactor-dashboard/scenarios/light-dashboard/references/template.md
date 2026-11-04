@@ -23,16 +23,16 @@
 
 只调整需求涉及的数据、资源 ID、字段、口径、文案和布局；复用[UI 组件](components.md)，用户风格与宿主约束优先。字段变化时，同步筛选、分析上下文、表格下钻与原始明细的字段映射。
 
-| 适配内容       | HTML 中的入口                                                                                                                                                                           |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 数据与查询范围 | 专题页：`source-data`、`prepareRows()`、`conditionsFor()` 与原始列映射 `recordColumns`；经营概览：`rawDataset`、`schema` 与查询 Builder。                                               |
-| 指标与发现     | 专题页：`PAGE`、`buildView()`；经营概览直接配置查询与布局；发现由 `analysis` 配置。                                                                                                     |
-| 图形与布局     | `buildChartSpec()` / `buildSpec()`、`draw()` / `drawPlot()`、Dashboard Builder 与 `layoutDashboard()`。                                                                                 |
-| 深入分析与明细 | `metricAnalysisContext()`、`bindMetricAnalysis()`、`DashboardTable`；接入细则见[深度分析](deep-analysis.md)与[表格适配器](../../../references/visual-query/references/table-theme.md)。 |
+| 适配内容       | HTML 中的入口                                                                                                                                                                |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 数据与查询范围 | 专题页：`source-data`、`prepareRows()`、`conditionsFor()` 与原始列映射 `recordColumns`；经营概览：`rawDataset`、`schema` 与查询 Builder。                                    |
+| 指标与发现     | 专题页：`PAGE`、`buildView()`；经营概览直接配置查询与布局；发现由 `analysis` 配置。                                                                                          |
+| 图形与布局     | `buildChartSpec()` / `buildSpec()`、`draw()` / `drawPlot()`、Dashboard Builder 与 `layoutDashboard()`。                                                                      |
+| 深入分析与明细 | `metricAnalysisContext()`、`bindMetricAnalysis()`、`DashboardTable`；接入细则见[深度分析](deep-analysis.md)与[表格适配器](../../../references/visual-query-table-theme.md)。 |
 
 函数名以实际 HTML 为准；外观配置见 [UI 组件](components.md#外观设置)。
 
-复用内嵌 `DashboardData` 管理连接与替换，条件、聚合和排序交给公开 Builder。纯数据通过 `query()` 获取，图形通过 `buildVSeed()` 获取；明细 QueryBuilder 使用 `queryMode: 'detail'`，列概况通过 `queryProfile()` 取得。专题页列字典由 `DashboardData.decode()` 在 `prepareRows()` 前还原；新数据可直接使用 `{ columns, rows }` JSON，缺失保留 `null`。静态数据见[内嵌规则](../../../references/visual-query/references/html-integration.md#静态独立-html-的数据内置)，其他来源见[数据接入](../../../references/server-runtime/guide.md)。
+复用内嵌 `DashboardData` 管理连接与替换，条件、聚合和排序交给公开 Builder。纯数据通过 `query()` 获取，图形通过 `buildVSeed()` 获取；明细 QueryBuilder 使用 `queryMode: 'detail'`，列概况通过 `queryProfile()` 取得。专题页列字典由 `DashboardData.decode()` 在 `prepareRows()` 前还原；新数据可直接使用 `{ columns, rows }` JSON，缺失保留 `null`。静态数据见[内嵌规则](../../../references/visual-query-html-integration.md#静态独立-html-的数据内置)，其他来源见[数据接入](../../../server-runtime/doc-guide.md)。
 
 沿用示例口径时注意：寿命指标取末年国家等权均值，首尾比较仅用两端有效的配对国家，国家汇总在所选完整范围内按国家平均，原始明细保留逐年记录；心衰事件占比不等于统一随访时点的死亡率；餐食热效应占比与单件热量先汇总再相除。关系图仅在 `analysis.relation` 配置了有业务含义的两轴时启用，不默认以记录数作解释轴。
 
@@ -44,7 +44,7 @@
 
 ## 维护模板
 
-维护源见 [UI 组件](components.md#组件边界与维护源)、[数据适配器](../../../references/visual-query/assets/dashboard-data.js)和[表格适配器](../../../references/visual-query/references/table-theme.md)。修改维护源时同步所有使用它的模板内嵌块，保留自然缩进与格式化忽略标记；`dashboard-page-style` 和业务模块只放页面差异。
+维护源见 [UI 组件](components.md#组件边界与维护源)、[数据适配器](../../../assets/visual-query-dashboard-data.js)和[表格适配器](../../../references/visual-query-table-theme.md)。修改维护源时同步所有使用它的模板内嵌块，保留自然缩进与格式化忽略标记；`dashboard-page-style` 和业务模块只放页面差异。
 
 独立 HTML 直接维护内嵌实现，保持单文件可运行，不依赖仓库组件源或维护脚本。增删或改名模板时同步本页列表、可视总览、入口、链接和截图；改变示例数据时重算核对值。
 

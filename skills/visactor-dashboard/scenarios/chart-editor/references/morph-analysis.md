@@ -1,6 +1,6 @@
 # ChartEditor Morph 经验
 
-通用排查与验收方法见 [visual-query 的 Morph 经验](../../../references/visual-query/references/morph-transitions.md)。本篇说明编辑器的更新接口、数据身份与动画边界。
+通用排查与验收方法见 [visual-query 的 Morph 经验](../../../references/visual-query-morph-transitions.md)。本篇说明编辑器的更新接口、数据身份与动画边界。
 
 ## 所有权与数据身份
 

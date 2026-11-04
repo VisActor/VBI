@@ -199,7 +199,7 @@ function generatePackage(repoRoot, packageName, projects) {
     }
   }
 
-  // Include local base classes and helper types used by emitted declarations.
+  // Include base classes, local helper types and builders exposed by public signatures.
   for (const record of records.values()) {
     if (Node.isClassDeclaration(record.declaration)) {
       const base = record.declaration.getBaseClass()
@@ -214,12 +214,28 @@ function generatePackage(repoRoot, packageName, projects) {
       if (
         !Node.isTypeAliasDeclaration(helper) &&
         !Node.isInterfaceDeclaration(helper) &&
-        !Node.isEnumDeclaration(helper)
+        !Node.isEnumDeclaration(helper) &&
+        !Node.isClassDeclaration(helper)
       )
         continue
       if (!referencedNames.has(helper.getName())) continue
       const original = record.sourceFile.getStatements().find((item) => item.getName?.() === helper.getName())
       if (original) recordFor(original)
+    }
+    for (const imported of record.sourceFile.getImportDeclarations()) {
+      const names = imported
+        .getNamedImports()
+        .filter((item) => referencedNames.has(item.getAliasNode()?.getText() ?? item.getName()))
+        .map((item) => item.getName())
+      if (!names.length) continue
+      const target = imported.getModuleSpecifierSourceFile()
+      if (!target || !target.getFilePath().startsWith(sourceRoot + path.sep)) continue
+      for (const [name, declarations] of target.getExportedDeclarations()) {
+        if (!names.includes(name)) continue
+        for (const declaration of declarations) {
+          if (Node.isClassDeclaration(declaration)) recordFor(declaration)
+        }
+      }
     }
   }
 
@@ -236,7 +252,7 @@ function generatePackage(repoRoot, packageName, projects) {
       record.title = duplicate
         ? `${record.name} (${record.exports.size ? [...record.entries].sort(compare).join(', ') : path.basename(record.source)})`
         : record.name
-      record.href = `${record.group}.md#${anchor(record.title)}`
+      record.href = `${packageName}-${record.group}.md#${anchor(record.title)}`
     }
     group.sort((a, b) => compare(a.title, b.title))
   }
@@ -249,7 +265,7 @@ function generatePackage(repoRoot, packageName, projects) {
     `适用版本：\`${metadata.version}\`。`,
     '包含 TypeScript 公开导出、接口声明与使用说明；实现代码、private / protected 成员不属于此 API。\n',
     '## 分类\n',
-    ...[...groups.keys()].sort(compare).map((name) => `- [${name}](${name}.md)`),
+    ...[...groups.keys()].sort(compare).map((name) => `- [${name}](${packageName}-${name}.md)`),
     `\n## 公开导出（${publicNames.length}）\n`,
     '| 导出 | 入口条件 | 声明 |',
     '| --- | --- | --- |',
@@ -258,7 +274,7 @@ function generatePackage(repoRoot, packageName, projects) {
       return `| \`${name}\` | ${[...new Set(variants.flatMap((record) => [...record.entries]))].sort(compare).join(', ')} | ${variants.map((record) => `[${record.title}](${record.href})`).join(' · ')} |`
     }),
   ]
-  files.set('index.md', index.join('\n') + '\n')
+  files.set(`${packageName}-index.md`, index.join('\n') + '\n')
   for (const [name, group] of [...groups].sort(([a], [b]) => compare(a, b))) {
     const imports = [
       ...new Set(
@@ -271,7 +287,7 @@ function generatePackage(repoRoot, packageName, projects) {
     ].sort(compare)
     const content = [
       `# ${name}\n`,
-      '[API 索引](index.md)\n',
+      `[API 索引](${packageName}-index.md)\n`,
       ...group.map((record) => `- [${record.title}](${record.href})`),
       ...(imports.length
         ? ['\n类型引用沿用源码模块名，包的公开导出以索引为准：\n', '```typescript', ...imports, '```']
@@ -299,7 +315,7 @@ function generatePackage(repoRoot, packageName, projects) {
         ...(defaults ? ['\n参数默认值（来自源码）：\n', '```typescript', defaults, '```'] : []),
       )
     }
-    files.set(`${name}.md`, content.join('\n') + '\n')
+    files.set(`${packageName}-${name}.md`, content.join('\n') + '\n')
   }
   return { name: packageName, exports: publicNames.length, files }
 }
@@ -317,7 +333,7 @@ export async function buildSkillApi({ repoRoot = repoDirectory, onProgress = () 
   })
   for (const { name, files } of packages) {
     onProgress(`格式化 ${name} API`)
-    files.set('guide.md', fs.readFileSync(path.join(repoRoot, 'scripts/skill-api', `${name}.md`), 'utf8'))
+    files.set(`${name}-guide.md`, fs.readFileSync(path.join(repoRoot, 'scripts/skill-api', `${name}.md`), 'utf8'))
     for (const [filename, content] of files) {
       const result = await format(filename, content, formatOptions)
       if (result.errors.length)
@@ -326,11 +342,11 @@ export async function buildSkillApi({ repoRoot = repoDirectory, onProgress = () 
     }
   }
   onProgress('写入 API 文档')
-  for (const { name, files } of packages) {
-    // API pages live only in the all-in-one skill; build:skills packages consumers.
-    const directory = path.join(skillRoot, 'references', 'api', name)
-    fs.rmSync(directory, { recursive: true, force: true })
-    fs.mkdirSync(directory, { recursive: true })
+  // API pages live only in the all-in-one skill; build:skills packages consumers.
+  const directory = path.join(skillRoot, 'api')
+  fs.rmSync(directory, { recursive: true, force: true })
+  fs.mkdirSync(directory, { recursive: true })
+  for (const { files } of packages) {
     for (const [filename, content] of files) fs.writeFileSync(path.join(directory, filename), content)
   }
   return packages.map(({ name, exports, files }) => ({ name, exports, pages: files.size }))

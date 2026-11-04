@@ -47,6 +47,6 @@ query / chart.queryBins()    → summary + bins            → Connector.query(Q
 
 建议通过 Chart 配置控制概况显示，VSeed 消费 DTO 并生成概况行；本次不实现显示开关或默认 buildVSeed 联动。需另评估统计 SQL 与明细查询的一致性及成本。
 
-历史实测：[表格适配器](../../../skills/visactor-dashboard/references/visual-query/assets/dashboard-table.js) 统计段 **117 行 / 5,784 B**，呈现段 **85 行 / 4,095 B**。合计每份候选 **202 行 / 9,879 B**；若保留 40–60 行调用，估计四份净删 **27.8–31.7 KB**。须在新调用方式下重测，不与 09 或其他 ADR 相加。
+历史实测：[表格适配器](../../../skills/visactor-dashboard/assets/visual-query-dashboard-table.js) 统计段 **117 行 / 5,784 B**，呈现段 **85 行 / 4,095 B**。合计每份候选 **202 行 / 9,879 B**；若保留 40–60 行调用，估计四份净删 **27.8–31.7 KB**。须在新调用方式下重测，不与 09 或其他 ADR 相加。
 
 验收：VBI 公开入口可独立统计和分箱；SQL 只返回聚合结果；查询粒度与 limit 保持；空值、常量、边界及同频排序确定；统计不改 Yjs，原 Chart 查询与 Spec 回归通过。

@@ -55,7 +55,7 @@ function fixture(t) {
   }
   for (const name of skillNames) {
     write(root, `skills/${name}/SKILL.md`, 'Manual root skill.\n')
-    write(root, `skills/${name}/references/activation-map.yaml`, 'manual: true\n')
+    write(root, `skills/${name}/references/manual.md`, 'Manual reference.\n')
     write(root, `skills/${name}/templates/example.html`, '<p>Manual template</p>\n')
   }
   write(
@@ -180,36 +180,37 @@ function snapshot(root) {
 test('documents public declarations, aliases, overloads, defaults and workspace re-exports from source', async (t) => {
   const root = fixture(t)
   await buildSkillApi({ repoRoot: root })
-  const api = path.join(root, 'skills/visactor-dashboard/references/api')
-  const client = fs.readFileSync(path.join(api, 'vbi/chart-builder.md'), 'utf8')
+  const api = path.join(root, 'skills/visactor-dashboard/api')
+  const client = fs.readFileSync(path.join(api, 'vbi-chart-builder.md'), 'utf8')
   assert.match(client, /Public client documentation/)
   assert.match(client, /readonly model: Model/)
   assert.match(client, /limit = 10/)
   assert.match(client, /make\(input: string\): string/)
   assert.match(client, /make\(input: number\): number/)
   assert.doesNotMatch(client, /secret|cache|#internal|return input|hidden implementation|modules must never execute/)
-  const types = fs.readFileSync(path.join(api, 'vbi/types.md'), 'utf8')
+  const types = fs.readFileSync(path.join(api, 'vbi-types.md'), 'utf8')
   assert.match(types, /PublicModel/)
   assert.match(types, /type Detail/)
   assert.match(types, /enum Status/)
   assert.match(types, /packages\/vseed\/src\/pipeline\/pipe.ts/)
-  assert.match(fs.readFileSync(path.join(api, 'vbi/index.md'), 'utf8'), /sharedUtility/)
+  assert.match(fs.readFileSync(path.join(api, 'vbi-index.md'), 'utf8'), /sharedUtility/)
   for (const group of ['builder', 'register', 'chart-types', 'data', 'pipeline', 'theme', 'i18n', 'types']) {
-    assert.ok(fs.existsSync(path.join(api, 'vseed', `${group}.md`)), `${group} is documented`)
+    assert.ok(fs.existsSync(path.join(api, `vseed-${group}.md`)), `${group} is documented`)
   }
-  assert.equal(fs.existsSync(path.join(api, 'vseed/schemas.md')), false)
-  for (const content of snapshot(path.join(api, 'vseed')).values()) {
-    assert.doesNotMatch(content, /schemas\.md|zLine|LineSchema/)
+  assert.equal(fs.existsSync(path.join(api, 'vseed-schemas.md')), false)
+  for (const [name, content] of snapshot(api)) {
+    assert.match(name, /^(vbi|vseed|vquery)-[^/]+\.md$/)
+    if (name.startsWith('vseed-')) assert.doesNotMatch(content, /schemas\.md|zLine|LineSchema/)
   }
-  assert.match(fs.readFileSync(path.join(api, 'vseed/types.md'), 'utf8'), /SchemaInput/)
-  assert.match(fs.readFileSync(path.join(api, 'vquery/index.md'), 'utf8'), /zQuery/)
+  assert.match(fs.readFileSync(path.join(api, 'vseed-types.md'), 'utf8'), /SchemaInput/)
+  assert.match(fs.readFileSync(path.join(api, 'vquery-index.md'), 'utf8'), /zQuery/)
 })
 
 test('keeps conditional exports distinct and documents inherited public members', async (t) => {
   const root = fixture(t)
   await buildSkillApi({ repoRoot: root })
-  const api = path.join(root, 'skills/visactor-dashboard/references/api/vquery')
-  const index = fs.readFileSync(path.join(api, 'index.md'), 'utf8')
+  const api = path.join(root, 'skills/visactor-dashboard/api')
+  const index = fs.readFileSync(path.join(api, 'vquery-index.md'), 'utf8')
   const exportConditions = (name) =>
     index
       .split('\n')
@@ -218,10 +219,10 @@ test('keeps conditional exports distinct and documents inherited public members'
   assert.equal(exportConditions('InMemoryAdapter'), 'node')
   assert.equal(exportConditions('IndexedDBAdapter'), 'browser, default')
   assert.equal(exportConditions('VQuery'), 'browser, default, node')
-  const runtime = fs.readFileSync(path.join(api, 'runtime.md'), 'utf8')
+  const runtime = fs.readFileSync(path.join(api, 'vquery-runtime.md'), 'utf8')
   assert.match(runtime, /query\(value: string\): string/)
   assert.doesNotMatch(runtime, /private secret|protected cache/)
-  assert.match(runtime, /runtime.md#vquery-vqueryts/)
+  assert.match(runtime, /vquery-runtime.md#vquery-vqueryts/)
 })
 
 test('updates the canonical API, removes stale content and preserves manual skills', async (t) => {
@@ -235,28 +236,28 @@ test('updates the canonical API, removes stale content and preserves manual skil
   assert.deepEqual(snapshot(skillsRoot), first)
 
   for (const skill of skillNames) {
-    write(root, `skills/${skill}/references/api/vbi/obsolete.md`, 'Stale page without a marker.\n')
-    write(root, `skills/${skill}/references/api/vbi/old/data.json`, '{"stale":true}\n')
-    write(root, `skills/${skill}/references/api/vquery/guide.md`, 'Diverged workflow copy.\n')
-    write(root, `skills/${skill}/references/api/vseed/schemas.md`, 'Obsolete schema declarations.\n')
+    write(root, `skills/${skill}/api/vbi-obsolete.md`, 'Stale page without a marker.\n')
+    write(root, `skills/${skill}/api/vbi-old/data.json`, '{"stale":true}\n')
+    write(root, `skills/${skill}/api/vquery-guide.md`, 'Diverged workflow copy.\n')
+    write(root, `skills/${skill}/api/vseed-schemas.md`, 'Obsolete schema declarations.\n')
   }
   write(root, 'packages/vbi/src/index.ts', 'export const nextApi = true')
   write(root, 'scripts/skill-api/vquery.md', '# Updated query workflow\n')
   await buildSkillApi({ repoRoot: root })
-  const canonical = snapshot(path.join(skillsRoot, 'visactor-dashboard/references/api'))
+  const canonical = snapshot(path.join(skillsRoot, 'visactor-dashboard/api'))
   for (const skill of skillNames) {
-    const api = path.join(skillsRoot, skill, 'references', 'api')
+    const api = path.join(skillsRoot, skill, 'api')
     assert.deepEqual(snapshot(api), canonical)
-    assert.equal(fs.existsSync(path.join(api, 'vbi/chart-builder.md')), false)
-    assert.equal(fs.existsSync(path.join(api, 'vbi/obsolete.md')), false)
-    assert.equal(fs.existsSync(path.join(api, 'vbi/old')), false)
-    assert.equal(fs.existsSync(path.join(api, 'vseed/schemas.md')), false)
-    assert.match(fs.readFileSync(path.join(api, 'vbi/index.md'), 'utf8'), /nextApi/)
-    assert.match(fs.readFileSync(path.join(api, 'vquery/guide.md'), 'utf8'), /Updated query workflow/)
+    assert.equal(fs.existsSync(path.join(api, 'vbi-chart-builder.md')), false)
+    assert.equal(fs.existsSync(path.join(api, 'vbi-obsolete.md')), false)
+    assert.equal(fs.existsSync(path.join(api, 'vbi-old')), false)
+    assert.equal(fs.existsSync(path.join(api, 'vseed-schemas.md')), false)
+    assert.match(fs.readFileSync(path.join(api, 'vbi-index.md'), 'utf8'), /nextApi/)
+    assert.match(fs.readFileSync(path.join(api, 'vquery-guide.md'), 'utf8'), /Updated query workflow/)
     for (const name of packageNames) {
-      assert.ok(fs.existsSync(path.join(api, name, 'guide.md')))
-      assert.ok(fs.existsSync(path.join(api, name, 'index.md')))
-      assert.equal(fs.existsSync(path.join(api, name, 'api')), false)
+      assert.ok(fs.existsSync(path.join(api, `${name}-guide.md`)))
+      assert.ok(fs.existsSync(path.join(api, `${name}-index.md`)))
+      assert.equal(fs.existsSync(path.join(api, name)), false)
       assert.equal(fs.existsSync(path.join(skillsRoot, skill, 'references', name)), false)
     }
   }
@@ -322,9 +323,8 @@ test('published API guides work in standalone downloads without repository maint
   write(root, 'packages/vbi/src/vbi.ts', 'export const createVBI = () => ({})')
   fs.appendFileSync(path.join(root, 'packages/vbi/src/index.ts'), "\nexport * from './vbi'\n")
   for (const skill of skillNames) {
-    for (const reference of ['visual-query', 'server-runtime']) {
-      write(root, `skills/${skill}/references/${reference}/guide.md`, `# ${reference}\n`)
-    }
+    write(root, `skills/${skill}/references/visual-query-guide.md`, '# visual-query\n')
+    write(root, `skills/${skill}/server-runtime/doc-guide.md`, '# server-runtime\n')
   }
   await buildSkillApi({ repoRoot: root })
   const downloads = fs.mkdtempSync(path.join(os.tmpdir(), 'standalone-skill-api-'))
@@ -332,14 +332,63 @@ test('published API guides work in standalone downloads without repository maint
   for (const skill of skillNames) {
     const standalone = path.join(downloads, skill)
     fs.cpSync(path.join(root, 'skills', skill), standalone, { recursive: true })
-    for (const [name, content] of snapshot(path.join(standalone, 'references', 'api'))) {
+    for (const [name, content] of snapshot(path.join(standalone, 'api'))) {
       assert.doesNotMatch(content, /pnpm build:skill-api|scripts\/skill-api|cd skills\//, name)
       for (const [, href] of content.matchAll(/\]\(([^)\s]+)\)/g)) {
         if (href.startsWith('#') || href.includes(':')) continue
-        const target = path.resolve(standalone, 'references', 'api', path.dirname(name), href.split('#')[0])
+        const target = path.resolve(standalone, 'api', path.dirname(name), href.split('#')[0])
         assert.ok(target.startsWith(standalone + path.sep), `${name}: ${href} escapes the download`)
         assert.ok(fs.existsSync(target), `${name}: ${href} is missing from the download`)
       }
     }
   }
+})
+
+test('includes builders exposed through imported callbacks and return types without private dependencies', async (t) => {
+  const root = fixture(t)
+  write(
+    root,
+    'packages/vbi/src/chart-builder/client.ts',
+    `import { FilterNode as PublicNode, HiddenNode, Model } from './nodes'
+     import type { VSeed } from '@visactor/vseed'
+     import type { Readable } from 'node:stream'
+     import type { Unused } from './unused'
+     export class Client {
+       private internal!: HiddenNode
+       private unused!: Unused
+       configure(callback: (node: PublicNode) => void): void {}
+       seed(value: VSeed): Model { return { count: 1 } }
+       stream(value: Readable): void {}
+     }
+     export function make() { return new Client() }`,
+  )
+  write(
+    root,
+    'packages/vbi/src/chart-builder/nodes.ts',
+    `import { GroupNode } from './group'
+     export class FilterNode {
+       private secret = 'hidden'
+       setValue(value: number): this { return this }
+       group(): GroupNode { return new GroupNode() }
+     }
+     export class HiddenNode { privateOnly() {} }
+     export interface Model { count: number }`,
+  )
+  write(
+    root,
+    'packages/vbi/src/chart-builder/group.ts',
+    `import { FilterNode } from './nodes'
+     export class GroupNode { add(callback: (node: FilterNode) => void): this { return this } }`,
+  )
+  write(root, 'packages/vbi/src/chart-builder/unused.ts', 'export class Unused {}')
+  await buildSkillApi({ repoRoot: root })
+  const api = path.join(root, 'skills/visactor-dashboard/api')
+  const content = fs.readFileSync(path.join(api, 'vbi-chart-builder.md'), 'utf8')
+  assert.match(content, /## FilterNode/)
+  assert.match(content, /setValue\(value: number\): this/)
+  assert.match(content, /## GroupNode/)
+  assert.match(content, /add\(callback: \(node: FilterNode\) => void\): this/)
+  assert.doesNotMatch(content, /## HiddenNode|## Unused|privateOnly|private secret/)
+  assert.doesNotMatch(content, /## Readable|## VSeed/)
+  assert.doesNotMatch(fs.readFileSync(path.join(api, 'vbi-index.md'), 'utf8'), /\| `FilterNode`|\| `GroupNode`/)
 })
