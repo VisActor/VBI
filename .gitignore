@@ -33,3 +33,4 @@ tools/llm_test/new-type
 .worktrees
 
 practices/mysql-order-simulator
+.vseed-visual/
