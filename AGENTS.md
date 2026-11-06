@@ -25,3 +25,12 @@ Use `.agents/skills/development/SKILL.md` for code, test, build, or dependency c
 Skip it for changes limited to skills, prompts, or agent instructions.
 
 Skill documents and references describe current capabilities, usage, and constraints without narrating past changes, removals, or migrations.
+
+## PR and visual verification
+
+- Read [Contributing](./CONTRIBUTING.md#pr-checks-and-merge-process) before submitting. The VSeed advisory workflow is enabled for eligible new same-repository main PRs touching `packages/vseed/`; stable CR has a wider scope.
+- Product, dependency and visual-case changes require relevant unit tests and the default full official-main visual comparison: `node packages/vseed/scripts/visual-test.mjs`. Preserve the development skill's coverage, generation and website checks. Markdown/agent-guidance-only changes require document/link validation and an explicit not-run explanation.
+- Add or strengthen deterministic regression cases for features, fixes and gaps. Follow the [case guide](./packages/vseed/__tests__/visual/cases/README.md); real interactions need semantic assertions. Self-comparison is not a baseline pass. Do not relax thresholds, skip cases or hide errors.
+- Follow the [Photo collaboration guide](./packages/vseed/__tests__/visual/BUGSERVER_CASE_WORKFLOW.md). Local cases do not sync to BugServer; only product administrators create platform cases, and IDs must be real.
+- Check current head/base and report scope before using Bot results. Photo is report-only and manually reviewed; completed does not mean all Photo tests passed. Never approve/merge, edit managed summaries/markers, automatically update baselines or bypass unknown-request deduplication.
+- Stop test servers, browsers and child processes you started when finished.
