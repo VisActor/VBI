@@ -206,9 +206,19 @@ export async function build(root, destination, runtime, log) {
     ...(runtime.offline ? { NODE_OPTIONS: '--max-old-space-size=2048' } : {}),
     RAYON_NUM_THREADS: '2',
   }
+  // tsgo 的并行文件读取不受 GOMAXPROCS 完整约束；继承原配置，仅串行生成类型。
+  const tsconfig = destination + '.tsconfig.json'
+  await fs.writeFile(
+    tsconfig,
+    JSON.stringify({
+      extends: path.join(root, 'packages/vseed/tsconfig.json'),
+      compilerOptions: { singleThreaded: true },
+    }),
+    { flag: 'wx' },
+  )
   await runtime.run(
     process.execPath,
-    [path.join(root, 'packages/vseed/node_modules/@rslib/core/bin/rslib.js'), 'build'],
+    [path.join(root, 'packages/vseed/node_modules/@rslib/core/bin/rslib.js'), 'build', '--tsconfig', tsconfig],
     path.join(root, 'packages/vseed'),
     log,
     { code: 'BUILD_FAILED', env },

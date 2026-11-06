@@ -8,6 +8,8 @@ import { parseOptions } from './visual-test.mjs'
 import { loadCases, selectCases, validateResults, acquireLock } from './visual/runner.mjs'
 import { saveReport } from '../__tests__/visual/report.mjs'
 import Reporter from '../__tests__/visual/reporter.mjs'
+import { build } from './visual/build.mjs'
+import { execFileSync } from 'node:child_process'
 
 const suite = fileURLToPath(new URL('../__tests__/visual', import.meta.url))
 test('首批清单恰好四项，非法参数和结果漏项/重复项拒绝', async () => {
@@ -80,5 +82,41 @@ test('普通执行异常与显式业务断言分开，阶段超时保留错误',
       if (previous[i] === undefined) delete process.env[key]
       else process.env[key] = previous[i]
     await fs.rm(dir, { recursive: true, force: true })
+  }
+})
+
+// 构建使用继承配置，保留原源码/类型规则；head/base各自传入其冻结工程路径。
+test('类型生成仅限制并发，不覆写冻结 tsconfig 或关闭声明', async () => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'vseed-build-'))
+  const stopped = new Error('stop after checking build invocation')
+  try {
+    execFileSync('git', ['init', '--quiet', root])
+    await fs.writeFile(path.join(root, '.gitignore'), 'dist/\n')
+    await fs.mkdir(path.join(root, 'packages/vseed'), { recursive: true })
+    const original = '{"compilerOptions":{"declaration":true,"strict":true}}'
+    await fs.writeFile(path.join(root, 'packages/vseed/tsconfig.json'), original)
+    await assert.rejects(
+      build(
+        root,
+        path.join(root, 'bundle.js'),
+        {
+          offline: true,
+          async run(command, args) {
+            // 在实际运行器接口核对覆盖配置，其余构建参数保持。
+            assert.deepEqual(args.slice(1, 3), ['build', '--tsconfig'])
+            assert.deepEqual(JSON.parse(await fs.readFile(args[3], 'utf8')), {
+              extends: path.join(root, 'packages/vseed/tsconfig.json'),
+              compilerOptions: { singleThreaded: true },
+            })
+            throw stopped
+          },
+        },
+        path.join(root, 'build.log'),
+      ),
+      (error) => error === stopped,
+    )
+    assert.equal(await fs.readFile(path.join(root, 'packages/vseed/tsconfig.json'), 'utf8'), original)
+  } finally {
+    await fs.rm(root, { recursive: true, force: true })
   }
 })
