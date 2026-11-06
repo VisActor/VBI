@@ -107,5 +107,10 @@ jobs:
       - name: Build packages and examples
         run: pnpm run build
 
+      - name: Validate visual and workflow protocols
+        run: |
+          pnpm --filter @visactor/vseed run test:visual:protocol
+          node --test .github/scripts/bug-server-gray-scope.test.cjs
+
       - name: Run tests and enforce coverage thresholds
         run: pnpm run test:coverage
