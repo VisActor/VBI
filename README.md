@@ -35,3 +35,7 @@ Install the VBI skill for coding agents:
 ```bash
 npx skills add visactor/vbi
 ```
+
+## Contributing and PR workflow
+
+Read [Contributing](./CONTRIBUTING.md) / [贡献指南](./CONTRIBUTING.zh-CN.md) for local checks, VSeed case authoring, the enabled workflow's scope and cutoff, PR states, manual Photo review, and approval/merge. Start visual testing from the [VSeed guide](./packages/vseed/__tests__/visual/README.md).
