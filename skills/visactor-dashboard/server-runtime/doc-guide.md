@@ -19,13 +19,13 @@
 
 ## 启动与页面接入
 
-Node.js >=24.12.0。在能访问数据源的机器执行；云端容器的 localhost 不代表用户电脑。安装 runtime 的公开 npm 依赖后启动：
+需要 Node.js >=24.12.0、npm，以及固定 npm 依赖 `@visactor/vquery@0.7.4`、`mysql2@3.15.3`；所有来源模式均需安装。服务端安装以本目录的 [package.json](package.json) 与 [package-lock.json](package-lock.json) 为准。在能访问数据源的机器执行；云端容器的 localhost 不代表用户电脑。
 
 ```sh
 # 从本技能根目录执行
 cd server-runtime
 npm ci --ignore-scripts
-# 根据所选数据源配置环境变量，或在本目录创建仅供本地使用的 .env。
+# 按下方“环境配置”设置进程环境变量，或手动创建本目录的 .env。
 npm start -- /absolute/path/to/dashboard.html
 ```
 
@@ -35,7 +35,9 @@ npm start -- /absolute/path/to/dashboard.html
 
 ## 环境配置
 
-将以下示例保存为 `server-runtime/.env`，按实际数据源填写配置，并将其放在 HTML 目录之外。
+按以下文字示例手动创建 `server-runtime/.env`，或直接设置同名进程环境变量；技能不分发 `.env.example` 文件。`npm start` 从 `server-runtime/` 工作目录自动读取 `.env`，已有进程环境变量优先于文件中的同名值。
+
+按实际来源选择一个 `VBI_SOURCE_TYPE`，仅启用对应配置；文件 / HTTP 模式必须提供实际字段的 `VBI_SOURCE_SCHEMA`，module 模式需提供本地适配器路径。将 `.env` 放在 HTML 目录之外，真实凭据不随产物分发。
 
 ```dotenv
 VBI_SOURCE_TYPE=mysql

@@ -6,6 +6,8 @@
 
 ## 启动
 
+先核对[运行依赖](doc-guide.md#启动与页面接入)，再按[环境配置](doc-guide.md#环境配置)的文字示例手动创建 `server-runtime/.env`，或设置同名进程环境变量。
+
 ```sh
 # 从本技能根目录执行
 cd server-runtime
