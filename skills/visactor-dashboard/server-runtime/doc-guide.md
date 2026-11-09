@@ -33,6 +33,38 @@ npm start -- /absolute/path/to/dashboard.html
 
 页面与服务同源，Connector 请求相对路径 `/api/context` 和 `/api/query`。服务端请求上游 HTTP 不受浏览器 CORS 响应头限制；上游鉴权、网络可达性和 TLS 仍需正常满足。不要让页面直接读取本地文件、携带数据库凭据或重复请求上游接口。具体令牌、JSON 注入和响应格式见 [页面与服务协议](doc-protocol.md)。
 
+## 环境配置
+
+将以下示例保存为 `server-runtime/.env`，按实际数据源填写配置，并将其放在 HTML 目录之外。
+
+```dotenv
+VBI_SOURCE_TYPE=mysql
+VBI_MYSQL_HOST=127.0.0.1
+VBI_MYSQL_PORT=3306
+VBI_MYSQL_USER=readonly
+VBI_MYSQL_PASSWORD=
+VBI_MYSQL_DATABASE=analytics
+VBI_MYSQL_TABLE=events
+VBI_MYSQL_TIMEZONE=+00:00
+VBI_PORT=4317
+
+# File / HTTP: switch VBI_SOURCE_TYPE and provide the actual schema.
+# VBI_SOURCE_TYPE=file
+# VBI_SOURCE_FILE=/absolute/path/to/rows.csv
+# VBI_SOURCE_SCHEMA=[{"name":"region","type":"string"},{"name":"sales","type":"number"}]
+# VBI_SOURCE_ID=local-data
+# VBI_SOURCE_TYPE=http
+# VBI_HTTP_URL=https://api.example.com/sales
+# VBI_HTTP_METHOD=GET
+# VBI_HTTP_HEADERS={}
+# VBI_SOURCE_ROWS_POINTER=/data/items
+# VBI_SOURCE_FORMAT=json
+
+# Other databases / HTTP protocols: trusted, locally maintained adapter.
+# VBI_SOURCE_TYPE=module
+# VBI_SOURCE_MODULE=/absolute/path/to/adapter.mjs
+```
+
 ## 职责与资源
 
 - 数据源提供 `context()`、`query(queries)` 和 `close()`；runtime 负责同源校验、HTTP 协议、请求限制与生命周期。文件路径、上游 URL 和认证信息由服务端配置，不从浏览器请求体接收。

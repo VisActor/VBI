@@ -10,7 +10,7 @@
 # 从本技能根目录执行
 cd server-runtime
 npm ci --ignore-scripts
-# 将 .env.example 复制为 .env，填写账号、数据库和表名。
+# 按 doc-guide.md 的环境配置示例创建 .env，填写账号、数据库和表名。
 npm start -- /absolute/path/to/dashboard.html
 ```
 
