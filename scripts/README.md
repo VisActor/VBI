@@ -23,7 +23,7 @@ pnpm build:skills --check
 场景目录名、根目录 `SKILL.md` 的 `name` 与 ZIP 文件名一致。
 四个场景都包含 `references/` 下以 `data-analysis-`、`deep-analysis-`、`visual-query-` 为前缀的三类公共资料，以及同级的 `server-runtime/` 和 `api/`。公共文档直接放在 `references/` 下，不包含子目录，例如 `data-analysis-guide.md`、`deep-analysis-interaction.md` 和 `visual-query-guide.md`。公共 JS/CSS 资源在 `skills/visactor-dashboard/assets/` 中维护，打包到每个独立技能的 `assets/`，例如 `assets/visual-query-dashboard-data.js`；引用它们的 Markdown 链接同步改写。模块的触发条件和文档关系直接维护在统一入口。
 
-本地服务的文档、运行脚本、测试、依赖清单、锁文件和 `.env.example` 全部直接放在 `server-runtime/` 下，不包含子目录。运行文档统一使用 `doc-` 前缀，例如 `server-runtime/doc-guide.md` 和 `server-runtime/doc-protocol.md`。API 文件直接放在 `api/` 下，以 `vbi-`、`vseed-`、`vquery-` 为前缀，例如 `api/vquery-guide.md` 和 `api/vbi-chart-builder.md`。`data-analysis-guide.md` 维护分析契约、比较口径与证据验收；`deep-analysis-interaction.md` 负责分析入口、局部探索和返回。公共资料不含 `SKILL.md`，不会被识别为独立技能。
+本地服务的文档、运行脚本、测试、依赖清单和锁文件全部直接放在 `server-runtime/` 下，不包含子目录。环境配置示例见 `server-runtime/doc-guide.md`。运行文档统一使用 `doc-` 前缀，例如 `server-runtime/doc-guide.md` 和 `server-runtime/doc-protocol.md`。API 文件直接放在 `api/` 下，以 `vbi-`、`vseed-`、`vquery-` 为前缀，例如 `api/vquery-guide.md` 和 `api/vbi-chart-builder.md`。`data-analysis-guide.md` 维护分析契约、比较口径与证据验收；`deep-analysis-interaction.md` 负责分析入口、局部探索和返回。公共资料不含 `SKILL.md`，不会被识别为独立技能。
 每个独立技能的 `SKILL.md` 由场景专属说明与统一入口中 `## 通用模块` 至文件末尾的内容组成。公共模块只在统一入口维护，场景源码通过链接访问它；构建时插入公共模块并按两份来源各自的路径改写链接，不带入统一入口的四场景路由。
 
 分发包只允许根文件和一级资源目录中的文件，例如 `SKILL.md`、`references/data-analysis-guide.md`、`assets/analysis.js`；不包含 `scenarios/`、嵌套资源目录或额外 `SKILL.md`。场景的 frontmatter `name` 必须与目录及 ZIP 名相同，并提供非空 `description`。重复目标路径、过深目录和错误入口会使构建失败，不会覆盖已有 ZIP。
