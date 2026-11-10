@@ -19,19 +19,53 @@
 
 ## 启动与页面接入
 
-Node.js >=24.12.0。在能访问数据源的机器执行；云端容器的 localhost 不代表用户电脑。安装 runtime 的公开 npm 依赖后启动：
+需要 Node.js >=24.12.0、npm，以及固定 npm 依赖 `@visactor/vquery@0.7.4`、`mysql2@3.15.3`；所有来源模式均需安装。服务端安装以本目录的 [package.json](package.json) 与 [package-lock.json](package-lock.json) 为准。在能访问数据源的机器执行；云端容器的 localhost 不代表用户电脑。
 
 ```sh
 # 从本技能根目录执行
 cd server-runtime
 npm ci --ignore-scripts
-# 根据所选数据源配置环境变量，或在本目录创建仅供本地使用的 .env。
+# 按下方“环境配置”设置进程环境变量，或手动创建本目录的 .env。
 npm start -- /absolute/path/to/dashboard.html
 ```
 
 服务默认监听 `127.0.0.1:4317`，端口用 `VBI_PORT` 设置；按终端打印的 URL 打开页面，`Ctrl+C` 停止。配置路径相对于启动时的工作目录，优先使用绝对路径。分发时提供 HTML、声明的资源、服务文件、依赖清单和锁文件。
 
 页面与服务同源，Connector 请求相对路径 `/api/context` 和 `/api/query`。服务端请求上游 HTTP 不受浏览器 CORS 响应头限制；上游鉴权、网络可达性和 TLS 仍需正常满足。不要让页面直接读取本地文件、携带数据库凭据或重复请求上游接口。具体令牌、JSON 注入和响应格式见 [页面与服务协议](doc-protocol.md)。
+
+## 环境配置
+
+按以下文字示例手动创建 `server-runtime/.env`，或直接设置同名进程环境变量；技能不分发 `.env.example` 文件。`npm start` 从 `server-runtime/` 工作目录自动读取 `.env`，已有进程环境变量优先于文件中的同名值。
+
+按实际来源选择一个 `VBI_SOURCE_TYPE`，仅启用对应配置；文件 / HTTP 模式必须提供实际字段的 `VBI_SOURCE_SCHEMA`，module 模式需提供本地适配器路径。将 `.env` 放在 HTML 目录之外，真实凭据不随产物分发。
+
+```dotenv
+VBI_SOURCE_TYPE=mysql
+VBI_MYSQL_HOST=127.0.0.1
+VBI_MYSQL_PORT=3306
+VBI_MYSQL_USER=readonly
+VBI_MYSQL_PASSWORD=
+VBI_MYSQL_DATABASE=analytics
+VBI_MYSQL_TABLE=events
+VBI_MYSQL_TIMEZONE=+00:00
+VBI_PORT=4317
+
+# File / HTTP: switch VBI_SOURCE_TYPE and provide the actual schema.
+# VBI_SOURCE_TYPE=file
+# VBI_SOURCE_FILE=/absolute/path/to/rows.csv
+# VBI_SOURCE_SCHEMA=[{"name":"region","type":"string"},{"name":"sales","type":"number"}]
+# VBI_SOURCE_ID=local-data
+# VBI_SOURCE_TYPE=http
+# VBI_HTTP_URL=https://api.example.com/sales
+# VBI_HTTP_METHOD=GET
+# VBI_HTTP_HEADERS={}
+# VBI_SOURCE_ROWS_POINTER=/data/items
+# VBI_SOURCE_FORMAT=json
+
+# Other databases / HTTP protocols: trusted, locally maintained adapter.
+# VBI_SOURCE_TYPE=module
+# VBI_SOURCE_MODULE=/absolute/path/to/adapter.mjs
+```
 
 ## 职责与资源
 

@@ -6,11 +6,13 @@
 
 ## 启动
 
+先核对[运行依赖](doc-guide.md#启动与页面接入)，再按[环境配置](doc-guide.md#环境配置)的文字示例手动创建 `server-runtime/.env`，或设置同名进程环境变量。
+
 ```sh
 # 从本技能根目录执行
 cd server-runtime
 npm ci --ignore-scripts
-# 将 .env.example 复制为 .env，填写账号、数据库和表名。
+# 按 doc-guide.md 的环境配置示例创建 .env，填写账号、数据库和表名。
 npm start -- /absolute/path/to/dashboard.html
 ```
 
