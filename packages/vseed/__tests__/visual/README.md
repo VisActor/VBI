@@ -31,3 +31,5 @@ Bot只在无网络隔离中使用 --offline 和逐侧准备的依赖。根pnpm-l
 `.vseed-visual/runs/<run-id>/index.html` 展示三图，`agent-summary.md` 和 `summary.json` 保存问题、两侧SHA及范围；构建日志、两侧Playwright报告和失败trace用于定位。整体复制报告目录以保留相对链接，不提交运行产物。
 
 正常、异常和Ctrl+C后检查本轮浏览器、HTTP服务、子进程和基线worktree已退出。SIGKILL/断电后先核对 `git worktree list` 和 `.vseed-visual/running.lock/owner.json` 的归属及进程状态，再由维护者处理本轮残留，不能盲删锁或他人资源。
+
+图文选择已启用的 PR 按贡献指南核查并保存当前修订后手动 Merge，Approve 可选。仅合入前保存的所选基准可更新，未选项和原报告保持；该能力不改变上述全量视觉比较要求。
