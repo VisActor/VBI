@@ -83,7 +83,7 @@ jobs:
             sh -ec 'tar -x -C /work && chown -R node:node /work'
           docker build -t fork-tests - <<'DOCKER'
           FROM node:24.12.0-bookworm
-          RUN apt-get update && apt-get install -y --no-install-recommends build-essential pkg-config libcairo2-dev libpango1.0-dev libpng-dev libjpeg-dev libgif-dev librsvg2-dev xvfb xauth libgtk-3-0 libgtk2.0-0 libnss3 libasound2 libgbm1 libxss1 libatk-bridge2.0-0 && npm install --global pnpm@10.26.1
+          RUN apt-get update && apt-get install -y --no-install-recommends jq build-essential pkg-config libcairo2-dev libpango1.0-dev libpng-dev libjpeg-dev libgif-dev librsvg2-dev xvfb xauth libgtk-3-0 libgtk2.0-0 libnss3 libasound2 libgbm1 libxss1 libatk-bridge2.0-0 && npm install --global pnpm@10.26.1
           USER node
           WORKDIR /work
           DOCKER
